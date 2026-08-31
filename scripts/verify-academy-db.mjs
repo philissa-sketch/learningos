@@ -143,8 +143,17 @@ ok('exactly four files import db.js',
   importers.length === 4 && importers.every((f) => MAY_IMPORT_DB.includes(f)),
   importers.join(', '));
 
-ok('...and the import screen takes only the live connection',
-  (codeOnly('src/components/Academy/ImportSchool.jsx').match(/import \{([^}]*)\} from '\.\.\/\.\.\/db\/db\.js'/) || [, ''])[1].trim() === 'db');
+// The live connection, to write into — and EXPORT_TABLE_POLICY, to READ. The
+// policy is the list of tables a daily handoff leaves behind, and the restore
+// screen names them so a parent can see her compliance file actually arrived.
+// That is a declaration about tables, not a way into one.
+const IMPORT_SCREEN_MAY_IMPORT = ['db', 'EXPORT_TABLE_POLICY'];
+const importScreenNames = (codeOnly('src/components/Academy/ImportSchool.jsx')
+  .match(/import \{([^}]*)\} from '\.\.\/\.\.\/db\/db\.js'/) || [, ''])[1]
+  .split(',').map((n) => n.trim()).filter(Boolean);
+ok('the import screen takes the live connection and the export policy, nothing else',
+  importScreenNames.length > 0 && importScreenNames.every((n) => IMPORT_SCREEN_MAY_IMPORT.includes(n)),
+  `it imports: ${importScreenNames.join(', ')}`);
 
 const GATE_MAY_IMPORT = ['openAcademy', 'closeAcademy'];
 const gateImport = (codeOnly('src/FrontDoorGate.jsx').match(/import \{([^}]*)\} from '\.\/db\/db\.js'/) || [, ''])[1];

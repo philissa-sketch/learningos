@@ -119,7 +119,7 @@ Browsable lesson subjects, for rank-gate reachability: aerospace, technology, so
 
 ## Verification suites
 
-54 guard suites in `scripts/` — this is the suite:
+55 guard suites in `scripts/` — this is the suite:
 
 - `node scripts/verify-academic-order.mjs`
 - `node scripts/verify-academic-schedule.mjs`
@@ -148,6 +148,7 @@ Browsable lesson subjects, for rank-gate reachability: aerospace, technology, so
 - `node scripts/verify-khan-unit-completion.mjs`
 - `node scripts/verify-khan-unit-names.mjs`
 - `node scripts/verify-local-dates.mjs`
+- `node scripts/verify-migration.mjs`
 - `node scripts/verify-mission-grades.mjs`
 - `node scripts/verify-mission-schedule.mjs`
 - `node scripts/verify-morning-meeting.mjs`

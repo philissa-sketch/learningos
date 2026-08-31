@@ -1,5 +1,12 @@
 import { useState } from 'react';
-import { db } from '../../db/db.js';
+import { db, EXPORT_TABLE_POLICY } from '../../db/db.js';
+import {
+  databasesInFile,
+  likeliestSchoolDatabase,
+  tablesForDatabase,
+  tablesTheHandoffWouldMiss,
+  validateMigrationFile
+} from '../../lib/migrationFile.js';
 import {
   openSourceReadOnly,
   readAllTables,
@@ -39,6 +46,11 @@ import '../FrontDoor/frontDoor.css';
 export default function ImportSchool({ academy, onDone, onCancel }) {
   const [step, setStep] = useState('name');
   const [sourceName, setSourceName] = useState('');
+  // 'database' — a school at THIS web address
+  // 'file'     — a school that lived at a different one
+  const [mode, setMode] = useState('database');
+  const [migration, setMigration] = useState(null); // the parsed file
+  const [missedByHandoff, setMissedByHandoff] = useState([]);
   const [sourceTables, setSourceTables] = useState(null);
   const [summary, setSummary] = useState(null);
   const [tables, setTables] = useState(new Set());
@@ -69,6 +81,60 @@ export default function ImportSchool({ academy, onDone, onCancel }) {
     setBusy(false);
   }
 
+  /**
+   * Read a migration file instead of a database at this address.
+   *
+   * Same destination, same plan, same verification — only the source differs.
+   * The file carries every database from the old address, so which school's
+   * records to restore is a choice, not a guess.
+   */
+  async function readFile(event) {
+    const chosen = event.target.files?.[0];
+    if (!chosen) return;
+    setBusy(true);
+    setError(null);
+    try {
+      const parsed = JSON.parse(await chosen.text());
+      const checked = validateMigrationFile(parsed);
+      if (!checked.ok) {
+        setError(checked.error);
+        setBusy(false);
+        return;
+      }
+
+      const which = likeliestSchoolDatabase(checked.file);
+      const flat = tablesForDatabase(checked.file, which);
+      const found = summarizeSource(flat);
+
+      setMigration({ file: checked.file, database: which, databases: databasesInFile(checked.file) });
+      setSourceTables(flat);
+      setSummary(found);
+      setTables(new Set(found.tables.filter((t) => t.rows > 0).map((t) => t.name)));
+      setCurrencies(new Set());
+      // Named on the next screen, because these are the tables a parent is
+      // most likely to assume travelled and least likely to notice missing:
+      // a compliance checklist is not something you open every morning.
+      setMissedByHandoff(tablesTheHandoffWouldMiss(flat, EXPORT_TABLE_POLICY));
+      setStep('choose');
+    } catch (e) {
+      setError(e.message || String(e));
+    }
+    setBusy(false);
+  }
+
+  function switchDatabase(name) {
+    const flat = tablesForDatabase(migration.file, name);
+    const found = summarizeSource(flat);
+    setMigration({ ...migration, database: name });
+    setSourceTables(flat);
+    setSummary(found);
+    setTables(new Set(found.tables.filter((t) => t.rows > 0).map((t) => t.name)));
+    setCurrencies(new Set());
+    // Recomputed, not carried over: it describes the database being restored,
+    // and showing the previous one's list would be worse than showing none.
+    setMissedByHandoff(tablesTheHandoffWouldMiss(flat, EXPORT_TABLE_POLICY));
+  }
+
   async function run() {
     if (busy) return;
     setBusy(true);
@@ -96,19 +162,38 @@ export default function ImportSchool({ academy, onDone, onCancel }) {
   return (
     <Panel onCancel={onCancel}>
       {step === 'name' ? (
-        <form className="fd-body" onSubmit={read}>
+        <div className="fd-body">
           <p className="fd-steps">Import · Step 1 of 3</p>
-          <h1>Which school?</h1>
+          <h1>Where is the school now?</h1>
           <p className="fd-hint">
-            The name of the database the existing school saved its records under. Nothing is
-            written to it — this reads a copy and leaves the original exactly as it is.
+            Nothing is written to the original either way. This reads a copy and leaves the school
+            it came from exactly as it is.
           </p>
 
-          <p className="fd-note">
-            <strong>It has to be the same web address.</strong> Browser records belong to the exact
-            URL they were created at. If the old school ran at a different address, open{' '}
-            <em>this</em> app at that address first, or the database will not be there to find.
-          </p>
+          <div className="fd-tabs" style={{ marginBottom: '22px' }}>
+            <button
+              type="button"
+              role="tab"
+              aria-selected={mode === 'database'}
+              onClick={() => {
+                setMode('database');
+                setError(null);
+              }}
+            >
+              At this address
+            </button>
+            <button
+              type="button"
+              role="tab"
+              aria-selected={mode === 'file'}
+              onClick={() => {
+                setMode('file');
+                setError(null);
+              }}
+            >
+              From a file
+            </button>
+          </div>
 
           {error ? (
             <p className="fd-error" role="alert">
@@ -116,20 +201,44 @@ export default function ImportSchool({ academy, onDone, onCancel }) {
             </p>
           ) : null}
 
-          <label htmlFor="imp-name">Database name</label>
-          <input
-            id="imp-name"
-            type="text"
-            autoComplete="off"
-            spellCheck="false"
-            value={sourceName}
-            onChange={(e) => setSourceName(e.target.value)}
-          />
+          {mode === 'database' ? (
+            <form onSubmit={read}>
+              <p className="fd-note">
+                Use this when the old school ran at <em>this same web address</em>. Browser records
+                belong to the exact URL that created them, so a school from a different address
+                cannot be seen from here — it has to come as a file.
+              </p>
 
-          <button className="fd-btn" type="submit" disabled={busy || !sourceName.trim()}>
-            {busy ? 'Reading…' : 'Read it'}
-          </button>
-        </form>
+              <label htmlFor="imp-name">Database name</label>
+              <input
+                id="imp-name"
+                type="text"
+                autoComplete="off"
+                spellCheck="false"
+                value={sourceName}
+                onChange={(e) => setSourceName(e.target.value)}
+              />
+
+              <button className="fd-btn" type="submit" disabled={busy || !sourceName.trim()}>
+                {busy ? 'Reading…' : 'Read it'}
+              </button>
+            </form>
+          ) : (
+            <div>
+              <p className="fd-note">
+                A <strong>migration file</strong>, made at the school&apos;s old address. This is
+                not the daily &ldquo;send my work&rdquo; file — that one deliberately leaves your
+                own records behind, and a move needs all of them. See{' '}
+                <code>docs/MIGRATION.md</code>.
+              </p>
+
+              <label htmlFor="imp-file">Migration file</label>
+              <input id="imp-file" type="file" accept=".json,application/json" onChange={readFile} />
+
+              {busy ? <p className="fd-hint">Reading…</p> : null}
+            </div>
+          )}
+        </div>
       ) : null}
 
       {step === 'choose' && summary ? (
@@ -141,6 +250,66 @@ export default function ImportSchool({ academy, onDone, onCancel }) {
             {summary.tables.filter((t) => t.rows > 0).length} tables. Untick anything that should
             not travel.
           </p>
+
+          {migration ? (
+            <>
+              <p className="fd-note">
+                From <strong>{migration.database}</strong>, exported{' '}
+                {new Date(migration.file.exportedAt).toLocaleDateString()} at{' '}
+                {migration.file.source?.origin || 'an unrecorded address'}.
+              </p>
+
+              {migration.databases.length > 1 ? (
+                <>
+                  <p className="fd-steps">
+                    The file holds {migration.databases.length} databases — restore which?
+                  </p>
+                  <div style={{ marginBottom: '18px' }}>
+                    {migration.databases.map((name) => (
+                      <label
+                        key={name}
+                        style={{
+                          display: 'flex',
+                          gap: '10px',
+                          alignItems: 'center',
+                          textTransform: 'none',
+                          letterSpacing: 0,
+                          fontSize: '13px',
+                          marginBottom: '6px',
+                          color: 'var(--fd-text)'
+                        }}
+                      >
+                        <input
+                          type="radio"
+                          name="which-db"
+                          style={{ width: 'auto', margin: 0 }}
+                          checked={migration.database === name}
+                          onChange={() => switchDatabase(name)}
+                        />
+                        <span>{name}</span>
+                      </label>
+                    ))}
+                  </div>
+                </>
+              ) : null}
+
+              {/*
+                Named explicitly, because these are the tables a parent is most
+                likely to assume came across and least likely to notice
+                missing. A compliance checklist is not something you open every
+                morning — you open it once a year, and by then the file that
+                should have carried it is long gone.
+              */}
+              {missedByHandoff.length ? (
+                <p className="fd-note">
+                  <strong>In this file, and not in a daily handoff:</strong>{' '}
+                  {missedByHandoff.map((t) => `${t.name} (${t.rows})`).join(', ')}. These are your
+                  own records — the compliance file, the course descriptions, your notes. A
+                  &ldquo;send my work&rdquo; file leaves them behind on purpose; a move must not.
+                </p>
+              ) : null}
+            </>
+          ) : null}
 
           {summary.currencies.length ? (
             <>

@@ -419,3 +419,67 @@ is not that learner.
 The lazy chunks already in the list (`ParentDashboard` 264 kB, `RewardsHome`
 146 kB, `AcademicHome` 72 kB…) are the school's own pre-existing route splits
 and are unaffected.
+
+---
+
+## The move to a new address, and the export that would have lost the compliance file (Aug 31, 2026)
+
+LearningOS is getting its own address — `learningos-academy.netlify.app`. The
+old one goes back to being the old school until the move is proven.
+
+### Why this needed new code at all
+
+Browser records belong to the exact URL that created them. A move is therefore
+not a copy between databases; the records travel as a file.
+
+And **the export that already exists would have quietly ruined it.**
+`EXPORT_TABLE_POLICY` excludes nine tables from the daily handoff — the
+compliance checklist, the course descriptions, the quarterly evaluations, the
+parent's notes about her son. Every one of those exclusions is right for a
+handoff between two computers that both hold the records, and every one is
+wrong for a move to a machine that holds none.
+
+Reaching for it would have run cleanly, reported success, and dropped the
+Georgia record. Nobody would have noticed until the year it was needed.
+
+So a migration file is a separate format with the opposite rule: everything
+travels. `scripts/verify-migration.mjs` computes the exclusion list from
+`EXPORT_TABLE_POLICY` itself and fails if any of those tables goes missing —
+so adding a tenth exclusion tomorrow extends the check automatically.
+
+### A console snippet rather than a button
+
+To read records at the old address, the code has to be RUNNING at the old
+address. A button would have meant deploying a new version of the old app over
+a child who was using it — which is exactly the mistake made earlier today.
+
+`docs/migration-export-snippet.js` is pasted into the console instead. It opens
+each database **without declaring a version**, because declaring one triggers an
+upgrade and an upgrade is a write to the one thing that must not be written; and
+it aborts rather than leaving an empty database behind if a name does not exist.
+It takes every database at the address, not a chosen one — a household database
+left behind is a passcode and every PIN lost.
+
+### The bug the guard caught
+
+`tablesTheHandoffWouldMiss()` took the whole file and looked up
+`file.tables[name]`. Keys in a file are `database::table`, so every lookup
+missed and it returned an empty list — **with no error anywhere.** The one piece
+of reassurance a parent most needs on that screen would have rendered as
+nothing at all.
+
+It now takes the flat tables, and there is a check asserting that passing the
+whole file still returns nothing — so the note explaining the trap stays honest
+rather than becoming a story about a bug that was fixed some other way.
+
+### Verified
+
+`scripts/verify-migration.mjs` — 31 checks, including a restore that drops the
+compliance table (must fail), a truncated file (must be refused, naming the
+table), a daily handoff file offered by mistake (must be refused, explaining the
+difference), and the ledger filter still holding on a file restore.
+
+**64 of 64 check scripts pass.** Four stylesheets clean through PostCSS. 283
+modules resolve from `main.jsx`.
+
+`docs/MIGRATION.md` is the runbook, in order, with what each failure means.
