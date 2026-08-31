@@ -138,9 +138,22 @@ take hers, not the reverse.
 
 ## Open, unrelated to C1
 
-- **Attendance is 36 against 21 possible weekdays** (school started Aug 3).
-  Not a migration fault; the rows predate it. Summer sessions and weekend
-  activity are legitimate hours, dev test rows are not. Readable by date in the
-  Parent Dashboard.
-- **The second computer** still bookmarks the old address. `MIGRATION.md`
-  Part F is the ten-minute fix — export from the new Academy, import there.
+- **The second computer is done.** Both machines are on the new address, each
+  with its own household database and Academy record.
+
+- **Attendance is resolved — nothing was wrong.** 36 rows against 21 possible
+  weekdays broke down as 21 weekdays + 7 weekend days with real work + 8 summer
+  days before Aug 3. Every row carried real minutes; there were no test rows and
+  nothing was deleted. Both extra categories legitimately count under the
+  standing summer and weekend rules.
+
+- **Two days show implausible lesson counts** — one Sunday with 50 lessons in 16
+  minutes, the Monday after with 91 in 113. Every other day is 0–19. Looks like a
+  bulk mark-complete (a Khan seed or a batch tick). It inflates the gradebook and
+  lesson counts, not the hours, so it is a records question rather than a
+  compliance one. Left alone deliberately.
+
+- **Only 7 of 36 days show 270+ active minutes** (Georgia's 4.5-hour bar). But
+  `activeMinutes` is app-active time and the dashboard credits
+  `max(active, scheduled)`, so the reported figure is higher. Worth comparing the
+  two once, to know which number would be stood behind.
