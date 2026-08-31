@@ -72,8 +72,13 @@ function findTabLabel(view) {
   return 'Menu';
 }
 
-export function NavBar({ view, onNavigate }) {
+/**
+ * @param {Function} [onSignOut] hands the machine back to the LearningOS front
+ *   door. See the sign-out button below for why a child can reach it.
+ */
+export function NavBar({ view, onNavigate, onSignOut }) {
   const [openGroup, setOpenGroup] = useState(null); // desktop dropdown
+  const [confirmSignOut, setConfirmSignOut] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false); // mobile sheet
   const [expandedMobileGroup, setExpandedMobileGroup] = useState(findGroupFor(view)?.id || null);
   const navRef = useRef(null);
@@ -104,6 +109,48 @@ export function NavBar({ view, onNavigate }) {
 
   return (
     <header className="print-hide sticky top-0 z-10 border-b border-space-700 bg-space-900/95 backdrop-blur">
+      {confirmSignOut ? (
+        <div
+          className="fixed inset-0 z-50 grid place-items-center bg-space-950/80 px-4"
+          onMouseDown={(e) => e.target === e.currentTarget && setConfirmSignOut(false)}
+        >
+          <div
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="signout-title"
+            className="w-full max-w-sm rounded-2xl border border-space-700 bg-space-800 p-6 text-left"
+          >
+            <h2 id="signout-title" className="font-display text-lg text-ink-100">
+              Sign out?
+            </h2>
+            <p className="mt-2 text-sm text-ink-300">
+              Nothing is lost. Everything you have done is saved on this computer and will be
+              exactly where you left it.
+            </p>
+            <p className="mt-2 text-sm text-ink-400">
+              To get back in you will need your name and your four numbers.
+            </p>
+            <div className="mt-5 flex gap-3">
+              <button
+                type="button"
+                onClick={onSignOut}
+                className="flex-1 rounded-lg bg-signal-cyan px-4 py-2 font-display text-sm font-700 text-space-950 transition hover:brightness-110"
+              >
+                Sign out
+              </button>
+              <button
+                type="button"
+                autoFocus
+                onClick={() => setConfirmSignOut(false)}
+                className="flex-1 rounded-lg border border-space-600 px-4 py-2 font-display text-sm text-ink-200 transition hover:border-ink-500"
+              >
+                Stay signed in
+              </button>
+            </div>
+          </div>
+        </div>
+      ) : null}
+
       <div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-3 sm:px-6">
         <div className="flex items-center gap-2">
           <span className="text-lg font-display font-700 tracking-wide text-signal-cyan">
@@ -151,6 +198,34 @@ export function NavBar({ view, onNavigate }) {
             <span aria-hidden="true">{avatarIconFor(equippedAvatar)}</span>
             🪙 {coinBalance}
           </button>
+
+          {/*
+            ---- A CHILD CAN SIGN THEMSELVES OUT ----
+
+            The first version put sign-out behind the parent passcode, reasoning
+            that a button here is one a twelve-year-old hits by accident
+            mid-lesson. That reasoning was wrong for what this platform is FOR.
+
+            Two children share this computer. If only the parent can sign out,
+            the second child can never reach her own Academy without fetching
+            her mother first — every single day. That is not a safeguard, it is
+            a queue.
+
+            The accidental press is real, so it is handled by ASKING, which
+            costs one tap. And the worst case is mild: signing out loses
+            nothing, and getting back in is a name and four numbers.
+          */}
+          {onSignOut ? (
+            <button
+              type="button"
+              onClick={() => setConfirmSignOut(true)}
+              title="Sign out — hand the computer to someone else"
+              aria-label="Sign out"
+              className="ml-1 rounded-full border border-space-700 px-2 py-0.5 font-display text-xs text-ink-500 transition hover:border-ink-500 hover:text-ink-300"
+            >
+              ⏻<span className="ml-1 hidden sm:inline">Sign out</span>
+            </button>
+          ) : null}
         </div>
 
         {/* Desktop: 4 group buttons (3 dropdowns + Parent Dashboard direct link) */}

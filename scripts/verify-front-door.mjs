@@ -188,6 +188,38 @@ ok('signing out forgets it and closes the connection',
 ok('...and returns to the home page rather than a bare panel',
   /setPhase\('home'\)/.test(gate));
 
+// ---- A CHILD CAN SIGN THEMSELVES OUT, AND THAT IS THE POINT ----
+//
+// The first version put sign-out behind the parent passcode, reasoning that a
+// button on the school side is one a twelve-year-old hits by accident
+// mid-lesson. A real family found the flaw in that within a day.
+//
+// Two children share one computer. If only the parent can sign out, the second
+// child cannot reach her own Academy without fetching her mother — every
+// morning. The platform's whole premise is two learners on one machine; a
+// sign-out only a parent can perform turns that into a queue.
+//
+// The accidental press is real and is handled by ASKING, which costs one tap.
+// The worst case is mild: nothing is lost, and getting back in is a name and
+// four numbers.
+const nav = codeOnly('src/components/Navigation/NavBar.jsx');
+const navText = read('src/components/Navigation/NavBar.jsx');
+ok('a learner can sign themselves out from the school side',
+  /onSignOut/.test(nav) && /Sign out/.test(navText),
+  'the second child on a shared computer cannot get in otherwise');
+ok('...and App threads it to the nav, not only to the parent dashboard',
+  /<NavBar[^>]*onSignOut=\{onSignOut\}/.test(codeOnly('src/App.jsx')));
+ok('...but it asks first, rather than firing on one stray tap',
+  /confirmSignOut/.test(nav) && /setConfirmSignOut\(true\)/.test(nav));
+ok('...and the question says nothing is lost',
+  /Nothing is lost/.test(navText),
+  'a child who thinks sign-out deletes their work will never press it');
+ok('...and says what getting back in takes',
+  /your name and your four numbers/i.test(navText));
+ok('the parent keeps one in the dashboard as well',
+  /onSignOut=\{onSignOut\}/.test(codeOnly('src/App.jsx')) &&
+    /SignOutSection/.test(codeOnly('src/components/Dashboard/ParentDashboard.jsx')));
+
 console.log('\n--- 5b. the sign-in panel opens over the home page ---');
 
 const home = codeOnly('src/components/FrontDoor/HomePage.jsx');

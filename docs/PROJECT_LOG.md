@@ -483,3 +483,131 @@ difference), and the ledger filter still holding on a file restore.
 modules resolve from `main.jsx`.
 
 `docs/MIGRATION.md` is the runbook, in order, with what each failure means.
+
+---
+
+## The move happened (Aug 31, 2026)
+
+LearningOS is at **`learningos-academy.netlify.app`**, with its own name, its own
+repository, and Lamar's records inside it.
+
+### What travelled
+
+Exported from `mission-control-homeschool.netlify.app`: **1,062 rows across 46
+tables**, from two databases. Restored into `LearningOSDB_lamar-junt`: **1,021
+rows**. The difference is exactly 41 — the `petal` and `seed` entries that
+belong to his sister.
+
+Twelve spot-checks against the export, all matching:
+
+| | expected | found |
+|---|---|---|
+| attendance | 36 | 36 |
+| ledger | 20 | 20 |
+| complianceChecks | 3 | 3 |
+| evidenceLinks | 8 | 8 |
+| meta · schedule · parentAuth | 1 each | 1 each |
+| khanAcademyAssignments | 162 | 162 |
+| rewards | 206 | 206 |
+| fieldTrips | 213 | 213 |
+| academicAssignments | 48 | 48 |
+| academicBooks | 20 | 20 |
+
+### The screen did the job it was built for
+
+The currency notes made the decision obvious rather than technical:
+
+```
+coin   — 12   "Flight Suit", "Course Correction", "Engineering Workstation"
+credit —  8   "Credit for work completed before the Marketplace opened"
+petal  — 39   "Ribboned Braids", "Morning warm-up", "Window Box"
+seed   —  2   "Sat Week 1 · Seeds"
+```
+
+Flight suits on one side, ribboned braids on the other. A hardcoded allow-list
+would have produced the same 20 rows and taught nobody anything; this took about
+a second to read and will work the same way for a currency invented next year.
+
+`credit` came back as 8 rather than the audited 7 — one earned since. The count
+moved and nothing broke, which is the point of not hardcoding it.
+
+### What it cost to get here, and the lesson
+
+Three false starts, all mine, all the same shape: **a change was made and not
+deployed.**
+
+1. The site was relinked in Netlify's *build settings* rather than its
+   *repository* setting, so nothing ever deployed. I read "branch: master" as
+   proof the relink worked. It was not.
+2. The migration code was written and committed locally but never pushed, so the
+   live import screen was the older one with no file tab.
+3. Before that, deploying LearningOS to the shared address flipped a child's
+   school mid-morning, because a deploy reaches every computer at that address at
+   once.
+
+The rule that comes out of it: **after code changes, say plainly that it is not
+live until it is pushed, and verify the deployed bundle rather than the local
+one.** Checking the live site's JavaScript for a known string took one command
+and would have caught two of the three immediately.
+
+### Still open
+
+- **Attendance is 36 against 21 possible weekdays** (Aug 3–31). Not a migration
+  fault — the rows were already there. Worth resolving before it becomes a
+  compliance answer: summer sessions and weekend activity are legitimate, dev
+  test rows are not.
+- **Lamar's computer has not been migrated.** It has its own copy of the
+  records; the whole process runs again there.
+- **`learningos-academy` is not his bookmark yet.** The old address still works
+  and still holds everything.
+
+---
+
+## The sign-out only a parent could reach (Aug 31, 2026)
+
+Hours after the migration, from the parent: **"He's unable to logout."**
+
+He was not. Sign Out lived in the Parent Dashboard, behind the passcode, and I
+put it there on purpose with a reason written next to it:
+
+> *A Sign Out button on the school side is one a twelve-year-old hits by
+> accident mid-lesson and then cannot undo without finding her.*
+
+That reasoning is fine in isolation and wrong for what this platform is FOR.
+
+**Two children share one computer.** That is the premise — it is why records
+separate by database, why content separates by folder, why there is a front door
+at all. A sign-out only the parent can perform means the second child cannot
+reach her own Academy without fetching her mother. Every morning. It is not a
+safeguard, it is a queue, and it would have been discovered by Azianna rather
+than by a test.
+
+### The fix, and what it cost to be wrong
+
+A sign-out control in the nav bar, next to the coin balance, reachable by the
+learner — with a confirmation rather than a passcode:
+
+> **Sign out?** Nothing is lost. Everything you have done is saved on this
+> computer and will be exactly where you left it. To get back in you will need
+> your name and your four numbers.
+
+The accidental press was a real concern and is handled by asking, which costs one
+tap. The worst case was never severe: signing out loses nothing, and getting back
+in is a name and four numbers. I had weighted a mild, recoverable annoyance above
+a daily blocker on the platform's core use case.
+
+The parent's Sign Out stays in the dashboard too — it is still the right place
+for "I am handing this machine to someone else."
+
+### The guard now argues the opposite of what it used to
+
+`verify-front-door.mjs` previously asserted that sign-out was reachable **only**
+from behind the parent passcode. It now asserts a learner can reach it, that App
+threads it to the nav and not only to the dashboard, that it asks first, and that
+the question says both *nothing is lost* and *what getting back in takes* — a
+child who believes sign-out deletes their work will never press it.
+
+The old reasoning is kept in the comment above the new checks. A guard that
+silently flips its assertion teaches nobody why.
+
+**64 of 64 check scripts pass.**

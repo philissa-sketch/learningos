@@ -388,7 +388,7 @@ export default function App({ initialView = 'dashboard', onSignOut }) {
   } else {
     content = (
       <>
-        <NavBar view={view} onNavigate={setView} />
+        <NavBar view={view} onNavigate={setView} onSignOut={onSignOut} />
         {view === 'dashboard' && (
           <MissionControlDashboard
             onStartLesson={setActiveLesson}
