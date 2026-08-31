@@ -1,0 +1,139 @@
+/*
+ * ---- ONE ACADEMY'S SKIN ----
+ *
+ * This was src/index.css in the school this Academy came from: a dark palette,
+ * a glow on the body, and the print rules for its Report Card and certificates.
+ *
+ * It is here rather than there because it is not true of every Academy. It is
+ * true of THIS one. The platform's own index.css now carries only what every
+ * Academy shares — the Tailwind layers, a full-height root, and a ground colour
+ * — and this file is loaded by App.jsx when this Academy's school renders.
+ *
+ * The @tailwind directives were removed: index.css already emits them once, and
+ * a second copy would ship the whole framework twice.
+ *
+ * When a second Academy arrives, this file is what it gets its own copy of.
+ */
+
+/*
+ * ---- NO @layer IN THIS FILE, AND THAT IS NOT A STYLE CHOICE ----
+ *
+ * These rules were inside `@layer base { }` and `@layer utilities { }` when
+ * they lived in the platform's index.css, next to the @tailwind directives.
+ *
+ * PostCSS processes every CSS file as its own entry. This file is imported by
+ * App.jsx, so Tailwind runs over it ALONE — and `@layer base` with no matching
+ * `@tailwind base` in the same file is a hard build error. Putting the
+ * directives back here would emit the whole framework a second time.
+ *
+ * So the rules are plain CSS. `@apply` still works, because the Tailwind plugin
+ * is running over this file either way; it is only `@layer` that needs the
+ * directive to attach to. scripts/verify-academy-css.mjs holds this.
+ */
+
+/**
+ * THE DEFAULT THEME — Telemetry.
+ *
+ * Space-separated RGB channels, not hex, because tailwind.config.js reads
+ * them through `rgb(var(--x) / <alpha-value>)` so that opacity modifiers
+ * like `bg-signal-cyan/10` keep working. A hex here would break every one
+ * of them silently.
+ *
+ * These are the FALLBACK values. lib/themes.js overwrites them on <html> at
+ * startup from whatever theme he has equipped, so the app is correct before
+ * any JavaScript runs and correct again a frame later.
+ */
+:root {
+  --space-950: 7 11 20;
+  --space-900: 11 17 32;
+  --space-800: 19 27 46;
+  --space-700: 28 39 61;
+  --space-600: 42 55 82;
+  --accent: 34 211 238;
+  --accent-glow: rgba(34, 211, 238, 0.06);
+}
+
+html, body, #root {
+  height: 100%;
+}
+body {
+  @apply font-body text-ink-100 antialiased;
+  /* Both halves are variables, so a theme repaints the page itself and not
+     just the panels sitting on it. */
+  background:
+    radial-gradient(ellipse at top, var(--accent-glow), transparent 55%),
+    rgb(var(--space-900));
+}
+::selection {
+  @apply bg-signal-cyan/30;
+}
+
+.font-display {
+  letter-spacing: 0.02em;
+}
+.telemetry {
+  @apply font-mono tracking-wide tabular-nums;
+}
+
+/* Print styles for the Report Card and Weekly Report — everything else
+   (nav, other Parent Dashboard sections, buttons) is hidden; the printed
+   content switches to plain black-on-white since a dark theme wastes ink
+   and reads poorly on paper. */
+@media print {
+  .print-hide {
+    display: none !important;
+  }
+  .print-content,
+  .print-content * {
+    background: white !important;
+    color: black !important;
+    border-color: #ccc !important;
+    box-shadow: none !important;
+  }
+}
+
+/* Certificate printing (Part 5 Rewards). Scoped to a body class the
+   certificate modal toggles on, so printing a certificate shows ONLY the
+   certificate and never interferes with the Report Card's print rules
+   above. Black-on-white to save ink and read well on paper. */
+@media print {
+  body.printing-certificate * {
+    visibility: hidden !important;
+  }
+  body.printing-certificate .certificate-print,
+  body.printing-certificate .certificate-print * {
+    visibility: visible !important;
+    color: black !important;
+    box-shadow: none !important;
+  }
+  body.printing-certificate .certificate-print {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    background: white !important;
+    border-color: #c8891a !important;
+  }
+}
+
+/* Field-trip Learning Pack printing (Part 5). Same scoped-body-class trick as
+   the certificate, so printing a pack shows only the pack, black-on-white. */
+@media print {
+  body.printing-fieldtrip * {
+    visibility: hidden !important;
+  }
+  body.printing-fieldtrip .fieldtrip-print,
+  body.printing-fieldtrip .fieldtrip-print * {
+    visibility: visible !important;
+    color: black !important;
+    box-shadow: none !important;
+  }
+  body.printing-fieldtrip .fieldtrip-print {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    background: white !important;
+    border-color: #ccc !important;
+  }
+}

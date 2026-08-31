@@ -1,0 +1,84 @@
+# ---------------------------------------------------------------------------
+# LearningOS — Netlify deployment
+#
+# WHY THIS EXISTS
+#
+# Until now his copy of the app was a folder someone re-copied by hand, and it
+# went stale between copies. That has caused real, confusing bugs: "when
+# selecting reading on my computer it opens to reading, when my son opens the
+# link on his computer it has the coding not the reading." Two machines, two
+# builds, and no way to tell from either screen.
+#
+# Deploying here ends that class of bug. Both machines load the same build,
+# always the current one.
+#
+# WHAT THIS DOES NOT DO: it does not sync his work. Progress lives in each
+# browser's own IndexedDB database, so the export/import handoff continues
+# exactly as it does today.
+# ---------------------------------------------------------------------------
+
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+  # ---- SKIP THE BUILD WHEN NOTHING A BROWSER CAN SEE CHANGED. (Aug 28, 2026.)
+  #
+  # A production deploy costs 15 credits against a 1,000/month allowance, and
+  # 51 deploys in August spent 765 of them. Most published no visible change:
+  # they were commits to scripts/, docs/ and this project's own notes.
+  #
+  # POLARITY IS THE WHOLE RISK:   exit 0 = SKIP   |   exit 1 = BUILD
+  # Getting it backwards means a push that looks fine and changes nothing on
+  # his computer. So this FAILS OPEN - no cached ref, an unresolvable ref, or
+  # anything unexpected all end in exit 1 and build. Worst case is a build that
+  # did not need to happen, which is exactly today's behaviour.
+  #
+  # WATCHED PATHS are everything the built site is made of. A new top-level
+  # source folder must be added here, or changes to it will not deploy.
+  #
+  # TO REVERT: delete this ignore line. Every push builds again.
+  ignore = "bash -c 'if [ -z \"$CACHED_COMMIT_REF\" ]; then exit 1; fi; if git diff --quiet \"$CACHED_COMMIT_REF\" \"$COMMIT_REF\" -- src public index.html package.json package-lock.json vite.config.js tailwind.config.js postcss.config.js netlify.toml; then exit 0; else exit 1; fi'"
+
+[build.environment]
+  # Pinned to the version the app is developed and tested against, so a
+  # Netlify default bump can never change the build underneath us.
+  NODE_VERSION = "22"
+
+# The app keeps its view in React state rather than the URL, so there are no
+# real routes to serve. This is here so a stray or bookmarked path still lands
+# on the app instead of a Netlify 404 page.
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+# ---------------------------------------------------------------------------
+# KEEP IT OUT OF SEARCH RESULTS.
+#
+# The site holds no student data — grades, attendance and reflections live in
+# the browser, never on this server. What IS public is the app itself and the
+# student's first name in its interface text. That does not need to be
+# indexed by Google, and a header is the reliable way to say so: robots.txt
+# asks crawlers not to CRAWL, X-Robots-Tag tells them not to LIST, which also
+# covers a URL someone links to from elsewhere.
+# ---------------------------------------------------------------------------
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Robots-Tag = "noindex, nofollow, noarchive, nosnippet"
+    X-Content-Type-Options = "nosniff"
+    X-Frame-Options = "SAMEORIGIN"
+    Referrer-Policy = "no-referrer"
+
+# Hashed build assets never change under their filename, so they can be
+# cached hard. index.html must NOT be, or a returning browser keeps serving
+# yesterday's app — which is the exact staleness this deployment exists to fix.
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/index.html"
+  [headers.values]
+    Cache-Control = "no-cache"

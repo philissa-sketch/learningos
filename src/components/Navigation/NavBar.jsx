@@ -1,0 +1,287 @@
+import { useEffect, useRef, useState } from 'react';
+import { useAppStore } from '../../store/useAppStore.js';
+import { avatarIconFor } from '../../lib/rewards.js';
+import { BUILD_STAMP } from '../../lib/buildStamp.js';
+
+// Grouped navigation (Aug 2026, parent feedback — 9 flat top-level tabs
+// felt cluttered/confusing). Every page still exists at the exact same
+// `view` id App.jsx already switches on; this only changes how they're
+// organized and reached, not what they are. Grouping confirmed with the
+// parent directly:
+//   Learn    — subject content Lamar actually studies from
+//   Practice — skill reps and low-stakes play, not graded subject content
+//   Plan     — looking back (Progress), looking ahead (Schedule), and the
+//              Academic Success Center (Part 9, built Aug 2026 — books,
+//              major assignments, and the portfolio, which is exactly the
+//              "what's coming and how is it going" work this group is
+//              for; it joined here as originally expected)
+//   Parent Dashboard — stays its own top-level item, different audience
+const NAV_GROUPS = [
+  {
+    id: 'learn',
+    label: 'Learn',
+    tabs: [
+      // FIRST, and above Mission Control on purpose: it is the 08:30 block, it
+      // is the first thing he does, and a morning routine buried three items
+      // down is a morning routine that gets skipped.
+      { id: 'morning', label: 'Morning Meeting' },
+      { id: 'dashboard', label: 'Mission Control' },
+      { id: 'lessons', label: 'Lesson Roster' },
+      { id: 'pe', label: 'PE & Nutrition' },
+      // Gardening sits in Learn beside PE & Nutrition — the app's two
+      // PARTICIPATION subjects, both real work recorded by what he did.
+      { id: 'garden', label: 'Garden' },
+      // Guitar joins PE and Garden here — this app's three PARTICIPATION
+      // subjects, all real work recorded by what he did rather than graded.
+      { id: 'guitar', label: 'Guitar' }
+    ]
+  },
+  {
+    id: 'practice',
+    label: 'Practice',
+    tabs: [
+      { id: 'journal', label: 'Writing Journal' },
+      { id: 'typing', label: 'Typing' },
+      { id: 'games', label: 'Games' },
+      { id: 'rewards', label: 'Rewards' }
+    ]
+  },
+  {
+    id: 'plan',
+    label: 'Plan',
+    tabs: [
+      { id: 'progress', label: 'Progress' },
+      { id: 'schedule', label: 'Schedule' },
+      { id: 'academic', label: 'Academic Center' }
+    ]
+  }
+];
+
+const PARENT_TAB = { id: 'parent', label: 'Parent Dashboard' };
+
+function findGroupFor(view) {
+  return NAV_GROUPS.find((g) => g.tabs.some((t) => t.id === view)) || null;
+}
+
+function findTabLabel(view) {
+  for (const g of NAV_GROUPS) {
+    const tab = g.tabs.find((t) => t.id === view);
+    if (tab) return tab.label;
+  }
+  if (view === PARENT_TAB.id) return PARENT_TAB.label;
+  return 'Menu';
+}
+
+export function NavBar({ view, onNavigate }) {
+  const [openGroup, setOpenGroup] = useState(null); // desktop dropdown
+  const [menuOpen, setMenuOpen] = useState(false); // mobile sheet
+  const [expandedMobileGroup, setExpandedMobileGroup] = useState(findGroupFor(view)?.id || null);
+  const navRef = useRef(null);
+
+  const currentLabel = findTabLabel(view);
+  const activeGroup = findGroupFor(view);
+
+  // Coin balance + equipped avatar (Part 5 gamification) — always visible, and
+  // a shortcut into the Rewards area.
+  const coinBalance = useAppStore((s) => s.getCoinBalance());
+  const equippedAvatar = useAppStore((s) => s.equippedAvatar);
+
+  // Close an open desktop dropdown on outside click, same convention as
+  // any other dropdown in this app.
+  useEffect(() => {
+    function handleClick(e) {
+      if (navRef.current && !navRef.current.contains(e.target)) setOpenGroup(null);
+    }
+    document.addEventListener('mousedown', handleClick);
+    return () => document.removeEventListener('mousedown', handleClick);
+  }, []);
+
+  const handleNavigate = (id) => {
+    onNavigate(id);
+    setOpenGroup(null);
+    setMenuOpen(false);
+  };
+
+  return (
+    <header className="print-hide sticky top-0 z-10 border-b border-space-700 bg-space-900/95 backdrop-blur">
+      <div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-3 sm:px-6">
+        <div className="flex items-center gap-2">
+          <span className="text-lg font-display font-700 tracking-wide text-signal-cyan">
+            MISSION CONTROL
+          </span>
+          <span className="hidden font-display text-sm text-ink-500 sm:inline">
+            Homeschool Academy
+          </span>
+          {/**
+            * THE BUILD STAMP, ON BOTH COMPUTERS. (Aug 10, 2026.)
+            *
+            * The parent: "when selecting reading on my computer it opens to
+            * reading, when my son opens the link on his computer it has the
+            * coding not the reading."
+            *
+            * Neither machine was broken — his was simply running an older copy
+            * of the app, and nothing on either screen said so. Progress syncs
+            * between the two computers; the code never has. This is how the
+            * two screens can be compared in one glance, out loud, from another
+            * room. See config/buildStamp.js.
+            *
+            * ---- WHAT IT MEANS NOW (Aug 24, 2026) ----
+            *
+            * The app is on Netlify, so the two computers cannot be on
+            * different builds by accident any more — and nobody runs the
+            * packaging script that used to write this string, so it is now
+            * stamped by the build itself.
+            *
+            * It still answers a real question, just a narrower one: a tab left
+            * open since Friday is running Friday's code, and this is the only
+            * thing on the screen that says so. Reloading the page fixes it.
+            */}
+          <span
+            title="The version this tab loaded, stamped when the site was built. If it looks old, reload the page."
+            className="hidden font-display text-[10px] uppercase tracking-widest text-ink-600 md:inline"
+          >
+            {BUILD_STAMP}
+          </span>
+          <button
+            type="button"
+            onClick={() => handleNavigate('rewards')}
+            aria-label={`Rewards — ${coinBalance} coins`}
+            className="ml-1 inline-flex items-center gap-1 rounded-full border border-signal-amber/40 bg-signal-amber/10 px-2 py-0.5 font-display text-xs font-700 text-signal-amber transition hover:brightness-110"
+          >
+            <span aria-hidden="true">{avatarIconFor(equippedAvatar)}</span>
+            🪙 {coinBalance}
+          </button>
+        </div>
+
+        {/* Desktop: 4 group buttons (3 dropdowns + Parent Dashboard direct link) */}
+        <nav ref={navRef} className="hidden items-center gap-1 rounded-lg bg-space-800 p-1 shadow-panel md:flex" aria-label="Primary">
+          {NAV_GROUPS.map((group) => {
+            const isActiveGroup = activeGroup?.id === group.id;
+            const isOpen = openGroup === group.id;
+            return (
+              <div key={group.id} className="relative">
+                <button
+                  type="button"
+                  onClick={() => setOpenGroup((g) => (g === group.id ? null : group.id))}
+                  aria-expanded={isOpen}
+                  aria-haspopup="true"
+                  className={
+                    'flex items-center gap-1.5 rounded-md px-3 py-1.5 text-sm font-display font-600 transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-signal-cyan ' +
+                    (isActiveGroup ? 'bg-signal-cyan/15 text-signal-cyan' : 'text-ink-300 hover:text-ink-100')
+                  }
+                >
+                  {group.label}
+                  <svg width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden="true" className={isOpen ? 'rotate-180 transition-transform' : 'transition-transform'}>
+                    <path d="M2 3.5L5 6.5L8 3.5" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                </button>
+
+                {isOpen && (
+                  <div className="absolute left-0 top-full z-20 mt-1 min-w-[200px] rounded-lg border border-space-700 bg-space-800 p-1 shadow-panel">
+                    {group.tabs.map((tab) => (
+                      <button
+                        key={tab.id}
+                        type="button"
+                        onClick={() => handleNavigate(tab.id)}
+                        aria-current={view === tab.id ? 'page' : undefined}
+                        className={
+                          'block w-full rounded-md px-3 py-2 text-left text-sm font-display font-600 transition-colors ' +
+                          (view === tab.id ? 'bg-signal-cyan/15 text-signal-cyan' : 'text-ink-300 hover:bg-space-900 hover:text-ink-100')
+                        }
+                      >
+                        {tab.label}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+            );
+          })}
+
+          <button
+            type="button"
+            onClick={() => handleNavigate(PARENT_TAB.id)}
+            aria-current={view === PARENT_TAB.id ? 'page' : undefined}
+            className={
+              'rounded-md px-3 py-1.5 text-sm font-display font-600 transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-signal-cyan ' +
+              (view === PARENT_TAB.id ? 'bg-signal-cyan/15 text-signal-cyan' : 'text-ink-300 hover:text-ink-100')
+            }
+          >
+            {PARENT_TAB.label}
+          </button>
+        </nav>
+
+        {/* Mobile: hamburger toggle showing the current page, opens a grouped accordion below */}
+        <button
+          type="button"
+          onClick={() => setMenuOpen((o) => !o)}
+          aria-expanded={menuOpen}
+          aria-label="Open navigation menu"
+          className="flex min-h-[44px] items-center gap-2 rounded-lg bg-space-800 px-3 py-2 font-display text-sm font-600 text-ink-100 shadow-panel md:hidden"
+        >
+          {currentLabel}
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <path d="M2 5h12M2 8h12M2 11h12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+          </svg>
+        </button>
+      </div>
+
+      {/* Mobile dropdown menu — grouped accordion, each row a real 44px+ touch target */}
+      {menuOpen && (
+        <nav aria-label="Primary" className="border-t border-space-700 bg-space-900 md:hidden">
+          {NAV_GROUPS.map((group) => {
+            const isExpanded = expandedMobileGroup === group.id;
+            const isActiveGroup = activeGroup?.id === group.id;
+            return (
+              <div key={group.id} className="border-b border-space-800">
+                <button
+                  type="button"
+                  onClick={() => setExpandedMobileGroup((g) => (g === group.id ? null : group.id))}
+                  aria-expanded={isExpanded}
+                  className={
+                    'flex min-h-[44px] w-full items-center justify-between px-4 py-3 text-left font-display text-sm font-700 uppercase tracking-wide transition-colors ' +
+                    (isActiveGroup ? 'text-signal-cyan' : 'text-ink-300')
+                  }
+                >
+                  {group.label}
+                  <svg width="12" height="12" viewBox="0 0 10 10" fill="none" aria-hidden="true" className={isExpanded ? 'rotate-180 transition-transform' : 'transition-transform'}>
+                    <path d="M2 3.5L5 6.5L8 3.5" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                </button>
+                {isExpanded && (
+                  <div className="pb-1">
+                    {group.tabs.map((tab) => (
+                      <button
+                        key={tab.id}
+                        type="button"
+                        onClick={() => handleNavigate(tab.id)}
+                        aria-current={view === tab.id ? 'page' : undefined}
+                        className={
+                          'block min-h-[44px] w-full px-8 py-2.5 text-left font-display text-sm font-600 transition-colors ' +
+                          (view === tab.id ? 'bg-signal-cyan/15 text-signal-cyan' : 'text-ink-300 hover:bg-space-800 hover:text-ink-100')
+                        }
+                      >
+                        {tab.label}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+            );
+          })}
+          <button
+            type="button"
+            onClick={() => handleNavigate(PARENT_TAB.id)}
+            aria-current={view === PARENT_TAB.id ? 'page' : undefined}
+            className={
+              'block min-h-[44px] w-full px-4 py-3 text-left font-display text-sm font-700 uppercase tracking-wide transition-colors ' +
+              (view === PARENT_TAB.id ? 'bg-signal-cyan/15 text-signal-cyan' : 'text-ink-300 hover:bg-space-800 hover:text-ink-100')
+            }
+          >
+            {PARENT_TAB.label}
+          </button>
+        </nav>
+      )}
+    </header>
+  );
+}

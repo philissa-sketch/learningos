@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LearningOS</title>
+    <!--
+      NO WEBFONT LINK, DELIBERATELY.
+
+      This used to preconnect and load three faces from fonts.googleapis.com.
+      LearningOS runs on a family's own computer and has to work on a morning
+      when the internet does not — a front door that waits on a font CDN is a
+      front door that hangs. Every stack in the app names its faces first and
+      falls back to system faces that hold the same shape.
+
+      An Academy's own theme may load whatever it likes, from its own folder,
+      after that child has signed in. That is content, and content is not the
+      platform's business.
+    -->
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>

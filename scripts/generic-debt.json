@@ -1,0 +1,464 @@
+{
+  "_baseline": "2026-08-31, the day the school moved into LearningOS",
+  "_why": "Files in the school zone that still name one Academy. This list may SHRINK and must never GROW. See scripts/verify-no-learner.mjs.",
+  "files": {
+    "src/App.jsx": [
+      "learner",
+      "school-name",
+      "subject"
+    ],
+    "src/components/Academic/AcademicAssignmentsView.jsx": [
+      "learner"
+    ],
+    "src/components/Academic/AcademicParentSetupView.jsx": [
+      "learner"
+    ],
+    "src/components/Academic/AcademicPortfolioView.jsx": [
+      "learner"
+    ],
+    "src/components/Academic/AssignmentFormatPicker.jsx": [
+      "learner"
+    ],
+    "src/components/Academic/AssignmentWriter.jsx": [
+      "learner"
+    ],
+    "src/components/Academic/BlackExcellenceShelf.jsx": [
+      "learner"
+    ],
+    "src/components/Academic/BookLibraryView.jsx": [
+      "learner"
+    ],
+    "src/components/Academic/PendingAssignmentSuggestion.jsx": [
+      "learner"
+    ],
+    "src/components/Academic/PendingBookSuggestion.jsx": [
+      "learner"
+    ],
+    "src/components/Academic/academicUi.js": [
+      "learner"
+    ],
+    "src/components/Dashboard/AcademicCenterCard.jsx": [
+      "learner"
+    ],
+    "src/components/Dashboard/AdminRecordsSection.jsx": [
+      "learner"
+    ],
+    "src/components/Dashboard/ClassBellCard.jsx": [
+      "learner",
+      "school-name"
+    ],
+    "src/components/Dashboard/ComplianceSection.jsx": [
+      "learner"
+    ],
+    "src/components/Dashboard/DailyMissionCard.jsx": [
+      "subject"
+    ],
+    "src/components/Dashboard/FeedbackFromMomCard.jsx": [
+      "guide"
+    ],
+    "src/components/Dashboard/GradeControls.jsx": [
+      "school-name"
+    ],
+    "src/components/Dashboard/KhanAcademyMissionsCard.jsx": [
+      "learner",
+      "school-name",
+      "subject"
+    ],
+    "src/components/Dashboard/LearningAnalyticsSection.jsx": [
+      "learner"
+    ],
+    "src/components/Dashboard/MissionControlBoard.jsx": [
+      "learner",
+      "school-name",
+      "guide"
+    ],
+    "src/components/Dashboard/MissionControlDashboard.jsx": [
+      "learner",
+      "school-name",
+      "guide",
+      "subject"
+    ],
+    "src/components/Dashboard/MissionEvaluationSection.jsx": [
+      "learner"
+    ],
+    "src/components/Dashboard/NovaParentGuide.jsx": [
+      "school-name"
+    ],
+    "src/components/Dashboard/NovaProgressPanel.jsx": [
+      "learner"
+    ],
+    "src/components/Dashboard/PacingSection.jsx": [
+      "learner"
+    ],
+    "src/components/Dashboard/ParentDashboard.jsx": [
+      "learner",
+      "school-name",
+      "subject"
+    ],
+    "src/components/Dashboard/ParentGate.jsx": [
+      "learner",
+      "school-name"
+    ],
+    "src/components/Dashboard/ProgressView.jsx": [
+      "learner",
+      "school-name",
+      "subject"
+    ],
+    "src/components/Dashboard/ScienceCourseMapSection.jsx": [
+      "learner"
+    ],
+    "src/components/Dashboard/StudentGradesCard.jsx": [
+      "learner",
+      "school-name"
+    ],
+    "src/components/Dashboard/StudentHandoffCard.jsx": [
+      "learner"
+    ],
+    "src/components/Dashboard/SubjectProgressOverview.jsx": [
+      "learner",
+      "school-name"
+    ],
+    "src/components/Dashboard/TimetableOrder.jsx": [
+      "learner"
+    ],
+    "src/components/Dashboard/TodayRow.jsx": [
+      "learner",
+      "school-name",
+      "subject"
+    ],
+    "src/components/Dashboard/TodaysRoutineRail.jsx": [
+      "learner",
+      "school-name"
+    ],
+    "src/components/Dashboard/TypingRecordSection.jsx": [
+      "learner"
+    ],
+    "src/components/Dashboard/WeekInReviewCard.jsx": [
+      "guide"
+    ],
+    "src/components/Dashboard/YearPlanSection.jsx": [
+      "learner"
+    ],
+    "src/components/Domains/DomainProjectView.jsx": [
+      "subject"
+    ],
+    "src/components/ErrorBoundary.jsx": [
+      "school-name"
+    ],
+    "src/components/Games/GamesHome.jsx": [
+      "learner",
+      "school-name",
+      "subject"
+    ],
+    "src/components/Games/LaunchDirector.jsx": [
+      "learner",
+      "guide"
+    ],
+    "src/components/Games/NationCommand.jsx": [
+      "learner",
+      "guide"
+    ],
+    "src/components/Garden/BuildTrackView.jsx": [
+      "learner"
+    ],
+    "src/components/Garden/GardenBriefView.jsx": [
+      "learner"
+    ],
+    "src/components/Garden/GardenHome.jsx": [
+      "learner"
+    ],
+    "src/components/Garden/NovaGardenGuide.jsx": [
+      "learner"
+    ],
+    "src/components/Garden/SeasonCalendarView.jsx": [
+      "learner"
+    ],
+    "src/components/Guitar/GuitarHome.jsx": [
+      "learner"
+    ],
+    "src/components/Guitar/PracticeTrackerView.jsx": [
+      "learner"
+    ],
+    "src/components/Guitar/RecordingView.jsx": [
+      "learner"
+    ],
+    "src/components/Guitar/SongsView.jsx": [
+      "learner"
+    ],
+    "src/components/Guitar/TheoryView.jsx": [
+      "learner"
+    ],
+    "src/components/Lesson/FeedbackPanel.jsx": [
+      "learner",
+      "school-name"
+    ],
+    "src/components/Lesson/GuidedNotes.jsx": [
+      "guide"
+    ],
+    "src/components/Lesson/LessonRoster.jsx": [
+      "learner",
+      "subject"
+    ],
+    "src/components/Lesson/PrintoutSheet.jsx": [
+      "learner"
+    ],
+    "src/components/Lesson/QuietQuarterNote.jsx": [
+      "learner",
+      "school-name"
+    ],
+    "src/components/Lesson/ReviewGame.jsx": [
+      "subject"
+    ],
+    "src/components/Lesson/StudyGuide.jsx": [
+      "learner",
+      "subject"
+    ],
+    "src/components/Mentor/NovaAvatar.jsx": [
+      "guide"
+    ],
+    "src/components/Mentor/NovaDashboardGreeting.jsx": [
+      "guide"
+    ],
+    "src/components/Mentor/NovaMessage.jsx": [
+      "guide"
+    ],
+    "src/components/Mentor/NovaVoiceQuickSettings.jsx": [
+      "learner",
+      "school-name"
+    ],
+    "src/components/Mentor/VoiceSettingsPanel.jsx": [
+      "learner",
+      "guide"
+    ],
+    "src/components/Messages/MissionCommsHome.jsx": [
+      "school-name"
+    ],
+    "src/components/Morning/MorningMeeting.jsx": [
+      "learner",
+      "school-name"
+    ],
+    "src/components/Navigation/NavBar.jsx": [
+      "learner",
+      "school-name",
+      "subject"
+    ],
+    "src/components/PE/ExerciseVideoManager.jsx": [
+      "learner"
+    ],
+    "src/components/PE/NutritionView.jsx": [
+      "learner"
+    ],
+    "src/components/PE/PEHome.jsx": [
+      "learner"
+    ],
+    "src/components/PE/WeeklyGoalCard.jsx": [
+      "learner"
+    ],
+    "src/components/PE/WorkoutView.jsx": [
+      "learner"
+    ],
+    "src/components/Rewards/CadetAvatar.jsx": [
+      "learner"
+    ],
+    "src/components/Rewards/ChallengesSection.jsx": [
+      "subject"
+    ],
+    "src/components/Rewards/HQRoom.jsx": [
+      "learner",
+      "school-name"
+    ],
+    "src/components/Rewards/InventorySection.jsx": [
+      "learner",
+      "school-name"
+    ],
+    "src/components/Rewards/RewardsHome.jsx": [
+      "learner",
+      "school-name",
+      "guide"
+    ],
+    "src/components/Rewards/SupplyStore.jsx": [
+      "learner",
+      "school-name"
+    ],
+    "src/components/Scheduler/DailyView.jsx": [
+      "learner",
+      "school-name",
+      "subject"
+    ],
+    "src/components/Scheduler/MonthlyView.jsx": [
+      "school-name"
+    ],
+    "src/components/Scheduler/WeeklyView.jsx": [
+      "learner",
+      "school-name"
+    ],
+    "src/components/Writing/TypedWordEngine.jsx": [
+      "school-name"
+    ],
+    "src/components/Writing/TypingHome.jsx": [
+      "learner",
+      "school-name"
+    ],
+    "src/components/Writing/TypingLessons.jsx": [
+      "learner"
+    ],
+    "src/components/Writing/TypingPractice.jsx": [
+      "school-name"
+    ],
+    "src/components/Writing/WeeklyQuizEngine.jsx": [
+      "school-name"
+    ],
+    "src/components/Writing/WordPracticeEngine.jsx": [
+      "school-name"
+    ],
+    "src/components/Writing/WordSearchGame.jsx": [
+      "school-name"
+    ],
+    "src/components/Writing/WritingJournal.jsx": [
+      "learner",
+      "subject"
+    ],
+    "src/components/Writing/WritingPromptEngine.jsx": [
+      "learner",
+      "school-name"
+    ],
+    "src/engine/LessonEngine.jsx": [
+      "school-name",
+      "guide"
+    ],
+    "src/engine/problemTemplates.js": [
+      "learner",
+      "school-name",
+      "subject"
+    ],
+    "src/lib/academicOrder.js": [
+      "learner"
+    ],
+    "src/lib/badges.js": [
+      "subject"
+    ],
+    "src/lib/bookSwap.js": [
+      "learner"
+    ],
+    "src/lib/challenges.js": [
+      "subject"
+    ],
+    "src/lib/compliancePacket.js": [
+      "learner",
+      "school-name"
+    ],
+    "src/lib/dailyWriting.js": [
+      "learner"
+    ],
+    "src/lib/economy.js": [
+      "school-name"
+    ],
+    "src/lib/fieldTrips.js": [
+      "learner",
+      "subject"
+    ],
+    "src/lib/glossary.js": [
+      "learner"
+    ],
+    "src/lib/gradeScale.js": [
+      "school-name"
+    ],
+    "src/lib/hqCrew.js": [
+      "learner"
+    ],
+    "src/lib/hqRooms.js": [
+      "learner",
+      "school-name"
+    ],
+    "src/lib/hqTruth.js": [
+      "subject"
+    ],
+    "src/lib/hqWander.js": [
+      "learner"
+    ],
+    "src/lib/learningAnalytics.js": [
+      "learner"
+    ],
+    "src/lib/missionGrades.js": [
+      "learner"
+    ],
+    "src/lib/missionSchedule.js": [
+      "learner"
+    ],
+    "src/lib/novaVoice.js": [
+      "learner",
+      "school-name",
+      "guide"
+    ],
+    "src/lib/pacing.js": [
+      "learner",
+      "school-name",
+      "subject"
+    ],
+    "src/lib/participationRecord.js": [
+      "subject"
+    ],
+    "src/lib/plannerCalendar.js": [
+      "learner"
+    ],
+    "src/lib/plannerFeeds.js": [
+      "learner",
+      "school-name",
+      "subject"
+    ],
+    "src/lib/quarterAvailability.js": [
+      "learner",
+      "school-name"
+    ],
+    "src/lib/readiness.js": [
+      "subject"
+    ],
+    "src/lib/readingPlan.js": [
+      "learner"
+    ],
+    "src/lib/rotatingBlock.js": [
+      "learner",
+      "school-name"
+    ],
+    "src/lib/scheduledMinutes.js": [
+      "learner",
+      "school-name",
+      "subject"
+    ],
+    "src/lib/scheduler.js": [
+      "learner"
+    ],
+    "src/lib/schoolQuarter.js": [
+      "school-name"
+    ],
+    "src/lib/sfx.js": [
+      "school-name"
+    ],
+    "src/lib/shipSystems.js": [
+      "subject"
+    ],
+    "src/lib/speech.js": [
+      "learner",
+      "school-name",
+      "guide"
+    ],
+    "src/lib/studyCycle.js": [
+      "learner"
+    ],
+    "src/lib/supplyCrate.js": [
+      "learner"
+    ],
+    "src/lib/weeklyPlan.js": [
+      "learner"
+    ],
+    "src/lib/yearPlan.js": [
+      "learner"
+    ],
+    "src/store/useAppStore.js": [
+      "learner",
+      "school-name",
+      "guide",
+      "subject"
+    ]
+  }
+}

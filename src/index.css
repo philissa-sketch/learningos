@@ -1,0 +1,41 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+ * ---- THE PLATFORM'S STYLESHEET IS ALMOST EMPTY, ON PURPOSE ----
+ *
+ * This file used to carry a full theme — a dark palette, a glow gradient on
+ * the body, print rules for a Report Card and a certificate. All of that
+ * belonged to ONE school. It painted every page in that school's colours
+ * before a single component rendered, which is exactly the kind of thing that
+ * makes a platform quietly single-tenant: the second family's Academy would
+ * have loaded its own theme onto a body already committed to someone else's.
+ *
+ * It travels with that school's components. What is left here is what is true
+ * for every Academy: the Tailwind layers, a full-height root, and a neutral
+ * ground for the front door to sit on.
+ *
+ * The front door and home page carry their own tokens (components/FrontDoor/
+ * frontDoor.css), scoped under .fd and .los, because they belong to LearningOS
+ * rather than to any Academy — they render before anyone has signed in, so
+ * there is no child whose colours they could wear.
+ */
+
+@layer base {
+  html,
+  body,
+  #root {
+    height: 100%;
+  }
+
+  /*
+   * A ground colour, not a theme. Dark, so that the wordless boot frame — the
+   * one frame shown before anyone has signed in — does not flash white on the
+   * way to the front door.
+   */
+  body {
+    background: #0e1a22;
+    -webkit-font-smoothing: antialiased;
+  }
+}

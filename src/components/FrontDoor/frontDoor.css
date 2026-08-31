@@ -1,0 +1,314 @@
+/*
+ * ---- THE FRONT DOOR'S OWN SKIN ----
+ *
+ * Deliberately outside the theme system. Every other surface in this app wears
+ * an Academy's palette — one child's deep space, another's warm cream — and this
+ * is the one screen that belongs to NO Academy. It cannot wear a child's colours
+ * before it knows which child is there. So it carries the LearningOS palette
+ * from docs/LEARNINGOS_FRONT_DOOR_MOCKUP.html, scoped under .fd so nothing
+ * leaks either direction.
+ *
+ * ---- NO GOOGLE FONTS ----
+ *
+ * The mockup links Newsreader, Karla and Chivo from fonts.googleapis.com. Not
+ * here. This app runs on the family's own computer and has to work when the
+ * internet does not — a sign-in screen that waits on a font CDN is a sign-in
+ * screen that hangs on a bad morning. The stacks below name those faces first,
+ * so they are used if the machine has them, and fall back to system faces that
+ * hold the same shape.
+ */
+
+/*
+ * Tokens are shared by the home page (.los) and the sign-in panel (.fd),
+ * because the panel opens OVER the page and the two must not drift apart.
+ */
+.fd,
+.los {
+  --fd-ink: #0e1a22;
+  --fd-ink-2: #16262f;
+  --fd-paper: #f7f5f1;
+  --fd-card: #ffffff;
+  --fd-line: #e2ded6;
+  --fd-text: #151e24;
+  --fd-text-mid: #4c5a62;
+  --fd-text-dim: #7c8890;
+  --fd-on-ink: #eaf2f2;
+  --fd-teal: #0e7c7b;
+  --fd-teal-bright: #14a3a1;
+  --fd-danger: #a3341f;
+  --fd-shadow-lg: 0 30px 70px -26px rgba(14, 26, 34, 0.42);
+
+  --fd-sans: Karla, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --fd-display: Newsreader, Georgia, 'Times New Roman', serif;
+  --fd-label: Chivo, 'Segoe UI', system-ui, sans-serif;
+}
+
+.fd {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: grid;
+  place-items: center;
+  padding: 22px;
+  background: var(--fd-ink);
+  font-family: var(--fd-sans);
+  color: var(--fd-text);
+  -webkit-font-smoothing: antialiased;
+  overflow-y: auto;
+}
+
+@media (prefers-color-scheme: dark) {
+  .fd,
+  .los {
+    --fd-paper: #0f181e;
+    --fd-card: #16232b;
+    --fd-line: #26363f;
+    --fd-text: #e8eff1;
+    --fd-text-mid: #a3b4ba;
+    --fd-text-dim: #75878e;
+    --fd-teal: #2abab6;
+    --fd-teal-bright: #43d3ce;
+    --fd-danger: #e08a72;
+    --fd-shadow-lg: 0 30px 70px -26px rgba(0, 0, 0, 0.75);
+  }
+}
+
+/* The panel opens over the home page, so it needs a scrim rather than a page
+   background of its own. */
+.fd {
+  background: rgba(8, 16, 20, 0.62);
+  backdrop-filter: blur(3px);
+}
+
+.fd-panel-wrap {
+  position: relative;
+  width: 100%;
+  max-width: 412px;
+}
+
+.fd-close {
+  position: absolute;
+  top: 16px;
+  right: 18px;
+  background: transparent;
+  border: 0;
+  color: var(--fd-on-ink);
+  font-size: 24px;
+  cursor: pointer;
+  line-height: 1;
+  padding: 4px 8px;
+  border-radius: 5px;
+}
+
+.fd-close:hover {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.fd-panel {
+  background: var(--fd-card);
+  border: 1px solid var(--fd-line);
+  border-radius: 16px;
+  width: 100%;
+  max-width: 412px;
+  box-shadow: var(--fd-shadow-lg);
+  overflow: hidden;
+}
+
+.fd-panel-top {
+  background: var(--fd-ink-2);
+  padding: 22px 26px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.fd-glyph {
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  border-radius: 8px;
+  background: var(--fd-teal-bright);
+  color: #04191a;
+  font-family: var(--fd-label);
+  font-weight: 700;
+  font-size: 16px;
+}
+
+.fd-brandname {
+  font-family: var(--fd-label);
+  font-weight: 700;
+  font-size: 18px;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  color: var(--fd-on-ink);
+}
+
+.fd-brandname span {
+  color: var(--fd-teal-bright);
+}
+
+.fd-tabs {
+  display: flex;
+  border-bottom: 1px solid var(--fd-line);
+}
+
+.fd-tabs button {
+  flex: 1;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  padding: 15px 10px;
+  font-family: var(--fd-label);
+  font-size: 11.5px;
+  font-weight: 600;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--fd-text-dim);
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+}
+
+.fd-tabs button[aria-selected='true'] {
+  color: var(--fd-teal);
+  border-bottom-color: var(--fd-teal);
+}
+
+.fd-tabs button:focus-visible {
+  outline: 2px solid var(--fd-teal);
+  outline-offset: -3px;
+}
+
+.fd-body {
+  padding: 28px 26px 26px;
+}
+
+.fd-body h1 {
+  font-family: var(--fd-display);
+  font-weight: 500;
+  font-size: 24px;
+  margin: 0 0 6px;
+  letter-spacing: -0.015em;
+  color: var(--fd-text);
+}
+
+.fd-hint {
+  font-size: 13.5px;
+  color: var(--fd-text-mid);
+  margin: 0 0 22px;
+  line-height: 1.5;
+}
+
+.fd-body label {
+  display: block;
+  font-family: var(--fd-label);
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+  color: var(--fd-text-dim);
+  margin-bottom: 7px;
+}
+
+.fd-body input {
+  width: 100%;
+  padding: 13px 14px;
+  border: 1px solid var(--fd-line);
+  border-radius: 8px;
+  background: var(--fd-paper);
+  color: var(--fd-text);
+  font-family: inherit;
+  font-size: 15px;
+  margin-bottom: 17px;
+}
+
+.fd-body input:focus {
+  outline: 2px solid var(--fd-teal);
+  outline-offset: -1px;
+  border-color: var(--fd-teal);
+}
+
+.fd-body input.fd-pin {
+  letter-spacing: 0.5em;
+  font-size: 20px;
+  text-align: center;
+  font-family: var(--fd-label);
+}
+
+.fd-btn {
+  width: 100%;
+  text-align: center;
+  padding: 14px;
+  font-family: var(--fd-label);
+  font-weight: 600;
+  font-size: 11.5px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  border-radius: 5px;
+  border: 1px solid transparent;
+  background: var(--fd-teal);
+  color: #04191a;
+  cursor: pointer;
+  transition: filter 0.18s ease;
+}
+
+.fd-btn:hover:not(:disabled) {
+  filter: brightness(1.09);
+}
+
+.fd-btn:disabled {
+  opacity: 0.55;
+  cursor: default;
+}
+
+.fd-btn:focus-visible {
+  outline: 2px solid var(--fd-teal-bright);
+  outline-offset: 2px;
+}
+
+.fd-helper {
+  font-size: 12.5px;
+  color: var(--fd-text-dim);
+  margin: 16px 0 0;
+  text-align: center;
+  line-height: 1.5;
+}
+
+/*
+ * Errors are announced, not just coloured: a child who cannot yet read a red
+ * tint still gets told by a screen reader, and colour alone fails anyone who
+ * cannot distinguish it.
+ */
+.fd-error {
+  font-size: 13px;
+  color: var(--fd-danger);
+  margin: 0 0 16px;
+  line-height: 1.5;
+}
+
+.fd-note {
+  font-size: 12.5px;
+  color: var(--fd-text-mid);
+  line-height: 1.55;
+  margin: 0 0 18px;
+  padding: 12px 14px;
+  border-left: 2px solid var(--fd-line);
+  background: var(--fd-paper);
+  border-radius: 0 6px 6px 0;
+}
+
+.fd-steps {
+  font-family: var(--fd-label);
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+  color: var(--fd-text-dim);
+  margin: 0 0 14px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fd * {
+    transition: none !important;
+  }
+}

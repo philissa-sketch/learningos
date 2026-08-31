@@ -1,0 +1,52 @@
+# ---------------------------------------------------------------------------
+# What never leaves this folder.
+#
+# The repository is PRIVATE, but "private" is a setting someone can change by
+# accident and a collaborator can be added to. Anything that would be a
+# problem in public does not go in at all.
+# ---------------------------------------------------------------------------
+
+# Dependencies and build output — Netlify installs and builds these itself.
+node_modules/
+dist/
+.vite/
+
+# ---- REAL STUDENT RECORDS. Never commit. ----
+# A school grade report lives in this folder. Progress, grades and attendance
+# live in the browser's database and in exported .json backups — none of it
+# belongs in source control.
+*.pdf
+mission-control-progress-*.json
+*-progress-*.json
+
+# The whole Progress folder, whatever anything in it is called. (Aug 25, 2026.)
+# She made this folder for his exports and imports. The three patterns above
+# only catch the app's own download NAME — rename a file, drop in one Lamar
+# saved himself, or copy one off his machine with a different name, and it
+# would sit in GitHub Desktop ready to commit. The folder is the safer rule:
+# a location cannot be typo'd the way a filename can.
+Progress/
+progress/
+
+# The two other legal records the app can download. Neither was matched by any
+# pattern above, anywhere in the repo — both carry his grades by name.
+transcript-*.txt
+homeschool-records-packet-*.txt
+
+# Packaged copies of the app and working scratch.
+*.zip
+_build/
+_to_delete/
+src.backup-*/
+.mc-patches/
+
+# An empty stray directory from an old unzip.
+mission-control-homeschool/
+
+# OS and editor noise.
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
+*.log

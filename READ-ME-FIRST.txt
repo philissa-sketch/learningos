@@ -1,0 +1,83 @@
+LEARNINGOS - how to open it
+===========================
+
+Go to:   https://mission-control-homeschool.netlify.app
+
+That is the whole thing. Bookmark it on both computers.
+
+There is no black window any more, and nothing to install.
+
+
+SIGNING IN  (this part is new)
+------------------------------
+The app now asks who is at the keyboard.
+
+  Students   - your name, then your four numbers.
+  Grown-ups  - the Parent Login, with your passcode.
+
+The computer remembers whoever signed in last, so most mornings
+you will land straight in school without being asked anything.
+You only see the sign-in page on a new computer, after Sign Out,
+or the very first time.
+
+FORGOT THE PASSCODE? On the Parent Login there is a link that
+says "Forgot it - use my recovery code". That is the code you
+were shown once at setup and asked to write down. It is the only
+way back in - there is no server anywhere to email a reset link.
+Keep it with the homeschool records.
+
+FORGOT THE FOUR NUMBERS? Ask your grown-up. She can set new ones.
+
+
+USE THE SAME BROWSER EVERY DAY
+------------------------------
+Your work is saved inside the browser, on the computer you are
+sitting at - not on the website. So:
+
+  * Same browser, every day. Chrome work does not show up in Edge.
+  * Not a private / incognito window. Those forget everything the
+    moment you close them.
+
+If the app ever opens completely empty, that is almost always the
+wrong browser or a private window. Nothing has been lost. Close it,
+open your normal browser, and go to the address again.
+
+
+YOU STILL HAVE TO TRADE FILES
+-----------------------------
+This is the part the website does NOT do for you.
+
+Both computers show the same app. They do NOT share the same
+records. Grades, attendance and Khan ticks live on the computer
+they were earned on until they are sent.
+
+  Every morning  - load Mom's file  ("Get my graded work back")
+  End of the day - send yours       ("Send my work to Mom")
+
+Both buttons are on the Morning Meeting screen. Loading the same
+file twice is safe - the second time does nothing.
+
+Skip a day and that day's attendance never reaches the record.
+
+
+WHEN MOM CHANGES THE APP
+------------------------
+Nothing to send, nothing to unzip. She commits in GitHub Desktop
+and pushes; the site rebuilds itself in a minute or two.
+
+If the app has been open all day, it may still be running the
+older version. Reloading the page picks up the new one. The build
+date in the top bar is what the tab is currently running.
+
+
+IF THE PAGE WILL NOT LOAD
+-------------------------
+The website needs an internet connection. If the internet is down,
+open the app from this folder instead - double-click
+
+    START-LEARNINGOS.bat
+
+That runs a local copy on this computer. Be aware that the local
+copy keeps its OWN separate records, so anything done there has to
+be exported and loaded back into the website copy afterwards.
+Use it only when the internet is out.

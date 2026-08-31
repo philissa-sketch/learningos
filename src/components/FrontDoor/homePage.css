@@ -1,0 +1,458 @@
+/*
+ * The LearningOS home page — the page the sign-in panel opens over.
+ *
+ * Tokens come from frontDoor.css, shared by `.fd, .los` so the panel and the
+ * page behind it cannot drift apart. Same rule as the panel: no font is fetched
+ * from a CDN, because a page that waits on one hangs on a morning when the
+ * internet is down.
+ *
+ * A remembered learner never sees this. It exists for a first visit, for the
+ * signed-out state, and for anyone who reaches the URL not knowing what this is.
+ */
+
+.los {
+  min-height: 100vh;
+  background: var(--fd-paper);
+  color: var(--fd-text);
+  font-family: var(--fd-sans);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+.los .inner {
+  max-width: 1160px;
+  margin: 0 auto;
+  padding: 0 26px;
+}
+
+.los .util-label,
+.los .eyebrow {
+  font-family: var(--fd-label);
+  font-weight: 600;
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--fd-teal);
+}
+
+/* ── utility bar ─────────────────────────────────────────────────── */
+
+.los-utility {
+  background: var(--fd-ink);
+  color: var(--fd-on-ink);
+}
+
+.los-utility .inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  min-height: 44px;
+  flex-wrap: wrap;
+}
+
+.los-utility nav {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.los-utility nav a {
+  color: var(--fd-on-ink);
+  opacity: 0.72;
+  text-decoration: none;
+  font-size: 12.5px;
+}
+
+.los-utility nav a:hover {
+  opacity: 1;
+}
+
+.los-logins {
+  display: flex;
+  gap: 6px;
+}
+
+.los-login-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  color: var(--fd-on-ink);
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 10px 12px;
+  border-radius: 5px;
+}
+
+.los-login-btn:hover {
+  background: rgba(234, 242, 242, 0.1);
+}
+
+.los-login-btn svg {
+  width: 15px;
+  height: 15px;
+}
+
+/* ── brand bar ───────────────────────────────────────────────────── */
+
+.los-brandbar {
+  background: var(--fd-ink-2);
+  color: var(--fd-on-ink);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.los-brandbar .inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 22px;
+  padding-top: 18px;
+  padding-bottom: 18px;
+  flex-wrap: wrap;
+}
+
+.los-brand {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+}
+
+.los-brand .fd-glyph {
+  width: 40px;
+  height: 40px;
+  font-size: 19px;
+}
+
+.los-brandname {
+  font-family: var(--fd-label);
+  font-weight: 700;
+  font-size: 23px;
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+
+.los-brandname span {
+  color: var(--fd-teal-bright);
+}
+
+.los-brandtag {
+  font-size: 12.5px;
+  color: var(--fd-on-ink);
+  opacity: 0.62;
+  margin-top: 4px;
+}
+
+.los-brand-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+/* ── buttons ─────────────────────────────────────────────────────── */
+
+.los-btn {
+  font-family: var(--fd-label);
+  font-weight: 600;
+  font-size: 11.5px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 12px 20px;
+  border-radius: 5px;
+  border: 1px solid transparent;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  transition: filter 0.18s ease, background 0.18s ease;
+}
+
+.los-btn-solid {
+  background: var(--fd-teal);
+  color: #04191a;
+}
+
+.los-btn-solid:hover {
+  filter: brightness(1.09);
+}
+
+.los-btn-ghost {
+  background: transparent;
+  color: var(--fd-on-ink);
+  border-color: rgba(234, 242, 242, 0.32);
+}
+
+.los-btn-ghost:hover {
+  background: rgba(234, 242, 242, 0.09);
+}
+
+.los-btn:focus-visible {
+  outline: 2px solid var(--fd-teal-bright);
+  outline-offset: 2px;
+}
+
+.los-btn-lg {
+  padding: 15px 27px;
+  font-size: 12px;
+}
+
+/* ── hero ────────────────────────────────────────────────────────── */
+
+.los-hero {
+  padding: 82px 0 68px;
+  border-bottom: 1px solid var(--fd-line);
+}
+
+.los-hero-grid {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: 56px;
+  align-items: center;
+}
+
+@media (max-width: 880px) {
+  .los-hero-grid {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+}
+
+.los h1 {
+  font-family: var(--fd-display);
+  font-weight: 500;
+  font-size: clamp(36px, 5.6vw, 62px);
+  line-height: 1.04;
+  letter-spacing: -0.022em;
+  margin: 0 0 22px;
+  color: var(--fd-text);
+}
+
+.los h1 em {
+  font-style: italic;
+  color: var(--fd-teal);
+}
+
+.los .eyebrow {
+  display: block;
+  margin-bottom: 20px;
+}
+
+.los-lede {
+  font-size: 17.5px;
+  line-height: 1.62;
+  color: var(--fd-text-mid);
+  max-width: 56ch;
+  margin: 0 0 30px;
+}
+
+.los-hero-cta {
+  display: flex;
+  gap: 11px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.los-hero-note {
+  font-size: 13px;
+  color: var(--fd-text-dim);
+  margin: 18px 0 0;
+}
+
+.los-goals {
+  background: var(--fd-card);
+  border: 1px solid var(--fd-line);
+  border-radius: 14px;
+  padding: 26px 24px;
+}
+
+.los-goals h2 {
+  font-family: var(--fd-label);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--fd-text-dim);
+  margin: 0 0 16px;
+}
+
+.los-goal-row {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  padding: 11px 0;
+  border-top: 1px solid var(--fd-line);
+}
+
+.los-goal-row .age {
+  font-family: var(--fd-label);
+  font-weight: 700;
+  font-size: 15px;
+  color: var(--fd-teal);
+  min-width: 26px;
+}
+
+.los-goal-row .want {
+  font-family: var(--fd-display);
+  font-size: 17px;
+  color: var(--fd-text);
+}
+
+.los-goals-foot {
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--fd-text-mid);
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px solid var(--fd-line);
+}
+
+/* ── sections ────────────────────────────────────────────────────── */
+
+.los section {
+  padding: 68px 0;
+  border-bottom: 1px solid var(--fd-line);
+}
+
+.los-sec-head {
+  margin-bottom: 36px;
+  max-width: 62ch;
+}
+
+.los h2:not(.los-goals h2) {
+  font-family: var(--fd-display);
+  font-weight: 500;
+  font-size: clamp(26px, 3.2vw, 36px);
+  letter-spacing: -0.018em;
+  margin: 0 0 12px;
+  color: var(--fd-text);
+}
+
+.los-sec-head p {
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--fd-text-mid);
+  margin: 0;
+}
+
+.los-cols {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 30px;
+}
+
+.los-col h3 {
+  font-family: var(--fd-label);
+  font-size: 11.5px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--fd-teal);
+  margin: 0 0 10px;
+}
+
+.los-col p {
+  font-size: 14.5px;
+  line-height: 1.62;
+  color: var(--fd-text-mid);
+  margin: 0;
+}
+
+.los-split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+  align-items: start;
+}
+
+@media (max-width: 880px) {
+  .los-split {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+}
+
+.los-fact {
+  display: flex;
+  gap: 13px;
+  padding: 13px 0;
+  border-top: 1px solid var(--fd-line);
+}
+
+.los-fact:first-child {
+  border-top: 0;
+}
+
+.los-fact svg {
+  width: 19px;
+  height: 19px;
+  flex: none;
+  margin-top: 2px;
+  color: var(--fd-teal);
+}
+
+.los-fact b {
+  display: block;
+  font-size: 14.5px;
+  margin-bottom: 3px;
+  color: var(--fd-text);
+}
+
+.los-fact span {
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: var(--fd-text-mid);
+}
+
+/* ── footer ──────────────────────────────────────────────────────── */
+
+.los-footer {
+  background: var(--fd-ink);
+  color: var(--fd-on-ink);
+  padding: 34px 0;
+}
+
+.los-footer .inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 22px;
+  flex-wrap: wrap;
+}
+
+.los-foot-brand {
+  font-family: var(--fd-label);
+  font-weight: 700;
+  font-size: 17px;
+}
+
+.los-foot-links {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.los-foot-links a,
+.los-foot-links button {
+  color: var(--fd-on-ink);
+  opacity: 0.72;
+  text-decoration: none;
+  font-size: 13px;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  font-family: inherit;
+  padding: 0;
+}
+
+.los-foot-links a:hover,
+.los-foot-links button:hover {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .los * {
+    transition: none !important;
+  }
+}

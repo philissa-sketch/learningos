@@ -1,0 +1,4 @@
+# Mission Control Homeschool Academy — a private family application.
+# Not for indexing. See the X-Robots-Tag header in netlify.toml.
+User-agent: *
+Disallow: /
