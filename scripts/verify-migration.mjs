@@ -105,8 +105,18 @@ ok('...and the message says which table', /attendance/.test(caught.error || ''),
 const handoffShaped = { version: 3, xp: 400, lessonProgress: [] };
 const wrongKind = M.validateMigrationFile(handoffShaped);
 ok('a daily handoff file is refused, not silently half-restored', !wrongKind.ok);
-ok('...and the message explains the difference',
-  /leaves out your own records|different thing/i.test(wrongKind.error || ''), wrongKind.error);
+ok('...and the message says WHICH file it is, not only which it is not',
+  /daily "send my work" file/.test(wrongKind.error || ''), wrongKind.error);
+ok('...and names the file to look for instead',
+  /learningos-migration-<date>\.json/.test(wrongKind.error || ''),
+  'a folder of similar JSON needs a filename, not a category');
+
+// An unrecognised file is not a handoff either, and saying "not a migration
+// file" about it leaves a person no wiser. It reports what the file DOES start
+// with, because the app is the only thing here that can actually read it.
+const strangeFile = M.validateMigrationFile({ mimeType: 'x', title: 'y', kind: 'drive-thing' });
+ok('an unrecognised file reports what it actually starts with',
+  /starts with: mimeType, title, kind/.test(strangeFile.error || ''), strangeFile.error);
 
 console.log('\n--- 3. the file is taken apart correctly ---');
 

@@ -74,12 +74,28 @@ export function validateMigrationFile(parsed) {
     return { ok: false, error: 'That file is not readable as JSON.' };
   }
   if (parsed.kind !== 'learningos-migration') {
+    // Say WHICH file this is, not just which it isn't.
+    //
+    // "That is not a migration file" is true and leaves a person staring at a
+    // folder of similar-looking JSON with no way to tell them apart. It
+    // happened. Several files are in play — the daily handoff, the migration
+    // file, whatever else lives in a Drive folder — and the app is the only
+    // thing here that can actually read them.
+    const keys = Object.keys(parsed).slice(0, 6).join(', ');
+    const looksLikeHandoff =
+      'lessonProgress' in parsed || 'xp' in parsed || 'attendance' in parsed;
+
     return {
       ok: false,
-      error:
-        'That is not a migration file. The daily "send my work" file is a ' +
-        'different thing and leaves out your own records — use the migration ' +
-        'export instead.'
+      error: looksLikeHandoff
+        ? 'This is a daily "send my work" file, not a migration file. That one ' +
+          'deliberately leaves out your own records — the compliance file, ' +
+          'course descriptions and notes — so it cannot be used to move a ' +
+          'school. Re-run the migration export and pick the file named ' +
+          'learningos-migration-<date>.json.'
+        : `This file is not a LearningOS migration file. It starts with: ${keys}. ` +
+          'A migration file starts with "format" and "kind", and is named ' +
+          'learningos-migration-<date>.json.'
     };
   }
   if (parsed.format !== MIGRATION_FORMAT) {
