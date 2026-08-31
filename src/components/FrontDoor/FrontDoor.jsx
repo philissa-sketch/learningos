@@ -28,6 +28,7 @@ export default function FrontDoor({
   onStudentSignedIn,
   onParentSignedIn,
   onParentRecordReplaced,
+  onSetUpThisComputer,
   onClose
 }) {
   const [tab, setTab] = useState(initialTab);
@@ -97,6 +98,7 @@ export default function FrontDoor({
               record={parentAuth}
               onSignedIn={onParentSignedIn}
               onRecordReplaced={onParentRecordReplaced}
+              onSetUpThisComputer={onSetUpThisComputer}
               emailRef={emailRef}
             />
           )}
@@ -228,7 +230,49 @@ function StudentTab({ academies, onSignedIn, nameRef }) {
   );
 }
 
-function ParentTab({ record, onSignedIn, onRecordReplaced, emailRef }) {
+/**
+ * ---- THE SAME MISTAKE, IN THE OTHER TAB ----
+ *
+ * The student tab was fixed first: a machine with no Academies says so instead
+ * of failing a sign-in. The parent tab had the identical flaw and was left
+ * standing, and a parent hit it within the hour.
+ *
+ * The front-door passcode lives in the HOUSEHOLD database, which is per-machine.
+ * A computer that has never been set up has no passcode on it — not the wrong
+ * one, none. Offering a passcode form there is offering a door with no room
+ * behind it, and "No parent passcode has been set on this computer yet" is a
+ * true sentence that tells nobody what to do next.
+ *
+ * There is nothing to protect on an empty machine, so this says what is
+ * happening and offers the button that actually moves forward.
+ */
+function SetUpThisComputer({ onSetUpThisComputer }) {
+  return (
+    <div className="fd-body">
+      <h1>Set up this computer</h1>
+      <p className="fd-hint">
+        This computer hasn&apos;t been set up yet, so there is no passcode on it to check yours
+        against. Schoolwork and passcodes are saved on each computer separately.
+      </p>
+      <p className="fd-note">
+        Setting up takes a couple of minutes: choose a passcode for this computer, then add the
+        Academy. Afterwards you can bring the schoolwork across from a migration file, and nothing
+        on the other computer is touched.
+      </p>
+      {onSetUpThisComputer ? (
+        <button className="fd-btn" type="button" onClick={onSetUpThisComputer}>
+          Set up this computer
+        </button>
+      ) : null}
+      <p className="fd-helper">
+        The passcode you choose here can be the same one you use elsewhere — it is stored
+        separately, so it gets its own recovery code.
+      </p>
+    </div>
+  );
+}
+
+function ParentTab({ record, onSignedIn, onRecordReplaced, onSetUpThisComputer, emailRef }) {
   const [mode, setMode] = useState('passcode'); // 'passcode' | 'recovery' | 'reset'
   const [email, setEmail] = useState('');
   const [passcode, setPasscode] = useState('');
@@ -250,6 +294,10 @@ function ParentTab({ record, onSignedIn, onRecordReplaced, emailRef }) {
     setPasscode('');
     setError(result.error);
     setBusy(false);
+  }
+
+  if (!record?.hash) {
+    return <SetUpThisComputer onSetUpThisComputer={onSetUpThisComputer} />;
   }
 
   if (mode === 'recovery' || mode === 'reset') {

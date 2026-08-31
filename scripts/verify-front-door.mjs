@@ -138,6 +138,29 @@ const PRE_SIGN_IN = [
 const leaks = PRE_SIGN_IN.filter((f) => /novaVoice|STUDENT_NAME|NOVA_NAME/.test(codeOnly(f)));
 ok('no pre-sign-in file imports a guide or a learner name', leaks.length === 0, leaks.join(', '));
 
+// ---- A COMPUTER THAT HAS NEVER BEEN SET UP SAYS SO, IN BOTH TABS ----
+//
+// Records and passcodes are per-machine. A second computer starts with an empty
+// household database: no Academies, and no parent passcode.
+//
+// Both tabs originally showed a form that could not succeed. The student tab was
+// fixed first and the parent tab was left standing — a parent hit it within the
+// hour. Fixing one instance of a shape and leaving its twin is its own bug, so
+// both are asserted here, together, in one place.
+const panelSrc = read('src/components/FrontDoor/FrontDoor.jsx');
+ok('an empty machine gets an honest student screen, not a doomed form',
+  /function NoAcademyHere\(\)/.test(panelSrc) && /<NoAcademyHere \/>/.test(panelSrc));
+ok('...and an honest parent screen',
+  /function SetUpThisComputer\(/.test(panelSrc) && /!record\?\.hash/.test(panelSrc));
+ok('...which offers the step that actually moves forward',
+  /onSetUpThisComputer/.test(panelSrc) && /onSetUpThisComputer/.test(gate),
+  'a true message with no next step is still a dead end');
+ok('...and the gate routes that button to first run',
+  /onSetUpThisComputer=\{\(\) => \{[\s\S]{0,120}setPhase\('first-run'\)/.test(gate));
+ok('the empty-machine screens are components, not early returns inside a tab',
+  /function NoAcademyHere\(\)/.test(panelSrc) && /function SetUpThisComputer\(/.test(panelSrc),
+  'a conditional return above useState breaks the rules of hooks');
+
 console.log('\n--- 3. secrets are hashed; nothing else pretends to be ---');
 
 const household = codeOnly('src/db/householdDb.js');

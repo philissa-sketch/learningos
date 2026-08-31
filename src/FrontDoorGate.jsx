@@ -197,6 +197,10 @@ export default function FrontDoorGate() {
               }
               enter(academies[0].id, 'parent');
             }}
+            onSetUpThisComputer={() => {
+              setPanel(null);
+              setPhase('first-run');
+            }}
             onParentRecordReplaced={async (record) => {
               await saveHouseholdParentAuth(record);
               setParentAuth(record);
