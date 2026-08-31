@@ -611,3 +611,59 @@ The old reasoning is kept in the comment above the new checks. A guard that
 silently flips its assertion teaches nobody why.
 
 **64 of 64 check scripts pass.**
+
+---
+
+## Both computers, and four bugs a real family found in one evening (Aug 31, 2026)
+
+The move is complete. Both machines are on `learningos-academy.netlify.app`,
+each with its own household database, its own Academy record, and 1,021 rows of
+verified school. The old address is an untouched archive.
+
+### Everything that broke after "done" was the same bug
+
+Four reports, hours apart, all from the second computer:
+
+1. **He could not sign out.** Sign Out was in the Parent Dashboard behind the
+   passcode, on the reasoning that a button on the school side is one a child
+   hits mid-lesson. Wrong for a platform whose premise is two children on one
+   computer — it made the second child wait for her mother every morning.
+2. **His sign-in said the passcode was wrong.** It was not. His machine had no
+   Academy on it. The door gave the deliberately vague failure, which is correct
+   when there is a guest list to protect and useless when the machine is empty.
+3. **Her parent sign-in failed too.** The identical flaw in the other tab, left
+   standing after fixing the first. Passcodes are per-machine; a fresh computer
+   has none, and the tab offered a form that could not succeed.
+4. **The migration file was rejected as a daily export.** Six near-identical
+   JSON files in one Downloads folder. The message said which file it was not.
+
+**Every one of them was a screen that told the truth and did not help.** And
+every one was on the empty-machine path — the path never walked during
+development, because development always happened on a machine that already had
+an Academy.
+
+### What changed
+
+- A learner can sign themselves out, with a confirmation instead of a passcode
+- An empty machine says so in BOTH tabs, and the parent tab offers the button
+  that actually moves forward
+- The file validator names what it read: a daily handoff by name, anything else
+  by the keys it starts with — and both name the file to look for instead
+- The empty-machine screens are components rather than early returns, so no
+  conditional return sits above `useState`
+
+Each guard now asserts the pair rather than one instance, because fixing one
+side of a shape and leaving its twin is what happened twice tonight.
+
+### For C1
+
+**The first task is to create a blank Academy and walk it cold.** That is also
+what the spec's acceptance test has asked for since revision 3, and doing it
+would have caught three of tonight's four before a twelve-year-old did.
+
+### Verified
+
+64 check scripts, all passing. Row counts on the second machine match the
+first. The original records at the old address were never written to at any
+point in the move — which is why four bugs on a school night cost time and
+nothing else.
