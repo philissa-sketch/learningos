@@ -101,9 +101,22 @@ ok('...and never maps over them into markup',
 ok('...and never renders a displayName',
   !/\{[^}]*displayName[^}]*\}/.test(doorMarkup),
   'displayName is for matching typed input, not for showing');
+// The rule is "never SHOW the number", not "never ask whether there are any".
+//
+// `{academies.length}` publishes how many children live here. `academies.length
+// > 0` publishes nothing — and the panel needs it, because a machine with zero
+// Academies gets an honest "this computer isn't set up yet" instead of a login
+// form that cannot succeed.
+//
+// The first version of this check forbade the string outright, which failed the
+// day that distinction started to matter. So: every use must be a comparison.
+const lengthUses = [...doorMarkup.matchAll(/academies\.length\s*(.{0,3})/g)].map((m) => m[1]);
 ok('...and never renders how many Academies exist',
-  !/academies\.length/.test(doorMarkup),
-  'a count is information about the family too');
+  lengthUses.length === 0 || lengthUses.every((after) => /^\s*(===|!==|>|<|>=|<=)/.test(after)),
+  `academies.length used as a value, not a comparison: ${lengthUses.join(' | ')}`);
+ok('...so an empty machine can be told apart without the count being shown',
+  !/\{\s*academies\.length\s*\}/.test(doorMarkup),
+  'interpolating the count into markup is the thing the rule forbids');
 ok('the rule is written down where the next editor will see it',
   /may not do|never RENDER|only after that child signs in/i.test(door),
   'a rule with no stated reason is a rule that gets optimised away');

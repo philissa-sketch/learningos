@@ -87,7 +87,11 @@ export default function FrontDoor({
           </div>
 
           {tab === 'student' ? (
-            <StudentTab academies={academies} onSignedIn={onStudentSignedIn} nameRef={nameRef} />
+            academies && academies.length > 0 ? (
+              <StudentTab academies={academies} onSignedIn={onStudentSignedIn} nameRef={nameRef} />
+            ) : (
+              <NoAcademyHere />
+            )
           ) : (
             <ParentTab
               record={parentAuth}
@@ -98,6 +102,40 @@ export default function FrontDoor({
           )}
         </div>
       </div>
+    </div>
+  );
+}
+
+/**
+ * ---- AN EMPTY MACHINE MAY SAY SO ----
+ *
+ * Everywhere else this door refuses to reveal whether a name is known, because a
+ * message that changes tells anyone willing to type who lives here.
+ *
+ * A computer with ZERO Academies is the one case where that reasoning does not
+ * apply: there is no guest list to publish. Showing a child a login form that
+ * cannot possibly succeed, and then telling him his numbers are wrong, is a lie
+ * the privacy rule never asked for — and it happened, to a twelve-year-old on
+ * the first evening after a move.
+ *
+ * Nothing to protect here, so nothing is withheld. The moment ONE Academy
+ * exists, the vague message comes back and stays.
+ */
+function NoAcademyHere() {
+  return (
+    <div className="fd-body">
+      <h1>This computer isn&apos;t set up yet</h1>
+      <p className="fd-hint">
+        Your name and numbers are probably fine — they just aren&apos;t on <em>this</em> computer
+        yet. Schoolwork is saved on each computer separately, so every computer has to be set up
+        once.
+      </p>
+      <p className="fd-note">
+        <strong>Ask your grown-up.</strong> From the Parent tab they can set this computer up and
+        bring your work across. It takes a few minutes, and nothing is lost — everything you have
+        done is safe on the computer you did it on.
+      </p>
+      <p className="fd-helper">Nothing is broken. This computer just hasn&apos;t met you yet.</p>
     </div>
   );
 }
