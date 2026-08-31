@@ -193,17 +193,40 @@ still has everything. There is no deadline.
 
 ---
 
-# PART F · Do Lamar's computer
+# PART F · The second computer
 
-Repeat **Part C** and **Part D** on his machine:
+The child's computer does **not** need the old address, and does not need the
+console. You already have the complete, verified record on your machine — carry
+that across instead of exporting from the old app a second time.
 
-- export at the old address from **his** browser
-- create his Academy at the new address
-- import his file
+### F1 · On YOUR computer, at the NEW address
 
-Then update the bookmark on both computers to the new address.
+Run the migration export snippet again (Part C, steps C1–C4). This time it reads
+the **new** Academy, so the file you get is the current record, already filtered,
+already verified.
 
----
+### F2 · On THEIR computer
+
+1. Go to `https://learningos-academy.netlify.app`
+2. Create the Academy — their name, their four numbers
+3. **Import an existing school → From a file** → pick the file from F1
+4. Leave everything ticked. There is nothing to filter this time; the sibling's
+   rows were left behind in the first import and are not in this file.
+
+### F3 · Change the bookmark
+
+Point it at the new address. The old one can stay in place as an archive — it
+still holds everything as it was, and nothing you do at the new address touches
+it.
+
+### A note on Academy ids
+
+Each computer generates its own id when the Academy is created, so the same
+child will be `lamar-junt` on one machine and something else on the other.
+
+**This does not matter.** The daily handoff carries rows and their syncIds, never
+academy ids, and nothing else in the app references them. Two ids for one child
+is untidy to look at and has no effect on anything.
 
 ## The daily routine after this
 
