@@ -42,31 +42,10 @@ export default {
           green: '#34D399',  // mastery / success — semantic, never themed
           red: '#F0555A'     // incorrect / alert — semantic, never themed
         },
-        /**
-         * ---- WHY INK IS A VARIABLE NOW (C2) ----
-         *
-         * These were three literal hex values chosen to sit on a dark page:
-         * #E8ECF4, #AEB8CC, #7C8798. `space` and `accent` above were made
-         * themeable so an Academy could repaint its background and its accent
-         * — but TEXT was left welded, which quietly made one design decision
-         * for every Academy that will ever exist: the page is dark.
-         *
-         * An Academy with a light palette could set `--space-950` to cream and
-         * would get pale grey text on cream. Not a bug in that Academy's
-         * stylesheet — a limit in the bones, and invisible until somebody
-         * brought a light school.
-         *
-         * The defaults below are byte-identical to the values they replace, so
-         * an Academy that sets nothing looks exactly as it did. Only an Academy
-         * that names its own ink gets different text.
-         *
-         * The semantic three above — amber, green, red — stay literal for the
-         * reason written there. Ink is not semantic. It is the page.
-         */
         ink: {
-          100: 'rgb(var(--ink-100, 232 236 244) / <alpha-value>)', // primary text
-          300: 'rgb(var(--ink-300, 174 184 204) / <alpha-value>)', // secondary text
-          500: 'rgb(var(--ink-500, 124 135 152) / <alpha-value>)'  // muted / captions
+          100: '#E8ECF4', // primary text on dark
+          300: '#AEB8CC', // secondary text
+          500: '#7C8798'  // muted / captions
         }
       },
       fontFamily: {

@@ -24,7 +24,7 @@ import { useAppStore } from './store/useAppStore.js';
  * the content it depends on exists. That ordering is what lets every other
  * school file destructure its slot at module scope and stay simple.
  */
-export default function SchoolBoot({ academy, enteredAs, onSignOut }) {
+export default function SchoolBoot({ enteredAs, onSignOut }) {
   const hydrated = useAppStore((s) => s.hydrated);
 
   /**
@@ -40,11 +40,5 @@ export default function SchoolBoot({ academy, enteredAs, onSignOut }) {
     }
   }, [enteredAs, hydrated]);
 
-  return (
-    <App
-      academyName={academy?.displayName || null}
-      initialView={enteredAs === 'parent' ? 'parent' : 'dashboard'}
-      onSignOut={onSignOut}
-    />
-  );
+  return <App initialView={enteredAs === 'parent' ? 'parent' : 'dashboard'} onSignOut={onSignOut} />;
 }

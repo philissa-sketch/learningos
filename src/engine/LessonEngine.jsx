@@ -95,40 +95,6 @@ export function beatWantsReflection(beat) {
   return beat?.reflect !== false;
 }
 
-/**
- * DOES THIS BEAT HAVE A PRACTICE DRILL AT ALL?
- *
- * ---- THE ONE PHASE THAT DID NOT SKIP WHEN ABSENT ----
- *
- * Every optional phase in this engine skips itself when a lesson has no data
- * for it. `beat-teach` skips its hook, its example and its diagram. Guided
- * notes skip when there is nothing to blank out. Apply-It skips when no
- * transfer question is authored — the comment at that branch says so out loud:
- * *"same skip-when-absent rule every other optional phase in this engine
- * follows."*
- *
- * Beat practice did not follow it. It assumed every beat generates its drill
- * from a template, and `advanceFromBeat` called `getTemplateById(...).build()`
- * with no guard at all. `getTemplateById` returns `undefined` for an id it does
- * not know — and for a beat with no id at all — so the first beat handoff in a
- * lesson without generators threw `Cannot read properties of undefined`, and
- * this app has no error boundary on that path.
- *
- * ---- WHY THE ANSWER IS NOT "GENERATE SOMETHING ANYWAY" ----
- *
- * A drill is a teaching decision, not a missing field. A curriculum may put its
- * ten questions in a weekly bank and let the beat carry one applied scenario
- * instead — small teach, then transfer, with the drilling gathered into an
- * end-of-week test. That is a coherent design, and an engine that insists on a
- * per-beat drill would be overruling it rather than serving it.
- *
- * So: a beat with a generator drills. A beat without one teaches, applies, and
- * moves on. Neither is a degraded version of the other.
- */
-export function beatHasPractice(beat) {
-  return Boolean(beat?.practiceGeneratorId);
-}
-
 export function LessonEngine({ lesson, onExit, onOpenView }) {
   const recordLessonResult = useAppStore((s) => s.recordLessonResult);
   const recordSelfExplanation = useAppStore((s) => s.recordSelfExplanation);
@@ -139,47 +105,8 @@ export function LessonEngine({ lesson, onExit, onOpenView }) {
   const legacyPracticeTarget = lesson.novaIntro?.practiceCount || 20;
   const legacyPracticeGenerator = legacyHasPractice ? getTemplateById(lesson.novaIntro.practiceGeneratorId) : null;
 
-  /**
-   * ---- WHAT A LESSON IS, WHEN IT IS NOT ALL ON THE SCREEN ----
-   *
-   * This engine grew around lessons that happen entirely at a keyboard: teach,
-   * drill, test. A lesson can also be forty-five minutes with twenty of them
-   * away from the screen — split a soaked bean, set four bags on a windowsill,
-   * write down what you saw — and the reading around that is not the lesson,
-   * it is the packaging.
-   *
-   * Four optional stages, each skipped when the lesson has no data for it:
-   *
-   *   `check-in`  — the opener, before any teaching. A thing to look at and a
-   *                 question with no right answer yet.
-   *   `activity`  — the hands-on middle: what to prepare, what is needed, the
-   *                 steps, and the safety line, which is never optional when
-   *                 it exists.
-   *   `ledger`    — what gets written down, plus the coaching for when she is
-   *                 stuck. Explicitly not graded where a lesson says so.
-   *   `practice`  — spoken questions with their answers, for the grown-up
-   *                 sitting beside her. Not a quiz; the answers are shown.
-   *
-   * None of them names a subject, a career or a learner. They are what a school
-   * day is made of, so they belong here rather than in any one folder.
-   */
-  const AFTER_BEATS = ['activity', 'ledger', 'practice', 'test'];
-
-  const lessonHasStage = (stage) => {
-    if (stage === 'test') return true;
-    if (stage === 'practice') return Array.isArray(lesson.practice) && lesson.practice.length > 0;
-    return Boolean(lesson[stage]);
-  };
-
-  /** The first stage after the beats this lesson actually has. */
-  const stageAfterBeats = (from = 0) => AFTER_BEATS.slice(from).find(lessonHasStage) || 'test';
-
-  /** The stage after the one named, so each screen's button knows where to go. */
-  const stageAfter = (stage) => stageAfterBeats(AFTER_BEATS.indexOf(stage) + 1);
-
   const [phase, setPhase] = useState(() => {
     if (lesson.passage) return 'passage';
-    if (lesson.checkIn) return 'check-in';
     if (hasBeats) return 'beat-teach';
     if (lesson.novaIntro) return 'briefing'; // legacy single-briefing flow
     return 'test';
@@ -345,7 +272,19 @@ export function LessonEngine({ lesson, onExit, onOpenView }) {
       setPracticeExtended(false);
       setPracticeCorrectHistory([]);
       if (hasBeats) {
-        leaveBeatTeaching();
+        // Active Application (Learn-Do template): a beat with a real
+        // applyItQuestion authored gets that transfer question next;
+        // otherwise skip straight to self-explanation, same "skip when
+        // absent" rule every other optional phase in this engine follows.
+        if (activeBeat?.applyItQuestion) {
+          setApplyItResult(null);
+          setPhase('beat-apply-it');
+        } else if (beatWantsReflection(activeBeat)) {
+          setReflectionText('');
+          setPhase('beat-reflect');
+        } else {
+          advanceFromBeat();
+        }
       } else {
         setPhase('test');
       }
@@ -356,53 +295,19 @@ export function LessonEngine({ lesson, onExit, onOpenView }) {
     }
   };
 
-  /**
-   * WHAT HAPPENS ONCE THIS BEAT'S TEACHING IS DONE.
-   *
-   * Active Application first: a beat with a real transfer question gets it.
-   * Then self-explanation, unless the beat declined it. Then the next beat.
-   *
-   * Extracted from `handlePracticeContinue` when beat practice became optional
-   * (see `beatHasPractice`). It used to sit inline there, which meant it could
-   * only ever be reached by FINISHING A DRILL — so a beat with no drill had no
-   * route to its own Apply-It question. Both callers now use this one path, so
-   * a beat that skips practice still applies and still reflects.
-   */
-  function leaveBeatTeaching() {
-    if (activeBeat?.applyItQuestion) {
-      setApplyItResult(null);
-      setPhase('beat-apply-it');
-    } else if (beatWantsReflection(activeBeat)) {
-      setReflectionText('');
-      setPhase('beat-reflect');
-    } else {
-      advanceFromBeat();
-    }
-  }
-
   // ---- Self-explanation continue (gap 3) — captures the reflection (if
   // any was typed), then does the actual beat-advance/move-to-test that
   // handlePracticeContinue used to do directly before this step existed. ----
   const advanceFromBeat = () => {
     if (beatIndex < beats.length - 1) {
       const nextBeat = beats[beatIndex + 1];
-      // THE LINE THIS ENGINE CRASHED ON. `getTemplateById` returns undefined
-      // for an id it does not know, and for the `undefined` a beat with no
-      // drill hands it — so `.build()` threw the moment a learner finished the
-      // first beat of a lesson whose beats carry applied scenarios instead of
-      // generated drills. Queue a question only when there is a generator to
-      // build one; `beat-teach` routes past practice when there is not.
       const nextGen = getTemplateById(nextBeat.practiceGeneratorId);
       setBeatIndex((i) => i + 1);
       setPracticeCount(0);
-      setPracticeQuestion(nextGen ? nextGen.build() : null);
+      setPracticeQuestion(nextGen.build());
       setPhase('beat-teach');
     } else {
-      // The beats are done. What follows is whatever this lesson actually has —
-      // the hands-on activity, the ledger, the spoken practice — and the test
-      // only once none of those are left. It used to go straight to the test,
-      // which for a lesson built around its middle meant skipping the lesson.
-      setPhase(stageAfterBeats());
+      setPhase('test');
     }
   };
 
@@ -599,222 +504,6 @@ export function LessonEngine({ lesson, onExit, onOpenView }) {
     );
   }
 
-  // ---- Check-in — the opener, before any teaching happens ----
-  //
-  // A thing to look at and a question she is not expected to be able to answer
-  // yet. Nothing is submitted and nothing is scored: the point is to have
-  // wondered about it before being told.
-  if (phase === 'check-in') {
-    const checkIn = lesson.checkIn;
-    return (
-      <div className="mx-auto max-w-2xl space-y-4 px-4 py-6 sm:px-6">
-        <ExitBar label={lesson.title} />
-        <NovaMessage label="Check-in" tone="brief">
-          {checkIn.title && (
-            <p className="font-display text-sm font-700 text-signal-cyan">{checkIn.title}</p>
-          )}
-          {checkIn.text && <p className="mt-2 leading-relaxed">{checkIn.text}</p>}
-          {checkIn.question && (
-            <div className="mt-3 rounded-lg border border-signal-amber/30 bg-signal-amber/5 p-3">
-              <p className="text-xs font-display uppercase tracking-widest text-signal-amber">
-                Think about it
-              </p>
-              <p className="mt-1 leading-relaxed">{checkIn.question}</p>
-            </div>
-          )}
-        </NovaMessage>
-        <button
-          type="button"
-          onClick={() =>
-            setPhase(hasBeats ? 'beat-teach' : lesson.novaIntro ? 'briefing' : stageAfterBeats())
-          }
-          className="w-full rounded-lg bg-signal-cyan px-4 py-2 font-display font-700 text-space-950 transition hover:brightness-110"
-        >
-          Start the Lesson
-        </button>
-      </div>
-    );
-  }
-
-  // ---- Activity — the part that happens away from the screen ----
-  //
-  // Rendered as a thing to DO, in the order it is done: what to get ready,
-  // what is needed, the steps, and the safety line last so it is the thing
-  // still on screen when she stands up.
-  if (phase === 'activity') {
-    const activity = lesson.activity;
-    return (
-      <div className="mx-auto max-w-2xl space-y-4 px-4 py-6 sm:px-6">
-        <ExitBar label={lesson.title} />
-        <div className="rounded-xl border border-space-700 bg-space-800 p-6 shadow-panel">
-          <p className="text-xs font-display uppercase tracking-widest text-signal-green">
-            Do This{activity.minutes ? ` — about ${activity.minutes} minutes` : ''}
-          </p>
-          {activity.title && (
-            <h2 className="mt-2 font-display text-2xl font-700 text-ink-100">{activity.title}</h2>
-          )}
-
-          {activity.prep && (
-            <div className="mt-4 rounded-lg border border-signal-amber/30 bg-signal-amber/5 p-3">
-              <p className="text-xs font-display uppercase tracking-widest text-signal-amber">
-                Get ready first
-              </p>
-              <p className="mt-1 text-sm text-ink-200">{activity.prep}</p>
-            </div>
-          )}
-
-          {Array.isArray(activity.needs) && activity.needs.length > 0 && (
-            <div className="mt-4">
-              <p className="text-xs font-display uppercase tracking-widest text-signal-cyan">
-                What you need
-              </p>
-              <ul className="mt-2 grid gap-1 text-sm text-ink-300 sm:grid-cols-2">
-                {activity.needs.map((need, i) => (
-                  <li key={i}>· {need}</li>
-                ))}
-              </ul>
-            </div>
-          )}
-
-          {Array.isArray(activity.steps) && activity.steps.length > 0 && (
-            <ol className="mt-4 space-y-2 text-ink-200">
-              {activity.steps.map((step, i) => (
-                <li key={i} className="flex gap-3">
-                  <span className="font-display text-sm font-700 text-signal-cyan">{i + 1}</span>
-                  <span className="leading-relaxed">{step}</span>
-                </li>
-              ))}
-            </ol>
-          )}
-
-          {/* Last, and loud. A safety line scrolled past is a safety line that
-              was not read. */}
-          {activity.safety && (
-            <div className="mt-4 rounded-lg border border-signal-red/40 bg-signal-red/5 p-3">
-              <p className="text-xs font-display uppercase tracking-widest text-signal-red">Safety</p>
-              <p className="mt-1 text-sm text-ink-100">{activity.safety}</p>
-            </div>
-          )}
-        </div>
-        <button
-          type="button"
-          onClick={() => setPhase(stageAfter('activity'))}
-          className="w-full rounded-lg bg-signal-cyan px-4 py-2 font-display font-700 text-space-950 transition hover:brightness-110"
-        >
-          Done — What Next
-        </button>
-      </div>
-    );
-  }
-
-  // ---- Ledger — what gets written down ----
-  //
-  // The record of the work, and the coaching for a learner who has stalled.
-  // `ifSheIsStuck` is deliberately shown to the grown-up rather than hidden
-  // behind a hint button: the person who needs it is sitting beside her.
-  if (phase === 'ledger') {
-    const ledger = lesson.ledger;
-    const game = ledger.game;
-    return (
-      <div className="mx-auto max-w-2xl space-y-4 px-4 py-6 sm:px-6">
-        <ExitBar label={lesson.title} />
-        <div className="rounded-xl border border-space-700 bg-space-800 p-6 shadow-panel">
-          <p className="text-xs font-display uppercase tracking-widest text-signal-cyan">
-            Write It Down
-          </p>
-
-          {Array.isArray(ledger.tasks) && ledger.tasks.length > 0 && (
-            <ul className="mt-3 space-y-2 text-ink-200">
-              {ledger.tasks.map((task, i) => (
-                <li key={i} className="flex gap-3">
-                  <span aria-hidden="true" className="text-ink-500">☐</span>
-                  <span className="leading-relaxed">{task}</span>
-                </li>
-              ))}
-            </ul>
-          )}
-
-          {game && (
-            <div className="mt-4 rounded-lg border border-space-600 bg-space-900 p-3">
-              {game.title && (
-                <p className="font-display text-sm font-700 text-signal-green">{game.title}</p>
-              )}
-              {Array.isArray(game.cards) && game.cards.length > 0 && (
-                <p className="mt-2 font-mono text-xs uppercase tracking-widest text-ink-300">
-                  {game.cards.join(' · ')}
-                </p>
-              )}
-              {Array.isArray(game.rounds) && (
-                <ol className="mt-2 space-y-1 text-sm text-ink-200">
-                  {game.rounds.map((round, i) => (
-                    <li key={i}>
-                      {i + 1}. {round}
-                    </li>
-                  ))}
-                </ol>
-              )}
-              {game.ifSheIsStuck && (
-                <p className="mt-3 border-t border-space-700 pt-2 text-sm text-ink-300">
-                  <span className="font-display text-xs uppercase tracking-widest text-ink-500">
-                    If she is stuck ·{' '}
-                  </span>
-                  {game.ifSheIsStuck}
-                </p>
-              )}
-            </div>
-          )}
-
-          {ledger.note && <p className="mt-4 text-sm italic text-ink-300">{ledger.note}</p>}
-        </div>
-        <button
-          type="button"
-          onClick={() => setPhase(stageAfter('ledger'))}
-          className="w-full rounded-lg bg-signal-cyan px-4 py-2 font-display font-700 text-space-950 transition hover:brightness-110"
-        >
-          Continue
-        </button>
-      </div>
-    );
-  }
-
-  // ---- Spoken practice — asked out loud, with the answers shown ----
-  //
-  // NOT a quiz, and it must never be scored: the answer and the reason are on
-  // the screen next to the question. It is for the grown-up to ask and for the
-  // pair of them to talk about, which is a different thing from a test and
-  // would be ruined by being marked.
-  if (phase === 'practice') {
-    return (
-      <div className="mx-auto max-w-2xl space-y-4 px-4 py-6 sm:px-6">
-        <ExitBar label={lesson.title} />
-        <div className="rounded-xl border border-space-700 bg-space-800 p-6 shadow-panel">
-          <p className="text-xs font-display uppercase tracking-widest text-signal-cyan">
-            Talk It Through
-          </p>
-          <p className="mt-1 text-sm text-ink-500">
-            Asked out loud. Nothing here is marked.
-          </p>
-          <div className="mt-4 space-y-4">
-            {lesson.practice.map((item, i) => (
-              <div key={i} className="rounded-lg border border-space-700 bg-space-900 p-3">
-                <p className="font-display text-sm font-700 text-ink-100">{item.ask}</p>
-                {item.answer && <p className="mt-1 text-sm text-ink-200">{item.answer}</p>}
-                {item.why && <p className="mt-1 text-sm text-ink-300">{item.why}</p>}
-              </div>
-            ))}
-          </div>
-        </div>
-        <button
-          type="button"
-          onClick={() => setPhase(stageAfter('practice'))}
-          className="w-full rounded-lg bg-signal-cyan px-4 py-2 font-display font-700 text-space-950 transition hover:brightness-110"
-        >
-          {hasTestQuestions ? 'Begin the Check' : 'Finish'}
-        </button>
-      </div>
-    );
-  }
-
   // ---- Beat teach phase — ONE small concept, taught with vocabulary woven into the example ----
   if (phase === 'beat-teach') {
     const beat = beats[beatIndex];
@@ -854,21 +543,8 @@ export function LessonEngine({ lesson, onExit, onOpenView }) {
           )}
           {beatIndex === beats.length - 1 && lesson.novaIntro.connection && (
             <div className="mt-3 rounded-lg border border-signal-amber/30 bg-signal-amber/5 p-3">
-              {/*
-                THIS HEADING NAMED ONE CHILD'S CAREER, IN THE BONES.
-
-                It read "How an Aerospace Engineer Uses This" — a literal
-                string in src/engine/, the file every Academy that will ever
-                exist runs its lessons through. C1 moved the curriculum out of
-                the platform and this survived it, because a heading is prose
-                and the guards read names.
-
-                It is the lesson's to title now, beside the paragraph it heads,
-                so an Academy studying anything says what it is studying. The
-                fallback names no career and no subject.
-              */}
               <p className="text-xs font-display uppercase tracking-widest text-signal-amber">
-                {lesson.novaIntro.connectionLabel || 'Where This Gets Used'}
+                How an Aerospace Engineer Uses This
               </p>
               <p className="mt-1">
                 <GlossaryText text={lesson.novaIntro.connection} terms={lesson.novaIntro.glossary} keyPrefix="conn-" />
@@ -887,35 +563,12 @@ export function LessonEngine({ lesson, onExit, onOpenView }) {
           )}
         </NovaMessage>
 
-        {/*
-          THREE ROUTES OUT OF A TEACH SCREEN, and the third is the new one.
-
-          Guided notes when there is something to blank out. Then practice, but
-          ONLY when this beat actually has a drill — see `beatHasPractice`. A
-          beat that carries an applied scenario instead of a generated drill
-          goes straight on to it, rather than promising "4 Quick Practice
-          Questions" it has no way to produce.
-
-          The label follows the route rather than being written once and
-          assumed, because a button that names a thing the next screen does not
-          do is worse than a plain one.
-        */}
         <button
           type="button"
-          onClick={() => {
-            if (guidedNotesForBeat) return setPhase('beat-guided-notes');
-            if (beatHasPractice(beat)) return setPhase('beat-practice');
-            return leaveBeatTeaching();
-          }}
+          onClick={() => setPhase(guidedNotesForBeat ? 'beat-guided-notes' : 'beat-practice')}
           className="w-full rounded-lg bg-signal-cyan px-4 py-2 font-display font-700 text-space-950 transition hover:brightness-110"
         >
-          {guidedNotesForBeat
-            ? 'Guided Notes First'
-            : beatHasPractice(beat)
-              ? `Try It — ${beatPracticeTarget} Quick Practice Questions`
-              : activeApplyItQuestion
-                ? 'Try It'
-                : 'Continue'}
+          {guidedNotesForBeat ? 'Guided Notes First' : `Try It — ${beatPracticeTarget} Quick Practice Questions`}
         </button>
       </div>
     );
@@ -929,13 +582,7 @@ export function LessonEngine({ lesson, onExit, onOpenView }) {
     return (
       <div className="mx-auto max-w-2xl space-y-4 px-4 py-6 sm:px-6">
         <ExitBar label={`${lesson.title} — ${beatIndex + 1} of ${beats.length}`} />
-        {/* Same three routes as the teach screen — a beat with no drill must
-            not be sent to one from here either. */}
-        <GuidedNotes
-          key={beatIndex}
-          guidedNotes={guidedNotes}
-          onDone={() => (beatHasPractice(beat) ? setPhase('beat-practice') : leaveBeatTeaching())}
-        />
+        <GuidedNotes key={beatIndex} guidedNotes={guidedNotes} onDone={() => setPhase('beat-practice')} />
       </div>
     );
   }
@@ -1071,28 +718,12 @@ export function LessonEngine({ lesson, onExit, onOpenView }) {
               )}
             </div>
           ))}
-          {/*
-            THE SAME BOX AS THE BEATS FLOW, AND IT HAD THE SAME WELDED HEADING.
-
-            Found by reading the DEPLOYED bundle rather than the source: the
-            beats flow had already been changed, and the old career name was
-            still in the shipped chunk. One value, two implementations, one of
-            them fixed — the failure mode this repository has paid for before.
-            Grep the whole tree for a string before believing it is gone.
-
-            The guard is new too. This block rendered unconditionally, so a
-            lesson with no `connection` drew an empty amber panel with a
-            heading over nothing. The beats flow has always guarded it; this
-            one never did.
-          */}
-          {intro.connection && (
-            <div className="mt-3 rounded-lg border border-signal-amber/30 bg-signal-amber/5 p-3">
-              <p className="text-xs font-display uppercase tracking-widest text-signal-amber">
-                {intro.connectionLabel || 'Where This Gets Used'}
-              </p>
-              <p className="mt-1">{intro.connection}</p>
-            </div>
-          )}
+          <div className="mt-3 rounded-lg border border-signal-amber/30 bg-signal-amber/5 p-3">
+            <p className="text-xs font-display uppercase tracking-widest text-signal-amber">
+              How an Aerospace Engineer Uses This
+            </p>
+            <p className="mt-1">{intro.connection}</p>
+          </div>
           {intro.videoUrl && (
             <a
               href={intro.videoUrl}

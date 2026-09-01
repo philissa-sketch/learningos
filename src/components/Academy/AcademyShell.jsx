@@ -3,7 +3,6 @@ import ImportSchool from './ImportSchool.jsx';
 import {
   AcademyContentMissing,
   academyHasContent,
-  availableAcademyFolders,
   contentPackFor,
   loadAcademyContent
 } from '../../content/academyContent.js';
@@ -101,7 +100,7 @@ export default function AcademyShell({ academy, enteredAs, onSignOut, onAcademyC
     if (content === 'ready') {
       return (
         <Suspense fallback={<div style={{ minHeight: '100vh', background: 'var(--fd-paper, #0e1a22)' }} />}>
-          <SchoolBoot academy={academy} enteredAs={enteredAs} onSignOut={onSignOut} />
+          <SchoolBoot enteredAs={enteredAs} onSignOut={onSignOut} />
         </Suspense>
       );
     }
@@ -119,8 +118,6 @@ export default function AcademyShell({ academy, enteredAs, onSignOut, onAcademyC
         pack={pack}
         error={contentError}
         broken={content === 'broken'}
-        canChoose={enteredAs === 'parent'}
-        onChoosePack={(contentPack) => onAcademyChanged?.({ contentPack })}
         onSignOut={onSignOut}
       />
     );
@@ -132,26 +129,6 @@ export default function AcademyShell({ academy, enteredAs, onSignOut, onAcademyC
         This Academy has its own private database and can be signed into. It has no records yet —
         either bring an existing school across, or set it up from scratch.
       </p>
-
-      {/*
-        THE PICKER BELONGS HERE TOO, AND THIS IS THE SCREEN IT WAS MISSING FROM.
-
-        A newly created Academy is `state: 'empty'`, and the only thing that
-        used to move it off empty was a verified import. A family starting a
-        second learner from scratch — no old school to bring across — reached
-        this screen and had nothing to press. The curriculum was in the build
-        and unreachable.
-
-        Choosing here sets the pack AND marks the Academy active, because for a
-        pack that ships its own subjects, timetable, guide and lessons there is
-        nothing left pending: the next screen is the school. The questionnaire
-        and placement path (§1's Configured state) is still to come, and when it
-        lands it takes over this decision rather than sitting beside it.
-      */}
-      <ContentPackPicker
-        canChoose={enteredAs === 'parent'}
-        onChoosePack={(contentPack) => onAcademyChanged?.({ contentPack, state: 'active' })}
-      />
 
       <p className="fd-note">
         <strong>Already have a school?</strong> Import copies its records into this Academy and
@@ -190,23 +167,7 @@ export default function AcademyShell({ academy, enteredAs, onSignOut, onAcademyC
  * afterwards. This is the room it sits in until then — its own, named after
  * itself, offering the one thing that moves forward.
  */
-function NoCurriculum({ academy, pack, error, broken, canChoose, onChoosePack, onSignOut }) {
-  /**
-   * ---- THE FIELD EXISTED BEFORE THE CONTROL THAT SETS IT ----
-   *
-   * `contentPackFor` reads `academy.contentPack` and falls back to the
-   * Academy's id. Nothing in the app ever WROTE that field, so the fallback was
-   * the only path — and an id is generated at the front door with a random
-   * suffix precisely so two children sharing a name do not share records. It
-   * can therefore never match a folder somebody authored. Every Academy but the
-   * first was stuck on this screen with no way off it.
-   *
-   * Spec §3a is the reason this is a picker rather than a one-time setup step:
-   * *"a career track is a field. It is never a foundation."* Changing what a
-   * learner is working toward must not change her id, her database, or one hour
-   * of what she has already earned. Choosing a pack rewrites one field on the
-   * household record. Nothing else moves.
-   */
+function NoCurriculum({ academy, pack, error, broken, onSignOut }) {
   return (
     <Panel
       steps={broken ? 'The Academy exists · Its curriculum is incomplete' : 'The Academy exists · No curriculum yet'}
@@ -218,9 +179,11 @@ function NoCurriculum({ academy, pack, error, broken, canChoose, onChoosePack, o
           : 'This Academy has its own records and its own database. Its lessons, subjects, timetable and guide have not been added yet.'}
       </p>
 
-      {broken ? null : (
-        <ContentPackPicker canChoose={canChoose} onChoosePack={onChoosePack} />
-      )}
+      <p className="fd-note">
+        Nothing is lost and nothing is wrong with the records. Curriculum is added to the app
+        itself, not from this screen — until it is, this Academy stays here rather than opening
+        somebody else&rsquo;s school.
+      </p>
 
       {error?.message ? (
         <p className="fd-helper" style={{ textAlign: 'left' }}>
@@ -232,81 +195,6 @@ function NoCurriculum({ academy, pack, error, broken, canChoose, onChoosePack, o
 
       <SignOutButton onSignOut={onSignOut} />
     </Panel>
-  );
-}
-
-/**
- * ---- CHOOSING WHAT THIS ACADEMY IS WORKING TOWARD ----
- *
- * `contentPackFor` reads `academy.contentPack` and falls back to the Academy's
- * id. Nothing in the app ever WROTE that field, so the fallback was the only
- * path — and an id is generated at the front door with a random suffix,
- * precisely so two children sharing a name do not share records. It can
- * therefore never match a folder somebody authored. Every Academy but the very
- * first was stuck with no way to reach a curriculum at all.
- *
- * Spec §3a is why this is a PICKER rather than a one-time setup step:
- * *"a career track is a field. It is never a foundation."* Changing what a
- * learner is working toward must not change her id, her database, or one hour
- * of what she has already earned. This rewrites one field on the household
- * record. Nothing else moves.
- *
- * ---- WHY IT APPEARS ON TWO SCREENS ----
- *
- * A newly created Academy is `state: 'empty'`, and until now the only thing
- * that moved it off empty was importing an existing school. A family starting
- * fresh — which is the ordinary case for a second learner — landed on a screen
- * with no way forward at all. Both screens offer it, because both are places a
- * real family arrives with no curriculum yet.
- */
-function ContentPackPicker({ canChoose, onChoosePack }) {
-  const packs = availableAcademyFolders();
-  const [chosen, setChosen] = useState('');
-
-  if (!canChoose || packs.length === 0) {
-    return (
-      <p className="fd-note">
-        Nothing is lost and nothing is wrong with the records. Curriculum is added to the app
-        itself — until it is, this Academy stays here rather than opening somebody else&rsquo;s
-        school.
-        {!canChoose ? ' A grown-up signed in can choose one from this screen.' : ''}
-      </p>
-    );
-  }
-
-  return (
-    <>
-      <p className="fd-note">
-        <strong>
-          This app carries {packs.length} curriculum{packs.length === 1 ? '' : 's'}.
-        </strong>{' '}
-        Choosing one opens it for this Academy. It changes nothing else — the records, the hours
-        and the grades belong to the Academy, not to the curriculum, and they stay exactly where
-        they are if you change it again later.
-      </p>
-
-      <label className="fd-helper" style={{ display: 'block', textAlign: 'left' }}>
-        Curriculum
-        <select value={chosen} onChange={(e) => setChosen(e.target.value)}>
-          <option value="">Choose…</option>
-          {packs.map((id) => (
-            <option key={id} value={id}>
-              {id}
-            </option>
-          ))}
-        </select>
-      </label>
-
-      <button
-        className="fd-btn"
-        type="button"
-        disabled={!chosen}
-        onClick={() => onChoosePack?.(chosen)}
-        style={{ marginBottom: '10px' }}
-      >
-        Open this curriculum
-      </button>
-    </>
   );
 }
 

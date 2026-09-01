@@ -1,8 +1,7 @@
 import { lazy, Suspense, useEffect, useState } from 'react';
 import { useAppStore } from './store/useAppStore.js';
 import { applyTheme } from './lib/themes.js';
-import { NavBar, viewIsAvailable } from './components/Navigation/NavBar.jsx';
-import { academyContent } from './content/academyContent.js';
+import { NavBar } from './components/Navigation/NavBar.jsx';
 import { MissionControlDashboard } from './components/Dashboard/MissionControlDashboard.jsx';
 // ParentGate is deliberately NOT lazy-loaded like the dashboard it wraps.
 // It is small, and it has to render the lock screen without pulling the
@@ -121,7 +120,7 @@ function ScreenLoading() {
  *   door. Threaded to the Parent Dashboard and nowhere else — signing out is a
  *   grown-up action, not a button a child can hit mid-lesson.
  */
-export default function App({ academyName = null, initialView = 'dashboard', onSignOut }) {
+export default function App({ initialView = 'dashboard', onSignOut }) {
   const hydrate = useAppStore((s) => s.hydrate);
   const hydrated = useAppStore((s) => s.hydrated);
   const hydrationError = useAppStore((s) => s.hydrationError);
@@ -131,26 +130,7 @@ export default function App({ academyName = null, initialView = 'dashboard', onS
   const [dbNotice, setDbNotice] = useState(null);
   const recordActiveMinute = useAppStore((s) => s.recordActiveMinute);
   const recordStudyCycleDay = useAppStore((s) => s.recordStudyCycleDay);
-  const [rawView, setRawView] = useState(initialView); // 'dashboard' | 'progress' | 'lessons' | 'games' | 'journal' | 'typing' | 'schedule' | 'academic' | 'pe' | 'garden' | 'guitar' | 'messages' | 'morning' | 'parent'
-
-  /**
-   * ---- A VIEW THIS ACADEMY CANNOT OPEN FALLS BACK ----
-   *
-   * Hiding a tab in the nav stops it being CHOSEN; it does not stop it being
-   * REACHED. `initialView` is restored from the last session, cards deep in the
-   * dashboard call setView('garden') directly, and a view that outlives the
-   * content it needs would render a screen reading names nobody supplied.
-   *
-   * So availability is checked where the view is USED rather than only where it
-   * is offered — the nav and the router agreeing because they ask the same
-   * function, not because two lists were kept in step by hand.
-   *
-   * Falling back to the dashboard rather than throwing: an Academy without a
-   * garden has done nothing wrong, and a blank screen would be a worse answer
-   * than the room it already has.
-   */
-  const view = viewIsAvailable(rawView, academyContent()) ? rawView : 'dashboard';
-  const setView = setRawView;
+  const [view, setView] = useState(initialView); // 'dashboard' | 'progress' | 'lessons' | 'games' | 'journal' | 'typing' | 'schedule' | 'academic' | 'pe' | 'garden' | 'guitar' | 'messages' | 'morning' | 'parent'
   // Which Scheduler view to open on. Set by the Morning Meeting's look-ahead
   // step; 'daily' everywhere else, which is what the nav has always done.
   const [scheduleMode, setScheduleMode] = useState('daily');
@@ -408,7 +388,7 @@ export default function App({ academyName = null, initialView = 'dashboard', onS
   } else {
     content = (
       <>
-        <NavBar academyName={academyName} view={view} onNavigate={setView} onSignOut={onSignOut} />
+        <NavBar view={view} onNavigate={setView} onSignOut={onSignOut} />
         {view === 'dashboard' && (
           <MissionControlDashboard
             onStartLesson={setActiveLesson}
@@ -527,7 +507,7 @@ export default function App({ academyName = null, initialView = 'dashboard', onS
         )}
         {view === 'parent' && (
           <ParentGate>
-            <ParentDashboard academyName={academyName} onSignOut={onSignOut} />
+            <ParentDashboard onSignOut={onSignOut} />
           </ParentGate>
         )}
       </>

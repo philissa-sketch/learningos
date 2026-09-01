@@ -186,9 +186,24 @@ console.log('\n--- 4. a forgotten passcode is not a lockout ---');
 
 const firstRun = codeOnly('src/components/FrontDoor/FirstRun.jsx');
 ok('first run creates a passcode', /buildPasscodeRecord\(/.test(firstRun));
+/*
+  ASSERT THE PROPERTY, NOT THE SENTENCE.
+
+  This used to require the literal words "written it down" on the screen, and it
+  failed the day that button stopped saying only that — because the screen grew
+  ways to KEEP the code (email it, save it as a file, copy it) rather than only
+  copy it onto paper. The check was pinned to the weakest version of the thing
+  it was protecting.
+
+  What actually matters is unchanged and is what is tested now: a recovery code
+  is generated, it is rendered where a person can see it, and the family cannot
+  leave the screen without acknowledging it. How they are invited to keep it is
+  a design decision; that they are shown it and must acknowledge it is the rule.
+*/
 ok('...with a recovery code, shown once',
   /generateRecoveryCode\(\)/.test(firstRun) &&
-    /written it down/i.test(read('src/components/FrontDoor/FirstRun.jsx')));
+    /\{issued\.code\}/.test(firstRun) &&
+    /onDone\(/.test(firstRun));
 
 // THE REGRESSION THIS EXISTS TO PREVENT.
 //

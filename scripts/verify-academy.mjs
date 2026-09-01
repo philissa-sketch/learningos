@@ -273,19 +273,21 @@ async function verifyHousehold() {
 }
 
 // ===========================================================================
+/*
+  NO ARGUMENT RUNS THE HOUSEHOLD MODE, rather than printing usage and failing.
+
+  Every other check in this folder runs bare — `node scripts/verify-x.mjs` —
+  and anything sweeping `scripts/verify-*.mjs` calls them that way. Exiting 1 on
+  a missing argument made this script look like a failing check in every such
+  sweep, which is precisely how a real failure later gets waved past.
+
+  Household is the right default anyway: asked nothing in particular, the useful
+  question is whether the Academies on this machine are properly separate.
+  Naming one asks the narrower question about that one alone.
+*/
 const arg = process.argv[2];
 
-if (!arg) {
-  console.error(
-    'usage:\n' +
-      '  node scripts/verify-academy.mjs <academy-folder>   one Academy, alone\n' +
-      '  node scripts/verify-academy.mjs --household        that they are separate\n\n' +
-      `on this machine: ${folders().join(', ')}`
-  );
-  process.exit(1);
-}
-
-if (arg === '--household') await verifyHousehold();
+if (!arg || arg === '--household') await verifyHousehold();
 else await verifyOne(arg);
 
 console.log(`\n${checks} checks · ${failures === 0 ? 'ALL PASSED' : `${failures} FAILED`}\n`);
