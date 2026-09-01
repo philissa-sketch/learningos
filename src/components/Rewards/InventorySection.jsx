@@ -7,7 +7,7 @@ import { CadetAvatar } from './CadetAvatar.jsx';
 import { RocketSwatch } from './RocketSwatch.jsx';
 import { academyContent } from '../../content/academyContent.js';
 
-const { AVATAR_GEAR, HQ_ITEMS, MISSION_EQUIPMENT } = academyContent().rewards;
+const { AVATAR_GEAR = [], HQ_ITEMS = [], MISSION_EQUIPMENT = [] } = academyContent().rewards;
 
 // ---------------------------------------------------------------------------
 // INVENTORY — where the things he bought actually live.

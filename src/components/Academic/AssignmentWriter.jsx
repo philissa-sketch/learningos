@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { wordProgress } from '../../lib/writingCheck.js';
 import { academyContent } from '../../content/academyContent.js';
 
-const { sizeFor } = academyContent().academicCenter;
+const { sizeFor = () => null } = academyContent().academicCenter;
 
 /**
  * WHERE HE ACTUALLY WRITES THE REPORT.

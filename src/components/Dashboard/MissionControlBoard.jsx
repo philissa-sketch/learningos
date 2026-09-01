@@ -7,10 +7,10 @@ import { todayDateStr, toDateStr, parseDateStr, addDays, formatShortDate, daysUn
 import { buildPlannerItems, splitPlannerItems } from '../../lib/plannerCalendar.js';
 import { academyContent } from '../../content/academyContent.js';
 
-const { GEORGIA_MINUTES_PER_DAY, declarationCoversToday, nextDeclarationDeadline } = academyContent().compliance;
-const { allLessons } = academyContent().lessons;
-const { SUBJECT_LABELS } = academyContent().subjects;
-const { writingPrompts } = academyContent().writing;
+const { GEORGIA_MINUTES_PER_DAY, declarationCoversToday = () => false, nextDeclarationDeadline = () => null } = academyContent().compliance;
+const { allLessons = [] } = academyContent().lessons;
+const { SUBJECT_LABELS = {} } = academyContent().subjects;
+const { writingPrompts = [] } = academyContent().writing;
 
 /**
  * THE MISSION CONTROL BOARD — the Parent Dashboard's front page.

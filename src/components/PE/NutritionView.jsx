@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { academyContent } from '../../content/academyContent.js';
 
-const { nutritionChallenges, nutritionTopics, recipeLibrary, shoppingListCategories } = academyContent().pe;
+const { nutritionChallenges = [], nutritionTopics = [], recipeLibrary = [], shoppingListCategories = [] } = academyContent().pe;
 
 const SUBTABS = [
   { id: 'topics', label: 'Learn' },

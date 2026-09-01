@@ -3,7 +3,7 @@ import { todayDateStr } from '../../lib/scheduler.js';
 import { useToday } from '../../lib/useToday.js';
 import { academyContent } from '../../content/academyContent.js';
 
-const { gardenCalendar, getGardenBriefById } = academyContent().electives;
+const { gardenCalendar = [], getGardenBriefById = () => null } = academyContent().electives;
 
 // Verified North Georgia fall windows (UGA Extension C1258). UGA's B577 chart
 // is written for MIDDLE Georgia; north plants about two weeks earlier in fall.

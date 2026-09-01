@@ -11,8 +11,8 @@ import {
 import { orderBooks } from '../../lib/academicOrder.js';
 import { academyContent } from '../../content/academyContent.js';
 
-const { activeMilestone, hasMilestones, leadStatus, milestoneProgress, startByFor } = academyContent().academicCenter;
-const { SUBJECT_LABELS } = academyContent().subjects;
+const { activeMilestone = () => null, hasMilestones = () => null, leadStatus = () => null, milestoneProgress = () => null, startByFor = () => null } = academyContent().academicCenter;
+const { SUBJECT_LABELS = {} } = academyContent().subjects;
 
 const LOOKAHEAD_DAYS = 7;
 

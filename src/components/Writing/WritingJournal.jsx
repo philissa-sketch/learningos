@@ -5,9 +5,9 @@ import { orderScheduledCards, scheduleSortDate } from '../../lib/academicOrder.j
 import { todayDateStr, toDateStr, addDays, parseDateStr } from '../../lib/scheduler.js';
 import { academyContent } from '../../content/academyContent.js';
 
-const { gardenProjects } = academyContent().electives;
-const { aerospaceProjects, roboticsProjects, scienceExperiments, technologyProjects } = academyContent().projects;
-const { writingPrompts } = academyContent().writing;
+const { gardenProjects = [] } = academyContent().electives;
+const { aerospaceProjects = [], roboticsProjects = [], scienceExperiments = [], technologyProjects = [] } = academyContent().projects;
+const { writingPrompts = [] } = academyContent().writing;
 
 /** Short, readable, and never through new Date('YYYY-MM-DD') - that is UTC. */
 function formatDue(dateStr) {

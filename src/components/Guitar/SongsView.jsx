@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useAppStore } from '../../store/useAppStore.js';
 import { academyContent } from '../../content/academyContent.js';
 
-const { GUITAR_OWN_SLOTS, guitarEducators, guitarOwnSongGuidance, guitarPerformanceMoment, guitarStarterSongs } = academyContent().electives;
+const { GUITAR_OWN_SLOTS, guitarEducators = [], guitarOwnSongGuidance = [], guitarPerformanceMoment = {}, guitarStarterSongs = [] } = academyContent().electives;
 
 /**
  * The song list — and the three slots he fills himself.

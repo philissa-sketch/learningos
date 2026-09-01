@@ -48,9 +48,9 @@ import { toDateStr, addDays, parseDateStr } from './scheduler.js';
 import { getCurrentQuarter } from './schoolQuarter.js';
 import { academyContent } from '../content/academyContent.js';
 
-const { khanGrammarUnitByUrl } = academyContent().khanSequences;
-const { allLessons } = academyContent().lessons;
-const { defaultSchedule } = academyContent().timetable;
+const { khanGrammarUnitByUrl = () => null } = academyContent().khanSequences;
+const { allLessons = [] } = academyContent().lessons;
+const { defaultSchedule = [] } = academyContent().timetable;
 
 /** Monday-first day keys, as weeklyWordState stores them in completedDayTasks. */
 const WORD_DAY_OFFSET = { mon: 0, tue: 1, wed: 2, thu: 3, fri: 4, sat: 5, sun: 6 };

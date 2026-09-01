@@ -7,8 +7,8 @@ import { useToday } from '../../lib/useToday.js';
 import { parseDateStr } from '../../lib/scheduler.js';
 import { academyContent } from '../../content/academyContent.js';
 
-const { gardenBuildTrack, gardenCapstone, gardenProjects } = academyContent().electives;
-const { SUBJECT_LABELS } = academyContent().subjects;
+const { gardenBuildTrack = [], gardenCapstone = {}, gardenProjects = [] } = academyContent().electives;
+const { SUBJECT_LABELS = {} } = academyContent().subjects;
 
 /** 'Fri 14 Aug'. */
 function dayLabel(dateStr) {

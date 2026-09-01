@@ -5,8 +5,8 @@ import { buildYearPlan, buildSemesterPlan, yearProgress, benchmarkGrowth } from 
 import { PacingSection } from './PacingSection.jsx';
 import { academyContent } from '../../content/academyContent.js';
 
-const { allLessons } = academyContent().lessons;
-const { SUBJECT_LABELS } = academyContent().subjects;
+const { allLessons = [] } = academyContent().lessons;
+const { SUBJECT_LABELS = {} } = academyContent().subjects;
 
 /**
  * Annual and semester planner — PROJECT_PLAN.md Part 8.

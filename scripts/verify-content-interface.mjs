@@ -339,6 +339,73 @@ if (fs.existsSync(templateManifest)) {
   );
 }
 
+/**
+ * ---- 7. A BLANK SLOT IS AN EMPTY ROOM, NOT A WHITE SCREEN (Sept 1, 2026) ----
+ *
+ * §3c: *"a slot an Academy has nothing for stays blank, and blank must render
+ * as an absent screen rather than a broken one."* Written in the spec, enforced
+ * nowhere, and the first Academy never tested it because it fills nearly every
+ * slot.
+ *
+ * The second Academy fills seven of sixteen and opened to a blank white page:
+ *
+ *     Cannot destructure property 'COIN_CATALOG' of
+ *     'academyContent(...).rewards' as it is undefined.   supplyCrate.js:37
+ *
+ * 87 modules destructure a slot at MODULE SCOPE, so an absent slot throws while
+ * the school is being imported — before React mounts, with no component to
+ * catch it and nothing to render.
+ */
+console.log('\n--- 7. an Academy that fills few slots still opens ---');
+{
+  const contentModule = contentSrc;
+
+  ok(
+    'absent slots resolve to an empty object rather than undefined',
+    /function withAbsentSlots/.test(contentModule) && /full\[slot\] = \{\}/.test(contentModule),
+    'destructuring undefined throws at import time, which is a white page and no error on screen'
+  );
+
+  /**
+   * THE ORDER IS THE WHOLE SAFETY OF IT. `{}` is truthy, so filling before the
+   * required check would satisfy every REQUIRED_SLOT and let an Academy with no
+   * subjects, no lessons and no timetable through the guard built to refuse it.
+   */
+  /**
+   * Matched on the ASSIGNMENT, not the bare call. `withAbsentSlots(content)`
+   * also appears in the function's own declaration, higher up the file than
+   * every call site — so the obvious version of this assertion compared the
+   * required check against the definition and failed while the code was right.
+   * Fourth time in this repo a guard has been pinned to a string that occurs
+   * more than once.
+   */
+  const FILL = 'installed = withAbsentSlots(content)';
+
+  ok(
+    'absent slots are filled AFTER the required check, never before',
+    contentModule.indexOf('REQUIRED_SLOTS.filter((slot) => !content[slot])') < contentModule.indexOf(FILL),
+    'an empty object is truthy — filling first would satisfy every required slot'
+  );
+
+  ok(
+    '...and the check scripts see the school the same way the browser does',
+    contentModule.split(FILL).length - 1 >= 2,
+    'installAcademyContent must fill too, or a guard tests a school no learner ever gets'
+  );
+
+  /**
+   * It must not INVENT contents. Filling a slot with plausible defaults is what
+   * NEVER_DEFAULTED already refuses for subjects and lessons, and for the same
+   * reason: a school made of nothing that still opens hides the exact state the
+   * Empty and Configured screens exist to show.
+   */
+  ok(
+    'a filled-in slot is empty, not populated',
+    !/full\[slot\] = \{[^}]/.test(contentModule),
+    'an absent slot gets nothing in it — that is the difference between blank and invented'
+  );
+}
+
 console.log(`\n${passed} passed, ${failures.length} failed`);
 if (failures.length) {
   console.log(`\n${failures.length} CHECK(S) FAILED`);

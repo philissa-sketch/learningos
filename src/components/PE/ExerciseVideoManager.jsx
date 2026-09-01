@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react';
 import { useAppStore } from '../../store/useAppStore.js';
 import { academyContent } from '../../content/academyContent.js';
 
-const { CATEGORY_LABELS, HIDDEN_VIDEO, curatedDemoFor, exerciseLibrary } = academyContent().pe;
+const { CATEGORY_LABELS = {}, HIDDEN_VIDEO, curatedDemoFor = () => null, exerciseLibrary = {} } = academyContent().pe;
 
 // ---------------------------------------------------------------------------
 // EXERCISE DEMO VIDEOS — one link per exercise, hers overriding a checked default.

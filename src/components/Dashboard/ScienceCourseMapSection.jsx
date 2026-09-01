@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 import { useAppStore } from '../../store/useAppStore.js';
 import { academyContent } from '../../content/academyContent.js';
 
-const { SCIENCE_COURSES, SCIENCE_COURSE_CHALLENGES, scienceCoverageByCourse } = academyContent().khanSequences;
+const { SCIENCE_COURSES = {}, SCIENCE_COURSE_CHALLENGES = [], scienceCoverageByCourse = () => null } = academyContent().khanSequences;
 
 /**
  * SCIENCE, COURSE BY COURSE — and the teacher units Khan wrote for her.

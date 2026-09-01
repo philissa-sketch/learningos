@@ -1,7 +1,7 @@
 import { useAppStore } from '../../store/useAppStore.js';
 import { academyContent } from '../../content/academyContent.js';
 
-const { subjectCardLabel } = academyContent().subjects;
+const { subjectCardLabel = () => null } = academyContent().subjects;
 
 /**
  * The student's own grades, on the Progress tab.

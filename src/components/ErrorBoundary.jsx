@@ -21,7 +21,7 @@ export class ErrorBoundary extends Component {
   }
 
   componentDidCatch(error, info) {
-    console.error('Mission Control screen crashed:', error, info?.componentStack);
+    console.error('A school screen crashed:', error, info?.componentStack);
   }
 
   render() {

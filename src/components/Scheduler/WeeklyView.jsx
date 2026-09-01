@@ -10,9 +10,9 @@ import {
 import { buildPlannerItemsByDate } from '../../lib/plannerCalendar.js';
 import { academyContent } from '../../content/academyContent.js';
 
-const { gardenProjects } = academyContent().electives;
-const { aerospaceProjects, roboticsProjects, scienceExperiments, technologyProjects } = academyContent().projects;
-const { getThisWeeksScheduledIds, writingPrompts } = academyContent().writing;
+const { gardenProjects = [] } = academyContent().electives;
+const { aerospaceProjects = [], roboticsProjects = [], scienceExperiments = [], technologyProjects = [] } = academyContent().projects;
+const { getThisWeeksScheduledIds = () => null, writingPrompts = [] } = academyContent().writing;
 
 function findItemById(id) {
   return (

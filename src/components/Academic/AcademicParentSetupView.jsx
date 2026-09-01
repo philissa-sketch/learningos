@@ -21,7 +21,7 @@ import {
 } from './academicUi.js';
 import { academyContent } from '../../content/academyContent.js';
 
-const { ACADEMIC_ASSIGNMENT_TYPES, ACADEMIC_BOOK_TYPES, ACADEMIC_SUCCESS_CENTER_QUARTER_ORDER } = academyContent().academicCenter;
+const { ACADEMIC_ASSIGNMENT_TYPES = [], ACADEMIC_BOOK_TYPES = [], ACADEMIC_SUCCESS_CENTER_QUARTER_ORDER } = academyContent().academicCenter;
 
 // Same letter set the Writing Journal Review and Khan Academy grading
 // already use — one grading scale across the whole app, not a second one.

@@ -294,4 +294,4 @@ export function QuietTile({ title, detail, badge, onOpen }) {
 }
 import { academyContent } from '../../content/academyContent.js';
 
-const { subjectCardLabel } = academyContent().subjects;
+const { subjectCardLabel = () => null } = academyContent().subjects;

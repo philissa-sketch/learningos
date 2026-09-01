@@ -147,4 +147,4 @@ export function missionEvidencePhrase(rows) {
 }
 import { academyContent } from '../content/academyContent.js';
 
-const { findProposal, missionScoreTotals } = academyContent().compliance;
+const { findProposal = () => null, missionScoreTotals = () => null } = academyContent().compliance;

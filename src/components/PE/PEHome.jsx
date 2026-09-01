@@ -8,7 +8,7 @@ import { WeeklyGoalCard } from './WeeklyGoalCard.jsx';
 import { NovaPEGuide } from './NovaPEGuide.jsx';
 import { academyContent } from '../../content/academyContent.js';
 
-const { getTodaysWorkout } = academyContent().pe;
+const { getTodaysWorkout = () => null } = academyContent().pe;
 
 const TABS = [
   { id: 'workout', label: "Today's Workout" },

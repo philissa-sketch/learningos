@@ -1,7 +1,7 @@
 import { useAppStore } from '../../store/useAppStore.js';
 import { academyContent } from '../../content/academyContent.js';
 
-const { EXTERNAL_GAMES_LIBRARY, QUIZ_PLATFORMS } = academyContent().games;
+const { EXTERNAL_GAMES_LIBRARY = [], QUIZ_PLATFORMS = [] } = academyContent().games;
 
 const SUBJECT_LABELS = {
   math: 'Math',

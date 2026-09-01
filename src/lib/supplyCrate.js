@@ -34,7 +34,7 @@
 // ---------------------------------------------------------------------------
 import { academyContent } from '../content/academyContent.js';
 
-const { COIN_CATALOG } = academyContent().rewards;
+const { COIN_CATALOG = [] } = academyContent().rewards;
 
 /** What a crate costs. Deliberately below the cheapest guaranteed contents. */
 export const CRATE_COST = 250;

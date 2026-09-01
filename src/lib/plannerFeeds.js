@@ -48,10 +48,10 @@
 import { toDateStr, addDays, todayDateStr, parseDateStr } from './scheduler.js';
 import { academyContent } from '../content/academyContent.js';
 
-const { gardenBriefs, gardenBuildTrack, gardenCalendar, gardenProjects } = academyContent().electives;
-const { aerospaceProjects, roboticsProjects, scienceExperiments, technologyProjects } = academyContent().projects;
-const { isHoliday } = academyContent().timetable;
-const { SCHOOL_YEAR_START, getSchoolWeekNumber, weeklyWritingSchedule, writingPrompts } = academyContent().writing;
+const { gardenBriefs = [], gardenBuildTrack = [], gardenCalendar = [], gardenProjects = [] } = academyContent().electives;
+const { aerospaceProjects = [], roboticsProjects = [], scienceExperiments = [], technologyProjects = [] } = academyContent().projects;
+const { isHoliday = () => false } = academyContent().timetable;
+const { SCHOOL_YEAR_START, getSchoolWeekNumber = () => false, weeklyWritingSchedule = {}, writingPrompts = [] } = academyContent().writing;
 
 /** Every pool a scheduled id might resolve against. Same six as weeklyPlan.js. */
 const POOLS = [writingPrompts, aerospaceProjects, scienceExperiments, technologyProjects, roboticsProjects, gardenProjects];

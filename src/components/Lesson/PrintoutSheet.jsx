@@ -156,5 +156,5 @@ export function SubjectJournal({ subject, onExit }) {
 }
 import { academyContent } from '../../content/academyContent.js';
 
-const { journalFor, printoutFor } = academyContent().rewards;
-const { SUBJECT_LABELS } = academyContent().subjects;
+const { journalFor = () => null, printoutFor = () => null } = academyContent().rewards;
+const { SUBJECT_LABELS = {} } = academyContent().subjects;

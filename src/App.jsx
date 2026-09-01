@@ -238,13 +238,13 @@ export default function App({ initialView = 'dashboard', onSignOut }) {
         {showProblem ? (
           <>
             <p className="font-display text-sm uppercase tracking-widest text-signal-amber">
-              Mission data could not load
+              Saved data could not load
             </p>
             <p className="max-w-md text-sm">
               {dbNotice === 'blocked'
-                ? 'Mission Control looks open in another tab or window. Close the other tab, then press Try Again.'
+                ? 'This school looks open in another tab or window. Close the other tab, then press Try Again.'
                 : dbNotice === 'versionchange'
-                  ? 'Mission Control was updated in another tab. Reload this tab to catch up — nothing is lost.'
+                  ? 'This school was updated in another tab. Reload this tab to catch up — nothing is lost.'
                   : `Your saved progress is still on this computer, but the app could not open it: ${hydrationError}`}
             </p>
             <button

@@ -5,7 +5,7 @@ import { parseMinutesRange } from '../../lib/exerciseTiming.js';
 import { useToday } from '../../lib/useToday.js';
 import { academyContent } from '../../content/academyContent.js';
 
-const { demoLinkFor } = academyContent().pe;
+const { demoLinkFor = () => null } = academyContent().pe;
 
 export function WorkoutView({ workout }) {
   const peWorkoutLog = useAppStore((s) => s.peWorkoutLog);

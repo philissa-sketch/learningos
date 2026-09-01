@@ -3,7 +3,7 @@ import { useAppStore } from '../../store/useAppStore.js';
 import { wordProgress } from '../../lib/writingCheck.js';
 import { academyContent } from '../../content/academyContent.js';
 
-const { RUBRIC_LEVELS, criteriaForFormat, findFormat, formatsForType, sizeFor, suggestedGradeFromRubric } = academyContent().academicCenter;
+const { RUBRIC_LEVELS = [], criteriaForFormat = () => null, findFormat = () => null, formatsForType = () => [], sizeFor = () => null, suggestedGradeFromRubric = () => null } = academyContent().academicCenter;
 
 /**
  * Parent-side format picker and rubric (PROJECT_PLAN.md Part 9's Book

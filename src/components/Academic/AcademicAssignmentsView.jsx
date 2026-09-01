@@ -16,7 +16,7 @@ import {
 } from './academicUi.js';
 import { academyContent } from '../../content/academyContent.js';
 
-const { findFormat, formatsForType, hasMilestones, leadStatus, milestoneProgress, milestonesFor, reflectionPromptFor, sizeFor, startByFor } = academyContent().academicCenter;
+const { findFormat = () => null, formatsForType = () => [], hasMilestones = () => null, leadStatus = () => null, milestoneProgress = () => null, milestonesFor = () => [], reflectionPromptFor = () => null, sizeFor = () => null, startByFor = () => null } = academyContent().academicCenter;
 
 /**
  * Assignments — student-facing view of the real, scheduled Academic

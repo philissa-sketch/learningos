@@ -5,7 +5,7 @@ import { scheduleStatus, formatClock, minutesSinceMidnight } from '../../lib/cla
 import { todayDateStr } from '../../lib/scheduler.js';
 import { academyContent } from '../../content/academyContent.js';
 
-const { dayPattern } = academyContent().timetable;
+const { dayPattern = () => null } = academyContent().timetable;
 
 /**
  * TODAY'S ROUTINE, ON MISSION CONTROL. (Aug 9, 2026.)

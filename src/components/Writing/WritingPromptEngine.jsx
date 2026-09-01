@@ -4,7 +4,7 @@ import { WritingCheckerLink } from './WritingCheckerLink.jsx';
 import { checkWriting } from '../../lib/writingCheck.js';
 import { academyContent } from '../../content/academyContent.js';
 
-const { lessonForPrompt, requirementsFor } = academyContent().writing;
+const { lessonForPrompt = () => null, requirementsFor = () => null } = academyContent().writing;
 
 export function WritingPromptEngine({ prompt, onExit }) {
   const submitWritingEntry = useAppStore((s) => s.submitWritingEntry);

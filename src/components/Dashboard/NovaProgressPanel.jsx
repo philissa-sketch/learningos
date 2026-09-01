@@ -5,7 +5,7 @@ import { getShipStatus } from '../../lib/shipSystems.js';
 import { todayDateStr } from '../../lib/scheduler.js';
 import { academyContent } from '../../content/academyContent.js';
 
-const { getDailyLine } = academyContent().guide;
+const { getDailyLine = () => null } = academyContent().guide;
 
 // ---------------------------------------------------------------------------
 // NOVA ON THE PROGRESS SCREEN.

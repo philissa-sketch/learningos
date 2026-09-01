@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useAppStore } from '../../store/useAppStore.js';
 import { academyContent } from '../../content/academyContent.js';
 
-const { typingLessons } = academyContent().writing;
+const { typingLessons = [] } = academyContent().writing;
 
 export function TypingLessons({ onExit, onGoToSpeedTest }) {
   const typingLessonProgress = useAppStore((s) => s.typingLessonProgress);

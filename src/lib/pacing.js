@@ -2,8 +2,8 @@ import { QUARTER_SPANS } from './yearPlan.js';
 import { liveRotatingSubjects, liveMorningSubject, ROTATING_BLOCK_ID } from './rotatingBlock.js';
 import { academyContent } from '../content/academyContent.js';
 
-const { allLessons } = academyContent().lessons;
-const { isSchoolDay } = academyContent().timetable;
+const { allLessons = [] } = academyContent().lessons;
+const { isSchoolDay = () => false } = academyContent().timetable;
 
 /**
  * =============================================================================

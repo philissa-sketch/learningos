@@ -319,6 +319,57 @@ export function contentPackFor(academy) {
   return academy.contentPack || academy.id || null;
 }
 
+/**
+ * Every slot present, so a slot nobody filled is EMPTY rather than missing.
+ *
+ * ---- WHY THIS EXISTS (Sept 1, 2026) ----
+ *
+ * The second Academy opened to a blank white page. Not a missing tab, not an
+ * empty panel — nothing at all, and no error on screen:
+ *
+ *     Cannot destructure property 'COIN_CATALOG' of
+ *     'academyContent(...).rewards' as it is undefined.   supplyCrate.js:37
+ *
+ * That Academy fills seven slots. For the other nine the school read
+ * `academyContent().rewards` and got `undefined`, and destructuring undefined
+ * throws. **87 modules do this, across 62 files** — and they do it at MODULE
+ * SCOPE, so it throws while the school is being imported, before React mounts
+ * anything. There is no component to catch it and nothing to render, which is
+ * why the page is white rather than broken-looking.
+ *
+ * docs/LEARNINGOS_PACK_SPEC.md §3c already required the opposite: *"a slot an
+ * Academy has nothing for stays blank, and blank must render as an absent
+ * screen rather than a broken one."* It was written down and enforced nowhere,
+ * and the first Academy never tested it because it fills nearly every slot.
+ *
+ * ---- WHY AN EMPTY OBJECT AND NOT A DEFAULT ----
+ *
+ * `{}` gives every name in that slot `undefined` instead of throwing on the
+ * slot itself. A school with no reward catalog then loads, and the crate offer
+ * only misbehaves if something actually calls it — which is the right place to
+ * fail, and a far smaller failure than no school at all.
+ *
+ * It deliberately does NOT invent contents. Filling a slot with plausible
+ * defaults is what `NEVER_DEFAULTED` refuses for subjects and lessons, for the
+ * same reason: a school made of nothing that still opens hides the state the
+ * Empty and Configured screens exist to show.
+ *
+ * ---- WHY IT RUNS AFTER THE REQUIRED CHECK, AND MUST KEEP DOING SO ----
+ *
+ * `{}` is truthy. Applied before `REQUIRED_SLOTS` is tested, it would satisfy
+ * every one of them and an Academy with no subjects, no lessons and no
+ * timetable would sail through the guard that exists to refuse it. Both call
+ * sites below check first and fill second, and that order is the whole safety
+ * of this function.
+ */
+function withAbsentSlots(content) {
+  const full = { ...content };
+  for (const slot of CONTENT_SLOTS) {
+    if (!full[slot]) full[slot] = {};
+  }
+  return full;
+}
+
 let installed = null;
 let installedId = null;
 
@@ -352,9 +403,10 @@ export async function loadAcademyContent(academyId) {
   const missing = REQUIRED_SLOTS.filter((slot) => !content[slot]);
   if (missing.length) throw new AcademyContentIncomplete(academyId, missing);
 
-  installed = content;
+  // Checked first, filled second — see withAbsentSlots().
+  installed = withAbsentSlots(content);
   installedId = academyId;
-  return content;
+  return installed;
 }
 
 /**
@@ -396,9 +448,11 @@ export function loadedAcademyId() {
 export function installAcademyContent(content, academyId = '(installed directly)') {
   const missing = REQUIRED_SLOTS.filter((slot) => !content?.[slot]);
   if (missing.length) throw new AcademyContentIncomplete(academyId, missing);
-  installed = content;
+  // Same order as loadAcademyContent: check, then fill. A check script must see
+  // the school exactly as the browser does, absent slots included.
+  installed = withAbsentSlots(content);
   installedId = academyId;
-  return content;
+  return installed;
 }
 
 /**

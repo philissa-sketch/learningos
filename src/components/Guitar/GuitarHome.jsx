@@ -7,7 +7,7 @@ import { RecordingView } from './RecordingView.jsx';
 import { NovaGuitarGuide } from './NovaGuitarGuide.jsx';
 import { academyContent } from '../../content/academyContent.js';
 
-const { guitarSkillLadder } = academyContent().electives;
+const { guitarSkillLadder = [] } = academyContent().electives;
 
 const TABS = [
   { id: 'practice', label: 'Practice' },

@@ -1,8 +1,8 @@
 import { parseDateStr, todayDateStr } from '../../lib/scheduler.js';
 import { academyContent } from '../../content/academyContent.js';
 
-const { ACADEMIC_SUBJECT_ORDER, ACADEMIC_SUCCESS_CENTER_QUARTER_ORDER } = academyContent().academicCenter;
-const { SUBJECT_LABELS, isKhanTaughtSubject } = academyContent().subjects;
+const { ACADEMIC_SUBJECT_ORDER = [], ACADEMIC_SUCCESS_CENTER_QUARTER_ORDER } = academyContent().academicCenter;
+const { SUBJECT_LABELS = {}, isKhanTaughtSubject = () => null } = academyContent().subjects;
 
 /**
  * Small shared display helpers for the Academic Success Center views.

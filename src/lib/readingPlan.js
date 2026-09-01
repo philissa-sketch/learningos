@@ -2,7 +2,7 @@ import { toDateStr, parseDateStr, todayDateStr } from './scheduler.js';
 import { QUARTER_SPANS } from './yearPlan.js';
 import { academyContent } from '../content/academyContent.js';
 
-const { EXCLUDED_RANGES } = academyContent().academicCenter;
+const { EXCLUDED_RANGES = [] } = academyContent().academicCenter;
 
 /**
  * Reading pacing — PROJECT_PLAN.md Part 9's "Intelligent Book Assignment

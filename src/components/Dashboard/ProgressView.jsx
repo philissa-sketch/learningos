@@ -10,7 +10,7 @@ import { getJourney, journeySummary } from '../../lib/journey.js';
 import { NovaProgressPanel } from './NovaProgressPanel.jsx';
 import { academyContent } from '../../content/academyContent.js';
 
-const { KHAN_TAUGHT_SUBJECTS } = academyContent().subjects;
+const { KHAN_TAUGHT_SUBJECTS = [] } = academyContent().subjects;
 
 // ---------------------------------------------------------------------------
 // PROGRESS — the "where am I, overall" screen.

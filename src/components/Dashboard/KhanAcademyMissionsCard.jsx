@@ -3,8 +3,8 @@ import { useAppStore } from '../../store/useAppStore.js';
 import { getCurrentQuarter, isQuarterlyBatchLabel, isSummerBatchLabel, hasSchoolStarted, SCHOOL_YEAR_START_DATE } from '../../lib/schoolQuarter.js';
 import { academyContent } from '../../content/academyContent.js';
 
-const { khanGrammarUnitForUrl, scienceCourseForUrl } = academyContent().khanSequences;
-const { subjectCardLabel } = academyContent().subjects;
+const { khanGrammarUnitForUrl = () => null, scienceCourseForUrl = () => null } = academyContent().khanSequences;
+const { subjectCardLabel = () => null } = academyContent().subjects;
 
 // Deliberately short labels for this card only — the full names
 // ("English Language Arts") do not fit the mission tiles. `writing`

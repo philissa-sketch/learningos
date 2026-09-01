@@ -32,7 +32,7 @@
 
 import { academyContent } from '../content/academyContent.js';
 
-const { allLessons } = academyContent().lessons;
+const { allLessons = [] } = academyContent().lessons;
 
 export function studyCycleKey(subject, quarter) {
   return `${subject}::${quarter}`;

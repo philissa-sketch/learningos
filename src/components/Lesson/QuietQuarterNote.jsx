@@ -1,7 +1,7 @@
 import { parseDateStr } from '../../lib/scheduler.js';
 import { academyContent } from '../../content/academyContent.js';
 
-const { SUBJECT_LABELS } = academyContent().subjects;
+const { SUBJECT_LABELS = {} } = academyContent().subjects;
 
 /**
  * "THERE IS NOTHING HERE THIS QUARTER" — SAID OUT LOUD.

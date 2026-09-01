@@ -14,7 +14,7 @@ import {
 } from './academicUi.js';
 import { academyContent } from '../../content/academyContent.js';
 
-const { BOOK_RANGE_LABELS, nextRecommendationForBook, rationaleFor } = academyContent().academicCenter;
+const { BOOK_RANGE_LABELS = {}, nextRecommendationForBook = () => null, rationaleFor = () => null } = academyContent().academicCenter;
 
 /**
  * Book Library — student-facing view of the Family/Subject Library

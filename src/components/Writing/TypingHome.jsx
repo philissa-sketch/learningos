@@ -83,4 +83,4 @@ export function TypingHome({ onChooseLessons, onChooseSpeedTest, onExit }) {
 }
 import { academyContent } from '../../content/academyContent.js';
 
-const { EDCLUB_PORTAL_URL, ERGONOMICS_CHECKLIST } = academyContent().writing;
+const { EDCLUB_PORTAL_URL, ERGONOMICS_CHECKLIST = [] } = academyContent().writing;

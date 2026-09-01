@@ -9,7 +9,7 @@ import { NovaGardenGuide } from './NovaGardenGuide.jsx';
 import { DomainProjectView } from '../Domains/DomainProjectView.jsx';
 import { academyContent } from '../../content/academyContent.js';
 
-const { getGardenDayForWeekOf, getNextGardenDay } = academyContent().electives;
+const { getGardenDayForWeekOf = () => null, getNextGardenDay = () => null } = academyContent().electives;
 
 const TABS = [
   { id: 'friday', label: 'Mission' },

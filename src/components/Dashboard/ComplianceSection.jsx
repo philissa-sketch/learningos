@@ -8,9 +8,9 @@ import { scheduledMinutesByDate, fullInstructionalDayMinutes } from '../../lib/s
 import { EvidenceFoldersSection } from './EvidenceLink.jsx';
 import { academyContent } from '../../content/academyContent.js';
 
-const { GEORGIA_LAW_CITATION, GEORGIA_MINUTES_PER_DAY, GEORGIA_REQUIRED_SUBJECTS, GEORGIA_REQUIREMENTS, declarationCoversToday, instructionProgress, nextDeclarationDeadline } = academyContent().compliance;
-const { SUBJECT_LABELS } = academyContent().subjects;
-const { isSchoolDay } = academyContent().timetable;
+const { GEORGIA_LAW_CITATION, GEORGIA_MINUTES_PER_DAY, GEORGIA_REQUIRED_SUBJECTS = [], GEORGIA_REQUIREMENTS = [], declarationCoversToday = () => false, instructionProgress = () => null, nextDeclarationDeadline = () => null } = academyContent().compliance;
+const { SUBJECT_LABELS = {} } = academyContent().subjects;
+const { isSchoolDay = () => false } = academyContent().timetable;
 
 /**
  * Georgia compliance — PROJECT_PLAN.md Part 8's "State compliance

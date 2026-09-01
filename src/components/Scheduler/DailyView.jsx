@@ -11,8 +11,8 @@ import {
 import { buildPlannerItemsByDate, splitPlannerItems } from '../../lib/plannerCalendar.js';
 import { academyContent } from '../../content/academyContent.js';
 
-const { SUBJECT_LABELS } = academyContent().subjects;
-const { dayPattern } = academyContent().timetable;
+const { SUBJECT_LABELS = {} } = academyContent().subjects;
+const { dayPattern = () => null } = academyContent().timetable;
 
 const COLOR_STYLES = {
   neutral: 'border-space-600 bg-space-800',

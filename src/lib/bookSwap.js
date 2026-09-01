@@ -31,7 +31,7 @@
 
 import { academyContent } from '../content/academyContent.js';
 
-const { bookRecommendations } = academyContent().academicCenter;
+const { bookRecommendations = {} } = academyContent().academicCenter;
 
 /** The book name at the front of an assignment title, before the first dash. */
 export const TITLE_SEPARATOR = ' — ';

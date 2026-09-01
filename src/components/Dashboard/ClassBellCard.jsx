@@ -19,7 +19,7 @@ import {
 } from '../../lib/sfx.js';
 import { academyContent } from '../../content/academyContent.js';
 
-const { dayPattern } = academyContent().timetable;
+const { dayPattern = () => null } = academyContent().timetable;
 
 /**
  * THE CLASS BELL — a countdown and an alarm for switching subjects.

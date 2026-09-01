@@ -2,8 +2,8 @@ import { toDateStr, parseDateStr } from './scheduler.js';
 import { instructionMinutes } from './instructionTime.js';
 import { academyContent } from '../content/academyContent.js';
 
-const { GEORGIA_DAYS_REQUIRED, findProposal, missionScoreTotals } = academyContent().compliance;
-const { holidaysInSpan, isSchoolDay } = academyContent().timetable;
+const { GEORGIA_DAYS_REQUIRED, findProposal = () => null, missionScoreTotals = () => null } = academyContent().compliance;
+const { holidaysInSpan = () => [], isSchoolDay = () => false } = academyContent().timetable;
 
 /**
  * Annual and semester planning — PROJECT_PLAN.md Part 8.

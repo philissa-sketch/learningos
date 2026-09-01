@@ -2,8 +2,8 @@ import { useState } from 'react';
 import { useAppStore } from '../../store/useAppStore.js';
 import { academyContent } from '../../content/academyContent.js';
 
-const { gardenProjects, getGardenBriefById } = academyContent().electives;
-const { SUBJECT_LABELS } = academyContent().subjects;
+const { gardenProjects = [], getGardenBriefById = () => null } = academyContent().electives;
+const { SUBJECT_LABELS = {} } = academyContent().subjects;
 
 /**
  * One Friday in the garden.

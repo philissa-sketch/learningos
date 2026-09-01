@@ -17,8 +17,8 @@ import { crewRoster, crewSpotFor, standingSpotFor } from '../../lib/hqCrew.js';
 import { wanderTick, rollFor, WANDER_TICK_MS } from '../../lib/hqWander.js';
 import { academyContent } from '../../content/academyContent.js';
 
-const { allLessons } = academyContent().lessons;
-const { HQ_ITEMS, MISSION_EQUIPMENT } = academyContent().rewards;
+const { allLessons = [] } = academyContent().lessons;
+const { HQ_ITEMS = [], MISSION_EQUIPMENT = [] } = academyContent().rewards;
 
 // ---------------------------------------------------------------------------
 // MISSION CONTROL HQ — drawn, not arranged.

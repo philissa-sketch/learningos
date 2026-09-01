@@ -1,7 +1,7 @@
 import { getQuarterGlossaryTerms } from '../../lib/glossary.js';
 import { academyContent } from '../../content/academyContent.js';
 
-const { SUBJECT_LABELS } = academyContent().subjects;
+const { SUBJECT_LABELS = {} } = academyContent().subjects;
 
 /**
  * A standalone, printable review screen for one quarter of a subject's

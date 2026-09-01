@@ -6,9 +6,9 @@ import { QuietQuarterNote } from './QuietQuarterNote.jsx';
 import { StudyCycleTracker } from './StudyCycleTracker.jsx';
 import { academyContent } from '../../content/academyContent.js';
 
-const { allLessons } = academyContent().lessons;
-const { journalFor, printoutFor } = academyContent().rewards;
-const { SUBJECT_LABELS, subjectCardLabel } = academyContent().subjects;
+const { allLessons = [] } = academyContent().lessons;
+const { journalFor = () => null, printoutFor = () => null } = academyContent().rewards;
+const { SUBJECT_LABELS = {}, subjectCardLabel = () => null } = academyContent().subjects;
 
 // Nation Command and Launch Director both moved to their own dedicated
 // Games tab (Aug 2026, parent feedback — the Lesson Roster and Mission

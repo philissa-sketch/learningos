@@ -4,8 +4,8 @@ import { getMasteryMessage, getReviewMessage, getEnrichmentSuggestion } from '..
 import { playMastery } from '../../lib/sfx.js';
 import { academyContent } from '../../content/academyContent.js';
 
-const { gardenProjects } = academyContent().electives;
-const { aerospaceProjects, roboticsProjects, scienceExperiments, technologyProjects } = academyContent().projects;
+const { gardenProjects = [] } = academyContent().electives;
+const { aerospaceProjects = [], roboticsProjects = [], scienceExperiments = [], technologyProjects = [] } = academyContent().projects;
 
 const allHandsOnProjects = [...aerospaceProjects, ...scienceExperiments, ...technologyProjects, ...roboticsProjects, ...gardenProjects];
 

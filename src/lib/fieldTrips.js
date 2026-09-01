@@ -9,7 +9,7 @@
 
 import { academyContent } from '../content/academyContent.js';
 
-const { SUBJECT_LABELS } = academyContent().subjects;
+const { SUBJECT_LABELS = {} } = academyContent().subjects;
 
 // Subjects a trip can support (multi-select). Uses the app's real subject ids
 // so a completed trip's portfolio entry tags to a subject the records know.

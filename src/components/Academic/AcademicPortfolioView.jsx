@@ -4,10 +4,10 @@ import { buildAcademicPortfolio } from '../../lib/academicPortfolio.js';
 import { formatCompletedAt } from './academicUi.js';
 import { academyContent } from '../../content/academyContent.js';
 
-const { gardenProjects } = academyContent().electives;
-const { aerospaceProjects, roboticsProjects, scienceExperiments, technologyProjects } = academyContent().projects;
-const { SUBJECT_LABELS } = academyContent().subjects;
-const { writingPrompts } = academyContent().writing;
+const { gardenProjects = [] } = academyContent().electives;
+const { aerospaceProjects = [], roboticsProjects = [], scienceExperiments = [], technologyProjects = [] } = academyContent().projects;
+const { SUBJECT_LABELS = {} } = academyContent().subjects;
+const { writingPrompts = [] } = academyContent().writing;
 
 const FILTERS = [
   { id: 'all', label: 'Everything' },

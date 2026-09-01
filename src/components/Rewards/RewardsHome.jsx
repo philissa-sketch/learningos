@@ -19,7 +19,7 @@ import { playAchievement, playPurchase, unlockAudio } from '../../lib/sfx.js';
 import { RocketSwatch } from './RocketSwatch.jsx';
 import { academyContent } from '../../content/academyContent.js';
 
-const { costForCosmetic } = academyContent().rewards;
+const { costForCosmetic = () => null } = academyContent().rewards;
 
 // Gamification hub (Part 5, Aug 6, 2026): the student's Badges, Rewards Store,
 // and printable Certificates, plus a live coin balance. Coins are earned from

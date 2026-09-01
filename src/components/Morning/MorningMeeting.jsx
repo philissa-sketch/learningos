@@ -8,8 +8,8 @@ import { resolveBlockLabel } from '../../lib/rotatingBlock.js';
 import { NON_INSTRUCTIONAL_BLOCKS, blockMinutes } from '../../lib/scheduledMinutes.js';
 import { academyContent } from '../../content/academyContent.js';
 
-const { allLessons } = academyContent().lessons;
-const { writingPrompts } = academyContent().writing;
+const { allLessons = [] } = academyContent().lessons;
+const { writingPrompts = [] } = academyContent().writing;
 
 /**
  * ============================================================================

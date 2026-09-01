@@ -1,7 +1,7 @@
 import { useAppStore } from '../../store/useAppStore.js';
 import { academyContent } from '../../content/academyContent.js';
 
-const { candidatesForBook, nextRecommendationForBook } = academyContent().academicCenter;
+const { candidatesForBook = () => [], nextRecommendationForBook = () => null } = academyContent().academicCenter;
 
 /**
  * A real book, suggested for an empty slot, awaiting a yes or no.

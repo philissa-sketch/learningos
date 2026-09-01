@@ -39,9 +39,9 @@ import { ExerciseVideoManager } from '../PE/ExerciseVideoManager.jsx';
 import { REFERENCE_LINK_TYPES } from '../../lib/driveLinks.js';
 import { academyContent } from '../../content/academyContent.js';
 
-const { QUIZ_PLATFORMS } = academyContent().games;
-const { SUBJECT_LABELS } = academyContent().subjects;
-const { writingPrompts } = academyContent().writing;
+const { QUIZ_PLATFORMS = [] } = academyContent().games;
+const { SUBJECT_LABELS = {} } = academyContent().subjects;
+const { writingPrompts = [] } = academyContent().writing;
 
 const CONFIRM_PHRASE = 'RESET';
 const GEORGIA_DAYS_TARGET = 180;

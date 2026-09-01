@@ -34,4 +34,4 @@ export function getQuarterGlossaryTerms(subject, quarter) {
 }
 import { academyContent } from '../content/academyContent.js';
 
-const { allLessons } = academyContent().lessons;
+const { allLessons = [] } = academyContent().lessons;

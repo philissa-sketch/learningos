@@ -12,8 +12,8 @@ import {
 } from '../../lib/learningAnalytics.js';
 import { academyContent } from '../../content/academyContent.js';
 
-const { allLessons } = academyContent().lessons;
-const { SUBJECT_LABELS } = academyContent().subjects;
+const { allLessons = [] } = academyContent().lessons;
+const { SUBJECT_LABELS = {} } = academyContent().subjects;
 
 /**
  * Learning Analytics Dashboard — PROJECT_PLAN.md Part 8.

@@ -29,7 +29,10 @@
 import { todayDateStr, toDateStr } from './scheduler.js';
 import { academyContent } from '../content/academyContent.js';
 
-const { dailyDrills, getSchoolWeekNumber } = academyContent().writing;
+// An Academy that fills no `writing` slot has no drill ladder and no school-week
+// numbering of its own. `getSchoolWeekNumber` returning null makes drillForDate
+// answer "no drill today", which is true, instead of throwing on the dashboard.
+const { dailyDrills = [], getSchoolWeekNumber = () => null } = academyContent().writing;
 
 /** Monday..Thursday. Friday is the week's real piece; the weekend is the weekend. */
 export const DRILL_DAYS = [1, 2, 3, 4];

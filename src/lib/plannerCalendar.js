@@ -2,7 +2,7 @@ import { derivedPlannerItems } from './plannerFeeds.js';
 import { buildCalendarItems } from './scheduler.js';
 import { academyContent } from '../content/academyContent.js';
 
-const { milestonesFor } = academyContent().academicCenter;
+const { milestonesFor = () => [] } = academyContent().academicCenter;
 
 /**
  * The calendar, WITH the weekly steps of long assignments on it.

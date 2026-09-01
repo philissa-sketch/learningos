@@ -384,6 +384,29 @@ export function stalledWordIds(mastery) {
     .map(([id]) => id);
 }
 
+/**
+ * The word list, or an empty one.
+ *
+ * ---- WHY THIS EXISTS (Sept 1, 2026) ----
+ *
+ * A school whose Academy fills no `writing` slot has no spelling or vocabulary
+ * pool, and `spellingWordPool` arrives here as `undefined`. Every function below
+ * treats the pool as an array, so the first one to touch it threw during
+ * hydration — before any screen rendered:
+ *
+ *     Cannot read properties of undefined (reading 'slice')
+ *       at blankState -> computeWeeklyWordState -> _hydrateOnce
+ *
+ * That is one store away from the whole school failing to load over a feature
+ * the Academy does not have.
+ *
+ * An empty pool is the honest answer: no words this week, nothing to practise,
+ * no screen. §3c's rule — a slot an Academy has nothing for renders as an absent
+ * screen, never a broken one. Normalised at each exported entry point rather
+ * than at each use, so a path added later inherits it.
+ */
+const asPool = (pool) => (Array.isArray(pool) ? pool : []);
+
 function blankState(pool, todayStr) {
   return {
     weekNumber: 1,
@@ -590,6 +613,7 @@ function freshWeekFields(built) {
  * month).
  */
 export function computeWeeklyWordState(pool, existingState, todayStr) {
+  pool = asPool(pool);
   if (!existingState) return blankState(pool, todayStr);
 
   let state = { ...existingState };
@@ -737,6 +761,7 @@ export function computeWeeklyWordState(pool, existingState, todayStr) {
  *     being replaced, and the caller must say so before this runs
  */
 export function advanceToNextList(pool, state, todayStr) {
+  pool = asPool(pool);
   if (!state) return blankState(pool, todayStr);
   const from = {
     ...state,
@@ -821,7 +846,7 @@ export function buildReviewWordSet(words, dayMissedIds) {
 }
 
 export function getWordsByIds(pool, ids) {
-  const byId = new Map(pool.map((w) => [w.id, w]));
+  const byId = new Map(asPool(pool).map((w) => [w.id, w]));
   return ids.map((id) => byId.get(id)).filter(Boolean);
 }
 

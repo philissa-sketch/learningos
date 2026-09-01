@@ -7,9 +7,9 @@ import { EVIDENCE_FOLDERS } from './driveLinks.js';
 import { READINESS_SKILLS } from './readiness.js';
 import { academyContent } from '../content/academyContent.js';
 
-const { GEORGIA_LAW_CITATION, GEORGIA_REQUIREMENTS, MISSION_RUBRIC_CRITERIA, findProposal, instructionProgress, missionScoreTotals } = academyContent().compliance;
-const { SUBJECT_LABELS } = academyContent().subjects;
-const { isSchoolDay } = academyContent().timetable;
+const { GEORGIA_LAW_CITATION, GEORGIA_REQUIREMENTS = [], MISSION_RUBRIC_CRITERIA = [], findProposal = () => null, instructionProgress = () => null, missionScoreTotals = () => null } = academyContent().compliance;
+const { SUBJECT_LABELS = {} } = academyContent().subjects;
+const { isSchoolDay = () => false } = academyContent().timetable;
 
 /**
  * The combined compliance packet — Part 8's "generate one combined,

@@ -3,7 +3,7 @@ import { useAppStore } from '../../store/useAppStore.js';
 import { subjectHeading } from './academicUi.js';
 import { academyContent } from '../../content/academyContent.js';
 
-const { BLACK_EXCELLENCE_KNOWN_GAPS, blackAmericanAuthorsForSubject, blackExcellenceBooksForSubject } = academyContent().academicCenter;
+const { BLACK_EXCELLENCE_KNOWN_GAPS = [], blackAmericanAuthorsForSubject = () => [], blackExcellenceBooksForSubject = () => [] } = academyContent().academicCenter;
 
 /**
  * Black American Excellence Library shelf (PROJECT_PLAN.md Part 9).

@@ -192,17 +192,67 @@ import {
 } from '../lib/parentAuth.js';
 import { academyContent } from '../content/academyContent.js';
 
-const { availableDueDates, bookRationale, hasMilestones, milestonesFor, quarterlyAcademicPlaceholders, subjectBookPlaceholders } = academyContent().academicCenter;
-const { findProposal, missionScoreTotals } = academyContent().compliance;
-const { gardenProjects } = academyContent().electives;
-const { QUIZ_PLATFORM_IDS } = academyContent().games;
-const { GRAMMAR_COURSES, KHAN_GRAMMAR_UNITS, LEGACY_GRAMMAR_TITLES, SCIENCE_CANONICAL_KEYS, SCIENCE_CANONICAL_TITLES, generalGrammarUnitByUrl, grammarRowTitle, grammarUnitUrl, khanGrammarUnitByUrl, scienceCanonicalRow, scienceCourseChallengeRows, scienceRowsFor } = academyContent().khanSequences;
-const { allLessons } = academyContent().lessons;
-const { aerospaceProjects, roboticsProjects, scienceExperiments, technologyProjects } = academyContent().projects;
-const { SEEDED_REWARD_LADDER_MAP, catalogRewardRows } = academyContent().rewards;
-const { ACTIVE_SUBJECTS, KHAN_TAUGHT_SUBJECTS, LESSON_TRACK_SUBJECTS, PARTICIPATION_SUBJECTS, canonicalSubject, strandsForSubject } = academyContent().subjects;
-const { defaultSchedule } = academyContent().timetable;
-const { spellingWordPool, vocabularyWordPool, writingPrompts } = academyContent().writing;
+/**
+ * ---- EMPTY OF THE RIGHT SHAPE (Sept 1, 2026) ----
+ *
+ * `academyContent()` now hands back `{}` for a slot an Academy does not fill,
+ * so the school gets past import. That fixed the white page and moved the
+ * failure one step later: the store hydrates by SEEDING curriculum rows, and a
+ * seeder that indexes or iterates a name from an empty slot still throws —
+ * during hydration, which takes the whole school down rather than one screen.
+ *
+ * Three of those were found one reload at a time, which is no way to do it:
+ *
+ *     undefined['general']   seeding the grammar ladder
+ *     undefined['g78']       the same ladder, a different rung
+ *     undefined.slice        the weekly word pool
+ *
+ * So every name below now defaults to an EMPTY VALUE OF ITS OWN SHAPE — `[]`
+ * for a list, `{}` for a lookup, `new Set()` for a set. A loop over an empty
+ * list runs zero times and a lookup miss returns undefined, which is what a
+ * seeder for content this Academy does not have should do.
+ *
+ * **The shapes were read from the code, not guessed** — see
+ * scripts/triage-content-names.mjs, which resolves every contract name to its
+ * declaration. A `{}` where a list belongs would crash on `.filter` just as
+ * hard as `undefined` did.
+ *
+ * ---- FUNCTIONS, AND THE LINE THAT MATTERS ----
+ *
+ * Leaving every function undefined was the first instinct and it was wrong in
+ * one direction and right in the other. `scienceRowsFor is not a function` took
+ * the whole school down during hydration — for a seeder whose only job was to
+ * add science rows this Academy does not have.
+ *
+ * The distinction is what the function RETURNS:
+ *
+ *   Returns a LIST a seeder iterates  -> defaults to empty. The loop runs zero
+ *                                        times and NOTHING is written. That is
+ *                                        the correct outcome, not a silent one.
+ *   ANSWERS A QUESTION                -> defaults to "no" / null. A miss is
+ *                                        already a state every caller handles.
+ *   BUILDS A STRING FOR A RECORD      -> **no default.** `grammarRowTitle` and
+ *                                        `grammarUnitUrl` compose a row's title
+ *                                        and URL; an empty default would write
+ *                                        a blank, untitled row into a real
+ *                                        database, and a silently wrong record
+ *                                        is worse than a loud failure.
+ *
+ * Those last two are unreachable for an Academy with no grammar courses anyway:
+ * they are only called inside the ladder loop, which skips every rung whose
+ * course is missing from an empty `GRAMMAR_COURSES`.
+ */
+const { availableDueDates = () => [], bookRationale = {}, hasMilestones = () => false, milestonesFor = () => [], quarterlyAcademicPlaceholders = {}, subjectBookPlaceholders = {} } = academyContent().academicCenter;
+const { findProposal = () => null, missionScoreTotals = () => null } = academyContent().compliance;
+const { gardenProjects = [] } = academyContent().electives;
+const { QUIZ_PLATFORM_IDS = [] } = academyContent().games;
+const { GRAMMAR_COURSES = {}, KHAN_GRAMMAR_UNITS = [], LEGACY_GRAMMAR_TITLES = {}, SCIENCE_CANONICAL_KEYS = new Set(), SCIENCE_CANONICAL_TITLES = new Set(), generalGrammarUnitByUrl = () => null, grammarRowTitle, grammarUnitUrl, khanGrammarUnitByUrl = () => null, scienceCanonicalRow = () => null, scienceCourseChallengeRows = () => [], scienceRowsFor = () => [] } = academyContent().khanSequences;
+const { allLessons = [] } = academyContent().lessons;
+const { aerospaceProjects = [], roboticsProjects = [], scienceExperiments = [], technologyProjects = [] } = academyContent().projects;
+const { SEEDED_REWARD_LADDER_MAP = {}, catalogRewardRows = () => [] } = academyContent().rewards;
+const { ACTIVE_SUBJECTS = [], KHAN_TAUGHT_SUBJECTS = [], LESSON_TRACK_SUBJECTS = [], PARTICIPATION_SUBJECTS = [], canonicalSubject = () => null, strandsForSubject = () => null } = academyContent().subjects;
+const { defaultSchedule = [] } = academyContent().timetable;
+const { spellingWordPool = [], vocabularyWordPool = [], writingPrompts = [] } = academyContent().writing;
 
 const WRITING_ENTRY_XP = 15;
 // Academic Success Center. A book report, research paper, or
@@ -1466,7 +1516,7 @@ export const useAppStore = create((set, get) => ({
         // version upgrade, corrupt IndexedDB) left the app on the loading
         // screen forever with no message. Saved data is NOT touched here —
         // hydrate only reads.
-        console.error('Mission Control could not load saved data:', err);
+        console.error('LearningOS could not load saved data:', err);
         set({
           hydrationError:
             (err && (err.message || String(err.name || err))) ||
@@ -2413,7 +2463,13 @@ export const useAppStore = create((set, get) => ({
 
     const grammarLadderRows = [];
     for (const rung of GRAMMAR_LADDER_SPEC) {
-      const course = GRAMMAR_COURSES[rung.courseId];
+      // An Academy that fills no `khanSequences` slot has no grammar courses,
+      // and a rung pointing at a course this Academy does not carry is skipped
+      // rather than seeded. Unguarded this read `undefined['general']` and took
+      // the whole store down during hydration — no school, just "could not
+      // load". §3c: an absent slot is an absent screen, never a broken one.
+      const course = GRAMMAR_COURSES?.[rung.courseId];
+      if (!course) continue;
       rung.unitIndexes.forEach((idx, i) => {
         const unit = course.units[idx];
         grammarLadderRows.push({
@@ -2499,8 +2555,11 @@ export const useAppStore = create((set, get) => ({
      * matching URL row is a stale duplicate from the re-seed loop — delete it,
      * but only if it is uncompleted, so nothing graded is ever dropped.
      */
+    // An Academy with no grammar courses has no stale grammar titles to clean
+    // up either — an empty set here means the cleanup below simply finds
+    // nothing, which is the correct answer rather than a crash.
     const staleGrammarTitles = new Set([
-      ...GRAMMAR_COURSES.g78.units.map((u) => u.khanTitle + ' (7th-8th grade grammar)'),
+      ...(GRAMMAR_COURSES.g78?.units ?? []).map((u) => u.khanTitle + ' (7th-8th grade grammar)'),
       'Grammar course challenge (7th-8th grade)'
     ]);
     const liveGrammarIds = new Set(
@@ -5266,8 +5325,13 @@ export const useAppStore = create((set, get) => ({
    */
   getWritingJournalSummary() {
     const { writingEntries } = get();
-    const skillPrompts = writingPrompts.filter((p) => p.category === 'skill');
-    const projectPrompts = writingPrompts.filter((p) => p.category === 'project');
+    // An Academy that fills no `writing` slot has no prompts, and this card is
+    // on the dashboard — the landing screen. Unguarded, a school with no
+    // writing journal fails to render the page that would have said so.
+    // §3c: an absent slot is an absent screen, never a broken one.
+    const prompts = Array.isArray(writingPrompts) ? writingPrompts : [];
+    const skillPrompts = prompts.filter((p) => p.category === 'skill');
+    const projectPrompts = prompts.filter((p) => p.category === 'project');
     const completedSkillIds = new Set(writingEntries.map((e) => e.promptId));
     const skillCompleted = skillPrompts.filter((p) => completedSkillIds.has(p.id)).length;
     const projectIds = new Set([

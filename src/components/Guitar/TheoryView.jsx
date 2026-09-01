@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useAppStore } from '../../store/useAppStore.js';
 import { academyContent } from '../../content/academyContent.js';
 
-const { guitarTheory } = academyContent().electives;
+const { guitarTheory = [] } = academyContent().electives;
 
 /**
  * Guitar theory — short readings with ONE check question, recorded as

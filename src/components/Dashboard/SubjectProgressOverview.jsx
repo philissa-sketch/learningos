@@ -94,4 +94,4 @@ export function SubjectProgressOverview({ subjectProgress, khanBySubject = {} })
 }
 import { academyContent } from '../../content/academyContent.js';
 
-const { isKhanTaughtSubject, subjectCardLabel } = academyContent().subjects;
+const { isKhanTaughtSubject = () => null, subjectCardLabel = () => null } = academyContent().subjects;

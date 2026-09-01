@@ -24,13 +24,13 @@ import { liveRotatingSubjects, liveMorningSubject, ROTATING_BLOCK_ID } from '../
 import { useToday } from '../../lib/useToday.js';
 import { academyContent } from '../../content/academyContent.js';
 
-const { GUITAR_DAILY_MINUTES, gardenProjects, getCurrentGuitarSkill } = academyContent().electives;
-const { allLessons } = academyContent().lessons;
-const { getTodaysWorkout } = academyContent().pe;
-const { aerospaceProjects, roboticsProjects, scienceExperiments, technologyProjects } = academyContent().projects;
-const { subjectCardLabel } = academyContent().subjects;
-const { dayPattern, subjectsForDay } = academyContent().timetable;
-const { getThisWeeksScheduledIds, writingPrompts } = academyContent().writing;
+const { GUITAR_DAILY_MINUTES, gardenProjects = [], getCurrentGuitarSkill = () => null } = academyContent().electives;
+const { allLessons = [] } = academyContent().lessons;
+const { getTodaysWorkout = () => null } = academyContent().pe;
+const { aerospaceProjects = [], roboticsProjects = [], scienceExperiments = [], technologyProjects = [] } = academyContent().projects;
+const { subjectCardLabel = () => null } = academyContent().subjects;
+const { dayPattern = () => null, subjectsForDay = () => null } = academyContent().timetable;
+const { getThisWeeksScheduledIds = () => null, writingPrompts = [] } = academyContent().writing;
 
 /**
  * MISSION CONTROL — rebuilt Aug 7, 2026.

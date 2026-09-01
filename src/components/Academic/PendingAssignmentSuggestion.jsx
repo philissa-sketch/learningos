@@ -3,7 +3,7 @@ import { useAppStore } from '../../store/useAppStore.js';
 import { formatDueDate } from './academicUi.js';
 import { academyContent } from '../../content/academyContent.js';
 
-const { assignmentCandidatesForSlot, nextAssignmentRecommendation, resolveSuggestedDueDate } = academyContent().academicCenter;
+const { assignmentCandidatesForSlot = () => null, nextAssignmentRecommendation = () => null, resolveSuggestedDueDate = () => null } = academyContent().academicCenter;
 
 /**
  * A proposed assignment topic, awaiting a yes or no.
