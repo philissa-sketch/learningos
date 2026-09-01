@@ -199,7 +199,77 @@ export class AcademyContentIncomplete extends Error {
   }
 }
 
+/**
+ * The folder every Academy inherits from.
+ *
+ * ---- WHY DEFAULTS EXIST AT ALL ----
+ *
+ * Without them the contract is all-or-nothing: the school reads its content at
+ * the top of each module, so an Academy that does not supply `milestonesFor`
+ * hands the screen `undefined` and it breaks the moment it is used — for a
+ * feature that Academy may not even have.
+ *
+ * That would mean every new Academy owing 162 names on its first morning,
+ * including implementations of behaviour that has nothing to do with its
+ * curriculum. It is the opposite of what a platform is for.
+ *
+ * So the template ships a working default for anything generic, and an Academy
+ * overrides only what makes it different. §3b says this for the guide —
+ * *"the template's generic pools, merged with whatever that Academy's folder
+ * adds"* — and it is the same rule for every slot. A missing name is then a
+ * LESS TAILORED school, never a broken one.
+ */
+const TEMPLATE_ID = '_template';
+
+/**
+ * Slots the template must never fill.
+ *
+ * A default subject list or a default set of lessons is not a gentler fallback,
+ * it is a school made of nothing that still opens — which would hide exactly
+ * the state the Empty and Configured screens exist to show. These two must come
+ * from a real Academy or not at all.
+ */
+const NEVER_DEFAULTED = Object.freeze(['subjects', 'lessons']);
+
 const specifierFor = (academyId) => `../academies/${academyId}/content.js`;
+
+/**
+ * The Academy's answers laid over the template's, slot by slot.
+ *
+ * Shallow per slot, deliberately: an Academy overrides individual NAMES, not
+ * whole slots. A folder that supplies its own `formatsForType` but no
+ * `criteriaForFormat` keeps the default for the second, which is the whole
+ * point — otherwise providing one thing in a slot would silently drop the rest.
+ */
+export function mergeContent(template, academy) {
+  const merged = {};
+  for (const slot of new Set([...Object.keys(template || {}), ...Object.keys(academy || {})])) {
+    const base = template?.[slot];
+    const own = academy?.[slot];
+    if (base && own && typeof base === 'object' && typeof own === 'object') {
+      merged[slot] = { ...base, ...own };
+    } else {
+      merged[slot] = own ?? base;
+    }
+  }
+  return merged;
+}
+
+async function loadTemplate() {
+  const loader = academyFolders()[specifierFor(TEMPLATE_ID)];
+  if (!loader) return {};
+  const module = await loader();
+  const template = module.default ?? module;
+
+  const overreach = NEVER_DEFAULTED.filter((slot) => template[slot]);
+  if (overreach.length) {
+    throw new Error(
+      `The template fills ${overreach.join(' and ')}, which it must never do. ` +
+        'A default curriculum is a school made of nothing that still opens.'
+    );
+  }
+  return template;
+}
 
 /** Academy folders carried by this build. Ids only — nothing is loaded. */
 export function availableAcademyFolders() {
@@ -216,7 +286,8 @@ export function availableAcademyFolders() {
  * willing to await anything.
  */
 export function academyHasContent(academyId) {
-  return Boolean(academyId && academyFolders()[specifierFor(academyId)]);
+  if (!academyId || academyId.startsWith('_')) return false;
+  return Boolean(academyFolders()[specifierFor(academyId)]);
 }
 
 /**
@@ -261,12 +332,23 @@ let installedId = null;
 export async function loadAcademyContent(academyId) {
   if (!academyId) throw new Error('loadAcademyContent: academyId is required');
 
+  // The template is inherited BY Academies; it is not one. Signing into it
+  // would open a school with defaults and no curriculum.
+  if (academyId.startsWith('_')) {
+    throw new Error(`"${academyId}" is not an Academy — folders beginning with _ are inherited, not signed into.`);
+  }
+
   const loader = academyFolders()[specifierFor(academyId)];
   if (!loader) throw new AcademyContentMissing(academyId, availableAcademyFolders());
 
   const module = await loader();
-  const content = module.default ?? module;
+  const own = module.default ?? module;
 
+  // Defaults first, this Academy's answers over the top. See loadTemplate().
+  const content = mergeContent(await loadTemplate(), own);
+
+  // Checked AFTER the merge: an Academy that inherits a working guide and theme
+  // from the template has them, and is not incomplete for not rewriting them.
   const missing = REQUIRED_SLOTS.filter((slot) => !content[slot]);
   if (missing.length) throw new AcademyContentIncomplete(academyId, missing);
 

@@ -1,0 +1,77 @@
+/**
+ * THE NEUTRAL THEME — what an Academy looks like before anyone designs one.
+ *
+ * ---- WHY A DEFAULT THEME EXISTS ----
+ *
+ * An Academy created at the front door has no stylesheet of its own, and the
+ * platform's own index.css deliberately carries no palette — that was one
+ * school's skin and moving it out is why every family no longer opens onto
+ * somebody else's colours. Without something here, a Configured Academy would
+ * render its school as unstyled text on white.
+ *
+ * So this is a plain, readable school. Not a design — a floor. An Academy that
+ * ships its own academy.css replaces this entirely, name for name.
+ *
+ * ---- WHY THE PALETTE IS SPACE-SEPARATED CHANNELS, NOT HEX ----
+ *
+ * tailwind.config.js reads these as `rgb(var(--x) / <alpha-value>)`. A hex here
+ * breaks every opacity modifier in the app SILENTLY — nothing errors, the
+ * colours just stop responding. scripts/verify-academy-css.mjs checks for it,
+ * because it is invisible when reading the file.
+ *
+ * ---- WHY THERE IS NO @layer IN HERE ----
+ *
+ * PostCSS processes every stylesheet as its own entry, and an Academy sheet is
+ * imported by a component rather than by the entry that emits `@tailwind`. A
+ * bare `@layer` therefore has no directive to attach to and fails the build —
+ * which it did once, invisibly, on the day the theme first moved out. `@apply`
+ * is fine; the plugin is running either way. Plain CSS below, on purpose.
+ */
+
+/**
+ * A quiet neutral. Cool grey rather than pure black, because a full-black page
+ * with light text is harder to read for long stretches — and a school day is a
+ * long stretch.
+ */
+:root {
+  --space-950: 16 18 22;
+  --space-900: 24 27 33;
+  --space-800: 35 39 47;
+  --space-700: 51 57 68;
+  --space-600: 74 82 96;
+  --accent: 125 145 170;
+  --accent-glow: rgba(125, 145, 170, 0.05);
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  @apply font-body text-ink-100 antialiased;
+  background: rgb(var(--space-900));
+}
+
+::selection {
+  background: rgba(125, 145, 170, 0.3);
+}
+
+/**
+ * Print rules.
+ *
+ * A homeschool prints things — a report card, a certificate, a week's plan —
+ * and a family setting up in their first week may need to print before anyone
+ * has styled anything. Ink on white, no dark background bleeding through.
+ */
+@media print {
+  body {
+    background: #ffffff;
+    color: #000000;
+  }
+
+  .no-print {
+    display: none !important;
+  }
+}

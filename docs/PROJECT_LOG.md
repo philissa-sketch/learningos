@@ -865,3 +865,83 @@ slots, same modules, byte-identical slot contents. Only the import lines are
 ordered differently, because they are sorted now.
 
 **56 check scripts, all passing.**
+
+---
+
+## The template — the bones ship defaults now (Aug 31, 2026)
+
+### What looking at C2 actually found
+
+Measured against the second Academy's real folder: **2 of the 162 names the
+school asks for exist there.** 150 files, 511 exported names, two overlaps. The
+two schools share almost no module API, so her content cannot be dropped in —
+each slot needs an adapter.
+
+But the number that mattered was different. **71 of those 162 names are
+functions, not curriculum** — `milestonesFor`, `findFormat`, `instructionMinutes`,
+`getTodaysWorkout`. Nearly half of what a "curriculum folder" must supply is
+behaviour, which is the opposite of §1's rule that a fix in the bones reaches
+every Academy.
+
+### A wrong number, corrected
+
+The first triage said 24 of those were pure logic that could move to `lib/`
+as-is. **It was wrong: only 9 are.** The check looked one level deep, and
+`isSchoolDay` → `isHoliday` → `holidayName` → this family's own holiday list is
+three. Moving it would have compiled one family's Christmas into the platform —
+the precise violation this repository exists to prevent, and one no name-based
+guard would have caught, because a date is not a name.
+
+Re-run transitively: 9 pure, 62 bound to this Academy's data. Extraction was not
+worth a deploy.
+
+### The real blocker, and the answer already written down
+
+The re-check surfaced something worse than a small saving. The school reads its
+content at module scope, so an Academy that does not supply a name hands the
+screen `undefined` and it breaks the moment it is used — **for a feature that
+Academy may not even have.** No mission proposals, no guitar ladder, no garden
+track, and the school still demands all three.
+
+All-or-nothing: 162 names on the first morning, or a broken school.
+
+§3b already answers it, for the guide: *"the template's generic pools, merged
+with whatever that Academy's folder adds."* `_template/` has been in the tree
+since Step A, empty. It is the same rule for every slot.
+
+So the bones ship a working default, and an Academy overrides only what makes it
+different. A missing name is now a LESS TAILORED school rather than a broken one
+— which is what §3b says a missing band should be.
+
+### What went in
+
+- **`mergeContent`** — the Academy's answers over the template's, slot by slot,
+  name by name. Shallow per slot on purpose: an Academy supplying its own
+  `formatsForType` and no `criteriaForFormat` keeps the default for the second.
+  Otherwise providing one thing in a slot would silently drop the rest.
+- **`_template/guide/dailyLines.js`** — 31 neutral lines. Not a placeholder: at
+  three lines a date-seeded guide repeats every third day and a child reads each
+  one sixty times over a school year. Every §3b rule holds — no ability praise,
+  no level, no learner, no subject, no attributed quotes.
+- **`_template/theme/template.css`** — a plain readable school and print rules,
+  so a Configured Academy is not unstyled text on white while a family is still
+  setting up.
+- **The loader refuses a template that fills `subjects` or `lessons`.** A default
+  curriculum is not a gentler fallback, it is a school made of nothing that still
+  opens — hiding the exact state the Empty and Configured screens exist to show.
+- Required slots are checked **after** the merge, so an Academy inheriting a
+  working guide and theme is not incomplete for failing to rewrite them.
+- The manifest generator no longer reports inherited names as missing. What it
+  reports now is the real worklist.
+
+### Verified
+
+**56 check scripts, all passing.** `verify-content-interface.mjs` grew to 23
+checks covering the template: it exists, fills at least one slot, never fills
+`subjects` or `lessons`, provides no default the school does not read, is not
+offered as an Academy, and is actually merged rather than being a folder nobody
+loads.
+
+The existing Academy's manifest is **byte-identical** before and after. Nothing
+about the running school changed; the template only matters the moment a second
+Academy exists.

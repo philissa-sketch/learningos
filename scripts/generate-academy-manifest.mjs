@@ -195,12 +195,41 @@ if (hasCss) console.log('    theme             (stylesheet)');
 const blank = NEEDS.slots.filter((s) => !slotNames.includes(s) && !(s === 'theme' && hasCss));
 if (blank.length) console.log(`  left blank: ${blank.join(', ')}`);
 
-if (missing.length) {
-  console.log(`\n  ${missing.length} name(s) this Academy does not have:`);
-  for (const m of missing.slice(0, 20)) console.log('    ' + m);
-  if (missing.length > 20) console.log(`    …and ${missing.length - 20} more`);
+/**
+ * What the template already answers.
+ *
+ * A name the template provides is not missing — the Academy inherits it. Only
+ * what neither side supplies is a real gap, and for a new Academy that
+ * remainder IS the worklist. Reporting inherited names as missing would make it
+ * look far longer than it is.
+ */
+const templateManifest = path.join(ACADEMIES, '_template', 'content.js');
+const inherited = new Set();
+if (fs.existsSync(templateManifest)) {
+  const t = fs.readFileSync(templateManifest, 'utf8');
+  for (const m of t.matchAll(/export const (\w+) = \{([^}]*)\}/g)) {
+    if (m[1] === 'theme') continue;
+    for (const n of m[2].split(',').map((s) => s.split(':')[0].trim())) {
+      if (/^[A-Za-z_$][\w$]*$/.test(n)) inherited.add(n);
+    }
+  }
+}
+
+const inheritedHere = missing.filter((m) => inherited.has(m.split(' ')[0]));
+const reallyMissing = missing.filter((m) => !inherited.has(m.split(' ')[0]));
+
+if (inheritedHere.length) {
+  console.log(`\n  ${inheritedHere.length} name(s) inherited from the template — nothing to do:`);
+  console.log('    ' + inheritedHere.map((m) => m.split(' ')[0]).join(', '));
+}
+
+if (reallyMissing.length) {
+  console.log(`\n  ${reallyMissing.length} name(s) neither this Academy nor the template has:`);
+  for (const m of reallyMissing.slice(0, 25)) console.log('    ' + m);
+  if (reallyMissing.length > 25) console.log(`    …and ${reallyMissing.length - 25} more`);
   console.log(
     '\n  A school that reads these will fail at runtime. For a new Academy this is\n' +
-      '  the worklist: each line is content that has to exist before it can open.'
+      '  the worklist: each line is either content to write, or a default the\n' +
+      '  template should grow so no Academy has to write it twice.'
   );
 }

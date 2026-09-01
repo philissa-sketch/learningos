@@ -261,6 +261,84 @@ ok(
   'a hardcoded list is how a platform quietly becomes single-tenant'
 );
 
+// ---------------------------------------------------------------------------
+console.log('\n--- 6. the template is a floor, not a curriculum ---');
+// ---------------------------------------------------------------------------
+// Spec §1 and §3b. Without defaults the contract is all-or-nothing: the school
+// reads its content at module scope, so an Academy that does not supply a name
+// hands the screen `undefined` and it breaks — for a feature that Academy may
+// not even have. The template is what makes a missing name a LESS TAILORED
+// school rather than a broken one.
+//
+// The danger runs the other way too. A template that grew a default subject
+// list or default lessons would let a contentless Academy open a school made of
+// nothing, hiding the exact state the Empty and Configured screens exist to
+// show a family.
+
+const templateDir = path.join(ACADEMIES, '_template');
+const templateManifest = path.join(templateDir, 'content.js');
+ok('the template exists', fs.existsSync(templateManifest), 'src/academies/_template/content.js');
+
+if (fs.existsSync(templateManifest)) {
+  const template = fs.readFileSync(templateManifest, 'utf8');
+  const templateSlots = [...template.matchAll(/export const (\w+) = /g)].map((m) => m[1]);
+
+  ok('it fills at least one slot', templateSlots.length > 0, 'an empty template defaults nothing');
+  ok(
+    'it never fills subjects or lessons',
+    !templateSlots.includes('subjects') && !templateSlots.includes('lessons'),
+    'a default curriculum is a school made of nothing that still opens'
+  );
+  ok(
+    'it fills only declared slots',
+    templateSlots.every((s) => slots.includes(s)),
+    templateSlots.filter((s) => !slots.includes(s)).join(', ')
+  );
+
+  /**
+   * A default nobody reads is dead weight that still has to be maintained.
+   *
+   * `theme` is exempt because it is the one slot the school never destructures:
+   * the Academy shell calls `theme.load()` itself, before the school mounts, so
+   * its shape is a function rather than a list of names the inventory knows.
+   */
+  const templateNames = [...template.matchAll(/export const (\w+) = \{([^}]*)\}/g)]
+    .filter(([, slot]) => slot !== 'theme')
+    .flatMap(([, , body]) =>
+      body
+        .split(',')
+        .map((s) => s.split(':')[0].trim())
+        .filter((s) => /^[A-Za-z_$][\w$]*$/.test(s))
+    );
+  const unread = templateNames.filter((n) => !needs.names.includes(n));
+  ok('every default it provides is one the school actually reads', unread.length === 0, unread.join(', '));
+  ok('the check found names to check', templateNames.length > 0, 'the parse silently matched nothing');
+
+  ok(
+    'the template is not offered as an Academy',
+    !academyFolders.includes('_template'),
+    'signing into it would open a school with defaults and no curriculum'
+  );
+
+  const contentModule = fs.readFileSync(path.join(SRC, 'content/academyContent.js'), 'utf8');
+  ok(
+    'the loader merges the template under the Academy',
+    /mergeContent\(/.test(contentModule) && /loadTemplate\(\)/.test(contentModule),
+    'without the merge the template is a folder nobody reads'
+  );
+  ok(
+    'the loader refuses a template that fills subjects or lessons',
+    /NEVER_DEFAULTED/.test(contentModule),
+    'the rule has to execute, not just be written down'
+  );
+  ok(
+    'required slots are checked AFTER the merge',
+    contentModule.indexOf('mergeContent(await loadTemplate()') <
+      contentModule.indexOf('REQUIRED_SLOTS.filter((slot) => !content[slot])'),
+    'an Academy that inherits a working guide and theme is not incomplete'
+  );
+}
+
 console.log(`\n${passed} passed, ${failures.length} failed`);
 if (failures.length) {
   console.log(`\n${failures.length} CHECK(S) FAILED`);
