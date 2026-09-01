@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import FrontDoorGate from './FrontDoorGate.jsx';
-import { useAppStore } from './store/useAppStore.js';
 import './index.css';
 
 /**
@@ -12,10 +11,23 @@ import './index.css';
  * survives a reload — which is the property wanted: furnish a room for a
  * screenshot, take the picture, refresh.
  *
- *   __appStore.setState({ unlockedCosmetics: [...ids] })
+ *   await __appStore(); __appStore.get.setState({ unlockedCosmetics: [...ids] })
+ *
+ * ---- WHY THIS BECAME A FUNCTION ----
+ *
+ * It used to be a static import of the store. That one line pulled the store —
+ * and through it every content module the store reads — into the entry chunk,
+ * which meant one Academy's whole curriculum was downloaded and evaluated
+ * before anybody had signed in. It also broke the rule the content interface
+ * depends on: no school module may evaluate before its Academy's content is
+ * loaded. Importing on demand keeps the handle and drops both problems.
  */
 if (import.meta.env.DEV) {
-  window.__appStore = useAppStore;
+  window.__appStore = async () => {
+    const mod = await import('./store/useAppStore.js');
+    window.__appStore.get = mod.useAppStore;
+    return mod.useAppStore;
+  };
 }
 
 /**

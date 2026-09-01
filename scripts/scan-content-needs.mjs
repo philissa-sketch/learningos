@@ -21,7 +21,7 @@
 // ---------------------------------------------------------------------------
 import fs from 'node:fs';
 import path from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 import { parse } from '@babel/parser';
 
 const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');

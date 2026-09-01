@@ -204,6 +204,35 @@ export function academyHasContent(academyId) {
   return Boolean(academyId && ACADEMY_FOLDERS[specifierFor(academyId)]);
 }
 
+/**
+ * Which content pack an Academy uses.
+ *
+ * ---- WHY THIS IS A FIELD AND NOT THE ACADEMY'S ID ----
+ *
+ * Two reasons, and the second is the one that matters.
+ *
+ * The small one: an Academy's id is generated on the family's own computer at
+ * the front door, with a random suffix so two children sharing a first name do
+ * not resolve to one set of records. Nobody can author a folder named after an
+ * id that does not exist yet.
+ *
+ * The real one: §3a. A child can change what they are working toward, and that
+ * is the normal case rather than a failure case — *"a career track is a field.
+ * It is never a foundation."* If the curriculum folder were the Academy's id,
+ * then changing track would mean changing id, which would mean changing
+ * database, which would mean losing every hour, grade and record earned so far.
+ * The platform would be telling a twelve-year-old that changing her mind costs
+ * her a year of school.
+ *
+ * So the record points at a pack, and the pack can be repointed. Records stay
+ * where they are. Falling back to the id keeps every Academy created before
+ * this field existed working untouched.
+ */
+export function contentPackFor(academy) {
+  if (!academy) return null;
+  return academy.contentPack || academy.id || null;
+}
+
 let installed = null;
 let installedId = null;
 
