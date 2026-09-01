@@ -616,12 +616,7 @@ ok((appSrc.match(/view === 'guitar'/g) || []).length === 1, 'App.jsx routes the 
 ok((appSrc.match(/import\('\.\/components\/Guitar\/GuitarHome\.jsx'\)/g) || []).length === 1,
   'GuitarHome is lazy-loaded exactly once');
 const navSrc = fs.readFileSync(path.join(REPO, 'src/components/Navigation/NavBar.jsx'), 'utf8');
-// Matches the tab by its id and label, not by its exact field list. The tab
-// grew a `needs: 'electives'` when nav entries started declaring the content
-// slot they cannot open without, and pinning the whole literal made an
-// unrelated platform change look like a missing Guitar tab. What is being
-// guarded is that there is exactly ONE of them, and that still is.
-ok((navSrc.match(/\{ id: 'guitar', label: 'Guitar'[,}]/g) || []).length === 1,
+ok((navSrc.match(/\{ id: 'guitar', label: 'Guitar' \}/g) || []).length === 1,
   'the nav carries exactly one Guitar tab');
 
 // ===========================================================================

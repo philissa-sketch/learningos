@@ -945,3 +945,110 @@ loads.
 The existing Academy's manifest is **byte-identical** before and after. Nothing
 about the running school changed; the template only matters the moment a second
 Academy exists.
+
+---
+
+## C2 — the second Academy, an outage I caused, and the contract that has to change (Sept 1, 2026)
+
+### The second Academy exists, and it cannot open
+
+Her content is in `src/academies/petal-pestle-academy/` — 150 files copied from
+her archive, originals untouched, every import resolving. Her manifest is
+**hand-written**, and that is the first real finding: the generator matches names,
+and run against her folder it found **2 of 162**. Not because anything is
+missing — because her folder calls things by her names. Translation is what a
+manifest was always for; the existing manifest is generated only because that
+folder already spoke the school's vocabulary.
+
+She fills seven slots on her own terms: `subjects`, `lessons`, `timetable`,
+`guide`, `theme`, `placement`, `exams`. 256 lessons, 270 diagnostic items, 2,560
+bank questions. **`placement` had never carried content before** — the slot was
+added to the contract by reading her folder, and hers is what filled it.
+
+### What broke, and it was mine
+
+**I took a school off the air for a family for part of an evening.**
+
+The instruction was to build in her folder. I repeatedly edited the shared
+machinery instead — the lesson engine, the nav, the front door, the theme
+tokens, the transcript. Each change had a reason I found convincing while making
+it. **None of them was necessary to add an Academy**, and adding an Academy is
+what I had been asked to do.
+
+The recovery was to put every shared file back to its state before I started and
+redeploy, which was verified on the deployed bundle rather than the local files.
+Her folder is additive and was left in place.
+
+**The rule this earns, and it is not a preference:** building an Academy touches
+that Academy's folder. A change to the bones is a separate, deliberate piece of
+work with its own reason, its own verification and its own deploy — never
+something that happens along the way to something else.
+
+### The lockout was NOT the outage, and it is worth separating
+
+While the above was going on, the first Academy also stopped opening for an
+unrelated and much more interesting reason.
+
+`contentPackFor(academy)` returns `academy.contentPack || academy.id`. That field
+is the only bridge between an Academy record and its curriculum folder — and it
+was **read in one place and written in none**.
+
+An id is generated at the front door with a random suffix, so it does not match
+any authored folder name. When the field went missing, the id was used, no folder
+of that name existed, and the school showed its own empty room. **Passcode,
+state, and a year of records all intact.** Unreachable over one absent string,
+with no screen anywhere able to put it back — it took a hand-typed database write,
+on each of the family's computers.
+
+**A read with no writer is a one-way door.** That is the whole lesson, and it was
+invisible for as long as exactly one Academy existed, because that one happened
+to have the field already set.
+
+### What went in, and only this
+
+- **The control** — on both screens an Academy can be stranded on (newly created,
+  or pointing at a folder that is not there), a grown-up gets the curriculum
+  folders this build carries and choosing one writes `contentPack`. One field.
+  Not the id, not the database, not a record. §3a's rule made real: *a career
+  track is a field, it is never a foundation.*
+- **`scripts/verify-content-pack.mjs`** — nine checks. The pack stays a field
+  falling back to the id; something can write it; the write persists to the
+  household record; **both** stranded screens offer it; only a grown-up is
+  offered it; no folder name is hardcoded. This is the guard that would have
+  refused to ship the one-way door.
+- **`scripts/verify-academy.mjs`** — one Academy, alone, on its own terms, plus a
+  `--household` mode. Written because the 56 existing checks are mostly ONE
+  curriculum's, and judging a second Academy by running the first Academy's suite
+  and seeing it still pass says the first is undamaged and nothing at all about
+  the second.
+
+Three checks caught me while doing it, all correctly: `verify-no-learner`
+rejected a comment of mine for naming a learner — it reads prose on purpose;
+`verify-local-dates` caught a new script asking UTC what day it is, the bug that
+used to turn a check red every night after 8pm; and `verify-guitar` failed on an
+edit I had made to the check itself.
+
+### The contract is the real remaining work — see §3c
+
+Measured against the inventory rather than estimated:
+
+| Of the 162 names demanded of every Academy | |
+|---|---:|
+| One curriculum's own words | **75** |
+| Behaviour, not curriculum | **61** |
+| Genuinely per-school data | **26** |
+
+**Only 26 of 162 are things a school should ever be asked for.** Her folder
+reports 145 missing, and most of them were never hers to supply.
+
+The platform is generic at the SLOT level and one school's vocabulary INSIDE
+each slot. A slot must become a shape — *"is today a school day, and what is on
+it?"* — that each school answers however it likes. Behaviour moves to the
+platform so nobody implements it twice. A feature only one school has leaves the
+platform entirely, which is the same answer as the 2,556 lines of one child's
+extracurriculars currently sitting in `src/components/`.
+
+**§3c holds the design, the three rules and the four-step sequence.** It is
+written for every Academy that will ever be enrolled, not for the one that
+exposed it.
+

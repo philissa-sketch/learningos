@@ -276,6 +276,108 @@ drafted any time; they attach when `_template/` exists.
 
 ---
 
+## 3c · A slot is a SHAPE, not a name list
+
+**The last thing standing between LearningOS being multi-school in principle and
+multi-school in practice.** Written Sept 1 2026, after the second Academy was
+built and could not open.
+
+### What is wrong, measured
+
+C1 stopped the platform naming one Academy's FOLDER. It succeeded — records and
+curriculum are properly separated, and an Academy with no content shows its own
+room rather than somebody else's school.
+
+But the screens were written against one school's functions, and putting the
+data behind a slot did not change what the screens **call**:
+
+```js
+const { WEEK_PATTERN, isSchoolDay, dayPattern, subjectsForDay } =
+  academyContent().timetable;
+```
+
+The folder got generic. The vocabulary did not. Counted against the real
+inventory (`scripts/academy-content-needs.json`):
+
+| Of the 162 names the platform demands of EVERY Academy | | |
+|---|---:|---|
+| **One curriculum's own words** | **75** | `guitarTheory`, `aerospaceProjects`, `recipeLibrary`, `EDCLUB_PORTAL_URL` |
+| **Behaviour, not curriculum** | **61** | `affordable`, `findFormat`, `milestonesFor`, `instructionMinutes` |
+| **Genuinely per-school data** | **26** | `ACTIVE_SUBJECTS`, `WEEK_PATTERN`, `allLessons` |
+
+**Only 26 of 162 are things a school should ever be asked for.** The second
+Academy fills seven slots from a folder of 150 files and 575 exported names, and
+still reports 145 missing — because most of what is missing was never its to
+supply.
+
+### The three rules
+
+> **1 · A slot asks a QUESTION. It does not name a function.**
+
+`timetable` means *"is today a school day, and what is on it?"* — a small, stable
+interface each school answers however it likes. One school answers from a
+weekday rotation and a holiday list; another from five dated periods with no
+holiday list at all, because its long breaks run at three days a week rather than
+closing. Both are correct. Neither should have to invent the other's function
+names to be allowed to answer.
+
+> **2 · Behaviour belongs to the platform, never to a curriculum.**
+
+"How many words into this assignment", "can she afford this", "which format fits
+this type", "how many instructional minutes is that" — none of it is a fact
+about a child or a subject. §1 already says why this matters: *fix a bug once,
+every Academy gets it.* Sixty-one names currently make every school reimplement
+the same logic, which is the exact opposite.
+
+Anything that is pure logic moves to `lib/`. Anything that is logic **bound to
+one school's data** stays with that school — and the binding is checked
+**transitively**, because `isSchoolDay` → `isHoliday` → `holidayName` → one
+family's own holiday list is three levels deep, and moving it would have
+compiled one family's Christmas into the platform.
+
+> **3 · A feature only one school has does not live in the platform.**
+
+`src/components/Guitar/` and `src/components/Garden/` are 2,556 lines of one
+child's extracurriculars in the platform zone, and `NavBar.jsx` offers both tabs
+to every Academy that will ever exist. A second learner is shown a Guitar she has
+never played, opening onto a screen that reads content nobody wrote for her.
+
+An elective is an Academy's, not the platform's. What the platform owns is the
+IDEA of an elective — a place they appear, a way one declares itself — never a
+specific one.
+
+### What a school supplies when this is done
+
+**About twenty things about itself, and it inherits the rest.** That is the test.
+If a new Academy's first morning still owes more than roughly twenty answers,
+this is not finished.
+
+### Sequencing — safest first, and each lands alone
+
+Ordered so that no step needs the one after it, and every step is independently
+verifiable and independently deployable. **This is a refactor of the bones every
+existing school runs on. One batched, fully verified deploy per step.**
+
+| Step | Work | Moves |
+|---|---|---|
+| **1** | **Behaviour out of the contract.** Take the 61 logic names out of the slots and into `lib/`, transitively checked. Nothing about any curriculum changes. | 162 → ~101 |
+| **2** | **Features out of the platform.** Guitar, Garden and the two single-subject games leave `src/components/`. Nav entries become something an Academy declares rather than something the platform ships. | ~101 → ~40 |
+| **3** | **Slots become shapes.** Each remaining slot gets a named interface — a small set of questions — and each Academy implements it. This is the step that ends name matching. | ~40 → ~26 |
+| **4** | **The check follows.** `verify-content-interface` stops asking "does this Academy provide every name" and starts asking "does this Academy answer every question its slots claim to answer." | — |
+
+### Rules this refactor must not break
+
+- **The platform contains no learner.** `verify-no-learner.mjs` reads prose as
+  well as code, and it is right to. Do not weaken a zone to make a step pass.
+- **The debt list may shrink and must never grow.**
+- **Every step keeps the existing school byte-identical until it is deliberately
+  changed** — its manifest regenerated should differ only where a name genuinely
+  moved.
+- **A slot an Academy has nothing for stays blank**, and blank must render as an
+  absent screen rather than a broken one.
+
+---
+
 ## 4 · Already free — no work
 
 | Thing | Why |

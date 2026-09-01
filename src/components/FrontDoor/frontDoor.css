@@ -210,7 +210,10 @@
   margin-bottom: 7px;
 }
 
-.fd-body input {
+/* `select` joined `input` when the curriculum picker arrived. Styled together
+   rather than separately so the two cannot drift apart on one screen. */
+.fd-body input,
+.fd-body select {
   width: 100%;
   padding: 13px 14px;
   border: 1px solid var(--fd-line);
@@ -222,7 +225,8 @@
   margin-bottom: 17px;
 }
 
-.fd-body input:focus {
+.fd-body input:focus,
+.fd-body select:focus {
   outline: 2px solid var(--fd-teal);
   outline-offset: -1px;
   border-color: var(--fd-teal);
