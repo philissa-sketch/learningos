@@ -59,7 +59,42 @@ export const SLOT_RULES = [
   [/^data\/(aerospace|robotics|technology|science)\//, 'projects'],
   [/^data\/rewardCatalog\.js$/, 'rewards'],
   [/^data\/hqCrew\.js$/, 'rewards'],
-  [/^data\/printouts\.js$/, 'rewards']
+  [/^data\/printouts\.js$/, 'rewards'],
+
+  // ---- A SECOND ACADEMY, LAID OUT ITS OWN WAY ----
+  //
+  // These rules exist because the ones above were derived from a single
+  // folder, and a rule list written against one Academy is a rule list only
+  // that Academy can satisfy. Nothing below renames a slot: the slots are the
+  // platform's, and these say only which of one folder's paths answers to
+  // which. That is exactly the adapting a manifest is for.
+  //
+  // Note `data/movement/` -> `pe`. The slot is PE because PE is what this
+  // platform calls it; the folder is `movement` because that is what its
+  // author called it. A folder name is not a vocabulary change.
+  [/^data\/assessments\//, 'exams'],
+  [/^data\/reading\//, 'exams'],
+  [/^data\/herbs\//, 'electives'],
+  [/^data\/movement\//, 'pe'],
+  [/^data\/journal\//, 'writing'],
+  [/^data\/words\//, 'writing'],
+  [/^data\/standards\//, 'compliance'],
+  [/^data\/rewards\//, 'rewards'],
+  [/^data\/skillsCatalog\.js$/, 'subjects'],
+
+  // `config/` is this Academy's equivalent of the loose files above — the
+  // small decisions a school makes about itself. Three of its files are NOT
+  // mapped on purpose: navigation.js, senders.js and buildStamp.js are that
+  // app's own shell, not its curriculum, and a slot rule for them would put
+  // one school's furniture into the contract.
+  [/^config\/strands\.js$/, 'subjects'],
+  [/^config\/curriculumPlan\.js$/, 'subjects'],
+  [/^config\/schedule\.js$/, 'timetable'],
+  [/^config\/calendar\.js$/, 'timetable'],
+  [/^config\/assessment\.js$/, 'exams'],
+  [/^config\/evidence\.js$/, 'compliance'],
+  [/^config\/projects\.js$/, 'projects'],
+  [/^config\/room\.js$/, 'rewards']
 ];
 
 export const slotFor = (rel) => SLOT_RULES.find(([re]) => re.test(rel))?.[1] ?? null;

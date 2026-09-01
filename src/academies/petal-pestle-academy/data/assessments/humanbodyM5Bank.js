@@ -1,0 +1,69 @@
+// ---------------------------------------------------------------------------
+// THE HUMAN BODY · MODULE 5 BANK — 40 questions, 10 per lesson.
+//
+// Answer slots are assigned from a fixed balanced pattern AS THE FILE IS
+// WRITTEN, so an even spread is a property of the build rather than something
+// discovered afterwards and corrected. Modules 1 and 2 were written by hand and
+// both needed rebalancing after the fact; this one could not be uneven.
+// check-assessment reads every bank in the app since v3.47 — per course AND per
+// module.
+//
+// ---- WHAT THIS MODULE MAY NOT ASK ----
+//
+// Nothing that invites her to judge a heart. Every pulse question compares HER
+// OWN numbers with HER OWN, before and after — never with another child and
+// never with a chart. Where a question could be read as a verdict on a body,
+// the answer is that people differ.
+// ---------------------------------------------------------------------------
+
+export const HUMANBODY_M5_BANK = [
+  // ============================================ body-m5-01
+  { id: 't-bodym501a', lesson: 'body-m5-01', prompt: 'Where does your heart sit?', choices: ['Far left', 'Near the middle, tilted left', 'Far right', 'Below your stomach'], answer: 1, feedback: ['That is where the beat is loudest.', null, 'The tilt goes the other way.', 'It is up in your chest.'], why: 'Loudest on the left is not the same as living there.' },
+  { id: 't-bodym501b', lesson: 'body-m5-01', prompt: 'How many rooms are inside a heart?', choices: ['One', 'Two', 'Six', 'Four'], answer: 3, feedback: ['It is divided inside.', 'Two on each side makes four.', 'Four is the number.', null], why: 'Two take blood in, two push it out.' },
+  { id: 't-bodym501c', lesson: 'body-m5-01', prompt: 'A valve is:', choices: ['A door that opens one way', 'A kind of muscle', 'A blood vessel', 'A bone'], answer: 0, feedback: [null, 'Muscles pull.', 'Vessels are pipes.', 'No bones in a heart.'], why: 'One-way doors stop blood going backwards.' },
+  { id: 't-bodym501d', lesson: 'body-m5-01', prompt: 'Valves stop blood from:', choices: ['Getting warm', 'Carrying oxygen', 'Going backwards', 'Leaving the heart'], answer: 2, feedback: ['Not a temperature job.', 'It still carries it.', null, 'Leaving is the point.'], why: 'Backwards is the thing they prevent.' },
+  { id: 't-bodym501e', lesson: 'body-m5-01', prompt: 'The thump you hear is:', choices: ['Blood hitting bone', 'Muscles tearing', 'Valves shutting', 'Air moving'], answer: 2, feedback: ['Nothing hits bone.', 'Nothing tears.', null, 'Blood is not air.'], why: 'The sound of one-way doors closing.' },
+  { id: 't-bodym501f', lesson: 'body-m5-01', prompt: 'Your left lung is smaller than your right because:', choices: ['It makes room for the heart', 'It works less', 'It is younger', 'It holds less air on purpose'], answer: 0, feedback: [null, 'Both lungs work.', 'Lungs are as old as you.', 'It is about space.'], why: 'The heart leans into that side.' },
+  { id: 't-bodym501g', lesson: 'body-m5-01', prompt: 'Roughly how big is your heart?', choices: ['As big as your head', 'As small as a pea', 'As big as your chest', 'About the size of your fist'], answer: 3, feedback: ['Much smaller.', 'Much bigger.', 'It shares the space.', null], why: 'Make a fist and look.' },
+  { id: 't-bodym501h', lesson: 'body-m5-01', prompt: 'Two rooms take blood IN. The other two:', choices: ['Store blood', 'Push blood out', 'Clean blood', 'Warm blood'], answer: 1, feedback: ['It does not sit still.', null, 'Cleaning happens elsewhere.', 'Not a heater.'], why: 'In on one side, out on the other.' },
+  { id: 't-bodym501i', lesson: 'body-m5-01', prompt: 'The heart is mostly made of:', choices: ['Muscle', 'Bone', 'Skin', 'Fat'], answer: 0, feedback: [null, 'No bones in it.', 'Skin is outside.', 'It is a pump.'], why: 'A muscle that squeezes, as Module 1 said.' },
+  { id: 't-bodym501j', lesson: 'body-m5-01', prompt: 'If a valve opened both ways, blood would:', choices: ['Move faster', 'Stop', 'Go backwards as well as forwards', 'Turn yellow'], answer: 2, feedback: ['Speed is not it.', 'It would still move.', null, 'Colour would not change.'], why: 'One-way is the whole point of a valve.' },
+
+  // ============================================ body-m5-02
+  { id: 't-bodym502a', lesson: 'body-m5-02', prompt: 'The SHORT trip takes blood to your:', choices: ['Legs', 'Brain', 'Stomach', 'Lungs'], answer: 3, feedback: ['Long trip.', 'Long trip.', 'Long trip.', null], why: 'Chest to lungs and back.' },
+  { id: 't-bodym502b', lesson: 'body-m5-02', prompt: 'Blood picks up oxygen at your:', choices: ['Heart', 'Lungs', 'Stomach', 'Skin'], answer: 1, feedback: ['The heart pushes it.', null, 'That is food.', 'Skin keeps things out.'], why: 'That is what the short trip is for.' },
+  { id: 't-bodym502c', lesson: 'body-m5-02', prompt: 'Which side of the heart pushes hardest?', choices: ['The right', 'Both the same', 'The left', 'Neither'], answer: 2, feedback: ['It only reaches the lungs.', 'One has further to go.', null, 'A pump pushes.'], why: 'The whole body is a long way.' },
+  { id: 't-bodym502d', lesson: 'body-m5-02', prompt: 'The LONG trip goes:', choices: ['All round the body', 'Only to the lungs', 'Only to the head', 'Nowhere new'], answer: 0, feedback: [null, 'That is the short one.', 'It goes everywhere.', 'It covers the whole body.'], why: 'Toes to head and back.' },
+  { id: 't-bodym502e', lesson: 'body-m5-02', prompt: 'After the long trip, blood returns to the:', choices: ['Left side of the heart', 'Right side of the heart', 'Lungs', 'Stomach'], answer: 1, feedback: ['That is where it left from.', null, 'It goes there next.', 'Not part of the circuit.'], why: 'Right side in, left side out.' },
+  { id: 't-bodym502f', lesson: 'body-m5-02', prompt: 'The left side has the thickest muscle because:', choices: ['It is older', 'It is bigger', 'It holds more', 'It pushes the furthest'], answer: 3, feedback: ['Age is not it.', 'Thickness is the point.', 'Not about amount.', null], why: 'Furthest to push means strongest push.' },
+  { id: 't-bodym502g', lesson: 'body-m5-02', prompt: 'How many trips make one full circuit?', choices: ['Two', 'One', 'Three', 'Four'], answer: 0, feedback: [null, 'There are two loops.', 'Two, not three.', 'Two.'], why: 'Short to the lungs, long to the body.' },
+  { id: 't-bodym502h', lesson: 'body-m5-02', prompt: 'Blood just back from your toes is:', choices: ['Full of oxygen', 'Not moving', 'Low on oxygen', 'Yellow'], answer: 2, feedback: ['It gave it away.', 'It is still moving.', null, 'Colour is not the change.'], why: 'It delivered the oxygen on the way round.' },
+  { id: 't-bodym502i', lesson: 'body-m5-02', prompt: 'Why does blood go to the lungs BEFORE the body?', choices: ['Because lungs are nearer', 'To warm up', 'To slow down', 'To pick up oxygen first'], answer: 3, feedback: ['Distance is not the reason.', 'Not a heater.', 'Speed is not it.', null], why: 'You cannot deliver what you have not collected.' },
+  { id: 't-bodym502j', lesson: 'body-m5-02', prompt: 'The two trips share:', choices: ['The same lung', 'The same heart', 'The same leg', 'Nothing'], answer: 1, feedback: ['Only one trip goes there.', null, 'Legs are on the long trip.', 'They share the pump.'], why: 'One heart, two circuits.' },
+
+  // ============================================ body-m5-03
+  { id: 't-bodym503a', lesson: 'body-m5-03', prompt: 'A pulse of 80 a minute is how many beats an hour?', choices: ['4,800', '800', '480', '80'], answer: 0, feedback: [null, 'That is 10 minutes.', 'That is 6 minutes.', 'That is one minute.'], why: '80 multiplied by 60.' },
+  { id: 't-bodym503b', lesson: 'body-m5-03', prompt: 'Roughly how many beats in a day?', choices: ['1,000', '10,000', '100,000', '10 million'], answer: 2, feedback: ['Far more.', 'Still more.', null, 'Nearer a year.'], why: 'About a hundred thousand.' },
+  { id: 't-bodym503c', lesson: 'body-m5-03', prompt: 'Your heart rests:', choices: ['At night', 'Between each beat', 'When you sit', 'Never'], answer: 1, feedback: ['It beats all night.', null, 'It beats then too.', 'It does rest, in tiny gaps.'], why: 'The gaps add up to hours.' },
+  { id: 't-bodym503d', lesson: 'body-m5-03', prompt: 'A pulse of 70 a minute gives how many an hour?', choices: ['700', '420', '70', '4,200'], answer: 3, feedback: ['That is 10 minutes.', 'That is 6 minutes.', 'One minute.', null], why: '70 multiplied by 60.' },
+  { id: 't-bodym503e', lesson: 'body-m5-03', prompt: 'How many minutes are in an hour?', choices: ['24', '100', '60', '30'], answer: 2, feedback: ['That is hours in a day.', 'Not a time unit here.', null, 'Half an hour.'], why: 'Sixty, which is why you multiply by 60.' },
+  { id: 't-bodym503f', lesson: 'body-m5-03', prompt: 'How many hours are in a day?', choices: ['24', '12', '60', '7'], answer: 0, feedback: [null, 'That is half a day.', 'Minutes in an hour.', 'Days in a week.'], why: 'Twenty-four.' },
+  { id: 't-bodym503g', lesson: 'body-m5-03', prompt: 'Beats per minute to beats per DAY means multiplying by:', choices: ['24 then 7', '60 then 60', '100', '60 then 24'], answer: 3, feedback: ['Weeks are not days.', 'That is hours to seconds.', 'Not a real step.', null], why: 'Minutes to hours, then hours to days.' },
+  { id: 't-bodym503h', lesson: 'body-m5-03', prompt: 'Squeezing your fist once a second for a minute shows:', choices: ['How strong you are', 'How hard your heart works', 'How fast you count', 'Nothing useful'], answer: 1, feedback: ['Not a strength test.', null, 'Counting is not it.', 'It shows a great deal.'], why: 'Sixty squeezes is one minute of your heart.' },
+  { id: 't-bodym503i', lesson: 'body-m5-03', prompt: 'Your heart has been beating since:', choices: ['Your first birthday', 'Before you were born', 'You started school', 'Last year'], answer: 1, feedback: ['Long before.', null, 'Long before that.', 'Much longer.'], why: 'It started before you did.' },
+  { id: 't-bodym503j', lesson: 'body-m5-03', prompt: 'Two people count different beats a minute. That means:', choices: ['One is unwell', 'One counted badly', 'One is fitter', 'Nothing is wrong — people differ'], answer: 3, feedback: ['It says nothing of the kind.', 'Different is expected.', 'It does not measure that.', null], why: 'Difference is not a fault.' },
+
+  // ============================================ body-m5-04
+  { id: 't-bodym504a', lesson: 'body-m5-04', prompt: 'A doctor wants two pulse readings because:', choices: ['One is always wrong', 'To fill in a form', 'The difference is the finding', 'To check the counting'], answer: 2, feedback: ['Both can be right.', 'Forms are not why.', null, 'Sensible, and not the reason.'], why: 'One number has nothing to be compared with.' },
+  { id: 't-bodym504b', lesson: 'body-m5-04', prompt: 'A resting pulse is taken when you are:', choices: ['Sitting still', 'Marching', 'Running', 'Just finished moving'], answer: 0, feedback: [null, 'That is working.', 'Also working.', 'That is the working reading.'], why: 'Rested means rested.' },
+  { id: 't-bodym504c', lesson: 'body-m5-04', prompt: 'Taking your pulse three times after moving shows:', choices: ['That you counted right', 'How fit you are', 'Nothing extra', 'How quickly it settles'], answer: 3, feedback: ['Not the point.', 'It does not measure that.', 'It shows a shape.', null], why: 'The coming down is its own information.' },
+  { id: 't-bodym504d', lesson: 'body-m5-04', prompt: 'Your numbers read 72, 108, 88, 78. The biggest jump is:', choices: ['Second to third', 'First to second', 'Third to fourth', 'There is no jump'], answer: 1, feedback: ['That is a fall of 20.', null, 'That is a fall of 10.', 'There is a clear jump.'], why: '72 to 108 is a rise of 36.' },
+  { id: 't-bodym504e', lesson: 'body-m5-04', prompt: 'A working pulse compared with a resting one is usually:', choices: ['Higher', 'Lower', 'The same', 'Impossible to tell'], answer: 0, feedback: [null, 'Working raises it.', 'Moving changes it.', 'It is easy to tell.'], why: 'Muscles ask for more.' },
+  { id: 't-bodym504f', lesson: 'body-m5-04', prompt: 'After you stop moving, your pulse:', choices: ['Falls instantly', 'Keeps rising', 'Falls over a few minutes', 'Stops'], answer: 2, feedback: ['It takes time.', 'You stopped working.', null, 'Never.'], why: 'It settles rather than dropping.' },
+  { id: 't-bodym504g', lesson: 'body-m5-04', prompt: 'Before taking a RESTING pulse you should:', choices: ['Run first', 'Sit still for a minute', 'Hold your breath', 'Stand on one leg'], answer: 1, feedback: ['Opposite of resting.', null, 'That changes it.', 'That is work.'], why: 'Or the number is not a resting one.' },
+  { id: 't-bodym504h', lesson: 'body-m5-04', prompt: 'Marching instead of sprinting is:', choices: ['Not enough', 'A waste of time', 'Only for beginners', 'Safer, and enough to change the number'], answer: 3, feedback: ['It changes it plenty.', 'It works.', 'It is right for anyone.', null], why: 'The point is the change, not the effort.' },
+  { id: 't-bodym504i', lesson: 'body-m5-04', prompt: 'If you feel dizzy you should:', choices: ['Stop and sit down', 'Push through', 'Go faster', 'Count quicker'], answer: 0, feedback: [null, 'Never.', 'Never.', 'The counting is not the point.'], why: 'Stopping is always the right answer.' },
+  { id: 't-bodym504j', lesson: 'body-m5-04', prompt: 'These pulse numbers are compared with:', choices: ['Other children', 'A chart', 'Your own other numbers', 'Your brother'], answer: 2, feedback: ['Never anybody else.', 'No chart here.', null, 'Not a comparison.'], why: 'Yours, against yours, before and after.' },
+];
+
+export default HUMANBODY_M5_BANK;

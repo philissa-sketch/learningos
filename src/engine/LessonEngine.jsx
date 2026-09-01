@@ -95,6 +95,40 @@ export function beatWantsReflection(beat) {
   return beat?.reflect !== false;
 }
 
+/**
+ * DOES THIS BEAT HAVE A PRACTICE DRILL AT ALL?
+ *
+ * ---- THE ONE PHASE THAT DID NOT SKIP WHEN ABSENT ----
+ *
+ * Every optional phase in this engine skips itself when a lesson has no data
+ * for it. `beat-teach` skips its hook, its example and its diagram. Guided
+ * notes skip when there is nothing to blank out. Apply-It skips when no
+ * transfer question is authored — the comment at that branch says so out loud:
+ * *"same skip-when-absent rule every other optional phase in this engine
+ * follows."*
+ *
+ * Beat practice did not follow it. It assumed every beat generates its drill
+ * from a template, and `advanceFromBeat` called `getTemplateById(...).build()`
+ * with no guard at all. `getTemplateById` returns `undefined` for an id it does
+ * not know — and for a beat with no id at all — so the first beat handoff in a
+ * lesson without generators threw `Cannot read properties of undefined`, and
+ * this app has no error boundary on that path.
+ *
+ * ---- WHY THE ANSWER IS NOT "GENERATE SOMETHING ANYWAY" ----
+ *
+ * A drill is a teaching decision, not a missing field. A curriculum may put its
+ * ten questions in a weekly bank and let the beat carry one applied scenario
+ * instead — small teach, then transfer, with the drilling gathered into an
+ * end-of-week test. That is a coherent design, and an engine that insists on a
+ * per-beat drill would be overruling it rather than serving it.
+ *
+ * So: a beat with a generator drills. A beat without one teaches, applies, and
+ * moves on. Neither is a degraded version of the other.
+ */
+export function beatHasPractice(beat) {
+  return Boolean(beat?.practiceGeneratorId);
+}
+
 export function LessonEngine({ lesson, onExit, onOpenView }) {
   const recordLessonResult = useAppStore((s) => s.recordLessonResult);
   const recordSelfExplanation = useAppStore((s) => s.recordSelfExplanation);
@@ -272,19 +306,7 @@ export function LessonEngine({ lesson, onExit, onOpenView }) {
       setPracticeExtended(false);
       setPracticeCorrectHistory([]);
       if (hasBeats) {
-        // Active Application (Learn-Do template): a beat with a real
-        // applyItQuestion authored gets that transfer question next;
-        // otherwise skip straight to self-explanation, same "skip when
-        // absent" rule every other optional phase in this engine follows.
-        if (activeBeat?.applyItQuestion) {
-          setApplyItResult(null);
-          setPhase('beat-apply-it');
-        } else if (beatWantsReflection(activeBeat)) {
-          setReflectionText('');
-          setPhase('beat-reflect');
-        } else {
-          advanceFromBeat();
-        }
+        leaveBeatTeaching();
       } else {
         setPhase('test');
       }
@@ -295,16 +317,46 @@ export function LessonEngine({ lesson, onExit, onOpenView }) {
     }
   };
 
+  /**
+   * WHAT HAPPENS ONCE THIS BEAT'S TEACHING IS DONE.
+   *
+   * Active Application first: a beat with a real transfer question gets it.
+   * Then self-explanation, unless the beat declined it. Then the next beat.
+   *
+   * Extracted from `handlePracticeContinue` when beat practice became optional
+   * (see `beatHasPractice`). It used to sit inline there, which meant it could
+   * only ever be reached by FINISHING A DRILL — so a beat with no drill had no
+   * route to its own Apply-It question. Both callers now use this one path, so
+   * a beat that skips practice still applies and still reflects.
+   */
+  function leaveBeatTeaching() {
+    if (activeBeat?.applyItQuestion) {
+      setApplyItResult(null);
+      setPhase('beat-apply-it');
+    } else if (beatWantsReflection(activeBeat)) {
+      setReflectionText('');
+      setPhase('beat-reflect');
+    } else {
+      advanceFromBeat();
+    }
+  }
+
   // ---- Self-explanation continue (gap 3) — captures the reflection (if
   // any was typed), then does the actual beat-advance/move-to-test that
   // handlePracticeContinue used to do directly before this step existed. ----
   const advanceFromBeat = () => {
     if (beatIndex < beats.length - 1) {
       const nextBeat = beats[beatIndex + 1];
+      // THE LINE THIS ENGINE CRASHED ON. `getTemplateById` returns undefined
+      // for an id it does not know, and for the `undefined` a beat with no
+      // drill hands it — so `.build()` threw the moment a learner finished the
+      // first beat of a lesson whose beats carry applied scenarios instead of
+      // generated drills. Queue a question only when there is a generator to
+      // build one; `beat-teach` routes past practice when there is not.
       const nextGen = getTemplateById(nextBeat.practiceGeneratorId);
       setBeatIndex((i) => i + 1);
       setPracticeCount(0);
-      setPracticeQuestion(nextGen.build());
+      setPracticeQuestion(nextGen ? nextGen.build() : null);
       setPhase('beat-teach');
     } else {
       setPhase('test');
@@ -543,8 +595,21 @@ export function LessonEngine({ lesson, onExit, onOpenView }) {
           )}
           {beatIndex === beats.length - 1 && lesson.novaIntro.connection && (
             <div className="mt-3 rounded-lg border border-signal-amber/30 bg-signal-amber/5 p-3">
+              {/*
+                THIS HEADING NAMED ONE CHILD'S CAREER, IN THE BONES.
+
+                It read "How an Aerospace Engineer Uses This" — a literal
+                string in src/engine/, the file every Academy that will ever
+                exist runs its lessons through. C1 moved the curriculum out of
+                the platform and this survived it, because a heading is prose
+                and the guards read names.
+
+                It is the lesson's to title now, beside the paragraph it heads,
+                so an Academy studying anything says what it is studying. The
+                fallback names no career and no subject.
+              */}
               <p className="text-xs font-display uppercase tracking-widest text-signal-amber">
-                How an Aerospace Engineer Uses This
+                {lesson.novaIntro.connectionLabel || 'Where This Gets Used'}
               </p>
               <p className="mt-1">
                 <GlossaryText text={lesson.novaIntro.connection} terms={lesson.novaIntro.glossary} keyPrefix="conn-" />
@@ -563,12 +628,35 @@ export function LessonEngine({ lesson, onExit, onOpenView }) {
           )}
         </NovaMessage>
 
+        {/*
+          THREE ROUTES OUT OF A TEACH SCREEN, and the third is the new one.
+
+          Guided notes when there is something to blank out. Then practice, but
+          ONLY when this beat actually has a drill — see `beatHasPractice`. A
+          beat that carries an applied scenario instead of a generated drill
+          goes straight on to it, rather than promising "4 Quick Practice
+          Questions" it has no way to produce.
+
+          The label follows the route rather than being written once and
+          assumed, because a button that names a thing the next screen does not
+          do is worse than a plain one.
+        */}
         <button
           type="button"
-          onClick={() => setPhase(guidedNotesForBeat ? 'beat-guided-notes' : 'beat-practice')}
+          onClick={() => {
+            if (guidedNotesForBeat) return setPhase('beat-guided-notes');
+            if (beatHasPractice(beat)) return setPhase('beat-practice');
+            return leaveBeatTeaching();
+          }}
           className="w-full rounded-lg bg-signal-cyan px-4 py-2 font-display font-700 text-space-950 transition hover:brightness-110"
         >
-          {guidedNotesForBeat ? 'Guided Notes First' : `Try It — ${beatPracticeTarget} Quick Practice Questions`}
+          {guidedNotesForBeat
+            ? 'Guided Notes First'
+            : beatHasPractice(beat)
+              ? `Try It — ${beatPracticeTarget} Quick Practice Questions`
+              : activeApplyItQuestion
+                ? 'Try It'
+                : 'Continue'}
         </button>
       </div>
     );
@@ -582,7 +670,13 @@ export function LessonEngine({ lesson, onExit, onOpenView }) {
     return (
       <div className="mx-auto max-w-2xl space-y-4 px-4 py-6 sm:px-6">
         <ExitBar label={`${lesson.title} — ${beatIndex + 1} of ${beats.length}`} />
-        <GuidedNotes key={beatIndex} guidedNotes={guidedNotes} onDone={() => setPhase('beat-practice')} />
+        {/* Same three routes as the teach screen — a beat with no drill must
+            not be sent to one from here either. */}
+        <GuidedNotes
+          key={beatIndex}
+          guidedNotes={guidedNotes}
+          onDone={() => (beatHasPractice(beat) ? setPhase('beat-practice') : leaveBeatTeaching())}
+        />
       </div>
     );
   }

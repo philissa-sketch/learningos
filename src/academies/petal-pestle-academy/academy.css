@@ -1,0 +1,119 @@
+/*
+ * ---- THIS ACADEMY'S SKIN ----
+ *
+ * This was src/index.css in the app this Academy came from: cream ground, a
+ * lavender and petal wash across the top, ink dark enough to read all day, and
+ * the print rules its records need.
+ *
+ * ---- WHY IT IS PLAIN CSS AND NOT THE ORIGINAL FILE ----
+ *
+ * The original used `@tailwind` directives and `@apply` against its own app's
+ * design tokens — font-body, text-ink-900, rounded-petal, bg-cream-100,
+ * shadow-petal, lavender-300. None of those tokens exist here, and `@apply`
+ * with an unknown class is a BUILD FAILURE, not a missing style. Copying the
+ * file across would have broken the build rather than looked wrong.
+ *
+ * So the palette is expressed the way this platform expresses palettes: as the
+ * CSS variables tailwind.config.js already reads. Every `bg-space-900`,
+ * `text-ink-100` and `border-space-700` in the whole school repaints from the
+ * values below, with no component changed and every opacity modifier still
+ * working.
+ *
+ * ---- WHY THERE IS NO @layer IN HERE ----
+ *
+ * PostCSS processes every stylesheet as its own entry, and an Academy sheet is
+ * imported by a component rather than by the entry that emits `@tailwind`. A
+ * bare `@layer` has no directive to attach to and fails the build. This cost a
+ * deploy once. Plain CSS, on purpose — see _template/theme/template.css.
+ *
+ * ---- WHY THE CHANNELS ARE SPACE-SEPARATED AND NOT HEX ----
+ *
+ * tailwind.config.js reads these as `rgb(var(--x) / <alpha-value>)`. A hex here
+ * breaks every opacity modifier in the app SILENTLY — nothing errors, the
+ * colours simply stop responding. scripts/verify-academy-css.mjs checks for it,
+ * because it is invisible when reading the file.
+ */
+
+/*
+ * ---- A LIGHT SCHOOL, WHICH IS NEW ----
+ *
+ * The platform's ink was three fixed hex values chosen for a dark page until
+ * this Academy arrived; it is variable now, which is what makes cream possible.
+ * If text ever comes back pale on cream, the cause is `ink` having been welded
+ * shut again upstream, not anything in this file.
+ *
+ * The ramp runs the opposite way to a dark school on purpose: 950 is the
+ * PALEST here, because it is the deepest background, and the deepest
+ * background in this school is nearly white.
+ */
+:root {
+  --space-950: 255 252 248; /* the page — warm cream, never pure white */
+  --space-900: 253 249 244; /* panels sitting on the page */
+  --space-800: 250 245 238; /* raised surface */
+  --space-700: 232 223 211; /* panel border */
+  --space-600: 214 204 238; /* hairline / divider — a lavender tint */
+
+  --accent: 138 116 186;    /* lavender, the primary accent */
+  --accent-glow: rgba(138, 116, 186, 0.08);
+
+  /* Ink dark enough to read for a school day, warm rather than pure black. */
+  --ink-100: 42 38 51;      /* primary text */
+  --ink-300: 88 80 102;     /* secondary text */
+  --ink-500: 132 124 146;   /* muted / captions */
+}
+
+/*
+ * The wash. Two soft ellipses over cream — lavender top left, petal top right.
+ * It is the first thing she sees every morning and it is the whole reason this
+ * school does not look like a worksheet.
+ */
+body {
+  background:
+    radial-gradient(ellipse at top left, rgba(214, 204, 238, 0.35), transparent 45%),
+    radial-gradient(ellipse at top right, rgba(247, 198, 208, 0.3), transparent 45%),
+    rgb(var(--space-950));
+  color: rgb(var(--ink-100));
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: rgba(214, 204, 238, 0.75);
+}
+
+/* A nine-year-old taps and clicks fast. Nothing should feel like it snapped. */
+button {
+  transition:
+    background-color 150ms ease,
+    border-color 150ms ease,
+    color 150ms ease,
+    filter 150ms ease;
+}
+
+/*
+ * ---- PRINT ----
+ *
+ * Her records get printed: the report, the levels page, the certificates. The
+ * wash above must not follow them onto paper, and neither must anything that
+ * only exists to be tapped.
+ */
+@media print {
+  .print-hide {
+    display: none !important;
+  }
+
+  body {
+    background: white !important;
+  }
+
+  .print-content,
+  .print-content * {
+    background: white !important;
+    color: black !important;
+    border-color: #ccc !important;
+    box-shadow: none !important;
+  }
+
+  @page {
+    margin: 0.5in;
+  }
+}

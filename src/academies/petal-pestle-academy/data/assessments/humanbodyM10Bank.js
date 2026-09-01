@@ -1,0 +1,71 @@
+// ---------------------------------------------------------------------------
+// THE HUMAN BODY · MODULE 10 BANK — 40 questions, 10 per lesson.
+//
+// Answer slots assigned from a fixed balanced pattern at build time: 10/10/10/10.
+//
+// ---- WHERE THE MATHS SITS ----
+//
+// Lesson 2 carries FIVE unit-conversion questions (metres to centimetres and
+// back). Lesson 3 carries FOUR area-and-perimeter questions on a counted grid.
+// Those are the two items her Check-In put at the test floor — units 0 of 3,
+// perimeter 0 of 3, area 0 of 2 — and they are asked here inside a body
+// question, not bolted on as arithmetic drill.
+//
+// ---- SAFETY ----
+//
+// Nothing about calories, amounts, "good" and "bad" foods, weight, appearance,
+// probiotics, supplements, or anybody's own digestion. Gut bacteria is asked
+// about as biology and nothing else.
+// ---------------------------------------------------------------------------
+
+export const HUMANBODY_M10_BANK = [
+  // ============================================ body-m10-01
+  { id: 't-bodym1001a', lesson: 'body-m10-01', prompt: 'Your gut is best described as:', choices: ['Many separate bags', 'A solid block', 'One connected tube', 'A single pouch'], answer: 2, feedback: ['It is joined all the way.', 'It is hollow.', null, 'It is long, not round.'], why: 'Mouth to end, joined throughout.' },
+  { id: 't-bodym1001b', lesson: 'body-m10-01', prompt: 'Food sitting in your gut is:', choices: ['Still passing through', 'Inside your blood', 'Part of your muscles', 'Gone'], answer: 0, feedback: [null, 'Not until it crosses the wall.', 'Nothing is built from it yet.', 'It is still there.'], why: 'The tube counts as outside.' },
+  { id: 't-bodym1001c', lesson: 'body-m10-01', prompt: 'What pushes food along the tube?', choices: ['Gravity', 'Breathing', 'Nothing at all', 'Waves of muscle squeezing'], answer: 3, feedback: ['Astronauts digest food too.', 'Breathing moves air.', 'Something must move it.', null], why: 'Squeezing waves travel behind it.' },
+  { id: 't-bodym1001d', lesson: 'body-m10-01', prompt: 'You could digest food lying upside down because:', choices: ['Food is light', 'Muscle waves do the pushing', 'Gravity works both ways', 'You could not'], answer: 1, feedback: ['Weight is not the point.', null, 'Gravity pulls one way.', 'You could.'], why: 'The tube pushes for itself.' },
+  { id: 't-bodym1001e', lesson: 'body-m10-01', prompt: 'The order food meets the parts is:', choices: ['Stomach, mouth, intestines', 'Mouth, stomach, intestines', 'Intestines, stomach, mouth', 'All at the same time'], answer: 1, feedback: ['The mouth is first.', null, 'That is backwards.', 'It is a journey, in order.'], why: 'One direction, start to end.' },
+  { id: 't-bodym1001f', lesson: 'body-m10-01', prompt: 'A doughnut is used as a model because:', choices: ['It is sweet', 'It is round', 'It is soft', 'It has a hole running through'], answer: 3, feedback: ['Taste is not the point.', 'Shape alone is not it.', 'Softness is not it.', null], why: 'Food travels in the hole.' },
+  { id: 't-bodym1001g', lesson: 'body-m10-01', prompt: 'The walls of the gut tube are made of:', choices: ['Muscle', 'Bone', 'Skin', 'Nothing'], answer: 0, feedback: [null, 'No bones in the gut.', 'Skin is outside.', 'They are real walls.'], why: 'Muscle is what can squeeze.' },
+  { id: 't-bodym1001h', lesson: 'body-m10-01', prompt: 'A squeezing wave travels:', choices: ['In front of the food', 'In both directions', 'Behind the food, pushing it on', 'Not at all'], answer: 2, feedback: ['That would block it.', 'It would go nowhere.', null, 'It very much does.'], why: 'Like squeezing a toothpaste tube.' },
+  { id: 't-bodym1001i', lesson: 'body-m10-01', prompt: 'Drawing the journey on a strip of paper shows:', choices: ['How big she is', 'What she should eat', 'How fast food moves', 'The order of the parts'], answer: 3, feedback: ['Nothing about her is drawn.', 'No food advice here.', 'Speed is not shown.', null], why: 'A map of the route, in order.' },
+  { id: 't-bodym1001j', lesson: 'body-m10-01', prompt: 'Squeezing a toothpaste tube from the bottom moves paste:', choices: ['Down', 'Up and out', 'Nowhere', 'Sideways only'], answer: 1, feedback: ['The squeeze pushes it on.', null, 'It does move.', 'It moves along the tube.'], why: 'The same trick your gut uses.' },
+
+  // ============================================ body-m10-02
+  { id: 't-bodym1002a', lesson: 'body-m10-02', prompt: 'The small intestine is about:', choices: ['Seven metres long', 'Seven centimetres long', 'Seventy metres long', 'One metre long'], answer: 0, feedback: [null, 'That is shorter than a ruler.', 'Ten times too long.', 'Far too short.'], why: 'Coiled behind the belly button.' },
+  { id: 't-bodym1002b', lesson: 'body-m10-02', prompt: 'Seven metres written in centimetres is:', choices: ['70 cm', '7000 cm', '700 cm', '7 cm'], answer: 2, feedback: ['That is under a metre.', 'That would be seventy metres.', null, 'The unit has to change too.'], why: 'One metre is a hundred centimetres.' },
+  { id: 't-bodym1002c', lesson: 'body-m10-02', prompt: 'Three metres written in centimetres is:', choices: ['30 cm', '3000 cm', '300 cm', '3 cm'], answer: 2, feedback: ['Ten times too small.', 'Ten times too big.', null, 'The unit did not change.'], why: '3 × 100 = 300.' },
+  { id: 't-bodym1002d', lesson: 'body-m10-02', prompt: 'Five hundred centimetres is the same as:', choices: ['5 metres', '50 metres', '500 metres', 'Half a metre'], answer: 0, feedback: [null, 'Ten times too many.', 'A hundred times too many.', 'Far too short.'], why: '500 ÷ 100 = 5.' },
+  { id: 't-bodym1002e', lesson: 'body-m10-02', prompt: 'A longer small intestine means:', choices: ['Food moves faster', 'More time to take useful bits out', 'Less room for food', 'Food weighs more'], answer: 1, feedback: ['Longer takes longer.', null, 'It holds more, not less.', 'Length is not weight.'], why: 'More time in the stream, more gold.' },
+  { id: 't-bodym1002f', lesson: 'body-m10-02', prompt: 'Seven metres fits inside you because it is:', choices: ['Stretchy', 'Very thin', 'Cut in pieces', 'Coiled and folded'], answer: 3, feedback: ['Stretch is not the reason.', 'Thin, but that is not it.', 'It is one whole tube.', null], why: 'Wound round to fit a small space.' },
+  { id: 't-bodym1002g', lesson: 'body-m10-02', prompt: 'Your own small intestine is:', choices: ['Exactly seven metres', 'Longer than a grown-up’s', 'Not there yet', 'Shorter, because you are shorter'], answer: 3, feedback: ['Seven is the grown-up figure.', 'Yours is shorter.', 'You have one already.', null], why: 'It grows as you do.' },
+  { id: 't-bodym1002h', lesson: 'body-m10-02', prompt: 'Measuring string in metres and centimetres practises:', choices: ['Weighing', 'Changing units', 'Telling time', 'Counting money'], answer: 1, feedback: ['Nothing is weighed.', null, 'No clock is used.', 'No money here.'], why: 'The same length written two ways.' },
+  { id: 't-bodym1002i', lesson: 'body-m10-02', prompt: 'Two metres and fifty centimetres is the same as:', choices: ['2050 cm', '25 cm', '250 cm', '2500 cm'], answer: 2, feedback: ['That reads it wrongly.', 'Ten times too small.', null, 'Ten times too big.'], why: '200 + 50 = 250.' },
+  { id: 't-bodym1002j', lesson: 'body-m10-02', prompt: 'Coiling the string into a pile changes:', choices: ['How much space it takes up', 'How long it is', 'Its weight', 'Its colour'], answer: 0, feedback: [null, 'Length stays the same.', 'Weight stays the same.', 'Colour stays the same.'], why: 'Same length, less space.' },
+
+  // ============================================ body-m10-03
+  { id: 't-bodym1003a', lesson: 'body-m10-03', prompt: 'The inside wall of the small intestine is:', choices: ['Smooth like glass', 'Covered in tiny fingers', 'Made of bone', 'Completely dry'], answer: 1, feedback: ['That is the opposite.', null, 'No bone in the gut.', 'It is wet.'], why: 'Shaggy, like a towel.' },
+  { id: 't-bodym1003b', lesson: 'body-m10-03', prompt: 'Folding a surface many times means:', choices: ['There is less of it', 'It gets smoother', 'It gets heavier', 'More of it fits in the same space'], answer: 3, feedback: ['Folding hides it, not removes it.', 'It gets rougher.', 'Weight is unchanged.', null], why: 'A folded towel keeps all its surface.' },
+  { id: 't-bodym1003c', lesson: 'body-m10-03', prompt: 'A rectangle 4 squares by 3 squares has an area of:', choices: ['12 squares', '7 squares', '14 squares', '4 squares'], answer: 0, feedback: [null, 'That is adding the sides.', 'That is the perimeter.', 'That is one side.'], why: '4 × 3 = 12.' },
+  { id: 't-bodym1003d', lesson: 'body-m10-03', prompt: 'That same rectangle has a perimeter of:', choices: ['12 squares', '7 squares', '14 squares', '24 squares'], answer: 2, feedback: ['That is the area.', 'That is one side plus another.', null, 'That is doubled twice.'], why: '4 + 3 + 4 + 3 = 14.' },
+  { id: 't-bodym1003e', lesson: 'body-m10-03', prompt: 'A strip 12 squares by 1 square has an area of:', choices: ['12 squares', '13 squares', '26 squares', '1 square'], answer: 0, feedback: [null, 'That is adding the sides.', 'That is the perimeter.', 'That is one side.'], why: '12 × 1 = 12.' },
+  { id: 't-bodym1003f', lesson: 'body-m10-03', prompt: 'Compared with the 4 by 3 rectangle, the long strip has:', choices: ['More area', 'Less area', 'The same area but more edge', 'The same edge'], answer: 2, feedback: ['Both are 12.', 'Both are 12.', null, 'The strip has far more.'], why: 'Long and thin buys edge.' },
+  { id: 't-bodym1003g', lesson: 'body-m10-03', prompt: 'Food finally enters your body when it:', choices: ['Is swallowed', 'Reaches the stomach', 'Is chewed', 'Crosses the gut wall into blood'], answer: 3, feedback: ['Still in the tube.', 'Still in the tube.', 'Only smaller pieces.', null], why: 'Across the wall, into the blood.' },
+  { id: 't-bodym1003h', lesson: 'body-m10-03', prompt: 'Inside each tiny finger of the lining there are:', choices: ['Bones', 'Blood vessels', 'Muscles only', 'Nothing'], answer: 1, feedback: ['No bones there.', null, 'Blood is the point.', 'They are not empty.'], why: 'Blood waiting on the other side.' },
+  { id: 't-bodym1003i', lesson: 'body-m10-03', prompt: 'The gut wall has to be:', choices: ['As thick as possible', 'Made of bone', 'Thin enough to cross', 'Completely sealed'], answer: 2, feedback: ['Thick would block it.', 'No bone.', null, 'Then nothing could get in.'], why: 'The same trick as the lungs.' },
+  { id: 't-bodym1003j', lesson: 'body-m10-03', prompt: 'A towel dries you and glass does not because the towel has:', choices: ['Far more surface', 'More weight', 'A smoother face', 'More colour'], answer: 0, feedback: [null, 'Weight is not it.', 'Rougher, not smoother.', 'Colour is not it.'], why: 'Folded fibres, huge surface.' },
+
+  // ============================================ body-m10-04
+  { id: 't-bodym1004a', lesson: 'body-m10-04', prompt: 'The main job of the large intestine is:', choices: ['Chewing', 'Taking water back', 'Making blood', 'Pumping'], answer: 1, feedback: ['That was the very start.', null, 'Bones do that.', 'The heart does that.'], why: 'So your body does not lose it.' },
+  { id: 't-bodym1004b', lesson: 'body-m10-04', prompt: 'Compared with the small intestine, the large one is:', choices: ['Narrower and longer', 'The same', 'Not connected', 'Wider and shorter'], answer: 3, feedback: ['That is the small one.', 'They differ.', 'It is joined on.', null], why: 'Wider, and much shorter.' },
+  { id: 't-bodym1004c', lesson: 'body-m10-04', prompt: 'The tiny living things in your gut are:', choices: ['Always harmful', 'Not really alive', 'Only there when ill', 'Mostly helpful and meant to be there'], answer: 3, feedback: ['Most do a useful job.', 'They are alive and grow.', 'They live there always.', null], why: 'They break down bits you cannot.' },
+  { id: 't-bodym1004d', lesson: 'body-m10-04', prompt: 'You start with 200 ml and 60 ml stays in the sponge. What is left?', choices: ['260 ml', '140 ml', '120 ml', '160 ml'], answer: 1, feedback: ['That is adding them.', null, 'Check the subtraction.', 'Check the subtraction.'], why: '200 − 60 = 140.' },
+  { id: 't-bodym1004e', lesson: 'body-m10-04', prompt: 'A thousand millilitres make:', choices: ['One metre', 'One gram', 'One litre', 'Ten litres'], answer: 2, feedback: ['That is a length.', 'That is a weight.', null, 'A hundred times too many.'], why: 'Millilitres measure liquid.' },
+  { id: 't-bodym1004f', lesson: 'body-m10-04', prompt: 'The sponge in the activity stood for:', choices: ['The gut lining soaking water up', 'The stomach', 'A tooth', 'The heart'], answer: 0, feedback: [null, 'That was the bag model.', 'Teeth came earlier.', 'The heart is a pump.'], why: 'Absorbing is soaking up.' },
+  { id: 't-bodym1004g', lesson: 'body-m10-04', prompt: 'Scientists study gut bacteria because:', choices: ['Most of them are helpful', 'They are all dangerous', 'There are only a few', 'They are easy to see'], answer: 0, feedback: [null, 'Most are not.', 'There are huge numbers.', 'They are far too small.'], why: 'Helpful is the interesting part.' },
+  { id: 't-bodym1004h', lesson: 'body-m10-04', prompt: 'To absorb something means to:', choices: ['Push it away', 'Break it apart', 'Soak it up and take it in', 'Measure it'], answer: 2, feedback: ['That is the opposite.', 'That is digesting.', null, 'That is measuring.'], why: 'Like a sponge with water.' },
+  { id: 't-bodym1004i', lesson: 'body-m10-04', prompt: 'By the time food reaches the large intestine, most useful bits are:', choices: ['Still there', 'Already taken out', 'Only just arriving', 'Never removed'], answer: 1, feedback: ['The seven metres did that.', null, 'They came out earlier.', 'They are removed.'], why: 'The small intestine got there first.' },
+  { id: 't-bodym1004j', lesson: 'body-m10-04', prompt: 'In the sponge activity, nothing should be:', choices: ['Measured', 'Written down', 'Squeezed', 'Drunk or tasted'], answer: 3, feedback: ['Measuring is the activity.', 'Writing it up is the point.', 'Squeezing is the activity.', null], why: 'Water and sponge only, over a tray.' },
+];
+
+export default HUMANBODY_M10_BANK;
