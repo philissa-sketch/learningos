@@ -35,6 +35,16 @@ import { SCHOOL_YEAR, periodFor } from './config/calendar.js';
 import { getDailyLine } from './data/mentor/marigoldLines.js';
 import { ALL_LESSONS } from './data/lessons/appCourses.js';
 import { allItems, itemsForStrand, getItem, bankSummary } from './data/diagnostic/index.js';
+import { WEEKS, allWeeks, weekById, weekForLesson, weekTestReady, BANDS, bandFor } from './config/assessment.js';
+import {
+  ALL_BANK_ITEMS,
+  BANKS,
+  allBankItems,
+  itemsForLesson,
+  itemsForLessons,
+  bankItemById,
+  courseOfQuestion
+} from './data/assessments/appBank.js';
 
 /* ==========================================================================
  * DATES
@@ -313,6 +323,37 @@ export const guide = { getDailyLine };
  * ======================================================================== */
 
 export const placement = { allItems, itemsForStrand, getItem, bankSummary };
+
+/* ==========================================================================
+ * EXAMS
+ *
+ * The school reads NO names out of this slot today — its own exam screens were
+ * built against a different shape and have not been generalised yet. So this is
+ * carried rather than consumed, and that is the point: the banks are 2,560
+ * written and checked items, and data preserved costs nothing while data
+ * dropped is gone.
+ *
+ * `WEEKS` and the assessment rules come from config/assessment.js; the question
+ * banks come from data/assessments/. Both belong to the same idea — what gets
+ * tested, when, and how it is scored — so they fill one slot together.
+ * ======================================================================== */
+
+export const exams = {
+  WEEKS,
+  allWeeks,
+  weekById,
+  weekForLesson,
+  weekTestReady,
+  BANDS,
+  bandFor,
+  ALL_BANK_ITEMS,
+  BANKS,
+  allBankItems,
+  itemsForLesson,
+  itemsForLessons,
+  bankItemById,
+  courseOfQuestion
+};
 
 /* ==========================================================================
  * THEME

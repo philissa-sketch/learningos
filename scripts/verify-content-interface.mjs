@@ -217,9 +217,27 @@ for (const folder of academyFolders) {
   }
   const manifest = fs.readFileSync(manifestPath, 'utf8');
 
+  /**
+   * A MANIFEST MAY RENAME ON THE WAY IN — `{ allLessons: ALL_LESSONS }`.
+   *
+   * This used to read the whole entry as the name, so a slot written that way
+   * looked EMPTY: `allLessons: ALL_LESSONS` matched nothing called
+   * `allLessons`. The generated manifest never renames — it imports the exact
+   * identifiers the school asks for — so nothing exercised this until an
+   * Academy whose files use its own vocabulary had to translate.
+   *
+   * The contract is the key, on the left. scan-content-needs.mjs has always
+   * read it that way (`s.split(':')[0]`); this is the two agreeing.
+   *
+   * Comments are stripped first for the same reason: a prose line inside a slot
+   * is not a name, and a manifest worth reading has prose in it.
+   */
   const provided = new Map();
   for (const m of manifest.matchAll(/export const (\w+) = \{([^}]*)\}/g)) {
-    for (const n of m[2].split(',').map((s) => s.trim()).filter(Boolean)) {
+    const body = m[2].replace(/\/\/[^\n]*/g, '').replace(/\/\*[\s\S]*?\*\//g, '');
+    for (const entry of body.split(',')) {
+      const n = entry.split(':')[0].trim();
+      if (!n || !/^[A-Za-z_$][\w$]*$/.test(n)) continue;
       if (!provided.has(n)) provided.set(n, []);
       provided.get(n).push(m[1]);
     }
@@ -234,12 +252,49 @@ for (const folder of academyFolders) {
     dupes.map(([n, s]) => `${n} in ${s.join(', ')}`).join('; ')
   );
 
-  const missing = needs.names.filter((n) => !provided.has(n));
-  ok(
-    `${folder}: provides every name the school asks for`,
-    missing.length === 0,
-    `${missing.length} missing: ${missing.slice(0, 8).join(', ')}`
+  /**
+   * ---- A BLANK SLOT IS LEGITIMATE. A HOLE INSIDE A FILLED ONE IS NOT ----
+   *
+   * This used to assert that every Academy supplies all 162 names the school
+   * reads. That was true of a platform with one Academy in it and became wrong
+   * the moment a second arrived: it demanded a guitar ladder and a garden
+   * calendar from a learner who has neither, and the only way to pass was to
+   * invent them.
+   *
+   * The contract already said otherwise — src/content/academyContent.js: *"A
+   * slot an Academy has nothing for is left blank. Blank is expected and costs
+   * nothing; it is the difference between a slot and a requirement."* The check
+   * had simply never been taught it.
+   *
+   * ---- WHAT IS STILL GUARDED, AND IT IS THE PART THAT BITES ----
+   *
+   * A slot an Academy DOES fill must be complete. Half a slot is the dangerous
+   * state: the tab renders because the slot exists, the screen destructures a
+   * name that was never supplied, and it breaks in front of a child rather than
+   * here. So the rule is per-slot, not per-name-in-the-build.
+   *
+   * This is a NARROWING, and it is only safe because the nav now gates on slot
+   * presence (components/Navigation/NavBar.jsx `needs`) and App.jsx refuses a
+   * view whose slot is absent. Remove either of those and this check stops
+   * covering the gap it was narrowed to leave. Do not narrow it further.
+   */
+  const filledSlots = new Set(
+    [...manifest.matchAll(/export const (\w+) = /g)].map((m) => m[1])
   );
+
+  const missing = needs.names.filter(
+    (n) => !provided.has(n) && filledSlots.has(needs.nameToSlot[n])
+  );
+  ok(
+    `${folder}: every slot it fills, it fills completely`,
+    missing.length === 0,
+    `${missing.length} missing from slots this Academy DOES fill: ${missing.slice(0, 8).join(', ')}`
+  );
+
+  const blankSlots = slots.filter((s) => !filledSlots.has(s));
+  if (blankSlots.length) {
+    console.log(`      ${folder} leaves blank, legitimately: ${blankSlots.join(', ')}`);
+  }
 
   const declaresSlots = [...manifest.matchAll(/export const (\w+) = /g)].map((m) => m[1]);
   const strange = declaresSlots.filter((s) => !slots.includes(s));

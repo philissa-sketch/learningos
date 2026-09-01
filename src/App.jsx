@@ -1,7 +1,8 @@
 import { lazy, Suspense, useEffect, useState } from 'react';
 import { useAppStore } from './store/useAppStore.js';
 import { applyTheme } from './lib/themes.js';
-import { NavBar } from './components/Navigation/NavBar.jsx';
+import { NavBar, viewIsAvailable } from './components/Navigation/NavBar.jsx';
+import { academyContent } from './content/academyContent.js';
 import { MissionControlDashboard } from './components/Dashboard/MissionControlDashboard.jsx';
 // ParentGate is deliberately NOT lazy-loaded like the dashboard it wraps.
 // It is small, and it has to render the lock screen without pulling the
@@ -130,7 +131,26 @@ export default function App({ initialView = 'dashboard', onSignOut }) {
   const [dbNotice, setDbNotice] = useState(null);
   const recordActiveMinute = useAppStore((s) => s.recordActiveMinute);
   const recordStudyCycleDay = useAppStore((s) => s.recordStudyCycleDay);
-  const [view, setView] = useState(initialView); // 'dashboard' | 'progress' | 'lessons' | 'games' | 'journal' | 'typing' | 'schedule' | 'academic' | 'pe' | 'garden' | 'guitar' | 'messages' | 'morning' | 'parent'
+  const [rawView, setRawView] = useState(initialView); // 'dashboard' | 'progress' | 'lessons' | 'games' | 'journal' | 'typing' | 'schedule' | 'academic' | 'pe' | 'garden' | 'guitar' | 'messages' | 'morning' | 'parent'
+
+  /**
+   * ---- A VIEW THIS ACADEMY CANNOT OPEN FALLS BACK ----
+   *
+   * Hiding a tab in the nav stops it being CHOSEN; it does not stop it being
+   * REACHED. `initialView` is restored from the last session, cards deep in the
+   * dashboard call setView('garden') directly, and a view that outlives the
+   * content it needs would render a screen reading names nobody supplied.
+   *
+   * So availability is checked where the view is USED rather than only where it
+   * is offered — the nav and the router agreeing because they ask the same
+   * function, not because two lists were kept in step by hand.
+   *
+   * Falling back to the dashboard rather than throwing: an Academy without a
+   * garden has done nothing wrong, and a blank screen would be a worse answer
+   * than the room it already has.
+   */
+  const view = viewIsAvailable(rawView, academyContent()) ? rawView : 'dashboard';
+  const setView = setRawView;
   // Which Scheduler view to open on. Set by the Morning Meeting's look-ahead
   // step; 'daily' everywhere else, which is what the nav has always done.
   const [scheduleMode, setScheduleMode] = useState('daily');

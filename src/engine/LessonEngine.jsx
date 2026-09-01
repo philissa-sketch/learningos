@@ -139,8 +139,47 @@ export function LessonEngine({ lesson, onExit, onOpenView }) {
   const legacyPracticeTarget = lesson.novaIntro?.practiceCount || 20;
   const legacyPracticeGenerator = legacyHasPractice ? getTemplateById(lesson.novaIntro.practiceGeneratorId) : null;
 
+  /**
+   * ---- WHAT A LESSON IS, WHEN IT IS NOT ALL ON THE SCREEN ----
+   *
+   * This engine grew around lessons that happen entirely at a keyboard: teach,
+   * drill, test. A lesson can also be forty-five minutes with twenty of them
+   * away from the screen — split a soaked bean, set four bags on a windowsill,
+   * write down what you saw — and the reading around that is not the lesson,
+   * it is the packaging.
+   *
+   * Four optional stages, each skipped when the lesson has no data for it:
+   *
+   *   `check-in`  — the opener, before any teaching. A thing to look at and a
+   *                 question with no right answer yet.
+   *   `activity`  — the hands-on middle: what to prepare, what is needed, the
+   *                 steps, and the safety line, which is never optional when
+   *                 it exists.
+   *   `ledger`    — what gets written down, plus the coaching for when she is
+   *                 stuck. Explicitly not graded where a lesson says so.
+   *   `practice`  — spoken questions with their answers, for the grown-up
+   *                 sitting beside her. Not a quiz; the answers are shown.
+   *
+   * None of them names a subject, a career or a learner. They are what a school
+   * day is made of, so they belong here rather than in any one folder.
+   */
+  const AFTER_BEATS = ['activity', 'ledger', 'practice', 'test'];
+
+  const lessonHasStage = (stage) => {
+    if (stage === 'test') return true;
+    if (stage === 'practice') return Array.isArray(lesson.practice) && lesson.practice.length > 0;
+    return Boolean(lesson[stage]);
+  };
+
+  /** The first stage after the beats this lesson actually has. */
+  const stageAfterBeats = (from = 0) => AFTER_BEATS.slice(from).find(lessonHasStage) || 'test';
+
+  /** The stage after the one named, so each screen's button knows where to go. */
+  const stageAfter = (stage) => stageAfterBeats(AFTER_BEATS.indexOf(stage) + 1);
+
   const [phase, setPhase] = useState(() => {
     if (lesson.passage) return 'passage';
+    if (lesson.checkIn) return 'check-in';
     if (hasBeats) return 'beat-teach';
     if (lesson.novaIntro) return 'briefing'; // legacy single-briefing flow
     return 'test';
@@ -359,7 +398,11 @@ export function LessonEngine({ lesson, onExit, onOpenView }) {
       setPracticeQuestion(nextGen ? nextGen.build() : null);
       setPhase('beat-teach');
     } else {
-      setPhase('test');
+      // The beats are done. What follows is whatever this lesson actually has —
+      // the hands-on activity, the ledger, the spoken practice — and the test
+      // only once none of those are left. It used to go straight to the test,
+      // which for a lesson built around its middle meant skipping the lesson.
+      setPhase(stageAfterBeats());
     }
   };
 
@@ -551,6 +594,222 @@ export function LessonEngine({ lesson, onExit, onOpenView }) {
           className="w-full rounded-lg bg-signal-cyan px-4 py-2 font-display font-700 text-space-950 transition hover:brightness-110"
         >
           Begin Questions
+        </button>
+      </div>
+    );
+  }
+
+  // ---- Check-in — the opener, before any teaching happens ----
+  //
+  // A thing to look at and a question she is not expected to be able to answer
+  // yet. Nothing is submitted and nothing is scored: the point is to have
+  // wondered about it before being told.
+  if (phase === 'check-in') {
+    const checkIn = lesson.checkIn;
+    return (
+      <div className="mx-auto max-w-2xl space-y-4 px-4 py-6 sm:px-6">
+        <ExitBar label={lesson.title} />
+        <NovaMessage label="Check-in" tone="brief">
+          {checkIn.title && (
+            <p className="font-display text-sm font-700 text-signal-cyan">{checkIn.title}</p>
+          )}
+          {checkIn.text && <p className="mt-2 leading-relaxed">{checkIn.text}</p>}
+          {checkIn.question && (
+            <div className="mt-3 rounded-lg border border-signal-amber/30 bg-signal-amber/5 p-3">
+              <p className="text-xs font-display uppercase tracking-widest text-signal-amber">
+                Think about it
+              </p>
+              <p className="mt-1 leading-relaxed">{checkIn.question}</p>
+            </div>
+          )}
+        </NovaMessage>
+        <button
+          type="button"
+          onClick={() =>
+            setPhase(hasBeats ? 'beat-teach' : lesson.novaIntro ? 'briefing' : stageAfterBeats())
+          }
+          className="w-full rounded-lg bg-signal-cyan px-4 py-2 font-display font-700 text-space-950 transition hover:brightness-110"
+        >
+          Start the Lesson
+        </button>
+      </div>
+    );
+  }
+
+  // ---- Activity — the part that happens away from the screen ----
+  //
+  // Rendered as a thing to DO, in the order it is done: what to get ready,
+  // what is needed, the steps, and the safety line last so it is the thing
+  // still on screen when she stands up.
+  if (phase === 'activity') {
+    const activity = lesson.activity;
+    return (
+      <div className="mx-auto max-w-2xl space-y-4 px-4 py-6 sm:px-6">
+        <ExitBar label={lesson.title} />
+        <div className="rounded-xl border border-space-700 bg-space-800 p-6 shadow-panel">
+          <p className="text-xs font-display uppercase tracking-widest text-signal-green">
+            Do This{activity.minutes ? ` — about ${activity.minutes} minutes` : ''}
+          </p>
+          {activity.title && (
+            <h2 className="mt-2 font-display text-2xl font-700 text-ink-100">{activity.title}</h2>
+          )}
+
+          {activity.prep && (
+            <div className="mt-4 rounded-lg border border-signal-amber/30 bg-signal-amber/5 p-3">
+              <p className="text-xs font-display uppercase tracking-widest text-signal-amber">
+                Get ready first
+              </p>
+              <p className="mt-1 text-sm text-ink-200">{activity.prep}</p>
+            </div>
+          )}
+
+          {Array.isArray(activity.needs) && activity.needs.length > 0 && (
+            <div className="mt-4">
+              <p className="text-xs font-display uppercase tracking-widest text-signal-cyan">
+                What you need
+              </p>
+              <ul className="mt-2 grid gap-1 text-sm text-ink-300 sm:grid-cols-2">
+                {activity.needs.map((need, i) => (
+                  <li key={i}>· {need}</li>
+                ))}
+              </ul>
+            </div>
+          )}
+
+          {Array.isArray(activity.steps) && activity.steps.length > 0 && (
+            <ol className="mt-4 space-y-2 text-ink-200">
+              {activity.steps.map((step, i) => (
+                <li key={i} className="flex gap-3">
+                  <span className="font-display text-sm font-700 text-signal-cyan">{i + 1}</span>
+                  <span className="leading-relaxed">{step}</span>
+                </li>
+              ))}
+            </ol>
+          )}
+
+          {/* Last, and loud. A safety line scrolled past is a safety line that
+              was not read. */}
+          {activity.safety && (
+            <div className="mt-4 rounded-lg border border-signal-red/40 bg-signal-red/5 p-3">
+              <p className="text-xs font-display uppercase tracking-widest text-signal-red">Safety</p>
+              <p className="mt-1 text-sm text-ink-100">{activity.safety}</p>
+            </div>
+          )}
+        </div>
+        <button
+          type="button"
+          onClick={() => setPhase(stageAfter('activity'))}
+          className="w-full rounded-lg bg-signal-cyan px-4 py-2 font-display font-700 text-space-950 transition hover:brightness-110"
+        >
+          Done — What Next
+        </button>
+      </div>
+    );
+  }
+
+  // ---- Ledger — what gets written down ----
+  //
+  // The record of the work, and the coaching for a learner who has stalled.
+  // `ifSheIsStuck` is deliberately shown to the grown-up rather than hidden
+  // behind a hint button: the person who needs it is sitting beside her.
+  if (phase === 'ledger') {
+    const ledger = lesson.ledger;
+    const game = ledger.game;
+    return (
+      <div className="mx-auto max-w-2xl space-y-4 px-4 py-6 sm:px-6">
+        <ExitBar label={lesson.title} />
+        <div className="rounded-xl border border-space-700 bg-space-800 p-6 shadow-panel">
+          <p className="text-xs font-display uppercase tracking-widest text-signal-cyan">
+            Write It Down
+          </p>
+
+          {Array.isArray(ledger.tasks) && ledger.tasks.length > 0 && (
+            <ul className="mt-3 space-y-2 text-ink-200">
+              {ledger.tasks.map((task, i) => (
+                <li key={i} className="flex gap-3">
+                  <span aria-hidden="true" className="text-ink-500">☐</span>
+                  <span className="leading-relaxed">{task}</span>
+                </li>
+              ))}
+            </ul>
+          )}
+
+          {game && (
+            <div className="mt-4 rounded-lg border border-space-600 bg-space-900 p-3">
+              {game.title && (
+                <p className="font-display text-sm font-700 text-signal-green">{game.title}</p>
+              )}
+              {Array.isArray(game.cards) && game.cards.length > 0 && (
+                <p className="mt-2 font-mono text-xs uppercase tracking-widest text-ink-300">
+                  {game.cards.join(' · ')}
+                </p>
+              )}
+              {Array.isArray(game.rounds) && (
+                <ol className="mt-2 space-y-1 text-sm text-ink-200">
+                  {game.rounds.map((round, i) => (
+                    <li key={i}>
+                      {i + 1}. {round}
+                    </li>
+                  ))}
+                </ol>
+              )}
+              {game.ifSheIsStuck && (
+                <p className="mt-3 border-t border-space-700 pt-2 text-sm text-ink-300">
+                  <span className="font-display text-xs uppercase tracking-widest text-ink-500">
+                    If she is stuck ·{' '}
+                  </span>
+                  {game.ifSheIsStuck}
+                </p>
+              )}
+            </div>
+          )}
+
+          {ledger.note && <p className="mt-4 text-sm italic text-ink-300">{ledger.note}</p>}
+        </div>
+        <button
+          type="button"
+          onClick={() => setPhase(stageAfter('ledger'))}
+          className="w-full rounded-lg bg-signal-cyan px-4 py-2 font-display font-700 text-space-950 transition hover:brightness-110"
+        >
+          Continue
+        </button>
+      </div>
+    );
+  }
+
+  // ---- Spoken practice — asked out loud, with the answers shown ----
+  //
+  // NOT a quiz, and it must never be scored: the answer and the reason are on
+  // the screen next to the question. It is for the grown-up to ask and for the
+  // pair of them to talk about, which is a different thing from a test and
+  // would be ruined by being marked.
+  if (phase === 'practice') {
+    return (
+      <div className="mx-auto max-w-2xl space-y-4 px-4 py-6 sm:px-6">
+        <ExitBar label={lesson.title} />
+        <div className="rounded-xl border border-space-700 bg-space-800 p-6 shadow-panel">
+          <p className="text-xs font-display uppercase tracking-widest text-signal-cyan">
+            Talk It Through
+          </p>
+          <p className="mt-1 text-sm text-ink-500">
+            Asked out loud. Nothing here is marked.
+          </p>
+          <div className="mt-4 space-y-4">
+            {lesson.practice.map((item, i) => (
+              <div key={i} className="rounded-lg border border-space-700 bg-space-900 p-3">
+                <p className="font-display text-sm font-700 text-ink-100">{item.ask}</p>
+                {item.answer && <p className="mt-1 text-sm text-ink-200">{item.answer}</p>}
+                {item.why && <p className="mt-1 text-sm text-ink-300">{item.why}</p>}
+              </div>
+            ))}
+          </div>
+        </div>
+        <button
+          type="button"
+          onClick={() => setPhase(stageAfter('practice'))}
+          className="w-full rounded-lg bg-signal-cyan px-4 py-2 font-display font-700 text-space-950 transition hover:brightness-110"
+        >
+          {hasTestQuestions ? 'Begin the Check' : 'Finish'}
         </button>
       </div>
     );
@@ -812,12 +1071,28 @@ export function LessonEngine({ lesson, onExit, onOpenView }) {
               )}
             </div>
           ))}
-          <div className="mt-3 rounded-lg border border-signal-amber/30 bg-signal-amber/5 p-3">
-            <p className="text-xs font-display uppercase tracking-widest text-signal-amber">
-              How an Aerospace Engineer Uses This
-            </p>
-            <p className="mt-1">{intro.connection}</p>
-          </div>
+          {/*
+            THE SAME BOX AS THE BEATS FLOW, AND IT HAD THE SAME WELDED HEADING.
+
+            Found by reading the DEPLOYED bundle rather than the source: the
+            beats flow had already been changed, and the old career name was
+            still in the shipped chunk. One value, two implementations, one of
+            them fixed — the failure mode this repository has paid for before.
+            Grep the whole tree for a string before believing it is gone.
+
+            The guard is new too. This block rendered unconditionally, so a
+            lesson with no `connection` drew an empty amber panel with a
+            heading over nothing. The beats flow has always guarded it; this
+            one never did.
+          */}
+          {intro.connection && (
+            <div className="mt-3 rounded-lg border border-signal-amber/30 bg-signal-amber/5 p-3">
+              <p className="text-xs font-display uppercase tracking-widest text-signal-amber">
+                {intro.connectionLabel || 'Where This Gets Used'}
+              </p>
+              <p className="mt-1">{intro.connection}</p>
+            </div>
+          )}
           {intro.videoUrl && (
             <a
               href={intro.videoUrl}

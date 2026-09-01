@@ -1,49 +1,70 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useAppStore } from '../../store/useAppStore.js';
 import { avatarIconFor } from '../../lib/rewards.js';
 import { BUILD_STAMP } from '../../lib/buildStamp.js';
+import { academyContent } from '../../content/academyContent.js';
 
 // Grouped navigation (Aug 2026, parent feedback — 9 flat top-level tabs
 // felt cluttered/confusing). Every page still exists at the exact same
 // `view` id App.jsx already switches on; this only changes how they're
 // organized and reached, not what they are. Grouping confirmed with the
 // parent directly:
-//   Learn    — subject content Lamar actually studies from
+//   Learn    — subject content the learner actually studies from
 //   Practice — skill reps and low-stakes play, not graded subject content
 //   Plan     — looking back (Progress), looking ahead (Schedule), and the
-//              Academic Success Center (Part 9, built Aug 2026 — books,
-//              major assignments, and the portfolio, which is exactly the
-//              "what's coming and how is it going" work this group is
-//              for; it joined here as originally expected)
+//              Academic Success Center (books, major assignments and the
+//              portfolio — exactly the "what's coming and how is it going"
+//              work this group is for)
 //   Parent Dashboard — stays its own top-level item, different audience
+/**
+ * ---- A TAB CAN SAY WHAT IT NEEDS ----
+ *
+ * Every tab below used to render for every Academy. That was invisible while
+ * one Academy existed and filled every slot; the moment a second arrived it
+ * meant a child being offered a Garden she does not have and a Guitar she has
+ * never played, both opening onto a screen that reads content nobody wrote.
+ *
+ * `needs` names the content slot a tab cannot work without. No slot, no tab —
+ * the same skip-when-absent rule the lesson engine follows for a beat with no
+ * example. A tab with no `needs` is platform furniture that works for anyone:
+ * the dashboard, the schedule, the roster.
+ *
+ * ---- WHAT THIS DOES NOT YET FIX ----
+ *
+ * `garden` and `guitar` both gate on `electives`, which is coarse: an Academy
+ * with a garden and no guitar gets both tabs or neither. The honest fix is that
+ * the platform should carry an ELECTIVES area and let each Academy name what is
+ * in it, rather than shipping components/Garden/ and components/Guitar/ as
+ * platform code — two whole feature directories that belong to one curriculum.
+ *
+ * That is a real refactor and it is written down rather than quietly tolerated.
+ * What is fixed here is the part that shows a child somebody else's subject.
+ */
 const NAV_GROUPS = [
   {
     id: 'learn',
     label: 'Learn',
     tabs: [
-      // FIRST, and above Mission Control on purpose: it is the 08:30 block, it
-      // is the first thing he does, and a morning routine buried three items
-      // down is a morning routine that gets skipped.
+      // FIRST, and above the dashboard on purpose: it is the first block of the
+      // morning, and a morning routine buried three items down gets skipped.
       { id: 'morning', label: 'Morning Meeting' },
       { id: 'dashboard', label: 'Mission Control' },
       { id: 'lessons', label: 'Lesson Roster' },
-      { id: 'pe', label: 'PE & Nutrition' },
-      // Gardening sits in Learn beside PE & Nutrition — the app's two
-      // PARTICIPATION subjects, both real work recorded by what he did.
-      { id: 'garden', label: 'Garden' },
-      // Guitar joins PE and Garden here — this app's three PARTICIPATION
-      // subjects, all real work recorded by what he did rather than graded.
-      { id: 'guitar', label: 'Guitar' }
+      { id: 'pe', label: 'PE & Nutrition', needs: 'pe' },
+      // Gardening sits in Learn beside PE & Nutrition — participation subjects,
+      // real work recorded by what was done rather than graded.
+      { id: 'garden', label: 'Garden', needs: 'electives' },
+      { id: 'guitar', label: 'Guitar', needs: 'electives' }
     ]
   },
   {
     id: 'practice',
     label: 'Practice',
     tabs: [
-      { id: 'journal', label: 'Writing Journal' },
-      { id: 'typing', label: 'Typing' },
-      { id: 'games', label: 'Games' },
-      { id: 'rewards', label: 'Rewards' }
+      { id: 'journal', label: 'Writing Journal', needs: 'writing' },
+      { id: 'typing', label: 'Typing', needs: 'writing' },
+      { id: 'games', label: 'Games', needs: 'games' },
+      { id: 'rewards', label: 'Rewards', needs: 'rewards' }
     ]
   },
   {
@@ -52,19 +73,44 @@ const NAV_GROUPS = [
     tabs: [
       { id: 'progress', label: 'Progress' },
       { id: 'schedule', label: 'Schedule' },
-      { id: 'academic', label: 'Academic Center' }
+      { id: 'academic', label: 'Academic Center', needs: 'academicCenter' }
     ]
   }
 ];
 
 const PARENT_TAB = { id: 'parent', label: 'Parent Dashboard' };
 
-function findGroupFor(view) {
-  return NAV_GROUPS.find((g) => g.tabs.some((t) => t.id === view)) || null;
+/**
+ * The tabs THIS Academy can actually open.
+ *
+ * A group whose every tab was dropped disappears with them — an empty dropdown
+ * is worse than no dropdown, because it looks like something failed to load.
+ */
+export function navGroupsFor(content) {
+  return NAV_GROUPS.map((group) => ({
+    ...group,
+    tabs: group.tabs.filter((tab) => !tab.needs || Boolean(content?.[tab.needs]))
+  })).filter((group) => group.tabs.length > 0);
 }
 
-function findTabLabel(view) {
-  for (const g of NAV_GROUPS) {
+/** Is this view reachable for this Academy? Used by App.jsx to refuse a
+ *  navigation into a feature this Academy has no content for. */
+export function viewIsAvailable(view, content) {
+  if (view === PARENT_TAB.id) return true;
+  for (const group of NAV_GROUPS) {
+    const tab = group.tabs.find((t) => t.id === view);
+    if (tab) return !tab.needs || Boolean(content?.[tab.needs]);
+  }
+  // A view no tab owns — a lesson, a printout — is not the nav's to refuse.
+  return true;
+}
+
+function findGroupFor(view, groups) {
+  return groups.find((g) => g.tabs.some((t) => t.id === view)) || null;
+}
+
+function findTabLabel(view, groups) {
+  for (const g of groups) {
     const tab = g.tabs.find((t) => t.id === view);
     if (tab) return tab.label;
   }
@@ -80,11 +126,20 @@ export function NavBar({ view, onNavigate, onSignOut }) {
   const [openGroup, setOpenGroup] = useState(null); // desktop dropdown
   const [confirmSignOut, setConfirmSignOut] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false); // mobile sheet
-  const [expandedMobileGroup, setExpandedMobileGroup] = useState(findGroupFor(view)?.id || null);
   const navRef = useRef(null);
 
-  const currentLabel = findTabLabel(view);
-  const activeGroup = findGroupFor(view);
+  // Read once per render from the signed-in Academy's manifest. Safe here
+  // because the shell awaits loadAcademyContent() before mounting the school —
+  // see src/content/academyContent.js on why "read before load" is structurally
+  // impossible rather than merely discouraged.
+  const groups = useMemo(() => navGroupsFor(academyContent()), []);
+
+  const [expandedMobileGroup, setExpandedMobileGroup] = useState(
+    () => findGroupFor(view, navGroupsFor(academyContent()))?.id || null
+  );
+
+  const currentLabel = findTabLabel(view, groups);
+  const activeGroup = findGroupFor(view, groups);
 
   // Coin balance + equipped avatar (Part 5 gamification) — always visible, and
   // a shortcut into the Rewards area.
@@ -230,7 +285,7 @@ export function NavBar({ view, onNavigate, onSignOut }) {
 
         {/* Desktop: 4 group buttons (3 dropdowns + Parent Dashboard direct link) */}
         <nav ref={navRef} className="hidden items-center gap-1 rounded-lg bg-space-800 p-1 shadow-panel md:flex" aria-label="Primary">
-          {NAV_GROUPS.map((group) => {
+          {groups.map((group) => {
             const isActiveGroup = activeGroup?.id === group.id;
             const isOpen = openGroup === group.id;
             return (
@@ -304,7 +359,7 @@ export function NavBar({ view, onNavigate, onSignOut }) {
       {/* Mobile dropdown menu — grouped accordion, each row a real 44px+ touch target */}
       {menuOpen && (
         <nav aria-label="Primary" className="border-t border-space-700 bg-space-900 md:hidden">
-          {NAV_GROUPS.map((group) => {
+          {groups.map((group) => {
             const isExpanded = expandedMobileGroup === group.id;
             const isActiveGroup = activeGroup?.id === group.id;
             return (
