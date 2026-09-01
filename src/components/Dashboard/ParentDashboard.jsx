@@ -857,7 +857,7 @@ function SignOutSection({ onSignOut }) {
   );
 }
 
-export function ParentDashboard({ onSignOut }) {
+export function ParentDashboard({ academyName = null, onSignOut }) {
   const [section, setSection] = useState('mission-control-board');
   const [openGroup, setOpenGroup] = useState('board');
   const activeGroup = SECTION_GROUPS.find((g) => g.id === openGroup) || null;
@@ -2581,7 +2581,19 @@ function ReportCardSection() {
 
   const handleDownloadTranscript = () => {
     const lines = [
-      'MISSION CONTROL HOMESCHOOL ACADEMY — TRANSCRIPT',
+      /*
+        ---- A TRANSCRIPT MUST CARRY THE RIGHT SCHOOL'S NAME ----
+
+        This was the literal string 'MISSION CONTROL HOMESCHOOL ACADEMY', so
+        every transcript this platform produced was headed with one school's
+        name no matter whose record it was. That is worse than the same mistake
+        anywhere else on screen: a transcript is kept for years, handed to a
+        college, and cannot be corrected after it is filed.
+
+        The Academy's own display name, uppercased for a document header, and
+        LearningOS only as the fallback when an Academy has not been named yet.
+      */
+      `${(academyName || 'LearningOS').toUpperCase()} — TRANSCRIPT`,
       `Generated: ${new Date().toLocaleDateString()}`,
       '',
       ...data.map((row) => {

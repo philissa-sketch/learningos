@@ -3,6 +3,7 @@ import ImportSchool from './ImportSchool.jsx';
 import {
   AcademyContentMissing,
   academyHasContent,
+  availableAcademyFolders,
   contentPackFor,
   loadAcademyContent
 } from '../../content/academyContent.js';
@@ -100,7 +101,7 @@ export default function AcademyShell({ academy, enteredAs, onSignOut, onAcademyC
     if (content === 'ready') {
       return (
         <Suspense fallback={<div style={{ minHeight: '100vh', background: 'var(--fd-paper, #0e1a22)' }} />}>
-          <SchoolBoot enteredAs={enteredAs} onSignOut={onSignOut} />
+          <SchoolBoot academy={academy} enteredAs={enteredAs} onSignOut={onSignOut} />
         </Suspense>
       );
     }
@@ -118,6 +119,8 @@ export default function AcademyShell({ academy, enteredAs, onSignOut, onAcademyC
         pack={pack}
         error={contentError}
         broken={content === 'broken'}
+        canChoose={enteredAs === 'parent'}
+        onChoosePack={(contentPack) => onAcademyChanged?.({ contentPack })}
         onSignOut={onSignOut}
       />
     );
@@ -167,7 +170,26 @@ export default function AcademyShell({ academy, enteredAs, onSignOut, onAcademyC
  * afterwards. This is the room it sits in until then — its own, named after
  * itself, offering the one thing that moves forward.
  */
-function NoCurriculum({ academy, pack, error, broken, onSignOut }) {
+function NoCurriculum({ academy, pack, error, broken, canChoose, onChoosePack, onSignOut }) {
+  /**
+   * ---- THE FIELD EXISTED BEFORE THE CONTROL THAT SETS IT ----
+   *
+   * `contentPackFor` reads `academy.contentPack` and falls back to the
+   * Academy's id. Nothing in the app ever WROTE that field, so the fallback was
+   * the only path — and an id is generated at the front door with a random
+   * suffix precisely so two children sharing a name do not share records. It
+   * can therefore never match a folder somebody authored. Every Academy but the
+   * first was stuck on this screen with no way off it.
+   *
+   * Spec §3a is the reason this is a picker rather than a one-time setup step:
+   * *"a career track is a field. It is never a foundation."* Changing what a
+   * learner is working toward must not change her id, her database, or one hour
+   * of what she has already earned. Choosing a pack rewrites one field on the
+   * household record. Nothing else moves.
+   */
+  const packs = availableAcademyFolders();
+  const [chosen, setChosen] = useState('');
+
   return (
     <Panel
       steps={broken ? 'The Academy exists · Its curriculum is incomplete' : 'The Academy exists · No curriculum yet'}
@@ -179,11 +201,51 @@ function NoCurriculum({ academy, pack, error, broken, onSignOut }) {
           : 'This Academy has its own records and its own database. Its lessons, subjects, timetable and guide have not been added yet.'}
       </p>
 
-      <p className="fd-note">
-        Nothing is lost and nothing is wrong with the records. Curriculum is added to the app
-        itself, not from this screen — until it is, this Academy stays here rather than opening
-        somebody else&rsquo;s school.
-      </p>
+      {/*
+        Offered only when a grown-up signed in. Which curriculum a learner is
+        working toward is not the learner's switch to flip mid-morning, and the
+        passcode was already verified at the front door — so this asks for no
+        second one, the same reasoning ParentGate uses.
+      */}
+      {!broken && canChoose && packs.length > 0 ? (
+        <>
+          <p className="fd-note">
+            <strong>This app carries {packs.length} curriculum{packs.length === 1 ? '' : 's'}.</strong>{' '}
+            Choosing one opens it for this Academy. It changes nothing else — the records, the
+            hours and the grades already here belong to the Academy, not to the curriculum, and
+            they stay exactly where they are if you change it again later.
+          </p>
+
+          <label className="fd-helper" style={{ display: 'block', textAlign: 'left' }}>
+            Curriculum
+            <select value={chosen} onChange={(e) => setChosen(e.target.value)}>
+              <option value="">Choose…</option>
+              {packs.map((id) => (
+                <option key={id} value={id}>
+                  {id}
+                </option>
+              ))}
+            </select>
+          </label>
+
+          <button
+            className="fd-btn"
+            type="button"
+            disabled={!chosen}
+            onClick={() => onChoosePack?.(chosen)}
+            style={{ marginTop: '10px', marginBottom: '10px', opacity: chosen ? 1 : 0.5 }}
+          >
+            Open this curriculum
+          </button>
+        </>
+      ) : (
+        <p className="fd-note">
+          Nothing is lost and nothing is wrong with the records. Curriculum is added to the app
+          itself — until it is, this Academy stays here rather than opening somebody else&rsquo;s
+          school.
+          {!canChoose && !broken ? ' A grown-up can choose one from this screen.' : ''}
+        </p>
+      )}
 
       {error?.message ? (
         <p className="fd-helper" style={{ textAlign: 'left' }}>

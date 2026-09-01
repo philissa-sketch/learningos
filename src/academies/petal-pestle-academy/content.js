@@ -34,6 +34,7 @@ import { DEFAULT_SCHEDULE } from './config/schedule.js';
 import { SCHOOL_YEAR, periodFor } from './config/calendar.js';
 import { getDailyLine } from './data/mentor/marigoldLines.js';
 import { ALL_LESSONS } from './data/lessons/appCourses.js';
+import { toEngineShapeAll } from './data/lessons/toEngineShape.js';
 import { allItems, itemsForStrand, getItem, bankSummary } from './data/diagnostic/index.js';
 import { WEEKS, allWeeks, weekById, weekForLesson, weekTestReady, BANDS, bandFor } from './config/assessment.js';
 import {
@@ -170,9 +171,18 @@ export const subjects = {
 
 /* ==========================================================================
  * LESSONS
+ *
+ * Adapted at the boundary rather than in the files. The lessons on disk are the
+ * ones that were written — with their reasoning above them and their fields
+ * under their own names — and `toEngineShape` renames what the engine needs
+ * renamed on the way through. See that file for why this is not 256 edits.
+ *
+ * Mapped once, at module load, rather than per render: `allLessons` is read all
+ * over the school, and re-deriving 256 objects on every read would allocate a
+ * new array each time and defeat every memo downstream of it.
  * ======================================================================== */
 
-export const lessons = { allLessons: ALL_LESSONS };
+export const lessons = { allLessons: toEngineShapeAll(ALL_LESSONS) };
 
 /* ==========================================================================
  * TIMETABLE

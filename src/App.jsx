@@ -121,7 +121,7 @@ function ScreenLoading() {
  *   door. Threaded to the Parent Dashboard and nowhere else — signing out is a
  *   grown-up action, not a button a child can hit mid-lesson.
  */
-export default function App({ initialView = 'dashboard', onSignOut }) {
+export default function App({ academyName = null, initialView = 'dashboard', onSignOut }) {
   const hydrate = useAppStore((s) => s.hydrate);
   const hydrated = useAppStore((s) => s.hydrated);
   const hydrationError = useAppStore((s) => s.hydrationError);
@@ -408,7 +408,7 @@ export default function App({ initialView = 'dashboard', onSignOut }) {
   } else {
     content = (
       <>
-        <NavBar view={view} onNavigate={setView} onSignOut={onSignOut} />
+        <NavBar academyName={academyName} view={view} onNavigate={setView} onSignOut={onSignOut} />
         {view === 'dashboard' && (
           <MissionControlDashboard
             onStartLesson={setActiveLesson}
@@ -527,7 +527,7 @@ export default function App({ initialView = 'dashboard', onSignOut }) {
         )}
         {view === 'parent' && (
           <ParentGate>
-            <ParentDashboard onSignOut={onSignOut} />
+            <ParentDashboard academyName={academyName} onSignOut={onSignOut} />
           </ParentGate>
         )}
       </>

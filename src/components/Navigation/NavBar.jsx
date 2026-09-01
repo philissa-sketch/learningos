@@ -122,7 +122,7 @@ function findTabLabel(view, groups) {
  * @param {Function} [onSignOut] hands the machine back to the LearningOS front
  *   door. See the sign-out button below for why a child can reach it.
  */
-export function NavBar({ view, onNavigate, onSignOut }) {
+export function NavBar({ academyName, view, onNavigate, onSignOut }) {
   const [openGroup, setOpenGroup] = useState(null); // desktop dropdown
   const [confirmSignOut, setConfirmSignOut] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false); // mobile sheet
@@ -208,12 +208,26 @@ export function NavBar({ view, onNavigate, onSignOut }) {
 
       <div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-3 sm:px-6">
         <div className="flex items-center gap-2">
+          {/*
+            ---- THE APP IS CALLED LEARNINGOS ----
+
+            This read "MISSION CONTROL / Homeschool Academy" — one school's
+            name, in the platform, on every screen of every Academy. C1 moved
+            the curriculum out and the title stayed, so a second learner signed
+            into her own school and it announced itself as somebody else's.
+
+            The Academy's OWN name comes first now, because that is whose school
+            this is. LearningOS sits behind it as the thing the school is built
+            on, the way an operating system does — visible, secondary, and the
+            same for everyone. An Academy with no name yet shows LearningOS
+            alone rather than a blank space.
+          */}
           <span className="text-lg font-display font-700 tracking-wide text-signal-cyan">
-            MISSION CONTROL
+            {academyName || 'LearningOS'}
           </span>
-          <span className="hidden font-display text-sm text-ink-500 sm:inline">
-            Homeschool Academy
-          </span>
+          {academyName && (
+            <span className="hidden font-display text-sm text-ink-500 sm:inline">LearningOS</span>
+          )}
           {/**
             * THE BUILD STAMP, ON BOTH COMPUTERS. (Aug 10, 2026.)
             *
