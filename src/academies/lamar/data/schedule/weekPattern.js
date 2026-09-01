@@ -39,6 +39,7 @@
  */
 
 import { holidayName } from './schoolHolidays.js';
+import { patternSubjects } from '../../../../lib/timetable.js';
 
 /** 0=Sunday .. 6=Saturday, matching Date#getDay(). */
 export const WEEK_PATTERN = {
@@ -249,18 +250,9 @@ export function subjectsForDay(date = new Date(), quarterId = null) {
   return patternSubjects(pattern, quarterId);
 }
 
-/**
- * The preference order for a pattern in a given quarter.
- *
- * A null quarterId means the caller does not know or does not care, and gets
- * the default shape. It never returns undefined: a day with neither key would
- * otherwise crash every caller that maps over the result.
- */
-export function patternSubjects(pattern, quarterId = null) {
-  if (!pattern) return [];
-  const override = quarterId && pattern.subjectsByQuarter?.[quarterId];
-  return override || pattern.subjects || [];
-}
+// patternSubjects moved to src/lib/timetable.js on Sept 1, 2026. WEEK_PATTERN
+// stays here — the shape of a week is this school's. Pulling the right list out
+// of one is every school's. §3c Step 1.
 
 export function dayPattern(date = new Date()) {
   const base = WEEK_PATTERN[date.getDay()];

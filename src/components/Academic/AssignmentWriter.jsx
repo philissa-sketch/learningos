@@ -1,7 +1,8 @@
 import { useState } from 'react';
+import { wordProgress } from '../../lib/writingCheck.js';
 import { academyContent } from '../../content/academyContent.js';
 
-const { sizeFor, wordProgress } = academyContent().academicCenter;
+const { sizeFor } = academyContent().academicCenter;
 
 /**
  * WHERE HE ACTUALLY WRITES THE REPORT.

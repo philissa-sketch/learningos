@@ -321,3 +321,43 @@ export function getAssignmentsForDates(assignments, dateStrs) {
   const set = new Set(dateStrs);
   return assignments.filter((a) => a.dueDate && set.has(a.dueDate));
 }
+
+/**
+ * ===========================================================================
+ * ARRIVED FROM A CURRICULUM FOLDER — §3c Step 1, slice 1. (Sept 1, 2026.)
+ * ===========================================================================
+ *
+ * Both of these were sitting inside one Academy's content, which meant every
+ * Academy enrolled after it would have had to supply its own copy of "how many
+ * days until a date" and "which week of the year is this". Neither is a fact
+ * about a school. They are here because the platform should answer them once.
+ */
+
+/**
+ * Whole days from `today` to `dateStr`. Negative when the date has passed.
+ *
+ * Both arguments are date STRINGS, and the arithmetic runs through
+ * parseDateStr, which anchors at local midnight. A deadline counted in UTC
+ * reads one day short every evening after 8pm here — see
+ * scripts/verify-local-dates.mjs, which exists because that shipped once.
+ */
+export function daysUntil(dateStr, today = todayDateStr()) {
+  return Math.round((parseDateStr(dateStr) - parseDateStr(today)) / 86400000);
+}
+
+/**
+ * The ISO-8601 week number for a date.
+ *
+ * The UTC calls here are the safe kind and the distinction matters: the date's
+ * LOCAL parts are read first and rebuilt as a UTC midnight, so the current
+ * moment never enters the arithmetic. What is banned is asking UTC what day it
+ * is today; doing fixed arithmetic on a date already pinned down is how you
+ * avoid daylight-saving hours shifting a week boundary.
+ */
+export function getWeekNumber(date = new Date()) {
+  const d = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
+  const dayNum = d.getUTCDay() || 7;
+  d.setUTCDate(d.getUTCDate() + 4 - dayNum);
+  const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
+  return Math.ceil(((d - yearStart) / 86400000 + 1) / 7);
+}

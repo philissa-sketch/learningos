@@ -40,6 +40,10 @@ import { fileURLToPath } from 'node:url';
 
 const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const gc = await import(REPO + '/src/academies/lamar/data/admin/georgiaCompliance.js');
+// instructionMinutes left this Academy's folder for the platform on Sept 1,
+// 2026 (§3c Step 1). The thresholds it is checked against are still the
+// school's, which is why only this one name moved.
+const { instructionMinutes } = await import(REPO + '/src/lib/instructionTime.js');
 const { isSchoolDay } = await import(REPO + '/src/academies/lamar/data/schedule/schoolHolidays.js');
 const sm = await import(REPO + '/src/lib/scheduledMinutes.js');
 const { defaultSchedule } = await import(REPO + '/src/academies/lamar/data/schedule/defaultSchedule.js');
@@ -68,7 +72,7 @@ console.log('\n--- 1. the bar itself is unchanged ---');
 {
   ok('Georgia is 180 days at 4.5 hours', gc.GEORGIA_DAYS_REQUIRED === 180 && gc.GEORGIA_MINUTES_PER_DAY === 270);
   ok('a day is app time PLUS what she entered',
-    gc.instructionMinutes({ activeMinutes: 117, offlineMinutes: 150 }) === 267,
+    instructionMinutes({ activeMinutes: 117, offlineMinutes: 150 }) === 267,
     'the fix was never to loosen the bar');
   ok('...and 267 does NOT clear 270',
     gc.instructionProgress({ '2026-08-12': day(117, 150) }, OPTS).fullDays === 0,
@@ -201,12 +205,12 @@ console.log('\n--- 4b. the schedule enters the hours ---');
 
   /** MEASURED AND SCHEDULED ARE THE SAME HOURS. */
   ok('Khan in another tab: 5 measured, 60 scheduled, the day counts 60',
-    gc.instructionMinutes({ activeMinutes: 5 }, 60) === 60,
+    instructionMinutes({ activeMinutes: 5 }, 60) === 60,
     'not 65 — they are two views of the same hour');
   ok('...and 90 in-app against a 60-minute block counts 90, not 150',
-    gc.instructionMinutes({ activeMinutes: 90 }, 60) === 90);
+    instructionMinutes({ activeMinutes: 90 }, 60) === 90);
   ok('...while hand-entered offline time always adds',
-    gc.instructionMinutes({ activeMinutes: 5, offlineMinutes: 150 }, 60) === 210,
+    instructionMinutes({ activeMinutes: 5, offlineMinutes: 150 }, 60) === 210,
     'it exists precisely for instruction neither the tab nor the timetable saw');
 
   ok('a full day of ticks clears the 4.5-hour bar',
@@ -456,9 +460,28 @@ console.log('\n--- the offline-entry panel agrees with the record it is filling 
   ok('the panel credits the day through instructionMinutes',
     /const total = instructionMinutes\(row, scheduled\);/.test(code),
     'measured + logged was the third copy of the credit rule');
-  ok('...imported from georgiaCompliance, not re-derived here',
-    readsFromAcademy(code, 'instructionMinutes'),
+  /**
+   * ---- WHAT THIS ASSERTION IS FOR, AND WHY IT MOVED (Sept 1, 2026) ----
+   *
+   * It read `readsFromAcademy(code, 'instructionMinutes')` — the panel must get
+   * the function from the Academy's content slot. That was the right test right
+   * up until §3c Step 1 moved instructionMinutes into the platform, and then it
+   * failed on the change it should have been indifferent to.
+   *
+   * The property this guard exists to protect was never "which module it comes
+   * from". It is **there is one implementation of the credit rule and this panel
+   * uses it** — because three separate hand-rolled copies of `measured + logged`
+   * drifted apart here, and each was fixed believing it was the last.
+   *
+   * So it now asserts the property: the function is IMPORTED from somewhere,
+   * and this file does not compute the rule itself.
+   */
+  ok('...imported, not re-derived here',
+    /import \{[^}]*\binstructionMinutes\b[^}]*\} from/.test(code) || readsFromAcademy(code, 'instructionMinutes'),
     'a fourth hand-rolled max() is exactly how this drifted the first three times');
+  ok('...and the panel never rebuilds the credit rule by hand',
+    !/Math\.max\(\s*(onScreen|measured|activeMinutes)/.test(code),
+    'the fourth copy would look exactly like the first three');
   ok('...on the timetable credit for THAT date',
     /const scheduled = scheduledByDateAll\[date\] \|\| 0;/.test(code),
     'the panel lets her pick any date — crediting today would be a silent lie on every other one');

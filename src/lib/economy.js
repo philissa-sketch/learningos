@@ -273,3 +273,27 @@ export function creditPurchaseApproval(cost, entries, options = {}) {
   }
   return { auto: true, reason: '' };
 }
+
+/**
+ * ===========================================================================
+ * ARRIVED FROM A CURRICULUM FOLDER — §3c Step 1, slice 1. (Sept 1, 2026.)
+ * ===========================================================================
+ *
+ * What a learner can afford out of a catalog, cheapest first.
+ *
+ * The CATALOG is the school's — every Academy stocks its own store, and none
+ * of that is the platform's business. Deciding which rows a balance reaches is
+ * not a curriculum question at all, and it lived in one Academy's folder only
+ * because that is where the catalog happened to be.
+ *
+ * Cheapest-first is deliberate: a store that opens on what is nearly out of
+ * reach reads as a list of things you cannot have. It should open on what you
+ * can.
+ *
+ * Rows priced at or below zero are excluded rather than shown as free — a
+ * missing price is missing data, not a giveaway.
+ */
+export function affordable(balance, catalog) {
+  const price = (i) => (i.currency === 'credit' ? i.credits : i.cost);
+  return catalog.filter((i) => price(i) > 0 && price(i) <= balance).sort((a, b) => price(a) - price(b));
+}

@@ -1,8 +1,6 @@
 import { useState } from 'react';
 import { useAppStore } from '../../store/useAppStore.js';
-import { academyContent } from '../../content/academyContent.js';
-
-const { getWeekNumber } = academyContent().pe;
+import { getWeekNumber } from '../../lib/scheduler.js';
 
 function currentWeekKey() {
   const now = new Date();

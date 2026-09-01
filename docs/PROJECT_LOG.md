@@ -1052,3 +1052,91 @@ extracurriculars currently sitting in `src/components/`.
 written for every Academy that will ever be enrolled, not for the one that
 exposed it.
 
+
+---
+
+## C3 — the contract's first six names, and the number that was 61 (Sept 1, 2026)
+
+### 61 was measured by name. Read transitively it is 9
+
+§3c scoped Step 1 as sixty-one behaviour names leaving the slots. Counted
+against the code rather than the names — `scripts/triage-content-names.mjs`,
+which walks each name's definition to what it references and to what THOSE
+reference, to a fixed point — the answer is **nine**.
+
+| Verdict | |
+|---|---:|
+| behaviour | **9** |
+| school-bound | 62 |
+| school-data | 91 |
+| unresolved | 0 |
+
+The estimate was not careless. By name it is right: `affordable`, `sizeFor`,
+`findFormat` and `instructionMinutes` all read as arithmetic. `sizeFor(format)`
+is pure in its signature and touches `FORMAT_SIZE` on its first line.
+
+The spec's own worked example came out exactly as written —
+`isSchoolDay -> isHoliday -> holidayName -> HOLIDAY_BY_DATE`, three levels. **Fifteen
+of the 62 bind at depth 3 or 4**, and that band is precisely where a triage by
+eye fails.
+
+### Six moved. Three were held, and the reason is the same for all three
+
+The tool follows references. **It cannot see a fact typed straight into the
+code**, and a hand pass over the nine caught three that no closure walk would
+have:
+
+- **`nextDeclarationDeadline`** — `new Date(year, 8, 1)`. September 1 is one
+  state's statutory filing deadline. It would have shipped Georgia's law to
+  every family in every state, silently.
+- **`declarationCoversToday`** — its helper hardcodes a July school-year
+  boundary while `lib/schoolQuarter.js` already owns a start date that says
+  August. Moving it installs a second, disagreeing answer to one question.
+- **`suggestedGradeFromRubric`** — seven percentage bands that disagree with the
+  thirteen in `lib/gradeScale.js`. 85% is an `A-` to one and a `B` to the other.
+  Reconciling changes grades already recorded, which is a decision and not a
+  refactor.
+
+A general magic-number detector would flag every sensible constant in the
+codebase, so there is nothing useful to automate. The mitigation is that the
+behaviour list is short by construction: **read it before you move it.** Nine
+names is ten minutes, and that pass caught a third of them.
+
+### What went in
+
+`daysUntil` and `getWeekNumber` to `lib/scheduler.js` · `affordable` to
+`lib/economy.js` · `wordProgress` to `lib/writingCheck.js` ·
+`instructionMinutes` to a new `lib/instructionTime.js` · `patternSubjects` to a
+new `lib/timetable.js`.
+
+Each moved with its reasoning rewritten for any school. Two carried a comment
+that named this family — one quoting the parent, one explaining which subject
+gets the second Wednesday block in Q1. **The comment was fixed, never the
+guard**, and the specific reasoning stayed with the school.
+
+**Contract: 162 -> 156.** The manifest regenerated differs only where a name
+moved.
+
+### A check that was pinned to the wrong thing
+
+`verify-georgia-hours` asserted the compliance panel read `instructionMinutes`
+**from the Academy slot**. That was right until the function became the
+platform's, and then it failed on the change it should have been indifferent to
+— the fourth time in this repo a check has been pinned to a fact rather than to
+its property.
+
+The property it exists to protect was never which module the function comes
+from. It is that **one implementation of the credit rule exists and this panel
+uses it**, because three hand-rolled copies of `measured + logged` drifted apart
+here and each was fixed believing it was the last. It now asserts that, and a
+new assertion refuses a fourth hand-rolled copy. Nothing was loosened.
+
+### Verified
+
+57 passed, 1 failed — the same deliberate red. `verify-no-learner` 18/0: the
+debt list did not grow. The second Academy's missing count fell 145 -> 140, five
+rather than six because her manifest already supplied `patternSubjects`.
+
+**Built and deployed: not yet.** Scoped in `docs/STEP1_SCOPE.md`, including what
+slices 2-4 cost and why the elective functions are excluded from Step 1
+entirely — Step 2 deletes them, and moving them first means moving them twice.

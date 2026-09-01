@@ -1,0 +1,1890 @@
+{
+ "_generated": "scripts/triage-content-names.mjs — do not edit by hand",
+ "_why": "Which contract names are behaviour the platform should own, and for the rest, the chain that binds them to one school.",
+ "_readAgainst": "lamar",
+ "summary": {
+  "behaviour": 3,
+  "schoolBound": 62,
+  "schoolData": 91,
+  "unresolved": 0,
+  "total": 156
+ },
+ "names": [
+  {
+   "name": "ACADEMIC_ASSIGNMENT_TYPES",
+   "slot": "academicCenter",
+   "verdict": "school-data",
+   "kind": "data",
+   "definedIn": "src/academies/lamar/data/academicSuccessCenter/placeholders.js",
+   "why": "A value sitting in an Academy folder. A fact about one school."
+  },
+  {
+   "name": "ACADEMIC_BOOK_TYPES",
+   "slot": "academicCenter",
+   "verdict": "school-data",
+   "kind": "data",
+   "definedIn": "src/academies/lamar/data/academicSuccessCenter/placeholders.js",
+   "why": "A value sitting in an Academy folder. A fact about one school."
+  },
+  {
+   "name": "ACADEMIC_SUBJECT_ORDER",
+   "slot": "academicCenter",
+   "verdict": "school-data",
+   "kind": "data",
+   "definedIn": "src/academies/lamar/data/academicSuccessCenter/placeholders.js",
+   "why": "A value sitting in an Academy folder. A fact about one school."
+  },
+  {
+   "name": "ACADEMIC_SUCCESS_CENTER_QUARTER_ORDER",
+   "slot": "academicCenter",
+   "verdict": "school-data",
+   "kind": "data",
+   "definedIn": "src/academies/lamar/data/academicSuccessCenter/placeholders.js",
+   "why": "A value sitting in an Academy folder. A fact about one school."
+  },
+  {
+   "name": "ACTIVE_SUBJECTS",
+   "slot": "subjects",
+   "verdict": "school-data",
+   "kind": "data",
+   "definedIn": "src/academies/lamar/subjects.js",
+   "why": "A value sitting in an Academy folder. A fact about one school."
+  },
+  {
+   "name": "AVATAR_GEAR",
+   "slot": "rewards",
+   "verdict": "school-data",
+   "kind": "data",
+   "definedIn": "src/academies/lamar/data/rewardCatalog.js",
+   "why": "A value sitting in an Academy folder. A fact about one school."
+  },
+  {
+   "name": "BLACK_EXCELLENCE_KNOWN_GAPS",
+   "slot": "academicCenter",
+   "verdict": "school-data",
+   "kind": "data",
+   "definedIn": "src/academies/lamar/data/academicSuccessCenter/blackExcellenceLibrary.js",
+   "why": "A value sitting in an Academy folder. A fact about one school."
+  },
+  {
+   "name": "BOOK_RANGE_LABELS",
+   "slot": "academicCenter",
+   "verdict": "school-data",
+   "kind": "data",
+   "definedIn": "src/academies/lamar/data/academicSuccessCenter/bookRationale.js",
+   "why": "A value sitting in an Academy folder. A fact about one school."
+  },
+  {
+   "name": "BUDGET_CATEGORIES",
+   "slot": "games",
+   "verdict": "school-data",
+   "kind": "data",
+   "definedIn": "src/academies/lamar/data/games/nationCommandContent.js",
+   "why": "A value sitting in an Academy folder. A fact about one school."
+  },
+  {
+   "name": "BUDGET_TOTAL_POINTS",
+   "slot": "games",
+   "verdict": "school-data",
+   "kind": "data",
+   "definedIn": "src/academies/lamar/data/games/nationCommandContent.js",
+   "why": "A value sitting in an Academy folder. A fact about one school."
+  },
+  {
+   "name": "CATEGORY_LABELS",
+   "slot": "pe",
+   "verdict": "school-data",
+   "kind": "data",
+   "definedIn": "src/academies/lamar/data/pe/exerciseLibrary.js",
+   "why": "A value sitting in an Academy folder. A fact about one school."
+  },
+  {
+   "name": "COIN_CATALOG",
+   "slot": "rewards",
+   "verdict": "school-data",
+   "kind": "data",
+   "definedIn": "src/academies/lamar/data/rewardCatalog.js",
+   "why": "A value sitting in an Academy folder. A fact about one school."
+  },
+  {
+   "name": "ECONOMIC_SYSTEMS",
+   "slot": "games",
+   "verdict": "school-data",
+   "kind": "data",
+   "definedIn": "src/academies/lamar/data/games/nationCommandContent.js",
+   "why": "A value sitting in an Academy folder. A fact about one school."
+  },
+  {
+   "name": "EDCLUB_PORTAL_URL",
+   "slot": "writing",
+   "verdict": "school-data",
+   "kind": "data",
+   "definedIn": "src/academies/lamar/data/writing/typingLessons.js",
+   "why": "A value sitting in an Academy folder. A fact about one school."
+  },
+  {
+   "name": "ERGONOMICS_CHECKLIST",
+   "slot": "writing",
+   "verdict": "school-data",
+   "kind": "data",
+   "definedIn": "src/academies/lamar/data/writing/typingLessons.js",
+   "why": "A value sitting in an Academy folder. A fact about one school."
+  },
+  {
+   "name": "EXCLUDED_RANGES",
+   "slot": "academicCenter",
+   "verdict": "school-data",
+   "kind": "data",
+   "definedIn": "src/academies/lamar/data/academicSuccessCenter/assignmentRecommendations.js",
+   "why": "A value sitting in an Academy folder. A fact about one school."
+  },
+  {
+   "name": "EXTERNAL_GAMES_LIBRARY",
+   "slot": "games",
+   "verdict": "school-data",
+   "kind": "data",
+   "definedIn": "src/academies/lamar/data/games/externalGamesLibrary.js",
+   "why": "A value sitting in an Academy folder. A fact about one school."
+  },
+  {
+   "name": "GEORGIA_DAYS_REQUIRED",
+   "slot": "compliance",
+   "verdict": "school-data",
+   "kind": "data",
+   "definedIn": "src/academies/lamar/data/admin/georgiaCompliance.js",
+   "why": "A value sitting in an Academy folder. A fact about one school."
+  },
+  {
+   "name": "GEORGIA_LAW_CITATION",
+   "slot": "compliance",
+   "verdict": "school-data",
+   "kind": "data",
+   "definedIn": "src/academies/lamar/data/admin/georgiaCompliance.js",
+   "why": "A value sitting in an Academy folder. A fact about one school."
+  },
+  {
+   "name": "GEORGIA_MINUTES_PER_DAY",
+   "slot": "compliance",
+   "verdict": "school-data",
+   "kind": "data",
+   "definedIn": "src/academies/lamar/data/admin/georgiaCompliance.js",
+   "why": "A value sitting in an Academy folder. A fact about one school."
+  },
+  {
+   "name": "GEORGIA_REQUIRED_SUBJECTS",
+   "slot": "compliance",
+   "verdict": "school-data",
+   "kind": "data",
+   "definedIn": "src/academies/lamar/data/admin/georgiaCompliance.js",
+   "why": "A value sitting in an Academy folder. A fact about one school."
+  },
+  {
+   "name": "GEORGIA_REQUIREMENTS",
+   "slot": "compliance",
+   "verdict": "school-data",
+   "kind": "data",
+   "definedIn": "src/academies/lamar/data/admin/georgiaCompliance.js",
+   "why": "A value sitting in an Academy folder. A fact about one school."
+  },
+  {
+   "name": "GOVERNMENT_TYPES",
+   "slot": "games",
+   "verdict": "school-data",
+   "kind": "data",
+   "definedIn": "src/academies/lamar/data/games/nationCommandContent.js",
+   "why": "A value sitting in an Academy folder. A fact about one school."
+  },
+  {
+   "name": "GRAMMAR_COURSES",
+   "slot": "khanSequences",
+   "verdict": "school-data",
+   "kind": "data",
+   "definedIn": "src/academies/lamar/data/khan/grammarCourseOrder.js",
+   "why": "A value sitting in an Academy folder. A fact about one school."
+  },
+  {
+   "name": "GUITAR_DAILY_MINUTES",
+   "slot": "electives",
+   "verdict": "school-data",
+   "kind": "data",
+   "definedIn": "src/academies/lamar/data/guitar/guitarSkillLadder.js",
+   "why": "A value sitting in an Academy folder. A fact about one school."
+  },
+  {
+   "name": "GUITAR_OWN_SLOTS",
+   "slot": "electives",
+   "verdict": "school-data",
+   "kind": "data",
+   "definedIn": "src/academies/lamar/data/guitar/guitarSongs.js",
+   "why": "A value sitting in an Academy folder. A fact about one school."
+  },
+  {
+   "name": "GUITAR_SESSION_SHAPE",
+   "slot": "electives",
+   "verdict": "school-data",
+   "kind": "data",
+   "definedIn": "src/academies/lamar/data/guitar/guitarSkillLadder.js",
+   "why": "A value sitting in an Academy folder. A fact about one school."
+  },
+  {
+   "name": "HIDDEN_VIDEO",
+   "slot": "pe",
+   "verdict": "school-data",
+   "kind": "data",
+   "definedIn": "src/academies/lamar/data/pe/peVideoSource.js",
+   "why": "A value sitting in an Academy folder. A fact about one school."
+  },
+  {
+   "name": "HQ_CREW",
+   "slot": "rewards",
+   "verdict": "school-data",
+   "kind": "data",
+   "definedIn": "src/academies/lamar/data/hqCrew.js",
+   "why": "A value sitting in an Academy folder. A fact about one school."
+  },
+  {
+   "name": "HQ_ITEMS",
+   "slot": "rewards",
+   "verdict": "school-data",
+   "kind": "data",
+   "definedIn": "src/academies/lamar/data/rewardCatalog.js",
+   "why": "A value sitting in an Academy folder. A fact about one school."
+  },
+  {
+   "name": "KHAN_GRAMMAR_UNITS",
+   "slot": "khanSequences",
+   "verdict": "school-data",
+   "kind": "data",
+   "definedIn": "src/academies/lamar/data/khan/grammarCourseOrder.js",
+   "why": "A value sitting in an Academy folder. A fact about one school."
+  },
+  {
+   "name": "KHAN_TAUGHT_SUBJECTS",
+   "slot": "subjects",
+   "verdict": "school-data",
+   "kind": "data",
+   "definedIn": "src/academies/lamar/subjects.js",
+   "why": "A value sitting in an Academy folder. A fact about one school."
+  },
+  {
+   "name": "LAUNCH_SCORE_LABELS",
+   "slot": "games",
+   "verdict": "school-data",
+   "kind": "data",
+   "definedIn": "src/academies/lamar/data/games/launchDirectorContent.js",
+   "why": "A value sitting in an Academy folder. A fact about one school."
+  },
+  {
+   "name": "LEGACY_GRAMMAR_TITLES",
+   "slot": "khanSequences",
+   "verdict": "school-data",
+   "kind": "derived",
+   "definedIn": "src/academies/lamar/data/khan/grammarCourseOrder.js",
+   "why": "A value computed once at module load. Whatever it was computed from is baked into it."
+  },
+  {
+   "name": "LESSON_TRACK_SUBJECTS",
+   "slot": "subjects",
+   "verdict": "school-data",
+   "kind": "data",
+   "definedIn": "src/academies/lamar/subjects.js",
+   "why": "A value sitting in an Academy folder. A fact about one school."
+  },
+  {
+   "name": "MISSION_EQUIPMENT",
+   "slot": "rewards",
+   "verdict": "school-data",
+   "kind": "data",
+   "definedIn": "src/academies/lamar/data/rewardCatalog.js",
+   "why": "A value sitting in an Academy folder. A fact about one school."
+  },
+  {
+   "name": "MISSION_QUARTERS",
+   "slot": "compliance",
+   "verdict": "school-data",
+   "kind": "derived",
+   "definedIn": "src/academies/lamar/data/admin/missionEvaluations.js",
+   "why": "A value computed once at module load. Whatever it was computed from is baked into it."
+  },
+  {
+   "name": "MISSION_RUBRIC_CRITERIA",
+   "slot": "compliance",
+   "verdict": "school-data",
+   "kind": "data",
+   "definedIn": "src/academies/lamar/data/admin/missionEvaluations.js",
+   "why": "A value sitting in an Academy folder. A fact about one school."
+  },
+  {
+   "name": "MISSION_STATUS_LABELS",
+   "slot": "compliance",
+   "verdict": "school-data",
+   "kind": "data",
+   "definedIn": "src/academies/lamar/data/admin/missionEvaluations.js",
+   "why": "A value sitting in an Academy folder. A fact about one school."
+  },
+  {
+   "name": "NATION_SCORE_LABELS",
+   "slot": "games",
+   "verdict": "school-data",
+   "kind": "data",
+   "definedIn": "src/academies/lamar/data/games/nationCommandContent.js",
+   "why": "A value sitting in an Academy folder. A fact about one school."
+  },
+  {
+   "name": "PARTICIPATION_SUBJECTS",
+   "slot": "subjects",
+   "verdict": "school-data",
+   "kind": "data",
+   "definedIn": "src/academies/lamar/subjects.js",
+   "why": "A value sitting in an Academy folder. A fact about one school."
+  },
+  {
+   "name": "PROPELLANT_OPTIONS",
+   "slot": "games",
+   "verdict": "school-data",
+   "kind": "data",
+   "definedIn": "src/academies/lamar/data/games/launchDirectorContent.js",
+   "why": "A value sitting in an Academy folder. A fact about one school."
+  },
+  {
+   "name": "QUIZ_PLATFORMS",
+   "slot": "games",
+   "verdict": "school-data",
+   "kind": "data",
+   "definedIn": "src/academies/lamar/data/games/quizPlatforms.js",
+   "why": "A value sitting in an Academy folder. A fact about one school."
+  },
+  {
+   "name": "QUIZ_PLATFORM_IDS",
+   "slot": "games",
+   "verdict": "school-data",
+   "kind": "derived",
+   "definedIn": "src/academies/lamar/data/games/quizPlatforms.js",
+   "why": "A value computed once at module load. Whatever it was computed from is baked into it."
+  },
+  {
+   "name": "RUBRIC_LEVELS",
+   "slot": "academicCenter",
+   "verdict": "school-data",
+   "kind": "data",
+   "definedIn": "src/academies/lamar/data/academicSuccessCenter/reportFormats.js",
+   "why": "A value sitting in an Academy folder. A fact about one school."
+  },
+  {
+   "name": "SCHOOL_YEAR_START",
+   "slot": "writing",
+   "verdict": "school-data",
+   "kind": "derived",
+   "definedIn": "src/academies/lamar/data/writing/weeklySchedule.js",
+   "why": "A value computed once at module load. Whatever it was computed from is baked into it."
+  },
+  {
+   "name": "SCIENCE_CANONICAL_KEYS",
+   "slot": "khanSequences",
+   "verdict": "school-data",
+   "kind": "derived",
+   "definedIn": "src/academies/lamar/data/khan/scienceSequence.js",
+   "why": "A value computed once at module load. Whatever it was computed from is baked into it."
+  },
+  {
+   "name": "SCIENCE_CANONICAL_TITLES",
+   "slot": "khanSequences",
+   "verdict": "school-data",
+   "kind": "derived",
+   "definedIn": "src/academies/lamar/data/khan/scienceSequence.js",
+   "why": "A value computed once at module load. Whatever it was computed from is baked into it."
+  },
+  {
+   "name": "SCIENCE_COURSES",
+   "slot": "khanSequences",
+   "verdict": "school-data",
+   "kind": "data",
+   "definedIn": "src/academies/lamar/data/khan/scienceSequence.js",
+   "why": "A value sitting in an Academy folder. A fact about one school."
+  },
+  {
+   "name": "SCIENCE_COURSE_CHALLENGES",
+   "slot": "khanSequences",
+   "verdict": "school-data",
+   "kind": "data",
+   "definedIn": "src/academies/lamar/data/khan/scienceSequence.js",
+   "why": "A value sitting in an Academy folder. A fact about one school."
+  },
+  {
+   "name": "SEEDED_REWARD_LADDER_MAP",
+   "slot": "rewards",
+   "verdict": "school-data",
+   "kind": "data",
+   "definedIn": "src/academies/lamar/data/rewardCatalog.js",
+   "why": "A value sitting in an Academy folder. A fact about one school."
+  },
+  {
+   "name": "STAGING_OPTIONS",
+   "slot": "games",
+   "verdict": "school-data",
+   "kind": "data",
+   "definedIn": "src/academies/lamar/data/games/launchDirectorContent.js",
+   "why": "A value sitting in an Academy folder. A fact about one school."
+  },
+  {
+   "name": "SUBJECT_LABELS",
+   "slot": "subjects",
+   "verdict": "school-data",
+   "kind": "data",
+   "definedIn": "src/academies/lamar/subjects.js",
+   "why": "A value sitting in an Academy folder. A fact about one school."
+  },
+  {
+   "name": "TRADE_EVENT",
+   "slot": "games",
+   "verdict": "school-data",
+   "kind": "data",
+   "definedIn": "src/academies/lamar/data/games/nationCommandContent.js",
+   "why": "A value sitting in an Academy folder. A fact about one school."
+  },
+  {
+   "name": "TRAJECTORY_EVENT",
+   "slot": "games",
+   "verdict": "school-data",
+   "kind": "data",
+   "definedIn": "src/academies/lamar/data/games/launchDirectorContent.js",
+   "why": "A value sitting in an Academy folder. A fact about one school."
+  },
+  {
+   "name": "WEEK_PATTERN",
+   "slot": "timetable",
+   "verdict": "school-data",
+   "kind": "data",
+   "definedIn": "src/academies/lamar/data/schedule/weekPattern.js",
+   "why": "A value sitting in an Academy folder. A fact about one school."
+  },
+  {
+   "name": "WEIGHT_BUDGET_CATEGORIES",
+   "slot": "games",
+   "verdict": "school-data",
+   "kind": "data",
+   "definedIn": "src/academies/lamar/data/games/launchDirectorContent.js",
+   "why": "A value sitting in an Academy folder. A fact about one school."
+  },
+  {
+   "name": "WEIGHT_BUDGET_TOTAL_POINTS",
+   "slot": "games",
+   "verdict": "school-data",
+   "kind": "data",
+   "definedIn": "src/academies/lamar/data/games/launchDirectorContent.js",
+   "why": "A value sitting in an Academy folder. A fact about one school."
+  },
+  {
+   "name": "activeMilestone",
+   "slot": "academicCenter",
+   "verdict": "school-bound",
+   "definedIn": "src/academies/lamar/data/academicSuccessCenter/assignmentMilestones.js",
+   "bindsVia": [
+    "activeMilestone",
+    "milestonesFor",
+    "buildMilestones",
+    "MILESTONE_TEMPLATES"
+   ],
+   "depth": 4,
+   "needsTables": [
+    "DEFAULT_LEAD_DAYS",
+    "LEAD_DAYS_BY_TYPE",
+    "MILESTONE_TEMPLATES"
+   ],
+   "carriesHelpers": [
+    "buildMilestones",
+    "leadDaysFor",
+    "milestoneOpensOn",
+    "milestonesFor"
+   ],
+   "why": "Logic, but its closure reaches school data 3 levels down: activeMilestone -> milestonesFor -> buildMilestones -> MILESTONE_TEMPLATES."
+  },
+  {
+   "name": "aerospaceProjects",
+   "slot": "projects",
+   "verdict": "school-data",
+   "kind": "data",
+   "definedIn": "src/academies/lamar/data/aerospace/aerospaceProjects.js",
+   "why": "A value sitting in an Academy folder. A fact about one school."
+  },
+  {
+   "name": "allLessons",
+   "slot": "lessons",
+   "verdict": "school-data",
+   "kind": "data",
+   "definedIn": "src/academies/lamar/data/lessons/index.js",
+   "why": "A value sitting in an Academy folder. A fact about one school."
+  },
+  {
+   "name": "assignmentCandidatesForSlot",
+   "slot": "academicCenter",
+   "verdict": "school-bound",
+   "definedIn": "src/academies/lamar/data/academicSuccessCenter/assignmentRecommendations.js",
+   "bindsVia": [
+    "assignmentCandidatesForSlot",
+    "assignmentRecommendations"
+   ],
+   "depth": 2,
+   "needsTables": [
+    "assignmentRecommendations"
+   ],
+   "carriesHelpers": [],
+   "why": "Logic, but its closure reaches school data directly: assignmentCandidatesForSlot -> assignmentRecommendations."
+  },
+  {
+   "name": "availableDueDates",
+   "slot": "academicCenter",
+   "verdict": "school-bound",
+   "definedIn": "src/academies/lamar/data/academicSuccessCenter/assignmentRecommendations.js",
+   "bindsVia": [
+    "availableDueDates",
+    "QUARTER_DUE_WINDOWS"
+   ],
+   "depth": 2,
+   "needsTables": [
+    "EXCLUDED_RANGES",
+    "FRIDAY",
+    "QUARTER_DUE_WINDOWS"
+   ],
+   "carriesHelpers": [
+    "isExcluded",
+    "yearsFor"
+   ],
+   "why": "Logic, but its closure reaches school data directly: availableDueDates -> QUARTER_DUE_WINDOWS."
+  },
+  {
+   "name": "blackAmericanAuthorsForSubject",
+   "slot": "academicCenter",
+   "verdict": "school-bound",
+   "definedIn": "src/academies/lamar/data/academicSuccessCenter/blackExcellenceLibrary.js",
+   "bindsVia": [
+    "blackAmericanAuthorsForSubject",
+    "EXCLUDED_FROM_ROSTER"
+   ],
+   "depth": 2,
+   "needsTables": [
+    "EXCLUDED_FROM_ROSTER",
+    "blackExcellenceLibrary"
+   ],
+   "carriesHelpers": [
+    "blackExcellenceBooksForSubject",
+    "splitAuthorNames"
+   ],
+   "why": "Logic, but its closure reaches school data directly: blackAmericanAuthorsForSubject -> EXCLUDED_FROM_ROSTER."
+  },
+  {
+   "name": "blackExcellenceBooksForSubject",
+   "slot": "academicCenter",
+   "verdict": "school-bound",
+   "definedIn": "src/academies/lamar/data/academicSuccessCenter/blackExcellenceLibrary.js",
+   "bindsVia": [
+    "blackExcellenceBooksForSubject",
+    "blackExcellenceLibrary"
+   ],
+   "depth": 2,
+   "needsTables": [
+    "blackExcellenceLibrary"
+   ],
+   "carriesHelpers": [],
+   "why": "Logic, but its closure reaches school data directly: blackExcellenceBooksForSubject -> blackExcellenceLibrary."
+  },
+  {
+   "name": "bookRationale",
+   "slot": "academicCenter",
+   "verdict": "school-data",
+   "kind": "data",
+   "definedIn": "src/academies/lamar/data/academicSuccessCenter/bookRationale.js",
+   "why": "A value sitting in an Academy folder. A fact about one school."
+  },
+  {
+   "name": "bookRecommendations",
+   "slot": "academicCenter",
+   "verdict": "school-data",
+   "kind": "data",
+   "definedIn": "src/academies/lamar/data/academicSuccessCenter/bookRecommendations.js",
+   "why": "A value sitting in an Academy folder. A fact about one school."
+  },
+  {
+   "name": "candidatesForBook",
+   "slot": "academicCenter",
+   "verdict": "school-bound",
+   "definedIn": "src/academies/lamar/data/academicSuccessCenter/bookRecommendations.js",
+   "bindsVia": [
+    "candidatesForBook",
+    "bookRecommendations"
+   ],
+   "depth": 2,
+   "needsTables": [
+    "blackExcellenceLibrary",
+    "bookRecommendations"
+   ],
+   "carriesHelpers": [
+    "blackExcellenceBooksForSubject"
+   ],
+   "why": "Logic, but its closure reaches school data directly: candidatesForBook -> bookRecommendations."
+  },
+  {
+   "name": "canonicalSubject",
+   "slot": "subjects",
+   "verdict": "school-bound",
+   "definedIn": "src/academies/lamar/subjects.js",
+   "bindsVia": [
+    "canonicalSubject",
+    "RETIRED_SUBJECT_MERGES"
+   ],
+   "depth": 2,
+   "needsTables": [
+    "RETIRED_SUBJECT_MERGES"
+   ],
+   "carriesHelpers": [],
+   "why": "Logic, but its closure reaches school data directly: canonicalSubject -> RETIRED_SUBJECT_MERGES."
+  },
+  {
+   "name": "catalogRewardRows",
+   "slot": "rewards",
+   "verdict": "school-bound",
+   "definedIn": "src/academies/lamar/data/rewardCatalog.js",
+   "bindsVia": [
+    "catalogRewardRows",
+    "REAL_WORLD_REWARDS"
+   ],
+   "depth": 2,
+   "needsTables": [
+    "DREAM_REWARDS",
+    "REAL_WORLD_REWARDS",
+    "TIERS_REQUIRING_PARENT"
+   ],
+   "carriesHelpers": [],
+   "why": "Logic, but its closure reaches school data directly: catalogRewardRows -> REAL_WORLD_REWARDS."
+  },
+  {
+   "name": "costForCosmetic",
+   "slot": "rewards",
+   "verdict": "school-bound",
+   "definedIn": "src/academies/lamar/data/rewardCatalog.js",
+   "bindsVia": [
+    "costForCosmetic",
+    "COSMETIC_REPRICE"
+   ],
+   "depth": 2,
+   "needsTables": [
+    "COSMETIC_REPRICE"
+   ],
+   "carriesHelpers": [],
+   "why": "Logic, but its closure reaches school data directly: costForCosmetic -> COSMETIC_REPRICE."
+  },
+  {
+   "name": "criteriaForFormat",
+   "slot": "academicCenter",
+   "verdict": "school-bound",
+   "definedIn": "src/academies/lamar/data/academicSuccessCenter/reportFormats.js",
+   "bindsVia": [
+    "criteriaForFormat",
+    "RUBRIC_CRITERIA"
+   ],
+   "depth": 2,
+   "needsTables": [
+    "RUBRIC_CRITERIA"
+   ],
+   "carriesHelpers": [],
+   "why": "Logic, but its closure reaches school data directly: criteriaForFormat -> RUBRIC_CRITERIA."
+  },
+  {
+   "name": "curatedDemoFor",
+   "slot": "pe",
+   "verdict": "school-bound",
+   "definedIn": "src/academies/lamar/data/pe/exerciseDemoVideos.js",
+   "bindsVia": [
+    "curatedDemoFor",
+    "EXERCISE_DEMO_VIDEOS"
+   ],
+   "depth": 2,
+   "needsTables": [
+    "EXERCISE_DEMO_VIDEOS"
+   ],
+   "carriesHelpers": [],
+   "why": "Logic, but its closure reaches school data directly: curatedDemoFor -> EXERCISE_DEMO_VIDEOS."
+  },
+  {
+   "name": "dailyDrills",
+   "slot": "writing",
+   "verdict": "school-data",
+   "kind": "data",
+   "definedIn": "src/academies/lamar/data/writing/dailyDrills.js",
+   "why": "A value sitting in an Academy folder. A fact about one school."
+  },
+  {
+   "name": "dayPattern",
+   "slot": "timetable",
+   "verdict": "school-bound",
+   "definedIn": "src/academies/lamar/data/schedule/weekPattern.js",
+   "bindsVia": [
+    "dayPattern",
+    "WEEK_PATTERN"
+   ],
+   "depth": 2,
+   "needsTables": [
+    "HOLIDAY_BY_DATE",
+    "WEEK_PATTERN"
+   ],
+   "carriesHelpers": [
+    "holidayName",
+    "toLocalDateStr"
+   ],
+   "why": "Logic, but its closure reaches school data directly: dayPattern -> WEEK_PATTERN."
+  },
+  {
+   "name": "declarationCoversToday",
+   "slot": "compliance",
+   "verdict": "behaviour",
+   "definedIn": "src/academies/lamar/data/admin/georgiaCompliance.js",
+   "why": "Logic whose whole closure touches no school data. The same for every Academy."
+  },
+  {
+   "name": "defaultSchedule",
+   "slot": "timetable",
+   "verdict": "school-data",
+   "kind": "data",
+   "definedIn": "src/academies/lamar/data/schedule/defaultSchedule.js",
+   "why": "A value sitting in an Academy folder. A fact about one school."
+  },
+  {
+   "name": "demoLinkFor",
+   "slot": "pe",
+   "verdict": "school-bound",
+   "definedIn": "src/academies/lamar/data/pe/peVideoSource.js",
+   "bindsVia": [
+    "demoLinkFor",
+    "HIDDEN_VIDEO"
+   ],
+   "depth": 2,
+   "needsTables": [
+    "EXERCISE_DEMO_VIDEOS",
+    "HIDDEN_VIDEO"
+   ],
+   "carriesHelpers": [
+    "curatedDemoFor"
+   ],
+   "why": "Logic, but its closure reaches school data directly: demoLinkFor -> HIDDEN_VIDEO."
+  },
+  {
+   "name": "draftMissionFeedback",
+   "slot": "compliance",
+   "verdict": "school-bound",
+   "definedIn": "src/academies/lamar/data/admin/missionEvaluations.js",
+   "bindsVia": [
+    "draftMissionFeedback",
+    "MISSION_RUBRIC_CRITERIA"
+   ],
+   "depth": 2,
+   "needsTables": [
+    "FEEDBACK_SENTENCES",
+    "MISSION_RUBRIC_CRITERIA"
+   ],
+   "carriesHelpers": [
+    "missionScoreTotals"
+   ],
+   "why": "Logic, but its closure reaches school data directly: draftMissionFeedback -> MISSION_RUBRIC_CRITERIA."
+  },
+  {
+   "name": "exerciseLibrary",
+   "slot": "pe",
+   "verdict": "school-data",
+   "kind": "data",
+   "definedIn": "src/academies/lamar/data/pe/exerciseLibrary.js",
+   "why": "A value sitting in an Academy folder. A fact about one school."
+  },
+  {
+   "name": "findFormat",
+   "slot": "academicCenter",
+   "verdict": "school-bound",
+   "definedIn": "src/academies/lamar/data/academicSuccessCenter/reportFormats.js",
+   "bindsVia": [
+    "findFormat",
+    "formatsForType",
+    "BOOK_REPORT_FORMATS"
+   ],
+   "depth": 3,
+   "needsTables": [
+    "BOOK_REPORT_FORMATS",
+    "PORTFOLIO_ENTRY_FORMATS",
+    "PRESENTATION_FORMATS",
+    "RESEARCH_PAPER_FORMATS"
+   ],
+   "carriesHelpers": [
+    "formatsForType"
+   ],
+   "why": "Logic, but its closure reaches school data 2 levels down: findFormat -> formatsForType -> BOOK_REPORT_FORMATS."
+  },
+  {
+   "name": "findProposal",
+   "slot": "compliance",
+   "verdict": "school-bound",
+   "definedIn": "src/academies/lamar/data/admin/missionEvaluations.js",
+   "bindsVia": [
+    "findProposal",
+    "MISSION_PROPOSALS"
+   ],
+   "depth": 2,
+   "needsTables": [
+    "MISSION_PROPOSALS"
+   ],
+   "carriesHelpers": [],
+   "why": "Logic, but its closure reaches school data directly: findProposal -> MISSION_PROPOSALS."
+  },
+  {
+   "name": "formatsForType",
+   "slot": "academicCenter",
+   "verdict": "school-bound",
+   "definedIn": "src/academies/lamar/data/academicSuccessCenter/reportFormats.js",
+   "bindsVia": [
+    "formatsForType",
+    "BOOK_REPORT_FORMATS"
+   ],
+   "depth": 2,
+   "needsTables": [
+    "BOOK_REPORT_FORMATS",
+    "PORTFOLIO_ENTRY_FORMATS",
+    "PRESENTATION_FORMATS",
+    "RESEARCH_PAPER_FORMATS"
+   ],
+   "carriesHelpers": [],
+   "why": "Logic, but its closure reaches school data directly: formatsForType -> BOOK_REPORT_FORMATS."
+  },
+  {
+   "name": "gardenBriefs",
+   "slot": "electives",
+   "verdict": "school-data",
+   "kind": "data",
+   "definedIn": "src/academies/lamar/data/gardening/gardenBriefs.js",
+   "why": "A value sitting in an Academy folder. A fact about one school."
+  },
+  {
+   "name": "gardenBuildTrack",
+   "slot": "electives",
+   "verdict": "school-data",
+   "kind": "data",
+   "definedIn": "src/academies/lamar/data/gardening/gardenBuildTrack.js",
+   "why": "A value sitting in an Academy folder. A fact about one school."
+  },
+  {
+   "name": "gardenCalendar",
+   "slot": "electives",
+   "verdict": "school-data",
+   "kind": "data",
+   "definedIn": "src/academies/lamar/data/gardening/gardenCalendar.js",
+   "why": "A value sitting in an Academy folder. A fact about one school."
+  },
+  {
+   "name": "gardenCapstone",
+   "slot": "electives",
+   "verdict": "school-data",
+   "kind": "data",
+   "definedIn": "src/academies/lamar/data/gardening/gardenBuildTrack.js",
+   "why": "A value sitting in an Academy folder. A fact about one school."
+  },
+  {
+   "name": "gardenProjects",
+   "slot": "electives",
+   "verdict": "school-data",
+   "kind": "data",
+   "definedIn": "src/academies/lamar/data/gardening/gardenProjects.js",
+   "why": "A value sitting in an Academy folder. A fact about one school."
+  },
+  {
+   "name": "generalGrammarUnitByUrl",
+   "slot": "khanSequences",
+   "verdict": "school-bound",
+   "definedIn": "src/academies/lamar/data/khan/grammarCourseOrder.js",
+   "bindsVia": [
+    "generalGrammarUnitByUrl",
+    "KHAN_GRAMMAR_UNITS"
+   ],
+   "depth": 2,
+   "needsTables": [
+    "KHAN_GRAMMAR_UNITS"
+   ],
+   "carriesHelpers": [],
+   "why": "Logic, but its closure reaches school data directly: generalGrammarUnitByUrl -> KHAN_GRAMMAR_UNITS."
+  },
+  {
+   "name": "getCurrentGuitarSkill",
+   "slot": "electives",
+   "verdict": "school-bound",
+   "definedIn": "src/academies/lamar/data/guitar/guitarSkillLadder.js",
+   "bindsVia": [
+    "getCurrentGuitarSkill",
+    "guitarSkillLadder"
+   ],
+   "depth": 2,
+   "needsTables": [
+    "guitarSkillLadder"
+   ],
+   "carriesHelpers": [],
+   "why": "Logic, but its closure reaches school data directly: getCurrentGuitarSkill -> guitarSkillLadder."
+  },
+  {
+   "name": "getDailyLine",
+   "slot": "guide",
+   "verdict": "school-bound",
+   "definedIn": "src/academies/lamar/data/mentor/dailyLines.js",
+   "bindsVia": [
+    "getDailyLine",
+    "NOVA_LINES"
+   ],
+   "depth": 2,
+   "needsTables": [
+    "NOVA_LINES",
+    "QUOTED"
+   ],
+   "carriesHelpers": [
+    "hashString"
+   ],
+   "why": "Logic, but its closure reaches school data directly: getDailyLine -> NOVA_LINES."
+  },
+  {
+   "name": "getGardenBriefById",
+   "slot": "electives",
+   "verdict": "school-bound",
+   "definedIn": "src/academies/lamar/data/gardening/gardenBriefs.js",
+   "bindsVia": [
+    "getGardenBriefById",
+    "gardenBriefs"
+   ],
+   "depth": 2,
+   "needsTables": [
+    "gardenBriefs"
+   ],
+   "carriesHelpers": [],
+   "why": "Logic, but its closure reaches school data directly: getGardenBriefById -> gardenBriefs."
+  },
+  {
+   "name": "getGardenDayForWeekOf",
+   "slot": "electives",
+   "verdict": "school-bound",
+   "definedIn": "src/academies/lamar/data/gardening/gardenCalendar.js",
+   "bindsVia": [
+    "getGardenDayForWeekOf",
+    "getGardenDayForDate",
+    "gardenCalendar"
+   ],
+   "depth": 3,
+   "needsTables": [
+    "gardenCalendar"
+   ],
+   "carriesHelpers": [
+    "getGardenDayForDate",
+    "toKey"
+   ],
+   "why": "Logic, but its closure reaches school data 2 levels down: getGardenDayForWeekOf -> getGardenDayForDate -> gardenCalendar."
+  },
+  {
+   "name": "getGuitarTool",
+   "slot": "electives",
+   "verdict": "school-bound",
+   "definedIn": "src/academies/lamar/data/guitar/guitarTools.js",
+   "bindsVia": [
+    "getGuitarTool",
+    "guitarTools"
+   ],
+   "depth": 2,
+   "needsTables": [
+    "guitarTools"
+   ],
+   "carriesHelpers": [],
+   "why": "Logic, but its closure reaches school data directly: getGuitarTool -> guitarTools."
+  },
+  {
+   "name": "getNextGardenDay",
+   "slot": "electives",
+   "verdict": "school-bound",
+   "definedIn": "src/academies/lamar/data/gardening/gardenCalendar.js",
+   "bindsVia": [
+    "getNextGardenDay",
+    "gardenCalendar"
+   ],
+   "depth": 2,
+   "needsTables": [
+    "gardenCalendar"
+   ],
+   "carriesHelpers": [
+    "toKey"
+   ],
+   "why": "Logic, but its closure reaches school data directly: getNextGardenDay -> gardenCalendar."
+  },
+  {
+   "name": "getSchoolWeekNumber",
+   "slot": "writing",
+   "verdict": "school-bound",
+   "definedIn": "src/academies/lamar/data/writing/weeklySchedule.js",
+   "bindsVia": [
+    "getSchoolWeekNumber",
+    "SCHOOL_YEAR_START"
+   ],
+   "depth": 2,
+   "needsTables": [
+    "SCHOOL_YEAR_START"
+   ],
+   "carriesHelpers": [],
+   "why": "Logic, but its closure reaches school data directly: getSchoolWeekNumber -> SCHOOL_YEAR_START."
+  },
+  {
+   "name": "getThisWeeksScheduledIds",
+   "slot": "writing",
+   "verdict": "school-bound",
+   "definedIn": "src/academies/lamar/data/writing/weeklySchedule.js",
+   "bindsVia": [
+    "getThisWeeksScheduledIds",
+    "weeklyWritingSchedule"
+   ],
+   "depth": 2,
+   "needsTables": [
+    "SCHOOL_YEAR_START",
+    "weeklyWritingSchedule"
+   ],
+   "carriesHelpers": [
+    "getSchoolWeekNumber"
+   ],
+   "why": "Logic, but its closure reaches school data directly: getThisWeeksScheduledIds -> weeklyWritingSchedule."
+  },
+  {
+   "name": "getTodaysWorkout",
+   "slot": "pe",
+   "verdict": "school-bound",
+   "definedIn": "src/academies/lamar/data/pe/weeklyWorkoutPlan.js",
+   "bindsVia": [
+    "getTodaysWorkout",
+    "getWorkoutForDate",
+    "EXERCISES_PER_WORKOUT"
+   ],
+   "depth": 3,
+   "needsTables": [
+    "CATEGORY_LABELS",
+    "EXERCISES_PER_WORKOUT",
+    "WEEKLY_PLAN",
+    "exerciseLibrary"
+   ],
+   "carriesHelpers": [
+    "getDayPlan",
+    "getWorkoutForDate",
+    "pickExercisesForWeek"
+   ],
+   "why": "Logic, but its closure reaches school data 2 levels down: getTodaysWorkout -> getWorkoutForDate -> EXERCISES_PER_WORKOUT."
+  },
+  {
+   "name": "grammarRowTitle",
+   "slot": "khanSequences",
+   "verdict": "school-bound",
+   "definedIn": "src/academies/lamar/data/khan/grammarCourseOrder.js",
+   "bindsVia": [
+    "grammarRowTitle",
+    "GRAMMAR_COURSES"
+   ],
+   "depth": 2,
+   "needsTables": [
+    "GRAMMAR_COURSES"
+   ],
+   "carriesHelpers": [],
+   "why": "Logic, but its closure reaches school data directly: grammarRowTitle -> GRAMMAR_COURSES."
+  },
+  {
+   "name": "grammarUnitUrl",
+   "slot": "khanSequences",
+   "verdict": "school-bound",
+   "definedIn": "src/academies/lamar/data/khan/grammarCourseOrder.js",
+   "bindsVia": [
+    "grammarUnitUrl",
+    "GRAMMAR_COURSES"
+   ],
+   "depth": 2,
+   "needsTables": [
+    "GRAMMAR_COURSES"
+   ],
+   "carriesHelpers": [],
+   "why": "Logic, but its closure reaches school data directly: grammarUnitUrl -> GRAMMAR_COURSES."
+  },
+  {
+   "name": "guitarEducators",
+   "slot": "electives",
+   "verdict": "school-data",
+   "kind": "data",
+   "definedIn": "src/academies/lamar/data/guitar/guitarTools.js",
+   "why": "A value sitting in an Academy folder. A fact about one school."
+  },
+  {
+   "name": "guitarFeedbackPlaces",
+   "slot": "electives",
+   "verdict": "school-data",
+   "kind": "data",
+   "definedIn": "src/academies/lamar/data/guitar/guitarTools.js",
+   "why": "A value sitting in an Academy folder. A fact about one school."
+  },
+  {
+   "name": "guitarOwnSongGuidance",
+   "slot": "electives",
+   "verdict": "school-data",
+   "kind": "data",
+   "definedIn": "src/academies/lamar/data/guitar/guitarSongs.js",
+   "why": "A value sitting in an Academy folder. A fact about one school."
+  },
+  {
+   "name": "guitarPerformanceMoment",
+   "slot": "electives",
+   "verdict": "school-data",
+   "kind": "data",
+   "definedIn": "src/academies/lamar/data/guitar/guitarSongs.js",
+   "why": "A value sitting in an Academy folder. A fact about one school."
+  },
+  {
+   "name": "guitarSkillLadder",
+   "slot": "electives",
+   "verdict": "school-data",
+   "kind": "data",
+   "definedIn": "src/academies/lamar/data/guitar/guitarSkillLadder.js",
+   "why": "A value sitting in an Academy folder. A fact about one school."
+  },
+  {
+   "name": "guitarStarterSongs",
+   "slot": "electives",
+   "verdict": "school-data",
+   "kind": "data",
+   "definedIn": "src/academies/lamar/data/guitar/guitarSongs.js",
+   "why": "A value sitting in an Academy folder. A fact about one school."
+  },
+  {
+   "name": "guitarTheory",
+   "slot": "electives",
+   "verdict": "school-data",
+   "kind": "data",
+   "definedIn": "src/academies/lamar/data/guitar/guitarTheory.js",
+   "why": "A value sitting in an Academy folder. A fact about one school."
+  },
+  {
+   "name": "hasMilestones",
+   "slot": "academicCenter",
+   "verdict": "school-bound",
+   "definedIn": "src/academies/lamar/data/academicSuccessCenter/assignmentMilestones.js",
+   "bindsVia": [
+    "hasMilestones",
+    "MILESTONE_TEMPLATES"
+   ],
+   "depth": 2,
+   "needsTables": [
+    "MILESTONE_TEMPLATES"
+   ],
+   "carriesHelpers": [],
+   "why": "Logic, but its closure reaches school data directly: hasMilestones -> MILESTONE_TEMPLATES."
+  },
+  {
+   "name": "holidaysInSpan",
+   "slot": "timetable",
+   "verdict": "school-bound",
+   "definedIn": "src/academies/lamar/data/schedule/schoolHolidays.js",
+   "bindsVia": [
+    "holidaysInSpan",
+    "SCHOOL_HOLIDAYS"
+   ],
+   "depth": 2,
+   "needsTables": [
+    "SCHOOL_HOLIDAYS"
+   ],
+   "carriesHelpers": [],
+   "why": "Logic, but its closure reaches school data directly: holidaysInSpan -> SCHOOL_HOLIDAYS."
+  },
+  {
+   "name": "instructionProgress",
+   "slot": "compliance",
+   "verdict": "school-bound",
+   "definedIn": "src/academies/lamar/data/admin/georgiaCompliance.js",
+   "bindsVia": [
+    "instructionProgress",
+    "GEORGIA_MINUTES_PER_DAY"
+   ],
+   "depth": 2,
+   "needsTables": [
+    "GEORGIA_DAYS_REQUIRED",
+    "GEORGIA_MINUTES_PER_DAY"
+   ],
+   "carriesHelpers": [
+    "isEligibleSchoolDay"
+   ],
+   "why": "Logic, but its closure reaches school data directly: instructionProgress -> GEORGIA_MINUTES_PER_DAY."
+  },
+  {
+   "name": "isHoliday",
+   "slot": "timetable",
+   "verdict": "school-bound",
+   "definedIn": "src/academies/lamar/data/schedule/schoolHolidays.js",
+   "bindsVia": [
+    "isHoliday",
+    "holidayName",
+    "HOLIDAY_BY_DATE"
+   ],
+   "depth": 3,
+   "needsTables": [
+    "HOLIDAY_BY_DATE"
+   ],
+   "carriesHelpers": [
+    "holidayName",
+    "toLocalDateStr"
+   ],
+   "why": "Logic, but its closure reaches school data 2 levels down: isHoliday -> holidayName -> HOLIDAY_BY_DATE."
+  },
+  {
+   "name": "isKhanTaughtSubject",
+   "slot": "subjects",
+   "verdict": "school-bound",
+   "definedIn": "src/academies/lamar/subjects.js",
+   "bindsVia": [
+    "isKhanTaughtSubject",
+    "KHAN_TAUGHT_SUBJECTS"
+   ],
+   "depth": 2,
+   "needsTables": [
+    "KHAN_TAUGHT_SUBJECTS"
+   ],
+   "carriesHelpers": [],
+   "why": "Logic, but its closure reaches school data directly: isKhanTaughtSubject -> KHAN_TAUGHT_SUBJECTS."
+  },
+  {
+   "name": "isSchoolDay",
+   "slot": "timetable",
+   "verdict": "school-bound",
+   "definedIn": "src/academies/lamar/data/schedule/schoolHolidays.js",
+   "bindsVia": [
+    "isSchoolDay",
+    "isHoliday",
+    "holidayName",
+    "HOLIDAY_BY_DATE"
+   ],
+   "depth": 4,
+   "needsTables": [
+    "HOLIDAY_BY_DATE"
+   ],
+   "carriesHelpers": [
+    "holidayName",
+    "isHoliday",
+    "toLocalDateStr"
+   ],
+   "why": "Logic, but its closure reaches school data 3 levels down: isSchoolDay -> isHoliday -> holidayName -> HOLIDAY_BY_DATE."
+  },
+  {
+   "name": "journalFor",
+   "slot": "rewards",
+   "verdict": "school-bound",
+   "definedIn": "src/academies/lamar/data/printouts.js",
+   "bindsVia": [
+    "journalFor",
+    "SUBJECT_JOURNALS"
+   ],
+   "depth": 2,
+   "needsTables": [
+    "SUBJECT_JOURNALS"
+   ],
+   "carriesHelpers": [],
+   "why": "Logic, but its closure reaches school data directly: journalFor -> SUBJECT_JOURNALS."
+  },
+  {
+   "name": "khanGrammarUnitByUrl",
+   "slot": "khanSequences",
+   "verdict": "school-bound",
+   "definedIn": "src/academies/lamar/data/khan/grammarCourseOrder.js",
+   "bindsVia": [
+    "khanGrammarUnitByUrl",
+    "GRAMMAR_COURSES"
+   ],
+   "depth": 2,
+   "needsTables": [
+    "GRAMMAR_COURSES"
+   ],
+   "carriesHelpers": [
+    "grammarRowTitle"
+   ],
+   "why": "Logic, but its closure reaches school data directly: khanGrammarUnitByUrl -> GRAMMAR_COURSES."
+  },
+  {
+   "name": "khanGrammarUnitForUrl",
+   "slot": "khanSequences",
+   "verdict": "school-bound",
+   "definedIn": "src/academies/lamar/data/khan/grammarCourseOrder.js",
+   "bindsVia": [
+    "khanGrammarUnitForUrl",
+    "khanGrammarUnitByUrl",
+    "GRAMMAR_COURSES"
+   ],
+   "depth": 3,
+   "needsTables": [
+    "GRAMMAR_COURSES"
+   ],
+   "carriesHelpers": [
+    "grammarRowTitle",
+    "khanGrammarUnitByUrl"
+   ],
+   "why": "Logic, but its closure reaches school data 2 levels down: khanGrammarUnitForUrl -> khanGrammarUnitByUrl -> GRAMMAR_COURSES."
+  },
+  {
+   "name": "leadStatus",
+   "slot": "academicCenter",
+   "verdict": "school-bound",
+   "definedIn": "src/academies/lamar/data/academicSuccessCenter/assignmentMilestones.js",
+   "bindsVia": [
+    "leadStatus",
+    "startByFor",
+    "leadDaysFor",
+    "LEAD_DAYS_BY_TYPE"
+   ],
+   "depth": 4,
+   "needsTables": [
+    "DEFAULT_LEAD_DAYS",
+    "LEAD_DAYS_BY_TYPE",
+    "MILESTONE_TEMPLATES"
+   ],
+   "carriesHelpers": [
+    "buildMilestones",
+    "leadDaysFor",
+    "milestonesFor",
+    "startByFor"
+   ],
+   "why": "Logic, but its closure reaches school data 3 levels down: leadStatus -> startByFor -> leadDaysFor -> LEAD_DAYS_BY_TYPE."
+  },
+  {
+   "name": "lessonForPrompt",
+   "slot": "writing",
+   "verdict": "school-bound",
+   "definedIn": "src/academies/lamar/data/writing/promptLessons.js",
+   "bindsVia": [
+    "lessonForPrompt",
+    "PROMPT_LESSONS"
+   ],
+   "depth": 2,
+   "needsTables": [
+    "PROMPT_LESSONS"
+   ],
+   "carriesHelpers": [],
+   "why": "Logic, but its closure reaches school data directly: lessonForPrompt -> PROMPT_LESSONS."
+  },
+  {
+   "name": "milestoneProgress",
+   "slot": "academicCenter",
+   "verdict": "school-bound",
+   "definedIn": "src/academies/lamar/data/academicSuccessCenter/assignmentMilestones.js",
+   "bindsVia": [
+    "milestoneProgress",
+    "milestonesFor",
+    "buildMilestones",
+    "MILESTONE_TEMPLATES"
+   ],
+   "depth": 4,
+   "needsTables": [
+    "MILESTONE_TEMPLATES"
+   ],
+   "carriesHelpers": [
+    "buildMilestones",
+    "milestonesFor"
+   ],
+   "why": "Logic, but its closure reaches school data 3 levels down: milestoneProgress -> milestonesFor -> buildMilestones -> MILESTONE_TEMPLATES."
+  },
+  {
+   "name": "milestonesFor",
+   "slot": "academicCenter",
+   "verdict": "school-bound",
+   "definedIn": "src/academies/lamar/data/academicSuccessCenter/assignmentMilestones.js",
+   "bindsVia": [
+    "milestonesFor",
+    "buildMilestones",
+    "MILESTONE_TEMPLATES"
+   ],
+   "depth": 3,
+   "needsTables": [
+    "MILESTONE_TEMPLATES"
+   ],
+   "carriesHelpers": [
+    "buildMilestones"
+   ],
+   "why": "Logic, but its closure reaches school data 2 levels down: milestonesFor -> buildMilestones -> MILESTONE_TEMPLATES."
+  },
+  {
+   "name": "missionGrowth",
+   "slot": "compliance",
+   "verdict": "school-bound",
+   "definedIn": "src/academies/lamar/data/admin/missionEvaluations.js",
+   "bindsVia": [
+    "missionGrowth",
+    "MISSION_QUARTERS"
+   ],
+   "depth": 2,
+   "needsTables": [
+    "MISSION_PROPOSALS",
+    "MISSION_QUARTERS",
+    "MISSION_RUBRIC_CRITERIA"
+   ],
+   "carriesHelpers": [
+    "findProposal",
+    "missionScoreTotals"
+   ],
+   "why": "Logic, but its closure reaches school data directly: missionGrowth -> MISSION_QUARTERS."
+  },
+  {
+   "name": "missionScoreTotals",
+   "slot": "compliance",
+   "verdict": "school-bound",
+   "definedIn": "src/academies/lamar/data/admin/missionEvaluations.js",
+   "bindsVia": [
+    "missionScoreTotals",
+    "MISSION_RUBRIC_CRITERIA"
+   ],
+   "depth": 2,
+   "needsTables": [
+    "MISSION_RUBRIC_CRITERIA"
+   ],
+   "carriesHelpers": [],
+   "why": "Logic, but its closure reaches school data directly: missionScoreTotals -> MISSION_RUBRIC_CRITERIA."
+  },
+  {
+   "name": "nextAssignmentRecommendation",
+   "slot": "academicCenter",
+   "verdict": "school-bound",
+   "definedIn": "src/academies/lamar/data/academicSuccessCenter/assignmentRecommendations.js",
+   "bindsVia": [
+    "nextAssignmentRecommendation",
+    "assignmentCandidatesForSlot",
+    "assignmentRecommendations"
+   ],
+   "depth": 3,
+   "needsTables": [
+    "assignmentRecommendations"
+   ],
+   "carriesHelpers": [
+    "assignmentCandidatesForSlot",
+    "readingAssignmentSuggestion"
+   ],
+   "why": "Logic, but its closure reaches school data 2 levels down: nextAssignmentRecommendation -> assignmentCandidatesForSlot -> assignmentRecommendations."
+  },
+  {
+   "name": "nextDeclarationDeadline",
+   "slot": "compliance",
+   "verdict": "behaviour",
+   "definedIn": "src/academies/lamar/data/admin/georgiaCompliance.js",
+   "why": "Logic whose whole closure touches no school data. The same for every Academy."
+  },
+  {
+   "name": "nextRecommendationForBook",
+   "slot": "academicCenter",
+   "verdict": "school-bound",
+   "definedIn": "src/academies/lamar/data/academicSuccessCenter/bookRecommendations.js",
+   "bindsVia": [
+    "nextRecommendationForBook",
+    "candidatesForBook",
+    "bookRecommendations"
+   ],
+   "depth": 3,
+   "needsTables": [
+    "blackExcellenceLibrary",
+    "bookRecommendations"
+   ],
+   "carriesHelpers": [
+    "blackExcellenceBooksForSubject",
+    "candidatesForBook"
+   ],
+   "why": "Logic, but its closure reaches school data 2 levels down: nextRecommendationForBook -> candidatesForBook -> bookRecommendations."
+  },
+  {
+   "name": "nutritionChallenges",
+   "slot": "pe",
+   "verdict": "school-data",
+   "kind": "data",
+   "definedIn": "src/academies/lamar/data/pe/nutritionContent.js",
+   "why": "A value sitting in an Academy folder. A fact about one school."
+  },
+  {
+   "name": "nutritionTopics",
+   "slot": "pe",
+   "verdict": "school-data",
+   "kind": "data",
+   "definedIn": "src/academies/lamar/data/pe/nutritionContent.js",
+   "why": "A value sitting in an Academy folder. A fact about one school."
+  },
+  {
+   "name": "printoutFor",
+   "slot": "rewards",
+   "verdict": "school-bound",
+   "definedIn": "src/academies/lamar/data/printouts.js",
+   "bindsVia": [
+    "printoutFor",
+    "LESSON_PRINTOUTS"
+   ],
+   "depth": 2,
+   "needsTables": [
+    "LESSON_PRINTOUTS",
+    "PRINTOUT_KINDS"
+   ],
+   "carriesHelpers": [],
+   "why": "Logic, but its closure reaches school data directly: printoutFor -> LESSON_PRINTOUTS."
+  },
+  {
+   "name": "proposalsForQuarter",
+   "slot": "compliance",
+   "verdict": "school-bound",
+   "definedIn": "src/academies/lamar/data/admin/missionEvaluations.js",
+   "bindsVia": [
+    "proposalsForQuarter",
+    "MISSION_PROPOSALS"
+   ],
+   "depth": 2,
+   "needsTables": [
+    "MISSION_PROPOSALS"
+   ],
+   "carriesHelpers": [],
+   "why": "Logic, but its closure reaches school data directly: proposalsForQuarter -> MISSION_PROPOSALS."
+  },
+  {
+   "name": "quarterlyAcademicPlaceholders",
+   "slot": "academicCenter",
+   "verdict": "school-data",
+   "kind": "data",
+   "definedIn": "src/academies/lamar/data/academicSuccessCenter/placeholders.js",
+   "why": "A value sitting in an Academy folder. A fact about one school."
+  },
+  {
+   "name": "rationaleFor",
+   "slot": "academicCenter",
+   "verdict": "school-bound",
+   "definedIn": "src/academies/lamar/data/academicSuccessCenter/bookRationale.js",
+   "bindsVia": [
+    "rationaleFor",
+    "bookRationale"
+   ],
+   "depth": 2,
+   "needsTables": [
+    "bookRationale"
+   ],
+   "carriesHelpers": [],
+   "why": "Logic, but its closure reaches school data directly: rationaleFor -> bookRationale."
+  },
+  {
+   "name": "recipeLibrary",
+   "slot": "pe",
+   "verdict": "school-data",
+   "kind": "data",
+   "definedIn": "src/academies/lamar/data/pe/nutritionContent.js",
+   "why": "A value sitting in an Academy folder. A fact about one school."
+  },
+  {
+   "name": "reflectionPromptFor",
+   "slot": "academicCenter",
+   "verdict": "school-bound",
+   "definedIn": "src/academies/lamar/data/academicSuccessCenter/reportFormats.js",
+   "bindsVia": [
+    "reflectionPromptFor",
+    "REFLECTION_PROMPTS"
+   ],
+   "depth": 2,
+   "needsTables": [
+    "DEFAULT_REFLECTION_PROMPT",
+    "REFLECTION_PROMPTS"
+   ],
+   "carriesHelpers": [],
+   "why": "Logic, but its closure reaches school data directly: reflectionPromptFor -> REFLECTION_PROMPTS."
+  },
+  {
+   "name": "requirementsFor",
+   "slot": "writing",
+   "verdict": "school-bound",
+   "definedIn": "src/academies/lamar/data/writing/drillRequirements.js",
+   "bindsVia": [
+    "requirementsFor",
+    "DRILL_REQUIREMENTS"
+   ],
+   "depth": 2,
+   "needsTables": [
+    "DRILL_REQUIREMENTS"
+   ],
+   "carriesHelpers": [],
+   "why": "Logic, but its closure reaches school data directly: requirementsFor -> DRILL_REQUIREMENTS."
+  },
+  {
+   "name": "resolveSuggestedDueDate",
+   "slot": "academicCenter",
+   "verdict": "school-bound",
+   "definedIn": "src/academies/lamar/data/academicSuccessCenter/assignmentRecommendations.js",
+   "bindsVia": [
+    "resolveSuggestedDueDate",
+    "suggestedDueDateForSlot",
+    "SLOT_DUE_DATES"
+   ],
+   "depth": 3,
+   "needsTables": [
+    "SLOT_DUE_DATES"
+   ],
+   "carriesHelpers": [
+    "suggestedDueDateForSlot"
+   ],
+   "why": "Logic, but its closure reaches school data 2 levels down: resolveSuggestedDueDate -> suggestedDueDateForSlot -> SLOT_DUE_DATES."
+  },
+  {
+   "name": "roboticsProjects",
+   "slot": "projects",
+   "verdict": "school-data",
+   "kind": "data",
+   "definedIn": "src/academies/lamar/data/robotics/roboticsProjects.js",
+   "why": "A value sitting in an Academy folder. A fact about one school."
+  },
+  {
+   "name": "scienceCanonicalRow",
+   "slot": "khanSequences",
+   "verdict": "school-bound",
+   "definedIn": "src/academies/lamar/data/khan/scienceSequence.js",
+   "bindsVia": [
+    "scienceCanonicalRow",
+    "SCIENCE_KHAN_SEQUENCE"
+   ],
+   "depth": 2,
+   "needsTables": [
+    "SCIENCE_COURSE_CHALLENGES",
+    "SCIENCE_KHAN_SEQUENCE"
+   ],
+   "carriesHelpers": [],
+   "why": "Logic, but its closure reaches school data directly: scienceCanonicalRow -> SCIENCE_KHAN_SEQUENCE."
+  },
+  {
+   "name": "scienceCourseChallengeRows",
+   "slot": "khanSequences",
+   "verdict": "school-bound",
+   "definedIn": "src/academies/lamar/data/khan/scienceSequence.js",
+   "bindsVia": [
+    "scienceCourseChallengeRows",
+    "SCIENCE_COURSE_CHALLENGES"
+   ],
+   "depth": 2,
+   "needsTables": [
+    "SCIENCE_COURSE_CHALLENGES"
+   ],
+   "carriesHelpers": [],
+   "why": "Logic, but its closure reaches school data directly: scienceCourseChallengeRows -> SCIENCE_COURSE_CHALLENGES."
+  },
+  {
+   "name": "scienceCourseForUrl",
+   "slot": "khanSequences",
+   "verdict": "school-bound",
+   "definedIn": "src/academies/lamar/data/khan/scienceSequence.js",
+   "bindsVia": [
+    "scienceCourseForUrl",
+    "SCIENCE_KHAN_SEQUENCE"
+   ],
+   "depth": 2,
+   "needsTables": [
+    "SCIENCE_COURSES",
+    "SCIENCE_COURSE_CHALLENGES",
+    "SCIENCE_KHAN_SEQUENCE"
+   ],
+   "carriesHelpers": [],
+   "why": "Logic, but its closure reaches school data directly: scienceCourseForUrl -> SCIENCE_KHAN_SEQUENCE."
+  },
+  {
+   "name": "scienceCoverageByCourse",
+   "slot": "khanSequences",
+   "verdict": "school-bound",
+   "definedIn": "src/academies/lamar/data/khan/scienceSequence.js",
+   "bindsVia": [
+    "scienceCoverageByCourse",
+    "SCIENCE_COURSES"
+   ],
+   "depth": 2,
+   "needsTables": [
+    "SCIENCE_COURSES",
+    "SCIENCE_KHAN_SEQUENCE"
+   ],
+   "carriesHelpers": [],
+   "why": "Logic, but its closure reaches school data directly: scienceCoverageByCourse -> SCIENCE_COURSES."
+  },
+  {
+   "name": "scienceExperiments",
+   "slot": "projects",
+   "verdict": "school-data",
+   "kind": "data",
+   "definedIn": "src/academies/lamar/data/science/scienceExperiments.js",
+   "why": "A value sitting in an Academy folder. A fact about one school."
+  },
+  {
+   "name": "scienceRowsFor",
+   "slot": "khanSequences",
+   "verdict": "school-bound",
+   "definedIn": "src/academies/lamar/data/khan/scienceSequence.js",
+   "bindsVia": [
+    "scienceRowsFor",
+    "SCIENCE_KHAN_SEQUENCE"
+   ],
+   "depth": 2,
+   "needsTables": [
+    "SCIENCE_KHAN_SEQUENCE"
+   ],
+   "carriesHelpers": [],
+   "why": "Logic, but its closure reaches school data directly: scienceRowsFor -> SCIENCE_KHAN_SEQUENCE."
+  },
+  {
+   "name": "shoppingListCategories",
+   "slot": "pe",
+   "verdict": "school-data",
+   "kind": "data",
+   "definedIn": "src/academies/lamar/data/pe/nutritionContent.js",
+   "why": "A value sitting in an Academy folder. A fact about one school."
+  },
+  {
+   "name": "sizeFor",
+   "slot": "academicCenter",
+   "verdict": "school-bound",
+   "definedIn": "src/academies/lamar/data/academicSuccessCenter/reportFormats.js",
+   "bindsVia": [
+    "sizeFor",
+    "FORMAT_SIZE"
+   ],
+   "depth": 2,
+   "needsTables": [
+    "FORMAT_SIZE"
+   ],
+   "carriesHelpers": [],
+   "why": "Logic, but its closure reaches school data directly: sizeFor -> FORMAT_SIZE."
+  },
+  {
+   "name": "spellingWordPool",
+   "slot": "writing",
+   "verdict": "school-data",
+   "kind": "data",
+   "definedIn": "src/academies/lamar/data/writing/spellingWordPool.js",
+   "why": "A value sitting in an Academy folder. A fact about one school."
+  },
+  {
+   "name": "startByFor",
+   "slot": "academicCenter",
+   "verdict": "school-bound",
+   "definedIn": "src/academies/lamar/data/academicSuccessCenter/assignmentMilestones.js",
+   "bindsVia": [
+    "startByFor",
+    "leadDaysFor",
+    "LEAD_DAYS_BY_TYPE"
+   ],
+   "depth": 3,
+   "needsTables": [
+    "DEFAULT_LEAD_DAYS",
+    "LEAD_DAYS_BY_TYPE",
+    "MILESTONE_TEMPLATES"
+   ],
+   "carriesHelpers": [
+    "buildMilestones",
+    "leadDaysFor",
+    "milestonesFor"
+   ],
+   "why": "Logic, but its closure reaches school data 2 levels down: startByFor -> leadDaysFor -> LEAD_DAYS_BY_TYPE."
+  },
+  {
+   "name": "strandsForSubject",
+   "slot": "subjects",
+   "verdict": "school-bound",
+   "definedIn": "src/academies/lamar/subjects.js",
+   "bindsVia": [
+    "strandsForSubject",
+    "SUBJECT_STRANDS"
+   ],
+   "depth": 2,
+   "needsTables": [
+    "SUBJECT_STRANDS"
+   ],
+   "carriesHelpers": [],
+   "why": "Logic, but its closure reaches school data directly: strandsForSubject -> SUBJECT_STRANDS."
+  },
+  {
+   "name": "subjectBookPlaceholders",
+   "slot": "academicCenter",
+   "verdict": "school-data",
+   "kind": "data",
+   "definedIn": "src/academies/lamar/data/academicSuccessCenter/placeholders.js",
+   "why": "A value sitting in an Academy folder. A fact about one school."
+  },
+  {
+   "name": "subjectCardLabel",
+   "slot": "subjects",
+   "verdict": "school-bound",
+   "definedIn": "src/academies/lamar/subjects.js",
+   "bindsVia": [
+    "subjectCardLabel",
+    "SUBJECT_CARD_LABELS"
+   ],
+   "depth": 2,
+   "needsTables": [
+    "SUBJECT_CARD_LABELS",
+    "SUBJECT_LABELS"
+   ],
+   "carriesHelpers": [],
+   "why": "Logic, but its closure reaches school data directly: subjectCardLabel -> SUBJECT_CARD_LABELS."
+  },
+  {
+   "name": "subjectsForDay",
+   "slot": "timetable",
+   "verdict": "school-bound",
+   "definedIn": "src/academies/lamar/data/schedule/weekPattern.js",
+   "bindsVia": [
+    "subjectsForDay",
+    "dayPattern",
+    "WEEK_PATTERN"
+   ],
+   "depth": 3,
+   "needsTables": [
+    "HOLIDAY_BY_DATE",
+    "WEEK_PATTERN"
+   ],
+   "carriesHelpers": [
+    "dayPattern",
+    "holidayName",
+    "toLocalDateStr"
+   ],
+   "why": "Logic, but its closure reaches school data 2 levels down: subjectsForDay -> dayPattern -> WEEK_PATTERN."
+  },
+  {
+   "name": "suggestedGradeFromRubric",
+   "slot": "academicCenter",
+   "verdict": "behaviour",
+   "definedIn": "src/academies/lamar/data/academicSuccessCenter/reportFormats.js",
+   "why": "Logic whose whole closure touches no school data. The same for every Academy."
+  },
+  {
+   "name": "technologyProjects",
+   "slot": "projects",
+   "verdict": "school-data",
+   "kind": "data",
+   "definedIn": "src/academies/lamar/data/technology/technologyProjects.js",
+   "why": "A value sitting in an Academy folder. A fact about one school."
+  },
+  {
+   "name": "typingLessons",
+   "slot": "writing",
+   "verdict": "school-data",
+   "kind": "data",
+   "definedIn": "src/academies/lamar/data/writing/typingLessons.js",
+   "why": "A value sitting in an Academy folder. A fact about one school."
+  },
+  {
+   "name": "vocabularyWordPool",
+   "slot": "writing",
+   "verdict": "school-data",
+   "kind": "data",
+   "definedIn": "src/academies/lamar/data/writing/vocabularyWordPool.js",
+   "why": "A value sitting in an Academy folder. A fact about one school."
+  },
+  {
+   "name": "weeklyWritingSchedule",
+   "slot": "writing",
+   "verdict": "school-data",
+   "kind": "data",
+   "definedIn": "src/academies/lamar/data/writing/weeklySchedule.js",
+   "why": "A value sitting in an Academy folder. A fact about one school."
+  },
+  {
+   "name": "writingPrompts",
+   "slot": "writing",
+   "verdict": "school-data",
+   "kind": "data",
+   "definedIn": "src/academies/lamar/data/writing/writingPrompts.js",
+   "why": "A value sitting in an Academy folder. A fact about one school."
+  }
+ ]
+}

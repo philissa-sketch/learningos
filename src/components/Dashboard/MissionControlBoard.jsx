@@ -3,11 +3,11 @@ import { useAppStore } from '../../store/useAppStore.js';
 import { scheduledMinutesByDate } from '../../lib/scheduledMinutes.js';
 import { PercentGradeInput, LetterGradePicker } from './GradeControls.jsx';
 import { getCurrentQuarter } from '../../lib/schoolQuarter.js';
-import { todayDateStr, toDateStr, parseDateStr, addDays, formatShortDate } from '../../lib/scheduler.js';
+import { todayDateStr, toDateStr, parseDateStr, addDays, formatShortDate, daysUntil } from '../../lib/scheduler.js';
 import { buildPlannerItems, splitPlannerItems } from '../../lib/plannerCalendar.js';
 import { academyContent } from '../../content/academyContent.js';
 
-const { GEORGIA_MINUTES_PER_DAY, daysUntil, declarationCoversToday, nextDeclarationDeadline } = academyContent().compliance;
+const { GEORGIA_MINUTES_PER_DAY, declarationCoversToday, nextDeclarationDeadline } = academyContent().compliance;
 const { allLessons } = academyContent().lessons;
 const { SUBJECT_LABELS } = academyContent().subjects;
 const { writingPrompts } = academyContent().writing;

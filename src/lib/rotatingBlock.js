@@ -1,9 +1,10 @@
 import { getCurrentQuarter } from './schoolQuarter.js';
+import { patternSubjects } from './timetable.js';
 import { academyContent } from '../content/academyContent.js';
 
 const { allLessons } = academyContent().lessons;
 const { SUBJECT_LABELS } = academyContent().subjects;
-const { WEEK_PATTERN, dayPattern, patternSubjects } = academyContent().timetable;
+const { WEEK_PATTERN, dayPattern } = academyContent().timetable;
 
 /**
  * WHAT IS ACTUALLY IN THE 2:15 BLOCK TODAY.

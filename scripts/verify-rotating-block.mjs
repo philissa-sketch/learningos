@@ -243,7 +243,10 @@ console.log('--- friday shows everything, because it is the overflow day ---');
 // and made the KHAN rows agree. The lesson loop kept its own answer.
 // ---------------------------------------------------------------------------
 {
-  const { subjectsForDay, patternSubjects, dayPattern } = await import(root + '/src/academies/lamar/data/schedule/weekPattern.js');
+  const { subjectsForDay, dayPattern } = await import(root + '/src/academies/lamar/data/schedule/weekPattern.js');
+  // patternSubjects moved to the platform on Sept 1, 2026 (§3c Step 1). The
+  // week pattern it reads is still this school's.
+  const { patternSubjects } = await import(root + '/src/lib/timetable.js');
 
   /** Every school day of a Q1 week, and one from Q2 where the override lifts. */
   const days = [D(2026, 8, 24), D(2026, 8, 25), D(2026, 8, 26), D(2026, 8, 27), D(2026, 11, 4)];

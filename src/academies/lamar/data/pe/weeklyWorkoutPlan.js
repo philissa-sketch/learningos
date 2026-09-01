@@ -16,6 +16,7 @@
  */
 
 import { exerciseLibrary, CATEGORY_LABELS } from './exerciseLibrary.js';
+import { getWeekNumber } from '../../../../lib/scheduler.js';
 
 // Fixed day-of-week -> category mapping (JS Date.getDay(): 0=Sunday).
 export const WEEKLY_PLAN = [
@@ -30,16 +31,9 @@ export const WEEKLY_PLAN = [
 
 const EXERCISES_PER_WORKOUT = 4;
 
-/** Real ISO-8601-style week number (1-53) for a given Date, used only as a
- * rotation seed — doesn't need to be perfectly ISO-compliant, just stable
- * and predictable week to week. */
-export function getWeekNumber(date = new Date()) {
-  const d = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
-  const dayNum = d.getUTCDay() || 7;
-  d.setUTCDate(d.getUTCDate() + 4 - dayNum);
-  const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
-  return Math.ceil(((d - yearStart) / 86400000 + 1) / 7);
-}
+// getWeekNumber moved to src/lib/scheduler.js on Sept 1, 2026. It is used here
+// as a rotation seed, but which week of the year it is has never been a fact
+// about a school. §3c Step 1.
 
 export function getDayPlan(date = new Date()) {
   const dayIndex = date.getDay();

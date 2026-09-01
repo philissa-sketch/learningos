@@ -1,7 +1,8 @@
 import { toDateStr, parseDateStr } from './scheduler.js';
+import { instructionMinutes } from './instructionTime.js';
 import { academyContent } from '../content/academyContent.js';
 
-const { GEORGIA_DAYS_REQUIRED, findProposal, instructionMinutes, missionScoreTotals } = academyContent().compliance;
+const { GEORGIA_DAYS_REQUIRED, findProposal, missionScoreTotals } = academyContent().compliance;
 const { holidaysInSpan, isSchoolDay } = academyContent().timetable;
 
 /**

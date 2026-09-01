@@ -828,24 +828,9 @@ export function sizeFor(format) {
   return format?.id ? FORMAT_SIZE[format.id] || null : null;
 }
 
-/**
- * "234 of 350–500 words" — where he is against the target, for the live
- * counter on the box he is typing in. Returns null when the format is not
- * measured in words (a podcast, a debate), because a word count there would be
- * a number that means nothing.
- */
-export function wordProgress(size, count) {
-  if (!size?.words) return null;
-  const [min, max] = size.words;
-  return {
-    min,
-    max,
-    count,
-    /** 'short' | 'in-range' | 'over' — 'over' is not a failure, just worth knowing. */
-    state: count < min ? 'short' : count <= max ? 'in-range' : 'over',
-    label: `${count} of ${min}–${max} words`
-  };
-}
+// wordProgress moved to src/lib/writingCheck.js on Sept 1, 2026. The size
+// TARGETS above stay here — how long a report should be is a teaching
+// decision. Comparing a count to a range is not. §3c Step 1.
 
 export function criteriaForFormat(format) {
   return format ? RUBRIC_CRITERIA[format.rubricKind] || [] : [];

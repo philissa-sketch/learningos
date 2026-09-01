@@ -627,6 +627,9 @@ console.log('\n--- 5. he can write the report in the app ---');
    * no total is a treadmill with no off switch.
    */
   const rf = await import(REPO + '/src/academies/lamar/data/academicSuccessCenter/reportFormats.js');
+  // wordProgress moved to the platform on Sept 1, 2026 (§3c Step 1). The size
+  // targets it is measured against are still this school's.
+  const { wordProgress } = await import(REPO + '/src/lib/writingCheck.js');
   const everyFormat = [
     ...rf.BOOK_REPORT_FORMATS,
     ...rf.PRESENTATION_FORMATS,
@@ -652,12 +655,12 @@ console.log('\n--- 5. he can write the report in the app ---');
   ok('...and a research paper is longer than a book report',
     rf.sizeFor(rf.findFormat('Research Paper', 'person-study')).words[0] >
       rf.sizeFor(traditional).words[0]);
-  const prog = rf.wordProgress(rf.sizeFor(traditional), 400);
+  const prog = wordProgress(rf.sizeFor(traditional), 400);
   ok('the counter says what it is counting toward',
     prog.label === '400 of 350–500 words' && prog.state === 'in-range', JSON.stringify(prog));
-  ok('...and knows when he is short', rf.wordProgress(rf.sizeFor(traditional), 100).state === 'short');
+  ok('...and knows when he is short', wordProgress(rf.sizeFor(traditional), 100).state === 'short');
   ok('...and says nothing at all on a format measured in minutes',
-    rf.wordProgress(rf.sizeFor(rf.findFormat('Book Report', 'podcast')), 100) === null,
+    wordProgress(rf.sizeFor(rf.findFormat('Book Report', 'podcast')), 100) === null,
     'a word count on a podcast is a number that means nothing');
 
   const viewCode = codeOnly('src/components/Academic/AcademicAssignmentsView.jsx');

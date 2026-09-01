@@ -263,3 +263,31 @@ export function checkWriting(text, { requirements = [], minWords = 0, minSentenc
     sentences: sentencesOf(text).length
   };
 }
+
+/**
+ * ===========================================================================
+ * ARRIVED FROM A CURRICULUM FOLDER — §3c Step 1, slice 1. (Sept 1, 2026.)
+ * ===========================================================================
+ *
+ * "234 of 350–500 words" — where a draft stands against its target, for the
+ * live counter on the box it is being typed into.
+ *
+ * The TARGET is the school's: how long a book report should be is a teaching
+ * decision, and it is handed in as `size`. Comparing a count to a range is
+ * not, and it lived in a curriculum folder only because the targets did.
+ *
+ * Returns null when the format is not measured in words — a podcast, a
+ * debate — because a word count there is a number that means nothing.
+ */
+export function wordProgress(size, count) {
+  if (!size?.words) return null;
+  const [min, max] = size.words;
+  return {
+    min,
+    max,
+    count,
+    /** 'short' | 'in-range' | 'over' — 'over' is not a failure, just worth knowing. */
+    state: count < min ? 'short' : count <= max ? 'in-range' : 'over',
+    label: `${count} of ${min}–${max} words`
+  };
+}

@@ -1,7 +1,5 @@
 import { toDateStr, parseDateStr } from './scheduler.js';
-import { academyContent } from '../content/academyContent.js';
-
-const { instructionMinutes } = academyContent().compliance;
+import { instructionMinutes } from './instructionTime.js';
 
 /**
  * Learning Analytics — PROJECT_PLAN.md Part 8.

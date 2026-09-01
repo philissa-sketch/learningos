@@ -462,17 +462,9 @@ export const CREDIT_CATALOG = [
   ...DREAM_REWARDS.map((i) => ({ ...i, category: 'Dream Rewards', currency: 'credit' }))
 ];
 
-/**
- * "What can I afford right now?" — the budgeting view.
- *
- * Returns affordable items cheapest-first. Sorting cheapest-first is
- * deliberate: expensive-first reads as an upsell, and this feature exists to
- * teach budgeting, not to move inventory.
- */
-export function affordable(balance, catalog) {
-  const price = (i) => (i.currency === 'credit' ? i.credits : i.cost);
-  return catalog.filter((i) => price(i) > 0 && price(i) <= balance).sort((a, b) => price(a) - price(b));
-}
+// "What can I afford right now?" moved to src/lib/economy.js on Sept 1, 2026.
+// The catalog above is this school's; deciding which rows a balance reaches is
+// every school's, so it is the platform's. §3c Step 1.
 
 /**
  * The opportunity-cost line, or null when it should stay quiet.

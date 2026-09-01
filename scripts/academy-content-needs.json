@@ -19,8 +19,8 @@
   "rewards",
   "compliance"
  ],
- "files": 86,
- "reads": 147,
+ "files": 84,
+ "reads": 145,
  "legacyImports": [],
  "names": [
   "ACADEMIC_ASSIGNMENT_TYPES",
@@ -83,7 +83,6 @@
   "WEIGHT_BUDGET_TOTAL_POINTS",
   "activeMilestone",
   "aerospaceProjects",
-  "affordable",
   "allLessons",
   "assignmentCandidatesForSlot",
   "availableDueDates",
@@ -99,7 +98,6 @@
   "curatedDemoFor",
   "dailyDrills",
   "dayPattern",
-  "daysUntil",
   "declarationCoversToday",
   "defaultSchedule",
   "demoLinkFor",
@@ -123,7 +121,6 @@
   "getSchoolWeekNumber",
   "getThisWeeksScheduledIds",
   "getTodaysWorkout",
-  "getWeekNumber",
   "grammarRowTitle",
   "grammarUnitUrl",
   "guitarEducators",
@@ -135,7 +132,6 @@
   "guitarTheory",
   "hasMilestones",
   "holidaysInSpan",
-  "instructionMinutes",
   "instructionProgress",
   "isHoliday",
   "isKhanTaughtSubject",
@@ -154,7 +150,6 @@
   "nextRecommendationForBook",
   "nutritionChallenges",
   "nutritionTopics",
-  "patternSubjects",
   "printoutFor",
   "proposalsForQuarter",
   "quarterlyAcademicPlaceholders",
@@ -183,7 +178,6 @@
   "typingLessons",
   "vocabularyWordPool",
   "weeklyWritingSchedule",
-  "wordProgress",
   "writingPrompts"
  ],
  "nameToSlot": {
@@ -209,7 +203,6 @@
   "RUBRIC_LEVELS": "academicCenter",
   "criteriaForFormat": "academicCenter",
   "suggestedGradeFromRubric": "academicCenter",
-  "wordProgress": "academicCenter",
   "BLACK_EXCELLENCE_KNOWN_GAPS": "academicCenter",
   "blackAmericanAuthorsForSubject": "academicCenter",
   "blackExcellenceBooksForSubject": "academicCenter",
@@ -228,9 +221,7 @@
   "GEORGIA_MINUTES_PER_DAY": "compliance",
   "GEORGIA_REQUIRED_SUBJECTS": "compliance",
   "GEORGIA_REQUIREMENTS": "compliance",
-  "daysUntil": "compliance",
   "declarationCoversToday": "compliance",
-  "instructionMinutes": "compliance",
   "instructionProgress": "compliance",
   "nextDeclarationDeadline": "compliance",
   "isSchoolDay": "timetable",
@@ -299,13 +290,11 @@
   "nutritionTopics": "pe",
   "recipeLibrary": "pe",
   "shoppingListCategories": "pe",
-  "getWeekNumber": "pe",
   "demoLinkFor": "pe",
   "HQ_ITEMS": "rewards",
   "MISSION_EQUIPMENT": "rewards",
   "AVATAR_GEAR": "rewards",
   "costForCosmetic": "rewards",
-  "affordable": "rewards",
   "EDCLUB_PORTAL_URL": "writing",
   "ERGONOMICS_CHECKLIST": "writing",
   "typingLessons": "writing",
@@ -321,7 +310,6 @@
   "weeklyWritingSchedule": "writing",
   "EXCLUDED_RANGES": "academicCenter",
   "WEEK_PATTERN": "timetable",
-  "patternSubjects": "timetable",
   "khanGrammarUnitByUrl": "khanSequences",
   "COIN_CATALOG": "rewards",
   "GEORGIA_DAYS_REQUIRED": "compliance",
@@ -415,8 +403,7 @@
      "findFormat",
      "formatsForType",
      "sizeFor",
-     "suggestedGradeFromRubric",
-     "wordProgress"
+     "suggestedGradeFromRubric"
     ]
    }
   ],
@@ -424,8 +411,7 @@
    {
     "slot": "academicCenter",
     "names": [
-     "sizeFor",
-     "wordProgress"
+     "sizeFor"
     ]
    }
   ],
@@ -526,9 +512,7 @@
      "GEORGIA_MINUTES_PER_DAY",
      "GEORGIA_REQUIRED_SUBJECTS",
      "GEORGIA_REQUIREMENTS",
-     "daysUntil",
      "declarationCoversToday",
-     "instructionMinutes",
      "instructionProgress",
      "nextDeclarationDeadline"
     ]
@@ -580,7 +564,6 @@
     "slot": "compliance",
     "names": [
      "GEORGIA_MINUTES_PER_DAY",
-     "daysUntil",
      "declarationCoversToday",
      "nextDeclarationDeadline"
     ]
@@ -1057,14 +1040,6 @@
     ]
    }
   ],
-  "components/PE/WeeklyGoalCard.jsx": [
-   {
-    "slot": "pe",
-    "names": [
-     "getWeekNumber"
-    ]
-   }
-  ],
   "components/PE/WorkoutView.jsx": [
    {
     "slot": "pe",
@@ -1112,8 +1087,7 @@
     "names": [
      "AVATAR_GEAR",
      "HQ_ITEMS",
-     "MISSION_EQUIPMENT",
-     "affordable"
+     "MISSION_EQUIPMENT"
     ]
    }
   ],
@@ -1278,14 +1252,6 @@
     ]
    }
   ],
-  "lib/learningAnalytics.js": [
-   {
-    "slot": "compliance",
-    "names": [
-     "instructionMinutes"
-    ]
-   }
-  ],
   "lib/missionGrades.js": [
    {
     "slot": "compliance",
@@ -1385,8 +1351,7 @@
     "slot": "timetable",
     "names": [
      "WEEK_PATTERN",
-     "dayPattern",
-     "patternSubjects"
+     "dayPattern"
     ]
    }
   ],
@@ -1472,7 +1437,6 @@
     "names": [
      "GEORGIA_DAYS_REQUIRED",
      "findProposal",
-     "instructionMinutes",
      "missionScoreTotals"
     ]
    },

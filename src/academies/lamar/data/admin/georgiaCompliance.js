@@ -1,4 +1,7 @@
 import { toDateStr, parseDateStr, todayDateStr } from '../../../../lib/scheduler.js';
+// Counting a record's minutes is the platform's; the thresholds below are this
+// state's. Moved out on Sept 1, 2026 — §3c Step 1.
+import { instructionMinutes } from '../../../../lib/instructionTime.js';
 
 /**
  * Georgia homeschool compliance — PROJECT_PLAN.md Part 8's "State
@@ -172,9 +175,8 @@ export function declarationCoversToday(filedAt, today = todayDateStr()) {
   return filedYear === declarationSchoolYear(today);
 }
 
-export function daysUntil(dateStr, today = todayDateStr()) {
-  return Math.round((parseDateStr(dateStr) - parseDateStr(today)) / 86400000);
-}
+// daysUntil moved to src/lib/scheduler.js on Sept 1, 2026 — counting days to a
+// date is not a fact about a school. §3c Step 1.
 
 /**
  * Progress against the 180-day / 4.5-hour requirement, from real
@@ -206,36 +208,11 @@ export function daysUntil(dateStr, today = todayDateStr()) {
 export const GEORGIA_DAYS_REQUIRED = 180;
 export const GEORGIA_MINUTES_PER_DAY = 270;
 
-/**
- * Total instruction minutes for one attendance row.
- *
- * ---- THREE SOURCES, AND WHY THEY ARE NOT ALL ADDED (Aug 16, 2026) ----
- *
- *   activeMinutes     MEASURED   every minute this tab was visible
- *   scheduledMinutes  SCHEDULED  the timetable blocks his completed work covers
- *   offlineMinutes    ENTERED    hours she types in for work away from a screen
- *
- * The parent: "Lamar goes by the scheduler for his school day. when he selects
- * that he's done the time should be entered." Exactly right — the app cannot
- * see Khan Academy, but it has always known that Mathematics is 09:00-10:00
- * because she said so.
- *
- * **The measured and the scheduled minutes are two views of the SAME hours, so
- * the record takes the larger of the two rather than the sum.** He does Khan in
- * another tab during the 60-minute maths block: measured says 5, scheduled says
- * 60, and the truth is 60 — not 65. He spends 90 minutes in this app during a
- * 60-minute block: measured says 90, and adding the scheduled 60 on top would
- * invent half an hour.
- *
- * offlineMinutes is added, because it is the one source that is disjoint by
- * definition — it exists precisely to record instruction that happened where
- * neither the tab nor the timetable was watching.
- */
-export function instructionMinutes(row = {}, scheduledMinutes = 0) {
-  const onScreen = row.activeMinutes || 0;
-  const scheduled = scheduledMinutes || row.scheduledMinutes || 0;
-  return Math.max(onScreen, scheduled) + (row.offlineMinutes || 0);
-}
+// instructionMinutes moved to src/lib/instructionTime.js on Sept 1, 2026,
+// where its reasoning is written for any school. Imported at the top of this
+// file and still used below, because the thresholds it is measured against —
+// the 180 days and 270 minutes above — are this state's and stay here. §3c
+// Step 1.
 
 /**
  * ---- WHICH DAYS ARE EVEN ELIGIBLE (Aug 16, 2026) ----

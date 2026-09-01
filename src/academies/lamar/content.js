@@ -14,8 +14,8 @@ import { BLACK_EXCELLENCE_KNOWN_GAPS, blackAmericanAuthorsForSubject, blackExcel
 import { BOOK_RANGE_LABELS, bookRationale, rationaleFor } from './data/academicSuccessCenter/bookRationale.js';
 import { bookRecommendations, candidatesForBook, nextRecommendationForBook } from './data/academicSuccessCenter/bookRecommendations.js';
 import { ACADEMIC_ASSIGNMENT_TYPES, ACADEMIC_BOOK_TYPES, ACADEMIC_SUBJECT_ORDER, ACADEMIC_SUCCESS_CENTER_QUARTER_ORDER, quarterlyAcademicPlaceholders, subjectBookPlaceholders } from './data/academicSuccessCenter/placeholders.js';
-import { RUBRIC_LEVELS, criteriaForFormat, findFormat, formatsForType, reflectionPromptFor, sizeFor, suggestedGradeFromRubric, wordProgress } from './data/academicSuccessCenter/reportFormats.js';
-import { GEORGIA_DAYS_REQUIRED, GEORGIA_LAW_CITATION, GEORGIA_MINUTES_PER_DAY, GEORGIA_REQUIRED_SUBJECTS, GEORGIA_REQUIREMENTS, daysUntil, declarationCoversToday, instructionMinutes, instructionProgress, nextDeclarationDeadline } from './data/admin/georgiaCompliance.js';
+import { RUBRIC_LEVELS, criteriaForFormat, findFormat, formatsForType, reflectionPromptFor, sizeFor, suggestedGradeFromRubric } from './data/academicSuccessCenter/reportFormats.js';
+import { GEORGIA_DAYS_REQUIRED, GEORGIA_LAW_CITATION, GEORGIA_MINUTES_PER_DAY, GEORGIA_REQUIRED_SUBJECTS, GEORGIA_REQUIREMENTS, declarationCoversToday, instructionProgress, nextDeclarationDeadline } from './data/admin/georgiaCompliance.js';
 import { MISSION_QUARTERS, MISSION_RUBRIC_CRITERIA, MISSION_STATUS_LABELS, draftMissionFeedback, findProposal, missionGrowth, missionScoreTotals, proposalsForQuarter } from './data/admin/missionEvaluations.js';
 import { gardenBriefs, getGardenBriefById } from './data/gardening/gardenBriefs.js';
 import { gardenBuildTrack, gardenCapstone } from './data/gardening/gardenBuildTrack.js';
@@ -37,18 +37,18 @@ import { curatedDemoFor } from './data/pe/exerciseDemoVideos.js';
 import { CATEGORY_LABELS, exerciseLibrary } from './data/pe/exerciseLibrary.js';
 import { nutritionChallenges, nutritionTopics, recipeLibrary, shoppingListCategories } from './data/pe/nutritionContent.js';
 import { HIDDEN_VIDEO, demoLinkFor } from './data/pe/peVideoSource.js';
-import { getTodaysWorkout, getWeekNumber } from './data/pe/weeklyWorkoutPlan.js';
+import { getTodaysWorkout } from './data/pe/weeklyWorkoutPlan.js';
 import { aerospaceProjects } from './data/aerospace/aerospaceProjects.js';
 import { roboticsProjects } from './data/robotics/roboticsProjects.js';
 import { scienceExperiments } from './data/science/scienceExperiments.js';
 import { technologyProjects } from './data/technology/technologyProjects.js';
 import { HQ_CREW } from './data/hqCrew.js';
 import { journalFor, printoutFor } from './data/printouts.js';
-import { AVATAR_GEAR, COIN_CATALOG, HQ_ITEMS, MISSION_EQUIPMENT, SEEDED_REWARD_LADDER_MAP, affordable, catalogRewardRows, costForCosmetic } from './data/rewardCatalog.js';
+import { AVATAR_GEAR, COIN_CATALOG, HQ_ITEMS, MISSION_EQUIPMENT, SEEDED_REWARD_LADDER_MAP, catalogRewardRows, costForCosmetic } from './data/rewardCatalog.js';
 import { ACTIVE_SUBJECTS, KHAN_TAUGHT_SUBJECTS, LESSON_TRACK_SUBJECTS, PARTICIPATION_SUBJECTS, SUBJECT_LABELS, canonicalSubject, isKhanTaughtSubject, strandsForSubject, subjectCardLabel } from './subjects.js';
 import { defaultSchedule } from './data/schedule/defaultSchedule.js';
 import { holidaysInSpan, isHoliday, isSchoolDay } from './data/schedule/schoolHolidays.js';
-import { WEEK_PATTERN, dayPattern, patternSubjects, subjectsForDay } from './data/schedule/weekPattern.js';
+import { WEEK_PATTERN, dayPattern, subjectsForDay } from './data/schedule/weekPattern.js';
 import { dailyDrills } from './data/writing/dailyDrills.js';
 import { requirementsFor } from './data/writing/drillRequirements.js';
 import { lessonForPrompt } from './data/writing/promptLessons.js';
@@ -58,9 +58,9 @@ import { vocabularyWordPool } from './data/writing/vocabularyWordPool.js';
 import { SCHOOL_YEAR_START, getSchoolWeekNumber, getThisWeeksScheduledIds, weeklyWritingSchedule } from './data/writing/weeklySchedule.js';
 import { writingPrompts } from './data/writing/writingPrompts.js';
 
-export const academicCenter = { ACADEMIC_ASSIGNMENT_TYPES, ACADEMIC_BOOK_TYPES, ACADEMIC_SUBJECT_ORDER, ACADEMIC_SUCCESS_CENTER_QUARTER_ORDER, BLACK_EXCELLENCE_KNOWN_GAPS, BOOK_RANGE_LABELS, EXCLUDED_RANGES, RUBRIC_LEVELS, activeMilestone, assignmentCandidatesForSlot, availableDueDates, blackAmericanAuthorsForSubject, blackExcellenceBooksForSubject, bookRationale, bookRecommendations, candidatesForBook, criteriaForFormat, findFormat, formatsForType, hasMilestones, leadStatus, milestoneProgress, milestonesFor, nextAssignmentRecommendation, nextRecommendationForBook, quarterlyAcademicPlaceholders, rationaleFor, reflectionPromptFor, resolveSuggestedDueDate, sizeFor, startByFor, subjectBookPlaceholders, suggestedGradeFromRubric, wordProgress };
+export const academicCenter = { ACADEMIC_ASSIGNMENT_TYPES, ACADEMIC_BOOK_TYPES, ACADEMIC_SUBJECT_ORDER, ACADEMIC_SUCCESS_CENTER_QUARTER_ORDER, BLACK_EXCELLENCE_KNOWN_GAPS, BOOK_RANGE_LABELS, EXCLUDED_RANGES, RUBRIC_LEVELS, activeMilestone, assignmentCandidatesForSlot, availableDueDates, blackAmericanAuthorsForSubject, blackExcellenceBooksForSubject, bookRationale, bookRecommendations, candidatesForBook, criteriaForFormat, findFormat, formatsForType, hasMilestones, leadStatus, milestoneProgress, milestonesFor, nextAssignmentRecommendation, nextRecommendationForBook, quarterlyAcademicPlaceholders, rationaleFor, reflectionPromptFor, resolveSuggestedDueDate, sizeFor, startByFor, subjectBookPlaceholders, suggestedGradeFromRubric };
 
-export const compliance = { GEORGIA_DAYS_REQUIRED, GEORGIA_LAW_CITATION, GEORGIA_MINUTES_PER_DAY, GEORGIA_REQUIRED_SUBJECTS, GEORGIA_REQUIREMENTS, MISSION_QUARTERS, MISSION_RUBRIC_CRITERIA, MISSION_STATUS_LABELS, daysUntil, declarationCoversToday, draftMissionFeedback, findProposal, instructionMinutes, instructionProgress, missionGrowth, missionScoreTotals, nextDeclarationDeadline, proposalsForQuarter };
+export const compliance = { GEORGIA_DAYS_REQUIRED, GEORGIA_LAW_CITATION, GEORGIA_MINUTES_PER_DAY, GEORGIA_REQUIRED_SUBJECTS, GEORGIA_REQUIREMENTS, MISSION_QUARTERS, MISSION_RUBRIC_CRITERIA, MISSION_STATUS_LABELS, declarationCoversToday, draftMissionFeedback, findProposal, instructionProgress, missionGrowth, missionScoreTotals, nextDeclarationDeadline, proposalsForQuarter };
 
 export const electives = { GUITAR_DAILY_MINUTES, GUITAR_OWN_SLOTS, GUITAR_SESSION_SHAPE, gardenBriefs, gardenBuildTrack, gardenCalendar, gardenCapstone, gardenProjects, getCurrentGuitarSkill, getGardenBriefById, getGardenDayForWeekOf, getGuitarTool, getNextGardenDay, guitarEducators, guitarFeedbackPlaces, guitarOwnSongGuidance, guitarPerformanceMoment, guitarSkillLadder, guitarStarterSongs, guitarTheory };
 
@@ -72,15 +72,15 @@ export const khanSequences = { GRAMMAR_COURSES, KHAN_GRAMMAR_UNITS, LEGACY_GRAMM
 
 export const lessons = { allLessons };
 
-export const pe = { CATEGORY_LABELS, HIDDEN_VIDEO, curatedDemoFor, demoLinkFor, exerciseLibrary, getTodaysWorkout, getWeekNumber, nutritionChallenges, nutritionTopics, recipeLibrary, shoppingListCategories };
+export const pe = { CATEGORY_LABELS, HIDDEN_VIDEO, curatedDemoFor, demoLinkFor, exerciseLibrary, getTodaysWorkout, nutritionChallenges, nutritionTopics, recipeLibrary, shoppingListCategories };
 
 export const projects = { aerospaceProjects, roboticsProjects, scienceExperiments, technologyProjects };
 
-export const rewards = { AVATAR_GEAR, COIN_CATALOG, HQ_CREW, HQ_ITEMS, MISSION_EQUIPMENT, SEEDED_REWARD_LADDER_MAP, affordable, catalogRewardRows, costForCosmetic, journalFor, printoutFor };
+export const rewards = { AVATAR_GEAR, COIN_CATALOG, HQ_CREW, HQ_ITEMS, MISSION_EQUIPMENT, SEEDED_REWARD_LADDER_MAP, catalogRewardRows, costForCosmetic, journalFor, printoutFor };
 
 export const subjects = { ACTIVE_SUBJECTS, KHAN_TAUGHT_SUBJECTS, LESSON_TRACK_SUBJECTS, PARTICIPATION_SUBJECTS, SUBJECT_LABELS, canonicalSubject, isKhanTaughtSubject, strandsForSubject, subjectCardLabel };
 
-export const timetable = { WEEK_PATTERN, dayPattern, defaultSchedule, holidaysInSpan, isHoliday, isSchoolDay, patternSubjects, subjectsForDay };
+export const timetable = { WEEK_PATTERN, dayPattern, defaultSchedule, holidaysInSpan, isHoliday, isSchoolDay, subjectsForDay };
 
 export const writing = { EDCLUB_PORTAL_URL, ERGONOMICS_CHECKLIST, SCHOOL_YEAR_START, dailyDrills, getSchoolWeekNumber, getThisWeeksScheduledIds, lessonForPrompt, requirementsFor, spellingWordPool, typingLessons, vocabularyWordPool, weeklyWritingSchedule, writingPrompts };
 

@@ -1,13 +1,14 @@
 import { useState } from 'react';
 import { useAppStore } from '../../store/useAppStore.js';
 import { buildCompliancePacket } from '../../lib/compliancePacket.js';
-import { parseDateStr, todayDateStr, toDateStr } from '../../lib/scheduler.js';
+import { parseDateStr, todayDateStr, toDateStr, daysUntil } from '../../lib/scheduler.js';
+import { instructionMinutes } from '../../lib/instructionTime.js';
 import { SCHOOL_YEAR_START_DATE } from '../../lib/schoolQuarter.js';
 import { scheduledMinutesByDate, fullInstructionalDayMinutes } from '../../lib/scheduledMinutes.js';
 import { EvidenceFoldersSection } from './EvidenceLink.jsx';
 import { academyContent } from '../../content/academyContent.js';
 
-const { GEORGIA_LAW_CITATION, GEORGIA_MINUTES_PER_DAY, GEORGIA_REQUIRED_SUBJECTS, GEORGIA_REQUIREMENTS, daysUntil, declarationCoversToday, instructionMinutes, instructionProgress, nextDeclarationDeadline } = academyContent().compliance;
+const { GEORGIA_LAW_CITATION, GEORGIA_MINUTES_PER_DAY, GEORGIA_REQUIRED_SUBJECTS, GEORGIA_REQUIREMENTS, declarationCoversToday, instructionProgress, nextDeclarationDeadline } = academyContent().compliance;
 const { SUBJECT_LABELS } = academyContent().subjects;
 const { isSchoolDay } = academyContent().timetable;
 
