@@ -4,7 +4,6 @@ import { generateDailyPracticeSet } from '../../engine/dailyPractice.js';
 import { getTemplatesUpToTier } from '../../engine/problemTemplates.js';
 import { hasSchoolStarted, SCHOOL_YEAR_START_DATE, getCurrentQuarter } from '../../lib/schoolQuarter.js';
 import { useCurrentQuarterKhanAssignments } from './KhanAcademyMissionsCard.jsx';
-import { allLessons } from '../../academies/lamar/data/lessons/index.js';
 import { TodayRow, StartHereCard, QuietTile } from './TodayRow.jsx';
 import { StudentHandoffCard } from './StudentHandoffCard.jsx';
 import { AcademicCenterCard } from './AcademicCenterCard.jsx';
@@ -12,28 +11,26 @@ import { ClassBellCard } from './ClassBellCard.jsx';
 import { TodaysRoutineRail } from './TodaysRoutineRail.jsx';
 import { WeekInReviewCard } from './WeekInReviewCard.jsx';
 import { FeedbackFromMomCard } from './FeedbackFromMomCard.jsx';
-import { dayPattern, subjectsForDay } from '../../academies/lamar/data/schedule/weekPattern.js';
 import { drillForDate, drillDoneOn } from '../../lib/dailyWriting.js';
 import { gardenForDate, fridayOfSchoolWeek, getSchoolWeekNumber } from '../../lib/plannerFeeds.js';
-import { writingPrompts } from '../../academies/lamar/data/writing/writingPrompts.js';
-import { aerospaceProjects } from '../../academies/lamar/data/aerospace/aerospaceProjects.js';
-import { scienceExperiments } from '../../academies/lamar/data/science/scienceExperiments.js';
-import { technologyProjects } from '../../academies/lamar/data/technology/technologyProjects.js';
-import { roboticsProjects } from '../../academies/lamar/data/robotics/roboticsProjects.js';
-import { gardenProjects } from '../../academies/lamar/data/gardening/gardenProjects.js';
-import { getCurrentGuitarSkill, GUITAR_DAILY_MINUTES } from '../../academies/lamar/data/guitar/guitarSkillLadder.js';
-import { getThisWeeksScheduledIds } from '../../academies/lamar/data/writing/weeklySchedule.js';
 import { formatShortDate, parseDateStr, toDateStr, addDays } from '../../lib/scheduler.js';
 import { NovaDashboardGreeting } from '../Mentor/NovaDashboardGreeting.jsx';
 import { DailyMissionCard } from './DailyMissionCard.jsx';
-import { subjectCardLabel } from '../../academies/lamar/subjects.js';
 import { WORD_ACTIVITIES } from '../../lib/weeklyWords.js';
 import { todayDateStr } from '../../lib/scheduler.js';
 import { TimetableOrder } from './TimetableOrder.jsx';
 import { BLOCK_FOR_SUBJECT, STRAND_BLOCK, khanReadingStrand, blockForLesson } from '../../lib/scheduledMinutes.js';
 import { liveRotatingSubjects, liveMorningSubject, ROTATING_BLOCK_ID } from '../../lib/rotatingBlock.js';
 import { useToday } from '../../lib/useToday.js';
-import { getTodaysWorkout } from '../../academies/lamar/data/pe/weeklyWorkoutPlan.js';
+import { academyContent } from '../../content/academyContent.js';
+
+const { GUITAR_DAILY_MINUTES, gardenProjects, getCurrentGuitarSkill } = academyContent().electives;
+const { allLessons } = academyContent().lessons;
+const { getTodaysWorkout } = academyContent().pe;
+const { aerospaceProjects, roboticsProjects, scienceExperiments, technologyProjects } = academyContent().projects;
+const { subjectCardLabel } = academyContent().subjects;
+const { dayPattern, subjectsForDay } = academyContent().timetable;
+const { getThisWeeksScheduledIds, writingPrompts } = academyContent().writing;
 
 /**
  * MISSION CONTROL — rebuilt Aug 7, 2026.

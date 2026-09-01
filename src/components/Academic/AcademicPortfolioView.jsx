@@ -1,14 +1,13 @@
 import { useState } from 'react';
 import { useAppStore } from '../../store/useAppStore.js';
 import { buildAcademicPortfolio } from '../../lib/academicPortfolio.js';
-import { writingPrompts } from '../../academies/lamar/data/writing/writingPrompts.js';
-import { aerospaceProjects } from '../../academies/lamar/data/aerospace/aerospaceProjects.js';
-import { scienceExperiments } from '../../academies/lamar/data/science/scienceExperiments.js';
-import { technologyProjects } from '../../academies/lamar/data/technology/technologyProjects.js';
-import { roboticsProjects } from '../../academies/lamar/data/robotics/roboticsProjects.js';
-import { gardenProjects } from '../../academies/lamar/data/gardening/gardenProjects.js';
-import { SUBJECT_LABELS } from '../../academies/lamar/subjects.js';
 import { formatCompletedAt } from './academicUi.js';
+import { academyContent } from '../../content/academyContent.js';
+
+const { gardenProjects } = academyContent().electives;
+const { aerospaceProjects, roboticsProjects, scienceExperiments, technologyProjects } = academyContent().projects;
+const { SUBJECT_LABELS } = academyContent().subjects;
+const { writingPrompts } = academyContent().writing;
 
 const FILTERS = [
   { id: 'all', label: 'Everything' },

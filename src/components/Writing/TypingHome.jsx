@@ -1,4 +1,3 @@
-import { EDCLUB_PORTAL_URL, ERGONOMICS_CHECKLIST } from '../../academies/lamar/data/writing/typingLessons.js';
 
 export function TypingHome({ onChooseLessons, onChooseSpeedTest, onExit }) {
   return (
@@ -82,3 +81,6 @@ export function TypingHome({ onChooseLessons, onChooseSpeedTest, onExit }) {
     </div>
   );
 }
+import { academyContent } from '../../content/academyContent.js';
+
+const { EDCLUB_PORTAL_URL, ERGONOMICS_CHECKLIST } = academyContent().writing;

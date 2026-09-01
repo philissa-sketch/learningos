@@ -7,7 +7,9 @@
 // she decides when to create it and reviews everything before it reaches her
 // son. She can paste her own or AI-written content into the notes as well.
 
-import { SUBJECT_LABELS } from '../academies/lamar/subjects.js';
+import { academyContent } from '../content/academyContent.js';
+
+const { SUBJECT_LABELS } = academyContent().subjects;
 
 // Subjects a trip can support (multi-select). Uses the app's real subject ids
 // so a completed trip's portfolio entry tags to a subject the records know.

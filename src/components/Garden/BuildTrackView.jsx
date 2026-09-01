@@ -1,13 +1,14 @@
 import { useMemo } from 'react';
 import { useAppStore } from '../../store/useAppStore.js';
-import { gardenBuildTrack, gardenCapstone } from '../../academies/lamar/data/gardening/gardenBuildTrack.js';
-import { gardenProjects } from '../../academies/lamar/data/gardening/gardenProjects.js';
-import { SUBJECT_LABELS } from '../../academies/lamar/subjects.js';
 import { SUN_ZONES, SURVEY_DAYS_WANTED, sunSurveyStats, zoneClass } from '../../lib/sunSurvey.js';
 import { gardenCalendarItems } from '../../lib/plannerFeeds.js';
 import { wateringStats, formatAmounts } from '../../lib/wateringLog.js';
 import { useToday } from '../../lib/useToday.js';
 import { parseDateStr } from '../../lib/scheduler.js';
+import { academyContent } from '../../content/academyContent.js';
+
+const { gardenBuildTrack, gardenCapstone, gardenProjects } = academyContent().electives;
+const { SUBJECT_LABELS } = academyContent().subjects;
 
 /** 'Fri 14 Aug'. */
 function dayLabel(dateStr) {

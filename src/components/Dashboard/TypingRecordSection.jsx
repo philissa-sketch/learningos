@@ -1,7 +1,9 @@
 import { useAppStore } from '../../store/useAppStore.js';
 import { typingRecord, typingProgressNote } from '../../lib/typingRecord.js';
 import { BLOCK_FOR_SUBJECT, blockMinutes } from '../../lib/scheduledMinutes.js';
-import { defaultSchedule } from '../../academies/lamar/data/schedule/defaultSchedule.js';
+import { academyContent } from '../../content/academyContent.js';
+
+const { defaultSchedule } = academyContent().timetable;
 
 /**
  * =============================================================================

@@ -24,6 +24,7 @@
 // The top four rungs of a ladder the parent approved were unreachable in
 // practice, and nothing said so.
 // ---------------------------------------------------------------------------
+import './lib/academy-under-test.mjs';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';

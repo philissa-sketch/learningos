@@ -1,5 +1,7 @@
 import { useAppStore } from '../../store/useAppStore.js';
-import { subjectCardLabel } from '../../academies/lamar/subjects.js';
+import { academyContent } from '../../content/academyContent.js';
+
+const { subjectCardLabel } = academyContent().subjects;
 
 /**
  * The student's own grades, on the Progress tab.

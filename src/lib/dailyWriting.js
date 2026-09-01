@@ -26,9 +26,10 @@
 // never repeat, but a drill can be re-attempted, and the same trap is one line
 // away. So the check is always (id AND date), never id alone.
 // ---------------------------------------------------------------------------
-import { dailyDrills } from '../academies/lamar/data/writing/dailyDrills.js';
-import { getSchoolWeekNumber } from '../academies/lamar/data/writing/weeklySchedule.js';
 import { todayDateStr, toDateStr } from './scheduler.js';
+import { academyContent } from '../content/academyContent.js';
+
+const { dailyDrills, getSchoolWeekNumber } = academyContent().writing;
 
 /** Monday..Thursday. Friday is the week's real piece; the weekend is the weekend. */
 export const DRILL_DAYS = [1, 2, 3, 4];

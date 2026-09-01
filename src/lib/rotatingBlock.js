@@ -1,7 +1,9 @@
-import { dayPattern, WEEK_PATTERN, patternSubjects } from '../academies/lamar/data/schedule/weekPattern.js';
 import { getCurrentQuarter } from './schoolQuarter.js';
-import { allLessons } from '../academies/lamar/data/lessons/index.js';
-import { SUBJECT_LABELS } from '../academies/lamar/subjects.js';
+import { academyContent } from '../content/academyContent.js';
+
+const { allLessons } = academyContent().lessons;
+const { SUBJECT_LABELS } = academyContent().subjects;
+const { WEEK_PATTERN, dayPattern, patternSubjects } = academyContent().timetable;
 
 /**
  * WHAT IS ACTUALLY IN THE 2:15 BLOCK TODAY.

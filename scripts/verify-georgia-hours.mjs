@@ -32,6 +32,8 @@
 // answer is offlineMinutes, which is hers to enter — so the screen now says
 // how many school days are short instead of leaving her to notice.
 // ---------------------------------------------------------------------------
+import './lib/academy-under-test.mjs';
+import { readsFromAcademy } from './lib/reads-content.mjs';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -401,7 +403,7 @@ console.log('\n--- the offline-minutes alarm fires only on days that are short -
     /const credited = Math\.max\(active, creditedByDate\[date\] \|\| 0\)/.test(code));
   ok('...against Georgia\'s own daily bar, imported not retyped',
     /credited < GEORGIA_MINUTES_PER_DAY/.test(code)
-      && /import \{ GEORGIA_MINUTES_PER_DAY \} from '\.\.\/\.\.\/academies\/lamar\/data\/admin\/georgiaCompliance\.js'/.test(board),
+      && readsFromAcademy(board, 'GEORGIA_MINUTES_PER_DAY'),
     '270 written here by hand would be a second copy of the rule');
   boardSources = sourceKeysAt(code);
   ok('the board asks for every source coveredBlockIds can use',
@@ -455,7 +457,7 @@ console.log('\n--- the offline-entry panel agrees with the record it is filling 
     /const total = instructionMinutes\(row, scheduled\);/.test(code),
     'measured + logged was the third copy of the credit rule');
   ok('...imported from georgiaCompliance, not re-derived here',
-    /instructionMinutes,/.test(code) && /from '\.\.\/\.\.\/academies\/lamar\/data\/admin\/georgiaCompliance\.js'/.test(code),
+    readsFromAcademy(code, 'instructionMinutes'),
     'a fourth hand-rolled max() is exactly how this drifted the first three times');
   ok('...on the timetable credit for THAT date',
     /const scheduled = scheduledByDateAll\[date\] \|\| 0;/.test(code),
@@ -536,7 +538,7 @@ console.log('\n--- the lessons this app teaches earn the block they sit in ---')
       && /STRAND_BLOCK\[strand\]/.test(code),
     'sending grammar to the 15-minute Reading block under-counted every English day');
   ok('...from the real lesson catalogue, not a hand-written prefix table',
-    /import \{ allLessons \} from '\.\.\/academies\/lamar\/data\/lessons\/index\.js';/.test(code)
+    readsFromAcademy(code, 'allLessons')
       && /for \(const l of allLessons\) map\.set\(l\.id, l\.subject\)/.test(code),
     'a prefix table drifts silently the first time a lesson id changes shape');
   ok('mastery is NOT required for the minutes to count',

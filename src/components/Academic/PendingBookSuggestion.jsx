@@ -1,8 +1,7 @@
 import { useAppStore } from '../../store/useAppStore.js';
-import {
-  candidatesForBook,
-  nextRecommendationForBook
-} from '../../academies/lamar/data/academicSuccessCenter/bookRecommendations.js';
+import { academyContent } from '../../content/academyContent.js';
+
+const { candidatesForBook, nextRecommendationForBook } = academyContent().academicCenter;
 
 /**
  * A real book, suggested for an empty slot, awaiting a yes or no.

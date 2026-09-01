@@ -1,23 +1,15 @@
 import { useState } from 'react';
 import { useAppStore } from '../../store/useAppStore.js';
-import { SUBJECT_LABELS } from '../../academies/lamar/subjects.js';
-import {
-  GEORGIA_REQUIREMENTS,
-  GEORGIA_REQUIRED_SUBJECTS,
-  GEORGIA_LAW_CITATION,
-  nextDeclarationDeadline,
-  declarationCoversToday,
-  daysUntil,
-  instructionProgress,
-  instructionMinutes,
-  GEORGIA_MINUTES_PER_DAY
-} from '../../academies/lamar/data/admin/georgiaCompliance.js';
 import { buildCompliancePacket } from '../../lib/compliancePacket.js';
 import { parseDateStr, todayDateStr, toDateStr } from '../../lib/scheduler.js';
 import { SCHOOL_YEAR_START_DATE } from '../../lib/schoolQuarter.js';
-import { isSchoolDay } from '../../academies/lamar/data/schedule/schoolHolidays.js';
 import { scheduledMinutesByDate, fullInstructionalDayMinutes } from '../../lib/scheduledMinutes.js';
 import { EvidenceFoldersSection } from './EvidenceLink.jsx';
+import { academyContent } from '../../content/academyContent.js';
+
+const { GEORGIA_LAW_CITATION, GEORGIA_MINUTES_PER_DAY, GEORGIA_REQUIRED_SUBJECTS, GEORGIA_REQUIREMENTS, daysUntil, declarationCoversToday, instructionMinutes, instructionProgress, nextDeclarationDeadline } = academyContent().compliance;
+const { SUBJECT_LABELS } = academyContent().subjects;
+const { isSchoolDay } = academyContent().timetable;
 
 /**
  * Georgia compliance — PROJECT_PLAN.md Part 8's "State compliance

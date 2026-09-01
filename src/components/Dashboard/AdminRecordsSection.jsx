@@ -1,9 +1,11 @@
 import { useState } from 'react';
 import { useAppStore } from '../../store/useAppStore.js';
-import { SUBJECT_LABELS } from '../../academies/lamar/subjects.js';
 import { parseDateStr, todayDateStr } from '../../lib/scheduler.js';
 import { EvidenceLinkInput, EvidenceLinkEditor } from './EvidenceLink.jsx';
 import { folderForRecordKind } from '../../lib/driveLinks.js';
+import { academyContent } from '../../content/academyContent.js';
+
+const { SUBJECT_LABELS } = academyContent().subjects;
 
 /**
  * Administrative records — PROJECT_PLAN.md Part 8's field trip log,

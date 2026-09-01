@@ -15,6 +15,7 @@
 // against the BUILDER, not the components — they would have failed on the old
 // code and they fail again if anyone reintroduces an unseeded shuffle.
 // ---------------------------------------------------------------------------
+import './lib/academy-under-test.mjs';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -46,7 +47,10 @@ import {
   mergeWordHistories,
   advanceToNextList
 } from '../src/lib/weeklyWords.js';
-import { wordStudyDates } from '../src/lib/scheduledMinutes.js';
+// Loaded with await, not as a static import: the harness above installs an
+// Academy's content using top-level await, and a sibling static import would
+// race it — this module reads content the moment it is evaluated.
+const { wordStudyDates } = await import('../src/lib/scheduledMinutes.js');
 import { spellingWordPool } from '../src/academies/lamar/data/writing/spellingWordPool.js';
 import { vocabularyWordPool } from '../src/academies/lamar/data/writing/vocabularyWordPool.js';
 

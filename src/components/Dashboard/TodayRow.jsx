@@ -1,4 +1,3 @@
-import { subjectCardLabel } from '../../academies/lamar/subjects.js';
 
 /**
  * ONE LINE PER THING TO DO. Aug 7, 2026, from the parent looking at the real
@@ -293,3 +292,6 @@ export function QuietTile({ title, detail, badge, onOpen }) {
     </button>
   );
 }
+import { academyContent } from '../../content/academyContent.js';
+
+const { subjectCardLabel } = academyContent().subjects;

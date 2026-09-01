@@ -1,7 +1,8 @@
 import { toDateStr, parseDateStr } from './scheduler.js';
-import { instructionMinutes, GEORGIA_DAYS_REQUIRED } from '../academies/lamar/data/admin/georgiaCompliance.js';
-import { isSchoolDay, holidaysInSpan } from '../academies/lamar/data/schedule/schoolHolidays.js';
-import { missionScoreTotals, findProposal } from '../academies/lamar/data/admin/missionEvaluations.js';
+import { academyContent } from '../content/academyContent.js';
+
+const { GEORGIA_DAYS_REQUIRED, findProposal, instructionMinutes, missionScoreTotals } = academyContent().compliance;
+const { holidaysInSpan, isSchoolDay } = academyContent().timetable;
 
 /**
  * Annual and semester planning — PROJECT_PLAN.md Part 8.

@@ -1,5 +1,7 @@
 import { getQuarterGlossaryTerms } from '../../lib/glossary.js';
-import { SUBJECT_LABELS } from '../../academies/lamar/subjects.js';
+import { academyContent } from '../../content/academyContent.js';
+
+const { SUBJECT_LABELS } = academyContent().subjects;
 
 /**
  * A standalone, printable review screen for one quarter of a subject's

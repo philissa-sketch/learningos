@@ -23,6 +23,7 @@
 // on two screens — his and hers — and two orders for the same rows is worse
 // than one bad order, because then neither screen can be trusted.
 // ---------------------------------------------------------------------------
+import './lib/academy-under-test.mjs';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';

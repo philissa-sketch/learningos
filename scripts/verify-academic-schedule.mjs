@@ -35,6 +35,7 @@
 // and a reading assignment whose note still described work that had since
 // been scheduled separately.
 // ---------------------------------------------------------------------------
+import './lib/academy-under-test.mjs';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';

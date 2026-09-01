@@ -29,7 +29,9 @@
  * read. **They move together, or not at all.**
  */
 
-import { bookRecommendations } from '../academies/lamar/data/academicSuccessCenter/bookRecommendations.js';
+import { academyContent } from '../content/academyContent.js';
+
+const { bookRecommendations } = academyContent().academicCenter;
 
 /** The book name at the front of an assignment title, before the first dash. */
 export const TITLE_SEPARATOR = ' — ';

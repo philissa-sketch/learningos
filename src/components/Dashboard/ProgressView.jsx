@@ -7,8 +7,10 @@ import { RocketProgressMeter } from './RocketProgressMeter.jsx';
 import { SubjectProgressOverview } from './SubjectProgressOverview.jsx';
 import { StudentGradesCard } from './StudentGradesCard.jsx';
 import { getJourney, journeySummary } from '../../lib/journey.js';
-import { KHAN_TAUGHT_SUBJECTS } from '../../academies/lamar/subjects.js';
 import { NovaProgressPanel } from './NovaProgressPanel.jsx';
+import { academyContent } from '../../content/academyContent.js';
+
+const { KHAN_TAUGHT_SUBJECTS } = academyContent().subjects;
 
 // ---------------------------------------------------------------------------
 // PROGRESS — the "where am I, overall" screen.

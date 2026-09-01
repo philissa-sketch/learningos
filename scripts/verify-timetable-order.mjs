@@ -40,6 +40,7 @@
 // decision, it belongs to the parent, and encoding today's answer here would
 // make her next change fail a test instead of a screen.
 // ---------------------------------------------------------------------------
+import './lib/academy-under-test.mjs';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';

@@ -8,6 +8,8 @@
 // it, and that mistake has fired repeatedly in this codebase, including twice
 // during this very build.
 // ---------------------------------------------------------------------------
+import './lib/academy-under-test.mjs';
+import { readsFromAcademy } from './lib/reads-content.mjs';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -37,7 +39,10 @@ import {
 import { ACTIVE_SUBJECTS, PARTICIPATION_SUBJECTS, SUBJECT_LABELS, subjectCardLabel } from '../src/academies/lamar/subjects.js';
 // The app's own local-date formatter. Imported rather than reimplemented — see
 // the note on `day()` below for what reimplementing it cost.
-import { toDateStr } from '../src/lib/scheduler.js';
+// Loaded with await, not as a static import: the harness above installs an
+// Academy's content using top-level await, and a sibling static import would
+// race it — this module reads content the moment it is evaluated.
+const { toDateStr } = await import('../src/lib/scheduler.js');
 import { defaultSchedule } from '../src/academies/lamar/data/schedule/defaultSchedule.js';
 import { allLessons } from '../src/academies/lamar/data/lessons/index.js';
 import { aerospaceProjects } from '../src/academies/lamar/data/aerospace/aerospaceProjects.js';
@@ -45,7 +50,10 @@ import { scienceExperiments } from '../src/academies/lamar/data/science/scienceE
 import { technologyProjects } from '../src/academies/lamar/data/technology/technologyProjects.js';
 import { roboticsProjects } from '../src/academies/lamar/data/robotics/roboticsProjects.js';
 import { gardenProjects } from '../src/academies/lamar/data/gardening/gardenProjects.js';
-import { useAppStore, migrateSavedSchedule } from '../src/store/useAppStore.js';
+// Loaded with await, not as a static import: the harness above installs an
+// Academy's content using top-level await, and a sibling static import would
+// race it — this module reads content the moment it is evaluated.
+const { useAppStore, migrateSavedSchedule } = await import('../src/store/useAppStore.js');
 
 const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 let failures = 0;
@@ -599,7 +607,7 @@ console.log('\n--- 10. the daily card actually reaches his screen ---');
 const dashSrc = fs.readFileSync(path.join(REPO, 'src/components/Dashboard/MissionControlDashboard.jsx'), 'utf8');
 ok((dashSrc.match(/subject="guitar"/g) || []).length === 1,
   'the home screen renders exactly one guitar row');
-ok((dashSrc.match(/import \{ getCurrentGuitarSkill, GUITAR_DAILY_MINUTES \} from/g) || []).length === 1,
+ok(readsFromAcademy(dashSrc, 'getCurrentGuitarSkill') && readsFromAcademy(dashSrc, 'GUITAR_DAILY_MINUTES'),
   'the home screen imports the ladder rather than hardcoding a title');
 ok((dashSrc.match(/getCurrentGuitarSkill\(guitarClearedNumbers\)/g) || []).length === 1,
   'the row shows the skill he is actually on');

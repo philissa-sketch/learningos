@@ -2,20 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { AssignmentWriter } from './AssignmentWriter.jsx';
 import { useAppStore } from '../../store/useAppStore.js';
 import { getCurrentQuarter } from '../../lib/schoolQuarter.js';
-import {
-  milestonesFor,
-  hasMilestones,
-  milestoneProgress,
-  startByFor,
-  leadStatus
-} from '../../academies/lamar/data/academicSuccessCenter/assignmentMilestones.js';
 import { todayDateStr } from '../../lib/scheduler.js';
-import {
-  findFormat,
-  formatsForType,
-  reflectionPromptFor,
-  sizeFor
-} from '../../academies/lamar/data/academicSuccessCenter/reportFormats.js';
 import { WritingCheckerLink } from '../Writing/WritingCheckerLink.jsx';
 import { orderAssignments } from '../../lib/academicOrder.js';
 import {
@@ -27,6 +14,9 @@ import {
   formatDueDate,
   dueDateStatus
 } from './academicUi.js';
+import { academyContent } from '../../content/academyContent.js';
+
+const { findFormat, formatsForType, hasMilestones, leadStatus, milestoneProgress, milestonesFor, reflectionPromptFor, sizeFor, startByFor } = academyContent().academicCenter;
 
 /**
  * Assignments — student-facing view of the real, scheduled Academic

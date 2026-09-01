@@ -41,6 +41,7 @@
 // The lesson worth keeping: a widget showing one gate of a two-gate system
 // does not look broken. It looks finished.
 // ---------------------------------------------------------------------------
+import './lib/academy-under-test.mjs';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';

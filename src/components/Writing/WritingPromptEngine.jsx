@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import { useAppStore } from '../../store/useAppStore.js';
 import { WritingCheckerLink } from './WritingCheckerLink.jsx';
-import { lessonForPrompt } from '../../academies/lamar/data/writing/promptLessons.js';
 import { checkWriting } from '../../lib/writingCheck.js';
-import { requirementsFor } from '../../academies/lamar/data/writing/drillRequirements.js';
+import { academyContent } from '../../content/academyContent.js';
+
+const { lessonForPrompt, requirementsFor } = academyContent().writing;
 
 export function WritingPromptEngine({ prompt, onExit }) {
   const submitWritingEntry = useAppStore((s) => s.submitWritingEntry);

@@ -1,4 +1,3 @@
-import { allLessons } from '../academies/lamar/data/lessons/index.js';
 
 /**
  * Aggregates every lesson's `novaIntro.glossary` for a given subject +
@@ -33,3 +32,6 @@ export function getQuarterGlossaryTerms(subject, quarter) {
     terms: Array.from(termMap.values()).sort((a, b) => a.term.localeCompare(b.term))
   };
 }
+import { academyContent } from '../content/academyContent.js';
+
+const { allLessons } = academyContent().lessons;

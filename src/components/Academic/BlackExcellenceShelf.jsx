@@ -1,11 +1,9 @@
 import { useState } from 'react';
 import { useAppStore } from '../../store/useAppStore.js';
-import {
-  blackExcellenceBooksForSubject,
-  blackAmericanAuthorsForSubject,
-  BLACK_EXCELLENCE_KNOWN_GAPS
-} from '../../academies/lamar/data/academicSuccessCenter/blackExcellenceLibrary.js';
 import { subjectHeading } from './academicUi.js';
+import { academyContent } from '../../content/academyContent.js';
+
+const { BLACK_EXCELLENCE_KNOWN_GAPS, blackAmericanAuthorsForSubject, blackExcellenceBooksForSubject } = academyContent().academicCenter;
 
 /**
  * Black American Excellence Library shelf (PROJECT_PLAN.md Part 9).

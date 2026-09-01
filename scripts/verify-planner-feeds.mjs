@@ -33,6 +33,7 @@
 // THE SHAPE OF ALL THREE: the data was already there and complete. Nothing read
 // it as a date.
 // ---------------------------------------------------------------------------
+import './lib/academy-under-test.mjs';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';

@@ -24,6 +24,7 @@
  *      sections must come out byte-identical. Not "does not currently" — a
  *      structural separation, asserted from both ends.
  */
+import './lib/academy-under-test.mjs';
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';

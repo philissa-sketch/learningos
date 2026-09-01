@@ -34,6 +34,7 @@
 // real lesson: a fix applied in one file is not a fix, and only a rule that
 // covers the whole tree keeps it fixed.
 // ---------------------------------------------------------------------------
+import './lib/academy-under-test.mjs';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';

@@ -1,6 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useAppStore } from '../../store/useAppStore.js';
-import { dayPattern } from '../../academies/lamar/data/schedule/weekPattern.js';
 import { todayDateStr } from '../../lib/scheduler.js';
 import {
   scheduleStatus,
@@ -18,6 +17,9 @@ import {
   isAudioUnlocked,
   onAudioUnlockChange
 } from '../../lib/sfx.js';
+import { academyContent } from '../../content/academyContent.js';
+
+const { dayPattern } = academyContent().timetable;
 
 /**
  * THE CLASS BELL — a countdown and an alarm for switching subjects.

@@ -1,13 +1,8 @@
 import { useMemo, useState } from 'react';
 import { useAppStore } from '../../store/useAppStore.js';
-import {
-  GOVERNMENT_TYPES,
-  ECONOMIC_SYSTEMS,
-  TRADE_EVENT,
-  BUDGET_CATEGORIES,
-  BUDGET_TOTAL_POINTS,
-  NATION_SCORE_LABELS as SCORE_LABELS
-} from '../../academies/lamar/data/games/nationCommandContent.js';
+import { academyContent } from '../../content/academyContent.js';
+
+const { BUDGET_CATEGORIES, BUDGET_TOTAL_POINTS, ECONOMIC_SYSTEMS, GOVERNMENT_TYPES, NATION_SCORE_LABELS: SCORE_LABELS, TRADE_EVENT } = academyContent().games;
 
 const SCORE_KEYS = Object.keys(SCORE_LABELS);
 

@@ -1,12 +1,14 @@
 import { useAppStore } from '../../store/useAppStore.js';
-import { allLessons } from '../../academies/lamar/data/lessons/index.js';
-import { SUBJECT_LABELS, subjectCardLabel } from '../../academies/lamar/subjects.js';
 import { hasSchoolStarted, SCHOOL_YEAR_START_DATE, getCurrentQuarter, quarterOpensOn } from '../../lib/schoolQuarter.js';
 import { isLessonOpen, subjectQuarterStatus } from '../../lib/quarterAvailability.js';
 import { parseDateStr } from '../../lib/scheduler.js';
 import { QuietQuarterNote } from './QuietQuarterNote.jsx';
-import { printoutFor, journalFor } from '../../academies/lamar/data/printouts.js';
 import { StudyCycleTracker } from './StudyCycleTracker.jsx';
+import { academyContent } from '../../content/academyContent.js';
+
+const { allLessons } = academyContent().lessons;
+const { journalFor, printoutFor } = academyContent().rewards;
+const { SUBJECT_LABELS, subjectCardLabel } = academyContent().subjects;
 
 // Nation Command and Launch Director both moved to their own dedicated
 // Games tab (Aug 2026, parent feedback — the Lesson Roster and Mission

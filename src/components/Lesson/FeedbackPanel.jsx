@@ -2,11 +2,10 @@ import { useEffect, useMemo, useRef } from 'react';
 import { NovaMessage } from '../Mentor/NovaMessage.jsx';
 import { getMasteryMessage, getReviewMessage, getEnrichmentSuggestion } from '../../lib/novaVoice.js';
 import { playMastery } from '../../lib/sfx.js';
-import { aerospaceProjects } from '../../academies/lamar/data/aerospace/aerospaceProjects.js';
-import { scienceExperiments } from '../../academies/lamar/data/science/scienceExperiments.js';
-import { technologyProjects } from '../../academies/lamar/data/technology/technologyProjects.js';
-import { roboticsProjects } from '../../academies/lamar/data/robotics/roboticsProjects.js';
-import { gardenProjects } from '../../academies/lamar/data/gardening/gardenProjects.js';
+import { academyContent } from '../../content/academyContent.js';
+
+const { gardenProjects } = academyContent().electives;
+const { aerospaceProjects, roboticsProjects, scienceExperiments, technologyProjects } = academyContent().projects;
 
 const allHandsOnProjects = [...aerospaceProjects, ...scienceExperiments, ...technologyProjects, ...roboticsProjects, ...gardenProjects];
 

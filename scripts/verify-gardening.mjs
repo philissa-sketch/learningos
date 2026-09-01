@@ -9,6 +9,8 @@
 // once during this very build: weekPattern.js already contained the word
 // "gardening" in Friday's own note text.
 // ---------------------------------------------------------------------------
+import './lib/academy-under-test.mjs';
+import { countReadsFromAcademy, bodyWithoutContentReads } from './lib/reads-content.mjs';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -30,7 +32,10 @@ import { aerospaceProjects } from '../src/academies/lamar/data/aerospace/aerospa
 import { scienceExperiments } from '../src/academies/lamar/data/science/scienceExperiments.js';
 import { technologyProjects } from '../src/academies/lamar/data/technology/technologyProjects.js';
 import { roboticsProjects } from '../src/academies/lamar/data/robotics/roboticsProjects.js';
-import { useAppStore } from '../src/store/useAppStore.js';
+// Loaded with await, not as a static import: the harness above installs an
+// Academy's content using top-level await, and a sibling static import would
+// race it — this module reads content the moment it is evaluated.
+const { useAppStore } = await import('../src/store/useAppStore.js');
 
 const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const read = (rel) => fs.readFileSync(path.join(REPO, rel), 'utf8');
@@ -142,17 +147,14 @@ for (const [rel] of CONSUMERS) {
 }
 for (const [rel, why] of CONSUMERS) {
   const text = fs.readFileSync(path.join(REPO, rel), 'utf8');
-  const importRe = /import\s*\{[^}]*\bgardenProjects\b[^}]*\}\s*from\s*['"][^'"]*gardenProjects\.js['"]\s*;/g;
-  const imports = (text.match(importRe) || []).length;
-  // Strip comments and the import lines, then look for a real use.
-  const body = text
-    .replace(/\/\*[\s\S]*?\*\//g, '')
-    .replace(/^\s*\/\/.*$/gm, '')
-    .replace(importRe, '');
-  const uses = (body.match(/\bgardenProjects\b/g) || []).length;
-  ok(imports === 1 && uses >= 1,
-    `${path.basename(rel)} imports AND uses gardenProjects — ${why}`,
-    `imports=${imports} uses=${uses}`);
+  // The list now arrives from whichever Academy is signed in, rather than from
+  // one Academy's folder by name. Same assertion, current shape — see
+  // scripts/lib/reads-content.mjs.
+  const reads = countReadsFromAcademy(text, 'gardenProjects');
+  const uses = (bodyWithoutContentReads(text).match(/\bgardenProjects\b/g) || []).length;
+  ok(reads === 1 && uses >= 1,
+    `${path.basename(rel)} reads AND uses gardenProjects — ${why}`,
+    `reads=${reads} uses=${uses}`);
 }
 
 // ===========================================================================

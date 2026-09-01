@@ -1,5 +1,7 @@
 import { toDateStr, parseDateStr } from './scheduler.js';
-import { instructionMinutes } from '../academies/lamar/data/admin/georgiaCompliance.js';
+import { academyContent } from '../content/academyContent.js';
+
+const { instructionMinutes } = academyContent().compliance;
 
 /**
  * Learning Analytics — PROJECT_PLAN.md Part 8.

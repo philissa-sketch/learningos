@@ -1,5 +1,7 @@
 import { useState } from 'react';
-import { sizeFor, wordProgress } from '../../academies/lamar/data/academicSuccessCenter/reportFormats.js';
+import { academyContent } from '../../content/academyContent.js';
+
+const { sizeFor, wordProgress } = academyContent().academicCenter;
 
 /**
  * WHERE HE ACTUALLY WRITES THE REPORT.

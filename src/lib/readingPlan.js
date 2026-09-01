@@ -1,6 +1,8 @@
 import { toDateStr, parseDateStr, todayDateStr } from './scheduler.js';
-import { EXCLUDED_RANGES } from '../academies/lamar/data/academicSuccessCenter/assignmentRecommendations.js';
 import { QUARTER_SPANS } from './yearPlan.js';
+import { academyContent } from '../content/academyContent.js';
+
+const { EXCLUDED_RANGES } = academyContent().academicCenter;
 
 /**
  * Reading pacing — PROJECT_PLAN.md Part 9's "Intelligent Book Assignment

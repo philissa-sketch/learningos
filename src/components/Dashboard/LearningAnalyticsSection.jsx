@@ -1,6 +1,4 @@
 import { useAppStore } from '../../store/useAppStore.js';
-import { SUBJECT_LABELS } from '../../academies/lamar/subjects.js';
-import { allLessons } from '../../academies/lamar/data/lessons/index.js';
 import { todayDateStr } from '../../lib/scheduler.js';
 import {
   timeOnTask,
@@ -12,6 +10,10 @@ import {
   slowestLessons,
   UNANSWERED_QUESTIONS
 } from '../../lib/learningAnalytics.js';
+import { academyContent } from '../../content/academyContent.js';
+
+const { allLessons } = academyContent().lessons;
+const { SUBJECT_LABELS } = academyContent().subjects;
 
 /**
  * Learning Analytics Dashboard — PROJECT_PLAN.md Part 8.

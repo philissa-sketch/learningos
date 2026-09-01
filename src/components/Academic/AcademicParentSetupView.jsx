@@ -2,11 +2,6 @@ import { useState } from 'react';
 import { useAppStore } from '../../store/useAppStore.js';
 import { getCurrentQuarter } from '../../lib/schoolQuarter.js';
 import {
-  ACADEMIC_ASSIGNMENT_TYPES,
-  ACADEMIC_BOOK_TYPES,
-  ACADEMIC_SUCCESS_CENTER_QUARTER_ORDER
-} from '../../academies/lamar/data/academicSuccessCenter/placeholders.js';
-import {
   PendingBookSuggestion,
   countPendingSuggestions
 } from './PendingBookSuggestion.jsx';
@@ -24,6 +19,9 @@ import {
   orderedQuarters,
   formatDueDate
 } from './academicUi.js';
+import { academyContent } from '../../content/academyContent.js';
+
+const { ACADEMIC_ASSIGNMENT_TYPES, ACADEMIC_BOOK_TYPES, ACADEMIC_SUCCESS_CENTER_QUARTER_ORDER } = academyContent().academicCenter;
 
 // Same letter set the Writing Journal Review and Khan Academy grading
 // already use — one grading scale across the whole app, not a second one.

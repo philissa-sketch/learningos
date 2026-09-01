@@ -33,6 +33,7 @@
 // PACKET from fixtures and reads the text that comes out, because the only
 // thing that matters here is what a Georgia reviewer would see on the page.
 // ---------------------------------------------------------------------------
+import './lib/academy-under-test.mjs';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';

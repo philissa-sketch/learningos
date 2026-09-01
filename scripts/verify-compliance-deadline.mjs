@@ -15,6 +15,8 @@
 // Her record at the time: the tick was there, done, completedAt 2026-08-21.
 // The app had it and never asked.
 // ---------------------------------------------------------------------------
+import './lib/academy-under-test.mjs';
+import { readsFromAcademy } from './lib/reads-content.mjs';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -78,7 +80,7 @@ console.log('\n--- 1. the banner reads the tick at all ---');
     /declarationCoversToday\(declarationFiledAt, today\)/.test(code),
     'a September-1 comparison calls a late filing from last year this year\'s');
   ok('...through the shared rule, not a second copy of the arithmetic',
-    /declarationCoversToday,/.test(code) && /georgiaCompliance\.js/.test(code),
+    readsFromAcademy(code, 'declarationCoversToday'),
     'two implementations of one legal rule is how they drift');
 }
 

@@ -1,7 +1,9 @@
 import { useMemo, useState } from 'react';
 import { useAppStore } from '../../store/useAppStore.js';
-import { MISSION_EQUIPMENT, AVATAR_GEAR, HQ_ITEMS, affordable } from '../../academies/lamar/data/rewardCatalog.js';
 import { playAchievement, playCrate, unlockAudio } from '../../lib/sfx.js';
+import { academyContent } from '../../content/academyContent.js';
+
+const { AVATAR_GEAR, HQ_ITEMS, MISSION_EQUIPMENT, affordable } = academyContent().rewards;
 
 // ---------------------------------------------------------------------------
 // MISSION SUPPLY — equipment, avatar gear, and the Mission Control HQ.

@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { useAppStore } from '../../store/useAppStore.js';
-import { getGardenDayForWeekOf, getNextGardenDay } from '../../academies/lamar/data/gardening/gardenCalendar.js';
 import { GardenBriefView } from './GardenBriefView.jsx';
 import { SunSurveyView } from './SunSurveyView.jsx';
 import { GardenLogView } from './GardenLogView.jsx';
@@ -8,6 +7,9 @@ import { BuildTrackView } from './BuildTrackView.jsx';
 import { SeasonCalendarView } from './SeasonCalendarView.jsx';
 import { NovaGardenGuide } from './NovaGardenGuide.jsx';
 import { DomainProjectView } from '../Domains/DomainProjectView.jsx';
+import { academyContent } from '../../content/academyContent.js';
+
+const { getGardenDayForWeekOf, getNextGardenDay } = academyContent().electives;
 
 const TABS = [
   { id: 'friday', label: 'Mission' },

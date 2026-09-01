@@ -39,6 +39,7 @@
 // browser — so the payload keys are read from the source of the object
 // literal, which is checked for shape as it goes.
 // ---------------------------------------------------------------------------
+import './lib/academy-under-test.mjs';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';

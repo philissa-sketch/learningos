@@ -1,14 +1,8 @@
 import { useState } from 'react';
 import { useAppStore } from '../../store/useAppStore.js';
-import {
-  formatsForType,
-  findFormat,
-  criteriaForFormat,
-  suggestedGradeFromRubric,
-  RUBRIC_LEVELS,
-  sizeFor,
-  wordProgress
-} from '../../academies/lamar/data/academicSuccessCenter/reportFormats.js';
+import { academyContent } from '../../content/academyContent.js';
+
+const { RUBRIC_LEVELS, criteriaForFormat, findFormat, formatsForType, sizeFor, suggestedGradeFromRubric, wordProgress } = academyContent().academicCenter;
 
 /**
  * Parent-side format picker and rubric (PROJECT_PLAN.md Part 9's Book

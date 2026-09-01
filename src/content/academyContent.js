@@ -57,7 +57,22 @@
  * The key is the specifier, so the folder name IS the Academy id. Nothing
  * derives one from the other and nothing lists them.
  */
-const ACADEMY_FOLDERS = import.meta.glob('../academies/*/content.js');
+let FOLDERS = null;
+
+/**
+ * Resolved on first use, not at module load.
+ *
+ * `import.meta.glob` is a Vite transform. The 39 check scripts import school
+ * modules straight into plain Node, where it does not exist — and a school
+ * module now reaches this file, so a glob at module scope took 32 of those
+ * checks out at once. Calling it lazily means Node only meets it if something
+ * actually asks which Academy folders exist, and a check that has installed its
+ * content directly never does.
+ */
+function academyFolders() {
+  if (!FOLDERS) FOLDERS = import.meta.glob('../academies/*/content.js');
+  return FOLDERS;
+}
 
 /**
  * The sixteen slots an Academy folder may fill.
@@ -188,7 +203,7 @@ const specifierFor = (academyId) => `../academies/${academyId}/content.js`;
 
 /** Academy folders carried by this build. Ids only — nothing is loaded. */
 export function availableAcademyFolders() {
-  return Object.keys(ACADEMY_FOLDERS)
+  return Object.keys(academyFolders())
     .map((key) => key.slice('../academies/'.length, -'/content.js'.length))
     .filter((id) => !id.startsWith('_'))
     .sort();
@@ -201,7 +216,7 @@ export function availableAcademyFolders() {
  * willing to await anything.
  */
 export function academyHasContent(academyId) {
-  return Boolean(academyId && ACADEMY_FOLDERS[specifierFor(academyId)]);
+  return Boolean(academyId && academyFolders()[specifierFor(academyId)]);
 }
 
 /**
@@ -246,7 +261,7 @@ let installedId = null;
 export async function loadAcademyContent(academyId) {
   if (!academyId) throw new Error('loadAcademyContent: academyId is required');
 
-  const loader = ACADEMY_FOLDERS[specifierFor(academyId)];
+  const loader = academyFolders()[specifierFor(academyId)];
   if (!loader) throw new AcademyContentMissing(academyId, availableAcademyFolders());
 
   const module = await loader();
@@ -282,6 +297,26 @@ export function academyContent() {
 /** Which Academy's content is loaded, or null. */
 export function loadedAcademyId() {
   return installedId;
+}
+
+/**
+ * Install content that has already been imported, without going through the
+ * glob.
+ *
+ * For the check scripts, which run school modules straight into plain Node
+ * where `import.meta.glob` does not exist. They import one Academy's manifest
+ * themselves and hand it over here, so the module they are actually testing
+ * finds its content the same way it would in the browser.
+ *
+ * Not a back door: it installs a real manifest and enforces the same required
+ * slots. A check that installs nothing still gets the same throw the app would.
+ */
+export function installAcademyContent(content, academyId = '(installed directly)') {
+  const missing = REQUIRED_SLOTS.filter((slot) => !content?.[slot]);
+  if (missing.length) throw new AcademyContentIncomplete(academyId, missing);
+  installed = content;
+  installedId = academyId;
+  return content;
 }
 
 /**

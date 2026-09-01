@@ -42,13 +42,15 @@
 // a records packet that counts lunch toward Georgia's 4.5 hours is the same
 // kind of wrong as one that counts a Saturday in July.
 // ---------------------------------------------------------------------------
-import { defaultSchedule } from '../academies/lamar/data/schedule/defaultSchedule.js';
 import { toMinutes } from './classBell.js';
 import { localDayOf } from './academicOrder.js';
 import { toDateStr, addDays, parseDateStr } from './scheduler.js';
-import { allLessons } from '../academies/lamar/data/lessons/index.js';
-import { khanGrammarUnitByUrl } from '../academies/lamar/data/khan/grammarCourseOrder.js';
 import { getCurrentQuarter } from './schoolQuarter.js';
+import { academyContent } from '../content/academyContent.js';
+
+const { khanGrammarUnitByUrl } = academyContent().khanSequences;
+const { allLessons } = academyContent().lessons;
+const { defaultSchedule } = academyContent().timetable;
 
 /** Monday-first day keys, as weeklyWordState stores them in completedDayTasks. */
 const WORD_DAY_OFFSET = { mon: 0, tue: 1, wed: 2, thu: 3, fri: 4, sat: 5, sun: 6 };

@@ -1,10 +1,8 @@
 import { useMemo } from 'react';
 import { useAppStore } from '../../store/useAppStore.js';
-import {
-  SCIENCE_COURSES,
-  scienceCoverageByCourse,
-  SCIENCE_COURSE_CHALLENGES
-} from '../../academies/lamar/data/khan/scienceSequence.js';
+import { academyContent } from '../../content/academyContent.js';
+
+const { SCIENCE_COURSES, SCIENCE_COURSE_CHALLENGES, scienceCoverageByCourse } = academyContent().khanSequences;
 
 /**
  * SCIENCE, COURSE BY COURSE — and the teacher units Khan wrote for her.

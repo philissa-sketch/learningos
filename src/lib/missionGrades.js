@@ -1,4 +1,3 @@
-import { findProposal, missionScoreTotals } from '../academies/lamar/data/admin/missionEvaluations.js';
 
 /**
  * =============================================================================
@@ -146,3 +145,6 @@ export function missionEvidencePhrase(rows) {
   const avg = Math.round((rows.reduce((n, r) => n + r.value, 0) / rows.length) * 100);
   return `${rows.length} quarterly mission${rows.length === 1 ? '' : 's'} scored, ${avg}% average`;
 }
+import { academyContent } from '../content/academyContent.js';
+
+const { findProposal, missionScoreTotals } = academyContent().compliance;

@@ -26,6 +26,7 @@
  *   2. Due on the quarter's own last day, leaving no room to score and approve
  *      it inside the quarter it grades. Section 3.
  */
+import './lib/academy-under-test.mjs';
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';

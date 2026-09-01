@@ -10,6 +10,7 @@
 // transcript, tested in the Q1 exam) and a Typing screen where he actually
 // TYPES. This guard holds the wire in place.
 // ---------------------------------------------------------------------------
+import './lib/academy-under-test.mjs';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';

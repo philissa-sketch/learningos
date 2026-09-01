@@ -1,5 +1,3 @@
-import { SUBJECT_LABELS } from '../../academies/lamar/subjects.js';
-import { printoutFor, journalFor } from '../../academies/lamar/data/printouts.js';
 
 /**
  * THE PRINTABLE SHEETS.
@@ -156,3 +154,7 @@ export function SubjectJournal({ subject, onExit }) {
     </div>
   );
 }
+import { academyContent } from '../../content/academyContent.js';
+
+const { journalFor, printoutFor } = academyContent().rewards;
+const { SUBJECT_LABELS } = academyContent().subjects;

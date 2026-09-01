@@ -25,6 +25,7 @@
 // are provable here — and by pinning the one order-of-operations rule that the
 // deploy created.
 // ---------------------------------------------------------------------------
+import './lib/academy-under-test.mjs';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';

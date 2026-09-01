@@ -5,6 +5,7 @@
  * understand the rotating block. Let's fix that to have the actual course that
  * will be there for the week."
  */
+import './lib/academy-under-test.mjs';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';

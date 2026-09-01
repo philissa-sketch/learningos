@@ -667,3 +667,150 @@ would have caught three of tonight's four before a twelve-year-old did.
 first. The original records at the old address were never written to at any
 point in the move — which is why four bugs on a school night cost time and
 nothing else.
+
+---
+
+## C1 — an Academy's content is loaded, not compiled in (Aug 31, 2026)
+
+The school no longer names an Academy. It asks which one is signed in.
+
+### The cold walk, first, and what it showed
+
+A blank Academy was created on the live site before any code was written — the
+task the last entry ended on. The front door, both empty-machine screens, first
+run, the passcode, the recovery code and the Academy creation all behaved
+correctly, and a new Academy correctly stopped at *"nothing in it yet"*.
+
+Then that Academy's state was moved by hand to `active`, which is where the
+second learner lands the day she has anything at all. It rendered the FIRST
+Academy's school: its guide, Aerospace Engineering, its rank ladder, its reading
+lesson, and a field trip belonging to another child, marked past due.
+
+Its own database had been created and was empty. **Records separated perfectly.
+Curriculum had no concept of whose it was.** That is the whole of C1 in one
+screen, and it is worth more than the grep that preceded it.
+
+### Why the cheap fix does not exist
+
+The obvious repair is to re-point 205 imports at a shared module that re-exports
+everything. Measured properly, that fails: of the 190 names the school imported,
+**42 are one curriculum's own words** — `aerospaceQ3Exam`, `gardenProjects`,
+`guitarTheory`. A second Academy cannot supply a thing called `aerospaceQ3Exam`.
+A shared module listing those names would have compiled one child's curriculum
+into the platform while appearing to remove it.
+
+So the contract is by ROLE. Sixteen slots — `lessons`, `timetable`, `guide`,
+`pe`, `rewards`, `compliance` — that any Academy can fill, and one generated
+manifest per Academy folder saying what it puts in each. `lessons` is the slot;
+`aerospaceLessons7` is one Academy's answer to it.
+
+**The slot names are this platform's own, by parent decision.** PE is PE, not
+`movement`. The second Academy was meant to be built on these bones and drifted
+into a different shape instead, which is the whole reason its content now has to
+be adapted rather than dropped in; inventing a third vocabulary in the contract
+meant to reunite them would repeat that mistake one layer up. Exactly one name
+had to bend, because the platform guard refuses a bare quoted course-provider
+name, and nothing was loosened to let it through.
+
+### The guard rejected two of my own drafts, and was right both times
+
+The first slot list named one slot after the outside course provider and one
+after the two-letter abbreviation for physical education.
+`verify-no-learner.mjs` failed the commit on the first. Then it failed the
+*replacement comment*, because the rejected name was still written there in
+quotes — which is the reason it reads prose as well as code. A platform file
+that must name a vendor to explain itself has not finished separating from it.
+
+### One slot came from reading the second Academy's folder
+
+The rest were derived from the only Academy that exists in code, which is
+precisely how a contract only one Academy can honour gets written. Checked
+against the second Academy's real folder, one hole appeared: **`placement`** — a
+diagnostic bank the first Academy has no equivalent for, because its placement
+predates the code. §1 makes placement a state EVERY Academy passes through, so a
+contract with nowhere to put diagnostics cannot express the platform's own
+middle state.
+
+That Academy also masters and reports on *skills* rather than whole lessons.
+That is not a new slot — this platform already has the idea as the strands
+hanging off a subject — so its manifest adapts it into `subjects`. Flagged
+rather than silently reshaped.
+
+### Two collisions the generator refused to write around
+
+`isSchoolDay` exists twice in one Academy's schedule folder, with two
+implementations, each documented as *"the single place the rest of the app
+should ask."* Everything compliance-related uses the same one, so nothing is
+wrong today. A manifest built by matching names would have imported both, which
+is not valid JavaScript, and if it had loaded, one would silently have started
+answering questions about attendance. The scan records which MODULE each name is
+wanted from, not just the name.
+
+Both games exported `SCORE_LABELS`. Renamed at the source; each component
+aliases straight back, so nothing inside either game changed.
+
+### The circular dependency, found by the checks rather than by a family
+
+Three of the Academy's own content files import date helpers out of `lib/`. So
+loading a manifest evaluates those `lib` modules **while that manifest is still
+loading** — and a module-scope content read there asks for content that has not
+finished arriving. It threw in Node, and it would have thrown in the browser.
+
+The rule it produced, now asserted: **a module that Academy content imports must
+not read Academy content at module scope.** Two files are in that position; both
+read inside the function that needs the value. The longer fix is to move those
+date helpers somewhere content can import without reaching into the school —
+Tier 2, and there is a comment where someone will find it.
+
+### Why the school's 550 use sites did not change
+
+Every school file reads its slot at the top of the module, so the identifiers
+below are untouched:
+
+```js
+const { WEEK_PATTERN, isSchoolDay } = academyContent().timetable;
+```
+
+That is safe only because the platform reaches the school through **one** dynamic
+import, made after `loadAcademyContent()` resolves. `main.jsx` and the shell no
+longer statically import `App.jsx` or the store; `SchoolBoot.jsx` is the seam.
+So no school module can evaluate before its content exists — structurally, not
+by convention. 205 import lines moved. 120 files changed, +391 / −312.
+
+### An Academy with no curriculum now has a room
+
+It shows its own name and says plainly that its lessons have not been added yet.
+It never falls through to another Academy's school. The diagnostic detail is
+there for a grown-up; the full Configured room, with the questionnaire and the
+diagnostics, is C2's.
+
+### The Academy record names its content pack
+
+Not its id. The small reason is that an id is generated on the family's own
+machine with a random suffix, so no folder can be authored against it in
+advance. The real reason is §3a: **a career track is a field, never a
+foundation.** If the folder were the id, changing what a child is working toward
+would change her database and cost her every hour, grade and record she had
+earned. The record points at a pack; the pack can be repointed; the records stay.
+
+### Verified
+
+**56 check scripts, all passing** — 55 inherited, one written here.
+`verify-content-interface.mjs` holds the four properties C1 depends on: nothing
+outside an Academy folder statically imports one, the boot path reaches the
+school only dynamically, nothing reachable from content reads content at load
+time, and every Academy answers the whole contract.
+
+**The generic debt list shrank from 131 files to 85.** The ratchet moved for the
+first time.
+
+207 modules reachable from `main.jsx`, down from 283 — the difference is one
+Academy's curriculum, which is now behind the glob and code-split per learner.
+352 files parse, every relative import resolves, four stylesheets clean through
+the real PostCSS.
+
+**Not verified here: `npm run build`.** Same sandbox limit as every previous
+entry — Windows-only rollup binaries, and the npm registry is unreachable, so a
+clean install cannot be made either. It must be run on a real machine before
+this is pushed, and the deployed bundle checked for a known string afterwards
+rather than the local one.

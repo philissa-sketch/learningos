@@ -1,12 +1,8 @@
 import { useState } from 'react';
 import { useAppStore } from '../../store/useAppStore.js';
-import {
-  GUITAR_OWN_SLOTS,
-  guitarStarterSongs,
-  guitarOwnSongGuidance,
-  guitarPerformanceMoment
-} from '../../academies/lamar/data/guitar/guitarSongs.js';
-import { guitarEducators } from '../../academies/lamar/data/guitar/guitarTools.js';
+import { academyContent } from '../../content/academyContent.js';
+
+const { GUITAR_OWN_SLOTS, guitarEducators, guitarOwnSongGuidance, guitarPerformanceMoment, guitarStarterSongs } = academyContent().electives;
 
 /**
  * The song list — and the three slots he fills himself.

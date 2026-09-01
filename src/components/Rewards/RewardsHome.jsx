@@ -2,7 +2,6 @@ import { useMemo, useState } from 'react';
 import { useAppStore } from '../../store/useAppStore.js';
 import { evaluateBadges } from '../../lib/badges.js';
 import { AVATARS, ROCKETS, avatarIconFor, DEFAULT_AVATAR_ID, DEFAULT_ROCKET_ID } from '../../lib/rewards.js';
-import { costForCosmetic } from '../../academies/lamar/data/rewardCatalog.js';
 import { JourneySection, ShipSection } from './MissionJourney.jsx';
 import { ChallengesSection, HistorySection } from './ChallengesSection.jsx';
 import { SupplySection } from './SupplyStore.jsx';
@@ -18,6 +17,9 @@ import { READINESS_SKILLS, LEVEL_STYLE, nextLevel, criteriaFor } from '../../lib
 import { STUDENT_NAME } from '../../lib/novaVoice.js';
 import { playAchievement, playPurchase, unlockAudio } from '../../lib/sfx.js';
 import { RocketSwatch } from './RocketSwatch.jsx';
+import { academyContent } from '../../content/academyContent.js';
+
+const { costForCosmetic } = academyContent().rewards;
 
 // Gamification hub (Part 5, Aug 6, 2026): the student's Badges, Rewards Store,
 // and printable Certificates, plus a live coin balance. Coins are earned from

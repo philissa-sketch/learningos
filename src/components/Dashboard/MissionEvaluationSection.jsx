@@ -1,25 +1,15 @@
 import { useState, useMemo } from 'react';
 import { useAppStore } from '../../store/useAppStore.js';
-import { SUBJECT_LABELS, ACTIVE_SUBJECTS, KHAN_TAUGHT_SUBJECTS, PARTICIPATION_SUBJECTS } from '../../academies/lamar/subjects.js';
 import { missionSubjects, missionGradeGap } from '../../lib/missionGrades.js';
-import { RUBRIC_LEVELS } from '../../academies/lamar/data/academicSuccessCenter/reportFormats.js';
-import {
-  MISSION_RUBRIC_CRITERIA,
-  MISSION_QUARTERS,
-  MISSION_STATUS_LABELS,
-  proposalsForQuarter,
-  findProposal,
-  missionScoreTotals,
-  draftMissionFeedback,
-  missionGrowth
-} from '../../academies/lamar/data/admin/missionEvaluations.js';
 import { getCurrentQuarter } from '../../lib/schoolQuarter.js';
 import { EvidenceLinkEditor } from './EvidenceLink.jsx';
 import { overlapNotice, missionTiming, missionTimingNote } from '../../lib/missionSchedule.js';
-import { aerospaceProjects } from '../../academies/lamar/data/aerospace/aerospaceProjects.js';
-import { scienceExperiments } from '../../academies/lamar/data/science/scienceExperiments.js';
-import { technologyProjects } from '../../academies/lamar/data/technology/technologyProjects.js';
-import { roboticsProjects } from '../../academies/lamar/data/robotics/roboticsProjects.js';
+import { academyContent } from '../../content/academyContent.js';
+
+const { RUBRIC_LEVELS } = academyContent().academicCenter;
+const { MISSION_QUARTERS, MISSION_RUBRIC_CRITERIA, MISSION_STATUS_LABELS, draftMissionFeedback, findProposal, missionGrowth, missionScoreTotals, proposalsForQuarter } = academyContent().compliance;
+const { aerospaceProjects, roboticsProjects, scienceExperiments, technologyProjects } = academyContent().projects;
+const { ACTIVE_SUBJECTS, KHAN_TAUGHT_SUBJECTS, PARTICIPATION_SUBJECTS, SUBJECT_LABELS } = academyContent().subjects;
 
 /**
  * Every hands-on project in the curriculum, for the duplicate check below.

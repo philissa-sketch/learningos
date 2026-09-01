@@ -23,6 +23,8 @@
 //   3. IT REACHES HIS COMPUTER. A link that lives only on her machine is a
 //      link he never sees.
 // ---------------------------------------------------------------------------
+import './lib/academy-under-test.mjs';
+import { readsFromAcademy } from './lib/reads-content.mjs';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -117,7 +119,7 @@ console.log('\n--- 4. she can set them, and only to something safe ---');
   ok('there is a setter', /async setQuizLink\(platformId, url\) \{/.test(store));
   ok('...that refuses an unknown platform',
     /!QUIZ_PLATFORM_IDS\.includes\(platformId\)/.test(store)
-      && /import \{ QUIZ_PLATFORM_IDS \} from '\.\.\/academies\/lamar\/data\/games\/quizPlatforms\.js';/.test(store));
+      && readsFromAcademy(store, 'QUIZ_PLATFORM_IDS'));
   ok('...and refuses anything that is not http(s)',
     /!\/\^https\?:\\\/\\\/\/i\.test\(trimmed\)/.test(store),
     'a javascript: or data: URL here is handed straight to a link a child taps');
@@ -137,7 +139,7 @@ console.log('\n--- 4. she can set them, and only to something safe ---');
     /\{ id: 'quiz-games', label: 'Blooket \/ Kahoot \/ Gimkit' \}/.test(pcode));
   ok('...with a box per platform, driven by the data file',
     /QUIZ_PLATFORMS\.map\(\(platform\) => \{/.test(pcode)
-      && /import \{ QUIZ_PLATFORMS \} from '\.\.\/\.\.\/academies\/lamar\/data\/games\/quizPlatforms\.js';/.test(pcode));
+      && readsFromAcademy(pcode, 'QUIZ_PLATFORMS'));
   ok('...and a bad address is explained, not swallowed',
     /That needs to start with http:\/\/ or https:\/\//.test(parent));
 }

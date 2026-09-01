@@ -45,18 +45,13 @@
 // to Thursday drills, Friday the real piece — and it lands the deadline on the
 // flex day that exists to absorb what is behind.
 // ---------------------------------------------------------------------------
-import { weeklyWritingSchedule, SCHOOL_YEAR_START, getSchoolWeekNumber } from '../academies/lamar/data/writing/weeklySchedule.js';
-import { writingPrompts } from '../academies/lamar/data/writing/writingPrompts.js';
-import { aerospaceProjects } from '../academies/lamar/data/aerospace/aerospaceProjects.js';
-import { scienceExperiments } from '../academies/lamar/data/science/scienceExperiments.js';
-import { technologyProjects } from '../academies/lamar/data/technology/technologyProjects.js';
-import { roboticsProjects } from '../academies/lamar/data/robotics/roboticsProjects.js';
-import { gardenProjects } from '../academies/lamar/data/gardening/gardenProjects.js';
-import { gardenCalendar } from '../academies/lamar/data/gardening/gardenCalendar.js';
-import { gardenBuildTrack } from '../academies/lamar/data/gardening/gardenBuildTrack.js';
-import { gardenBriefs } from '../academies/lamar/data/gardening/gardenBriefs.js';
 import { toDateStr, addDays, todayDateStr, parseDateStr } from './scheduler.js';
-import { isHoliday } from '../academies/lamar/data/schedule/schoolHolidays.js';
+import { academyContent } from '../content/academyContent.js';
+
+const { gardenBriefs, gardenBuildTrack, gardenCalendar, gardenProjects } = academyContent().electives;
+const { aerospaceProjects, roboticsProjects, scienceExperiments, technologyProjects } = academyContent().projects;
+const { isHoliday } = academyContent().timetable;
+const { SCHOOL_YEAR_START, getSchoolWeekNumber, weeklyWritingSchedule, writingPrompts } = academyContent().writing;
 
 /** Every pool a scheduled id might resolve against. Same six as weeklyPlan.js. */
 const POOLS = [writingPrompts, aerospaceProjects, scienceExperiments, technologyProjects, roboticsProjects, gardenProjects];

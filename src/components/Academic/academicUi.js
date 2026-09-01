@@ -1,9 +1,8 @@
-import { SUBJECT_LABELS, isKhanTaughtSubject } from '../../academies/lamar/subjects.js';
-import {
-  ACADEMIC_SUBJECT_ORDER,
-  ACADEMIC_SUCCESS_CENTER_QUARTER_ORDER
-} from '../../academies/lamar/data/academicSuccessCenter/placeholders.js';
 import { parseDateStr, todayDateStr } from '../../lib/scheduler.js';
+import { academyContent } from '../../content/academyContent.js';
+
+const { ACADEMIC_SUBJECT_ORDER, ACADEMIC_SUCCESS_CENTER_QUARTER_ORDER } = academyContent().academicCenter;
+const { SUBJECT_LABELS, isKhanTaughtSubject } = academyContent().subjects;
 
 /**
  * Small shared display helpers for the Academic Success Center views.

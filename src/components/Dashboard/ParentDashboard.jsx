@@ -4,7 +4,6 @@ import { XP_PER_COIN, XP_PER_CREDIT, CREDIT_AUTO_APPROVE_MAX } from '../../lib/e
 import { CurrencyControlsSection } from './CurrencyControlsSection.jsx';
 import { GRADE_SCALE_SUMMARY, gradeColor } from '../../lib/gradeScale.js';
 import { PercentGradeInput } from './GradeControls.jsx';
-import { SUBJECT_LABELS } from '../../academies/lamar/subjects.js';
 import { groupByQuarter, getCurrentQuarter, quarterRank } from '../../lib/schoolQuarter.js';
 import { SUGGESTED_PARENT_REWARDS } from '../../lib/rewards.js';
 import { READINESS_SKILLS, READINESS_LEVELS, LEVEL_STYLE, criteriaFor } from '../../lib/readiness.js';
@@ -24,7 +23,6 @@ import { TypingRecordSection } from './TypingRecordSection.jsx';
 import { ScienceCourseMapSection } from './ScienceCourseMapSection.jsx';
 import { NovaParentGuide } from './NovaParentGuide.jsx';
 import { VoiceSettingsPanel } from '../Mentor/VoiceSettingsPanel.jsx';
-import { QUIZ_PLATFORMS } from '../../academies/lamar/data/games/quizPlatforms.js';
 import {
   buildCalendarItems,
   getUpcomingCalendarItems,
@@ -35,11 +33,15 @@ import {
   parseDateStr,
   getNextCalendarItemsBeyond
 } from '../../lib/scheduler.js';
-import { writingPrompts } from '../../academies/lamar/data/writing/writingPrompts.js';
 import { derivedPlannerItems } from '../../lib/plannerFeeds.js';
 import { participationSummary, participationPhrases } from '../../lib/participationRecord.js';
 import { ExerciseVideoManager } from '../PE/ExerciseVideoManager.jsx';
 import { REFERENCE_LINK_TYPES } from '../../lib/driveLinks.js';
+import { academyContent } from '../../content/academyContent.js';
+
+const { QUIZ_PLATFORMS } = academyContent().games;
+const { SUBJECT_LABELS } = academyContent().subjects;
+const { writingPrompts } = academyContent().writing;
 
 const CONFIRM_PHRASE = 'RESET';
 const GEORGIA_DAYS_TARGET = 180;

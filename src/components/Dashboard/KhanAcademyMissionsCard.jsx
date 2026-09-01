@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import { useAppStore } from '../../store/useAppStore.js';
 import { getCurrentQuarter, isQuarterlyBatchLabel, isSummerBatchLabel, hasSchoolStarted, SCHOOL_YEAR_START_DATE } from '../../lib/schoolQuarter.js';
-import { subjectCardLabel } from '../../academies/lamar/subjects.js';
-import { khanGrammarUnitForUrl } from '../../academies/lamar/data/khan/grammarCourseOrder.js';
-import { scienceCourseForUrl } from '../../academies/lamar/data/khan/scienceSequence.js';
+import { academyContent } from '../../content/academyContent.js';
+
+const { khanGrammarUnitForUrl, scienceCourseForUrl } = academyContent().khanSequences;
+const { subjectCardLabel } = academyContent().subjects;
 
 // Deliberately short labels for this card only — the full names
 // ("English Language Arts") do not fit the mission tiles. `writing`

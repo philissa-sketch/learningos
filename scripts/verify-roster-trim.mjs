@@ -19,6 +19,7 @@
  * already: a roster is a plan and a completed unit is a record. A plan can be
  * rewritten; a record cannot.
  */
+import './lib/academy-under-test.mjs';
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';

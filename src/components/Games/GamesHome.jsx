@@ -1,6 +1,7 @@
 import { useAppStore } from '../../store/useAppStore.js';
-import { EXTERNAL_GAMES_LIBRARY } from '../../academies/lamar/data/games/externalGamesLibrary.js';
-import { QUIZ_PLATFORMS } from '../../academies/lamar/data/games/quizPlatforms.js';
+import { academyContent } from '../../content/academyContent.js';
+
+const { EXTERNAL_GAMES_LIBRARY, QUIZ_PLATFORMS } = academyContent().games;
 
 const SUBJECT_LABELS = {
   math: 'Math',

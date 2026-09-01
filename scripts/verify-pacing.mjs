@@ -32,6 +32,7 @@
 //   5. "exactly enough" is its own state and is not reported as healthy;
 //   6. the shipped Mission Control lesson table, on its own, still fits.
 // ---------------------------------------------------------------------------
+import './lib/academy-under-test.mjs';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';

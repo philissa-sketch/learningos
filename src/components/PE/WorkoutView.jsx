@@ -1,9 +1,11 @@
 import { useState } from 'react';
 import { useAppStore } from '../../store/useAppStore.js';
-import { demoLinkFor } from '../../academies/lamar/data/pe/peVideoSource.js';
 import { ExerciseTimer } from './ExerciseTimer.jsx';
 import { parseMinutesRange } from '../../lib/exerciseTiming.js';
 import { useToday } from '../../lib/useToday.js';
+import { academyContent } from '../../content/academyContent.js';
+
+const { demoLinkFor } = academyContent().pe;
 
 export function WorkoutView({ workout }) {
   const peWorkoutLog = useAppStore((s) => s.peWorkoutLog);

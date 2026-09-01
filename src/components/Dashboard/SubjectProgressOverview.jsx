@@ -1,4 +1,3 @@
-import { subjectCardLabel, isKhanTaughtSubject } from '../../academies/lamar/subjects.js';
 
 function Bar({ pct, tone = 'green' }) {
   const color = tone === 'cyan' ? 'bg-signal-cyan' : 'bg-signal-green';
@@ -93,3 +92,6 @@ export function SubjectProgressOverview({ subjectProgress, khanBySubject = {} })
     </div>
   );
 }
+import { academyContent } from '../../content/academyContent.js';
+
+const { isKhanTaughtSubject, subjectCardLabel } = academyContent().subjects;

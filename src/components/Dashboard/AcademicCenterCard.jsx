@@ -1,5 +1,4 @@
 import { useAppStore } from '../../store/useAppStore.js';
-import { SUBJECT_LABELS } from '../../academies/lamar/subjects.js';
 import {
   buildCalendarItems,
   getUpcomingCalendarItems,
@@ -9,14 +8,11 @@ import {
   addDays,
   parseDateStr
 } from '../../lib/scheduler.js';
-import {
-  activeMilestone,
-  milestoneProgress,
-  hasMilestones,
-  startByFor,
-  leadStatus
-} from '../../academies/lamar/data/academicSuccessCenter/assignmentMilestones.js';
 import { orderBooks } from '../../lib/academicOrder.js';
+import { academyContent } from '../../content/academyContent.js';
+
+const { activeMilestone, hasMilestones, leadStatus, milestoneProgress, startByFor } = academyContent().academicCenter;
+const { SUBJECT_LABELS } = academyContent().subjects;
 
 const LOOKAHEAD_DAYS = 7;
 

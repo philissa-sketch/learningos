@@ -1,10 +1,3 @@
-import { writingPrompts } from '../academies/lamar/data/writing/writingPrompts.js';
-import { aerospaceProjects } from '../academies/lamar/data/aerospace/aerospaceProjects.js';
-import { scienceExperiments } from '../academies/lamar/data/science/scienceExperiments.js';
-import { technologyProjects } from '../academies/lamar/data/technology/technologyProjects.js';
-import { roboticsProjects } from '../academies/lamar/data/robotics/roboticsProjects.js';
-import { gardenProjects } from '../academies/lamar/data/gardening/gardenProjects.js';
-import { getThisWeeksScheduledIds } from '../academies/lamar/data/writing/weeklySchedule.js';
 
 // ---------------------------------------------------------------------------
 // THE WEEK'S WRITING AND PROJECT PLAN — one lookup, shared.
@@ -71,3 +64,8 @@ export function getWeeklyWritingItem(date = new Date()) {
   }
   return null;
 }
+import { academyContent } from '../content/academyContent.js';
+
+const { gardenProjects } = academyContent().electives;
+const { aerospaceProjects, roboticsProjects, scienceExperiments, technologyProjects } = academyContent().projects;
+const { getThisWeeksScheduledIds, writingPrompts } = academyContent().writing;

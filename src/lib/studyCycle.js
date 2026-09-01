@@ -30,7 +30,9 @@
 // a short, real adaptive drill pulled from the quarter's own lowest-
 // accuracy lessons, using generators that already exist.
 
-import { allLessons } from '../academies/lamar/data/lessons/index.js';
+import { academyContent } from '../content/academyContent.js';
+
+const { allLessons } = academyContent().lessons;
 
 export function studyCycleKey(subject, quarter) {
   return `${subject}::${quarter}`;

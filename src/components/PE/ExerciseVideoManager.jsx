@@ -1,8 +1,8 @@
 import { useMemo, useState } from 'react';
 import { useAppStore } from '../../store/useAppStore.js';
-import { exerciseLibrary, CATEGORY_LABELS } from '../../academies/lamar/data/pe/exerciseLibrary.js';
-import { curatedDemoFor } from '../../academies/lamar/data/pe/exerciseDemoVideos.js';
-import { HIDDEN_VIDEO } from '../../academies/lamar/data/pe/peVideoSource.js';
+import { academyContent } from '../../content/academyContent.js';
+
+const { CATEGORY_LABELS, HIDDEN_VIDEO, curatedDemoFor, exerciseLibrary } = academyContent().pe;
 
 // ---------------------------------------------------------------------------
 // EXERCISE DEMO VIDEOS — one link per exercise, hers overriding a checked default.

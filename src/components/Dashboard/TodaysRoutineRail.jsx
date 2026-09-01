@@ -2,8 +2,10 @@ import { useState, useEffect, useMemo } from 'react';
 import { useAppStore } from '../../store/useAppStore.js';
 import { resolveBlockLabel, ROTATING_BLOCK_ID } from '../../lib/rotatingBlock.js';
 import { scheduleStatus, formatClock, minutesSinceMidnight } from '../../lib/classBell.js';
-import { dayPattern } from '../../academies/lamar/data/schedule/weekPattern.js';
 import { todayDateStr } from '../../lib/scheduler.js';
+import { academyContent } from '../../content/academyContent.js';
+
+const { dayPattern } = academyContent().timetable;
 
 /**
  * TODAY'S ROUTINE, ON MISSION CONTROL. (Aug 9, 2026.)

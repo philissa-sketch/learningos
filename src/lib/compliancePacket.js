@@ -1,18 +1,15 @@
 import { participationSummary } from './participationRecord.js';
 import { toDateStr } from './scheduler.js';
 import { SCHOOL_YEAR_START_DATE } from './schoolQuarter.js';
-import { isSchoolDay } from '../academies/lamar/data/schedule/schoolHolidays.js';
 import { scheduledMinutesByDate } from './scheduledMinutes.js';
-import { SUBJECT_LABELS } from '../academies/lamar/subjects.js';
-import { GEORGIA_LAW_CITATION, GEORGIA_REQUIREMENTS, instructionProgress } from '../academies/lamar/data/admin/georgiaCompliance.js';
 import { parseDateStr } from './scheduler.js';
 import { EVIDENCE_FOLDERS } from './driveLinks.js';
 import { READINESS_SKILLS } from './readiness.js';
-import {
-  MISSION_RUBRIC_CRITERIA,
-  findProposal,
-  missionScoreTotals
-} from '../academies/lamar/data/admin/missionEvaluations.js';
+import { academyContent } from '../content/academyContent.js';
+
+const { GEORGIA_LAW_CITATION, GEORGIA_REQUIREMENTS, MISSION_RUBRIC_CRITERIA, findProposal, instructionProgress, missionScoreTotals } = academyContent().compliance;
+const { SUBJECT_LABELS } = academyContent().subjects;
+const { isSchoolDay } = academyContent().timetable;
 
 /**
  * The combined compliance packet — Part 8's "generate one combined,

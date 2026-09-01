@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { useAppStore } from '../../store/useAppStore.js';
-import { guitarFeedbackPlaces } from '../../academies/lamar/data/guitar/guitarTools.js';
+import { academyContent } from '../../content/academyContent.js';
+
+const { guitarFeedbackPlaces } = academyContent().electives;
 
 /**
  * THE RECORDING ROUTINE — and the parent-facing safety text, which is NOT

@@ -34,6 +34,7 @@
 // suggestion. This makes it a rule, for hand-written dates and generated ones
 // alike, and it runs before any date is proposed to her again.
 // ---------------------------------------------------------------------------
+import './lib/academy-under-test.mjs';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';

@@ -1,8 +1,6 @@
 import { useState, useEffect, useMemo } from 'react';
 import { useAppStore } from '../../store/useAppStore.js';
 import { resolveBlockLabel, ROTATING_BLOCK_ID } from '../../lib/rotatingBlock.js';
-import { SUBJECT_LABELS } from '../../academies/lamar/subjects.js';
-import { dayPattern } from '../../academies/lamar/data/schedule/weekPattern.js';
 import {
   toDateStr,
   todayDateStr,
@@ -11,6 +9,10 @@ import {
   parseDateStr
 } from '../../lib/scheduler.js';
 import { buildPlannerItemsByDate, splitPlannerItems } from '../../lib/plannerCalendar.js';
+import { academyContent } from '../../content/academyContent.js';
+
+const { SUBJECT_LABELS } = academyContent().subjects;
+const { dayPattern } = academyContent().timetable;
 
 const COLOR_STYLES = {
   neutral: 'border-space-600 bg-space-800',

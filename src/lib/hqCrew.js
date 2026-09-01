@@ -22,8 +22,10 @@
  * =============================================================================
  */
 
-import { HQ_CREW } from '../academies/lamar/data/hqCrew.js';
 import { projectFloor, depth, BACK, VB } from './hqGeometry.js';
+import { academyContent } from '../content/academyContent.js';
+
+const { HQ_CREW } = academyContent().rewards;
 
 /**
  * HAS THIS CREW MEMBER ARRIVED?

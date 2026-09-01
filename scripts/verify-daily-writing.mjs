@@ -30,6 +30,7 @@
 //      project had already found and fixed for self-explanations in August,
 //      sitting one table away.
 // ---------------------------------------------------------------------------
+import './lib/academy-under-test.mjs';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';

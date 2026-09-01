@@ -19,6 +19,7 @@
 // the same calculation the store does and asserts against it, plus the source
 // checks that keep the wiring honest.
 // ---------------------------------------------------------------------------
+import './lib/academy-under-test.mjs';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';

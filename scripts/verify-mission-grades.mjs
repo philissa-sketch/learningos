@@ -24,6 +24,7 @@
 // testing this family deliberately does not do." The app's own primary
 // assessment counted for nothing on the transcript, while a book report counted.
 // ---------------------------------------------------------------------------
+import './lib/academy-under-test.mjs';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';

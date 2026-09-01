@@ -2,8 +2,6 @@ import { useEffect, useRef } from 'react';
 import { useAppStore } from '../../store/useAppStore.js';
 import { matchReadingLogToBooks } from '../../lib/academicPortfolio.js';
 import { BlackExcellenceShelf } from './BlackExcellenceShelf.jsx';
-import { nextRecommendationForBook } from '../../academies/lamar/data/academicSuccessCenter/bookRecommendations.js';
-import { rationaleFor, BOOK_RANGE_LABELS } from '../../academies/lamar/data/academicSuccessCenter/bookRationale.js';
 import { getCurrentQuarter } from '../../lib/schoolQuarter.js';
 import { buildReadingPlan, currentReadingWeek, readingStatus } from '../../lib/readingPlan.js';
 import { formatDueDate } from './academicUi.js';
@@ -14,6 +12,9 @@ import {
   subjectHeading,
   orderedSubjects
 } from './academicUi.js';
+import { academyContent } from '../../content/academyContent.js';
+
+const { BOOK_RANGE_LABELS, nextRecommendationForBook, rationaleFor } = academyContent().academicCenter;
 
 /**
  * Book Library — student-facing view of the Family/Subject Library

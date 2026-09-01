@@ -1,11 +1,13 @@
 import { useMemo } from 'react';
 import { useAppStore } from '../../store/useAppStore.js';
-import { MISSION_EQUIPMENT, AVATAR_GEAR, HQ_ITEMS } from '../../academies/lamar/data/rewardCatalog.js';
 import { AVATARS, ROCKETS, avatarIconFor, DEFAULT_AVATAR_ID, DEFAULT_ROCKET_ID } from '../../lib/rewards.js';
 import { playPurchase, unlockAudio } from '../../lib/sfx.js';
 import { HQRoom } from './HQRoom.jsx';
 import { CadetAvatar } from './CadetAvatar.jsx';
 import { RocketSwatch } from './RocketSwatch.jsx';
+import { academyContent } from '../../content/academyContent.js';
+
+const { AVATAR_GEAR, HQ_ITEMS, MISSION_EQUIPMENT } = academyContent().rewards;
 
 // ---------------------------------------------------------------------------
 // INVENTORY — where the things he bought actually live.

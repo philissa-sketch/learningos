@@ -24,6 +24,7 @@
 // has zones, and this suite asserts the two that carry meaning — the desk
 // cluster stays together, and the rug stays under the furniture standing on it.
 // ---------------------------------------------------------------------------
+import './lib/academy-under-test.mjs';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';

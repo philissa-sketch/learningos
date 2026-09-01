@@ -1,15 +1,16 @@
 import { useMemo, useState } from 'react';
 import { useAppStore } from '../../store/useAppStore.js';
-import { allLessons } from '../../academies/lamar/data/lessons/index.js';
 import { scheduledMinutesByDate } from '../../lib/scheduledMinutes.js';
-import { GEORGIA_MINUTES_PER_DAY } from '../../academies/lamar/data/admin/georgiaCompliance.js';
 import { PercentGradeInput, LetterGradePicker } from './GradeControls.jsx';
-import { writingPrompts } from '../../academies/lamar/data/writing/writingPrompts.js';
-import { SUBJECT_LABELS } from '../../academies/lamar/subjects.js';
 import { getCurrentQuarter } from '../../lib/schoolQuarter.js';
 import { todayDateStr, toDateStr, parseDateStr, addDays, formatShortDate } from '../../lib/scheduler.js';
 import { buildPlannerItems, splitPlannerItems } from '../../lib/plannerCalendar.js';
-import { nextDeclarationDeadline, daysUntil, declarationCoversToday } from '../../academies/lamar/data/admin/georgiaCompliance.js';
+import { academyContent } from '../../content/academyContent.js';
+
+const { GEORGIA_MINUTES_PER_DAY, daysUntil, declarationCoversToday, nextDeclarationDeadline } = academyContent().compliance;
+const { allLessons } = academyContent().lessons;
+const { SUBJECT_LABELS } = academyContent().subjects;
+const { writingPrompts } = academyContent().writing;
 
 /**
  * THE MISSION CONTROL BOARD — the Parent Dashboard's front page.

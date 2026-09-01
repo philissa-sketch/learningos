@@ -1,5 +1,4 @@
 import { create } from 'zustand';
-import { scienceRowsFor, scienceCourseChallengeRows, scienceCanonicalRow, SCIENCE_CANONICAL_KEYS, SCIENCE_CANONICAL_TITLES } from '../academies/lamar/data/khan/scienceSequence.js';
 import {
   db,
   META_ID,
@@ -154,33 +153,16 @@ import { todayDateStr, toDateStr } from '../lib/scheduler.js';
 import { scheduledMinutesByDate } from '../lib/scheduledMinutes.js';
 import { DEFAULT_REWARDS } from '../lib/rewards.js';
 import { applyTheme } from '../lib/themes.js';
-import { SEEDED_REWARD_LADDER_MAP, catalogRewardRows } from '../academies/lamar/data/rewardCatalog.js';
 import { generateLearningPack, DEFAULT_FIELD_TRIPS, LIBRARY_TRIP_RENAMES, fieldTripSyncId, planFieldTripDedupe } from '../lib/fieldTrips.js';
 import { planBookSwap } from '../lib/bookSwap.js';
 import { READINESS_SKILLS } from '../lib/readiness.js';
 import { getCurrentQuarter, isQuarterlyBatchLabel, isSummerBatchLabel, groupByQuarter, isQuarterAvailable, getQuarterDateRange, quarterRank, SCHOOL_YEAR_START_DATE } from '../lib/schoolQuarter.js';
-import { KHAN_GRAMMAR_UNITS, khanGrammarUnitByUrl, generalGrammarUnitByUrl, LEGACY_GRAMMAR_TITLES, GRAMMAR_COURSES, grammarRowTitle, grammarUnitUrl } from '../academies/lamar/data/khan/grammarCourseOrder.js';
-import { allLessons } from '../academies/lamar/data/lessons/index.js';
-import { QUIZ_PLATFORM_IDS } from '../academies/lamar/data/games/quizPlatforms.js';
 import { BUILD_STAMP } from '../lib/buildStamp.js';
-import { ACTIVE_SUBJECTS, KHAN_TAUGHT_SUBJECTS, LESSON_TRACK_SUBJECTS, PARTICIPATION_SUBJECTS, canonicalSubject } from '../academies/lamar/subjects.js';
-import { writingPrompts } from '../academies/lamar/data/writing/writingPrompts.js';
-import { aerospaceProjects } from '../academies/lamar/data/aerospace/aerospaceProjects.js';
-import { scienceExperiments } from '../academies/lamar/data/science/scienceExperiments.js';
-import { technologyProjects } from '../academies/lamar/data/technology/technologyProjects.js';
-import { roboticsProjects } from '../academies/lamar/data/robotics/roboticsProjects.js';
 // CONSUMER 7 OF 7 for hands-on project arrays. See
 // scripts/verify-gardening.mjs — a project array wired into fewer than all
 // seven files fails SILENTLY: the project exists and can even be done, but
 // nothing points at it and finishing it leaves no record. This codebase has
 // shipped that bug twice (Science experiments, then Tinkercad).
-import { gardenProjects } from '../academies/lamar/data/gardening/gardenProjects.js';
-import {
-  subjectBookPlaceholders,
-  quarterlyAcademicPlaceholders
-} from '../academies/lamar/data/academicSuccessCenter/placeholders.js';
-import { milestonesFor, hasMilestones } from '../academies/lamar/data/academicSuccessCenter/assignmentMilestones.js';
-import { availableDueDates } from '../academies/lamar/data/academicSuccessCenter/assignmentRecommendations.js';
 import {
   computeWeeklyWordState,
   appendQuizResult,
@@ -196,15 +178,9 @@ import {
   MASTERY_ACTIVITIES,
   MASTERY_STREAK
 } from '../lib/weeklyWords.js';
-import { spellingWordPool } from '../academies/lamar/data/writing/spellingWordPool.js';
-import { vocabularyWordPool } from '../academies/lamar/data/writing/vocabularyWordPool.js';
-import { defaultSchedule } from '../academies/lamar/data/schedule/defaultSchedule.js';
-import { bookRationale } from '../academies/lamar/data/academicSuccessCenter/bookRationale.js';
 import { nextReviewScheduleEntry } from '../engine/dailyPractice.js';
 import { studyCycleKey, nextTermBlitzSlot } from '../lib/studyCycle.js';
 import { EVIDENCE_FOLDER_KEYS, SEEDED_FOLDER_URLS, normalizeEvidenceUrl, REFERENCE_LINK_TYPES } from '../lib/driveLinks.js';
-import { strandsForSubject } from '../academies/lamar/subjects.js';
-import { findProposal, missionScoreTotals } from '../academies/lamar/data/admin/missionEvaluations.js';
 import { missionScoresForSubject, missionEvidencePhrase } from '../lib/missionGrades.js';
 import {
   buildPasscodeRecord,
@@ -214,6 +190,19 @@ import {
   generateRecoveryCode,
   cryptoAvailable
 } from '../lib/parentAuth.js';
+import { academyContent } from '../content/academyContent.js';
+
+const { availableDueDates, bookRationale, hasMilestones, milestonesFor, quarterlyAcademicPlaceholders, subjectBookPlaceholders } = academyContent().academicCenter;
+const { findProposal, missionScoreTotals } = academyContent().compliance;
+const { gardenProjects } = academyContent().electives;
+const { QUIZ_PLATFORM_IDS } = academyContent().games;
+const { GRAMMAR_COURSES, KHAN_GRAMMAR_UNITS, LEGACY_GRAMMAR_TITLES, SCIENCE_CANONICAL_KEYS, SCIENCE_CANONICAL_TITLES, generalGrammarUnitByUrl, grammarRowTitle, grammarUnitUrl, khanGrammarUnitByUrl, scienceCanonicalRow, scienceCourseChallengeRows, scienceRowsFor } = academyContent().khanSequences;
+const { allLessons } = academyContent().lessons;
+const { aerospaceProjects, roboticsProjects, scienceExperiments, technologyProjects } = academyContent().projects;
+const { SEEDED_REWARD_LADDER_MAP, catalogRewardRows } = academyContent().rewards;
+const { ACTIVE_SUBJECTS, KHAN_TAUGHT_SUBJECTS, LESSON_TRACK_SUBJECTS, PARTICIPATION_SUBJECTS, canonicalSubject, strandsForSubject } = academyContent().subjects;
+const { defaultSchedule } = academyContent().timetable;
+const { spellingWordPool, vocabularyWordPool, writingPrompts } = academyContent().writing;
 
 const WRITING_ENTRY_XP = 15;
 // Academic Success Center. A book report, research paper, or

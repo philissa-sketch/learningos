@@ -1,6 +1,8 @@
 import { useAppStore } from '../../store/useAppStore.js';
-import { SUBJECT_LABELS } from '../../academies/lamar/subjects.js';
 import { yearPacing, pacingNote, quarterPacingNote, loadBreakdown } from '../../lib/pacing.js';
+import { academyContent } from '../../content/academyContent.js';
+
+const { SUBJECT_LABELS } = academyContent().subjects;
 
 /**
  * =============================================================================

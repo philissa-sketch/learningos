@@ -38,8 +38,10 @@
  * =============================================================================
  */
 
-import { HQ_ITEMS } from '../academies/lamar/data/rewardCatalog.js';
 import { BACK } from './hqGeometry.js';
+import { academyContent } from '../content/academyContent.js';
+
+const { HQ_ITEMS } = academyContent().rewards;
 
 /**
  * THE HUB.

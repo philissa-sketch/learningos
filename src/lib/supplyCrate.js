@@ -32,7 +32,9 @@
 // The seed also includes what he already owns, so the offer moves as his
 // collection grows rather than pointing at something he cannot receive.
 // ---------------------------------------------------------------------------
-import { COIN_CATALOG } from '../academies/lamar/data/rewardCatalog.js';
+import { academyContent } from '../content/academyContent.js';
+
+const { COIN_CATALOG } = academyContent().rewards;
 
 /** What a crate costs. Deliberately below the cheapest guaranteed contents. */
 export const CRATE_COST = 250;

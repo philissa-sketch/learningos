@@ -3,11 +3,13 @@ import { useAppStore } from '../../store/useAppStore.js';
 import { todayDateStr, formatShortDate, parseDateStr, addDays, toDateStr } from '../../lib/scheduler.js';
 import { buildPlannerItems, splitPlannerItems } from '../../lib/plannerCalendar.js';
 import { localDayOf } from '../../lib/academicOrder.js';
-import { writingPrompts } from '../../academies/lamar/data/writing/writingPrompts.js';
 import { drillById } from '../../lib/dailyWriting.js';
-import { allLessons } from '../../academies/lamar/data/lessons/index.js';
 import { resolveBlockLabel } from '../../lib/rotatingBlock.js';
 import { NON_INSTRUCTIONAL_BLOCKS, blockMinutes } from '../../lib/scheduledMinutes.js';
+import { academyContent } from '../../content/academyContent.js';
+
+const { allLessons } = academyContent().lessons;
+const { writingPrompts } = academyContent().writing;
 
 /**
  * ============================================================================

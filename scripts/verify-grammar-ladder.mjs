@@ -31,6 +31,7 @@
  * from the shipped store, runs it through the shipped title/URL builders, and
  * asserts properties of the ROWS THAT RESULT.
  */
+import './lib/academy-under-test.mjs';
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';

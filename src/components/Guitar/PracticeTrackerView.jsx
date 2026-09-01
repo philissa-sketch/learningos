@@ -1,14 +1,10 @@
 import { useState } from 'react';
 import { useAppStore } from '../../store/useAppStore.js';
-import {
-  GUITAR_DAILY_MINUTES,
-  GUITAR_SESSION_SHAPE,
-  guitarSkillLadder,
-  getCurrentGuitarSkill
-} from '../../academies/lamar/data/guitar/guitarSkillLadder.js';
-import { getGuitarTool } from '../../academies/lamar/data/guitar/guitarTools.js';
 import { todayDateStr } from '../../lib/scheduler.js';
 import { toDateStr } from '../../lib/scheduler.js';
+import { academyContent } from '../../content/academyContent.js';
+
+const { GUITAR_DAILY_MINUTES, GUITAR_SESSION_SHAPE, getCurrentGuitarSkill, getGuitarTool, guitarSkillLadder } = academyContent().electives;
 
 /**
  * THE PRACTICE TRACKER — the Habit Tracker widget from PROJECT_PLAN.md Part 5,

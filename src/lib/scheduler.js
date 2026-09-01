@@ -1,6 +1,29 @@
-import { startByFor, leadStatus } from '../academies/lamar/data/academicSuccessCenter/assignmentMilestones.js';
 import { missionCalendarItems } from './missionSchedule.js';
-import { MISSION_QUARTERS, findProposal } from '../academies/lamar/data/admin/missionEvaluations.js';
+import { academyContent } from '../content/academyContent.js';
+
+/**
+ * ---- THIS FILE READS CONTENT INSIDE ITS FUNCTIONS, NOT AT THE TOP ----
+ *
+ * Every other school file destructures its slot at module scope, which is safe
+ * because the platform only reaches the school after an Academy's content has
+ * loaded. This file is one of two exceptions, and the reason is a genuine
+ * circular dependency rather than a style preference.
+ *
+ * Three of the Academy's own content files import the date helpers below
+ * (`toDateStr`, `parseDateStr`, `addDays`). So loading a manifest evaluates
+ * this module — while that manifest is still being loaded. A read at the top of
+ * this file therefore asks for content that is, at that exact moment, halfway
+ * through arriving, and throws.
+ *
+ * The rule it produces, worth keeping: A MODULE THAT ACADEMY CONTENT IMPORTS
+ * MUST NOT READ ACADEMY CONTENT AT MODULE SCOPE. Only two files are in that
+ * position today — this one and missionSchedule.js — and both read inside the
+ * one function that needs the values, by which time loading has finished.
+ *
+ * The longer-term fix is to move these date helpers somewhere content can
+ * import without reaching into the school at all. That is a Tier 2 item, and
+ * this comment is what should send someone looking for it.
+ */
 /**
  * Pure date/calendar helpers for the Daily/Weekly/Monthly Scheduler
  * (PROJECT_PLAN.md Part 5 — parent asked directly for "a clear view of
@@ -140,6 +163,10 @@ export function getAssignmentsForDate(assignments, dateStr) {
  * passed is not done, and should keep showing as missed rather than vanish.
  */
 export function buildCalendarItems({ assignments = [], academicAssignments = [], fieldTrips = [], missionEvaluations = [] }) {
+  // Read here rather than at module scope — see the note at the top of the file.
+  const { leadStatus, startByFor } = academyContent().academicCenter;
+  const { MISSION_QUARTERS, findProposal } = academyContent().compliance;
+
   const items = assignments
     .filter((a) => a.dueDate)
     .map((a) => ({

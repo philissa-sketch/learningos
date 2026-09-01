@@ -5,6 +5,8 @@
  * off for rest but not the weeks" and, confirming the list, "those single days
  * are all off for rest."
  */
+import './lib/academy-under-test.mjs';
+import { readsFromAcademy } from './lib/reads-content.mjs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -206,7 +208,7 @@ console.log('\n--- ONE CALENDAR (audit item O-4) ---');
       && /QUARTER_SPANS\.find\(\(q\) => q\.batchLabel === quarterLabel\)/.test(code),
     'matched on the same label the Academic Center stores on every assignment');
   ok('...and still takes the breaks from the assignment scheduler',
-    /import \{ EXCLUDED_RANGES \}/.test(code),
+    readsFromAcademy(code, 'EXCLUDED_RANGES'),
     'holidays come from one place — that half was always right');
 
   /** The behaviour: every reading week must fall inside its own quarter. */

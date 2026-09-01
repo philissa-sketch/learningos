@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { useAppStore } from '../../store/useAppStore.js';
-import { getWeekNumber } from '../../academies/lamar/data/pe/weeklyWorkoutPlan.js';
+import { academyContent } from '../../content/academyContent.js';
+
+const { getWeekNumber } = academyContent().pe;
 
 function currentWeekKey() {
   const now = new Date();

@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import { useAppStore } from '../../store/useAppStore.js';
-import { getGardenBriefById } from '../../academies/lamar/data/gardening/gardenBriefs.js';
-import { gardenProjects } from '../../academies/lamar/data/gardening/gardenProjects.js';
-import { SUBJECT_LABELS } from '../../academies/lamar/subjects.js';
+import { academyContent } from '../../content/academyContent.js';
+
+const { gardenProjects, getGardenBriefById } = academyContent().electives;
+const { SUBJECT_LABELS } = academyContent().subjects;
 
 /**
  * One Friday in the garden.

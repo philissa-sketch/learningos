@@ -1,7 +1,9 @@
 import { QUARTER_SPANS } from './yearPlan.js';
 import { liveRotatingSubjects, liveMorningSubject, ROTATING_BLOCK_ID } from './rotatingBlock.js';
-import { isSchoolDay } from '../academies/lamar/data/schedule/schoolHolidays.js';
-import { allLessons } from '../academies/lamar/data/lessons/index.js';
+import { academyContent } from '../content/academyContent.js';
+
+const { allLessons } = academyContent().lessons;
+const { isSchoolDay } = academyContent().timetable;
 
 /**
  * =============================================================================

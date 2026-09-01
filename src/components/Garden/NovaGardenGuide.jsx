@@ -1,5 +1,7 @@
 import { NovaMessage } from '../Mentor/NovaMessage.jsx';
-import { getGardenBriefById } from '../../academies/lamar/data/gardening/gardenBriefs.js';
+import { academyContent } from '../../content/academyContent.js';
+
+const { getGardenBriefById } = academyContent().electives;
 
 // ---------------------------------------------------------------------------
 // NOVA IN THE GARDEN.

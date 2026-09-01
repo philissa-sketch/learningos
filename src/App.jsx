@@ -13,7 +13,7 @@ import { ParentGate } from './components/Dashboard/ParentGate.jsx';
 // app (Batch A, Aug 2026). Deliberately NOT lazy — it must exist before
 // any screen that could throw.
 import { ErrorBoundary } from './components/ErrorBoundary.jsx';
-import './academies/lamar/academy.css'; // this Academy's theme and print rules — see the file header
+ // this Academy's theme and print rules — see the file header
 
 // Performance pass (Aug 2026): everything below is reachable only after
 // the Dashboard's first paint (a nav tab, or an action taken from the

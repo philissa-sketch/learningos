@@ -32,6 +32,7 @@
 // Six guards in this repo have passed against their own explanatory comment.
 // `codeOnly()` below strips comments; every negative assertion uses it.
 // ---------------------------------------------------------------------------
+import './lib/academy-under-test.mjs';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';

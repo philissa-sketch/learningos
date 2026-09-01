@@ -1,10 +1,12 @@
 import { useState } from 'react';
 import { useAppStore } from '../../store/useAppStore.js';
-import { SUBJECT_LABELS } from '../../academies/lamar/subjects.js';
-import { allLessons } from '../../academies/lamar/data/lessons/index.js';
 import { todayDateStr, parseDateStr } from '../../lib/scheduler.js';
 import { buildYearPlan, buildSemesterPlan, yearProgress, benchmarkGrowth } from '../../lib/yearPlan.js';
 import { PacingSection } from './PacingSection.jsx';
+import { academyContent } from '../../content/academyContent.js';
+
+const { allLessons } = academyContent().lessons;
+const { SUBJECT_LABELS } = academyContent().subjects;
 
 /**
  * Annual and semester planner — PROJECT_PLAN.md Part 8.

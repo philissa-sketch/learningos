@@ -1,13 +1,11 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useAppStore } from '../../store/useAppStore.js';
-import { HQ_ITEMS, MISSION_EQUIPMENT } from '../../academies/lamar/data/rewardCatalog.js';
 import { DEFAULT_AVATAR_ID } from '../../lib/rewards.js';
 import { CadetAvatar } from './CadetAvatar.jsx';
 import {
   VB, BACK, depth, projectFloor, FIGURE_SCALE, reachYFor,
   LIGHT, CONTACT_RX, CONTACT_RATIO, lampLightAt
 } from '../../lib/hqGeometry.js';
-import { allLessons } from '../../academies/lamar/data/lessons/index.js';
 import { READINESS_SKILLS } from '../../lib/readiness.js';
 import { buildYearPlan } from '../../lib/yearPlan.js';
 import { todayDateStr } from '../../lib/scheduler.js';
@@ -17,6 +15,10 @@ import {
 } from '../../lib/hqTruth.js';
 import { crewRoster, crewSpotFor, standingSpotFor } from '../../lib/hqCrew.js';
 import { wanderTick, rollFor, WANDER_TICK_MS } from '../../lib/hqWander.js';
+import { academyContent } from '../../content/academyContent.js';
+
+const { allLessons } = academyContent().lessons;
+const { HQ_ITEMS, MISSION_EQUIPMENT } = academyContent().rewards;
 
 // ---------------------------------------------------------------------------
 // MISSION CONTROL HQ — drawn, not arranged.

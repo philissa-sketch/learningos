@@ -1,12 +1,14 @@
 import { useState } from 'react';
 import { useAppStore } from '../../store/useAppStore.js';
-import { getTodaysWorkout } from '../../academies/lamar/data/pe/weeklyWorkoutPlan.js';
 import { WorkoutView } from './WorkoutView.jsx';
 import { NutritionView } from './NutritionView.jsx';
 import { TrackersView } from './TrackersView.jsx';
 import { MealsView } from './MealsView.jsx';
 import { WeeklyGoalCard } from './WeeklyGoalCard.jsx';
 import { NovaPEGuide } from './NovaPEGuide.jsx';
+import { academyContent } from '../../content/academyContent.js';
+
+const { getTodaysWorkout } = academyContent().pe;
 
 const TABS = [
   { id: 'workout', label: "Today's Workout" },

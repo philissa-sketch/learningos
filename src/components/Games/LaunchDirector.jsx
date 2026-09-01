@@ -1,13 +1,8 @@
 import { useMemo, useState } from 'react';
 import { useAppStore } from '../../store/useAppStore.js';
-import {
-  STAGING_OPTIONS,
-  PROPELLANT_OPTIONS,
-  TRAJECTORY_EVENT,
-  WEIGHT_BUDGET_CATEGORIES,
-  WEIGHT_BUDGET_TOTAL_POINTS,
-  LAUNCH_SCORE_LABELS as SCORE_LABELS
-} from '../../academies/lamar/data/games/launchDirectorContent.js';
+import { academyContent } from '../../content/academyContent.js';
+
+const { LAUNCH_SCORE_LABELS: SCORE_LABELS, PROPELLANT_OPTIONS, STAGING_OPTIONS, TRAJECTORY_EVENT, WEIGHT_BUDGET_CATEGORIES, WEIGHT_BUDGET_TOTAL_POINTS } = academyContent().games;
 
 const SCORE_KEYS = Object.keys(SCORE_LABELS);
 

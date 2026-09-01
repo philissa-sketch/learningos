@@ -1,9 +1,11 @@
 import { useMemo } from 'react';
 import { NovaMessage } from '../Mentor/NovaMessage.jsx';
-import { getDailyLine } from '../../academies/lamar/data/mentor/dailyLines.js';
 import { evaluateBadges } from '../../lib/badges.js';
 import { getShipStatus } from '../../lib/shipSystems.js';
 import { todayDateStr } from '../../lib/scheduler.js';
+import { academyContent } from '../../content/academyContent.js';
+
+const { getDailyLine } = academyContent().guide;
 
 // ---------------------------------------------------------------------------
 // NOVA ON THE PROGRESS SCREEN.

@@ -1,10 +1,7 @@
 import { useState } from 'react';
-import {
-  nutritionTopics,
-  recipeLibrary,
-  shoppingListCategories,
-  nutritionChallenges
-} from '../../academies/lamar/data/pe/nutritionContent.js';
+import { academyContent } from '../../content/academyContent.js';
+
+const { nutritionChallenges, nutritionTopics, recipeLibrary, shoppingListCategories } = academyContent().pe;
 
 const SUBTABS = [
   { id: 'topics', label: 'Learn' },

@@ -33,7 +33,8 @@
  * three-Friday mission starts three weeks earlier than a two-Friday one.
  */
 
-import { isSchoolDay } from '../academies/lamar/data/schedule/schoolHolidays.js';
+import { academyContent } from '../content/academyContent.js';
+
 
 const PERIOD_MONTHS = {
   Q1: [8, 9, 10],
@@ -115,6 +116,12 @@ function shiftDays(dateStr, delta) {
  * and gives up after eight weeks rather than looping forever on a bad range.
  */
 export function fridayOnOrBefore(dateStr) {
+  // Read here rather than at module scope: this file is reachable from an
+  // Academy's own content through scheduler.js, so at module-evaluation time
+  // the content it would ask for is still being loaded. See the note at the
+  // top of lib/scheduler.js for the rule and the longer-term fix.
+  const { isSchoolDay } = academyContent().timetable;
+
   if (!dateStr) return null;
   const [y, m, d] = String(dateStr).split('-').map(Number);
   const dt = new Date(y, m - 1, d);

@@ -23,6 +23,7 @@
  *
  * That case is check #1 below and it is the reason this file exists.
  */
+import './lib/academy-under-test.mjs';
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
