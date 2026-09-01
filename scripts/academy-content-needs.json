@@ -1,6 +1,6 @@
 {
  "_generated": "scripts/scan-content-needs.mjs — do not edit by hand",
- "_why": "The names the school reaches into an Academy folder for. Every one must appear in every Academy manifest that fills that slot.",
+ "_why": "Every name the school reads out of an Academy, and the slot it reads it from. Each Academy manifest must supply these.",
  "slots": [
   "subjects",
   "lessons",
@@ -20,8 +20,8 @@
   "compliance"
  ],
  "files": 86,
- "statements": 205,
- "cssImports": 1,
+ "reads": 147,
+ "legacyImports": [],
  "names": [
   "ACADEMIC_ASSIGNMENT_TYPES",
   "ACADEMIC_BOOK_TYPES",
@@ -187,60 +187,43 @@
   "writingPrompts"
  ],
  "nameToSlot": {
-  "activeMilestone": "academicCenter",
+  "findFormat": "academicCenter",
+  "formatsForType": "academicCenter",
   "hasMilestones": "academicCenter",
   "leadStatus": "academicCenter",
   "milestoneProgress": "academicCenter",
   "milestonesFor": "academicCenter",
-  "startByFor": "academicCenter",
-  "RUBRIC_LEVELS": "academicCenter",
-  "criteriaForFormat": "academicCenter",
-  "findFormat": "academicCenter",
-  "formatsForType": "academicCenter",
   "reflectionPromptFor": "academicCenter",
   "sizeFor": "academicCenter",
-  "suggestedGradeFromRubric": "academicCenter",
-  "wordProgress": "academicCenter",
+  "startByFor": "academicCenter",
   "ACADEMIC_ASSIGNMENT_TYPES": "academicCenter",
   "ACADEMIC_BOOK_TYPES": "academicCenter",
-  "ACADEMIC_SUBJECT_ORDER": "academicCenter",
   "ACADEMIC_SUCCESS_CENTER_QUARTER_ORDER": "academicCenter",
-  "quarterlyAcademicPlaceholders": "academicCenter",
-  "subjectBookPlaceholders": "academicCenter",
-  "writingPrompts": "writing",
+  "gardenProjects": "electives",
   "aerospaceProjects": "projects",
+  "roboticsProjects": "projects",
   "scienceExperiments": "projects",
   "technologyProjects": "projects",
-  "roboticsProjects": "projects",
-  "gardenProjects": "electives",
-  "ACTIVE_SUBJECTS": "subjects",
-  "KHAN_TAUGHT_SUBJECTS": "subjects",
-  "LESSON_TRACK_SUBJECTS": "subjects",
-  "PARTICIPATION_SUBJECTS": "subjects",
   "SUBJECT_LABELS": "subjects",
-  "canonicalSubject": "subjects",
-  "isKhanTaughtSubject": "subjects",
-  "strandsForSubject": "subjects",
-  "subjectCardLabel": "subjects",
+  "writingPrompts": "writing",
+  "RUBRIC_LEVELS": "academicCenter",
+  "criteriaForFormat": "academicCenter",
+  "suggestedGradeFromRubric": "academicCenter",
+  "wordProgress": "academicCenter",
   "BLACK_EXCELLENCE_KNOWN_GAPS": "academicCenter",
   "blackAmericanAuthorsForSubject": "academicCenter",
   "blackExcellenceBooksForSubject": "academicCenter",
-  "bookRecommendations": "academicCenter",
-  "candidatesForBook": "academicCenter",
-  "nextRecommendationForBook": "academicCenter",
   "BOOK_RANGE_LABELS": "academicCenter",
-  "bookRationale": "academicCenter",
+  "nextRecommendationForBook": "academicCenter",
   "rationaleFor": "academicCenter",
-  "EXCLUDED_RANGES": "academicCenter",
   "assignmentCandidatesForSlot": "academicCenter",
-  "availableDueDates": "academicCenter",
   "nextAssignmentRecommendation": "academicCenter",
   "resolveSuggestedDueDate": "academicCenter",
-  "WEEK_PATTERN": "timetable",
+  "candidatesForBook": "academicCenter",
+  "ACADEMIC_SUBJECT_ORDER": "academicCenter",
+  "isKhanTaughtSubject": "subjects",
+  "activeMilestone": "academicCenter",
   "dayPattern": "timetable",
-  "patternSubjects": "timetable",
-  "subjectsForDay": "timetable",
-  "GEORGIA_DAYS_REQUIRED": "compliance",
   "GEORGIA_LAW_CITATION": "compliance",
   "GEORGIA_MINUTES_PER_DAY": "compliance",
   "GEORGIA_REQUIRED_SUBJECTS": "compliance",
@@ -250,37 +233,16 @@
   "instructionMinutes": "compliance",
   "instructionProgress": "compliance",
   "nextDeclarationDeadline": "compliance",
-  "holidaysInSpan": "timetable",
-  "isHoliday": "timetable",
   "isSchoolDay": "timetable",
-  "GRAMMAR_COURSES": "khanSequences",
-  "KHAN_GRAMMAR_UNITS": "khanSequences",
-  "LEGACY_GRAMMAR_TITLES": "khanSequences",
-  "generalGrammarUnitByUrl": "khanSequences",
-  "grammarRowTitle": "khanSequences",
-  "grammarUnitUrl": "khanSequences",
-  "khanGrammarUnitByUrl": "khanSequences",
   "khanGrammarUnitForUrl": "khanSequences",
-  "SCIENCE_CANONICAL_KEYS": "khanSequences",
-  "SCIENCE_CANONICAL_TITLES": "khanSequences",
-  "SCIENCE_COURSES": "khanSequences",
-  "SCIENCE_COURSE_CHALLENGES": "khanSequences",
-  "scienceCanonicalRow": "khanSequences",
-  "scienceCourseChallengeRows": "khanSequences",
   "scienceCourseForUrl": "khanSequences",
-  "scienceCoverageByCourse": "khanSequences",
-  "scienceRowsFor": "khanSequences",
+  "subjectCardLabel": "subjects",
   "allLessons": "lessons",
   "GUITAR_DAILY_MINUTES": "electives",
-  "GUITAR_SESSION_SHAPE": "electives",
   "getCurrentGuitarSkill": "electives",
-  "guitarSkillLadder": "electives",
-  "SCHOOL_YEAR_START": "writing",
-  "getSchoolWeekNumber": "writing",
-  "getThisWeeksScheduledIds": "writing",
-  "weeklyWritingSchedule": "writing",
   "getTodaysWorkout": "pe",
-  "getWeekNumber": "pe",
+  "subjectsForDay": "timetable",
+  "getThisWeeksScheduledIds": "writing",
   "MISSION_QUARTERS": "compliance",
   "MISSION_RUBRIC_CRITERIA": "compliance",
   "MISSION_STATUS_LABELS": "compliance",
@@ -289,9 +251,14 @@
   "missionGrowth": "compliance",
   "missionScoreTotals": "compliance",
   "proposalsForQuarter": "compliance",
+  "ACTIVE_SUBJECTS": "subjects",
+  "KHAN_TAUGHT_SUBJECTS": "subjects",
+  "PARTICIPATION_SUBJECTS": "subjects",
   "getDailyLine": "guide",
   "QUIZ_PLATFORMS": "games",
-  "QUIZ_PLATFORM_IDS": "games",
+  "SCIENCE_COURSES": "khanSequences",
+  "SCIENCE_COURSE_CHALLENGES": "khanSequences",
+  "scienceCoverageByCourse": "khanSequences",
   "defaultSchedule": "timetable",
   "EXTERNAL_GAMES_LIBRARY": "games",
   "LAUNCH_SCORE_LABELS": "games",
@@ -308,15 +275,16 @@
   "TRADE_EVENT": "games",
   "gardenBuildTrack": "electives",
   "gardenCapstone": "electives",
-  "gardenBriefs": "electives",
   "getGardenBriefById": "electives",
-  "gardenCalendar": "electives",
   "getGardenDayForWeekOf": "electives",
   "getNextGardenDay": "electives",
+  "gardenCalendar": "electives",
+  "guitarSkillLadder": "electives",
+  "GUITAR_SESSION_SHAPE": "electives",
   "getGuitarTool": "electives",
-  "guitarEducators": "electives",
   "guitarFeedbackPlaces": "electives",
   "GUITAR_OWN_SLOTS": "electives",
+  "guitarEducators": "electives",
   "guitarOwnSongGuidance": "electives",
   "guitarPerformanceMoment": "electives",
   "guitarStarterSongs": "electives",
@@ -324,338 +292,85 @@
   "journalFor": "rewards",
   "printoutFor": "rewards",
   "CATEGORY_LABELS": "pe",
-  "exerciseLibrary": "pe",
-  "curatedDemoFor": "pe",
   "HIDDEN_VIDEO": "pe",
-  "demoLinkFor": "pe",
+  "curatedDemoFor": "pe",
+  "exerciseLibrary": "pe",
   "nutritionChallenges": "pe",
   "nutritionTopics": "pe",
   "recipeLibrary": "pe",
   "shoppingListCategories": "pe",
-  "AVATAR_GEAR": "rewards",
-  "COIN_CATALOG": "rewards",
+  "getWeekNumber": "pe",
+  "demoLinkFor": "pe",
   "HQ_ITEMS": "rewards",
   "MISSION_EQUIPMENT": "rewards",
-  "SEEDED_REWARD_LADDER_MAP": "rewards",
-  "affordable": "rewards",
-  "catalogRewardRows": "rewards",
+  "AVATAR_GEAR": "rewards",
   "costForCosmetic": "rewards",
+  "affordable": "rewards",
   "EDCLUB_PORTAL_URL": "writing",
   "ERGONOMICS_CHECKLIST": "writing",
   "typingLessons": "writing",
   "lessonForPrompt": "writing",
   "requirementsFor": "writing",
+  "bookRecommendations": "academicCenter",
   "dailyDrills": "writing",
+  "getSchoolWeekNumber": "writing",
   "HQ_CREW": "rewards",
+  "gardenBriefs": "electives",
+  "isHoliday": "timetable",
+  "SCHOOL_YEAR_START": "writing",
+  "weeklyWritingSchedule": "writing",
+  "EXCLUDED_RANGES": "academicCenter",
+  "WEEK_PATTERN": "timetable",
+  "patternSubjects": "timetable",
+  "khanGrammarUnitByUrl": "khanSequences",
+  "COIN_CATALOG": "rewards",
+  "GEORGIA_DAYS_REQUIRED": "compliance",
+  "holidaysInSpan": "timetable",
+  "availableDueDates": "academicCenter",
+  "bookRationale": "academicCenter",
+  "quarterlyAcademicPlaceholders": "academicCenter",
+  "subjectBookPlaceholders": "academicCenter",
+  "QUIZ_PLATFORM_IDS": "games",
+  "GRAMMAR_COURSES": "khanSequences",
+  "KHAN_GRAMMAR_UNITS": "khanSequences",
+  "LEGACY_GRAMMAR_TITLES": "khanSequences",
+  "SCIENCE_CANONICAL_KEYS": "khanSequences",
+  "SCIENCE_CANONICAL_TITLES": "khanSequences",
+  "generalGrammarUnitByUrl": "khanSequences",
+  "grammarRowTitle": "khanSequences",
+  "grammarUnitUrl": "khanSequences",
+  "scienceCanonicalRow": "khanSequences",
+  "scienceCourseChallengeRows": "khanSequences",
+  "scienceRowsFor": "khanSequences",
+  "SEEDED_REWARD_LADDER_MAP": "rewards",
+  "catalogRewardRows": "rewards",
+  "LESSON_TRACK_SUBJECTS": "subjects",
+  "canonicalSubject": "subjects",
+  "strandsForSubject": "subjects",
   "spellingWordPool": "writing",
   "vocabularyWordPool": "writing"
- },
- "byModule": {
-  "data/academicSuccessCenter/assignmentMilestones.js": [
-   "activeMilestone",
-   "hasMilestones",
-   "leadStatus",
-   "milestoneProgress",
-   "milestonesFor",
-   "startByFor"
-  ],
-  "data/academicSuccessCenter/reportFormats.js": [
-   "RUBRIC_LEVELS",
-   "criteriaForFormat",
-   "findFormat",
-   "formatsForType",
-   "reflectionPromptFor",
-   "sizeFor",
-   "suggestedGradeFromRubric",
-   "wordProgress"
-  ],
-  "data/academicSuccessCenter/placeholders.js": [
-   "ACADEMIC_ASSIGNMENT_TYPES",
-   "ACADEMIC_BOOK_TYPES",
-   "ACADEMIC_SUBJECT_ORDER",
-   "ACADEMIC_SUCCESS_CENTER_QUARTER_ORDER",
-   "quarterlyAcademicPlaceholders",
-   "subjectBookPlaceholders"
-  ],
-  "data/writing/writingPrompts.js": [
-   "writingPrompts"
-  ],
-  "data/aerospace/aerospaceProjects.js": [
-   "aerospaceProjects"
-  ],
-  "data/science/scienceExperiments.js": [
-   "scienceExperiments"
-  ],
-  "data/technology/technologyProjects.js": [
-   "technologyProjects"
-  ],
-  "data/robotics/roboticsProjects.js": [
-   "roboticsProjects"
-  ],
-  "data/gardening/gardenProjects.js": [
-   "gardenProjects"
-  ],
-  "subjects.js": [
-   "ACTIVE_SUBJECTS",
-   "KHAN_TAUGHT_SUBJECTS",
-   "LESSON_TRACK_SUBJECTS",
-   "PARTICIPATION_SUBJECTS",
-   "SUBJECT_LABELS",
-   "canonicalSubject",
-   "isKhanTaughtSubject",
-   "strandsForSubject",
-   "subjectCardLabel"
-  ],
-  "data/academicSuccessCenter/blackExcellenceLibrary.js": [
-   "BLACK_EXCELLENCE_KNOWN_GAPS",
-   "blackAmericanAuthorsForSubject",
-   "blackExcellenceBooksForSubject"
-  ],
-  "data/academicSuccessCenter/bookRecommendations.js": [
-   "bookRecommendations",
-   "candidatesForBook",
-   "nextRecommendationForBook"
-  ],
-  "data/academicSuccessCenter/bookRationale.js": [
-   "BOOK_RANGE_LABELS",
-   "bookRationale",
-   "rationaleFor"
-  ],
-  "data/academicSuccessCenter/assignmentRecommendations.js": [
-   "EXCLUDED_RANGES",
-   "assignmentCandidatesForSlot",
-   "availableDueDates",
-   "nextAssignmentRecommendation",
-   "resolveSuggestedDueDate"
-  ],
-  "data/schedule/weekPattern.js": [
-   "WEEK_PATTERN",
-   "dayPattern",
-   "patternSubjects",
-   "subjectsForDay"
-  ],
-  "data/admin/georgiaCompliance.js": [
-   "GEORGIA_DAYS_REQUIRED",
-   "GEORGIA_LAW_CITATION",
-   "GEORGIA_MINUTES_PER_DAY",
-   "GEORGIA_REQUIRED_SUBJECTS",
-   "GEORGIA_REQUIREMENTS",
-   "daysUntil",
-   "declarationCoversToday",
-   "instructionMinutes",
-   "instructionProgress",
-   "nextDeclarationDeadline"
-  ],
-  "data/schedule/schoolHolidays.js": [
-   "holidaysInSpan",
-   "isHoliday",
-   "isSchoolDay"
-  ],
-  "data/khan/grammarCourseOrder.js": [
-   "GRAMMAR_COURSES",
-   "KHAN_GRAMMAR_UNITS",
-   "LEGACY_GRAMMAR_TITLES",
-   "generalGrammarUnitByUrl",
-   "grammarRowTitle",
-   "grammarUnitUrl",
-   "khanGrammarUnitByUrl",
-   "khanGrammarUnitForUrl"
-  ],
-  "data/khan/scienceSequence.js": [
-   "SCIENCE_CANONICAL_KEYS",
-   "SCIENCE_CANONICAL_TITLES",
-   "SCIENCE_COURSES",
-   "SCIENCE_COURSE_CHALLENGES",
-   "scienceCanonicalRow",
-   "scienceCourseChallengeRows",
-   "scienceCourseForUrl",
-   "scienceCoverageByCourse",
-   "scienceRowsFor"
-  ],
-  "data/lessons/index.js": [
-   "allLessons"
-  ],
-  "data/guitar/guitarSkillLadder.js": [
-   "GUITAR_DAILY_MINUTES",
-   "GUITAR_SESSION_SHAPE",
-   "getCurrentGuitarSkill",
-   "guitarSkillLadder"
-  ],
-  "data/writing/weeklySchedule.js": [
-   "SCHOOL_YEAR_START",
-   "getSchoolWeekNumber",
-   "getThisWeeksScheduledIds",
-   "weeklyWritingSchedule"
-  ],
-  "data/pe/weeklyWorkoutPlan.js": [
-   "getTodaysWorkout",
-   "getWeekNumber"
-  ],
-  "data/admin/missionEvaluations.js": [
-   "MISSION_QUARTERS",
-   "MISSION_RUBRIC_CRITERIA",
-   "MISSION_STATUS_LABELS",
-   "draftMissionFeedback",
-   "findProposal",
-   "missionGrowth",
-   "missionScoreTotals",
-   "proposalsForQuarter"
-  ],
-  "data/mentor/dailyLines.js": [
-   "getDailyLine"
-  ],
-  "data/games/quizPlatforms.js": [
-   "QUIZ_PLATFORMS",
-   "QUIZ_PLATFORM_IDS"
-  ],
-  "data/schedule/defaultSchedule.js": [
-   "defaultSchedule"
-  ],
-  "data/games/externalGamesLibrary.js": [
-   "EXTERNAL_GAMES_LIBRARY"
-  ],
-  "data/games/launchDirectorContent.js": [
-   "LAUNCH_SCORE_LABELS",
-   "PROPELLANT_OPTIONS",
-   "STAGING_OPTIONS",
-   "TRAJECTORY_EVENT",
-   "WEIGHT_BUDGET_CATEGORIES",
-   "WEIGHT_BUDGET_TOTAL_POINTS"
-  ],
-  "data/games/nationCommandContent.js": [
-   "BUDGET_CATEGORIES",
-   "BUDGET_TOTAL_POINTS",
-   "ECONOMIC_SYSTEMS",
-   "GOVERNMENT_TYPES",
-   "NATION_SCORE_LABELS",
-   "TRADE_EVENT"
-  ],
-  "data/gardening/gardenBuildTrack.js": [
-   "gardenBuildTrack",
-   "gardenCapstone"
-  ],
-  "data/gardening/gardenBriefs.js": [
-   "gardenBriefs",
-   "getGardenBriefById"
-  ],
-  "data/gardening/gardenCalendar.js": [
-   "gardenCalendar",
-   "getGardenDayForWeekOf",
-   "getNextGardenDay"
-  ],
-  "data/guitar/guitarTools.js": [
-   "getGuitarTool",
-   "guitarEducators",
-   "guitarFeedbackPlaces"
-  ],
-  "data/guitar/guitarSongs.js": [
-   "GUITAR_OWN_SLOTS",
-   "guitarOwnSongGuidance",
-   "guitarPerformanceMoment",
-   "guitarStarterSongs"
-  ],
-  "data/guitar/guitarTheory.js": [
-   "guitarTheory"
-  ],
-  "data/printouts.js": [
-   "journalFor",
-   "printoutFor"
-  ],
-  "data/pe/exerciseLibrary.js": [
-   "CATEGORY_LABELS",
-   "exerciseLibrary"
-  ],
-  "data/pe/exerciseDemoVideos.js": [
-   "curatedDemoFor"
-  ],
-  "data/pe/peVideoSource.js": [
-   "HIDDEN_VIDEO",
-   "demoLinkFor"
-  ],
-  "data/pe/nutritionContent.js": [
-   "nutritionChallenges",
-   "nutritionTopics",
-   "recipeLibrary",
-   "shoppingListCategories"
-  ],
-  "data/rewardCatalog.js": [
-   "AVATAR_GEAR",
-   "COIN_CATALOG",
-   "HQ_ITEMS",
-   "MISSION_EQUIPMENT",
-   "SEEDED_REWARD_LADDER_MAP",
-   "affordable",
-   "catalogRewardRows",
-   "costForCosmetic"
-  ],
-  "data/writing/typingLessons.js": [
-   "EDCLUB_PORTAL_URL",
-   "ERGONOMICS_CHECKLIST",
-   "typingLessons"
-  ],
-  "data/writing/promptLessons.js": [
-   "lessonForPrompt"
-  ],
-  "data/writing/drillRequirements.js": [
-   "requirementsFor"
-  ],
-  "data/writing/dailyDrills.js": [
-   "dailyDrills"
-  ],
-  "data/hqCrew.js": [
-   "HQ_CREW"
-  ],
-  "data/writing/spellingWordPool.js": [
-   "spellingWordPool"
-  ],
-  "data/writing/vocabularyWordPool.js": [
-   "vocabularyWordPool"
-  ]
  },
  "byFile": {
   "components/Academic/AcademicAssignmentsView.jsx": [
    {
-    "module": "data/academicSuccessCenter/assignmentMilestones.js",
-    "names": [
-     "milestonesFor",
-     "hasMilestones",
-     "milestoneProgress",
-     "startByFor",
-     "leadStatus"
-    ],
-    "local": [
-     "milestonesFor",
-     "hasMilestones",
-     "milestoneProgress",
-     "startByFor",
-     "leadStatus"
-    ]
-   },
-   {
-    "module": "data/academicSuccessCenter/reportFormats.js",
+    "slot": "academicCenter",
     "names": [
      "findFormat",
      "formatsForType",
+     "hasMilestones",
+     "leadStatus",
+     "milestoneProgress",
+     "milestonesFor",
      "reflectionPromptFor",
-     "sizeFor"
-    ],
-    "local": [
-     "findFormat",
-     "formatsForType",
-     "reflectionPromptFor",
-     "sizeFor"
+     "sizeFor",
+     "startByFor"
     ]
    }
   ],
   "components/Academic/AcademicParentSetupView.jsx": [
    {
-    "module": "data/academicSuccessCenter/placeholders.js",
+    "slot": "academicCenter",
     "names": [
-     "ACADEMIC_ASSIGNMENT_TYPES",
-     "ACADEMIC_BOOK_TYPES",
-     "ACADEMIC_SUCCESS_CENTER_QUARTER_ORDER"
-    ],
-    "local": [
      "ACADEMIC_ASSIGNMENT_TYPES",
      "ACADEMIC_BOOK_TYPES",
      "ACADEMIC_SUCCESS_CENTER_QUARTER_ORDER"
@@ -664,100 +379,51 @@
   ],
   "components/Academic/AcademicPortfolioView.jsx": [
    {
-    "module": "data/writing/writingPrompts.js",
+    "slot": "electives",
     "names": [
-     "writingPrompts"
-    ],
-    "local": [
-     "writingPrompts"
+     "gardenProjects"
     ]
    },
    {
-    "module": "data/aerospace/aerospaceProjects.js",
+    "slot": "projects",
     "names": [
-     "aerospaceProjects"
-    ],
-    "local": [
-     "aerospaceProjects"
-    ]
-   },
-   {
-    "module": "data/science/scienceExperiments.js",
-    "names": [
-     "scienceExperiments"
-    ],
-    "local": [
-     "scienceExperiments"
-    ]
-   },
-   {
-    "module": "data/technology/technologyProjects.js",
-    "names": [
-     "technologyProjects"
-    ],
-    "local": [
+     "aerospaceProjects",
+     "roboticsProjects",
+     "scienceExperiments",
      "technologyProjects"
     ]
    },
    {
-    "module": "data/robotics/roboticsProjects.js",
+    "slot": "subjects",
     "names": [
-     "roboticsProjects"
-    ],
-    "local": [
-     "roboticsProjects"
+     "SUBJECT_LABELS"
     ]
    },
    {
-    "module": "data/gardening/gardenProjects.js",
+    "slot": "writing",
     "names": [
-     "gardenProjects"
-    ],
-    "local": [
-     "gardenProjects"
-    ]
-   },
-   {
-    "module": "subjects.js",
-    "names": [
-     "SUBJECT_LABELS"
-    ],
-    "local": [
-     "SUBJECT_LABELS"
+     "writingPrompts"
     ]
    }
   ],
   "components/Academic/AssignmentFormatPicker.jsx": [
    {
-    "module": "data/academicSuccessCenter/reportFormats.js",
+    "slot": "academicCenter",
     "names": [
-     "formatsForType",
-     "findFormat",
-     "criteriaForFormat",
-     "suggestedGradeFromRubric",
      "RUBRIC_LEVELS",
-     "sizeFor",
-     "wordProgress"
-    ],
-    "local": [
-     "formatsForType",
-     "findFormat",
      "criteriaForFormat",
-     "suggestedGradeFromRubric",
-     "RUBRIC_LEVELS",
+     "findFormat",
+     "formatsForType",
      "sizeFor",
+     "suggestedGradeFromRubric",
      "wordProgress"
     ]
    }
   ],
   "components/Academic/AssignmentWriter.jsx": [
    {
-    "module": "data/academicSuccessCenter/reportFormats.js",
+    "slot": "academicCenter",
     "names": [
-     "sizeFor",
-     "wordProgress"
-    ],
-    "local": [
      "sizeFor",
      "wordProgress"
     ]
@@ -765,50 +431,28 @@
   ],
   "components/Academic/BlackExcellenceShelf.jsx": [
    {
-    "module": "data/academicSuccessCenter/blackExcellenceLibrary.js",
+    "slot": "academicCenter",
     "names": [
-     "blackExcellenceBooksForSubject",
+     "BLACK_EXCELLENCE_KNOWN_GAPS",
      "blackAmericanAuthorsForSubject",
-     "BLACK_EXCELLENCE_KNOWN_GAPS"
-    ],
-    "local": [
-     "blackExcellenceBooksForSubject",
-     "blackAmericanAuthorsForSubject",
-     "BLACK_EXCELLENCE_KNOWN_GAPS"
+     "blackExcellenceBooksForSubject"
     ]
    }
   ],
   "components/Academic/BookLibraryView.jsx": [
    {
-    "module": "data/academicSuccessCenter/bookRecommendations.js",
+    "slot": "academicCenter",
     "names": [
-     "nextRecommendationForBook"
-    ],
-    "local": [
-     "nextRecommendationForBook"
-    ]
-   },
-   {
-    "module": "data/academicSuccessCenter/bookRationale.js",
-    "names": [
-     "rationaleFor",
-     "BOOK_RANGE_LABELS"
-    ],
-    "local": [
-     "rationaleFor",
-     "BOOK_RANGE_LABELS"
+     "BOOK_RANGE_LABELS",
+     "nextRecommendationForBook",
+     "rationaleFor"
     ]
    }
   ],
   "components/Academic/PendingAssignmentSuggestion.jsx": [
    {
-    "module": "data/academicSuccessCenter/assignmentRecommendations.js",
+    "slot": "academicCenter",
     "names": [
-     "assignmentCandidatesForSlot",
-     "nextAssignmentRecommendation",
-     "resolveSuggestedDueDate"
-    ],
-    "local": [
      "assignmentCandidatesForSlot",
      "nextAssignmentRecommendation",
      "resolveSuggestedDueDate"
@@ -817,12 +461,8 @@
   ],
   "components/Academic/PendingBookSuggestion.jsx": [
    {
-    "module": "data/academicSuccessCenter/bookRecommendations.js",
+    "slot": "academicCenter",
     "names": [
-     "candidatesForBook",
-     "nextRecommendationForBook"
-    ],
-    "local": [
      "candidatesForBook",
      "nextRecommendationForBook"
     ]
@@ -830,706 +470,409 @@
   ],
   "components/Academic/academicUi.js": [
    {
-    "module": "subjects.js",
+    "slot": "academicCenter",
     "names": [
-     "SUBJECT_LABELS",
-     "isKhanTaughtSubject"
-    ],
-    "local": [
-     "SUBJECT_LABELS",
-     "isKhanTaughtSubject"
+     "ACADEMIC_SUBJECT_ORDER",
+     "ACADEMIC_SUCCESS_CENTER_QUARTER_ORDER"
     ]
    },
    {
-    "module": "data/academicSuccessCenter/placeholders.js",
+    "slot": "subjects",
     "names": [
-     "ACADEMIC_SUBJECT_ORDER",
-     "ACADEMIC_SUCCESS_CENTER_QUARTER_ORDER"
-    ],
-    "local": [
-     "ACADEMIC_SUBJECT_ORDER",
-     "ACADEMIC_SUCCESS_CENTER_QUARTER_ORDER"
+     "SUBJECT_LABELS",
+     "isKhanTaughtSubject"
     ]
    }
   ],
   "components/Dashboard/AcademicCenterCard.jsx": [
    {
-    "module": "subjects.js",
+    "slot": "academicCenter",
     "names": [
-     "SUBJECT_LABELS"
-    ],
-    "local": [
-     "SUBJECT_LABELS"
+     "activeMilestone",
+     "hasMilestones",
+     "leadStatus",
+     "milestoneProgress",
+     "startByFor"
     ]
    },
    {
-    "module": "data/academicSuccessCenter/assignmentMilestones.js",
+    "slot": "subjects",
     "names": [
-     "activeMilestone",
-     "milestoneProgress",
-     "hasMilestones",
-     "startByFor",
-     "leadStatus"
-    ],
-    "local": [
-     "activeMilestone",
-     "milestoneProgress",
-     "hasMilestones",
-     "startByFor",
-     "leadStatus"
+     "SUBJECT_LABELS"
     ]
    }
   ],
   "components/Dashboard/AdminRecordsSection.jsx": [
    {
-    "module": "subjects.js",
+    "slot": "subjects",
     "names": [
-     "SUBJECT_LABELS"
-    ],
-    "local": [
      "SUBJECT_LABELS"
     ]
    }
   ],
   "components/Dashboard/ClassBellCard.jsx": [
    {
-    "module": "data/schedule/weekPattern.js",
+    "slot": "timetable",
     "names": [
-     "dayPattern"
-    ],
-    "local": [
      "dayPattern"
     ]
    }
   ],
   "components/Dashboard/ComplianceSection.jsx": [
    {
-    "module": "subjects.js",
+    "slot": "compliance",
     "names": [
-     "SUBJECT_LABELS"
-    ],
-    "local": [
+     "GEORGIA_LAW_CITATION",
+     "GEORGIA_MINUTES_PER_DAY",
+     "GEORGIA_REQUIRED_SUBJECTS",
+     "GEORGIA_REQUIREMENTS",
+     "daysUntil",
+     "declarationCoversToday",
+     "instructionMinutes",
+     "instructionProgress",
+     "nextDeclarationDeadline"
+    ]
+   },
+   {
+    "slot": "subjects",
+    "names": [
      "SUBJECT_LABELS"
     ]
    },
    {
-    "module": "data/admin/georgiaCompliance.js",
+    "slot": "timetable",
     "names": [
-     "GEORGIA_REQUIREMENTS",
-     "GEORGIA_REQUIRED_SUBJECTS",
-     "GEORGIA_LAW_CITATION",
-     "nextDeclarationDeadline",
-     "declarationCoversToday",
-     "daysUntil",
-     "instructionProgress",
-     "instructionMinutes",
-     "GEORGIA_MINUTES_PER_DAY"
-    ],
-    "local": [
-     "GEORGIA_REQUIREMENTS",
-     "GEORGIA_REQUIRED_SUBJECTS",
-     "GEORGIA_LAW_CITATION",
-     "nextDeclarationDeadline",
-     "declarationCoversToday",
-     "daysUntil",
-     "instructionProgress",
-     "instructionMinutes",
-     "GEORGIA_MINUTES_PER_DAY"
-    ]
-   },
-   {
-    "module": "data/schedule/schoolHolidays.js",
-    "names": [
-     "isSchoolDay"
-    ],
-    "local": [
      "isSchoolDay"
     ]
    }
   ],
   "components/Dashboard/KhanAcademyMissionsCard.jsx": [
    {
-    "module": "subjects.js",
+    "slot": "khanSequences",
     "names": [
-     "subjectCardLabel"
-    ],
-    "local": [
-     "subjectCardLabel"
+     "khanGrammarUnitForUrl",
+     "scienceCourseForUrl"
     ]
    },
    {
-    "module": "data/khan/grammarCourseOrder.js",
+    "slot": "subjects",
     "names": [
-     "khanGrammarUnitForUrl"
-    ],
-    "local": [
-     "khanGrammarUnitForUrl"
-    ]
-   },
-   {
-    "module": "data/khan/scienceSequence.js",
-    "names": [
-     "scienceCourseForUrl"
-    ],
-    "local": [
-     "scienceCourseForUrl"
+     "subjectCardLabel"
     ]
    }
   ],
   "components/Dashboard/LearningAnalyticsSection.jsx": [
    {
-    "module": "subjects.js",
+    "slot": "lessons",
     "names": [
-     "SUBJECT_LABELS"
-    ],
-    "local": [
-     "SUBJECT_LABELS"
+     "allLessons"
     ]
    },
    {
-    "module": "data/lessons/index.js",
+    "slot": "subjects",
     "names": [
-     "allLessons"
-    ],
-    "local": [
-     "allLessons"
+     "SUBJECT_LABELS"
     ]
    }
   ],
   "components/Dashboard/MissionControlBoard.jsx": [
    {
-    "module": "data/lessons/index.js",
+    "slot": "compliance",
+    "names": [
+     "GEORGIA_MINUTES_PER_DAY",
+     "daysUntil",
+     "declarationCoversToday",
+     "nextDeclarationDeadline"
+    ]
+   },
+   {
+    "slot": "lessons",
     "names": [
      "allLessons"
-    ],
-    "local": [
-     "allLessons"
     ]
    },
    {
-    "module": "data/admin/georgiaCompliance.js",
+    "slot": "subjects",
     "names": [
-     "GEORGIA_MINUTES_PER_DAY"
-    ],
-    "local": [
-     "GEORGIA_MINUTES_PER_DAY"
-    ]
-   },
-   {
-    "module": "data/writing/writingPrompts.js",
-    "names": [
-     "writingPrompts"
-    ],
-    "local": [
-     "writingPrompts"
-    ]
-   },
-   {
-    "module": "subjects.js",
-    "names": [
-     "SUBJECT_LABELS"
-    ],
-    "local": [
      "SUBJECT_LABELS"
     ]
    },
    {
-    "module": "data/admin/georgiaCompliance.js",
+    "slot": "writing",
     "names": [
-     "nextDeclarationDeadline",
-     "daysUntil",
-     "declarationCoversToday"
-    ],
-    "local": [
-     "nextDeclarationDeadline",
-     "daysUntil",
-     "declarationCoversToday"
+     "writingPrompts"
     ]
    }
   ],
   "components/Dashboard/MissionControlDashboard.jsx": [
    {
-    "module": "data/lessons/index.js",
+    "slot": "electives",
+    "names": [
+     "GUITAR_DAILY_MINUTES",
+     "gardenProjects",
+     "getCurrentGuitarSkill"
+    ]
+   },
+   {
+    "slot": "lessons",
     "names": [
      "allLessons"
-    ],
-    "local": [
-     "allLessons"
     ]
    },
    {
-    "module": "data/schedule/weekPattern.js",
+    "slot": "pe",
     "names": [
-     "dayPattern",
-     "subjectsForDay"
-    ],
-    "local": [
-     "dayPattern",
-     "subjectsForDay"
+     "getTodaysWorkout"
     ]
    },
    {
-    "module": "data/writing/writingPrompts.js",
+    "slot": "projects",
     "names": [
-     "writingPrompts"
-    ],
-    "local": [
-     "writingPrompts"
-    ]
-   },
-   {
-    "module": "data/aerospace/aerospaceProjects.js",
-    "names": [
-     "aerospaceProjects"
-    ],
-    "local": [
-     "aerospaceProjects"
-    ]
-   },
-   {
-    "module": "data/science/scienceExperiments.js",
-    "names": [
-     "scienceExperiments"
-    ],
-    "local": [
-     "scienceExperiments"
-    ]
-   },
-   {
-    "module": "data/technology/technologyProjects.js",
-    "names": [
-     "technologyProjects"
-    ],
-    "local": [
+     "aerospaceProjects",
+     "roboticsProjects",
+     "scienceExperiments",
      "technologyProjects"
     ]
    },
    {
-    "module": "data/robotics/roboticsProjects.js",
-    "names": [
-     "roboticsProjects"
-    ],
-    "local": [
-     "roboticsProjects"
-    ]
-   },
-   {
-    "module": "data/gardening/gardenProjects.js",
-    "names": [
-     "gardenProjects"
-    ],
-    "local": [
-     "gardenProjects"
-    ]
-   },
-   {
-    "module": "data/guitar/guitarSkillLadder.js",
-    "names": [
-     "getCurrentGuitarSkill",
-     "GUITAR_DAILY_MINUTES"
-    ],
-    "local": [
-     "getCurrentGuitarSkill",
-     "GUITAR_DAILY_MINUTES"
-    ]
-   },
-   {
-    "module": "data/writing/weeklySchedule.js",
-    "names": [
-     "getThisWeeksScheduledIds"
-    ],
-    "local": [
-     "getThisWeeksScheduledIds"
-    ]
-   },
-   {
-    "module": "subjects.js",
+    "slot": "subjects",
     "names": [
      "subjectCardLabel"
-    ],
-    "local": [
-     "subjectCardLabel"
     ]
    },
    {
-    "module": "data/pe/weeklyWorkoutPlan.js",
+    "slot": "timetable",
     "names": [
-     "getTodaysWorkout"
-    ],
-    "local": [
-     "getTodaysWorkout"
+     "dayPattern",
+     "subjectsForDay"
+    ]
+   },
+   {
+    "slot": "writing",
+    "names": [
+     "getThisWeeksScheduledIds",
+     "writingPrompts"
     ]
    }
   ],
   "components/Dashboard/MissionEvaluationSection.jsx": [
    {
-    "module": "subjects.js",
-    "names": [
-     "SUBJECT_LABELS",
-     "ACTIVE_SUBJECTS",
-     "KHAN_TAUGHT_SUBJECTS",
-     "PARTICIPATION_SUBJECTS"
-    ],
-    "local": [
-     "SUBJECT_LABELS",
-     "ACTIVE_SUBJECTS",
-     "KHAN_TAUGHT_SUBJECTS",
-     "PARTICIPATION_SUBJECTS"
-    ]
-   },
-   {
-    "module": "data/academicSuccessCenter/reportFormats.js",
+    "slot": "academicCenter",
     "names": [
      "RUBRIC_LEVELS"
-    ],
-    "local": [
-     "RUBRIC_LEVELS"
     ]
    },
    {
-    "module": "data/admin/missionEvaluations.js",
+    "slot": "compliance",
     "names": [
-     "MISSION_RUBRIC_CRITERIA",
      "MISSION_QUARTERS",
-     "MISSION_STATUS_LABELS",
-     "proposalsForQuarter",
-     "findProposal",
-     "missionScoreTotals",
-     "draftMissionFeedback",
-     "missionGrowth"
-    ],
-    "local": [
      "MISSION_RUBRIC_CRITERIA",
-     "MISSION_QUARTERS",
      "MISSION_STATUS_LABELS",
-     "proposalsForQuarter",
-     "findProposal",
-     "missionScoreTotals",
      "draftMissionFeedback",
-     "missionGrowth"
+     "findProposal",
+     "missionGrowth",
+     "missionScoreTotals",
+     "proposalsForQuarter"
     ]
    },
    {
-    "module": "data/aerospace/aerospaceProjects.js",
+    "slot": "projects",
     "names": [
-     "aerospaceProjects"
-    ],
-    "local": [
-     "aerospaceProjects"
-    ]
-   },
-   {
-    "module": "data/science/scienceExperiments.js",
-    "names": [
-     "scienceExperiments"
-    ],
-    "local": [
-     "scienceExperiments"
-    ]
-   },
-   {
-    "module": "data/technology/technologyProjects.js",
-    "names": [
-     "technologyProjects"
-    ],
-    "local": [
+     "aerospaceProjects",
+     "roboticsProjects",
+     "scienceExperiments",
      "technologyProjects"
     ]
    },
    {
-    "module": "data/robotics/roboticsProjects.js",
+    "slot": "subjects",
     "names": [
-     "roboticsProjects"
-    ],
-    "local": [
-     "roboticsProjects"
+     "ACTIVE_SUBJECTS",
+     "KHAN_TAUGHT_SUBJECTS",
+     "PARTICIPATION_SUBJECTS",
+     "SUBJECT_LABELS"
     ]
    }
   ],
   "components/Dashboard/NovaProgressPanel.jsx": [
    {
-    "module": "data/mentor/dailyLines.js",
+    "slot": "guide",
     "names": [
-     "getDailyLine"
-    ],
-    "local": [
      "getDailyLine"
     ]
    }
   ],
   "components/Dashboard/PacingSection.jsx": [
    {
-    "module": "subjects.js",
+    "slot": "subjects",
     "names": [
-     "SUBJECT_LABELS"
-    ],
-    "local": [
      "SUBJECT_LABELS"
     ]
    }
   ],
   "components/Dashboard/ParentDashboard.jsx": [
    {
-    "module": "subjects.js",
+    "slot": "games",
     "names": [
-     "SUBJECT_LABELS"
-    ],
-    "local": [
-     "SUBJECT_LABELS"
-    ]
-   },
-   {
-    "module": "data/games/quizPlatforms.js",
-    "names": [
-     "QUIZ_PLATFORMS"
-    ],
-    "local": [
      "QUIZ_PLATFORMS"
     ]
    },
    {
-    "module": "data/writing/writingPrompts.js",
+    "slot": "subjects",
     "names": [
-     "writingPrompts"
-    ],
-    "local": [
+     "SUBJECT_LABELS"
+    ]
+   },
+   {
+    "slot": "writing",
+    "names": [
      "writingPrompts"
     ]
    }
   ],
   "components/Dashboard/ProgressView.jsx": [
    {
-    "module": "subjects.js",
+    "slot": "subjects",
     "names": [
-     "KHAN_TAUGHT_SUBJECTS"
-    ],
-    "local": [
      "KHAN_TAUGHT_SUBJECTS"
     ]
    }
   ],
   "components/Dashboard/ScienceCourseMapSection.jsx": [
    {
-    "module": "data/khan/scienceSequence.js",
+    "slot": "khanSequences",
     "names": [
      "SCIENCE_COURSES",
-     "scienceCoverageByCourse",
-     "SCIENCE_COURSE_CHALLENGES"
-    ],
-    "local": [
-     "SCIENCE_COURSES",
-     "scienceCoverageByCourse",
-     "SCIENCE_COURSE_CHALLENGES"
+     "SCIENCE_COURSE_CHALLENGES",
+     "scienceCoverageByCourse"
     ]
    }
   ],
   "components/Dashboard/StudentGradesCard.jsx": [
    {
-    "module": "subjects.js",
+    "slot": "subjects",
     "names": [
-     "subjectCardLabel"
-    ],
-    "local": [
      "subjectCardLabel"
     ]
    }
   ],
   "components/Dashboard/SubjectProgressOverview.jsx": [
    {
-    "module": "subjects.js",
+    "slot": "subjects",
     "names": [
-     "subjectCardLabel",
-     "isKhanTaughtSubject"
-    ],
-    "local": [
-     "subjectCardLabel",
-     "isKhanTaughtSubject"
+     "isKhanTaughtSubject",
+     "subjectCardLabel"
     ]
    }
   ],
   "components/Dashboard/TodayRow.jsx": [
    {
-    "module": "subjects.js",
+    "slot": "subjects",
     "names": [
-     "subjectCardLabel"
-    ],
-    "local": [
      "subjectCardLabel"
     ]
    }
   ],
   "components/Dashboard/TodaysRoutineRail.jsx": [
    {
-    "module": "data/schedule/weekPattern.js",
+    "slot": "timetable",
     "names": [
-     "dayPattern"
-    ],
-    "local": [
      "dayPattern"
     ]
    }
   ],
   "components/Dashboard/TypingRecordSection.jsx": [
    {
-    "module": "data/schedule/defaultSchedule.js",
+    "slot": "timetable",
     "names": [
-     "defaultSchedule"
-    ],
-    "local": [
      "defaultSchedule"
     ]
    }
   ],
   "components/Dashboard/YearPlanSection.jsx": [
    {
-    "module": "subjects.js",
+    "slot": "lessons",
     "names": [
-     "SUBJECT_LABELS"
-    ],
-    "local": [
-     "SUBJECT_LABELS"
+     "allLessons"
     ]
    },
    {
-    "module": "data/lessons/index.js",
+    "slot": "subjects",
     "names": [
-     "allLessons"
-    ],
-    "local": [
-     "allLessons"
+     "SUBJECT_LABELS"
     ]
    }
   ],
   "components/Games/GamesHome.jsx": [
    {
-    "module": "data/games/externalGamesLibrary.js",
+    "slot": "games",
     "names": [
-     "EXTERNAL_GAMES_LIBRARY"
-    ],
-    "local": [
-     "EXTERNAL_GAMES_LIBRARY"
-    ]
-   },
-   {
-    "module": "data/games/quizPlatforms.js",
-    "names": [
-     "QUIZ_PLATFORMS"
-    ],
-    "local": [
+     "EXTERNAL_GAMES_LIBRARY",
      "QUIZ_PLATFORMS"
     ]
    }
   ],
   "components/Games/LaunchDirector.jsx": [
    {
-    "module": "data/games/launchDirectorContent.js",
+    "slot": "games",
     "names": [
-     "STAGING_OPTIONS",
+     "LAUNCH_SCORE_LABELS",
      "PROPELLANT_OPTIONS",
+     "STAGING_OPTIONS",
      "TRAJECTORY_EVENT",
      "WEIGHT_BUDGET_CATEGORIES",
-     "WEIGHT_BUDGET_TOTAL_POINTS",
-     "LAUNCH_SCORE_LABELS"
-    ],
-    "local": [
-     "STAGING_OPTIONS",
-     "PROPELLANT_OPTIONS",
-     "TRAJECTORY_EVENT",
-     "WEIGHT_BUDGET_CATEGORIES",
-     "WEIGHT_BUDGET_TOTAL_POINTS",
-     "SCORE_LABELS"
+     "WEIGHT_BUDGET_TOTAL_POINTS"
     ]
    }
   ],
   "components/Games/NationCommand.jsx": [
    {
-    "module": "data/games/nationCommandContent.js",
+    "slot": "games",
     "names": [
-     "GOVERNMENT_TYPES",
-     "ECONOMIC_SYSTEMS",
-     "TRADE_EVENT",
      "BUDGET_CATEGORIES",
      "BUDGET_TOTAL_POINTS",
-     "NATION_SCORE_LABELS"
-    ],
-    "local": [
-     "GOVERNMENT_TYPES",
      "ECONOMIC_SYSTEMS",
-     "TRADE_EVENT",
-     "BUDGET_CATEGORIES",
-     "BUDGET_TOTAL_POINTS",
-     "SCORE_LABELS"
+     "GOVERNMENT_TYPES",
+     "NATION_SCORE_LABELS",
+     "TRADE_EVENT"
     ]
    }
   ],
   "components/Garden/BuildTrackView.jsx": [
    {
-    "module": "data/gardening/gardenBuildTrack.js",
+    "slot": "electives",
     "names": [
      "gardenBuildTrack",
-     "gardenCapstone"
-    ],
-    "local": [
-     "gardenBuildTrack",
-     "gardenCapstone"
-    ]
-   },
-   {
-    "module": "data/gardening/gardenProjects.js",
-    "names": [
-     "gardenProjects"
-    ],
-    "local": [
+     "gardenCapstone",
      "gardenProjects"
     ]
    },
    {
-    "module": "subjects.js",
+    "slot": "subjects",
     "names": [
-     "SUBJECT_LABELS"
-    ],
-    "local": [
      "SUBJECT_LABELS"
     ]
    }
   ],
   "components/Garden/GardenBriefView.jsx": [
    {
-    "module": "data/gardening/gardenBriefs.js",
+    "slot": "electives",
     "names": [
-     "getGardenBriefById"
-    ],
-    "local": [
+     "gardenProjects",
      "getGardenBriefById"
     ]
    },
    {
-    "module": "data/gardening/gardenProjects.js",
+    "slot": "subjects",
     "names": [
-     "gardenProjects"
-    ],
-    "local": [
-     "gardenProjects"
-    ]
-   },
-   {
-    "module": "subjects.js",
-    "names": [
-     "SUBJECT_LABELS"
-    ],
-    "local": [
      "SUBJECT_LABELS"
     ]
    }
   ],
   "components/Garden/GardenHome.jsx": [
    {
-    "module": "data/gardening/gardenCalendar.js",
+    "slot": "electives",
     "names": [
-     "getGardenDayForWeekOf",
-     "getNextGardenDay"
-    ],
-    "local": [
      "getGardenDayForWeekOf",
      "getNextGardenDay"
     ]
@@ -1537,503 +880,285 @@
   ],
   "components/Garden/NovaGardenGuide.jsx": [
    {
-    "module": "data/gardening/gardenBriefs.js",
+    "slot": "electives",
     "names": [
-     "getGardenBriefById"
-    ],
-    "local": [
      "getGardenBriefById"
     ]
    }
   ],
   "components/Garden/SeasonCalendarView.jsx": [
    {
-    "module": "data/gardening/gardenCalendar.js",
+    "slot": "electives",
     "names": [
-     "gardenCalendar"
-    ],
-    "local": [
-     "gardenCalendar"
-    ]
-   },
-   {
-    "module": "data/gardening/gardenBriefs.js",
-    "names": [
-     "getGardenBriefById"
-    ],
-    "local": [
+     "gardenCalendar",
      "getGardenBriefById"
     ]
    }
   ],
   "components/Guitar/GuitarHome.jsx": [
    {
-    "module": "data/guitar/guitarSkillLadder.js",
+    "slot": "electives",
     "names": [
-     "guitarSkillLadder"
-    ],
-    "local": [
      "guitarSkillLadder"
     ]
    }
   ],
   "components/Guitar/PracticeTrackerView.jsx": [
    {
-    "module": "data/guitar/guitarSkillLadder.js",
+    "slot": "electives",
     "names": [
      "GUITAR_DAILY_MINUTES",
      "GUITAR_SESSION_SHAPE",
-     "guitarSkillLadder",
-     "getCurrentGuitarSkill"
-    ],
-    "local": [
-     "GUITAR_DAILY_MINUTES",
-     "GUITAR_SESSION_SHAPE",
-     "guitarSkillLadder",
-     "getCurrentGuitarSkill"
-    ]
-   },
-   {
-    "module": "data/guitar/guitarTools.js",
-    "names": [
-     "getGuitarTool"
-    ],
-    "local": [
-     "getGuitarTool"
+     "getCurrentGuitarSkill",
+     "getGuitarTool",
+     "guitarSkillLadder"
     ]
    }
   ],
   "components/Guitar/RecordingView.jsx": [
    {
-    "module": "data/guitar/guitarTools.js",
+    "slot": "electives",
     "names": [
-     "guitarFeedbackPlaces"
-    ],
-    "local": [
      "guitarFeedbackPlaces"
     ]
    }
   ],
   "components/Guitar/SongsView.jsx": [
    {
-    "module": "data/guitar/guitarSongs.js",
+    "slot": "electives",
     "names": [
      "GUITAR_OWN_SLOTS",
-     "guitarStarterSongs",
+     "guitarEducators",
      "guitarOwnSongGuidance",
-     "guitarPerformanceMoment"
-    ],
-    "local": [
-     "GUITAR_OWN_SLOTS",
-     "guitarStarterSongs",
-     "guitarOwnSongGuidance",
-     "guitarPerformanceMoment"
-    ]
-   },
-   {
-    "module": "data/guitar/guitarTools.js",
-    "names": [
-     "guitarEducators"
-    ],
-    "local": [
-     "guitarEducators"
+     "guitarPerformanceMoment",
+     "guitarStarterSongs"
     ]
    }
   ],
   "components/Guitar/TheoryView.jsx": [
    {
-    "module": "data/guitar/guitarTheory.js",
+    "slot": "electives",
     "names": [
-     "guitarTheory"
-    ],
-    "local": [
      "guitarTheory"
     ]
    }
   ],
   "components/Lesson/FeedbackPanel.jsx": [
    {
-    "module": "data/aerospace/aerospaceProjects.js",
-    "names": [
-     "aerospaceProjects"
-    ],
-    "local": [
-     "aerospaceProjects"
-    ]
-   },
-   {
-    "module": "data/science/scienceExperiments.js",
-    "names": [
-     "scienceExperiments"
-    ],
-    "local": [
-     "scienceExperiments"
-    ]
-   },
-   {
-    "module": "data/technology/technologyProjects.js",
-    "names": [
-     "technologyProjects"
-    ],
-    "local": [
-     "technologyProjects"
-    ]
-   },
-   {
-    "module": "data/robotics/roboticsProjects.js",
-    "names": [
-     "roboticsProjects"
-    ],
-    "local": [
-     "roboticsProjects"
-    ]
-   },
-   {
-    "module": "data/gardening/gardenProjects.js",
+    "slot": "electives",
     "names": [
      "gardenProjects"
-    ],
-    "local": [
-     "gardenProjects"
+    ]
+   },
+   {
+    "slot": "projects",
+    "names": [
+     "aerospaceProjects",
+     "roboticsProjects",
+     "scienceExperiments",
+     "technologyProjects"
     ]
    }
   ],
   "components/Lesson/LessonRoster.jsx": [
    {
-    "module": "data/lessons/index.js",
+    "slot": "lessons",
     "names": [
-     "allLessons"
-    ],
-    "local": [
      "allLessons"
     ]
    },
    {
-    "module": "subjects.js",
+    "slot": "rewards",
     "names": [
-     "SUBJECT_LABELS",
-     "subjectCardLabel"
-    ],
-    "local": [
-     "SUBJECT_LABELS",
-     "subjectCardLabel"
+     "journalFor",
+     "printoutFor"
     ]
    },
    {
-    "module": "data/printouts.js",
+    "slot": "subjects",
     "names": [
-     "printoutFor",
-     "journalFor"
-    ],
-    "local": [
-     "printoutFor",
-     "journalFor"
+     "SUBJECT_LABELS",
+     "subjectCardLabel"
     ]
    }
   ],
   "components/Lesson/PrintoutSheet.jsx": [
    {
-    "module": "subjects.js",
+    "slot": "rewards",
     "names": [
-     "SUBJECT_LABELS"
-    ],
-    "local": [
-     "SUBJECT_LABELS"
+     "journalFor",
+     "printoutFor"
     ]
    },
    {
-    "module": "data/printouts.js",
+    "slot": "subjects",
     "names": [
-     "printoutFor",
-     "journalFor"
-    ],
-    "local": [
-     "printoutFor",
-     "journalFor"
+     "SUBJECT_LABELS"
     ]
    }
   ],
   "components/Lesson/QuietQuarterNote.jsx": [
    {
-    "module": "subjects.js",
+    "slot": "subjects",
     "names": [
-     "SUBJECT_LABELS"
-    ],
-    "local": [
      "SUBJECT_LABELS"
     ]
    }
   ],
   "components/Lesson/StudyGuide.jsx": [
    {
-    "module": "subjects.js",
+    "slot": "subjects",
     "names": [
-     "SUBJECT_LABELS"
-    ],
-    "local": [
      "SUBJECT_LABELS"
     ]
    }
   ],
   "components/Morning/MorningMeeting.jsx": [
    {
-    "module": "data/writing/writingPrompts.js",
+    "slot": "lessons",
     "names": [
-     "writingPrompts"
-    ],
-    "local": [
-     "writingPrompts"
+     "allLessons"
     ]
    },
    {
-    "module": "data/lessons/index.js",
+    "slot": "writing",
     "names": [
-     "allLessons"
-    ],
-    "local": [
-     "allLessons"
+     "writingPrompts"
     ]
    }
   ],
   "components/PE/ExerciseVideoManager.jsx": [
    {
-    "module": "data/pe/exerciseLibrary.js",
+    "slot": "pe",
     "names": [
-     "exerciseLibrary",
-     "CATEGORY_LABELS"
-    ],
-    "local": [
-     "exerciseLibrary",
-     "CATEGORY_LABELS"
-    ]
-   },
-   {
-    "module": "data/pe/exerciseDemoVideos.js",
-    "names": [
-     "curatedDemoFor"
-    ],
-    "local": [
-     "curatedDemoFor"
-    ]
-   },
-   {
-    "module": "data/pe/peVideoSource.js",
-    "names": [
-     "HIDDEN_VIDEO"
-    ],
-    "local": [
-     "HIDDEN_VIDEO"
+     "CATEGORY_LABELS",
+     "HIDDEN_VIDEO",
+     "curatedDemoFor",
+     "exerciseLibrary"
     ]
    }
   ],
   "components/PE/NutritionView.jsx": [
    {
-    "module": "data/pe/nutritionContent.js",
+    "slot": "pe",
     "names": [
+     "nutritionChallenges",
      "nutritionTopics",
      "recipeLibrary",
-     "shoppingListCategories",
-     "nutritionChallenges"
-    ],
-    "local": [
-     "nutritionTopics",
-     "recipeLibrary",
-     "shoppingListCategories",
-     "nutritionChallenges"
+     "shoppingListCategories"
     ]
    }
   ],
   "components/PE/PEHome.jsx": [
    {
-    "module": "data/pe/weeklyWorkoutPlan.js",
+    "slot": "pe",
     "names": [
-     "getTodaysWorkout"
-    ],
-    "local": [
      "getTodaysWorkout"
     ]
    }
   ],
   "components/PE/WeeklyGoalCard.jsx": [
    {
-    "module": "data/pe/weeklyWorkoutPlan.js",
+    "slot": "pe",
     "names": [
-     "getWeekNumber"
-    ],
-    "local": [
      "getWeekNumber"
     ]
    }
   ],
   "components/PE/WorkoutView.jsx": [
    {
-    "module": "data/pe/peVideoSource.js",
+    "slot": "pe",
     "names": [
-     "demoLinkFor"
-    ],
-    "local": [
      "demoLinkFor"
     ]
    }
   ],
   "components/Rewards/HQRoom.jsx": [
    {
-    "module": "data/rewardCatalog.js",
+    "slot": "lessons",
     "names": [
-     "HQ_ITEMS",
-     "MISSION_EQUIPMENT"
-    ],
-    "local": [
-     "HQ_ITEMS",
-     "MISSION_EQUIPMENT"
+     "allLessons"
     ]
    },
    {
-    "module": "data/lessons/index.js",
+    "slot": "rewards",
     "names": [
-     "allLessons"
-    ],
-    "local": [
-     "allLessons"
+     "HQ_ITEMS",
+     "MISSION_EQUIPMENT"
     ]
    }
   ],
   "components/Rewards/InventorySection.jsx": [
    {
-    "module": "data/rewardCatalog.js",
+    "slot": "rewards",
     "names": [
-     "MISSION_EQUIPMENT",
      "AVATAR_GEAR",
-     "HQ_ITEMS"
-    ],
-    "local": [
-     "MISSION_EQUIPMENT",
-     "AVATAR_GEAR",
-     "HQ_ITEMS"
+     "HQ_ITEMS",
+     "MISSION_EQUIPMENT"
     ]
    }
   ],
   "components/Rewards/RewardsHome.jsx": [
    {
-    "module": "data/rewardCatalog.js",
+    "slot": "rewards",
     "names": [
-     "costForCosmetic"
-    ],
-    "local": [
      "costForCosmetic"
     ]
    }
   ],
   "components/Rewards/SupplyStore.jsx": [
    {
-    "module": "data/rewardCatalog.js",
+    "slot": "rewards",
     "names": [
-     "MISSION_EQUIPMENT",
      "AVATAR_GEAR",
      "HQ_ITEMS",
-     "affordable"
-    ],
-    "local": [
      "MISSION_EQUIPMENT",
-     "AVATAR_GEAR",
-     "HQ_ITEMS",
      "affordable"
     ]
    }
   ],
   "components/Scheduler/DailyView.jsx": [
    {
-    "module": "subjects.js",
+    "slot": "subjects",
     "names": [
-     "SUBJECT_LABELS"
-    ],
-    "local": [
      "SUBJECT_LABELS"
     ]
    },
    {
-    "module": "data/schedule/weekPattern.js",
+    "slot": "timetable",
     "names": [
-     "dayPattern"
-    ],
-    "local": [
      "dayPattern"
     ]
    }
   ],
   "components/Scheduler/WeeklyView.jsx": [
    {
-    "module": "data/writing/writingPrompts.js",
+    "slot": "electives",
     "names": [
-     "writingPrompts"
-    ],
-    "local": [
-     "writingPrompts"
+     "gardenProjects"
     ]
    },
    {
-    "module": "data/aerospace/aerospaceProjects.js",
+    "slot": "projects",
     "names": [
-     "aerospaceProjects"
-    ],
-    "local": [
-     "aerospaceProjects"
-    ]
-   },
-   {
-    "module": "data/science/scienceExperiments.js",
-    "names": [
-     "scienceExperiments"
-    ],
-    "local": [
-     "scienceExperiments"
-    ]
-   },
-   {
-    "module": "data/technology/technologyProjects.js",
-    "names": [
-     "technologyProjects"
-    ],
-    "local": [
+     "aerospaceProjects",
+     "roboticsProjects",
+     "scienceExperiments",
      "technologyProjects"
     ]
    },
    {
-    "module": "data/robotics/roboticsProjects.js",
+    "slot": "writing",
     "names": [
-     "roboticsProjects"
-    ],
-    "local": [
-     "roboticsProjects"
-    ]
-   },
-   {
-    "module": "data/gardening/gardenProjects.js",
-    "names": [
-     "gardenProjects"
-    ],
-    "local": [
-     "gardenProjects"
-    ]
-   },
-   {
-    "module": "data/writing/weeklySchedule.js",
-    "names": [
-     "getThisWeeksScheduledIds"
-    ],
-    "local": [
-     "getThisWeeksScheduledIds"
+     "getThisWeeksScheduledIds",
+     "writingPrompts"
     ]
    }
   ],
   "components/Writing/TypingHome.jsx": [
    {
-    "module": "data/writing/typingLessons.js",
+    "slot": "writing",
     "names": [
-     "EDCLUB_PORTAL_URL",
-     "ERGONOMICS_CHECKLIST"
-    ],
-    "local": [
      "EDCLUB_PORTAL_URL",
      "ERGONOMICS_CHECKLIST"
     ]
@@ -2041,231 +1166,130 @@
   ],
   "components/Writing/TypingLessons.jsx": [
    {
-    "module": "data/writing/typingLessons.js",
+    "slot": "writing",
     "names": [
-     "typingLessons"
-    ],
-    "local": [
      "typingLessons"
     ]
    }
   ],
   "components/Writing/WritingJournal.jsx": [
    {
-    "module": "data/writing/writingPrompts.js",
+    "slot": "electives",
     "names": [
-     "writingPrompts"
-    ],
-    "local": [
-     "writingPrompts"
+     "gardenProjects"
     ]
    },
    {
-    "module": "data/science/scienceExperiments.js",
+    "slot": "projects",
     "names": [
-     "scienceExperiments"
-    ],
-    "local": [
-     "scienceExperiments"
-    ]
-   },
-   {
-    "module": "data/aerospace/aerospaceProjects.js",
-    "names": [
-     "aerospaceProjects"
-    ],
-    "local": [
-     "aerospaceProjects"
-    ]
-   },
-   {
-    "module": "data/technology/technologyProjects.js",
-    "names": [
-     "technologyProjects"
-    ],
-    "local": [
+     "aerospaceProjects",
+     "roboticsProjects",
+     "scienceExperiments",
      "technologyProjects"
     ]
    },
    {
-    "module": "data/robotics/roboticsProjects.js",
+    "slot": "writing",
     "names": [
-     "roboticsProjects"
-    ],
-    "local": [
-     "roboticsProjects"
-    ]
-   },
-   {
-    "module": "data/gardening/gardenProjects.js",
-    "names": [
-     "gardenProjects"
-    ],
-    "local": [
-     "gardenProjects"
+     "writingPrompts"
     ]
    }
   ],
   "components/Writing/WritingPromptEngine.jsx": [
    {
-    "module": "data/writing/promptLessons.js",
+    "slot": "writing",
     "names": [
-     "lessonForPrompt"
-    ],
-    "local": [
-     "lessonForPrompt"
-    ]
-   },
-   {
-    "module": "data/writing/drillRequirements.js",
-    "names": [
-     "requirementsFor"
-    ],
-    "local": [
+     "lessonForPrompt",
      "requirementsFor"
     ]
    }
   ],
   "lib/bookSwap.js": [
    {
-    "module": "data/academicSuccessCenter/bookRecommendations.js",
+    "slot": "academicCenter",
     "names": [
-     "bookRecommendations"
-    ],
-    "local": [
      "bookRecommendations"
     ]
    }
   ],
   "lib/compliancePacket.js": [
    {
-    "module": "data/schedule/schoolHolidays.js",
-    "names": [
-     "isSchoolDay"
-    ],
-    "local": [
-     "isSchoolDay"
-    ]
-   },
-   {
-    "module": "subjects.js",
-    "names": [
-     "SUBJECT_LABELS"
-    ],
-    "local": [
-     "SUBJECT_LABELS"
-    ]
-   },
-   {
-    "module": "data/admin/georgiaCompliance.js",
+    "slot": "compliance",
     "names": [
      "GEORGIA_LAW_CITATION",
      "GEORGIA_REQUIREMENTS",
-     "instructionProgress"
-    ],
-    "local": [
-     "GEORGIA_LAW_CITATION",
-     "GEORGIA_REQUIREMENTS",
-     "instructionProgress"
+     "MISSION_RUBRIC_CRITERIA",
+     "findProposal",
+     "instructionProgress",
+     "missionScoreTotals"
     ]
    },
    {
-    "module": "data/admin/missionEvaluations.js",
+    "slot": "subjects",
     "names": [
-     "MISSION_RUBRIC_CRITERIA",
-     "findProposal",
-     "missionScoreTotals"
-    ],
-    "local": [
-     "MISSION_RUBRIC_CRITERIA",
-     "findProposal",
-     "missionScoreTotals"
+     "SUBJECT_LABELS"
+    ]
+   },
+   {
+    "slot": "timetable",
+    "names": [
+     "isSchoolDay"
     ]
    }
   ],
   "lib/dailyWriting.js": [
    {
-    "module": "data/writing/dailyDrills.js",
+    "slot": "writing",
     "names": [
-     "dailyDrills"
-    ],
-    "local": [
-     "dailyDrills"
-    ]
-   },
-   {
-    "module": "data/writing/weeklySchedule.js",
-    "names": [
-     "getSchoolWeekNumber"
-    ],
-    "local": [
+     "dailyDrills",
      "getSchoolWeekNumber"
     ]
    }
   ],
   "lib/fieldTrips.js": [
    {
-    "module": "subjects.js",
+    "slot": "subjects",
     "names": [
-     "SUBJECT_LABELS"
-    ],
-    "local": [
      "SUBJECT_LABELS"
     ]
    }
   ],
   "lib/glossary.js": [
    {
-    "module": "data/lessons/index.js",
+    "slot": "lessons",
     "names": [
-     "allLessons"
-    ],
-    "local": [
      "allLessons"
     ]
    }
   ],
   "lib/hqCrew.js": [
    {
-    "module": "data/hqCrew.js",
+    "slot": "rewards",
     "names": [
-     "HQ_CREW"
-    ],
-    "local": [
      "HQ_CREW"
     ]
    }
   ],
   "lib/hqRooms.js": [
    {
-    "module": "data/rewardCatalog.js",
+    "slot": "rewards",
     "names": [
-     "HQ_ITEMS"
-    ],
-    "local": [
      "HQ_ITEMS"
     ]
    }
   ],
   "lib/learningAnalytics.js": [
    {
-    "module": "data/admin/georgiaCompliance.js",
+    "slot": "compliance",
     "names": [
-     "instructionMinutes"
-    ],
-    "local": [
      "instructionMinutes"
     ]
    }
   ],
   "lib/missionGrades.js": [
    {
-    "module": "data/admin/missionEvaluations.js",
+    "slot": "compliance",
     "names": [
-     "findProposal",
-     "missionScoreTotals"
-    ],
-    "local": [
      "findProposal",
      "missionScoreTotals"
     ]
@@ -2273,243 +1297,130 @@
   ],
   "lib/missionSchedule.js": [
    {
-    "module": "data/schedule/schoolHolidays.js",
+    "slot": "timetable",
     "names": [
-     "isSchoolDay"
-    ],
-    "local": [
      "isSchoolDay"
     ]
    }
   ],
   "lib/pacing.js": [
    {
-    "module": "data/schedule/schoolHolidays.js",
+    "slot": "lessons",
     "names": [
-     "isSchoolDay"
-    ],
-    "local": [
-     "isSchoolDay"
+     "allLessons"
     ]
    },
    {
-    "module": "data/lessons/index.js",
+    "slot": "timetable",
     "names": [
-     "allLessons"
-    ],
-    "local": [
-     "allLessons"
+     "isSchoolDay"
     ]
    }
   ],
   "lib/plannerCalendar.js": [
    {
-    "module": "data/academicSuccessCenter/assignmentMilestones.js",
+    "slot": "academicCenter",
     "names": [
-     "milestonesFor"
-    ],
-    "local": [
      "milestonesFor"
     ]
    }
   ],
   "lib/plannerFeeds.js": [
    {
-    "module": "data/writing/weeklySchedule.js",
+    "slot": "electives",
     "names": [
-     "weeklyWritingSchedule",
-     "SCHOOL_YEAR_START",
-     "getSchoolWeekNumber"
-    ],
-    "local": [
-     "weeklyWritingSchedule",
-     "SCHOOL_YEAR_START",
-     "getSchoolWeekNumber"
-    ]
-   },
-   {
-    "module": "data/writing/writingPrompts.js",
-    "names": [
-     "writingPrompts"
-    ],
-    "local": [
-     "writingPrompts"
-    ]
-   },
-   {
-    "module": "data/aerospace/aerospaceProjects.js",
-    "names": [
-     "aerospaceProjects"
-    ],
-    "local": [
-     "aerospaceProjects"
-    ]
-   },
-   {
-    "module": "data/science/scienceExperiments.js",
-    "names": [
-     "scienceExperiments"
-    ],
-    "local": [
-     "scienceExperiments"
-    ]
-   },
-   {
-    "module": "data/technology/technologyProjects.js",
-    "names": [
-     "technologyProjects"
-    ],
-    "local": [
-     "technologyProjects"
-    ]
-   },
-   {
-    "module": "data/robotics/roboticsProjects.js",
-    "names": [
-     "roboticsProjects"
-    ],
-    "local": [
-     "roboticsProjects"
-    ]
-   },
-   {
-    "module": "data/gardening/gardenProjects.js",
-    "names": [
-     "gardenProjects"
-    ],
-    "local": [
+     "gardenBriefs",
+     "gardenBuildTrack",
+     "gardenCalendar",
      "gardenProjects"
     ]
    },
    {
-    "module": "data/gardening/gardenCalendar.js",
+    "slot": "projects",
     "names": [
-     "gardenCalendar"
-    ],
-    "local": [
-     "gardenCalendar"
+     "aerospaceProjects",
+     "roboticsProjects",
+     "scienceExperiments",
+     "technologyProjects"
     ]
    },
    {
-    "module": "data/gardening/gardenBuildTrack.js",
-    "names": [
-     "gardenBuildTrack"
-    ],
-    "local": [
-     "gardenBuildTrack"
-    ]
-   },
-   {
-    "module": "data/gardening/gardenBriefs.js",
-    "names": [
-     "gardenBriefs"
-    ],
-    "local": [
-     "gardenBriefs"
-    ]
-   },
-   {
-    "module": "data/schedule/schoolHolidays.js",
+    "slot": "timetable",
     "names": [
      "isHoliday"
-    ],
-    "local": [
-     "isHoliday"
+    ]
+   },
+   {
+    "slot": "writing",
+    "names": [
+     "SCHOOL_YEAR_START",
+     "getSchoolWeekNumber",
+     "weeklyWritingSchedule",
+     "writingPrompts"
     ]
    }
   ],
   "lib/readingPlan.js": [
    {
-    "module": "data/academicSuccessCenter/assignmentRecommendations.js",
+    "slot": "academicCenter",
     "names": [
-     "EXCLUDED_RANGES"
-    ],
-    "local": [
      "EXCLUDED_RANGES"
     ]
    }
   ],
   "lib/rotatingBlock.js": [
    {
-    "module": "data/schedule/weekPattern.js",
+    "slot": "lessons",
     "names": [
-     "dayPattern",
-     "WEEK_PATTERN",
-     "patternSubjects"
-    ],
-    "local": [
-     "dayPattern",
-     "WEEK_PATTERN",
-     "patternSubjects"
-    ]
-   },
-   {
-    "module": "data/lessons/index.js",
-    "names": [
-     "allLessons"
-    ],
-    "local": [
      "allLessons"
     ]
    },
    {
-    "module": "subjects.js",
+    "slot": "subjects",
     "names": [
      "SUBJECT_LABELS"
-    ],
-    "local": [
-     "SUBJECT_LABELS"
+    ]
+   },
+   {
+    "slot": "timetable",
+    "names": [
+     "WEEK_PATTERN",
+     "dayPattern",
+     "patternSubjects"
     ]
    }
   ],
   "lib/scheduledMinutes.js": [
    {
-    "module": "data/schedule/defaultSchedule.js",
+    "slot": "khanSequences",
     "names": [
-     "defaultSchedule"
-    ],
-    "local": [
-     "defaultSchedule"
+     "khanGrammarUnitByUrl"
     ]
    },
    {
-    "module": "data/lessons/index.js",
+    "slot": "lessons",
     "names": [
-     "allLessons"
-    ],
-    "local": [
      "allLessons"
     ]
    },
    {
-    "module": "data/khan/grammarCourseOrder.js",
+    "slot": "timetable",
     "names": [
-     "khanGrammarUnitByUrl"
-    ],
-    "local": [
-     "khanGrammarUnitByUrl"
+     "defaultSchedule"
     ]
    }
   ],
   "lib/scheduler.js": [
    {
-    "module": "data/academicSuccessCenter/assignmentMilestones.js",
+    "slot": "academicCenter",
     "names": [
-     "startByFor",
-     "leadStatus"
-    ],
-    "local": [
-     "startByFor",
-     "leadStatus"
+     "leadStatus",
+     "startByFor"
     ]
    },
    {
-    "module": "data/admin/missionEvaluations.js",
+    "slot": "compliance",
     "names": [
-     "MISSION_QUARTERS",
-     "findProposal"
-    ],
-    "local": [
      "MISSION_QUARTERS",
      "findProposal"
     ]
@@ -2517,350 +1428,155 @@
   ],
   "lib/studyCycle.js": [
    {
-    "module": "data/lessons/index.js",
+    "slot": "lessons",
     "names": [
-     "allLessons"
-    ],
-    "local": [
      "allLessons"
     ]
    }
   ],
   "lib/supplyCrate.js": [
    {
-    "module": "data/rewardCatalog.js",
+    "slot": "rewards",
     "names": [
-     "COIN_CATALOG"
-    ],
-    "local": [
      "COIN_CATALOG"
     ]
    }
   ],
   "lib/weeklyPlan.js": [
    {
-    "module": "data/writing/writingPrompts.js",
+    "slot": "electives",
     "names": [
-     "writingPrompts"
-    ],
-    "local": [
-     "writingPrompts"
+     "gardenProjects"
     ]
    },
    {
-    "module": "data/aerospace/aerospaceProjects.js",
+    "slot": "projects",
     "names": [
-     "aerospaceProjects"
-    ],
-    "local": [
-     "aerospaceProjects"
-    ]
-   },
-   {
-    "module": "data/science/scienceExperiments.js",
-    "names": [
-     "scienceExperiments"
-    ],
-    "local": [
-     "scienceExperiments"
-    ]
-   },
-   {
-    "module": "data/technology/technologyProjects.js",
-    "names": [
-     "technologyProjects"
-    ],
-    "local": [
+     "aerospaceProjects",
+     "roboticsProjects",
+     "scienceExperiments",
      "technologyProjects"
     ]
    },
    {
-    "module": "data/robotics/roboticsProjects.js",
+    "slot": "writing",
     "names": [
-     "roboticsProjects"
-    ],
-    "local": [
-     "roboticsProjects"
-    ]
-   },
-   {
-    "module": "data/gardening/gardenProjects.js",
-    "names": [
-     "gardenProjects"
-    ],
-    "local": [
-     "gardenProjects"
-    ]
-   },
-   {
-    "module": "data/writing/weeklySchedule.js",
-    "names": [
-     "getThisWeeksScheduledIds"
-    ],
-    "local": [
-     "getThisWeeksScheduledIds"
+     "getThisWeeksScheduledIds",
+     "writingPrompts"
     ]
    }
   ],
   "lib/yearPlan.js": [
    {
-    "module": "data/admin/georgiaCompliance.js",
+    "slot": "compliance",
     "names": [
+     "GEORGIA_DAYS_REQUIRED",
+     "findProposal",
      "instructionMinutes",
-     "GEORGIA_DAYS_REQUIRED"
-    ],
-    "local": [
-     "instructionMinutes",
-     "GEORGIA_DAYS_REQUIRED"
+     "missionScoreTotals"
     ]
    },
    {
-    "module": "data/schedule/schoolHolidays.js",
+    "slot": "timetable",
     "names": [
-     "isSchoolDay",
-     "holidaysInSpan"
-    ],
-    "local": [
-     "isSchoolDay",
-     "holidaysInSpan"
-    ]
-   },
-   {
-    "module": "data/admin/missionEvaluations.js",
-    "names": [
-     "missionScoreTotals",
-     "findProposal"
-    ],
-    "local": [
-     "missionScoreTotals",
-     "findProposal"
+     "holidaysInSpan",
+     "isSchoolDay"
     ]
    }
   ],
   "store/useAppStore.js": [
    {
-    "module": "data/khan/scienceSequence.js",
+    "slot": "academicCenter",
     "names": [
-     "scienceRowsFor",
-     "scienceCourseChallengeRows",
-     "scienceCanonicalRow",
-     "SCIENCE_CANONICAL_KEYS",
-     "SCIENCE_CANONICAL_TITLES"
-    ],
-    "local": [
-     "scienceRowsFor",
-     "scienceCourseChallengeRows",
-     "scienceCanonicalRow",
-     "SCIENCE_CANONICAL_KEYS",
-     "SCIENCE_CANONICAL_TITLES"
+     "availableDueDates",
+     "bookRationale",
+     "hasMilestones",
+     "milestonesFor",
+     "quarterlyAcademicPlaceholders",
+     "subjectBookPlaceholders"
     ]
    },
    {
-    "module": "data/rewardCatalog.js",
+    "slot": "compliance",
     "names": [
-     "SEEDED_REWARD_LADDER_MAP",
-     "catalogRewardRows"
-    ],
-    "local": [
-     "SEEDED_REWARD_LADDER_MAP",
-     "catalogRewardRows"
+     "findProposal",
+     "missionScoreTotals"
     ]
    },
    {
-    "module": "data/khan/grammarCourseOrder.js",
+    "slot": "electives",
     "names": [
-     "KHAN_GRAMMAR_UNITS",
-     "khanGrammarUnitByUrl",
-     "generalGrammarUnitByUrl",
-     "LEGACY_GRAMMAR_TITLES",
+     "gardenProjects"
+    ]
+   },
+   {
+    "slot": "games",
+    "names": [
+     "QUIZ_PLATFORM_IDS"
+    ]
+   },
+   {
+    "slot": "khanSequences",
+    "names": [
      "GRAMMAR_COURSES",
-     "grammarRowTitle",
-     "grammarUnitUrl"
-    ],
-    "local": [
      "KHAN_GRAMMAR_UNITS",
-     "khanGrammarUnitByUrl",
-     "generalGrammarUnitByUrl",
      "LEGACY_GRAMMAR_TITLES",
-     "GRAMMAR_COURSES",
+     "SCIENCE_CANONICAL_KEYS",
+     "SCIENCE_CANONICAL_TITLES",
+     "generalGrammarUnitByUrl",
      "grammarRowTitle",
-     "grammarUnitUrl"
+     "grammarUnitUrl",
+     "khanGrammarUnitByUrl",
+     "scienceCanonicalRow",
+     "scienceCourseChallengeRows",
+     "scienceRowsFor"
     ]
    },
    {
-    "module": "data/lessons/index.js",
+    "slot": "lessons",
     "names": [
-     "allLessons"
-    ],
-    "local": [
      "allLessons"
     ]
    },
    {
-    "module": "data/games/quizPlatforms.js",
+    "slot": "projects",
     "names": [
-     "QUIZ_PLATFORM_IDS"
-    ],
-    "local": [
-     "QUIZ_PLATFORM_IDS"
+     "aerospaceProjects",
+     "roboticsProjects",
+     "scienceExperiments",
+     "technologyProjects"
     ]
    },
    {
-    "module": "subjects.js",
+    "slot": "rewards",
+    "names": [
+     "SEEDED_REWARD_LADDER_MAP",
+     "catalogRewardRows"
+    ]
+   },
+   {
+    "slot": "subjects",
     "names": [
      "ACTIVE_SUBJECTS",
      "KHAN_TAUGHT_SUBJECTS",
      "LESSON_TRACK_SUBJECTS",
      "PARTICIPATION_SUBJECTS",
-     "canonicalSubject"
-    ],
-    "local": [
-     "ACTIVE_SUBJECTS",
-     "KHAN_TAUGHT_SUBJECTS",
-     "LESSON_TRACK_SUBJECTS",
-     "PARTICIPATION_SUBJECTS",
-     "canonicalSubject"
-    ]
-   },
-   {
-    "module": "data/writing/writingPrompts.js",
-    "names": [
-     "writingPrompts"
-    ],
-    "local": [
-     "writingPrompts"
-    ]
-   },
-   {
-    "module": "data/aerospace/aerospaceProjects.js",
-    "names": [
-     "aerospaceProjects"
-    ],
-    "local": [
-     "aerospaceProjects"
-    ]
-   },
-   {
-    "module": "data/science/scienceExperiments.js",
-    "names": [
-     "scienceExperiments"
-    ],
-    "local": [
-     "scienceExperiments"
-    ]
-   },
-   {
-    "module": "data/technology/technologyProjects.js",
-    "names": [
-     "technologyProjects"
-    ],
-    "local": [
-     "technologyProjects"
-    ]
-   },
-   {
-    "module": "data/robotics/roboticsProjects.js",
-    "names": [
-     "roboticsProjects"
-    ],
-    "local": [
-     "roboticsProjects"
-    ]
-   },
-   {
-    "module": "data/gardening/gardenProjects.js",
-    "names": [
-     "gardenProjects"
-    ],
-    "local": [
-     "gardenProjects"
-    ]
-   },
-   {
-    "module": "data/academicSuccessCenter/placeholders.js",
-    "names": [
-     "subjectBookPlaceholders",
-     "quarterlyAcademicPlaceholders"
-    ],
-    "local": [
-     "subjectBookPlaceholders",
-     "quarterlyAcademicPlaceholders"
-    ]
-   },
-   {
-    "module": "data/academicSuccessCenter/assignmentMilestones.js",
-    "names": [
-     "milestonesFor",
-     "hasMilestones"
-    ],
-    "local": [
-     "milestonesFor",
-     "hasMilestones"
-    ]
-   },
-   {
-    "module": "data/academicSuccessCenter/assignmentRecommendations.js",
-    "names": [
-     "availableDueDates"
-    ],
-    "local": [
-     "availableDueDates"
-    ]
-   },
-   {
-    "module": "data/writing/spellingWordPool.js",
-    "names": [
-     "spellingWordPool"
-    ],
-    "local": [
-     "spellingWordPool"
-    ]
-   },
-   {
-    "module": "data/writing/vocabularyWordPool.js",
-    "names": [
-     "vocabularyWordPool"
-    ],
-    "local": [
-     "vocabularyWordPool"
-    ]
-   },
-   {
-    "module": "data/schedule/defaultSchedule.js",
-    "names": [
-     "defaultSchedule"
-    ],
-    "local": [
-     "defaultSchedule"
-    ]
-   },
-   {
-    "module": "data/academicSuccessCenter/bookRationale.js",
-    "names": [
-     "bookRationale"
-    ],
-    "local": [
-     "bookRationale"
-    ]
-   },
-   {
-    "module": "subjects.js",
-    "names": [
-     "strandsForSubject"
-    ],
-    "local": [
+     "canonicalSubject",
      "strandsForSubject"
     ]
    },
    {
-    "module": "data/admin/missionEvaluations.js",
+    "slot": "timetable",
     "names": [
-     "findProposal",
-     "missionScoreTotals"
-    ],
-    "local": [
-     "findProposal",
-     "missionScoreTotals"
+     "defaultSchedule"
+    ]
+   },
+   {
+    "slot": "writing",
+    "names": [
+     "spellingWordPool",
+     "vocabularyWordPool",
+     "writingPrompts"
     ]
    }
   ]

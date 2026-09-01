@@ -809,8 +809,59 @@ Academy's curriculum, which is now behind the glob and code-split per learner.
 352 files parse, every relative import resolves, four stylesheets clean through
 the real PostCSS.
 
-**Not verified here: `npm run build`.** Same sandbox limit as every previous
-entry — Windows-only rollup binaries, and the npm registry is unreachable, so a
-clean install cannot be made either. It must be run on a real machine before
-this is pushed, and the deployed bundle checked for a known string afterwards
-rather than the local one.
+**Built and deployed.** `npm run build` clean in 9.09s. The deployed bundle was
+checked rather than the local one, which is the rule three stalls paid for:
+
+| | before | after |
+|---|---|---|
+| `dist/assets/index-*.js` | 4,866.94 kB | **324 kB** |
+| curriculum | inside that file | `content-*.js`, fetched after sign-in |
+
+Confirmed live at the real address: the entry bundle carries a string that only
+exists in this change, carries no `academies/…/data/` path any more, and the
+network log shows the curriculum chunk requested only once an Academy signs in.
+An Academy pointed at no content pack rendered its own room; the same Academy
+pointed at a real one rendered the whole school, with no console errors.
+
+---
+
+## Two follow-ups, and a trap in my own tooling (Aug 31, 2026)
+
+### `isSchoolDay` existed twice; the dead one is gone
+
+Both were documented as the only one anyone should ask. Nothing imported the
+`weekPattern.js` copy — every Georgia hour was already filed through
+`schoolHolidays.js`. **Checked before deleting rather than assumed:** both were
+run over 400 days from Aug 2026 and agreed on every one. Then the unused one
+went, with the reasoning left in its place so nobody adds a third.
+
+### The scan wrote an empty inventory, and the generator believed it
+
+Worth writing down because the tool reported success.
+
+`scan-content-needs.mjs` was built to find imports pointing INTO an Academy
+folder. That was the right question before C1 and the wrong one the moment C1
+landed, because removing every one of those imports was the entire job. Re-run
+afterwards it found zero, wrote an empty inventory, and the generator built an
+**empty manifest** from it — a school with no curriculum, produced by two
+scripts that both exited 0.
+
+Caught only because the manifest was regenerated after deleting `isSchoolDay`
+and the output said `0 slots filled, 0 names`.
+
+Three changes came out of it:
+
+- The scan reads the shape the school now uses — `academyContent().slot`
+  destructures — and still reports any static Academy import, because one
+  reappearing is a C1 regression rather than a normal state.
+- **It refuses to write an empty inventory.** A scan finding nothing means the
+  scan is looking for the wrong thing; it throws and says so.
+- The generator refuses an empty inventory for the same reason, and now resolves
+  each name to a module by searching the Academy's own folder — which is what
+  makes it usable for an Academy whose files are laid out differently.
+
+The rewritten pair reproduces the live manifest exactly: same 162 names, same 13
+slots, same modules, byte-identical slot contents. Only the import lines are
+ordered differently, because they are sorted now.
+
+**56 check scripts, all passing.**

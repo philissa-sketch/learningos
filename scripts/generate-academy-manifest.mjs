@@ -9,51 +9,67 @@
 // happen to be. The manifest is the adapter between the two, and it lives in
 // the Academy's own folder because the adapting is that Academy's business.
 //
-// That is what lets two schools built to different shapes meet the same
-// contract: one folder calls its physical education content one thing, another
-// calls it another, and both fill the `pe` slot.
+// That is what lets two schools built to different shapes meet one contract:
+// one folder organises its physical education content one way, another does it
+// differently, and both fill the `pe` slot.
 //
-// ---- WHY THIS IS GENERATED ----
+// ---- HOW A NAME FINDS ITS MODULE ----
 //
-// The mapping is 77 modules and ~190 exported names. Typed by hand it would be
-// wrong on the first day and stale by the second. Generated, it is re-runnable:
-// add a file to an Academy folder, re-run, and the manifest grows a line.
+// The inventory (scripts/academy-content-needs.json) says WHAT the school needs
+// and which slot it reads it from. It does not say which file in a given
+// Academy holds it — it cannot, because that differs per Academy and is exactly
+// what this file works out.
+//
+// So for each needed name: find the modules in this folder that export it AND
+// whose path maps to the right slot. Exactly one is the answer. None means this
+// Academy does not have it. More than one is ambiguous and stops the run —
+// see below.
+//
+// ---- WHY AMBIGUITY IS A HARD STOP ----
+//
+// This Academy had two files exporting `isSchoolDay`, with two implementations,
+// each documented as the only one anyone should ask. Picking one silently would
+// have put a coin-flip in the middle of attendance. It is now deleted, and the
+// check that caught it stays.
 //
 // Names are NEVER renamed here. The school's use sites keep the identifiers
-// they already had — the whole conversion is an import-line change, and a
-// manifest that renamed things would turn it into a rewrite of every call site.
+// they already had.
 // ---------------------------------------------------------------------------
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { parse } from '@babel/parser';
 
+// Defined once, in the scan — three things have to agree about slots.
+import { slotFor } from './scan-content-needs.mjs';
+
 const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const ACADEMIES = path.join(REPO, 'src/academies');
 
-// The slot mapping is defined once, in the scan, and imported here — three
-// things have to agree about it and two copies is one too many.
-import { slotFor } from './scan-content-needs.mjs';
+function walk(dir, base = dir, acc = []) {
+  for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+    const full = path.join(dir, entry.name);
+    if (entry.isDirectory()) walk(full, base, acc);
+    else if (/\.jsx?$/.test(entry.name)) acc.push(path.relative(base, full).split(path.sep).join('/'));
+  }
+  return acc;
+}
 
 /** Every name a module exports. Parsed, never guessed. */
 function exportsOf(file) {
-  const ast = parse(fs.readFileSync(file, 'utf8'), {
-    sourceType: 'module',
-    plugins: ['jsx']
-  });
+  const ast = parse(fs.readFileSync(file, 'utf8'), { sourceType: 'module', plugins: ['jsx'] });
   const names = [];
   for (const node of ast.program.body) {
-    if (node.type === 'ExportNamedDeclaration') {
-      if (node.declaration) {
-        const d = node.declaration;
-        if (d.type === 'VariableDeclaration') {
-          for (const decl of d.declarations) if (decl.id.type === 'Identifier') names.push(decl.id.name);
-        } else if (d.id) names.push(d.id.name);
-      }
-      for (const s of node.specifiers) {
-        const exported = s.exported.name ?? s.exported.value;
-        if (exported !== 'default') names.push(exported);
-      }
+    if (node.type !== 'ExportNamedDeclaration') continue;
+    if (node.declaration) {
+      const d = node.declaration;
+      if (d.type === 'VariableDeclaration') {
+        for (const decl of d.declarations) if (decl.id.type === 'Identifier') names.push(decl.id.name);
+      } else if (d.id) names.push(d.id.name);
+    }
+    for (const s of node.specifiers) {
+      const exported = s.exported.name ?? s.exported.value;
+      if (exported !== 'default') names.push(exported);
     }
   }
   return names;
@@ -71,76 +87,57 @@ if (!fs.existsSync(folder)) {
   process.exit(1);
 }
 
-// Only names the school actually reaches for, and only from the module it
-// reaches for them in. An Academy's internals stay internal; publishing every
-// export as contract would make private helpers impossible to change later.
-//
-// Keyed by module rather than matched by name, because this Academy exports
-// `isSchoolDay` from two different files with two different implementations.
 const NEEDS = JSON.parse(fs.readFileSync(path.join(REPO, 'scripts/academy-content-needs.json'), 'utf8'));
-
-const bySlot = new Map();
-const skipped = [];
-const unresolved = [];
-
-for (const [rel, wanted] of Object.entries(NEEDS.byModule)) {
-  const slot = slotFor(rel);
-  if (!slot) {
-    skipped.push(rel);
-    continue;
-  }
-  const full = path.join(folder, rel);
-  if (!fs.existsSync(full)) {
-    unresolved.push(rel);
-    continue;
-  }
-  const has = new Set(exportsOf(full));
-  const absent = wanted.filter((n) => !has.has(n));
-  if (absent.length) unresolved.push(`${rel} does not export: ${absent.join(', ')}`);
-  const names = wanted.filter((n) => has.has(n));
-  if (!names.length) continue;
-  if (!bySlot.has(slot)) bySlot.set(slot, []);
-  bySlot.get(slot).push({ rel, names: [...names].sort() });
-}
-
-/**
- * A name wanted from two different modules that land in the same slot.
- *
- * This is a hard stop, not a warning. The two are different values — the
- * school's two games each define their own SCORE_LABELS — so a flat slot
- * cannot serve both, and emitting one anyway produces a duplicate binding that
- * is not valid JavaScript. The Academy has to say which is which.
- */
-const collisions = [];
-for (const [slot, modules] of bySlot) {
-  const owners = new Map();
-  for (const { rel, names } of modules) {
-    for (const n of names) {
-      if (!owners.has(n)) owners.set(n, []);
-      owners.get(n).push(rel);
-    }
-  }
-  for (const [n, mods] of owners) if (mods.length > 1) collisions.push({ slot, name: n, mods });
-}
-
-if (collisions.length) {
-  console.error(`\n${collisions.length} name collision(s) — manifest NOT written:\n`);
-  for (const c of collisions) {
-    console.error(`  slot "${c.slot}" would get ${c.name} from ${c.mods.length} modules:`);
-    for (const m of c.mods) console.error(`      ${m}`);
-  }
+if (!NEEDS.names?.length) {
   console.error(
-    '\nTwo modules in one slot exporting the same name are two different values.\n' +
-      'Give one of them a distinct exported name in the Academy folder, or split\n' +
-      'the slot. Do not let one silently win.\n'
+    'The inventory is empty. Run scripts/scan-content-needs.mjs first — and if it\n' +
+      'reports nothing, fix the scan rather than writing an empty manifest.'
   );
   process.exit(1);
 }
 
-if (unresolved.length) {
-  console.error('\nThe school asks this Academy for content it does not have:\n');
-  for (const u of unresolved) console.error(`  ${u}`);
-  console.error('');
+// name -> [{ module, slot }] for every module in this folder that exports it.
+const exporters = new Map();
+for (const rel of walk(folder)) {
+  if (rel === 'content.js') continue;
+  const slot = slotFor(rel);
+  if (!slot) continue;
+  for (const name of exportsOf(path.join(folder, rel))) {
+    if (!exporters.has(name)) exporters.set(name, []);
+    exporters.get(name).push({ module: rel, slot });
+  }
+}
+
+const bySlot = new Map();
+const missing = [];
+const ambiguous = [];
+
+for (const name of NEEDS.names) {
+  const slot = NEEDS.nameToSlot[name];
+  const candidates = (exporters.get(name) || []).filter((c) => c.slot === slot);
+
+  if (candidates.length === 0) {
+    missing.push(`${name} (slot ${slot})`);
+    continue;
+  }
+  if (candidates.length > 1) {
+    ambiguous.push(`${name} exported by ${candidates.map((c) => c.module).join(' AND ')}`);
+    continue;
+  }
+  const { module } = candidates[0];
+  if (!bySlot.has(slot)) bySlot.set(slot, new Map());
+  const mods = bySlot.get(slot);
+  if (!mods.has(module)) mods.set(module, []);
+  mods.get(module).push(name);
+}
+
+if (ambiguous.length) {
+  console.error(`\n${ambiguous.length} ambiguous name(s) — manifest NOT written:\n`);
+  for (const a of ambiguous) console.error('  ' + a);
+  console.error(
+    '\nTwo modules in one slot exporting one name are two different values, and\n' +
+      'one would silently win. Rename one at the source, or split the slot.\n'
+  );
   process.exit(1);
 }
 
@@ -158,16 +155,16 @@ lines.push('// A slot this Academy has nothing for is simply absent. Blank is ex
 lines.push('// ---------------------------------------------------------------------------');
 lines.push('');
 
-const slotOrder = [...bySlot.keys()].sort();
-for (const slot of slotOrder) {
-  for (const { rel, names } of bySlot.get(slot)) {
-    lines.push(`import { ${names.join(', ')} } from './${rel}';`);
+const slotNames = [...bySlot.keys()].sort();
+for (const slot of slotNames) {
+  for (const [module, names] of [...bySlot.get(slot)].sort()) {
+    lines.push(`import { ${[...names].sort().join(', ')} } from './${module}';`);
   }
 }
 lines.push('');
 
-for (const slot of slotOrder) {
-  const names = bySlot.get(slot).flatMap((m) => m.names).sort();
+for (const slot of slotNames) {
+  const names = [...bySlot.get(slot).values()].flat().sort();
   lines.push(`export const ${slot} = { ${names.join(', ')} };`);
   lines.push('');
 }
@@ -181,22 +178,29 @@ if (hasCss) {
   lines.push(" * would put every Academy's theme in every learner's download, which is the");
   lines.push(' * thing the folder split exists to prevent.');
   lines.push(' */');
-  lines.push('export const theme = { load: () => import(\'./academy.css\') };');
+  lines.push("export const theme = { load: () => import('./academy.css') };");
   lines.push('');
 }
 
 fs.writeFileSync(path.join(folder, 'content.js'), lines.join('\n'));
 
-const total = slotOrder.reduce((a, s) => a + bySlot.get(s).flatMap((m) => m.names).length, 0);
+const total = slotNames.reduce((a, s) => a + [...bySlot.get(s).values()].flat().length, 0);
 console.log(`src/academies/${academy}/content.js`);
-console.log(`  ${slotOrder.length} slots filled, ${total} names, from ${[...bySlot.values()].flat().length} modules`);
-for (const slot of slotOrder) {
-  const n = bySlot.get(slot).flatMap((m) => m.names).length;
-  console.log(`    ${slot.padEnd(16)} ${String(n).padStart(3)} names`);
+console.log(`  ${slotNames.length} slots filled, ${total} of ${NEEDS.names.length} names`);
+for (const slot of slotNames) {
+  console.log(`    ${slot.padEnd(16)} ${String([...bySlot.get(slot).values()].flat().length).padStart(3)}`);
 }
 if (hasCss) console.log('    theme             (stylesheet)');
-const unfilled = JSON.parse(
-  fs.readFileSync(path.join(REPO, 'scripts/academy-content-needs.json'), 'utf8')
-).slots.filter((s) => !slotOrder.includes(s) && !(s === 'theme' && hasCss));
-if (unfilled.length) console.log(`  left blank: ${unfilled.join(', ')}`);
-if (skipped.length) console.log(`  ${skipped.length} file(s) not mapped to a slot (internal to this Academy)`);
+
+const blank = NEEDS.slots.filter((s) => !slotNames.includes(s) && !(s === 'theme' && hasCss));
+if (blank.length) console.log(`  left blank: ${blank.join(', ')}`);
+
+if (missing.length) {
+  console.log(`\n  ${missing.length} name(s) this Academy does not have:`);
+  for (const m of missing.slice(0, 20)) console.log('    ' + m);
+  if (missing.length > 20) console.log(`    …and ${missing.length - 20} more`);
+  console.log(
+    '\n  A school that reads these will fail at runtime. For a new Academy this is\n' +
+      '  the worklist: each line is content that has to exist before it can open.'
+  );
+}

@@ -13,7 +13,12 @@ const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 
 const H = await import(ROOT + '/src/academies/lamar/data/schedule/schoolHolidays.js');
 const { QUARTER_SPANS, schoolDaysBetween, holidaysBetween } = await import(ROOT + '/src/lib/yearPlan.js');
-const { dayPattern, isSchoolDay } = await import(ROOT + '/src/academies/lamar/data/schedule/weekPattern.js');
+const { dayPattern } = await import(ROOT + '/src/academies/lamar/data/schedule/weekPattern.js');
+// isSchoolDay used to exist in weekPattern.js too, with a second implementation
+// and nothing importing it. It was deleted Aug 31 2026 after both were run over
+// 400 days and agreed on every one. This is the survivor, and the one every
+// Georgia hour is already filed through.
+const { isSchoolDay } = await import(ROOT + '/src/academies/lamar/data/schedule/schoolHolidays.js');
 const { GEORGIA_DAYS_REQUIRED } = await import(ROOT + '/src/academies/lamar/data/admin/georgiaCompliance.js');
 const { gardenCalendar } = await import(ROOT + '/src/academies/lamar/data/gardening/gardenCalendar.js');
 

@@ -279,10 +279,27 @@ export function dayPattern(date = new Date()) {
   };
 }
 
-/** True only for a real instructional day. The one question the UI should ask. */
-export function isSchoolDay(date = new Date()) {
-  return dayPattern(date).kind !== 'weekend' && dayPattern(date).kind !== 'holiday';
-}
+/**
+ * ---- isSchoolDay LIVED HERE TOO, AND WAS REMOVED (Aug 31, 2026) ----
+ *
+ * There were two of them: this one, derived from `dayPattern`, and the one in
+ * `schoolHolidays.js`, derived from the holiday list. Both were documented as
+ * the only one anyone should ask — *"The one question the UI should ask"* here,
+ * *"The single place the rest of the app should ask"* there.
+ *
+ * Nothing imported this one. Everything that files a Georgia hour — the
+ * compliance packet, pacing, the year plan, the compliance section, the mission
+ * schedule — imports the other. So the legal record already had a single source
+ * of truth and nothing was ever wrong.
+ *
+ * Checked before deleting rather than assumed: both were run over 400 days from
+ * Aug 2026 and agreed on every one. Then this one went, because two functions
+ * with one name, each believing it is authoritative, is a disagreement waiting
+ * for the day someone edits the holiday list in only one place.
+ *
+ * Ask `schoolHolidays.js`. Through the content interface that is
+ * `academyContent().timetable.isSchoolDay`.
+ */
 
 /**
  * How many times a week a subject comes up — used to explain the
