@@ -51,6 +51,11 @@ const PLATFORM = [
   'src/index.css',
   'src/db/',
   'src/academies/registry.js',
+  // The content interface. Held to the platform standard deliberately: it is
+  // the one file the whole school reaches content through, and a subject name
+  // leaking into it would re-weld the platform to one Academy in the single
+  // place designed to prevent exactly that.
+  'src/content/',
   'src/components/FrontDoor/',
   'src/components/Academy/',
   'src/lib/frontDoor.js',

@@ -6,7 +6,7 @@ import {
   TRADE_EVENT,
   BUDGET_CATEGORIES,
   BUDGET_TOTAL_POINTS,
-  SCORE_LABELS
+  NATION_SCORE_LABELS as SCORE_LABELS
 } from '../../academies/lamar/data/games/nationCommandContent.js';
 
 const SCORE_KEYS = Object.keys(SCORE_LABELS);

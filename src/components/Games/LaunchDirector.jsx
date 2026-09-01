@@ -6,7 +6,7 @@ import {
   TRAJECTORY_EVENT,
   WEIGHT_BUDGET_CATEGORIES,
   WEIGHT_BUDGET_TOTAL_POINTS,
-  SCORE_LABELS
+  LAUNCH_SCORE_LABELS as SCORE_LABELS
 } from '../../academies/lamar/data/games/launchDirectorContent.js';
 
 const SCORE_KEYS = Object.keys(SCORE_LABELS);

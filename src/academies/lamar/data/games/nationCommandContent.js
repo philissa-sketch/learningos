@@ -152,7 +152,10 @@ export const BUDGET_CATEGORIES = [
 
 export const BUDGET_TOTAL_POINTS = 100;
 
-export const SCORE_LABELS = {
+// Renamed from SCORE_LABELS: this Academy's two games each had one, and a slot
+// cannot hold the same name twice. The importing component aliases it straight
+// back to SCORE_LABELS, so nothing inside that component changed.
+export const NATION_SCORE_LABELS = {
   citizenVoice: 'Citizen Voice',
   decisionSpeed: 'Decision Speed',
   production: 'Production',
