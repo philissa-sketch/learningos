@@ -8,7 +8,10 @@ echo    LEARNINGOS
 echo   ============================================
 echo.
 
-where node >/dev/null 2>nul
+REM `>nul`, not `>/dev/null` — this is a Windows batch file, and the Unix form
+REM made every launch print "The system cannot find the path specified." above
+REM the startup banner. The check itself always worked; it just shouted first.
+where node >nul 2>nul
 if errorlevel 1 (
   echo   Node.js is not installed on this computer.
   echo   Download it from https://nodejs.org  ^(pick the LTS button^),

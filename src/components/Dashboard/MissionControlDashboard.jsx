@@ -1322,12 +1322,31 @@ export function MissionControlDashboard({
             );
           })}
 
+          {/*
+            ---- AN ACADEMY WITHOUT THIS ELECTIVE GETS NO ROW (Sept 3, 2026) ----
+
+            `getCurrentGuitarSkill` returns the last rung with `ladderComplete`
+            when the ladder is finished, so it answers `null` for exactly one
+            reason: this Academy has no guitar ladder at all. Two lines below
+            already used `guitarSkill?.`; the title did not, and a second
+            learner's dashboard died on `null.title` before it drew anything.
+
+            Guarding the whole row rather than the one read, because a Guitar
+            line reading "undefined" to a learner who has never played one is
+            not better than a crash — it is the same wrongness, quieter. §3c:
+            an absent slot is an absent screen.
+
+            The platform shipping this row to every Academy is the real fault,
+            and §3c Step 2 is where it stops. This keeps the dashboard alive
+            until then.
+          */}
+          {guitarSkill && (
           <TodayRow
             subject="guitar"
             blockId={BLOCK_FOR_SUBJECT.guitar}
             when={whenFor(BLOCK_FOR_SUBJECT.guitar)}
             title={
-              guitarSkill?.ladderComplete
+              guitarSkill.ladderComplete
                 ? `Keep playing — ${guitarSkill.title} was the last rung`
                 : guitarSkill.title
             }
@@ -1350,6 +1369,7 @@ export function MissionControlDashboard({
             onAction={onOpenGuitar}
             actionLabel={guitarDoneToday ? 'Open' : 'Start'}
           />
+          )}
           </TimetableOrder>
         </div>
         <p className="mt-2 text-xs text-ink-500">
