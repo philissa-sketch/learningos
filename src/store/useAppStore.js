@@ -250,7 +250,7 @@ const { GRAMMAR_COURSES = {}, KHAN_GRAMMAR_UNITS = [], LEGACY_GRAMMAR_TITLES = {
 const { allLessons = [] } = academyContent().lessons;
 const { aerospaceProjects = [], roboticsProjects = [], scienceExperiments = [], technologyProjects = [] } = academyContent().projects;
 const { SEEDED_REWARD_LADDER_MAP = {}, catalogRewardRows = () => [] } = academyContent().rewards;
-const { ACTIVE_SUBJECTS = [], KHAN_TAUGHT_SUBJECTS = [], LESSON_TRACK_SUBJECTS = [], PARTICIPATION_SUBJECTS = [], canonicalSubject = () => null, strandsForSubject = () => null } = academyContent().subjects;
+const { ACTIVE_SUBJECTS = [], KHAN_TAUGHT_SUBJECTS = [], LESSON_TRACK_SUBJECTS = [], PARTICIPATION_SUBJECTS = [], canonicalSubject = () => null, strandsForSubject = () => [] } = academyContent().subjects;
 const { defaultSchedule = [] } = academyContent().timetable;
 const { spellingWordPool = [], vocabularyWordPool = [], writingPrompts = [] } = academyContent().writing;
 

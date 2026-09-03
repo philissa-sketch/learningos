@@ -30,7 +30,7 @@ const { getTodaysWorkout = () => null } = academyContent().pe;
 const { aerospaceProjects = [], roboticsProjects = [], scienceExperiments = [], technologyProjects = [] } = academyContent().projects;
 const { subjectCardLabel = () => null } = academyContent().subjects;
 const { dayPattern = () => null, subjectsForDay = () => null } = academyContent().timetable;
-const { getThisWeeksScheduledIds = () => null, writingPrompts = [] } = academyContent().writing;
+const { getThisWeeksScheduledIds = () => [], writingPrompts = [] } = academyContent().writing;
 
 /**
  * MISSION CONTROL — rebuilt Aug 7, 2026.

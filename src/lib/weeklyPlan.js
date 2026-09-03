@@ -68,4 +68,4 @@ import { academyContent } from '../content/academyContent.js';
 
 const { gardenProjects = [] } = academyContent().electives;
 const { aerospaceProjects = [], roboticsProjects = [], scienceExperiments = [], technologyProjects = [] } = academyContent().projects;
-const { getThisWeeksScheduledIds = () => null, writingPrompts = [] } = academyContent().writing;
+const { getThisWeeksScheduledIds = () => [], writingPrompts = [] } = academyContent().writing;
