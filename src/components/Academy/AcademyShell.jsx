@@ -47,6 +47,7 @@ const SchoolBoot = lazy(() => import('../../SchoolBoot.jsx'));
 export default function AcademyShell({ academy, enteredAs, onSignOut, onAcademyChanged }) {
   const state = academy?.state || 'empty';
   const [importing, setImporting] = useState(false);
+  const [changingCurriculum, setChangingCurriculum] = useState(false);
 
   // 'idle' before anything is needed, then 'loading' → 'ready' | 'missing'.
   const [content, setContent] = useState(state === 'empty' ? 'idle' : 'loading');
@@ -97,11 +98,81 @@ export default function AcademyShell({ academy, enteredAs, onSignOut, onAcademyC
     );
   }
 
+  /**
+   * ---- REPOINTING A SCHOOL THAT IS ALREADY RUNNING ----
+   *
+   * The school reads its content at module scope, so by the time it is on
+   * screen every one of its modules has already destructured the pack that was
+   * installed when it mounted. Swapping `installed` underneath it would leave a
+   * running school holding values from a curriculum it is no longer pointed at
+   * — the worst possible version of this, because it looks like it worked.
+   *
+   * A reload is the honest way, and it is the same reasoning sign-out already
+   * uses: the field is written first, so the reload boots into the new pack.
+   */
+  async function repointCurriculum(contentPack) {
+    await onAcademyChanged?.({ contentPack });
+    window.location.reload();
+  }
+
   if (state !== 'empty') {
     if (content === 'ready') {
+      /**
+       * ---- §3a's THIRD DOOR ----
+       *
+       * *"Change what you're working toward"*, in the grown-up corner of every
+       * Academy. Specified, and for a long time not built.
+       *
+       * `contentPack` was written in exactly two places, and both of them were
+       * only reachable when the Academy was ALREADY BROKEN — the empty room and
+       * the no-curriculum room. That is not a writer. A parent whose Academy
+       * worked, and was pointed at the wrong child's curriculum, had no screen
+       * anywhere that could change it, and nothing on any screen that even said
+       * which curriculum was loaded. A wrong choice stayed invisible until she
+       * recognised another child's school.
+       *
+       * So this is reachable from a WORKING Academy, it names the pack before
+       * it offers to change it, and it is parent-only — a learner must not swap
+       * her own curriculum mid-morning.
+       */
+      if (changingCurriculum) {
+        return (
+          <Panel
+            steps="Signed in · Grown-up"
+            title={academy?.displayName ? `${academy.displayName}'s curriculum` : 'This curriculum'}
+          >
+            <p className="fd-hint">
+              This Academy is working through <strong>{pack}</strong>.
+            </p>
+
+            <ContentPackPicker
+              current={pack}
+              canChoose={enteredAs === 'parent'}
+              onChoosePack={repointCurriculum}
+            />
+
+            <button
+              className="fd-btn"
+              type="button"
+              onClick={() => setChangingCurriculum(false)}
+              style={{
+                background: 'transparent',
+                color: 'var(--fd-text-mid)',
+                border: '1px solid var(--fd-line)'
+              }}
+            >
+              Back to the school
+            </button>
+          </Panel>
+        );
+      }
+
       return (
         <Suspense fallback={<div style={{ minHeight: '100vh', background: 'var(--fd-paper, #0e1a22)' }} />}>
           <SchoolBoot enteredAs={enteredAs} onSignOut={onSignOut} />
+          {enteredAs === 'parent' ? (
+            <CurriculumChip pack={pack} onOpen={() => setChangingCurriculum(true)} />
+          ) : null}
         </Suspense>
       );
     }
@@ -305,6 +376,47 @@ function NoCurriculum({ academy, pack, error, broken, canChoose, onChoosePack, o
 
       <SignOutButton onSignOut={onSignOut} />
     </Panel>
+  );
+}
+
+/**
+ * The one thing on a working school that says which curriculum it is running.
+ *
+ * Small, cornered and parent-only. It is deliberately a plain label rather than
+ * an icon: the failure it exists to catch is a school that looks fine and is
+ * pointed at the wrong pack, and an icon would not have caught it.
+ *
+ * It renders over the school rather than inside it because the school belongs
+ * to an Academy and this belongs to the platform. Nothing behind this line may
+ * know that more than one Academy exists.
+ */
+function CurriculumChip({ pack, onOpen }) {
+  return (
+    <button
+      type="button"
+      onClick={onOpen}
+      title="Change what this Academy is working toward"
+      style={{
+        position: 'fixed',
+        left: '10px',
+        bottom: '10px',
+        zIndex: 9000,
+        maxWidth: '46vw',
+        overflow: 'hidden',
+        textOverflow: 'ellipsis',
+        whiteSpace: 'nowrap',
+        padding: '5px 10px',
+        borderRadius: '999px',
+        border: '1px solid rgba(255,255,255,0.25)',
+        background: 'rgba(14,26,34,0.82)',
+        color: 'rgba(255,255,255,0.72)',
+        font: '500 11px/1.2 system-ui, sans-serif',
+        letterSpacing: '0.03em',
+        cursor: 'pointer'
+      }}
+    >
+      Curriculum: {pack}
+    </button>
   );
 }
 

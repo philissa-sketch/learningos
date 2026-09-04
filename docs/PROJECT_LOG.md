@@ -1140,3 +1140,172 @@ rather than six because her manifest already supplied `patternSubjects`.
 **Built and deployed: not yet.** Scoped in `docs/STEP1_SCOPE.md`, including what
 slices 2-4 cost and why the elective functions are excluded from Step 1
 entirely — Step 2 deletes them, and moving them first means moving them twice.
+
+---
+
+## C3 continued — a thin Academy opens, and then cannot be reached (Sept 3, 2026)
+
+### The second Academy opened, and showed the first school
+
+After the blank-slot work below, the Academy opened — to Commander Nova, a
+Junior Engineer rank ladder, and a spelling list. Not a leak: the tells are all
+CONTENT, and they say the Academy was pointed at the wrong pack.
+
+Chasing why produced the finding that matters more than anything else in C3:
+
+```js
+// src/FrontDoorGate.jsx
+enter(academies[0].id, 'parent');   // always the first Academy
+```
+
+**A parent cannot choose which Academy to open, cannot create a second one once
+one exists, and cannot change a curriculum once it works.** `contentPack` is
+written in exactly two places and both are only reachable when the Academy is
+already broken. Nothing displays which pack is loaded, and
+`availableAcademyFolders()` sorts, so the first child's folder is the first
+option in the dropdown.
+
+**This is the same shape as the C2 outage one turn further on.** That one was a
+field read in one place and written in none. This one is a field written only
+where it is already broken. The lesson generalises: *a write reachable only from
+a failure state is not a writer.*
+
+The parent's verdict — *"there isn't an option to choose either school, it just
+takes me back to Mission Control"* — is correct, and it is a fair description of
+the platform today whatever the checks say. The separation underneath is real.
+It is not reachable.
+
+### What went in
+
+- **Step 1 slice 1.** Six names left the contract for the platform. 162 → 156.
+  Three of the nine candidates were HELD, all for the same reason: a fact typed
+  as a literal, which the closure walk cannot see. September 1 is one state's
+  filing deadline; a July school-year boundary disagrees with the August one
+  `lib/schoolQuarter.js` already owns; a seven-band grade scale disagrees with
+  the thirteen-band one in `lib/gradeScale.js`.
+- **Absent slots resolve to `{}`**, after the required-slot check and never
+  before — `{}` is truthy, and filling first would satisfy every required slot.
+- **258 names across 81 files** got shape-correct defaults, the shapes read from
+  each name's declaration. Then corrected: four were wrong, because the shape
+  has to come from what CALL SITES do with the result, not from the return
+  statement. `return schedule[week] || []` is a list and nothing about the
+  return type said so.
+- Functions that build a record's TEXT are deliberately never defaulted. An
+  empty `grammarRowTitle` writes a blank, untitled row into a real database.
+
+### Seven crashes, one shape
+
+Every one was a screen assuming content the Academy does not have, found one
+browser reload at a time. Five were import-time or hydration and would have been
+caught in a single run by a check that mounts a thin Academy. **No such check
+exists.** That is the real defect in the process, and it is step 2 of C4.
+
+### A guard that was pinned to the wrong thing
+
+`verify-georgia-hours` asserted the compliance panel read `instructionMinutes`
+**from the Academy slot**. Correct until Step 1 moved that function to the
+platform, then it failed on the change it should have been indifferent to — the
+fourth time in this repo a check has been pinned to a fact rather than to its
+property. It now asserts what it always meant: one implementation of the credit
+rule exists and this panel uses it. Nothing was loosened.
+
+### Next
+
+`docs/NEXT_SESSION_C4.md`. The three missing doors first — until a parent can
+create, choose and re-point an Academy, nothing else can be verified by using
+the app.
+
+---
+
+## C4 step 1 — the three doors (Sept 3, 2026)
+
+### What was actually wrong
+
+One line, and it made LearningOS single-school from the outside no matter how
+well separated the databases underneath were:
+
+```js
+enter(academies[0].id, 'parent');   // always the first Academy
+```
+
+Everything downstream of that followed from it. A parent could not choose which
+child's school to open. She could not create a second Academy once one existed,
+because the home page routes a grown-up through the passcode first and the
+passcode landed her inside Academy number one. And `contentPack` — the field
+that says which curriculum an Academy is working through — was written in
+exactly two places, both of them screens you could only reach once the Academy
+was already broken.
+
+Fifty-seven checks passed the whole time. None of them was watching whether a
+person could get there.
+
+### The three doors
+
+**Choose.** A new phase in the gate, `'choose'`, and a new component
+`src/components/FrontDoor/ParentCorner.jsx`. A verified passcode now ends at a
+list of the household's Academies — each one named, with its state and the
+curriculum it is pointed at — and the parent presses the one she means. A
+machine with no Academies still goes straight to creating the first, because a
+choice between nothing is a dead end.
+
+**Add.** "Add an Academy" from that corner, routed to `FirstRun` with
+`needsPasscode={false}` so a parent who has just signed in is not asked to
+invent a second passcode. Cancelling returns her to the corner rather than the
+home page, which would have made her retype the passcode to get back to the
+list she was looking at.
+
+**Repoint.** §3a's third door, specified long ago and never built. A working
+school now carries a small parent-only chip naming its curriculum, and pressing
+it opens the picker. It writes the field and then reloads, because the school
+reads its content at module scope: swapping `installed` under a running school
+would leave every already-evaluated module holding the old pack, which is the
+worst version of this because it looks like it worked.
+
+### Why the screen that shows names is a separate file
+
+`FrontDoor.jsx` may never render a child's name — it is shown to whoever sits
+down at the keyboard, and a list of names published to a stranger is exactly
+what that rule exists to prevent. `ParentCorner.jsx` renders names freely,
+because by the time it exists a passcode has been verified against a PBKDF2
+hash, and refusing to show a parent her own children would protect nobody.
+
+They are kept in two files so the difference is checkable. A guard that had to
+decide whether a given `.map()` sat before or after authentication would
+eventually be wrong. `verify-three-doors.mjs` counts entrances instead: exactly
+one caller, and not from the home phase.
+
+### The new guard, and what it is really watching
+
+`scripts/verify-three-doors.mjs`, 20 checks. It is the first check in this repo
+that watches REACHABILITY rather than correctness, which is the gap the parent
+found and fifty-seven passing checks did not.
+
+Section 4 is the one that matters most. Twice now this repo has shipped a field
+read in many places and written in none, or written only from a screen you could
+reach when the thing was already broken, and both times it cost an outage on a
+real child's school. That section asserts the working-school branch can reach
+the writer, that the pack is displayed before it is offered for change, and that
+repointing reloads.
+
+### One comment had to be rewritten
+
+`verify-no-learner` failed on `ParentCorner.jsx` for `school-name` — the prose
+quoted the parent's verdict verbatim and her sentence names one child's school.
+The comment was fixed, not the guard. That is the fifth time that rule has
+earned its keep.
+
+### Verified
+
+58 pass, 1 deliberate red — `verify-content-interface`, petal-pestle-academy's
+140 missing names, which goes green at §3c Step 4 and not by weakening it.
+`verify-no-learner` 18/0, debt 85 → 84 and did not grow. `verify-parses`
+517/517.
+
+**Not built and not deployed from here** — `npm run build` needs the Windows
+rollup binaries. `RUN-THE-BUILD.bat`, then commit from GitHub Desktop.
+
+### Next
+
+C4 step 2, the boot check. Then §3c Step 3 — Guitar and Garden out of
+`src/components/`, and a nav entry becoming something an Academy declares.
+`docs/GENERIC_INVENTORY.md` holds the measured starting point.
