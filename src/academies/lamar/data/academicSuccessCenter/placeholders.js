@@ -33,6 +33,24 @@
  * Book Library with one click. The slot is Required rather than
  * Recommended on purpose: this was an explicit ask, not a nice-to-have.
  *
+ * ⚠️ CHANGING A DUE DATE HERE DOES NOTHING FOR A LEARNER WHO ALREADY HAS
+ * THE ROW. Hydration runs once per slotId and never overwrites. Every
+ * learner who has used the app for more than a day already has these
+ * rows, so a seed edit reaches new Academies only.
+ *
+ * To move a date on a real screen you must ALSO add an entry to
+ * `ASSIGNMENT_CORRECTIONS` in src/store/useAppStore.js, naming the wrong
+ * value it is replacing so a date the parent chose herself is never
+ * touched. That table's own comment records the day this was learned:
+ * everything was fixed here, everything was verified, and none of it
+ * reached the databases that matter — "the parent looked at her real
+ * screen and the old dates were still there." It happened again on
+ * Sept 5, 2026, by exactly the same route.
+ *
+ * `verify-assignment-dates.mjs` holds the two in agreement once both
+ * exist. It cannot tell that a seed CHANGED — nothing can see history —
+ * so this paragraph is the half of the rule that has to be read.
+ *
  * SLOT IDS: every seed entry carries a stable `slotId`. Hydration is
  * idempotent per slotId, which means (a) re-running hydrate never
  * duplicates a slot, and (b) adding new subjects/quarters to this file
@@ -126,7 +144,31 @@ export const quarterlyAcademicPlaceholders = {
   },
   reading: {
     'Q1 2026-2027': [
-      { slotId: 'asg::reading::Q1::1', type: 'Reading Assignment', dueDate: '2026-09-18', title: 'Hatchet — Gary Paulsen', note: 'Weekly chapter pacing. Survival story, short chapters, strong momentum — chosen to keep him reading while Q1 rebuilds grammar.' },
+      /**
+       * THE BOOK STARTS WHEN THE OTHER REPORT IS TURNED IN. (Moved Sept 5, 2026.)
+       *
+       * The parent: the Hatchet book should not be started until Sept 18,
+       * which is when the A Long Walk to Water report is due.
+       *
+       * At 2026-09-18 it could not be. A Reading Assignment carries a 21-day
+       * lead — a novel is not read the night before — so a book DUE Sept 18
+       * had been saying "start now" since Aug 28, on his board beside the
+       * report he was supposed to be finishing. Starting Sept 18 means
+       * finishing Oct 9.
+       *
+       * The date it moves onto is the one the Hatchet BOOK REPORT just
+       * vacated, and that is not a coincidence: the report moved to Oct 30 for
+       * the same reason in the same pass, and Oct 30 is three weeks after this
+       * — the pattern every other report in this file uses. The whole Hatchet
+       * chain now sits behind Sept 18 rather than straddling it.
+       *
+       * KNOWN AND ACCEPTED: Aug 28 to Sept 17 has no new Reading Assignment
+       * open. He is not idle — A Long Walk to Water's report runs notes, draft
+       * and polish across exactly that window — but there is no new book in
+       * his hands until Sept 18, and that is the deliberate trade for not
+       * having two books open at once.
+       */
+      { slotId: 'asg::reading::Q1::1', type: 'Reading Assignment', dueDate: '2026-10-09', title: 'Hatchet — Gary Paulsen', note: 'Weekly chapter pacing. Survival story, short chapters, strong momentum — chosen to keep him reading while Q1 rebuilds grammar. Starts Sept 18, when the A Long Walk to Water report is turned in.' },
       /**
        * TWO BOOK REPORTS WERE OPEN AT ONCE. (Moved Sept 5, 2026.)
        *

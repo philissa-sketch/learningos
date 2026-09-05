@@ -4208,6 +4208,31 @@ export const useAppStore = create((set, get) => ({
       'asg::technology::Q1::1':   { fromDueDate: '2026-09-16', dueDate: '2026-09-11', format: 'build' },
       'asg::science::Q1::1':      { fromDueDate: '2026-09-16', dueDate: '2026-09-25', format: 'build' },
       'asg::writing::Q1::1':      { fromDueDate: '2026-09-16', dueDate: '2026-10-23', format: 'writing-sample' },
+      // --- dates: two book reports whose run-ups overlapped ---------------
+      //
+      // Sept 5, 2026. The parent: the Hatchet report should not start until
+      // the A Long Walk to Water report is turned in.
+      //
+      // A Book Report carries four weekly milestones and a 21-day lead on the
+      // first, so the day it LANDS ON HIS BOARD is its due date minus 42, not
+      // minus seven. At 2026-10-09 that was Aug 28 — three weeks before the
+      // report it was meant to follow was even due, and both sat on his board
+      // together. 2026-10-30 is the earliest date whose minus-42 lands on
+      // Sept 18, the day the other report is due.
+      //
+      // The seed in placeholders.js moved too, and moving it was NOT enough:
+      // his row was hydrated weeks ago and seeds never overwrite an existing
+      // row. That is the mistake this whole table exists to catch, and it was
+      // made again here before the table was remembered.
+      'asg::reading::Q1::2':      { fromDueDate: '2026-10-09', dueDate: '2026-10-30' },
+      // And the BOOK itself. A Reading Assignment carries a 21-day lead, so
+      // Hatchet DUE Sept 18 had been saying "start now" since Aug 28 — on his
+      // board beside the report he was supposed to be finishing. The parent
+      // asked for the book to start Sept 18, when that report is due, which
+      // means finishing Oct 9. It lands on the date the report above just
+      // vacated, and Oct 30 is then three weeks after it: the pattern every
+      // other report in this file uses.
+      'asg::reading::Q1::1':      { fromDueDate: '2026-09-18', dueDate: '2026-10-09' },
       // --- dates: outside their own quarter, or inside a school break ----
       //
       // Found Aug 30, 2026 by scripts/verify-assignment-dates.mjs, written
@@ -4259,7 +4284,27 @@ export const useAppStore = create((set, get) => ({
       // an earlier correction sits on a different date than one that never
       // did, and both are still "untouched by her" — so both must be
       // reachable, or the second fix only lands on half the databases.
-      if (fix.dueDate && [].concat(fix.fromDueDate).includes(row.dueDate)) changes.dueDate = fix.dueDate;
+      if (fix.dueDate && [].concat(fix.fromDueDate).includes(row.dueDate)) {
+        changes.dueDate = fix.dueDate;
+        /**
+         * A STORED MILESTONE CHAIN WAS COMPUTED FROM THE OLD DATE.
+         *
+         * `milestonesFor` returns stored milestones in preference to freshly
+         * computed ones, because stored ones carry his real progress. That is
+         * right, and it means a corrected due date does NOT move a chain that
+         * has already been written down — the assignment would move and its
+         * four weekly steps would stay where they were, which is the same
+         * class of half-applied fix this table exists to prevent.
+         *
+         * So: if nothing in the chain has been ticked, it is a stale plan and
+         * not progress. Clearing it lets milestonesFor rebuild it from the new
+         * date. If ANY step has been ticked, his work wins and nothing here
+         * touches it — a corrected date must never cost him a step he did.
+         */
+        if (row.milestones?.length && !row.milestones.some((m) => m.completedAt)) {
+          changes.milestones = [];
+        }
+      }
       // A note only changes if it is still the misleading shipped text.
       if (fix.note && row.note === fix.fromNote) changes.note = fix.note;
       // A format is only ever added. Never replace one she has chosen.

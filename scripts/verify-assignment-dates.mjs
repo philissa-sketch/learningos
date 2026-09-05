@@ -180,6 +180,79 @@ console.log('\n--- 4. the shape of the load ---');
       + ' — the four report milestones run one a week and need the room');
 }
 
+// ---------------------------------------------------------------------------
+// THE SEED AND THE CORRECTION MUST AGREE. (Added Sept 5, 2026.)
+//
+// ---- WHY ----
+//
+// placeholders.js says it plainly: real due dates live in the
+// `academicAssignments` table and are hydrated from these seeds ONCE PER
+// slotId, never overwritten afterward. So changing a seed date does nothing at
+// all for a learner who already has the row — which is every learner who has
+// used the app for more than a day.
+//
+// ASSIGNMENT_CORRECTIONS in useAppStore.js is the mechanism that reaches those
+// rows, and its own comment records the day this was learned: *"All of it was
+// fixed in placeholders.js, all of it verified, and none of it reached the two
+// databases that actually matter. The parent looked at her real screen and the
+// old dates were still there."*
+//
+// It happened again on Sept 5, 2026, to the Hatchet book report, by the same
+// route: the seed was moved, the guards were run, they passed, and the parent's
+// screen still showed the old date.
+//
+// ---- WHAT THIS CAN AND CANNOT CATCH ----
+//
+// It cannot know that a seed CHANGED — nothing here can see history. What it
+// can hold is that the two places a date lives never DISAGREE: a new learner
+// hydrating from the seed and an existing learner taking the correction must
+// land on the same day. Both halves of that have drifted here before.
+//
+// The half it cannot check is a process rule, and it belongs in prose next to
+// the seeds: changing a dated seed requires a correction entry.
+// ---------------------------------------------------------------------------
+{
+  const storeSrc = fs.readFileSync(path.join(REPO, 'src/store/useAppStore.js'), 'utf8');
+  const start = storeSrc.indexOf('const ASSIGNMENT_CORRECTIONS = {');
+  const body = start === -1 ? '' : storeSrc.slice(start, storeSrc.indexOf('\n    };', start));
+
+  ok('the corrections table was found and parsed',
+    start !== -1 && body.length > 0,
+    'a rename must not silently leave this section checking nothing');
+
+  const corrections = {};
+  for (const m of body.matchAll(/'(asg::[^']+)':\s*\{([^}]*)\}/g)) {
+    // fromDueDate names the WRONG value(s) and must not be read as the target.
+    const rest = m[2].replace(/fromDueDate:\s*(\[[^\]]*\]|'[^']*')/, '');
+    const due = /dueDate:\s*'([\d-]+)'/.exec(rest);
+    if (due) corrections[m[1]] = due[1];
+  }
+
+  ok('...and it carries corrections to check',
+    Object.keys(corrections).length > 0,
+    'zero parsed corrections means the regex stopped matching, not that the table emptied');
+
+  // Imported, not transcribed — same rule as the windows above.
+  const { quarterlyAcademicPlaceholders: seeds } = await import(
+    REPO + '/src/academies/lamar/data/academicSuccessCenter/placeholders.js'
+  );
+
+  const seedDates = {};
+  for (const subject of Object.values(seeds)) {
+    for (const rows of Object.values(subject)) {
+      for (const row of rows) if (row.slotId && row.dueDate) seedDates[row.slotId] = row.dueDate;
+    }
+  }
+
+  const disagree = Object.entries(corrections)
+    .filter(([slot, date]) => seedDates[slot] && seedDates[slot] !== date)
+    .map(([slot, date]) => `${slot}: correction ${date} vs seed ${seedDates[slot]}`);
+
+  ok('every correction lands on the same date as its seed',
+    disagree.length === 0,
+    disagree.join('; ') + ' — a new learner and an existing one would get different days');
+}
+
 console.log(`\n${passed} passed, ${failures.length} failed`);
 if (failures.length) {
   console.log(`\n${failures.length} CHECK(S) FAILED`);

@@ -1386,6 +1386,75 @@ relationship silently and no check can catch it.
 Six guards pass, `verify-assignment-dates` among them. The date is legal by the
 app's own rules, which is exactly why the rules did not catch the problem.
 
+### The seed moved and his screen did not
+
+The fix above was made in `placeholders.js` and verified, and the parent's
+screen still read *Start by Fri, Sep 18 · Finish by Fri, Oct 9*.
+
+`placeholders.js` says why in its own header: real due dates live in the
+`academicAssignments` table and are hydrated from the seeds **once per slotId,
+never overwritten afterward**. His row was hydrated weeks ago. A seed edit
+reaches new Academies only.
+
+`ASSIGNMENT_CORRECTIONS` in `useAppStore.js` is the mechanism built for exactly
+this, and its own comment records the day it was learned, Aug 10:
+
+> All of it was fixed in placeholders.js, all of it verified, and none of it
+> reached the two databases that actually matter. The parent looked at her real
+> screen and the old dates were still there.
+
+**Same file, same trap, one month later, by the same route.** The correction
+entry is now in, matching on the old value so a date she chose herself is never
+touched.
+
+Two things came out of it beyond the entry:
+
+- **A stored milestone chain was computed from the OLD date.** `milestonesFor`
+  prefers stored milestones because they carry his progress — which means a
+  corrected due date moved the assignment and left its four weekly steps where
+  they were. The correction loop now clears a chain with NO ticked step, so it
+  rebuilds from the new date; a chain with any step ticked is his work and is
+  never touched.
+- **A new assertion**: every correction must land on the same date as its seed,
+  or a new learner and an existing one get different days. Eighteen existing
+  corrections already satisfied it. It cannot catch that a seed CHANGED —
+  nothing can see history — so the other half of the rule is now written in
+  prose at the top of `placeholders.js`, where the next person will hit it.
+
+### And then the book itself — the thing she was actually pointing at
+
+The report was a real overlap and it was not what she was looking at. Her card
+read:
+
+```
+READING ASSIGNMENT   Hatchet — Gary Paulsen
+Start by Fri, Aug 28 — start now  ·  Finish by Fri, Sep 18
+```
+
+A Reading Assignment carries a 21-day lead — *a novel is not read the night
+before* — so a book DUE Sept 18 had been saying **start now** since Aug 28, on
+his board beside the report he was supposed to be finishing. A book cannot start
+Sept 18 and also be due Sept 18.
+
+`asg::reading::Q1::1` moved to **2026-10-09**, seed and correction together.
+That is the date the book report just vacated, and Oct 30 is then three weeks
+after it — the pattern every other report in this file uses. The Oct 30 change
+stops being a workaround and becomes the natural date.
+
+| | Card now reads |
+|---|---|
+| Hatchet — reading | Start by **Sep 18** · Finish by Oct 9 |
+| Hatchet — book report | Start by Oct 9 · Finish by Oct 30, opens on his board **Sep 18** |
+| A Long Walk to Water — report | Start by Aug 28 · Finish by Sep 18 |
+
+The whole Hatchet chain now sits behind Sept 18 instead of straddling it.
+
+**Known and accepted:** Aug 28 to Sept 17 has no new Reading Assignment open.
+He is not idle — A Long Walk to Water's report runs notes, draft and polish
+across exactly that window — but there is no new book in his hands until
+Sept 18. That is the deliberate trade for not having two books open at once,
+and it was the parent's call with the gap named in front of her.
+
 ### Scoped, not built
 
 `docs/ASSIGNMENT_PREREQUISITES.md` — a `blockedBy` field, and the rule that
