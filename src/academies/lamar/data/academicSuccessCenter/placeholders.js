@@ -127,7 +127,49 @@ export const quarterlyAcademicPlaceholders = {
   reading: {
     'Q1 2026-2027': [
       { slotId: 'asg::reading::Q1::1', type: 'Reading Assignment', dueDate: '2026-09-18', title: 'Hatchet — Gary Paulsen', note: 'Weekly chapter pacing. Survival story, short chapters, strong momentum — chosen to keep him reading while Q1 rebuilds grammar.' },
-      { slotId: 'asg::reading::Q1::2', type: 'Book Report', dueDate: '2026-10-09', format: 'creative-project', title: 'Hatchet — book jacket redesign', note: 'Redesign the cover and write a 150-word back-cover blurb. Deliberately a visual project: his writing is two strands behind his reading, and Q1 is grammar catch-up.' },
+      /**
+       * TWO BOOK REPORTS WERE OPEN AT ONCE. (Moved Sept 5, 2026.)
+       *
+       * The parent: the Hatchet report should not start until the A Long Walk
+       * to Water report is turned in. She was right, and the arithmetic says
+       * why.
+       *
+       * A Book Report carries four weekly milestones — read, notes, draft,
+       * polish — and a 21-day lead on the first one. So the date a report
+       * actually LANDS ON HIS BOARD is its due date minus 42 days, not minus
+       * seven. At 2026-10-09 that was Aug 28: the Hatchet reading step opened
+       * three weeks BEFORE the Salva's-well report it was supposed to follow
+       * was even due, and both sat on his board together.
+       *
+       * This is the same fault this file has now found three times at three
+       * different depths — a date with no run-up, then a milestone with no
+       * start, and now two run-ups overlapping each other. Each fix looked
+       * complete and the next one was sitting one level down.
+       *
+       * 2026-10-30 is the earliest date that clears it: minus 42 days is
+       * Sept 18, the day A Long Walk to Water is due. It is also the last day
+       * of Q1's due window (QUARTER_DUE_WINDOWS.Q1 ends [10, 30]), so there is
+       * no slack left in this quarter — a fifth Q1 report would have nowhere
+       * legal to go, and that is a real constraint rather than an oversight.
+       *
+       * The reading assignment for Hatchet is still due Sept 18 and has not
+       * moved. He reads the book on that schedule; the report's own "read"
+       * step is then already satisfied when it opens, which is the correct
+       * relationship between the two and was not true before.
+       *
+       * ---- WHY THIS IS A DATE AND NOT A RULE ----
+       *
+       * Because the app cannot express the rule. Nothing anywhere models "this
+       * assignment waits for that one" — there are only dates, and a date is
+       * the only tool available today. Hand-computing minus-42 to encode a
+       * dependency is exactly the kind of arithmetic that goes stale the next
+       * time either date moves.
+       *
+       * docs/ASSIGNMENT_PREREQUISITES.md scopes the real fix as platform work.
+       * When it lands, this date is free to go back to the three-weeks-after
+       * pattern every other report in this file uses.
+       */
+      { slotId: 'asg::reading::Q1::2', type: 'Book Report', dueDate: '2026-10-30', format: 'creative-project', title: 'Hatchet — book jacket redesign', note: 'Redesign the cover and write a 150-word back-cover blurb. Deliberately a visual project: his writing is two strands behind his reading, and Q1 is grammar catch-up. Dated to open after the A Long Walk to Water report is turned in — see the note above.' },
       { slotId: 'asg::writing::Q1::1', type: 'Writing Portfolio Entry', format: 'writing-sample', dueDate: '2026-10-23', title: 'Q1 writing portfolio — his strongest Journal entry', note: 'Best skill-prompt entry this quarter — selected later' }
     ],
     'Q2 2026-2027': [

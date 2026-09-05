@@ -48,6 +48,7 @@ export default function AcademyShell({ academy, enteredAs, onSignOut, onAcademyC
   const state = academy?.state || 'empty';
   const [importing, setImporting] = useState(false);
   const [changingCurriculum, setChangingCurriculum] = useState(false);
+  const [repointError, setRepointError] = useState(null);
 
   // 'idle' before anything is needed, then 'loading' → 'ready' | 'missing'.
   const [content, setContent] = useState(state === 'empty' ? 'idle' : 'loading');
@@ -109,9 +110,44 @@ export default function AcademyShell({ academy, enteredAs, onSignOut, onAcademyC
    *
    * A reload is the honest way, and it is the same reasoning sign-out already
    * uses: the field is written first, so the reload boots into the new pack.
+   *
+   * ---- WHY IT READS THE FIELD BACK BEFORE RELOADING (Sept 5, 2026) ----
+   *
+   * The first version of this function did the obvious thing:
+   *
+   *     await onAcademyChanged?.({ contentPack });
+   *     window.location.reload();
+   *
+   * and it did not work. A Dexie `put` resolves when the REQUEST succeeds, but
+   * the transaction still has to commit — and `location.reload()` can tear the
+   * page down before it does. The write vanished, the page came back on the old
+   * pack, and the button looked inert. The parent pressed it, watched a school
+   * reload into the same wrong curriculum, and reasonably concluded the feature
+   * was broken. She was right, for a reason neither of us could see from the
+   * screen.
+   *
+   * So `onAcademyChanged` now returns the record as READ BACK out of the
+   * database, and this refuses to reload until that record actually carries the
+   * pack it was asked for. A failed write says so on screen instead of
+   * destroying the page and pretending nothing happened.
+   *
+   * The rule generalises past this button: **never destroy the page on the
+   * strength of a write you have not read back.** This repo has already paid
+   * for the same lesson once — a tool can report success and produce nothing.
    */
   async function repointCurriculum(contentPack) {
-    await onAcademyChanged?.({ contentPack });
+    setRepointError(null);
+    const stored = await onAcademyChanged?.({ contentPack });
+
+    if (stored?.contentPack !== contentPack) {
+      setRepointError(
+        `That did not save — this Academy is still set to ${pack}. Nothing has been lost and ` +
+          'the records are untouched. Try once more; if it keeps happening, the school is safe ' +
+          'to keep using in the meantime.'
+      );
+      return;
+    }
+
     window.location.reload();
   }
 
@@ -144,6 +180,12 @@ export default function AcademyShell({ academy, enteredAs, onSignOut, onAcademyC
             <p className="fd-hint">
               This Academy is working through <strong>{pack}</strong>.
             </p>
+
+            {repointError ? (
+              <p className="fd-error" role="alert">
+                {repointError}
+              </p>
+            ) : null}
 
             <ContentPackPicker
               current={pack}

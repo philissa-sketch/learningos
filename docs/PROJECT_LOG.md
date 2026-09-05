@@ -1304,8 +1304,100 @@ earned its keep.
 **Not built and not deployed from here** — `npm run build` needs the Windows
 rollup binaries. `RUN-THE-BUILD.bat`, then commit from GitHub Desktop.
 
+### The repoint button did not save — found the same day, by using it
+
+The first version did the obvious thing:
+
+```js
+await onAcademyChanged?.({ contentPack });
+window.location.reload();
+```
+
+and it silently did nothing. A Dexie `put` resolves when the REQUEST succeeds;
+the transaction still has to commit, and `location.reload()` tore the page down
+before it did. The write vanished, the page came back on the old pack, and the
+button looked inert. The parent pressed it, watched a school reload into the
+same wrong curriculum, and concluded the feature was broken. She was right, for
+a reason neither of us could see from the screen.
+
+**This repo has already paid for this lesson once** — *a tool can report success
+and produce nothing* — and it was written down about generators. It is the same
+fault one layer down, in a browser database.
+
+`onAcademyChanged` now returns the record as READ BACK out of IndexedDB. The
+read is a separate transaction, and IndexedDB will not start it until the write
+ahead of it has committed, so a read-back carrying the new value is proof the
+write landed. `repointCurriculum` refuses to reload until it sees that, and a
+failed save says so on screen instead of destroying the page and pretending
+nothing happened.
+
+The rule, generalised: **never destroy the page on the strength of a write you
+have not read back.** Three new assertions in `verify-three-doors.mjs` hold it.
+Guard now 23/0.
+
 ### Next
 
 C4 step 2, the boot check. Then §3c Step 3 — Guitar and Garden out of
 `src/components/`, and a nav entry becoming something an Academy declares.
 `docs/GENERIC_INVENTORY.md` holds the measured starting point.
+
+---
+
+## Two book reports were open at once (Sept 5, 2026)
+
+The parent: the Hatchet report should not start until the A Long Walk to Water
+report is turned in. She was right, and the arithmetic says why.
+
+A Book Report carries four weekly milestones and a 21-day lead on the first, so
+the day it lands on his board is its due date **minus 42**, not minus seven.
+
+| | Due | Step 1 opened |
+|---|---|---|
+| A Long Walk to Water — Salva's well | 2026-09-18 | 2026-08-07 |
+| Hatchet — book jacket redesign | 2026-10-09 | **2026-08-28** |
+
+Hatchet's reading step opened three weeks before the report it was meant to
+follow was even due. Both were on his board together.
+
+**Third time, third depth.** Aug 15 found a due date with no run-up. Aug 16
+found a milestone with no start. This is two run-ups overlapping each other —
+each assignment's window correct in isolation, and nothing comparing one to
+another. Each fix looked complete and the next was one level down.
+
+### What went in
+
+`asg::reading::Q1::2` moved to **2026-10-30** — the earliest date whose minus-42
+lands on Sept 18, the day the other report is due. The reading assignment did
+not move; he still reads Hatchet by Sept 18, which means the report's own "read"
+step is already satisfied when it opens. That is the correct relationship
+between the two and was not true before.
+
+```
+OLD  Hatchet step 1 opens 2026-08-28
+NEW  Hatchet step 1 opens 2026-09-18
+```
+
+Two costs, written down rather than discovered later. Oct 30 is the last day of
+`QUARTER_DUE_WINDOWS.Q1`, so **Q1 has no slack left** — a fifth report would
+have nowhere legal to go. And it is arithmetic encoding an intent: nothing in
+the data says *this waits for that*, so moving either date breaks the
+relationship silently and no check can catch it.
+
+Six guards pass, `verify-assignment-dates` among them. The date is legal by the
+app's own rules, which is exactly why the rules did not catch the problem.
+
+### Scoped, not built
+
+`docs/ASSIGNMENT_PREREQUISITES.md` — a `blockedBy` field, and the rule that
+matters more than the field: **a prerequisite may delay an opening and may never
+strand one.** A blocker turned in early releases the next one early; a blocker
+never turned in releases it anyway on its own due date. A child who misses one
+report must not lose the next one, and a quarter must not be able to jam itself.
+
+It also records what has to move first: `assignmentMilestones.js` is behaviour
+sitting in one Academy's folder, and the templates and lead days inside it are
+not. Fold that move into the next §3c Step 1 slice, then build prerequisites on
+the moved arithmetic — otherwise the feature gets written twice.
+
+When it lands, Hatchet goes back to 2026-10-09 with the dependency declared out
+loud, and Q1 gets its slack back.

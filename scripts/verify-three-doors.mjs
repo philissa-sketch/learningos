@@ -175,8 +175,30 @@ ok('a working school displays which curriculum it is running',
   'a field nobody can see is a field nobody can correct');
 
 ok('repointing writes the field and then reloads',
-  /async function repointCurriculum\(contentPack\)[\s\S]{0,300}onAcademyChanged\?\.\(\{ contentPack \}\)[\s\S]{0,200}window\.location\.reload\(\)/.test(shell),
+  /async function repointCurriculum\(contentPack\)[\s\S]{0,600}onAcademyChanged\?\.\(\{ contentPack \}\)[\s\S]{0,600}window\.location\.reload\(\)/.test(shell),
   'the school read its content at module scope — swapping it underneath leaves it holding the old pack');
+
+// ---- NEVER DESTROY THE PAGE ON A WRITE YOU HAVE NOT READ BACK ----
+//
+// The first version of this button did `await put` then `location.reload()`,
+// and it silently did nothing. A Dexie put resolves when the REQUEST succeeds;
+// the transaction still has to commit, and the reload tore the page down first.
+// The parent pressed it, watched the school reload into the same wrong
+// curriculum, and concluded the feature was broken. She was right.
+//
+// This is the repo's own lesson — a tool can report success and produce
+// nothing — one layer down, in a browser database instead of a generator.
+ok('the writer returns the record as read back out of the database',
+  /const stored = await loadAcademyRecord\(next\.id\)/.test(gate) && /return stored \|\| null/.test(gate),
+  'a resolved write is not proof of a committed write');
+
+ok('...and repointing refuses to reload until the field actually carries the new pack',
+  /stored\?\.contentPack !== contentPack/.test(shell) &&
+    /setRepointError\(/.test(shell),
+  'reloading on an unconfirmed write turns a failed save into a button that looks inert');
+
+ok('...and a failed save says so on screen instead of vanishing',
+  /repointError \? \(/.test(shell) && /role="alert"/.test(shell));
 
 ok('the change screen names the current pack before offering to change it',
   /This Academy is working through/.test(read('src/components/Academy/AcademyShell.jsx')),

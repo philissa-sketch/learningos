@@ -7,6 +7,7 @@ import AcademyShell from './components/Academy/AcademyShell.jsx';
 import { closeAcademy, openAcademy } from './db/db.js';
 import {
   clearSession,
+  loadAcademyRecord,
   loadAcademyRecords,
   loadHouseholdParentAuth,
   loadSession,
@@ -276,11 +277,33 @@ export default function FrontDoorGate() {
        * state lives, so the change goes back through here rather than being
        * held in a component that unmounts.
        */
+      /**
+       * ---- IT RETURNS WHAT WAS STORED, NOT WHAT WAS ASKED FOR ----
+       *
+       * A caller that goes on to reload the page cannot trust a resolved write
+       * as proof the write survived. `put` resolves when the request succeeds;
+       * the transaction still has to commit, and `location.reload()` can tear
+       * the page down before it does. The change vanishes, the page comes back
+       * on the old value, and it looks exactly like the button did nothing.
+       *
+       * That happened, to the curriculum picker, on the day it was written.
+       *
+       * The read below is a SEPARATE transaction, and IndexedDB will not let it
+       * start until the write ahead of it has committed. So a read-back that
+       * comes home carrying the new value is proof the write landed — which is
+       * the one thing a caller about to destroy the page needs to know.
+       *
+       * This is the same lesson this repo has already paid for once: a tool can
+       * report success and produce nothing. Read the counts a generator prints;
+       * read the record a write claims to have made.
+       */
       onAcademyChanged={async (patch) => {
-        if (!open) return;
+        if (!open) return null;
         const next = { ...open, ...patch };
         await putAcademyRecord(next);
-        setAcademies((list) => list.map((a) => (a.id === next.id ? next : a)));
+        const stored = await loadAcademyRecord(next.id);
+        setAcademies((list) => list.map((a) => (a.id === next.id ? stored || next : a)));
+        return stored || null;
       }}
     />
   );
