@@ -72,41 +72,57 @@ export function getSchoolWeekNumber(date = new Date()) {
 // Week number -> array of prompt/project ids due that week. IDs match
 // writingPrompts.js (w7-*) and aerospaceProjects.js (ae7-*) exactly.
 export const weeklyWritingSchedule = {
-  // ---- Q1 2026-2027 (weeks 1-9): Flight Fundamentals ----
+  // ---- Q1 2026-2027 (weeks 1-13): Flight Fundamentals ----
   1: ['w7-paragraph'],
   2: ['ae7-bottle-rocket', 'w7-mission-report'],
   3: ['w7-essay'],
   4: ['ae7-parachute-drop', 'w7-scientific-observation'],
   5: ['w7-creative-writing'],
-  6: ['ae7-wind-tunnel', 'w7-lab-report'],
+  // THE WIND TUNNEL LEFT WEEK 6. (Sept 5, 2026.)
+  //
+  // The parent: "Mission Control has projects due that he hasn't learned
+  // about." This was the live one — he was scheduled to build a wind tunnel on
+  // Fri Sept 11 while `ae7-wind-tunnels-flight-testing` declares
+  // `quarter: 'Summer 2027'`, and the write-up would have asked him to explain
+  // airflow and turbulence ten months before either is taught.
+  //
+  // It could not simply move later HERE: this schedule runs weeks 1-43 and ends
+  // 2027-05-28, so it covers Q1-Q4 and never reaches Summer at all. The build
+  // is therefore carried by its Success Center entry alone —
+  // asg::aerospace::Summer::3, due 2027-07-23, which names the lesson it needs.
+  //
+  // Week 6 keeps its writing prompt and has no hands-on project, which is the
+  // true state of Q1 Aerospace: all three of its projects need Q2 or Summer
+  // lessons. See the Q1 note in placeholders.js.
+  6: ['w7-lab-report'],
   7: ['w7-technical-writing', 'w7-engineering-journal'],
   8: ['w7-research-paper', 'w7-design-documentation'],
   9: ['w7-persuasive-writing', 'w7-presentation-skills', 'w7-space-journal', 'w7-engineering-notebook'],
 
-  // ---- Q2 2026-2027 (weeks 10-18): Structures & Propulsion ----
+  // ---- (still Q1 — see the boundary note in the header) ----
   10: ['sci7-paper-airplane', 'w7-lab-report'],
   11: ['sci7-balloon-rocket', 'w7-mission-report'],
   12: ['sci7-rubber-band-airplane', 'w7-engineering-journal', 'tech7-tinkercad-nameplate'],  // tech7-cad, Q1 lesson 20 of 22
-  13: ['sci7-bridge-building', 'w7-lab-report', 'tech7-tinkercad-low-poly'],  // tech7-3d-modeling, Q1 lesson 21 of 22
+  13: ['w7-lab-report', 'tech7-tinkercad-low-poly'],  // tech7-3d-modeling, Q1 lesson 21 of 22
   14: ['sci7-catapult', 'w7-technical-writing'],
   15: ['sci7-marble-roller-coaster', 'w7-scientific-observation'],
   16: ['sci7-baking-soda-vinegar', 'w7-space-journal'],
   17: ['w7-essay', 'w7-design-documentation'],
-  18: ['w7-persuasive-writing', 'w7-engineering-notebook'],
+  18: ['sci7-bridge-building', 'w7-persuasive-writing', 'w7-engineering-notebook'],  // s7-materials-science, Q2
 
-  // ---- Q3 2026-2027 (weeks 19-27): Orbits & Missions ----
+  // ---- (still Q2 — Q2 runs weeks 14-22) ----
   19: ['sci7-satellite-model', 'w7-lab-report', 'tech7-tinkercad-parametric-shelf'],  // tech7-cad-2, Q2 lesson 8 of 10
-  20: ['sci7-mars-rover-model', 'w7-mission-report', 'tech7-tinkercad-light-and-material'],  // tech7-3d-modeling-2, Q2 lesson 9 of 10
+  20: ['w7-mission-report', 'tech7-tinkercad-light-and-material'],  // tech7-3d-modeling-2, Q2 lesson 9 of 10
   21: ['sci7-homemade-compass', 'w7-scientific-observation'],
   22: ['w7-research-paper', 'w7-space-journal'],
-  23: ['w7-creative-writing', 'w7-engineering-notebook'],
+  23: ['sci7-mars-rover-model', 'w7-creative-writing', 'w7-engineering-notebook'],  // s7-planetary-science, Q3
   24: ['w7-presentation-skills', 'w7-design-documentation'],
   25: ['w7-technical-writing', 'w7-mission-report'],
   26: ['w7-essay', 'w7-scientific-observation'],
   27: ['w7-persuasive-writing', 'w7-space-journal'],
 
-  // ---- Q4 2026-2027 (weeks 28-36): Innovation & Design ----
-  28: ['sci7-drone-concepts', 'w7-lab-report'],
+  // ---- (still Q3 — Q3 runs weeks 23-34) ----
+  28: ['w7-lab-report'],
   29: ['sci7-egg-drop', 'w7-engineering-journal'],
   30: ['w7-technical-writing', 'w7-mission-report'],
   31: ['w7-research-paper', 'w7-design-documentation'],
@@ -121,7 +137,7 @@ export const weeklyWritingSchedule = {
   37: ['sci7-solar-oven', 'w7-lab-report', 'rb7-project-motor-servo'],  // rb7-actuators, Q4 lesson 3 of 8
   38: ['w7-technical-writing', 'w7-mission-report', 'rb7-project-setup-loop'],  // rb7-microcontrollers, Q4 lesson 4 of 8
   39: ['w7-persuasive-writing', 'w7-scientific-observation', 'rb7-project-button-decision'],  // rb7-programming, Q4 lesson 5 of 8
-  40: ['w7-presentation-skills', 'w7-engineering-notebook'],
+  40: ['sci7-drone-concepts', 'w7-presentation-skills', 'w7-engineering-notebook'],  // s7-aerodynamics-2, Q4
   41: ['w7-essay', 'w7-design-documentation', 'rb7-project-line-follower'],  // rb7-feedback, Q4 lesson 7 of 8
   42: ['w7-research-paper', 'w7-space-journal'],
   /**

@@ -10,6 +10,7 @@ Paste this at the start of the C4 conversation.**
 | Doc | What it holds |
 |---|---|
 | **This file, §The job** | Why the last session's fixes did not make it generic |
+| **`docs/GENERIC_CARRYOVER.md`** | **Read this first.** Four platform faults a school-fixing session found on Sept 5, 2026 — two already fixed, three still open, plus the four construction habits that produced them. None of it can be fixed in an Academy folder |
 | `docs/LEARNINGOS_PACK_SPEC.md` §3a, §3c | The contract, the four steps, and the screen §3a specified and nobody built |
 | `docs/PROJECT_LOG.md`, last two entries | C3 and what it cost |
 | `docs/STEP1_SCOPE.md` | Step 1 measured — what moved, what did not, and why |

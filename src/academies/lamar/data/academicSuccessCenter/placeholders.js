@@ -363,34 +363,40 @@ export const quarterlyAcademicPlaceholders = {
        * Aerospace runs two sessions a week, so at one lesson per session that
        * lesson is not reachable until **2027-01-20**. It was due in week 7.
        *
-       * It now lives at asg::aerospace::Q3::3, and Q1 takes the Bottle Rocket
-       * iteration below instead — the earliest Aerospace project that exists.
+       * It is a SUMMER project — `ae7-wind-tunnels-flight-testing` declares
+       * `quarter: 'Summer 2027'` — and now lives at asg::aerospace::Summer::3.
+       *
+       * **Q1 Aerospace has no NEW project, and cannot have one.** All three
+       * hands-on Aerospace projects exist, and the lessons they need are
+       * declared Q2 (Bottle Rocket), Summer (Parachute Drop) and Summer (Wind
+       * Tunnel). Nothing in this subject is buildable in Q1. That is a
+       * curriculum fact, not a scheduling accident, and it is written here so
+       * the next person does not "fix" it by moving a project back into Q1.
+       *
+       * The one entry below is not a new project. It collects a build he has
+       * ALREADY done — see its own note.
        */
       /**
-       * THE ROCKET, DONE AGAIN — THIS TIME AFTER THE LESSON. (Sept 5, 2026.)
+       * THE PARACHUTE DROP HE DID, THAT NOTHING COLLECTED. (Added Sept 5, 2026.)
        *
-       * The Aug 20 note above says the bottle rocket "already has its write-up
-       * — Aug 16, graded C, 73%." Both halves are true and together they are
-       * the whole problem: `ae7-rocket-design` is lesson **15 of 49**, which
-       * two sessions a week cannot reach before **2026-09-21**. He built and
-       * wrote up a propulsion project five weeks before propulsion was taught,
-       * and was asked in the write-up to "explain the role of pressure and
-       * Newton's Third Law." He scored a C.
+       * The Writing Journal scheduled the Parachute Drop build in week 4
+       * (2026-08-28) and he did it. No assignment anywhere collected the
+       * result: no portfolio entry, no grade, no line on the transcript. It
+       * was the only one of the three Aerospace builds with nothing waiting
+       * for it, and it went unnoticed because the two schedulers — the Writing
+       * Journal and this file — have never been compared.
        *
-       * That is also why the slot looked wrong in August. The parent said the
-       * rocket was "setup so late" for Sept 16 — but Sept 16 was very nearly
-       * RIGHT for lesson 15. It only read as late because the project had
-       * already happened early. The Aug 20 fix retitled the slot to the wind
-       * tunnel rather than asking why, which is how a lesson-43 project came
-       * to sit on a week-7 date.
+       * Deliberately carries NO `needsLesson`. Its lesson,
+       * `ae7-reentry-heat-shields`, is declared Summer 2027, and gating this
+       * on Summer would leave a build he finished in August uncollected for
+       * eleven months. It asks only what he OBSERVED — which canopy fell
+       * slower, and by how much — not the reentry physics he has not met. The
+       * theory belongs to the Summer lesson, not to this record.
        *
-       * So this is not a repeat of work he has done. It is the project's own
-       * `iterationPrompt` — one deliberate change to the rocket he already
-       * built — due eleven days after Rocket Design is taught, so the physics
-       * is in hand before he is asked to explain it. The parent regrades the
-       * August entry herself once this is in.
+       * PARENT: this is new content written to collect existing work. Change
+       * the date or the wording if it does not match what he actually built.
        */
-      { slotId: 'asg::aerospace::Q1::3', type: 'Portfolio Entry', format: 'investigation', dueDate: '2026-10-02', needsLesson: 'ae7-rocket-design', title: 'Bottle rocket, second launch — change one thing and measure it', note: 'Launch the rocket you already built again, changing exactly one thing: the water amount, the fin design, or the air pressure. Record how high or far it went on every launch, including the ones that went badly. Then explain what changed using thrust and Newton\'s Third Law from the Rocket Design lesson, and name one thing that could have skewed the result.' }
+      { slotId: 'asg::aerospace::Q1::4', type: 'Portfolio Entry', format: 'investigation', dueDate: '2026-10-09', title: 'Parachute drop — what you built and what you measured', note: 'The parachute you dropped in week 4. Photograph it, give the canopy size and string length, and write down the fall times you actually recorded — including the drops that went wrong. Say which version fell slowest and name one thing that could have skewed the timing. Why it works belongs to the Summer reentry lesson; this is the record of what happened.' }
     ],
     'Q2 2026-2027': [
       // *Chasing Space: Young Readers' Edition* (Leland Melvin) was dropped
@@ -404,15 +410,31 @@ export const quarterlyAcademicPlaceholders = {
       // remaining Q2 books land exactly two weeks apart: Nov 20 / Dec 4 /
       // Dec 18. See readingStaggerMap in useAppStore.js, which is what
       // actually moves a row already in her database.
-      { slotId: 'asg::aerospace::Q2::1', type: 'Reading Assignment', dueDate: '2026-12-18', title: 'Spaceman (Adapted for Young Readers) — weekly chapter pacing', note: 'Paced alongside the Q2 Aerospace lessons' }
+      { slotId: 'asg::aerospace::Q2::1', type: 'Reading Assignment', dueDate: '2026-12-18', title: 'Spaceman (Adapted for Young Readers) — weekly chapter pacing', note: 'Paced alongside the Q2 Aerospace lessons' },
+      /**
+       * THE ROCKET, DONE AGAIN — THIS TIME AFTER THE LESSON. (Sept 5, 2026.)
+       *
+       * The Aug 20 note in Q1 says the bottle rocket "already has its write-up
+       * — Aug 16, graded C, 73%." Both halves are true and together they are
+       * the whole problem: `ae7-rocket-design` declares `quarter: 'Q2'`. He
+       * built and wrote up a propulsion project in WEEK 2, a full quarter
+       * before propulsion is taught, and the write-up asks him to "explain the
+       * role of pressure and Newton's Third Law." He scored a C.
+       *
+       * That is also why the Q1 slot looked wrong in August. The parent said
+       * the rocket was "setup so late" for Sept 16 — it only read as late
+       * because the project had already happened early.
+       *
+       * Not a repeat of work he has done: the project's own `iterationPrompt`,
+       * one deliberate change to the rocket he already built, due in the
+       * quarter that teaches the physics. The parent regrades the August entry
+       * herself once this is in.
+       */
+      { slotId: 'asg::aerospace::Q2::2', type: 'Portfolio Entry', format: 'investigation', dueDate: '2026-12-04', needsLesson: 'ae7-rocket-design', title: 'Bottle rocket, second launch — change one thing and measure it', note: 'Launch the rocket you already built again, changing exactly one thing: the water amount, the fin design, or the air pressure. Record how high or far it went on every launch, including the ones that went badly. Then explain what changed using thrust and Newton\'s Third Law from the Rocket Design lesson, and name one thing that could have skewed the result.' }
     ],
     'Q3 2026-2027': [
       { slotId: 'asg::aerospace::Q3::1', type: 'Reading Assignment', dueDate: '2027-03-26', title: 'Rocketry: Investigate the Science and Technology of Rockets — reference reading', note: 'Paced alongside the Q3 Aerospace lessons' },
-      { slotId: 'asg::aerospace::Q3::2', type: 'Reading Assignment', dueDate: '2027-03-12', title: 'Higher, Steeper, Faster: The Daredevils Who Conquered the Skies — weekly pacing', note: 'Weekly chapter pacing. Read it for itself — what used to be an engineering analysis of it is now the Q4 flight test.' },
-      // Moved here from Q1 on Sept 5, 2026 — see the note at the end of Q1.
-      // Its lesson is reachable 2027-01-20; Feb 5 is the first Friday after
-      // that which does not already carry an Aerospace item.
-      { slotId: 'asg::aerospace::Q3::3', type: 'Portfolio Entry', format: 'investigation', dueDate: '2027-02-05', needsLesson: 'ae7-wind-tunnels-flight-testing', title: 'Wind tunnel test — design, results, and what the airflow showed', note: 'Engineering-journal write-up of the Wind Tunnel Test, built after the Wind Tunnels & Flight Testing lesson — the fullest hands-on Aerospace project of the year.' }
+      { slotId: 'asg::aerospace::Q3::2', type: 'Reading Assignment', dueDate: '2027-03-12', title: 'Higher, Steeper, Faster: The Daredevils Who Conquered the Skies — weekly pacing', note: 'Weekly chapter pacing. Read it for itself — what used to be an engineering analysis of it is now the Q4 flight test.' }
     ],
     'Q4 2026-2027': [
       /**
@@ -447,6 +469,12 @@ export const quarterlyAcademicPlaceholders = {
     ],
     'Summer 2027': [
       { slotId: 'asg::aerospace::Summer::1', type: 'Reading Assignment', dueDate: '2027-07-30', title: 'The Space Race: How the Cold War Put Humans on the Moon — weekly pacing', note: 'Independent summer aerospace reading' },
+      // Moved out of Q1 on Sept 5, 2026, and then out of Q3 the same day, when
+      // the lesson's DECLARED quarter was read instead of estimated from the
+      // timetable: `ae7-wind-tunnels-flight-testing` says
+      // `quarter: 'Summer 2027'`. Estimating a fact the data states outright
+      // is how it landed in Q3; this is the stated value.
+      { slotId: 'asg::aerospace::Summer::3', type: 'Portfolio Entry', format: 'investigation', dueDate: '2027-07-23', needsLesson: 'ae7-wind-tunnels-flight-testing', title: 'Wind tunnel test — design, results, and what the airflow showed', note: 'Engineering-journal write-up of the Wind Tunnel Test, built after the Wind Tunnels & Flight Testing lesson — the fullest hands-on Aerospace project of the year.' },
       { slotId: 'asg::aerospace::Summer::2', type: 'Portfolio Entry', format: 'build', dueDate: '2027-06-30', title: 'Summer build — glider or wind tunnel, documented end to end', note: 'Summer engineering project write-up — project TBD' }
     ]
   },

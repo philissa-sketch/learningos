@@ -1780,9 +1780,9 @@ flag something that is fine. A guard that cries wolf gets switched off.
 - `asg::technology::Q1::1` → **2026-10-16**, eight days after its lesson.
   Both earlier shipped dates are named in `fromDueDate`, so a database that
   took the Aug 30 correction and one that never did both land.
-- `asg::aerospace::Q1::2` → retired, and reborn as **`asg::aerospace::Q3::3`
-  due 2027-02-05**, sixteen days after its lesson. Q1 could not hold it: the
-  lesson is not reachable until January.
+- `asg::aerospace::Q1::2` → retired, and reborn as **`asg::aerospace::Summer::3`
+  due 2027-07-23**. It first went to Q3 on an ESTIMATED date and had to be moved
+  again the same day — see the correction below.
 - `asg::technology::Q2::1` — no date change, `needsLesson` recorded so the
   check can see it.
 
@@ -1814,11 +1814,37 @@ because the project had already happened early. The fix that followed retitled
 the slot to the wind tunnel rather than asking why, swapping a lesson-15 project
 for a lesson-43 one. The root cause was never a date.
 
-Q1 Aerospace now holds `asg::aerospace::Q1::3` — the project's own
-`iterationPrompt`, one deliberate change to the rocket he already built, due
-**2026-10-02**, eleven days after Rocket Design is taught. Not a repeat of work
-he has done: a second pass with the physics in hand. The parent regrades the
-August entry herself once it is in.
+The rocket iteration — the project's own `iterationPrompt`, one deliberate
+change to the rocket he already built — is `asg::aerospace::Q2::2`, due
+**2026-12-04**. Not a repeat of work he has done: a second pass with the physics
+in hand. The parent regrades the August entry herself once it is in.
+
+**Q1 Aerospace has no project and cannot have one.** All three hands-on
+Aerospace projects exist; their lessons are declared Q2, Summer and Summer.
+Nothing in the subject is buildable in Q1. Written into `placeholders.js` so the
+next person does not "fix" it by moving a project back.
+
+### The correction: I estimated a fact the data declares
+
+The first version of `verify-lesson-before-assignment.mjs` computed when a
+lesson would be reached — days per week from `WEEK_PATTERN`, one lesson per
+session. It was wrong on half of what it checked, and passed both:
+
+| Lesson | Estimated | **Declares** |
+|---|---|---|
+| `ae7-rocket-design` | Q1 | **Q2** |
+| `ae7-wind-tunnels-flight-testing` | Q3 | **Summer 2027** |
+
+All 49 Aerospace and all 40 Technology lessons carry a `quarter`, and
+`verify-planner-feeds.mjs` has scheduled projects from it since August. The
+answer was in the repository and an estimate was used instead — **a closure walk
+cannot see a fact typed as a literal**, and **assert the property, not the
+address**, both already in this log, met from the inside.
+
+The check now compares declared quarters only: an assignment may not be filed in
+an earlier quarter than the lesson it needs. No week arithmetic, no pace
+assumption. A lesson shipping without a quarter fails the check rather than
+falling back to a guess.
 
 ### The fourth depth
 
@@ -1833,3 +1859,145 @@ shape one level out again:
 
 Each fix looked complete. Fold this into the prerequisites design rather than
 building the two separately.
+
+---
+
+## Two schedulers, and only one of them was being fixed (Sept 5, 2026)
+
+The parent, on being shown the assignment moves: **"I thought you already moved
+aerospace projects before we started with science."**
+
+She had every reason to think so. The answer was that a project lives in **two
+independent schedulers** and only one had been touched:
+
+| | Says | Fixed earlier that day |
+|---|---|---|
+| `weeklySchedule.js` — Writing Journal | *build this in week N* | **no** |
+| `placeholders.js` — Success Center | *write-up due on this date* | yes |
+
+So the write-ups had been moved to sit after their lessons while the builds
+stayed where they were, and the two now contradicted each other outright:
+
+| Project | Build | Write-up |
+|---|---|---|
+| Bottle Rocket | week 2 — Aug 14 | Dec 4 |
+| Parachute Drop | week 4 — Aug 28 | **none existed** |
+| Wind Tunnel | week 6 — **Sep 11** | Jul 23 |
+
+**The wind tunnel was six days away.** He was scheduled to build one on Fri
+Sept 11 and explain airflow and turbulence that
+`ae7-wind-tunnels-flight-testing` does not teach until Summer 2027. Moving the
+write-up to July had not stopped that — it had widened the gap to ten months.
+
+It was found by the check written an hour earlier, extended to pools it had not
+covered. **The guard caught the incomplete fix that the person who wrote the
+guard had just made.**
+
+### What went where
+
+- **Week 6 no longer schedules the wind tunnel.** It could not move later
+  inside the Writing Journal: that schedule runs weeks 1-43 and ends
+  2027-05-28, so it covers Q1-Q4 and **never reaches Summer at all**. Nothing
+  needing a Summer lesson can live in it. The build is carried by
+  `asg::aerospace::Summer::3` (due 2027-07-23) alone.
+- **`asg::aerospace::Q1::4` collects the parachute drop**, which he built in
+  week 4 and which nothing anywhere collected — no portfolio entry, no grade,
+  no transcript line. It carries NO `needsLesson` on purpose: its lesson is
+  Summer, and gating it would leave August's work uncollected for eleven
+  months. It asks what he measured, not the reentry physics he has not met.
+- **The two past builds stay put.** The parent: leave the past, fix forward.
+  Moving weeks 2 and 4 now would rewrite a record of what happened rather than
+  change what he does.
+
+---
+
+## Science gets its own quarters, and its projects stop borrowing Aerospace's
+
+The parent chose to quarter the science lessons **knowing what it costs**: all
+39 were untagged, and in this app an untagged lesson is never gated — that is
+deliberate and commented as load-bearing in `quarterAvailability.js`. So all 39
+were open to him. Tagged at the Khan pace `schoolQuarter.js` documents —
+**Q1 12 · Q2 6 · Q3 11 · Q4 7 · Summer 3** — in list order so every "I" topic
+precedes its "II".
+
+**He now has 12 of 39 open and 27 locked**, through `s7-electricity`. That is
+the chosen trade, not an accident: Science now behaves like Aerospace and
+Technology.
+
+All 13 experiments were then repointed off the Aerospace lessons they had been
+borrowing. Those cross-links were never carelessness — `weeklySchedule.js`
+explains them in its header, and Aerospace lessons were the only ones carrying a
+quarter to schedule from. Once Science had quarters the borrowing was no longer
+needed.
+
+### The bug this pass introduced, and how it surfaced
+
+The first repoint used a regex that scanned forward from a project id to the
+next `relatedLessonId`. For the five experiments that had **no** link, it
+scanned past them into the *next* project and rewrote that one's. Three entries
+ended up with two `relatedLessonId` keys, and **JavaScript takes the last** — so
+Mars Rover, Satellite Model and Drone Concepts silently pointed at the wrong
+lesson while the audit reported them as fine, because the wrong value was still
+a real lesson id.
+
+Caught by counting links against projects: 10 links for 13 projects. Redone with
+a per-entry parse that strips every `relatedLessonId` in an entry and inserts
+exactly one. **A verification that only asks "does this resolve?" cannot see a
+value that resolves to the wrong thing.**
+
+---
+
+## Repair 1: the drift had one cause, not five
+
+`weeklySchedule.js` labelled its sections with quarter boundaries that disagree
+with `schoolQuarter.js`:
+
+| | The file said | Actually |
+|---|---|---|
+| Q1 | weeks 1-9 | **1-13** |
+| Q2 | weeks 10-18 | **14-22** |
+| Q3 | weeks 19-27 | **23-34** |
+| Q4 | weeks 28-36 | **35-43** |
+
+Every project filed under a header slid one quarter early. Five Science
+experiments were affected; the three that looked right were right by accident.
+
+Repointing to Science lessons resolved two of the five on its own — Satellite
+Model and Egg Drop — because Science lessons sit differently than the Aerospace
+ones they had been borrowing. Three moved: **Bridge Building** w13→w18 (Q2),
+**Mars Rover** w20→w23 (Q3), **Drone Concepts** w28→w40 (Q4). The boundaries in
+the section headers were corrected so the next edit does not repeat it.
+
+## Repair 3: the check covered two pools of five
+
+`verify-planner-feeds` re-derives placement from the lesson and fails on drift —
+exactly right — but its project list was `[...roboticsProjects,
+...technologyProjects]`. **16 of the 26 planner-scheduled projects were never
+measured.**
+
+Extended to all four lesson-backed pools, with two rules that differ on purpose:
+
+- **Not EARLIER than the lesson's quarter**, rather than equal to it.
+  `weeklySchedule.js` deliberately schedules some experiments after their lesson
+  as reinforcement and says so. Review is fine; being asked to do something
+  before it is taught is not.
+- **A break is not a holiday.** `isHoliday` reads `SCHOOL_HOLIDAYS` — eleven
+  single federal days. The real breaks live in `EXCLUDED_RANGES`. The old check
+  passed on holidays while four weeks of work sat inside actual school breaks.
+
+**175 passed, 2 failed, and both failures are decisions rather than surprises:**
+the two past builds the parent chose to leave, and the four break weeks awaiting
+her week-by-week walkthrough. A red that names a decision is worth more than a
+green that was not looking.
+
+### Still open
+
+- **Repair 2** — w17 (Thanksgiving), w21 (Christmas Eve), w22 (New Year's Eve),
+  w43 (closing week). Moves writing prompts as well as one experiment, so it
+  needs the parent week by week rather than a rule.
+- **The Writing Journal has no Summer.** It ends 2027-05-28 while the school
+  year model treats Summer as a real period with its own pace. Three Aerospace
+  lessons' worth of Summer content has no home in it.
+- **Q1 Aerospace has no new project and cannot have one.** All three builds need
+  Q2 or Summer lessons. Written into `placeholders.js` so it is not "fixed"
+  by moving one back.

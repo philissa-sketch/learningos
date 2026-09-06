@@ -920,6 +920,93 @@ console.log('\n--- the done-check gets the evidence it decides on ---');
     'this is the failure, reproduced — which is why the call sites are checked above');
 }
 
+// ---------------------------------------------------------------------------
+// EVERY POOL, NOT TWO OF THEM. (Sept 5, 2026.)
+//
+// The section above re-derives placement from the lesson and fails if a project
+// drifts — exactly the right check — but its project list is
+// `[...roboticsProjects, ...technologyProjects]`. Aerospace, Science and
+// Gardening were never in scope, so 16 of the 26 planner-scheduled projects
+// went unmeasured, and this is what was sitting in them:
+//
+//   * five Science experiments scheduled a full quarter BEFORE the lesson they
+//     were matched to, because `weeklySchedule.js` labelled its sections with
+//     quarter boundaries (Q1 = weeks 1-9) that disagree with schoolQuarter.js
+//     (Q1 = weeks 1-13). Every project filed under a header slid one quarter.
+//   * all three hands-on Aerospace projects in weeks 2, 4 and 6 while their
+//     lessons are declared Q2, Summer and Summer. That is why the parent's son
+//     built and wrote up the bottle rocket in week 2 and scored a C on it: he
+//     was asked to explain Newton's Third Law a quarter before Rocket Design.
+//
+// TWO RULES, AND THEY ARE DIFFERENT ON PURPOSE.
+//
+// Placement must not be EARLIER than the lesson's quarter — not "equal to it".
+// `weeklySchedule.js` deliberately schedules some experiments after their
+// lesson as review, and says so in its header. Reinforcement is fine; being
+// asked to do something before it has been taught is not.
+//
+// And a break is not a holiday. `isHoliday` reads SCHOOL_HOLIDAYS, which is
+// eleven single federal days — Labor Day, Christmas Day. The real breaks
+// (Thanksgiving week, winter break, the closing week) live in EXCLUDED_RANGES
+// in assignmentRecommendations.js. The check above passes on holidays while
+// work sits inside actual breaks, so this measures the ranges too.
+// ---------------------------------------------------------------------------
+console.log('\n--- every pool: a project never precedes its lesson ---');
+{
+  const { aerospaceProjects } = await import(REPO + '/src/academies/lamar/data/aerospace/aerospaceProjects.js');
+  const { scienceExperiments } = await import(REPO + '/src/academies/lamar/data/science/scienceExperiments.js');
+  const { aerospaceLessons7 } = await import(REPO + '/src/academies/lamar/data/lessons/aerospace7.js');
+  const { scienceLessons7 } = await import(REPO + '/src/academies/lamar/data/lessons/science7.js');
+  const { EXCLUDED_RANGES } = await import(REPO + '/src/academies/lamar/data/academicSuccessCenter/assignmentRecommendations.js');
+  const { getCurrentQuarter } = await import(REPO + '/src/lib/schoolQuarter.js');
+
+  const ORDER = ['Q1', 'Q2', 'Q3', 'Q4', 'Summer'];
+  const key = (label) => String(label || '').trim().split(' ')[0];
+  const parseLocal = (d) => { const [y, m, day] = d.split('-').map(Number); return new Date(y, m - 1, day); };
+
+  const allLessons = new Map(
+    [...aerospaceLessons7, ...scienceLessons7, ...roboticsLessons7, ...technologyLessons7].map((l) => [l.id, l])
+  );
+  const allProjects = [...aerospaceProjects, ...scienceExperiments, ...roboticsProjects, ...technologyProjects];
+  const feed = pf.writingScheduleCalendarItems({ writingEntries: [] });
+
+  ok('all four lesson-backed pools are measured, not two',
+    allProjects.length >= 26, `only ${allProjects.length} projects found`);
+
+  const unlinked = allProjects.filter((p) => !p.relatedLessonId);
+  ok('...and every one of them names the lesson it needs',
+    unlinked.length === 0,
+    unlinked.map((p) => p.id).join(', ') + ' — an unlinked project cannot be placed or checked');
+
+  const dangling = allProjects.filter((p) => p.relatedLessonId && !allLessons.has(p.relatedLessonId));
+  ok('...pointing at a lesson that exists',
+    dangling.length === 0,
+    dangling.map((p) => `${p.id} -> ${p.relatedLessonId}`).join(', '));
+
+  const early = [];
+  for (const p of allProjects) {
+    const item = feed.find((i) => String(i.key || '').includes(p.id));
+    const lesson = allLessons.get(p.relatedLessonId);
+    if (!item || !lesson || !lesson.quarter) continue;
+    const lands = key(getCurrentQuarter(parseLocal(item.dueDate))?.id);
+    if (ORDER.indexOf(lands) < ORDER.indexOf(key(lesson.quarter))) {
+      early.push(`${p.id} is week ${item.schoolWeek} (${item.dueDate}, ${lands}) but ${p.relatedLessonId} is taught in ${key(lesson.quarter)}`);
+    }
+  }
+  ok('no project is scheduled before the quarter its lesson is taught',
+    early.length === 0,
+    early.join('; '));
+
+  const inBreak = [];
+  for (const item of feed) {
+    const range = EXCLUDED_RANGES.find(([from, to]) => item.dueDate >= from && item.dueDate <= to);
+    if (range) inBreak.push(`week ${item.schoolWeek} (${item.dueDate}) is inside ${range[0]}..${range[1]}`);
+  }
+  ok('nothing in the Writing Journal falls inside a school break',
+    inBreak.length === 0,
+    [...new Set(inBreak)].join('; ') + ' — isHoliday only knows single federal days, so it cannot see these');
+}
+
 console.log(`\n${passed} passed, ${failures.length} failed`);
 if (failures.length) {
   console.log(`\n${failures.length} CHECK(S) FAILED`);

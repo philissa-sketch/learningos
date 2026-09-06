@@ -13,11 +13,11 @@ export const scienceExperiments = [
   {
     id: 'sci7-paper-airplane',
     subject: 'science',
+    relatedLessonId: 's7-aerodynamics',  // How Things Fly
     tier: 1,
     category: 'experiment',
     title: 'Paper Airplane Distance Test',
     theme: 'Aerodynamics — testing how design affects flight distance',
-    relatedLessonId: 'ae7-how-airplanes-fly',
     objectives: 'Test how different paper airplane designs affect flight distance.',
     materials: ['Several sheets of paper', 'Measuring tape or ruler', 'Tape (optional)'],
     procedure: [
@@ -41,11 +41,11 @@ export const scienceExperiments = [
   {
     id: 'sci7-balloon-rocket',
     subject: 'science',
+    relatedLessonId: 's7-forces-motion',  // Newton's Laws of Motion
     tier: 1,
     category: 'experiment',
     title: 'Balloon Rocket Race',
     theme: "Forces and Motion — demonstrating Newton's Third Law",
-    relatedLessonId: 'ae7-thrust',
     objectives: "Demonstrate Newton's Third Law using a balloon-powered rocket on a string.",
     materials: ['A balloon', 'A plastic straw', 'String (10+ feet)', 'Tape'],
     procedure: [
@@ -69,11 +69,11 @@ export const scienceExperiments = [
   {
     id: 'sci7-egg-drop',
     subject: 'science',
+    relatedLessonId: 's7-engineering-design',  // The Engineering Design Process
     tier: 1,
     category: 'experiment',
     title: 'Egg Drop Challenge',
     theme: 'Engineering Design — protecting a fragile object from impact',
-    relatedLessonId: 'ae7-engineering-design-process',
     objectives: 'Design a protective structure that keeps an egg from breaking when dropped.',
     materials: [
       'A raw egg',
@@ -107,6 +107,7 @@ export const scienceExperiments = [
   {
     id: 'sci7-baking-soda-vinegar',
     subject: 'science',
+    relatedLessonId: 's7-chemistry',  // Atoms & Reactions
     tier: 1,
     category: 'experiment',
     title: 'Baking Soda & Vinegar Reaction',
@@ -133,6 +134,7 @@ export const scienceExperiments = [
   {
     id: 'sci7-homemade-compass',
     subject: 'science',
+    relatedLessonId: 's7-magnetism',  // Magnets & Fields
     tier: 1,
     category: 'experiment',
     title: 'Homemade Compass',
@@ -159,6 +161,7 @@ export const scienceExperiments = [
   {
     id: 'sci7-solar-oven',
     subject: 'science',
+    relatedLessonId: 's7-energy-2',  // Renewable vs. Nonrenewable
     tier: 1,
     category: 'experiment',
     title: 'Solar Oven',
@@ -197,6 +200,7 @@ export const scienceExperiments = [
   {
     id: 'sci7-marble-roller-coaster',
     subject: 'science',
+    relatedLessonId: 's7-energy',  // Forms & Transformations of Energy
     tier: 1,
     category: 'experiment',
     title: 'Marble Roller Coaster',
@@ -233,11 +237,11 @@ export const scienceExperiments = [
   {
     id: 'sci7-bridge-building',
     subject: 'science',
+    relatedLessonId: 's7-materials-science',  // Properties of Materials
     tier: 1,
     category: 'experiment',
     title: 'Bridge Building Challenge',
     theme: 'Materials Science & Engineering Design — building a load-bearing structure',
-    relatedLessonId: 'ae7-aircraft-design',
     objectives: 'Design and build a bridge from household materials that can support the most weight.',
     materials: [
       'Popsicle sticks or drinking straws',
@@ -267,6 +271,7 @@ export const scienceExperiments = [
   {
     id: 'sci7-catapult',
     subject: 'science',
+    relatedLessonId: 's7-forces-motion',  // Newton's Laws of Motion — stored energy and projectiles
     tier: 1,
     category: 'experiment',
     title: 'Catapult',
@@ -302,11 +307,11 @@ export const scienceExperiments = [
   {
     id: 'sci7-mars-rover-model',
     subject: 'science',
+    relatedLessonId: 's7-planetary-science',  // Comparing Planets
     tier: 1,
     category: 'experiment',
     title: 'Mars Rover Model',
     theme: 'Space Science & Engineering Design — mechanical design for rough terrain',
-    relatedLessonId: 'ae7-mars-missions',
     objectives: 'Design and build a simple model rover that can move using household materials, exploring basic mechanical design.',
     materials: [
       'A small cardboard box or plastic container',
@@ -336,11 +341,11 @@ export const scienceExperiments = [
   {
     id: 'sci7-satellite-model',
     subject: 'science',
+    relatedLessonId: 's7-space-science',  // Spacecraft & Satellites
     tier: 1,
     category: 'experiment',
     title: 'Satellite Model',
     theme: 'Space Science — the basic components real satellites need',
-    relatedLessonId: 'ae7-satellites',
     objectives: 'Build a simple model satellite to explore the basic components real satellites need to function.',
     materials: [
       'A small box or container for the satellite body',
@@ -369,11 +374,11 @@ export const scienceExperiments = [
   {
     id: 'sci7-drone-concepts',
     subject: 'science',
+    relatedLessonId: 's7-aerodynamics-2',  // Airfoils & Angle of Attack
     tier: 1,
     category: 'experiment',
     title: 'Drone Concepts Model',
     theme: 'Engineering Design & Physics — multi-rotor balance and drone components',
-    relatedLessonId: 'ae7-drones',
     objectives: 'Build a simple model to explore how drones balance multiple rotors and understand basic drone components.',
     materials: [
       'A small piece of cardboard or foam board (for the body)',
@@ -403,11 +408,11 @@ export const scienceExperiments = [
   {
     id: 'sci7-rubber-band-airplane',
     subject: 'science',
+    relatedLessonId: 's7-energy',  // Forms & Transformations of Energy — stored elastic energy
     tier: 1,
     category: 'experiment',
     title: 'Rubber Band Airplane',
     theme: 'Aerodynamics — propeller thrust from stored elastic energy',
-    relatedLessonId: 'ae7-how-airplanes-fly-2',
     objectives: 'Build a simple rubber-band-powered airplane to explore propeller thrust and stored elastic energy.',
     materials: [
       'A balsa wood or foam airplane kit (or a simple frame from craft sticks or lightweight cardboard)',

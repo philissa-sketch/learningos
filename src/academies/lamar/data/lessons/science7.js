@@ -11,6 +11,8 @@ export const scienceLessons7 = [
     id: 's7-earth-science',
     subject: 'science',
     tier: 1,
+    quarter: 'Q1 2026-2027',
+    sequenceInQuarter: 1,
     title: "Layers of the Earth",
     theme: 'Earth Science — the structure of our planet',
     questions: [
@@ -80,6 +82,8 @@ export const scienceLessons7 = [
     id: 's7-life-science',
     subject: 'science',
     tier: 1,
+    quarter: 'Q1 2026-2027',
+    sequenceInQuarter: 2,
     title: 'Cells & Classification',
     theme: 'Life Science — the basic unit of life and how living things are grouped',
     questions: [
@@ -149,6 +153,8 @@ export const scienceLessons7 = [
     id: 's7-physical-science',
     subject: 'science',
     tier: 1,
+    quarter: 'Q1 2026-2027',
+    sequenceInQuarter: 3,
     title: 'Matter & States',
     theme: 'Physical Science — states of matter and phase changes',
     questions: [
@@ -218,6 +224,8 @@ export const scienceLessons7 = [
     id: 's7-physics',
     subject: 'science',
     tier: 1,
+    quarter: 'Q1 2026-2027',
+    sequenceInQuarter: 4,
     title: 'Motion Basics',
     theme: 'Physics — speed, velocity, and the vocabulary of motion',
     questions: [
@@ -287,6 +295,8 @@ export const scienceLessons7 = [
     id: 's7-chemistry',
     subject: 'science',
     tier: 1,
+    quarter: 'Q1 2026-2027',
+    sequenceInQuarter: 5,
     title: 'Atoms & Reactions',
     theme: 'Chemistry — atoms, molecules, and chemical reactions',
     questions: [
@@ -356,6 +366,8 @@ export const scienceLessons7 = [
     id: 's7-astronomy',
     subject: 'science',
     tier: 1,
+    quarter: 'Q1 2026-2027',
+    sequenceInQuarter: 6,
     title: 'Our Solar System',
     theme: 'Astronomy — the sun, planets, and other bodies in our solar system',
     questions: [
@@ -425,6 +437,8 @@ export const scienceLessons7 = [
     id: 's7-weather',
     subject: 'science',
     tier: 1,
+    quarter: 'Q1 2026-2027',
+    sequenceInQuarter: 7,
     title: 'Atmosphere & Weather Patterns',
     theme: 'Weather — instruments and vocabulary for describing the atmosphere',
     questions: [
@@ -494,6 +508,8 @@ export const scienceLessons7 = [
     id: 's7-energy',
     subject: 'science',
     tier: 1,
+    quarter: 'Q1 2026-2027',
+    sequenceInQuarter: 8,
     title: 'Forms & Transformations of Energy',
     theme: 'Energy — kinetic, potential, and conservation of energy',
     questions: [
@@ -568,6 +584,8 @@ export const scienceLessons7 = [
     id: 's7-forces-motion',
     subject: 'science',
     tier: 1,
+    quarter: 'Q1 2026-2027',
+    sequenceInQuarter: 9,
     title: "Newton's Laws of Motion",
     theme: "Forces and Motion — Newton's three laws in action",
     questions: [
@@ -639,6 +657,8 @@ export const scienceLessons7 = [
     id: 's7-gravity',
     subject: 'science',
     tier: 1,
+    quarter: 'Q1 2026-2027',
+    sequenceInQuarter: 10,
     title: 'Gravity & Orbits',
     theme: 'Gravity — how it shapes orbits and causes microgravity',
     questions: [
@@ -714,6 +734,8 @@ export const scienceLessons7 = [
     id: 's7-aerodynamics',
     subject: 'science',
     tier: 1,
+    quarter: 'Q1 2026-2027',
+    sequenceInQuarter: 11,
     title: 'How Things Fly',
     theme: 'Aerodynamics — the four forces of flight',
     questions: [
@@ -788,6 +810,8 @@ export const scienceLessons7 = [
     id: 's7-electricity',
     subject: 'science',
     tier: 1,
+    quarter: 'Q1 2026-2027',
+    sequenceInQuarter: 12,
     title: 'Circuits & Current',
     theme: 'Electricity — how current flows through circuits',
     questions: [
@@ -857,6 +881,8 @@ export const scienceLessons7 = [
     id: 's7-magnetism',
     subject: 'science',
     tier: 1,
+    quarter: 'Q2 2026-2027',
+    sequenceInQuarter: 1,
     title: 'Magnets & Fields',
     theme: 'Magnetism — poles, fields, and electromagnets',
     questions: [
@@ -926,6 +952,8 @@ export const scienceLessons7 = [
     id: 's7-materials-science',
     subject: 'science',
     tier: 1,
+    quarter: 'Q2 2026-2027',
+    sequenceInQuarter: 2,
     title: 'Properties of Materials',
     theme: 'Materials Science — how engineers describe and choose materials',
     questions: [
@@ -996,6 +1024,8 @@ export const scienceLessons7 = [
     id: 's7-engineering-design',
     subject: 'science',
     tier: 1,
+    quarter: 'Q2 2026-2027',
+    sequenceInQuarter: 3,
     title: 'The Engineering Design Process',
     theme: 'Engineering Design — how engineers move from problem to solution',
     questions: [
@@ -1065,6 +1095,8 @@ export const scienceLessons7 = [
     id: 's7-environmental-science',
     subject: 'science',
     tier: 1,
+    quarter: 'Q2 2026-2027',
+    sequenceInQuarter: 4,
     title: 'Ecosystems & Sustainability',
     theme: 'Environmental Science — ecosystems, biodiversity, and renewable resources',
     questions: [
@@ -1134,6 +1166,8 @@ export const scienceLessons7 = [
     id: 's7-space-science',
     subject: 'science',
     tier: 1,
+    quarter: 'Q2 2026-2027',
+    sequenceInQuarter: 5,
     title: 'Spacecraft & Satellites',
     theme: 'Space Science — the vehicles and equipment used to explore space',
     questions: [
@@ -1203,6 +1237,8 @@ export const scienceLessons7 = [
     id: 's7-rocket-science',
     subject: 'science',
     tier: 1,
+    quarter: 'Q2 2026-2027',
+    sequenceInQuarter: 6,
     title: 'How Rockets Work',
     theme: 'Rocket Science — propulsion, staging, and reentry',
     questions: [
@@ -1273,6 +1309,8 @@ export const scienceLessons7 = [
     id: 's7-planetary-science',
     subject: 'science',
     tier: 1,
+    quarter: 'Q3 2026-2027',
+    sequenceInQuarter: 1,
     title: 'Comparing Planets',
     theme: 'Planetary Science — comparing the planets of our solar system',
     questions: [
@@ -1343,6 +1381,8 @@ export const scienceLessons7 = [
     id: 's7-scientific-method',
     subject: 'science',
     tier: 1,
+    quarter: 'Q3 2026-2027',
+    sequenceInQuarter: 2,
     title: 'Asking & Testing Questions',
     theme: 'Scientific Method — hypotheses, variables, and controls',
     questions: [
@@ -1412,6 +1452,8 @@ export const scienceLessons7 = [
     id: 's7-chemistry-2',
     subject: 'science',
     tier: 1,
+    quarter: 'Q3 2026-2027',
+    sequenceInQuarter: 3,
     title: 'Chemistry II: Acids, Bases & pH',
     theme: 'The pH scale and how it classifies acids and bases',
     questions: [
@@ -1481,6 +1523,8 @@ export const scienceLessons7 = [
     id: 's7-physics-2',
     subject: 'science',
     tier: 1,
+    quarter: 'Q3 2026-2027',
+    sequenceInQuarter: 4,
     title: 'Physics II: Simple Machines',
     theme: 'Levers, pulleys, and inclined planes — how simple machines make work easier',
     questions: [
@@ -1555,6 +1599,8 @@ export const scienceLessons7 = [
     id: 's7-earth-science-2',
     subject: 'science',
     tier: 1,
+    quarter: 'Q3 2026-2027',
+    sequenceInQuarter: 5,
     title: 'Earth Science II: Plate Tectonics & Earthquakes',
     theme: 'How moving plates shape the planet and cause earthquakes',
     questions: [
@@ -1624,6 +1670,8 @@ export const scienceLessons7 = [
     id: 's7-life-science-2',
     subject: 'science',
     tier: 1,
+    quarter: 'Q3 2026-2027',
+    sequenceInQuarter: 6,
     title: 'Life Science II: Genetics Basics',
     theme: 'DNA, genes, genotype, and phenotype',
     questions: [
@@ -1693,6 +1741,8 @@ export const scienceLessons7 = [
     id: 's7-physical-science-2',
     subject: 'science',
     tier: 1,
+    quarter: 'Q3 2026-2027',
+    sequenceInQuarter: 7,
     title: 'Physical Science II: Physical vs. Chemical Changes',
     theme: 'Telling reversible physical changes from true chemical reactions',
     questions: [
@@ -1767,6 +1817,8 @@ export const scienceLessons7 = [
     id: 's7-weather-2',
     subject: 'science',
     tier: 1,
+    quarter: 'Q3 2026-2027',
+    sequenceInQuarter: 8,
     title: 'Weather II: Clouds & Fronts',
     theme: 'Identifying cloud types and what they signal about weather',
     questions: [
@@ -1836,6 +1888,8 @@ export const scienceLessons7 = [
     id: 's7-energy-2',
     subject: 'science',
     tier: 1,
+    quarter: 'Q3 2026-2027',
+    sequenceInQuarter: 9,
     title: 'Energy II: Renewable vs. Nonrenewable',
     theme: 'Comparing energy sources and their environmental impact',
     questions: [
@@ -1915,6 +1969,8 @@ export const scienceLessons7 = [
     id: 's7-forces-motion-2',
     subject: 'science',
     tier: 1,
+    quarter: 'Q3 2026-2027',
+    sequenceInQuarter: 10,
     title: 'Forces and Motion II: Momentum',
     theme: 'Mass in motion and the conservation of momentum',
     questions: [
@@ -1994,6 +2050,8 @@ export const scienceLessons7 = [
     id: 's7-gravity-2',
     subject: 'science',
     tier: 1,
+    quarter: 'Q3 2026-2027',
+    sequenceInQuarter: 11,
     title: 'Gravity II: Weight vs. Mass',
     theme: 'Why an astronaut weighs less on the Moon but has the same mass',
     questions: [
@@ -2073,6 +2131,8 @@ export const scienceLessons7 = [
     id: 's7-aerodynamics-2',
     subject: 'science',
     tier: 1,
+    quarter: 'Q4 2026-2027',
+    sequenceInQuarter: 1,
     title: 'Aerodynamics II: Airfoils & Angle of Attack',
     theme: 'The wing shape and angle that let airplanes and birds fly',
     questions: [
@@ -2157,6 +2217,8 @@ export const scienceLessons7 = [
     id: 's7-electricity-2',
     subject: 'science',
     tier: 1,
+    quarter: 'Q4 2026-2027',
+    sequenceInQuarter: 2,
     title: 'Electricity II: Series & Parallel Circuits',
     theme: 'How circuit design affects what happens when one part fails',
     questions: [
@@ -2236,6 +2298,8 @@ export const scienceLessons7 = [
     id: 's7-magnetism-2',
     subject: 'science',
     tier: 1,
+    quarter: 'Q4 2026-2027',
+    sequenceInQuarter: 3,
     title: 'Magnetism II: Electromagnets & Magnetic Poles',
     theme: 'Attraction, repulsion, and controllable magnetism',
     questions: [
@@ -2315,6 +2379,8 @@ export const scienceLessons7 = [
     id: 's7-materials-science-2',
     subject: 'science',
     tier: 1,
+    quarter: 'Q4 2026-2027',
+    sequenceInQuarter: 4,
     title: 'Materials Science II: Composites & Alloys',
     theme: 'Combining materials to get properties neither has alone',
     questions: [
@@ -2404,6 +2470,8 @@ export const scienceLessons7 = [
     id: 's7-engineering-design-2',
     subject: 'science',
     tier: 1,
+    quarter: 'Q4 2026-2027',
+    sequenceInQuarter: 5,
     title: 'Engineering Design II: Prototyping & Testing',
     theme: 'Why engineers build rough versions and push designs to failure',
     questions: [
@@ -2488,6 +2556,8 @@ export const scienceLessons7 = [
     id: 's7-environmental-science-2',
     subject: 'science',
     tier: 1,
+    quarter: 'Q4 2026-2027',
+    sequenceInQuarter: 6,
     title: 'Environmental Science II: Carbon Cycle & Climate',
     theme: 'How carbon moves through the atmosphere, plants, and human activity',
     questions: [
@@ -2562,6 +2632,8 @@ export const scienceLessons7 = [
     id: 's7-space-science-2',
     subject: 'science',
     tier: 1,
+    quarter: 'Q4 2026-2027',
+    sequenceInQuarter: 7,
     title: 'Space Science II: Space Stations & Life Support',
     theme: 'How humans live and work in orbit for months at a time',
     questions: [
@@ -2651,6 +2723,8 @@ export const scienceLessons7 = [
     id: 's7-rocket-science-2',
     subject: 'science',
     tier: 1,
+    quarter: 'Summer 2027',
+    sequenceInQuarter: 1,
     title: 'Rocket Science II: Staging & Specific Impulse',
     theme: 'Why rockets shed weight in stages and how engine efficiency is measured',
     questions: [
@@ -2735,6 +2809,8 @@ export const scienceLessons7 = [
     id: 's7-planetary-science-2',
     subject: 'science',
     tier: 1,
+    quarter: 'Summer 2027',
+    sequenceInQuarter: 2,
     title: 'Planetary Science II: Moons & Rings',
     theme: 'Comparing moon counts and ring systems across the solar system',
     questions: [
@@ -2804,6 +2880,8 @@ export const scienceLessons7 = [
     id: 's7-scientific-method-2',
     subject: 'science',
     tier: 1,
+    quarter: 'Summer 2027',
+    sequenceInQuarter: 3,
     title: 'Scientific Method II: Designing a Fair Experiment',
     theme: 'Controlling variables, replication, and avoiding bias',
     questions: [
