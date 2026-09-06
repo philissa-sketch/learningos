@@ -4109,7 +4109,17 @@ export const useAppStore = create((set, get) => ({
      * milestones, or any status past 'not-started' keeps it — a dropped
      * assignment is never worth deleting real work over.
      */
-    const RETIRED_ASSIGNMENT_SLOTS = new Set(['asg::aerospace::Q2::2', 'asg::socialStudies::Q2::3']);
+    // asg::aerospace::Q1::2 — the Wind tunnel test write-up, moved OUT of Q1
+    // on Sept 5, 2026. The parent: "Mission Control has projects due that he
+    // hasn't learned about." Its project needs Aerospace lesson 43 of 49,
+    // which two sessions a week cannot reach before 2027-01-20; it was due in
+    // week 7. It lives at asg::aerospace::Q3::3 now, which seeds itself. The
+    // Q1 row has to go or his board keeps both.
+    const RETIRED_ASSIGNMENT_SLOTS = new Set([
+      'asg::aerospace::Q2::2',
+      'asg::socialStudies::Q2::3',
+      'asg::aerospace::Q1::2'
+    ]);
     const retiredAssignmentIds = academicAssignments
       .filter(
         (a) =>
@@ -4228,7 +4238,19 @@ export const useAppStore = create((set, get) => ({
       'asg::math::Q4::1':         { fromDueDate: ['2026-09-16', '2027-04-16'], dueDate: '2027-04-30', format: 'applied-math' },
       'asg::math::Summer::1':     { fromDueDate: '2026-09-16', dueDate: '2027-07-09', format: 'applied-math' },
       // --- dates: nine assignments on one day ----------------------------
-      'asg::technology::Q1::1':   { fromDueDate: '2026-09-16', dueDate: '2026-09-11', format: 'build' },
+      // --- dates: a project due before the lesson that teaches it ---------
+      //
+      // Sept 5, 2026. The parent: "Mission Control has projects due that he
+      // hasn't learned about."
+      //
+      // The Tinkercad Nameplate needs lesson `tech7-cad`, number 20 of
+      // Technology's 40. Technology runs two sessions a week, so at one
+      // lesson per session that is 2026-10-08 at the earliest. Sept 11 would
+      // have needed four lessons a week against two scheduled sessions.
+      //
+      // Both earlier shipped dates are named: a row that took the Aug 30
+      // correction sits on 2026-09-11, one that never did on 2026-09-16.
+      'asg::technology::Q1::1':   { fromDueDate: ['2026-09-16', '2026-09-11'], dueDate: '2026-10-16', format: 'build' },
       'asg::science::Q1::1':      { fromDueDate: '2026-09-16', dueDate: '2026-09-25', format: 'build' },
       'asg::writing::Q1::1':      { fromDueDate: '2026-09-16', dueDate: '2026-10-23', format: 'writing-sample' },
       // --- dates: two book reports whose run-ups overlapped ---------------

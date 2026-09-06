@@ -349,7 +349,48 @@ export const quarterlyAcademicPlaceholders = {
       // Q1. The title is what was wrong. The bottle rocket already has its
       // write-up — he wrote it in the Writing Journal on Aug 16 and she graded
       // it C, 73%.
-      { slotId: 'asg::aerospace::Q1::2', type: 'Portfolio Entry', format: 'investigation', dueDate: '2026-09-16', title: 'Wind tunnel test — design, results, and what the airflow showed', note: 'Engineering-journal write-up of the Wind Tunnel Test built in week 6 — the fullest hands-on Aerospace project of the quarter' }
+      /**
+       * THE WIND TUNNEL LEFT Q1. (Moved Sept 5, 2026.)
+       *
+       * The parent: *"Mission Control has projects due that he hasn't learned
+       * about."*
+       *
+       * The note above this used to say Sept 16 was "the Wednesday after the
+       * Wind Tunnel Test (Fri Sept 11), the last hands-on Aerospace project of
+       * Q1." That was wrong, and nothing could see it: the write-up is of the
+       * `ae7-wind-tunnel` project, which needs lesson
+       * `ae7-wind-tunnels-flight-testing` — **number 43 of Aerospace's 49**.
+       * Aerospace runs two sessions a week, so at one lesson per session that
+       * lesson is not reachable until **2027-01-20**. It was due in week 7.
+       *
+       * It now lives at asg::aerospace::Q3::3, and Q1 takes the Bottle Rocket
+       * iteration below instead — the earliest Aerospace project that exists.
+       */
+      /**
+       * THE ROCKET, DONE AGAIN — THIS TIME AFTER THE LESSON. (Sept 5, 2026.)
+       *
+       * The Aug 20 note above says the bottle rocket "already has its write-up
+       * — Aug 16, graded C, 73%." Both halves are true and together they are
+       * the whole problem: `ae7-rocket-design` is lesson **15 of 49**, which
+       * two sessions a week cannot reach before **2026-09-21**. He built and
+       * wrote up a propulsion project five weeks before propulsion was taught,
+       * and was asked in the write-up to "explain the role of pressure and
+       * Newton's Third Law." He scored a C.
+       *
+       * That is also why the slot looked wrong in August. The parent said the
+       * rocket was "setup so late" for Sept 16 — but Sept 16 was very nearly
+       * RIGHT for lesson 15. It only read as late because the project had
+       * already happened early. The Aug 20 fix retitled the slot to the wind
+       * tunnel rather than asking why, which is how a lesson-43 project came
+       * to sit on a week-7 date.
+       *
+       * So this is not a repeat of work he has done. It is the project's own
+       * `iterationPrompt` — one deliberate change to the rocket he already
+       * built — due eleven days after Rocket Design is taught, so the physics
+       * is in hand before he is asked to explain it. The parent regrades the
+       * August entry herself once this is in.
+       */
+      { slotId: 'asg::aerospace::Q1::3', type: 'Portfolio Entry', format: 'investigation', dueDate: '2026-10-02', needsLesson: 'ae7-rocket-design', title: 'Bottle rocket, second launch — change one thing and measure it', note: 'Launch the rocket you already built again, changing exactly one thing: the water amount, the fin design, or the air pressure. Record how high or far it went on every launch, including the ones that went badly. Then explain what changed using thrust and Newton\'s Third Law from the Rocket Design lesson, and name one thing that could have skewed the result.' }
     ],
     'Q2 2026-2027': [
       // *Chasing Space: Young Readers' Edition* (Leland Melvin) was dropped
@@ -367,7 +408,11 @@ export const quarterlyAcademicPlaceholders = {
     ],
     'Q3 2026-2027': [
       { slotId: 'asg::aerospace::Q3::1', type: 'Reading Assignment', dueDate: '2027-03-26', title: 'Rocketry: Investigate the Science and Technology of Rockets — reference reading', note: 'Paced alongside the Q3 Aerospace lessons' },
-      { slotId: 'asg::aerospace::Q3::2', type: 'Reading Assignment', dueDate: '2027-03-12', title: 'Higher, Steeper, Faster: The Daredevils Who Conquered the Skies — weekly pacing', note: 'Weekly chapter pacing. Read it for itself — what used to be an engineering analysis of it is now the Q4 flight test.' }
+      { slotId: 'asg::aerospace::Q3::2', type: 'Reading Assignment', dueDate: '2027-03-12', title: 'Higher, Steeper, Faster: The Daredevils Who Conquered the Skies — weekly pacing', note: 'Weekly chapter pacing. Read it for itself — what used to be an engineering analysis of it is now the Q4 flight test.' },
+      // Moved here from Q1 on Sept 5, 2026 — see the note at the end of Q1.
+      // Its lesson is reachable 2027-01-20; Feb 5 is the first Friday after
+      // that which does not already carry an Aerospace item.
+      { slotId: 'asg::aerospace::Q3::3', type: 'Portfolio Entry', format: 'investigation', dueDate: '2027-02-05', needsLesson: 'ae7-wind-tunnels-flight-testing', title: 'Wind tunnel test — design, results, and what the airflow showed', note: 'Engineering-journal write-up of the Wind Tunnel Test, built after the Wind Tunnels & Flight Testing lesson — the fullest hands-on Aerospace project of the year.' }
     ],
     'Q4 2026-2027': [
       /**
@@ -459,10 +504,17 @@ export const quarterlyAcademicPlaceholders = {
   // automatically without disturbing existing data).
   technology: {
     'Q1 2026-2027': [
-      { slotId: 'asg::technology::Q1::1', type: 'Portfolio Entry', format: 'build', dueDate: '2026-09-11', title: 'Tinkercad Mission Nameplate — designed, dimensioned, documented', note: 'Real built artifact from the Q1 web-development lessons (a working page or small project) — project TBD' }
+      // Moved from 2026-09-11 on Sept 5, 2026. The Tinkercad Nameplate needs
+      // lesson `tech7-cad` — number 20 of Technology's 40 — and Technology
+      // runs two sessions a week, so that lesson is not reachable until
+      // 2026-10-08. It was due in week 6, which would have needed four
+      // lessons a week against two scheduled sessions.
+      { slotId: 'asg::technology::Q1::1', type: 'Portfolio Entry', format: 'build', dueDate: '2026-10-16', needsLesson: 'tech7-cad', title: 'Tinkercad Mission Nameplate — designed, dimensioned, documented', note: 'The nameplate built in Tinkercad after the CAD Software Fundamentals lesson: exact dimensions typed rather than dragged, one shape used as a hole, and what changed when the base length moved.' }
     ],
     'Q2 2026-2027': [
-      { slotId: 'asg::technology::Q2::1', type: 'Portfolio Entry', format: 'investigation', dueDate: '2026-12-02', title: 'The Change-One-Number Test — parametric design write-up', note: 'Real built artifact from the Q2 automation/robotics-programming lessons — project TBD' },
+      // Needs lesson `tech7-cad-2`, number 30 of 40, reachable 2026-11-12.
+      // Dec 2 already clears it — checked, not assumed.
+      { slotId: 'asg::technology::Q2::1', type: 'Portfolio Entry', format: 'investigation', dueDate: '2026-12-02', needsLesson: 'tech7-cad-2', title: 'The Change-One-Number Test — parametric design write-up', note: 'Real built artifact from the Q2 automation/robotics-programming lessons — project TBD' },
       { slotId: 'asg::technology::Q2::2', type: 'Presentation', dueDate: '2026-12-11', format: 'demonstration', title: 'Demo your CAD build — walk through one design decision', note: 'Demo a real working program he wrote — format TBD' }
     ]
   }

@@ -1731,3 +1731,105 @@ history was deliberately not rewritten while the repo is private.
 **Third time this week a guard was pinned to a name instead of a property**, and
 the third different subsystem: the stagger map, the corrections table, and now
 the ignore rules.
+
+---
+
+## Projects due before the lessons that teach them (Sept 5, 2026)
+
+The parent, looking at Mission Control: **"Mission Control has projects due that
+he hasn't learned about."**
+
+| Assignment | Was due | Needs lesson | Reachable |
+|---|---|---|---|
+| Tinkercad Mission Nameplate | 2026-09-11 (week 6) | `tech7-cad` **#20 of 40** | 2026-10-08 |
+| Wind tunnel test | 2026-09-16 (week 7) | `ae7-wind-tunnels-flight-testing` **#43 of 49** | 2027-01-20 |
+| The Change-One-Number Test | 2026-12-02 | `tech7-cad-2` **#30 of 40** | 2026-11-12 — already fine |
+
+The seed comment above the wind tunnel had asserted the opposite in so many
+words — *"Sept 16 is the Wednesday after the Wind Tunnel Test (Fri Sept 11), the
+last hands-on Aerospace project of Q1."* It was written from the project's
+place in Q1's story, never from the lesson's place in the sequence.
+
+### The fact was in the repository and unreachable
+
+Every project carries a `relatedLessonId`. Every lesson list is ordered. But an
+ASSIGNMENT carried no link to its project — the two were joined only by having
+similar titles, which no check can read. So the dependency existed in the data
+the entire time and the only thing that ever compared the two was a parent
+looking at a screen.
+
+Assignments now carry `needsLesson` directly, and
+`scripts/verify-lesson-before-assignment.mjs` measures it.
+
+### The pace is read, not assumed
+
+`schoolQuarter.js` says ~12 lessons a quarter, but says in its own words that
+this is the **Khan Academy** pace — and Aerospace and Technology are
+`ACTIVE_SUBJECTS`, taught by Mission Control on its own timetable. The rate
+comes from `WEEK_PATTERN` instead: Aerospace meets Monday and Wednesday,
+Technology Tuesday and Thursday. Two sessions each.
+
+At **one lesson per session** — deliberately the most optimistic rate a learner
+could manage — Sept 11 would have needed four Technology lessons a week and
+Sept 16 eight Aerospace lessons a week, against two scheduled sessions. The
+optimism is the point: the check can fail to flag something late and can never
+flag something that is fine. A guard that cries wolf gets switched off.
+
+### What moved
+
+- `asg::technology::Q1::1` → **2026-10-16**, eight days after its lesson.
+  Both earlier shipped dates are named in `fromDueDate`, so a database that
+  took the Aug 30 correction and one that never did both land.
+- `asg::aerospace::Q1::2` → retired, and reborn as **`asg::aerospace::Q3::3`
+  due 2027-02-05**, sixteen days after its lesson. Q1 could not hold it: the
+  lesson is not reachable until January.
+- `asg::technology::Q2::1` — no date change, `needsLesson` recorded so the
+  check can see it.
+
+**Q1 Aerospace now has no project.** Worth knowing rather than discovering: the
+subject has only three hands-on projects in the whole curriculum, and they need
+lessons 15, 42 and 43. The earliest, the Bottle Rocket, is not reachable until
+partway through Q2. Technology is the same shape — its first project needs
+lesson 20 of 40.
+
+### The same fault, five weeks earlier, with a grade on it
+
+Asked whether the curriculum's Bottle Rocket was a harder project than the one
+he had already done, the answer was no — there is only one bottle rocket in all
+of Aerospace, and checking it found the fault had already happened once:
+
+| | |
+|---|---|
+| He wrote it up | **2026-08-16** (week 2) — graded **C, 73%** |
+| `ae7-rocket-design` (#15 of 49) reachable | **2026-09-21** |
+
+He built and wrote up a propulsion project five weeks before propulsion was
+taught, and the write-up asks him to *"explain the role of pressure and Newton's
+Third Law."*
+
+**It is also why the wind tunnel ended up on a week-7 date.** The Aug 20 note in
+`placeholders.js` records the parent saying the rocket was *"setup so late"* for
+Sept 16 — but Sept 16 was very nearly right for lesson 15. It only read as late
+because the project had already happened early. The fix that followed retitled
+the slot to the wind tunnel rather than asking why, swapping a lesson-15 project
+for a lesson-43 one. The root cause was never a date.
+
+Q1 Aerospace now holds `asg::aerospace::Q1::3` — the project's own
+`iterationPrompt`, one deliberate change to the rocket he already built, due
+**2026-10-02**, eleven days after Rocket Design is taught. Not a repeat of work
+he has done: a second pass with the physics in hand. The parent regrades the
+August entry herself once it is in.
+
+### The fourth depth
+
+`ASSIGNMENT_PREREQUISITES.md`, written earlier the same day, designs `blockedBy`
+for assignment→**assignment**. This is assignment→**lesson**, and it is the same
+shape one level out again:
+
+1. Aug 15 — a due date with no run-up.
+2. Aug 16 — a milestone with no start.
+3. Sept 5 — two run-ups overlapping.
+4. **Sept 5 — work scheduled before the teaching that makes it possible.**
+
+Each fix looked complete. Fold this into the prerequisites design rather than
+building the two separately.
