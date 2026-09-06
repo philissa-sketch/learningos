@@ -1613,3 +1613,121 @@ reverting. A guard that has never failed is not a guard.
 - **Five `asg::writing::*` slots are filed under the `reading` key** in
   `quarterlyAcademicPlaceholders`, while `bookSwap.js` derives a slot's subject
   from its slotId. Two places disagree about which subject those belong to.
+
+---
+
+## A year of field trips, deleted one reload at a time (Sept 5, 2026)
+
+The parent: **"There were field trips planned for the year and I no longer see
+them."**
+
+`planFieldTripDedupe`, written Aug 28 to collapse duplicate trips arriving
+through the import, decided whether two rows were the same visit like this:
+
+```js
+const sameVisit = otherDate === '' || otherDate === winnerDate;
+if (sameVisit && !fieldTripCarriesWork(other)) dropIds.push(other.id);
+```
+
+**A blank date counted as matching.** So a second visit to a place she had
+planned but not yet dated was read as a duplicate of the first and soft-deleted
+— on every hydrate, not once. Planning a year means choosing the places first
+and the dates later, and the repeat visit is the normal shape of it: a library's
+monthly homeschool day, a museum in two seasons.
+
+Reproduced against the real function before anything was changed:
+
+| Planned | Survived |
+|---|---|
+| 4 library visits, first dated, three dates to come | **1** |
+| 6 trips across 3 places, all undated | **3** |
+| 4 library visits, all dates entered | 4 — correct |
+
+Two rows are the same visit only when they say so: identical, non-empty dates.
+Undated repeats now fall through to the branch that keeps a row and gives it an
+id distinct from the winner's.
+
+What that gives up, written down rather than discovered later: two *undated*
+copies arriving through an import no longer collapse on their own. That is the
+right way round, and it is this file's own principle one step further — it
+already says *a duplicate cleanup that deletes the finished copy is worse than
+the duplicates.* A cleanup that deletes a plan is too.
+
+### Forty-seven checks passed while this ran
+
+`verify-field-trip-records` was entirely about a COMPLETED trip reaching the
+compliance packet. Not one check asked what the cleanup is allowed to REMOVE.
+The same shape as the stagger map three entries up: the guard measured the
+output everyone was worried about, and the destructive path had no guard at all.
+
+Section 7 now holds it from both sides — the dedupe must still collapse the Aug
+28 import copies, and must never take a row that is only undated. Verified by
+restoring the old line and watching three of them fail.
+
+### The restore, and the instruction that shaped it
+
+Every deleted trip was still in Dexie carrying a tombstone, so nothing was lost.
+But offered the restore, the parent said: **"Make sure duplicates are not
+added."**
+
+She was right, and it is the whole difficulty. The tombstoned pile is not one
+thing. It holds her undated plans AND the genuine undated import copies the Aug
+28 dedupe was built to remove. Content cannot separate them: two undated rows to
+the same place with the same empty notes are byte-identical whether she planned
+two visits or an import cloned one.
+
+`createdAt` separates them, and only `createdAt` — the one field that records a
+separate ACT of creation rather than a property of the trip:
+
+- `addFieldTrip` stamps `new Date().toISOString()` per trip, one at a time, so
+  two visits she planned herself never share an instant.
+- `mergeBySyncId` copies the incoming row wholesale, `createdAt` included, so an
+  import's copy carries the SAME instant as the row it duplicates — and that
+  original is the row the dedupe kept, which is still on screen.
+- the seeder stamps one `ftCreatedAt` across a whole batch.
+
+So: a tombstoned row whose instant is already visible is a copy and stays
+deleted; one with an instant of its own was a separate act and comes back. Two
+tombstones sharing an instant are copies of each other and one returns, not
+both. A row with **no** `createdAt` cannot be told from a copy, so it stays
+deleted — an unidentifiable row is exactly the case where a duplicate would be
+added.
+
+`planUndatedTripRestore` is pure and tested, like the dedupe beside it, and runs
+once behind a meta flag. Once, because after this pass a tombstone on these rows
+means what it says again: if she deletes a restored trip herself it has to stay
+deleted, and a restore running every hydrate would undo her the way the dedupe
+just did. Eight checks in section 8. **47 → 62.**
+
+### Ruled out on the way
+
+- **The import.** `mergeBySyncId` is purely additive: it builds from the local
+  rows and only adds an unmatched incoming row or overwrites a matched one's
+  content. A local row with no counterpart survives. It has no removal path, so
+  importing another Academy's backup could only ever have made the list longer.
+- **The wrong Academy.** Each opens its own Dexie database, and C4 step 1 made
+  choosing possible two days earlier, so this was the first suspect. Eliminated
+  by the parent: everything else on the screen was his and correct.
+
+### Found while answering "why is petal-pestle showing in my file list"
+
+Three exported databases — `petal-pestle-backup-2026-08-31.json` and two browser
+duplicate-downloads of it — plus `petal-pestle-rendered.html`, **committed** in
+`a81fa8f`. Every `.gitignore` rule missed them twice over: they are named
+"backup" and every pattern only knew "progress", and they landed in the repo
+ROOT rather than in `Progress/`, so the folder rule added Aug 25 — added
+precisely because *"a location cannot be typo'd the way a filename can"* — never
+saw them either.
+
+The root is now closed by default with `package.json` and `package-lock.json`
+named back in, plus `*backup*.json`, `*-export-*.json` and `*-rendered.html` by
+shape anywhere in the tree. Tested both directions.
+
+`.gitignore` alone changes nothing — git never ignores a file it already tracks,
+which is why `check-ignore` still reported all four as NOT IGNORED until tested
+with `--no-index`. They need `git rm --cached`. They stay in `a81fa8f`; the
+history was deliberately not rewritten while the repo is private.
+
+**Third time this week a guard was pinned to a name instead of a property**, and
+the third different subsystem: the stagger map, the corrections table, and now
+the ignore rules.

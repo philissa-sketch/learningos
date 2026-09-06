@@ -291,6 +291,124 @@ console.log('\n--- 6. the packet is actually given the trips ---');
   ok('no other screen builds a packet without the trips', outside.length === 0, outside.join(', '));
 }
 
+// ---------------------------------------------------------------------------
+// 7. THE DEDUPE NEVER DELETES A PLAN. (Sept 5, 2026.)
+//
+// The parent: "There were field trips planned for the year and I no longer
+// see them." `planFieldTripDedupe` counted a BLANK date as matching the
+// winner's date, so a second visit she had planned but not yet dated was
+// soft-deleted on every hydrate. Four visits to one library became one.
+//
+// Forty-seven checks passed while that ran, because every one of them was
+// about a COMPLETED trip reaching the compliance packet. Nothing asserted
+// what the cleanup is allowed to remove. These do, from both sides: it must
+// still collapse the import copies it was built for, and it must never take
+// a row that is only undated.
+// ---------------------------------------------------------------------------
+console.log('\n--- 7. the dedupe never deletes a plan ---');
+{
+  const { planFieldTripDedupe } = await import(REPO + '/src/lib/fieldTrips.js');
+  const T = (id, destination, date, extra = {}) => ({
+    id, destination, date, status: 'planned', createdAt: '2026-08-0' + id, ...extra
+  });
+  const dropped = (rows) => planFieldTripDedupe(rows).dropIds;
+
+  const LIB = 'FAB STEM Friday — Clayton County Library (Lovejoy)';
+
+  ok('an undated repeat visit is never deleted',
+    dropped([T(1, LIB, '2026-09-18'), T(2, LIB, ''), T(3, LIB, ''), T(4, LIB, '')]).length === 0,
+    'a year planned as places-first, dates-later loses everything after the first');
+
+  ok('...nor when every visit to every place is undated',
+    dropped([T(1, LIB, ''), T(2, LIB, ''), T(3, 'Delta Flight Museum', ''), T(4, 'Delta Flight Museum', '')]).length === 0,
+    'undated rows collapsed');
+
+  ok('visits to the same place on different dates are kept',
+    dropped([T(1, LIB, '2026-09-18'), T(2, LIB, '2026-10-16'), T(3, LIB, '2026-11-20')]).length === 0,
+    'a second visit she planned was treated as a duplicate');
+
+  ok('but exact dated copies STILL collapse — the Aug 28 duplicates',
+    dropped([T(1, LIB, '2026-10-02'), T(2, LIB, '2026-10-02'), T(3, LIB, '2026-10-02')]).length === 2,
+    'the dedupe stopped doing the job it was built for');
+
+  ok('...including a copy still wearing the old library name',
+    dropped([T(1, 'Local Public Library — STEM & Homeschool Programs', '2026-10-02'), T(2, LIB, '2026-10-02')]).length === 1,
+    'the rename map no longer resolves to one group');
+
+  const work = dropped([T(1, LIB, '2026-10-02'), T(2, LIB, '2026-10-02', { status: 'completed', hours: 4 })]);
+  ok('a trip carrying real work is never the one dropped',
+    work.length === 1 && work[0] === 1,
+    'the completed copy was deleted instead of the empty one');
+
+  ok('a dated duplicate goes while an undated plan beside it stays',
+    JSON.stringify(dropped([T(1, LIB, '2026-09-01'), T(2, LIB, '2026-09-01'), T(3, LIB, '')])) === '[2]',
+    'the two cases are not being told apart');
+}
+
+// ---------------------------------------------------------------------------
+// 8. THE RESTORE PUTS BACK PLANS AND NEVER ADDS A DUPLICATE. (Sept 5, 2026.)
+//
+// The parent, on being offered the restore: "Make sure duplicates are not
+// added." The tombstoned pile holds her undated plans AND the real import
+// copies the Aug 28 dedupe removed, and only `createdAt` separates them — a
+// copy carries the same instant as the row still on screen, a separately
+// planned visit carries its own. These checks hold that line from both sides.
+// ---------------------------------------------------------------------------
+console.log('\n--- 8. the restore adds no duplicates ---');
+{
+  const { planUndatedTripRestore } = await import(REPO + '/src/lib/fieldTrips.js');
+  const LIB = 'FAB STEM Friday — Clayton County Library (Lovejoy)';
+  const T = (id, dest, date, createdAt, extra = {}) =>
+    ({ id, destination: dest, date, createdAt, status: 'planned', ...extra });
+  const D = (t) => ({ ...t, deletedAt: '2026-09-01T10:00:00.000Z' });
+  const ids = (rows) => JSON.stringify(planUndatedTripRestore(rows).restoreIds);
+
+  ok('undated plans with their own instants all come back',
+    ids([T(1, LIB, '2026-09-18', '2026-08-01T09:00:00Z'),
+         D(T(2, LIB, '', '2026-08-01T09:05:00Z')),
+         D(T(3, LIB, '', '2026-08-01T09:07:00Z')),
+         D(T(4, LIB, '', '2026-08-02T11:00:00Z'))]) === '[2,3,4]',
+    'the plans the dedupe took are not being returned');
+
+  ok('an import copy stays deleted — same instant as the visible row',
+    ids([T(1, LIB, '', '2026-08-01T09:00:00Z'),
+         D(T(2, LIB, '', '2026-08-01T09:00:00Z')),
+         D(T(3, LIB, '', '2026-08-01T09:00:00Z'))]) === '[]',
+    'the restore would put the Aug 28 duplicates back');
+
+  ok('two tombstones sharing one instant return only once',
+    ids([T(1, LIB, '2026-09-18', '2026-08-01T09:00:00Z'),
+         D(T(2, LIB, '', '2026-08-05T12:00:00Z')),
+         D(T(3, LIB, '', '2026-08-05T12:00:00Z'))]) === '[2]',
+    'copies of each other both came back');
+
+  ok('a real plan returns while the copies beside it do not',
+    ids([T(1, LIB, '', '2026-08-01T09:00:00Z'),
+         D(T(2, LIB, '', '2026-08-01T09:00:00Z')),
+         D(T(3, LIB, '', '2026-08-09T15:00:00Z'))]) === '[3]',
+    'the two cases are not being told apart');
+
+  ok('a DATED tombstone is never restored — she deleted that herself',
+    ids([T(1, LIB, '2026-09-18', '2026-08-01T09:00:00Z'),
+         D(T(2, LIB, '2026-10-16', '2026-08-05T12:00:00Z'))]) === '[]',
+    'the restore reaches past the bug it is undoing');
+
+  ok('a tombstone carrying work is out of scope',
+    ids([T(1, LIB, '2026-09-18', '2026-08-01T09:00:00Z'),
+         D(T(2, LIB, '', '2026-08-05T12:00:00Z', { hours: 4 }))]) === '[]',
+    'the dedupe never took those, so the restore must not return them');
+
+  ok('a destination she emptied entirely stays empty',
+    ids([D(T(1, 'Tellus Science Museum', '', '2026-08-05T12:00:00Z')),
+         D(T(2, 'Tellus Science Museum', '', '2026-08-06T12:00:00Z'))]) === '[]',
+    'the bug always left a winner, so no winner means she did it');
+
+  ok('a row with no createdAt cannot be proved distinct, so it stays deleted',
+    ids([T(1, LIB, '2026-09-18', '2026-08-01T09:00:00Z'),
+         D(T(2, LIB, '', ''))]) === '[]',
+    'an unidentifiable row is exactly where a duplicate would be added');
+}
+
 console.log(`\n${passed} passed, ${failures.length} failed`);
 if (failures.length) {
   console.log(`\n${failures.length} CHECK(S) FAILED`);

@@ -276,6 +276,95 @@ export function fieldTripCarriesWork(trip) {
  * @param {Array} trips  every field trip row
  * @returns {{ idWrites: Array<{id:*, syncId:string}>, dropIds: Array }}
  */
+/**
+ * ===========================================================================
+ * WHICH OF THE DELETED TRIPS TO BRING BACK — AND WHICH TO LEAVE DELETED.
+ * ===========================================================================
+ *
+ * ---- WHY (Sept 5, 2026) ----
+ *
+ * `planFieldTripDedupe` counted a blank date as matching the winner's date, so
+ * every undated repeat visit she had planned was soft-deleted. The rows are all
+ * still in Dexie carrying a tombstone. This decides which ones go back.
+ *
+ * The parent, on being offered the restore: **"Make sure duplicates are not
+ * added."** She is right to say so, because the tombstoned pile is not all one
+ * thing. It holds BOTH:
+ *
+ *   - the undated repeat visits the bug took — plans, and
+ *   - the genuine undated import copies the dedupe was built to remove.
+ *
+ * Restoring the pile wholesale would put the duplicates back and undo the Aug
+ * 28 fix. Content cannot tell them apart: two undated rows to the same place
+ * with the same empty notes are byte-identical whether she planned two visits
+ * or an import cloned one.
+ *
+ * ---- WHAT DOES TELL THEM APART ----
+ *
+ * `createdAt`, and only `createdAt`. It is the one field that records a
+ * separate ACT of creation rather than a property of the trip:
+ *
+ *   - `addFieldTrip` stamps `new Date().toISOString()` per trip, one at a
+ *     time, so two visits she planned herself never share an instant.
+ *   - `mergeBySyncId` copies the incoming row wholesale, `createdAt` included,
+ *     so an import's copy carries the SAME instant as the row it duplicates —
+ *     and that original is the row the dedupe kept, which is still visible.
+ *   - the seeder stamps one `ftCreatedAt` across a whole batch, so seeded
+ *     defaults share an instant too.
+ *
+ * So the rule is: a tombstoned row whose instant is already on screen is a
+ * copy and stays deleted. A tombstoned row with an instant of its own was a
+ * separate act, and comes back. Two tombstones sharing one instant are copies
+ * of each other; one comes back, not both.
+ *
+ * A row with NO `createdAt` cannot be told from a copy at all, so it is left
+ * deleted — the whole point of this function is that it may not add a
+ * duplicate, and an unidentifiable row is exactly the case where it might.
+ *
+ * Deliberately narrow in three more ways, all matching the bug's own
+ * signature: only undated rows (a dated one was never at risk), only rows
+ * carrying no work (the dedupe never touched those), and only where the
+ * destination still has a surviving row (the bug always left a winner). A
+ * destination with nothing left is one she emptied herself.
+ */
+export function planUndatedTripRestore(trips) {
+  const rows = (Array.isArray(trips) ? trips : []).filter(Boolean);
+
+  // Every instant already on screen, per destination.
+  const visibleStamps = new Map();
+  for (const t of rows) {
+    if (t.deletedAt) continue;
+    const base = fieldTripSyncId(t.destination);
+    if (!base) continue;
+    if (!visibleStamps.has(base)) visibleStamps.set(base, new Set());
+    visibleStamps.get(base).add(String(t.createdAt || ''));
+  }
+
+  const restoreIds = [];
+  const claimed = new Map();
+  for (const t of rows) {
+    if (!t.deletedAt) continue;
+    if (String(t.date || '').trim()) continue;
+    if (fieldTripCarriesWork(t)) continue;
+
+    const base = fieldTripSyncId(t.destination);
+    if (!base) continue;
+    const onScreen = visibleStamps.get(base);
+    if (!onScreen) continue;          // nothing survived here — she emptied it herself
+
+    const stamp = String(t.createdAt || '');
+    if (!stamp) continue;             // unidentifiable: cannot prove it is not a copy
+    if (onScreen.has(stamp)) continue; // same instant as a visible row: a copy
+
+    if (!claimed.has(base)) claimed.set(base, new Set());
+    if (claimed.get(base).has(stamp)) continue; // two tombstones, one instant: copies
+    claimed.get(base).add(stamp);
+    restoreIds.push(t.id);
+  }
+
+  return { restoreIds };
+}
+
 export function planFieldTripDedupe(trips) {
   const rows = (Array.isArray(trips) ? trips : []).filter(Boolean);
 
@@ -308,7 +397,34 @@ export function planFieldTripDedupe(trips) {
 
     for (const other of ranked.slice(1)) {
       const otherDate = String(other.date || '').trim();
-      const sameVisit = otherDate === '' || otherDate === winnerDate;
+      /**
+       * A BLANK DATE IS NOT A MATCHING DATE. (Sept 5, 2026.)
+       *
+       * The parent: *"There were field trips planned for the year and I no
+       * longer see them."*
+       *
+       * This read `otherDate === '' || otherDate === winnerDate`. So a second
+       * visit she had planned but not DATED yet counted as the same visit as
+       * the first, carried no work, and was soft-deleted — on every hydrate,
+       * not once. Planning a year means choosing the places first and the
+       * dates later, and the repeat visit is the normal shape of it: a
+       * library's monthly homeschool day, a museum in two different seasons.
+       * Four visits to one library became one.
+       *
+       * Two rows are the same visit only when they SAY so — identical dates,
+       * both actually set. An undated repeat now falls through to the keep
+       * branch below and gets an id distinct from the winner's, so it shows
+       * up again and she can delete it herself if it really was a duplicate.
+       *
+       * What this gives up: two undated copies of the same trip arriving
+       * through an import no longer collapse on their own. That is the right
+       * way round. The dedupe still catches what it was built for — an
+       * import's copies carry the winner's date, which is why they grouped in
+       * the first place — and this file already states the principle one step
+       * short of here: *a duplicate cleanup that deletes the finished copy is
+       * worse than the duplicates.* A cleanup that deletes a plan is too.
+       */
+      const sameVisit = otherDate !== '' && otherDate === winnerDate;
       if (sameVisit && !fieldTripCarriesWork(other)) {
         dropIds.push(other.id);
         continue;

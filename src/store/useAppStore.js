@@ -153,7 +153,7 @@ import { todayDateStr, toDateStr } from '../lib/scheduler.js';
 import { scheduledMinutesByDate } from '../lib/scheduledMinutes.js';
 import { DEFAULT_REWARDS } from '../lib/rewards.js';
 import { applyTheme } from '../lib/themes.js';
-import { generateLearningPack, DEFAULT_FIELD_TRIPS, LIBRARY_TRIP_RENAMES, fieldTripSyncId, planFieldTripDedupe } from '../lib/fieldTrips.js';
+import { generateLearningPack, DEFAULT_FIELD_TRIPS, LIBRARY_TRIP_RENAMES, fieldTripSyncId, planFieldTripDedupe, planUndatedTripRestore } from '../lib/fieldTrips.js';
 import { planBookSwap } from '../lib/bookSwap.js';
 import { READINESS_SKILLS } from '../lib/readiness.js';
 import { getCurrentQuarter, isQuarterlyBatchLabel, isSummerBatchLabel, groupByQuarter, isQuarterAvailable, getQuarterDateRange, quarterRank, SCHOOL_YEAR_START_DATE } from '../lib/schoolQuarter.js';
@@ -4779,6 +4779,56 @@ export const useAppStore = create((set, get) => ({
 
       fieldTripsList = [...workingRows, ...added];
       await saveMeta({ defaultFieldTripsSeeded: true, defaultFieldTripsSeedVersion: FIELD_TRIP_SEED_VERSION });
+    }
+
+    /**
+     * ==================================================================
+     * GIVING BACK THE TRIPS THE DEDUPE TOOK. (Sept 5, 2026.)
+     * ==================================================================
+     *
+     * The parent: *"There were field trips planned for the year and I no
+     * longer see them."*
+     *
+     * `planFieldTripDedupe` read a BLANK date as matching the winner's date,
+     * so every undated repeat visit she had planned was soft-deleted — on
+     * every hydrate, for as long as it stood. That line is fixed above this
+     * one in lib/fieldTrips.js; this puts back what it already took.
+     *
+     * Runs ONCE, behind a meta flag. Not because repeating it would be
+     * expensive, but because after this pass the tombstones on these rows mean
+     * what they say again: if she deletes a restored trip herself, it must
+     * stay deleted, and a restore that ran every hydrate would undo her.
+     *
+     * `planUndatedTripRestore` decides what comes back, and its own comment
+     * carries the reasoning. The short version, and the parent's instruction
+     * that shaped it — *"make sure duplicates are not added"* — is that the
+     * tombstoned pile holds both her plans AND the real import copies the Aug
+     * 28 dedupe was built to remove, and `createdAt` is the only field that
+     * separates them: a copy carries the same instant as the row still on
+     * screen, a separately planned visit carries its own.
+     *
+     * Placed BEFORE the dedupe on purpose, so restored rows go through it and
+     * are given ids distinct from the winner's in the same pass.
+     */
+    if (!meta?.undatedFieldTripsRestored) {
+      const { restoreIds } = planUndatedTripRestore(fieldTripsList);
+      if (restoreIds.length > 0) {
+        const restoredAt = new Date().toISOString();
+        const restoreSet = new Set(restoreIds);
+        // `updatedAt` moves to now so the restore WINS on the other machine
+        // too. The tombstone it is undoing carries the deletion's timestamp,
+        // and mergeBySyncId takes the newer of the two — so an older restored
+        // row would lose to its own tombstone on the next import.
+        await Promise.all(
+          restoreIds.map((id) => updateFieldTripRecord(id, { deletedAt: null, updatedAt: restoredAt }))
+        );
+        for (const t of fieldTripsList) {
+          if (!restoreSet.has(t.id)) continue;
+          t.deletedAt = null;
+          t.updatedAt = restoredAt;
+        }
+      }
+      await saveMeta({ undatedFieldTripsRestored: true });
     }
 
     /**

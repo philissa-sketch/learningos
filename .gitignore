@@ -33,6 +33,38 @@ progress/
 transcript-*.txt
 homeschool-records-packet-*.txt
 
+# ---- AND IT HAPPENED AGAIN, SIX DAYS LATER. (Sept 5, 2026.) ----
+#
+# Three exported databases were sitting COMMITTED in the repo root:
+#
+#   petal-pestle-backup-2026-08-31.json          177 KB
+#   petal-pestle-backup-2026-08-31 (1).json      183 KB
+#   petal-pestle-backup-2026-08-31 (1) (1).json  184 KB
+#   petal-pestle-rendered.html
+#
+# Every rule above missed them, for two reasons at once. They are named
+# "backup", and every pattern above only knew the word "progress". And they
+# landed in the ROOT, not in Progress/, so the folder rule — added on Aug 25
+# precisely because "a location cannot be typo'd the way a filename can" —
+# never saw them either. The duplicate "(1)" names say how: a browser download
+# saved to the repo folder rather than to Progress/.
+#
+# The lesson is the one this project keeps re-learning: a guard pinned to the
+# NAME a thing happened to have will miss the same thing under another name.
+# Guard the property. The property here is that an exported database is not
+# source, and nothing in this repo needs loose JSON at the root — the build
+# reads package.json and package-lock.json, and everything else lives under
+# src/ or scripts/. So the root is closed by default and the two real files
+# are named back in.
+/*.json
+!/package.json
+!/package-lock.json
+
+# And by shape, anywhere in the tree, for exports that land somewhere else.
+*backup*.json
+*-export-*.json
+*-rendered.html
+
 # Packaged copies of the app and working scratch.
 *.zip
 _build/
