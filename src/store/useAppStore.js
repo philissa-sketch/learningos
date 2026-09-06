@@ -4082,11 +4082,19 @@ export const useAppStore = create((set, get) => ({
      * seven weeks, and it carried four books; two of them were astronaut
      * memoirs adapted for young readers running at the same time.
      *
+     * asg::socialStudies::Q2::3 — the *Red-Tail Angels* historical analysis,
+     * dropped Sept 5, 2026 at the parent's direction. A 7th-grade year carries
+     * about one book report per quarter and only in language arts; history
+     * carries at most one in the whole year, and Q1's Salva's-well build is
+     * it. Q2 already held the family-history Research Paper two weeks after
+     * this, both with 42-day run-ups, so the two write-ups overlapped for a
+     * month. The BOOK is untouched — asg::socialStudies::Q1::2 still reads it.
+     *
      * Only removes a row he has NOT touched. A grade, a completion, recorded
      * milestones, or any status past 'not-started' keeps it — a dropped
      * assignment is never worth deleting real work over.
      */
-    const RETIRED_ASSIGNMENT_SLOTS = new Set(['asg::aerospace::Q2::2']);
+    const RETIRED_ASSIGNMENT_SLOTS = new Set(['asg::aerospace::Q2::2', 'asg::socialStudies::Q2::3']);
     const retiredAssignmentIds = academicAssignments
       .filter(
         (a) =>
@@ -4243,7 +4251,6 @@ export const useAppStore = create((set, get) => ({
       //
       // The worst was the aerospace Book Report on 2027-04-02: after Q3 ends
       // and before Q4 begins, so NO quarter's grade would have collected it.
-      'asg::aerospace::Q4::3':    { fromDueDate: '2027-04-02', dueDate: '2027-04-23' },
       'asg::aerospace::Q4::1':    { fromDueDate: '2027-05-26', dueDate: '2027-05-21' },
       // --- dates: two research papers due together, and a Saturday -------
       'asg::socialStudies::Q2::1':{ fromDueDate: '2026-12-04', dueDate: '2026-11-13' },
@@ -4260,17 +4267,83 @@ export const useAppStore = create((set, get) => ({
       'asg::science::Q4::1':      { format: 'investigation' },
       'asg::technology::Q2::1':   { fromDueDate: '2026-11-25', dueDate: '2026-12-02', format: 'investigation' },
       // --- notes that promised a report nothing scheduled ----------------
+      //
+      // Each `fromNote` names EVERY text this row has ever shipped with, for
+      // the same reason `fromDueDate` does: a database that took the Sept 1
+      // correction sits on different text than one that never did, and both
+      // are still untouched by her. Naming only the original would land the
+      // second fix on half the databases.
+      //
+      // Sept 5, 2026: these three notes promised reports that no longer
+      // exist — the historical analysis was dropped, and the scientific
+      // review and engineering analysis became lab work. A note promising a
+      // report nothing schedules is the exact fault this section was written
+      // to fix, and dropping the reports without it would have recreated it
+      // pointing the other way.
       'asg::socialStudies::Q1::2': {
-        fromNote: 'Historical-analysis report on a world-regional history read',
-        note: 'Weekly chapter pacing. The historical analysis is due three weeks after you finish it.'
+        fromNote: [
+          'Historical-analysis report on a world-regional history read',
+          'Weekly chapter pacing. The historical analysis is due three weeks after you finish it.'
+        ],
+        note: 'Weekly chapter pacing. Read it for itself — the historical analysis that used to follow it was dropped Sept 5, 2026, and Q2\'s writing is the family-history research paper instead.'
       },
       'asg::science::Q3::1': {
-        fromNote: 'Scientific-review report on a Q3 life-science read',
-        note: 'Weekly chapter pacing. The scientific review below is due three weeks after you finish it.'
+        fromNote: [
+          'Scientific-review report on a Q3 life-science read',
+          'Weekly chapter pacing. The scientific review below is due three weeks after you finish it.'
+        ],
+        note: 'Weekly chapter pacing. Read it for itself — what used to be a scientific review of it is now the genetics investigation below, three weeks after you finish.'
       },
       'asg::aerospace::Q3::2': {
-        fromNote: 'Engineering-analysis or biography report on a Q3 Aerospace read — book and format TBD',
-        note: 'Weekly chapter pacing. The engineering analysis is due three weeks after you finish it.'
+        fromNote: [
+          'Engineering-analysis or biography report on a Q3 Aerospace read — book and format TBD',
+          'Weekly chapter pacing. The engineering analysis is due three weeks after you finish it.'
+        ],
+        note: 'Weekly chapter pacing. Read it for itself — what used to be an engineering analysis of it is now the Q4 flight test.'
+      },
+      // --- retypes: book reports outside language arts -------------------
+      //
+      // Sept 5, 2026. The parent, against the usual middle-school load: about
+      // one book report per quarter and ONLY in language arts — at most one
+      // all year in history, none in science or aerospace. Four of his seven
+      // were outside reading.
+      //
+      // The type is not a label here. 'Book Report' carries four weekly steps
+      // and a 21-day lead on the first, so each of these occupied his board
+      // for 42 days; 'Portfolio Entry' carries seven days and no chain. So
+      // this changes what is ON HIS BOARD, not what it is called, and it has
+      // to reach rows hydrated weeks ago or only a brand-new Academy gets it.
+      //
+      // FORMAT IDS ARE NOT INTERCHANGEABLE ACROSS TYPES. formatsForType()
+      // returns four ids for a Portfolio Entry — build, applied-math,
+      // investigation, writing-sample — and findFormat() returns null for
+      // anything else, which means no required sections, no checklist and no
+      // rubric. 'creative-project', 'parent-interview' and 'oral-presentation'
+      // are Book Report and Presentation ids and would all have silently
+      // produced a blank rubric here. That failure has happened in this file
+      // before, to all three research papers.
+      'asg::socialStudies::Q1::3': {
+        fromType: 'Book Report', fromFormat: 'creative-project',
+        type: 'Portfolio Entry', format: 'build',
+        fromNote: 'Model or labelled cross-section of the borehole well from the end of the book, plus the explanation page the format asks for. The engineering in the last chapters is the point.',
+        note: 'Model or labelled cross-section of the borehole well from the end of the book. Photograph it, label the parts that matter, and write down the real measurements you used. The engineering in the last chapters is the point.'
+      },
+      'asg::science::Q3::2': {
+        fromType: 'Book Report', fromFormat: 'oral-presentation',
+        type: 'Portfolio Entry', format: 'investigation',
+        title: 'Genetics investigation — trace one inherited trait through three generations',
+        fromNote: 'The report the reading note promised. What question the science answers, how it was tested, what the evidence shows, and what is still unknown.',
+        note: 'Pick one simple trait — attached earlobes, tongue rolling, widow\'s peak — and chart who has it across three generations of the family. Then predict the next generation with a Punnett square and say what could skew the result. The genetics book is the reading behind it; this is the lab.'
+      },
+      'asg::aerospace::Q4::3': {
+        // The date fix from the Aug 30 pass still has to reach any database
+        // that never took it, so it stays here alongside the retype.
+        fromDueDate: '2027-04-02', dueDate: '2027-04-23',
+        fromType: 'Book Report', fromFormat: 'parent-interview',
+        type: 'Portfolio Entry', format: 'investigation',
+        title: 'Flight test — glide ratio across three wing shapes',
+        fromNote: 'The report the Q3 reading note promised. What was being built, the problem it had to solve, the trade-offs, and what he would do differently.',
+        note: 'Three wing shapes on the same fuselage, five launches each, distance and height recorded every time. Keep the runs that went badly. The data goes into the Engineering Showcase in May.'
       }
     };
 
@@ -4305,9 +4378,44 @@ export const useAppStore = create((set, get) => ({
           changes.milestones = [];
         }
       }
-      // A note only changes if it is still the misleading shipped text.
-      if (fix.note && row.note === fix.fromNote) changes.note = fix.note;
-      // A format is only ever added. Never replace one she has chosen.
+      /**
+       * A RETYPE — 'Book Report' becomes 'Portfolio Entry', format and all.
+       *
+       * Guarded on BOTH the old type and the old format, not just the slot.
+       * A format she picked herself is an editorial choice, and a row that has
+       * already taken this retype must not take it twice.
+       *
+       * And refused outright on work he has touched. Every other correction
+       * here moves a date or a word; this one moves the RUBRIC the thing is
+       * judged against, so a graded, started, or part-ticked assignment keeps
+       * the type it was being done under. That leaves his row disagreeing with
+       * the seed, which is the right way round: a stale type on one assignment
+       * costs less than regrading work he already did.
+       */
+      const untouchedByHim =
+        !row.grade &&
+        !row.gradedAt &&
+        !row.completedAt &&
+        !row.startedAt &&
+        !row.milestones?.some((m) => m.completedAt) &&
+        (!row.status || row.status === 'not-started' || row.status === 'placeholder');
+      if (fix.type && untouchedByHim && row.type === fix.fromType && row.format === fix.fromFormat) {
+        changes.type = fix.type;
+        changes.format = fix.format;
+        if (fix.title) changes.title = fix.title;
+        // A Portfolio Entry has no milestone template, so a chain built for
+        // the Book Report is now dead weight pointing at steps that no longer
+        // exist. Nothing in it is ticked — `untouchedByHim` already refused
+        // any row where a step was.
+        if (row.milestones?.length) changes.milestones = [];
+      }
+      // A note only changes if it is still one of the texts we shipped.
+      // `fromNote` may name several, for the same reason `fromDueDate` may:
+      // a row that took an earlier correction holds different text than one
+      // that never did, and both are still untouched by her.
+      if (fix.note && [].concat(fix.fromNote).includes(row.note)) changes.note = fix.note;
+      // A format is only ever added. Never replace one she has chosen — the
+      // retype above is the one exception, and it names the format it expects.
       if (fix.format && !row.format) changes.format = fix.format;
       if (Object.keys(changes).length > 0) corrected.push({ ...row, ...changes });
     }

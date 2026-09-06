@@ -240,7 +240,7 @@ export const quarterlyAcademicPlaceholders = {
     // against Khan's Early Agrarian Societies unit rather than a lesson.
     'Q1 2026-2027': [
       { slotId: 'asg::socialStudies::Q1::1', type: 'Reading Assignment', dueDate: '2026-08-28', title: 'A Long Walk to Water — weekly chapter pacing', note: 'Paced alongside Khan Academy\'s Early Agrarian Societies World History unit' },
-      { slotId: 'asg::socialStudies::Q1::2', type: 'Reading Assignment', dueDate: '2026-10-30', title: 'Red-Tail Angels: The Tuskegee Airmen — weekly chapter pacing', note: 'Weekly chapter pacing. The historical analysis is due three weeks after you finish it.' },
+      { slotId: 'asg::socialStudies::Q1::2', type: 'Reading Assignment', dueDate: '2026-10-30', title: 'Red-Tail Angels: The Tuskegee Airmen — weekly chapter pacing', note: 'Weekly chapter pacing. Read it for itself — the historical analysis that used to follow it was dropped Sept 5, 2026, and Q2\'s writing is the family-history research paper instead.' },
       /**
        * THE BOOK REPORT FOR A LONG WALK TO WATER. (Added Aug 10, 2026.)
        *
@@ -264,7 +264,26 @@ export const quarterlyAcademicPlaceholders = {
        * due the same day as the reading leaves no room for three of them.
        * Sept 18 is a Friday and a full school day.
        */
-      { slotId: 'asg::socialStudies::Q1::3', type: 'Book Report', dueDate: '2026-09-18', format: 'creative-project', title: 'A Long Walk to Water — build or draw Salva\'s well', note: 'Model or labelled cross-section of the borehole well from the end of the book, plus the explanation page the format asks for. The engineering in the last chapters is the point.' }
+      /**
+       * NOT A BOOK REPORT. (Retyped Sept 5, 2026.)
+       *
+       * The parent, against the usual middle-school load: one book report per
+       * quarter, in language arts only — none in history, science or
+       * aerospace. This slot was typed 'Book Report' and had never been one in
+       * content: it asks him to build a well, which is the Portfolio Entry
+       * 'build' format almost word for word ("a model, a rocket, a print, a
+       * drawing to scale").
+       *
+       * The type is not a label here. 'Book Report' carries four weekly steps
+       * and a 21-day lead on the first, so this sat on his board for 42 days;
+       * 'Portfolio Entry' carries seven days and no chain. That is the right
+       * shape for one afternoon's build, and it is most of why Q1 looked
+       * crowded.
+       *
+       * The DUE DATE does not move. Sept 18 is the day the Hatchet chain is
+       * built to start behind — see the reading note above.
+       */
+      { slotId: 'asg::socialStudies::Q1::3', type: 'Portfolio Entry', dueDate: '2026-09-18', format: 'build', title: 'A Long Walk to Water — build or draw Salva\'s well', note: 'Model or labelled cross-section of the borehole well from the end of the book. Photograph it, label the parts that matter, and write down the real measurements you used. The engineering in the last chapters is the point.' }
     ],
     // Q2 is the Genealogy quarter, on its own.
     'Q2 2026-2027': [
@@ -282,7 +301,18 @@ export const quarterlyAcademicPlaceholders = {
        * milestones (read, notes, draft, polish) land one per week with the
        * reading deadline as week one.
        */
-      { slotId: 'asg::socialStudies::Q2::3', type: 'Book Report', dueDate: '2026-11-20', format: 'compare-contrast', title: 'Red-Tail Angels: The Tuskegee Airmen — historical analysis', note: 'The report the Q1 reading note promised. Set the scene with a real date and place, name the author\'s point of view, and quote the book at least once.' },
+      /**
+       * asg::socialStudies::Q2::3 — Red-Tail Angels historical analysis —
+       * DROPPED Sept 5, 2026 at the parent's direction, and retired from rows
+       * already seeded via RETIRED_ASSIGNMENT_SLOTS in useAppStore.js.
+       *
+       * It was the SECOND history book report in a year that should carry at
+       * most one, and Q2 already holds the family-history Research Paper two
+       * weeks later — a Book Report due Nov 20 and a Research Paper due Dec 4,
+       * with 42- and 42-day run-ups, so their windows sat on top of each other
+       * for a month. The book itself stays: asg::socialStudies::Q1::2 is still
+       * the Red-Tail Angels reading, and its note no longer promises a report.
+       */
       { slotId: 'asg::socialStudies::Q2::1', type: 'Reading Assignment', dueDate: '2026-11-13', title: 'National Geographic Kids Guide to Genealogy — read alongside the genealogy unit', note: 'Paced alongside the Genealogy & Historical Evidence unit — see the Black American Excellence shelf for genealogy and primary-source reads' },
       { slotId: 'asg::socialStudies::Q2::2', type: 'Research Paper', format: 'historical-investigation', dueDate: '2026-12-04', title: 'Family history research paper — one ancestor, three independent sources', note: 'Apply this quarter\'s evidence-evaluation methods (corroboration, bias, cross-referencing) to a real family or local-history investigation' }
     ],
@@ -337,7 +367,7 @@ export const quarterlyAcademicPlaceholders = {
     ],
     'Q3 2026-2027': [
       { slotId: 'asg::aerospace::Q3::1', type: 'Reading Assignment', dueDate: '2027-03-26', title: 'Rocketry: Investigate the Science and Technology of Rockets — reference reading', note: 'Paced alongside the Q3 Aerospace lessons' },
-      { slotId: 'asg::aerospace::Q3::2', type: 'Reading Assignment', dueDate: '2027-03-12', title: 'Higher, Steeper, Faster: The Daredevils Who Conquered the Skies — weekly pacing', note: 'Weekly chapter pacing. The engineering analysis is due three weeks after you finish it.' }
+      { slotId: 'asg::aerospace::Q3::2', type: 'Reading Assignment', dueDate: '2027-03-12', title: 'Higher, Steeper, Faster: The Daredevils Who Conquered the Skies — weekly pacing', note: 'Weekly chapter pacing. Read it for itself — what used to be an engineering analysis of it is now the Q4 flight test.' }
     ],
     'Q4 2026-2027': [
       /**
@@ -354,7 +384,19 @@ export const quarterlyAcademicPlaceholders = {
        * milestones (read, notes, draft, polish) land one per week with the
        * reading deadline as week one.
        */
-      { slotId: 'asg::aerospace::Q4::3', type: 'Book Report', dueDate: '2027-04-23', format: 'parent-interview', title: 'Higher, Steeper, Faster — engineering analysis', note: 'The report the Q3 reading note promised. What was being built, the problem it had to solve, the trade-offs, and what he would do differently.' },
+      /**
+       * WAS A BOOK REPORT ON *HIGHER, STEEPER, FASTER*. (Replaced Sept 5, 2026.)
+       *
+       * Aerospace should carry no book reports at all — it is assessed by what
+       * gets built and measured. The book stays as Q3 reading; what it used to
+       * end in is now a flight test whose DATA feeds the Engineering Showcase
+       * already scheduled three weeks later (asg::aerospace::Q4::2), so Q4
+       * gains a real measurement instead of a second write-up.
+       *
+       * PARENT: this title and note are new content written to replace the
+       * report — change either if you want a different investigation.
+       */
+      { slotId: 'asg::aerospace::Q4::3', type: 'Portfolio Entry', dueDate: '2027-04-23', format: 'investigation', title: 'Flight test — glide ratio across three wing shapes', note: 'Three wing shapes on the same fuselage, five launches each, distance and height recorded every time. Keep the runs that went badly. The data goes into the Engineering Showcase in May.' },
       { slotId: 'asg::aerospace::Q4::1', type: 'Reading Assignment', dueDate: '2027-05-21', title: 'The Wright Brothers: How They Invented the Airplane — weekly chapter pacing', note: 'Paced alongside the Q4 Aerospace lessons' },
       { slotId: 'asg::aerospace::Q4::2', type: 'Presentation', dueDate: '2027-05-19', format: 'engineering-showcase', title: 'Engineering showcase — a year of aerospace builds', note: 'Present a real completed Aerospace project or design — format TBD' }
     ],
@@ -375,7 +417,7 @@ export const quarterlyAcademicPlaceholders = {
       { slotId: 'asg::science::Q2::1', type: 'Portfolio Entry', format: 'investigation', dueDate: '2026-12-02', title: 'Body systems — trace one path from breath to working muscle', note: 'Lab-report write-up of a hands-on Science experiment actually run this quarter — experiment selected from the Writing Journal' }
     ],
     'Q3 2026-2027': [
-      { slotId: 'asg::science::Q3::1', type: 'Reading Assignment', dueDate: '2027-02-26', title: 'Genetics: Breaking the Code of Your DNA — weekly chapter pacing', note: 'Weekly chapter pacing. The scientific review below is due three weeks after you finish it.' },
+      { slotId: 'asg::science::Q3::1', type: 'Reading Assignment', dueDate: '2027-02-26', title: 'Genetics: Breaking the Code of Your DNA — weekly chapter pacing', note: 'Weekly chapter pacing. Read it for itself — what used to be a scientific review of it is now the genetics investigation below, three weeks after you finish.' },
       /**
        * A REPORT THE NOTE PROMISED AND NOTHING SCHEDULED. (Added Aug 10, 2026.)
        *
@@ -390,7 +432,17 @@ export const quarterlyAcademicPlaceholders = {
        * milestones (read, notes, draft, polish) land one per week with the
        * reading deadline as week one.
        */
-      { slotId: 'asg::science::Q3::2', type: 'Book Report', dueDate: '2027-03-26', format: 'oral-presentation', title: 'Genetics: Breaking the Code of Your DNA — scientific review', note: 'The report the reading note promised. What question the science answers, how it was tested, what the evidence shows, and what is still unknown.' }
+      /**
+       * WAS A BOOK REPORT ON THE GENETICS BOOK. (Replaced Sept 5, 2026.)
+       *
+       * Science is assessed by lab work, not by reports on books. The book
+       * stays as Q3 reading (asg::science::Q3::1); this is now the lab it was
+       * always the reading for, and it needs no equipment.
+       *
+       * PARENT: this title and note are new content written to replace the
+       * report — change either if you want a different investigation.
+       */
+      { slotId: 'asg::science::Q3::2', type: 'Portfolio Entry', dueDate: '2027-03-26', format: 'investigation', title: 'Genetics investigation — trace one inherited trait through three generations', note: 'Pick one simple trait — attached earlobes, tongue rolling, widow\'s peak — and chart who has it across three generations of the family. Then predict the next generation with a Punnett square and say what could skew the result. The genetics book is the reading behind it; this is the lab.' }
     ],
     'Q4 2026-2027': [
       { slotId: 'asg::science::Q4::1', type: 'Portfolio Entry', format: 'investigation', dueDate: '2027-04-28', title: 'Ecosystem study — one Georgia habitat, observed across four weeks', note: 'Lab-report write-up of a hands-on Science experiment actually run this quarter — experiment selected from the Writing Journal' }
