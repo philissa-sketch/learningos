@@ -1470,3 +1470,146 @@ the moved arithmetic — otherwise the feature gets written twice.
 
 When it lands, Hatchet goes back to 2026-10-09 with the dependency declared out
 loud, and Q1 gets its slack back.
+
+---
+
+## Seven book reports, four of them outside language arts (Sept 5, 2026)
+
+The parent, the same day and one level up from the date arithmetic: **a 7th
+grader should have about four book reports a year, and they belong to language
+arts.** She was reading standard middle-school practice — one major novel
+project per quarter for ELA, at most one book project all year for history,
+and none at all for science, which is assessed by lab work.
+
+Counted against his year, the split was cleaner than expected.
+
+| Subject | Book reports | Standard |
+|---|---|---|
+| reading | 3 + a Q3 Presentation | **already correct** — one per quarter |
+| socialStudies | 2 | at most 1 all year |
+| science | 1 | 0 |
+| aerospace | 1 | 0 |
+
+**Nothing was wrong with language arts.** Hatchet (Q1), Hidden Figures (Q2),
+The Martian as a Presentation (Q3), March: Book One (Q4) is exactly one major
+novel project per quarter. Every excess report was in a subject that should not
+have carried one.
+
+### The type is the scaffolding, not the label
+
+`Book Report` is not a name in this app. It is four weekly milestones and a
+21-day lead on the first — 42 days on his board — and `Portfolio Entry` is
+seven days and no chain. So retyping is a change to what he is looking at, not
+to what it is called, and two of these had never been book reports in content
+anyway: *build or draw Salva's well* is a model, and the Hatchet jacket
+redesign is a cover design. They were carrying six-week scaffolds for an
+afternoon's work.
+
+| Slot | Was | Now |
+|---|---|---|
+| `asg::socialStudies::Q1::3` | Book Report / creative-project | Portfolio Entry / **build**, same Sept 18 date |
+| `asg::socialStudies::Q2::3` | Book Report — Red-Tail Angels analysis | **retired** |
+| `asg::science::Q3::2` | Book Report / oral-presentation | Portfolio Entry / **investigation**, retitled as a lab |
+| `asg::aerospace::Q4::3` | Book Report / parent-interview | Portfolio Entry / **investigation**, retitled as a flight test |
+
+Red-Tail Angels went rather than moved: it was the second history report in a
+year that allows one, and Q2 already held the family-history Research Paper two
+weeks later, both with 42-day run-ups. `RETIRED_ASSIGNMENT_SLOTS` already
+existed for exactly this and already refuses to remove anything graded,
+started, completed or carrying a ticked step. The book itself stays.
+
+Board load fell from a seven-work peak to six, and Apr 9 and Mar 19–26 cleared
+entirely.
+
+### Two things the retype would have broken quietly
+
+**Format ids are not interchangeable across types.** `formatsForType` returns
+four ids for a Portfolio Entry — build, applied-math, investigation,
+writing-sample — and `findFormat` returns null for anything else. A format is
+the only thing that produces required sections, a checklist and a rubric, so
+carrying `creative-project`, `parent-interview` and `oral-presentation` across
+would have produced three assignments with **no rubric at all**, graded on
+instinct. This file has already paid for that once, on all three research
+papers. Every seeded format now validates against its own type.
+
+**Three reading notes promised the reports being removed.** `socialStudies::Q1::2`,
+`science::Q3::1` and `aerospace::Q3::2` each said *"the historical analysis /
+scientific review / engineering analysis is due three weeks after you finish
+it."* Dropping the reports without those would have recreated, pointing the
+other way, the exact fault the `fromNote` section was written to fix. Each
+`fromNote` now names **both** texts the row has ever shipped with, for the same
+reason `fromDueDate` names several: a database that took the Sept 1 correction
+holds different text than one that never did, and both are still untouched by
+her.
+
+The corrections loop grew a retype branch guarded on the old type **and** the
+old format, and refused outright on anything graded, started or part-ticked —
+because unlike every other correction here, this one moves the rubric the work
+is judged against. A stale type on one assignment costs less than regrading
+work he already did. Ten row shapes were replayed against the real loop before
+it shipped.
+
+---
+
+## A third date-writer nobody was checking (Sept 5, 2026)
+
+`verify-assignment-dates` passed green all week while `readingStaggerMap` sat in
+`useAppStore.js` writing due dates **with no from-guard**:
+
+```js
+const target = readingStaggerMap[row.slotId];
+if (!target || row.dueDate === target) continue;
+if (row.status && row.status !== 'not-started') continue;   // the only guard
+await updateAcademicAssignmentRecord(row.id, { dueDate: target });
+```
+
+Its own comment promised it moved *"ONLY rows still sitting on the old stacked
+date… a date the parent has since changed herself is left exactly as it is."*
+The code never checked that. It overwrote **any** not-started row whose date
+differed — including one she had just chosen, for any of its 21 slots.
+
+It was also fighting `ASSIGNMENT_CORRECTIONS` on three slots on every single
+boot: `reading::Q1::1` (writing 2026-09-18 over the corrected 2026-10-09),
+`reading::Q1::2` (2026-10-09 over 2026-10-30) and `socialStudies::Q2::1`
+(2026-12-04 over 2026-11-13 — that one since the Aug 30 pass, not this week).
+The screen came out right only because the corrections happen to run later in
+`_hydrateOnce`. Nothing enforced that order.
+
+**It could not simply be guarded.** A from-guard needs the old stacked dates.
+They predate the first commit — `e91e534` already carries the staggered ones —
+and `scheduleAcademicAssignment` records nothing marking a date as hers, so a
+stacked date from before Aug 7 and a date she picked yesterday are
+indistinguishable. The contract was unimplementable as written. The write is
+gone rather than guessing at dates in a record that is a legal document;
+eighteen of its twenty-one targets already equalled the seed, and the other
+three were wrong.
+
+### The guard that should have existed
+
+Four checks were pinned to two writers **by name**. A third was invisible by
+construction — the same failure shape this log already recorded as *assert the
+property, not the address*, met from the other side: not a guard failing on a
+correct change, but a guard passing over a wrong one.
+
+`verify-assignment-dates` now asserts the property. **11 checks → 15.**
+
+- no `slotId -> bare date` map may write dates outside `ASSIGNMENT_CORRECTIONS`
+- every correction that moves a date must name the date it replaces
+- every retype must name both the type and the format it replaces
+
+All three were tested by reintroducing the bug and watching them fail, then
+reverting. A guard that has never failed is not a guard.
+
+### Still open
+
+- **Sept 25 – Oct 9: two books open at once.** Moving Hatchet to Oct 9 pushed
+  its window into Apollo 8's, which opens Sept 25. The Aug 16 complaint, one
+  subject over — reading and aerospace rather than two inside reading. Fifteen
+  days. Not fixed; it is a scheduling decision, not a bug.
+- **Four milestone steps land on Fri Nov 27**, inside the Thanksgiving
+  `EXCLUDED_RANGES`. The exclusion governs assignment due dates and was never
+  applied inside `buildMilestones`, which does plain −7-day arithmetic. Same
+  shape as *a due date with no run-up is half a date*, one level down again.
+- **Five `asg::writing::*` slots are filed under the `reading` key** in
+  `quarterlyAcademicPlaceholders`, while `bookSwap.js` derives a slot's subject
+  from its slotId. Two places disagree about which subject those belong to.

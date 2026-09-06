@@ -1434,7 +1434,10 @@ export function migrateSavedSchedule(saved) {
 }
 
 /**
- * One book at a time.
+ * ONE BOOK AT A TIME — the Aug 7, 2026 stagger. THE MIGRATION IS GONE.
+ * Removed Sept 5, 2026. Read this before writing another date migration.
+ *
+ * ---- WHAT IT DID ----
  *
  * The parent, Aug 7 2026: "The reading assignment is due in 2 months. Is that
  * the correct amount of time for a book report."
@@ -1443,41 +1446,58 @@ export function migrateSavedSchedule(saved) {
  * assignment in a period carried the SAME due date. Q1 had four books all
  * stamped Oct 9; the whole year had nineteen books across five dates. The home
  * screen showed whichever one it found first, so three of his four Q1 books
- * were invisible, and the calendar showed one crowded day instead of a term of
- * steady reading.
+ * were invisible. `readingStaggerMap` spread them out — Q1 paced against
+ * measured lengths and ordered easiest-first against his IXL reading level of
+ * 690-810, A Long Walk to Water (720L, at level) before Hatchet (1020L) before
+ * Apollo 8 (1200L, the hardest thing on the list). Those dates are now simply
+ * the seed's dates, in placeholders.js, where the reasoning also lives.
  *
- * These dates stagger them. Q1 is paced against measured lengths and ordered
- * easiest-first against his IXL reading level of 690-810 — A Long Walk to
- * Water (720L, at level) before Hatchet (1020L) before Apollo 8 (1200L, and
- * the hardest thing on the list).
+ * ---- WHY IT HAD TO GO ----
  *
- * Applied at hydrate, and ONLY to rows still sitting on the old stacked date
- * with no work started. A date the parent has since changed herself, or a book
- * he has already finished, is left exactly as it is.
+ * Its comment promised it moved "ONLY rows still sitting on the old stacked
+ * date... A date the parent has since changed herself is left exactly as it
+ * is." The code never checked that. It read:
+ *
+ *     const target = readingStaggerMap[row.slotId];
+ *     if (!target || row.dueDate === target) continue;
+ *     if (row.status && row.status !== 'not-started') continue;   // only guard
+ *     await updateAcademicAssignmentRecord(row.id, { dueDate: target });
+ *
+ * — so it overwrote ANY not-started row whose date differed, including one she
+ * had just chosen. It was the only date-writer in this file without a
+ * from-guard; bookSwapMap has one, the wind-tunnel fix has one, and
+ * ASSIGNMENT_CORRECTIONS is built entirely out of them.
+ *
+ * It was also fighting ASSIGNMENT_CORRECTIONS on three slots, every boot:
+ * reading::Q1::1 (it wrote 2026-09-18 over the corrected 2026-10-09),
+ * reading::Q1::2 (2026-10-09 over 2026-10-30), and socialStudies::Q2::1
+ * (2026-12-04 over 2026-11-13). The screen came out right only because the
+ * corrections happen to run later in _hydrateOnce, which nothing enforced.
+ *
+ * ---- WHY IT COULD NOT SIMPLY BE GUARDED ----
+ *
+ * A from-guard needs the OLD stacked dates. They predate this repository's
+ * first commit — e91e534 already carries the staggered dates — so there is
+ * nothing to recover them from, and `scheduleAcademicAssignment` records
+ * nothing marking a date as hers. A stacked date from before Aug 7 and a date
+ * she picked yesterday are indistinguishable. The contract was unimplementable
+ * as written, so the write is gone rather than guessing at dates in a record
+ * that is a legal document.
+ *
+ * ---- WHAT REMOVING IT COSTS ----
+ *
+ * Eighteen of its twenty-one targets already equal the seed, so it was a no-op
+ * for those. The three above were wrong. The only loss is a database that has
+ * not been opened since Aug 7, 2026: rows it already holds keep a stacked
+ * date. Absent rows still re-seed correctly through missingAssignmentSeeds,
+ * and a stale one is one edit in Parent Setup. No such database is known —
+ * the live site and localhost:5173 are both long past it.
+ *
+ * ---- THE RULE THIS LEAVES ----
+ *
+ * A migration that writes a due date must name the value it replaces.
+ * scripts/verify-assignment-dates.mjs now fails the build if one does not.
  */
-const readingStaggerMap = {
-  'asg::socialStudies::Q1::1': '2026-08-28',
-  'asg::reading::Q1::1': '2026-09-18',
-  'asg::reading::Q1::2': '2026-10-09',
-  'asg::aerospace::Q1::1': '2026-10-16',
-  'asg::socialStudies::Q1::2': '2026-10-30',
-  'asg::reading::Q2::1': '2026-11-20',
-  'asg::socialStudies::Q2::1': '2026-12-04',
-  'asg::reading::Q2::2': '2026-12-11',
-  'asg::aerospace::Q2::1': '2026-12-18',
-  'asg::reading::Q3::1': '2027-01-29',
-  'asg::socialStudies::Q3::1': '2027-02-12',
-  'asg::science::Q3::1': '2027-02-26',
-  'asg::aerospace::Q3::2': '2027-03-12',
-  'asg::aerospace::Q3::1': '2027-03-26',
-  'asg::reading::Q4::1': '2027-04-23',
-  'asg::reading::Q4::2': '2027-05-14',
-  'asg::socialStudies::Q4::1': '2027-05-07',
-  'asg::aerospace::Q4::1': '2027-05-21',
-  'asg::reading::Summer::1': '2027-06-25',
-  'asg::socialStudies::Summer::1': '2027-07-16',
-  'asg::aerospace::Summer::1': '2027-07-30'
-};
 
 /**
  * The Aug 7, 2026 book-library rebuild, applied to rows already in the
@@ -1832,16 +1852,11 @@ export const useAppStore = create((set, get) => ({
       row.note = note;
     }
 
-    // --- Stagger the reading assignments (Aug 7, 2026) ---
-    for (const row of academicAssignmentRows) {
-      const target = readingStaggerMap[row.slotId];
-      if (!target || row.dueDate === target) continue;
-      // Never move a book he has started or finished, and never overwrite a
-      // date the parent set herself — only rows still on the seeded date.
-      if (row.status && row.status !== 'not-started') continue;
-      await updateAcademicAssignmentRecord(row.id, { dueDate: target });
-      row.dueDate = target;
-    }
+    // --- The Aug 7, 2026 reading stagger used to run here. It was removed on
+    // Sept 5, 2026 because it overwrote dates the parent had chosen; see the
+    // block above readingStaggerMap's old home for the full account. Its dates
+    // are the seed's dates now, and ASSIGNMENT_CORRECTIONS owns the three it
+    // was getting wrong.
 
     const typingLessonProgress = {};
     for (const row of typingLessonRows) {

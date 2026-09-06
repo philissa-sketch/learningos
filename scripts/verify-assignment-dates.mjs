@@ -251,6 +251,60 @@ console.log('\n--- 4. the shape of the load ---');
   ok('every correction lands on the same date as its seed',
     disagree.length === 0,
     disagree.join('; ') + ' — a new learner and an existing one would get different days');
+
+  // -------------------------------------------------------------------------
+  // NO THIRD DATE-WRITER. (Sept 5, 2026.)
+  //
+  // This file passed green for a week while `readingStaggerMap` sat in the
+  // store writing due dates with no from-guard — reverting any date the parent
+  // chose for its 21 slots, and fighting the corrections table on three of them
+  // every boot. The checks above could not see it because they were pinned to
+  // two writers by name: the seed and ASSIGNMENT_CORRECTIONS. A third one was
+  // invisible by construction.
+  //
+  // So this asserts the PROPERTY instead of the addresses: a due date reaching
+  // his database must name the value it replaces. Two shapes are refused —
+  // a slotId->bare-date map anywhere in the store outside the corrections
+  // table (which is exactly what the stagger was, and the shape a future
+  // session would reach for), and a correction that moves a date or a type
+  // without saying what it expects to find first.
+  // -------------------------------------------------------------------------
+  const uncommented = storeSrc
+    .replace(/\/\*[\s\S]*?\*\//g, '')   // block comments — the stagger's record lives in one
+    .replace(/^\s*\/\/.*$/gm, '');
+  const outsideCorrections = uncommented.split('ASSIGNMENT_CORRECTIONS');
+  const bareDateMaps = [];
+  for (const chunk of [outsideCorrections[0], ...outsideCorrections.slice(2)]) {
+    for (const m of (chunk || '').matchAll(/'(asg::[^']+)'\s*:\s*'(\d{4}-\d{2}-\d{2})'/g)) {
+      bareDateMaps.push(`${m[1]} -> '${m[2]}'`);
+    }
+  }
+  ok('no slotId->date map writes dates outside ASSIGNMENT_CORRECTIONS',
+    bareDateMaps.length === 0,
+    bareDateMaps.join('; ') + ' — a bare date keyed by slotId is a writer with no from-guard, '
+      + 'which is how readingStaggerMap reverted dates the parent had chosen. Move it into '
+      + 'ASSIGNMENT_CORRECTIONS and give it a fromDueDate.');
+
+  const entries = [...body.matchAll(/'(asg::[^']+)'\s*:\s*\{([\s\S]*?)\}\s*,?\s*(?=\n\s*(?:\/\/|\/\*|'asg|\}))/g)];
+  ok('...and the correction entries still parse for guard-checking',
+    entries.length > 0,
+    'zero entries means this regex stopped matching, not that the table emptied');
+
+  const unguardedDate = entries
+    .filter(([, , b]) => /(?<!from)[dD]ueDate:\s*'/.test(b) && !/fromDueDate:/.test(b))
+    .map((m) => m[1]);
+  ok('every correction that moves a date names the date it replaces',
+    unguardedDate.length === 0,
+    unguardedDate.join(', ') + ' — without fromDueDate it overwrites whatever is there, '
+      + 'including a date she set herself');
+
+  const unguardedType = entries
+    .filter(([, , b]) => /(?<!from)[tT]ype:\s*'/.test(b) && !(/fromType:/.test(b) && /fromFormat:/.test(b)))
+    .map((m) => m[1]);
+  ok('every retype names both the type and the format it replaces',
+    unguardedType.length === 0,
+    unguardedType.join(', ') + ' — a retype changes the rubric the work is graded against, '
+      + 'so it must refuse a row already retyped or carrying a format she chose');
 }
 
 console.log(`\n${passed} passed, ${failures.length} failed`);
