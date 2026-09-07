@@ -409,6 +409,86 @@ console.log('\n--- 8. the restore adds no duplicates ---');
     'an unidentifiable row is exactly where a duplicate would be added');
 }
 
+// ---------------------------------------------------------------------------
+// 9. A TOMBSTONE IS NOT A TRIP. (Sept 6, 2026.)
+//
+// The parent, after the Sept 5 fix shipped: "I don't see the field trips." Her
+// database: 348 rows, ONE visible. `planFieldTripDedupe` was handed every row
+// including tombstones, `fieldTripKeepScore` has never known about `deletedAt`,
+// so a deleted row entered the ranking, tied on score with the live one, and
+// won on the oldest `createdAt`. The live row then became an "other" and was
+// deleted in its turn — one live row per hydrate, for weeks.
+//
+// Sections 7 and 8 passed throughout. They were written for a different bug
+// (a blank date reading as a match) and every row here is dated. **Fixing a
+// real bug is not evidence that it was the bug.**
+// ---------------------------------------------------------------------------
+console.log('\n--- 9. a tombstone never competes with a live trip ---');
+{
+  const { planFieldTripDedupe, planDeletedTripRecovery } =
+    await import(REPO + '/src/lib/fieldTrips.js');
+  const LIB = 'FAB STEM Friday — Clayton County Library (Lovejoy)';
+  const T = (id, createdAt, extra = {}) =>
+    ({ id, destination: LIB, date: '2026-08-28', status: 'planned', createdAt, ...extra });
+  const dead = (t) => ({ ...t, deletedAt: '2026-09-01T00:00:00Z' });
+
+  ok('a deleted row never causes a live row to be deleted',
+    planFieldTripDedupe([
+      dead(T(1, '2026-08-01T09:00:00Z')),
+      T(2, '2026-09-01T09:00:00Z')
+    ]).dropIds.length === 0,
+    'the live copy loses to an older ghost — this is what emptied a real planner');
+
+  ok('...however many ghosts share the destination',
+    planFieldTripDedupe([
+      dead(T(1, '2026-08-01T09:00:00Z')),
+      dead(T(2, '2026-08-02T09:00:00Z')),
+      dead(T(3, '2026-08-03T09:00:00Z')),
+      T(4, '2026-09-05T09:00:00Z')
+    ]).dropIds.length === 0);
+
+  ok('...and a deleted row is never itself "dropped" again',
+    planFieldTripDedupe([dead(T(1, 'a')), dead(T(2, 'b'))]).dropIds.length === 0);
+
+  ok('two live duplicates still collapse — the Aug 28 fix is intact',
+    planFieldTripDedupe([T(1, 'a'), T(2, 'b')]).dropIds.length === 1);
+
+  // --- recovery: exactly one back per buried destination, never two ---------
+  const buried = [];
+  let id = 0;
+  for (const d of ['Georgia Aquarium', 'Delta Flight Museum', 'Fernbank Museum of Natural History']) {
+    for (let c = 0; c < 16; c += 1) {
+      buried.push({ id: (id += 1), destination: d, date: '2027-01-01', status: 'planned',
+        createdAt: `2026-08-${String(1 + c).padStart(2, '0')}T09:00:00Z`, deletedAt: '2026-09-01T00:00:00Z' });
+    }
+  }
+  const rec = planDeletedTripRecovery(buried);
+  ok('recovery brings back exactly one row per buried destination',
+    rec.restoreIds.length === 3,
+    `restored ${rec.restoreIds.length} from 48 rows across 3 destinations`);
+
+  const restored = new Set(rec.restoreIds);
+  const perDest = {};
+  for (const r of buried) if (restored.has(r.id)) perDest[r.destination] = (perDest[r.destination] || 0) + 1;
+  ok('...so no destination comes back twice',
+    Object.values(perDest).every((n) => n === 1),
+    JSON.stringify(perDest) + ' — the parent asked that duplicates not be added');
+
+  ok('a destination that still has a live row is left alone entirely',
+    planDeletedTripRecovery([
+      { id: 1, destination: 'Georgia Aquarium', date: '2027-04-16', createdAt: 'a', deletedAt: 'x' },
+      { id: 2, destination: 'Georgia Aquarium', date: '2027-04-16', createdAt: 'b' }
+    ]).restoreIds.length === 0,
+    'recovery reached past a visible trip');
+
+  ok('...and what it restores survives the next dedupe',
+    (() => {
+      const after = buried.map((r) => (restored.has(r.id) ? { ...r, deletedAt: null } : r));
+      return planFieldTripDedupe(after).dropIds.length === 0;
+    })(),
+    'the recovered rows would be deleted again on the next hydrate');
+}
+
 console.log(`\n${passed} passed, ${failures.length} failed`);
 if (failures.length) {
   console.log(`\n${failures.length} CHECK(S) FAILED`);

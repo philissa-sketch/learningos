@@ -327,6 +327,72 @@ export function fieldTripCarriesWork(trip) {
  * destination still has a surviving row (the bug always left a winner). A
  * destination with nothing left is one she emptied herself.
  */
+/**
+ * ===========================================================================
+ * BRING BACK A DESTINATION THAT HAS NOTHING LEFT.
+ * ===========================================================================
+ *
+ * ---- WHY (Sept 6, 2026) ----
+ *
+ * `planFieldTripDedupe` let tombstones compete for "winner" and killed the
+ * live row of every group, one hydrate at a time. The parent's planner reached
+ * 348 rows with exactly one visible. The cause is fixed above; this recovers
+ * what it took.
+ *
+ * ---- WHY IT IS NOT `planUndatedTripRestore` ----
+ *
+ * That one restores a repeat VISIT — an undated second trip to a place that
+ * still has a surviving row. It deliberately refuses a destination with
+ * nothing left, on the reasoning that an empty destination is one the parent
+ * emptied herself. That reasoning was right for the bug it was written for and
+ * wrong for this one: here the emptying was done by the app.
+ *
+ * ---- HOW IT CANNOT ADD A DUPLICATE ----
+ *
+ * The parent's instruction stands: **make sure duplicates are not added.** Her
+ * 348 rows are roughly sixteen copies of twenty-one destinations, so restoring
+ * by row would rebuild the pile that started this.
+ *
+ * So this restores **exactly one row per destination, and only where nothing
+ * is visible**. A destination with any live row is left alone entirely. One in,
+ * or none — there is no path through this function that makes two.
+ *
+ * The row chosen is the one the dedupe itself would have kept: highest
+ * `fieldTripKeepScore`, oldest `createdAt` breaking the tie. So the recovered
+ * trip is the copy carrying the most real work, not an arbitrary survivor.
+ */
+export function planDeletedTripRecovery(trips) {
+  const rows = (Array.isArray(trips) ? trips : []).filter(Boolean);
+
+  const visible = new Set();
+  for (const t of rows) {
+    if (t.deletedAt) continue;
+    const base = fieldTripSyncId(t.destination);
+    if (base) visible.add(base);
+  }
+
+  const buried = new Map();
+  for (const t of rows) {
+    if (!t.deletedAt) continue;
+    const base = fieldTripSyncId(t.destination);
+    if (!base || visible.has(base)) continue;   // something is on screen: leave it alone
+    if (!buried.has(base)) buried.set(base, []);
+    buried.get(base).push(t);
+  }
+
+  const restoreIds = [];
+  for (const group of buried.values()) {
+    const best = [...group].sort((a, b) => {
+      const byScore = fieldTripKeepScore(b) - fieldTripKeepScore(a);
+      if (byScore !== 0) return byScore;
+      return String(a.createdAt || '').localeCompare(String(b.createdAt || ''));
+    })[0];
+    if (best) restoreIds.push(best.id);
+  }
+
+  return { restoreIds };
+}
+
 export function planUndatedTripRestore(trips) {
   const rows = (Array.isArray(trips) ? trips : []).filter(Boolean);
 
@@ -366,7 +432,30 @@ export function planUndatedTripRestore(trips) {
 }
 
 export function planFieldTripDedupe(trips) {
-  const rows = (Array.isArray(trips) ? trips : []).filter(Boolean);
+  /**
+   * A DELETED ROW IS NOT A CANDIDATE. (Sept 6, 2026.)
+   *
+   * The parent's planner emptied itself: 348 field trip rows, 347 tombstoned,
+   * one survivor — and that survivor only lived because it was completed and
+   * carried work, so `fieldTripCarriesWork` protected it.
+   *
+   * This function was handed EVERY row, tombstones included — the store passes
+   * `[...fieldTripRows]`, and the `deletedAt` filter does not happen until the
+   * state boundary far below. `fieldTripKeepScore` has never known about
+   * `deletedAt` either. So a deleted row entered its group as a candidate,
+   * tied with the live one on score (both dated, +5), and won the tie because
+   * the tie-break is oldest `createdAt` and the deleted originals were older
+   * than every re-imported copy. The live row then became an "other", matched
+   * on date, and was deleted in its turn.
+   *
+   * Every hydrate, one more live row died to an older ghost. Imports kept
+   * adding fresh copies and the loop kept killing them, which is why the row
+   * count climbed to 348 while the visible count fell to one.
+   *
+   * A tombstone is a record of a deletion, not a trip. It cannot be kept and
+   * it cannot be deleted again, so it has no business in the ranking at all.
+   */
+  const rows = (Array.isArray(trips) ? trips : []).filter((t) => t && !t.deletedAt);
 
   const byDestination = new Map();
   for (const t of rows) {

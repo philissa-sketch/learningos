@@ -153,7 +153,7 @@ import { todayDateStr, toDateStr } from '../lib/scheduler.js';
 import { scheduledMinutesByDate } from '../lib/scheduledMinutes.js';
 import { DEFAULT_REWARDS } from '../lib/rewards.js';
 import { applyTheme } from '../lib/themes.js';
-import { generateLearningPack, DEFAULT_FIELD_TRIPS, LIBRARY_TRIP_RENAMES, fieldTripSyncId, planFieldTripDedupe, planUndatedTripRestore } from '../lib/fieldTrips.js';
+import { generateLearningPack, DEFAULT_FIELD_TRIPS, LIBRARY_TRIP_RENAMES, fieldTripSyncId, planFieldTripDedupe, planUndatedTripRestore, planDeletedTripRecovery } from '../lib/fieldTrips.js';
 import { planBookSwap } from '../lib/bookSwap.js';
 import { READINESS_SKILLS } from '../lib/readiness.js';
 import { getCurrentQuarter, isQuarterlyBatchLabel, isSummerBatchLabel, groupByQuarter, isQuarterAvailable, getQuarterDateRange, quarterRank, SCHOOL_YEAR_START_DATE } from '../lib/schoolQuarter.js';
@@ -4832,6 +4832,49 @@ export const useAppStore = create((set, get) => ({
      * Placed BEFORE the dedupe on purpose, so restored rows go through it and
      * are given ids distinct from the winner's in the same pass.
      */
+    /**
+     * ==================================================================
+     * THE PLANNER THAT EMPTIED ITSELF. (Sept 6, 2026.)
+     * ==================================================================
+     *
+     * The parent, after the Sept 5 fix shipped: *"I don't see the field
+     * trips."* Her database held **348 field trip rows and one visible one** —
+     * and that survivor lived only because it was completed and carried work.
+     *
+     * The Sept 5 fix was for a real bug and was not this one. It stopped the
+     * dedupe treating a BLANK date as a match; every row here is dated, so it
+     * never applied. `planUndatedTripRestore` refused them for the same
+     * reason, ran, found nothing, and set its flag.
+     *
+     * The actual cause: `planFieldTripDedupe` was handed every row INCLUDING
+     * tombstones — this store passes `[...fieldTripRows]` and the `deletedAt`
+     * filter does not happen until the state boundary. A deleted row entered
+     * the ranking, tied with the live one on score, and won on the oldest
+     * `createdAt`. The live row was then an "other" and was deleted in turn.
+     * One live row died to an older ghost on every hydrate. Fixed at source in
+     * lib/fieldTrips.js; this recovers what it already took.
+     *
+     * ONE ROW PER DESTINATION, and only where nothing is visible — her 348
+     * rows are ~16 copies of 21 destinations, and restoring by row would
+     * rebuild the pile. Her instruction, kept: duplicates are not added.
+     */
+    if (!meta?.deletedFieldTripsRecovered) {
+      const { restoreIds } = planDeletedTripRecovery(fieldTripsList);
+      if (restoreIds.length > 0) {
+        const recoveredAt = new Date().toISOString();
+        const recovered = new Set(restoreIds);
+        await Promise.all(
+          restoreIds.map((id) => updateFieldTripRecord(id, { deletedAt: null, updatedAt: recoveredAt }))
+        );
+        for (const t of fieldTripsList) {
+          if (!recovered.has(t.id)) continue;
+          t.deletedAt = null;
+          t.updatedAt = recoveredAt;
+        }
+      }
+      await saveMeta({ deletedFieldTripsRecovered: true });
+    }
+
     if (!meta?.undatedFieldTripsRestored) {
       const { restoreIds } = planUndatedTripRestore(fieldTripsList);
       if (restoreIds.length > 0) {
