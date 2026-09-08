@@ -362,6 +362,48 @@ console.log('\n--- 4. a due date now carries its run-up ---');
     && ms.leadStatus(hatchet, '2026-09-11') === 'not-yet');
   ok('...and is live on the day it starts', Boolean(ms.activeMilestone(hatchet, '2026-09-18')));
 
+  /**
+   * ---- AND THE SECOND HATCHET ROW, WHICH THE FIRST FIX DID NOT REACH ----
+   *
+   * The parent, an hour after the milestone fix: **"Why is the Hatchet book
+   * there? I stated that I don't want it there until 9/18."**
+   *
+   * Two different rows carry that title. The book REPORT reaches his board
+   * through `activeMilestone`, above. The BOOK reaches it through
+   * `currentBook` on the dashboard, which asked only for the earliest-due
+   * unfinished Reading Assignment in the quarter — started or not — so a book
+   * dated on Sept 5 precisely so its 21-day lead would open it on Sept 18 sat
+   * there as tonight's reading three weeks early.
+   *
+   * The gate is `leadStatus`, the same function the Academic Center card uses,
+   * so the two screens cannot disagree about whether a book is open yet.
+   */
+  const novel = { type: 'Reading Assignment', title: 'Hatchet — Gary Paulsen', dueDate: '2026-10-09', status: 'not-started' };
+  const isTonights = (a, todayStr) => ms.leadStatus(a, todayStr) !== 'not-yet';
+  ok('a book whose 21-day lead has not opened is not tonight\'s book',
+    ms.startByFor(novel) === '2026-09-18' && !isTonights(novel, '2026-09-08'),
+    'she moved this date herself on Sept 5 so it would start on the 18th');
+  ok('...still not the day before', !isTonights(novel, '2026-09-17'));
+  ok('...and it is his book on the day it starts', isTonights(novel, '2026-09-18'));
+  ok('...a book he has already opened is never hidden',
+    isTonights({ ...novel, status: 'in-progress' }, '2026-09-08'),
+    "'underway' must survive the gate or a started book vanishes off his board");
+  ok('...nor is one he is behind on', isTonights({ ...novel, dueDate: '2026-09-18' }, '2026-09-08'),
+    "'behind' is the state that most needs to be on screen");
+
+  /**
+   * CODE, NOT PROSE: the dashboard must actually apply that gate. Asserted on
+   * the filter itself, because a comment describing the rule is what this file
+   * already found once at the milestone level.
+   */
+  const boardCode = codeOnly('src/components/Dashboard/MissionControlDashboard.jsx');
+  ok('...and his board applies it to the book row',
+    /const currentBook =[\s\S]{0,600}?leadStatus\(a, today\) !== 'not-yet'/.test(boardCode),
+    'the row that shows the book is the row that has to ask');
+  ok('...reading leadStatus from the academy content pack, not a second copy',
+    /const \{ leadStatus = \(\) => null \} = academyContent\(\)\.academicCenter;/.test(boardCode),
+    'one source, so his board and the Academic Center cannot disagree');
+
   const later = { type: 'Book Report', dueDate: '2026-11-20', title: 'Red-Tail Angels', status: 'not-started' };
   ok('a book report due in November shows nothing in August',
     ms.activeMilestone(later, '2026-08-16') === null,

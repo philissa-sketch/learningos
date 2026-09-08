@@ -31,6 +31,7 @@ import { useToday } from '../../lib/useToday.js';
 import { academyContent } from '../../content/academyContent.js';
 
 const { GUITAR_DAILY_MINUTES, gardenProjects = [], getCurrentGuitarSkill = () => null } = academyContent().electives;
+const { leadStatus = () => null } = academyContent().academicCenter;
 const { allLessons = [] } = academyContent().lessons;
 const { getTodaysWorkout = () => null } = academyContent().pe;
 const { aerospaceProjects = [], roboticsProjects = [], scienceExperiments = [], technologyProjects = [] } = academyContent().projects;
@@ -339,6 +340,42 @@ export function MissionControlDashboard({
   // Sorted by due date, not array order. Now that the quarter's books are
   // staggered rather than stacked on one day, "the current book" is a real
   // question with a real answer: the one due soonest that he has not finished.
+  /**
+   * ==========================================================================
+   * A BOOK HE HAS NOT BEEN TOLD TO OPEN YET IS NOT TONIGHT'S BOOK.
+   * (Sep 8, 2026.)
+   * ==========================================================================
+   *
+   * The parent, twice in one day: **"the Book Report book Hatchet is showing
+   * up when he isn't to start reading that book on Sept 18"** and then
+   * **"Why is the Hatchet book there? I stated that I don't want it there
+   * until 9/18."**
+   *
+   * Two DIFFERENT Hatchet rows, and the first fix only reached one of them.
+   * The Book REPORT was appearing through `activeMilestone`, and that is
+   * fixed. The book itself was appearing through this line, which never asked
+   * the question at all.
+   *
+   * The dates were already right. On Sept 5 the reading assignment was moved
+   * to 2026-10-09 precisely so its 21-day lead would start it on Sept 18, and
+   * `ASSIGNMENT_CORRECTIONS` carries that onto rows already in her database.
+   * This filter simply never looked: earliest due date wins, started or not,
+   * so a book scheduled to be opened on Sept 18 sat on his board as tonight's
+   * reading three weeks early.
+   *
+   * `leadStatus` is the same function the Academic Center card uses to decide
+   * what is live, so the two screens cannot disagree about whether a book is
+   * open yet. 'not-yet' is the only state excluded — the moment he marks it in
+   * progress it is 'underway' and it comes back, and a book he is already
+   * behind on is 'behind' and stays.
+   *
+   * NO BOOK ROW AT ALL between Aug 28 and Sept 17, and that is the intended
+   * outcome rather than a hole. placeholders.js states it as a decision:
+   * *"KNOWN AND ACCEPTED: Aug 28 to Sept 17 has no new Reading Assignment
+   * open ... that is the deliberate trade for not having two books open at
+   * once."* A row inviting him into the next book during that window is the
+   * app arguing with her plan.
+   */
   const currentBook =
     academicAssignments
       .filter(
@@ -347,7 +384,8 @@ export function MissionControlDashboard({
           a.title &&
           a.dueDate &&
           a.quarter === currentQuarterLabel &&
-          a.status !== 'completed'
+          a.status !== 'completed' &&
+          leadStatus(a, today) !== 'not-yet'
       )
       .sort((a, b) => a.dueDate.localeCompare(b.dueDate))[0] || null;
 
