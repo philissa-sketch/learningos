@@ -7366,15 +7366,130 @@ export const useAppStore = create((set, get) => ({
      * A row she does not have at all is still skipped entirely — her seed
      * governs which assignments exist.
      */
-    const STUDENT_OWNED_ASSIGNMENT_FIELDS = [
-      'status',
-      'startedAt',
-      'completedAt',
-      'milestones',
-      'reflection',
-      'reflectedAt',
-      'rubricScores'
+    /**
+     * ======================================================================
+     * AND THE REPORT HE ACTUALLY WROTE WAS NOT ON THAT LIST. (Sep 8, 2026.)
+     * ======================================================================
+     *
+     * The parent: **"Lamar did the book report on his phone. He sent his
+     * export but the information for the book report didn't import."**
+     *
+     * His export carried all of it — `A Long Walk to Water — build or draw
+     * Salva's well`, four milestones ticked, 20 words of notes, a 258-word
+     * rough draft and a 218-word finished report. None of it crossed, for two
+     * separate reasons, and either one alone would have lost the work.
+     *
+     * ---- ONE: THE WRITING FIELDS WERE NEVER DECLARED HIS ----
+     *
+     * `saveAssignmentWriting` writes `notesText`, `draftText`, `finalText`,
+     * their word counts and `writingUpdatedAt`. The list above — written
+     * Aug 11, before the writing boxes existed — names none of them, and a
+     * field that is on neither side of the split simply does not travel. The
+     * split was right; it was never revisited when the app grew a place for
+     * him to write.
+     *
+     * These are the most his-own fields in the record. They are the work.
+     *
+     * ---- TWO: EQUAL STATUS COPIED NOTHING AT ALL ----
+     *
+     * The gate below was `rankOf(incoming) > rankOf(local)`. Both copies of
+     * this assignment sit at `in-progress`, so 2 > 2 is false and not one
+     * student field was read — the four ticked milestones included. A student
+     * who did a week of work without changing the row's STATUS sent an export
+     * that, by design, said nothing.
+     *
+     * ---- THE RULE NOW ----
+     *
+     * Status still needs him to be genuinely further along: an equal or lower
+     * status must never rewind hers. Everything else merges on its own terms
+     * and MONOTONICALLY — a tick stays ticked, text is never blanked, and the
+     * newer of two texts wins. Nothing here can subtract work from either
+     * machine, which is the only safe shape for a merge into a school record.
+     */
+    const STUDENT_OWNED_STATUS_FIELDS = ['status', 'startedAt', 'completedAt', 'rubricScores'];
+
+    /** notes / draft / final, each with the word count saved beside it. */
+    const WRITING_FIELDS = [
+      ['notesText', 'notesTextWords'],
+      ['draftText', 'draftTextWords'],
+      ['finalText', 'finalTextWords']
     ];
+
+    const hasText = (v) => typeof v === 'string' && v.trim().length > 0;
+
+    /**
+     * Which writing to keep, field by field.
+     *
+     *   she has none, he has some   -> his
+     *   both have some, his newer   -> his
+     *   anything else               -> hers, untouched
+     *
+     * `writingUpdatedAt` is one timestamp covering all three boxes, so "newer"
+     * is per-ROW rather than per-field. That is coarse and it is the honest
+     * limit of what the record stores; it never deletes, which is the property
+     * that matters.
+     */
+    function writingChanges(local, incoming) {
+      const changes = {};
+      const hisTime = incoming?.writingUpdatedAt || '';
+      const herTime = local?.writingUpdatedAt || '';
+      for (const [key, wordsKey] of WRITING_FIELDS) {
+        if (!hasText(incoming?.[key])) continue;
+        if (incoming[key] === local?.[key]) continue;
+        const takeHis = !hasText(local?.[key]) || (hisTime && hisTime > herTime);
+        if (!takeHis) continue;
+        changes[key] = incoming[key];
+        if (incoming[wordsKey] !== undefined) changes[wordsKey] = incoming[wordsKey];
+      }
+      if (Object.keys(changes).length > 0 && hisTime > herTime) changes.writingUpdatedAt = hisTime;
+      return changes;
+    }
+
+    /**
+     * Milestones merged STEP BY STEP, against her own list.
+     *
+     * The steps themselves — their labels, details and dates — are hers, the
+     * same way the title and the due date are: `milestonesFor` derives them
+     * from the assignment SHE holds, so a step his older build had and hers no
+     * longer does cannot come back through the merge. Only the two marks he
+     * can make travel: the tick and the XP receipt.
+     *
+     * A tick is monotonic and the EARLIER date wins — the day he finished a
+     * step is a fact about that day, and re-ticking it on a second machine
+     * must not move it later in a record that has to stand up to review.
+     */
+    function milestoneChanges(local, incoming) {
+      const his = Array.isArray(incoming?.milestones) ? incoming.milestones : [];
+      if (his.length === 0) return null;
+      const hers = milestonesFor(local);
+      if (!Array.isArray(hers) || hers.length === 0) return null;
+      const byId = new Map(his.filter((m) => m && m.id).map((m) => [m.id, m]));
+      let changed = false;
+      const merged = hers.map((step) => {
+        const mine = byId.get(step?.id);
+        if (!mine) return step;
+        const next = { ...step };
+        if (mine.completedAt && (!step.completedAt || mine.completedAt < step.completedAt)) {
+          next.completedAt = mine.completedAt;
+          changed = true;
+        }
+        if (mine.xpAwardedAt && !step.xpAwardedAt) {
+          next.xpAwardedAt = mine.xpAwardedAt;
+          changed = true;
+        }
+        return next;
+      });
+      return changed ? merged : null;
+    }
+
+    /** Reflection travels like the writing does: never blanked, newer wins. */
+    function reflectionChanges(local, incoming) {
+      if (!hasText(incoming?.reflection)) return null;
+      if (incoming.reflection === local?.reflection) return null;
+      const newer = (incoming.reflectedAt || '') > (local?.reflectedAt || '');
+      if (hasText(local?.reflection) && !newer) return null;
+      return { reflection: incoming.reflection, reflectedAt: incoming.reflectedAt ?? null };
+    }
 
     /**
      * ==================================================================
@@ -7429,11 +7544,19 @@ export const useAppStore = create((set, get) => ({
         const local = bySlot.get(incoming.slotId);
         if (!local) continue; // a slot she doesn't have — her seed governs
         const changes = {};
+        // Status and its timestamps: only when his copy is genuinely further
+        // along, so an equal or older status can never rewind hers.
         if (rankOf(incoming) > rankOf(local)) {
-          for (const field of STUDENT_OWNED_ASSIGNMENT_FIELDS) {
+          for (const field of STUDENT_OWNED_STATUS_FIELDS) {
             if (incoming[field] !== undefined) changes[field] = incoming[field];
           }
         }
+        // The work itself travels on its own terms, at any status.
+        const steps = milestoneChanges(local, incoming);
+        if (steps) changes.milestones = steps;
+        Object.assign(changes, writingChanges(local, incoming));
+        const reflected = reflectionChanges(local, incoming);
+        if (reflected) Object.assign(changes, reflected);
         // A grade travels on its own terms, exactly as it does everywhere else
         // in this import — a grade beats no grade, later gradedAt wins.
         if (incomingGradeWins(local, incoming)) {

@@ -317,18 +317,61 @@ console.log('\n--- 8. importing his progress does not undo her schedule ---');
    * rubric, the required sections and the checklist. She would have had no way
    * to notice: the row would just look the way it did last week.
    */
+  /**
+   * ---- AND THE REPORT HE WROTE WAS ON NEITHER SIDE OF THE SPLIT ----
+   *
+   * Sept 8, 2026. The parent: "Lamar did the book report on his phone. He sent
+   * his export but the information for the book report didn't import."
+   *
+   * The list this section used to check named seven fields and not one of the
+   * writing boxes — they were added to the app after the split was written. A
+   * field on neither side does not travel, so 258 words of draft and a
+   * 218-word finished report were dropped in silence. Both copies also sat at
+   * `in-progress`, and the gate was a strict `>`, so the four ticked
+   * milestones did not cross either.
+   *
+   * The split is unchanged in principle and now covers the work: STATUS needs
+   * him to be further along, and everything he actually made merges on its own
+   * monotonic terms at any status.
+   */
   const store = read('src/store/useAppStore.js');
   ok('the import splits student-owned fields from hers',
-    /const STUDENT_OWNED_ASSIGNMENT_FIELDS = \[/.test(store));
-  const owned = store.slice(store.indexOf('const STUDENT_OWNED_ASSIGNMENT_FIELDS'), store.indexOf('function mergeBySlot'));
-  for (const field of ['status', 'milestones', 'reflection', 'rubricScores']) {
-    ok(`his ${field} crosses over`, new RegExp(`'${field}'`).test(owned));
+    /const STUDENT_OWNED_STATUS_FIELDS = \[/.test(store));
+  const owned = store.slice(store.indexOf('const STUDENT_OWNED_STATUS_FIELDS'), store.indexOf('function mergeBySlot'));
+  for (const field of ['status', 'startedAt', 'completedAt', 'rubricScores']) {
+    ok(`his ${field} crosses over when he is further along`, new RegExp(`'${field}'`).test(owned));
   }
   for (const field of ['dueDate', 'format', 'title', 'note', 'quarter', 'type']) {
     ok(`his stale ${field} does NOT`, !new RegExp(`'${field}'`).test(owned),
       'the assignment definition is hers — his copy is days behind');
   }
+  for (const field of ['notesText', 'draftText', 'finalText']) {
+    ok(`the ${field} he wrote crosses over`, new RegExp(`'${field}'`).test(owned),
+      'the writing boxes are the work; a field on neither side of the split is dropped in silence');
+  }
+  ok('...and its word count travels beside it',
+    /'notesTextWords'/.test(owned) && /'draftTextWords'/.test(owned) && /'finalTextWords'/.test(owned));
+  ok('...and writing is never blanked by an empty incoming box',
+    /if \(!hasText\(incoming\?\.\[key\]\)\) continue;/.test(owned),
+    'a merge into a school record may add work, never subtract it');
+  ok('...nor overwritten by an older one',
+    /const takeHis = !hasText\(local\?\.\[key\]\) \|\| \(hisTime && hisTime > herTime\);/.test(owned));
+  ok('milestones merge step by step against HER list',
+    /const hers = milestonesFor\(local\);/.test(owned),
+    'the steps are hers like the due date is; only the tick and the XP receipt are his');
+  ok('...a tick keeps the EARLIER date',
+    /mine\.completedAt && \(!step\.completedAt \|\| mine\.completedAt < step\.completedAt\)/.test(owned),
+    're-ticking on a second machine must not move the day he finished it');
+  ok('...and his reflection is never blanked either',
+    /function reflectionChanges/.test(owned) && /if \(!hasText\(incoming\?\.reflection\)\) return null;/.test(owned));
   const fn = store.slice(store.indexOf('function mergeBySlot'), store.indexOf('const bookMerge ='));
+  ok('equal status no longer copies nothing at all',
+    /const steps = milestoneChanges\(local, incoming\);/.test(fn)
+      && /Object\.assign\(changes, writingChanges\(local, incoming\)\);/.test(fn),
+    'both copies sat at in-progress, and a strict > read not one student field');
+  ok('...while STATUS still needs him to be genuinely further along',
+    /if \(rankOf\(incoming\) > rankOf\(local\)\) \{[\s\S]{0,200}?STUDENT_OWNED_STATUS_FIELDS/.test(fn),
+    'an equal or older status must never rewind hers');
   ok('the whole-row replacement is gone', !/\{ \.\.\.incoming, id: local\.id \}/.test(fn),
     'that single line is what would have carried the old dates back');
   ok('a slot she does not have is still skipped', /if \(!local\) continue;/.test(fn),
