@@ -482,9 +482,26 @@ console.log('\n--- 4. a due date now carries its run-up ---');
    * 'books'` — it asserted that ANY focus lands on Assignments, which is
    * precisely what made a book focus wrong. The tab must follow the KIND.
    */
+  /**
+   * ---- AND IT PINNED THE EXPRESSION, NOT THE PROPERTY (Sep 8, 2026) ----
+   *
+   * Rewritten when a THIRD kind arrived — 'grade', which opens Parent Setup so
+   * she can read the work she is grading. The old regex matched the two-kind
+   * ternary character for character and failed a change that made the routing
+   * more correct, not less. Seventh stale-literal failure in this repo.
+   *
+   * The property is: every kind names its own tab, and no kind falls through
+   * to a tab meant for another.
+   */
+  const tabInit = (home.match(/const \[tab, setTab\] = useState\([\s\S]{0,300}?\);/) || [''])[0];
   ok('...and lands on the tab that matches what it was given',
-    /useState\(focus\?\.kind === 'assignment' \? 'assignments' : 'books'\)/.test(home),
+    /focus\?\.kind === 'assignment' \? 'assignments'/.test(tabInit)
+      && /focus\?\.kind === 'grade' \? 'setup'/.test(tabInit)
+      && /: 'books'/.test(tabInit),
     'any-focus-means-assignments is how a book id ended up highlighting an assignment');
+  ok("...and a grade focus does NOT land on his assignments list",
+    !/focus\?\.kind === 'grade' \? 'assignments'/.test(tabInit),
+    'the rubric and his finished copy are on Parent Setup, not the list he works from');
   ok('...routing a book focus to the book list and an assignment focus to the assignment list',
     /focusBookId=\{focus\?\.kind === 'book' \? focus\.id : null\}/.test(home)
       && /focusAssignmentId=\{focus\?\.kind === 'assignment' \? focus\.id : null\}/.test(home));

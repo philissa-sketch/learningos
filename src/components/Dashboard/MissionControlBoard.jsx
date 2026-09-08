@@ -323,10 +323,10 @@ function ReadyToGrade({ items, onGoTo }) {
             <LetterGradePicker grade={item.grade} onPick={item.onGrade} />
           )}
 
-          {item.openSection && (
+          {(item.onOpen || item.openSection) && (
             <button
               type="button"
-              onClick={() => onGoTo(item.openSection)}
+              onClick={() => (item.onOpen ? item.onOpen() : onGoTo(item.openSection))}
               className="flex-none text-xs text-ink-500 underline hover:text-ink-100"
             >
               {item.openLabel || 'Open'}
@@ -402,7 +402,7 @@ function Panel({ title, hint, children }) {
   );
 }
 
-export function MissionControlBoard({ onGoTo }) {
+export function MissionControlBoard({ onGoTo, onOpenAcademicCenter = null }) {
   const khanAcademyAssignments = useAppStore((s) => s.khanAcademyAssignments);
   const writingEntries = useAppStore((s) => s.writingEntries);
   const selfExplanations = useAppStore((s) => s.selfExplanations);
@@ -954,8 +954,30 @@ export function MissionControlBoard({ onGoTo }) {
       type: 'letter',
       grade: a.grade || null,
       onGrade: (g) => { gradeAcademicAssignment(a.id, g); pin(`academic-${a.id}`); },
+      /**
+       * ---- OPEN NOW OPENS THE WORK. (Sep 8, 2026.) ----
+       *
+       * The parent: **"It shows that it was done but it doesn't link me to the
+       * completed work to read. The open link sends me to Reading Books in the
+       * Academic Success Center."**
+       *
+       * She was right twice over. `openSection` can only name a Parent
+       * Dashboard section, and his report is not on one — it is in the Academic
+       * Center's Parent Setup tab, where the rubric has shown his finished copy
+       * since Aug 26. So this row was pointed at the nearest-sounding section,
+       * whose first panel is the Book Picker: "Change the book on an
+       * assignment". Nothing on that page is the thing she clicked.
+       *
+       * Fourth report of one rule — a row that names a thing must open THAT
+       * thing — and the first where the row had no id to open with.
+       *
+       * `onOpen` wins over `openSection` in the renderer, and the fallback
+       * stays: a build that has not been handed the handler still lands her
+       * somewhere real rather than doing nothing.
+       */
+      onOpen: onOpenAcademicCenter ? () => onOpenAcademicCenter({ kind: 'grade', id: a.id }) : null,
       openSection: 'academic-success-center',
-      openLabel: 'Open'
+      openLabel: 'Read it'
     });
   }
 

@@ -76,7 +76,68 @@ export function AssignmentFormatPicker({ assignment }) {
         </div>
       )}
 
-      {chosen && assignment.status === 'completed' && <RubricScorer assignment={assignment} format={chosen} />}
+      {assignment.status === 'completed' &&
+        (chosen ? (
+          <RubricScorer assignment={assignment} format={chosen} />
+        ) : (
+          <div className="mt-3">
+            <SubmittedWork assignment={assignment} />
+          </div>
+        ))}
+    </div>
+  );
+}
+
+/**
+ * WHAT HE ACTUALLY WROTE, FINAL FIRST AND SAYING WHICH IT IS.
+ *
+ * ---- WHY IT IS ITS OWN COMPONENT NOW (Sep 8, 2026) ----
+ *
+ * It lived inside `RubricScorer`, which renders only when a FORMAT has been
+ * chosen. A completed assignment with a full report in it and no format picked
+ * showed her nothing at all — the same "I cannot read the work" she reported
+ * this day, one condition further in, and it would have looked like the fix to
+ * that report had simply not worked.
+ *
+ * The rubric genuinely needs a format: its criteria come from one. His writing
+ * does not, so it no longer waits for one.
+ */
+function SubmittedWork({ assignment, format = null }) {
+  const shown = assignment.finalText
+    ? { text: assignment.finalText, label: 'His finished copy' }
+    : assignment.draftText
+      ? { text: assignment.draftText, label: 'His rough draft — he has not saved a finished copy yet' }
+      : null;
+  if (!shown) return null;
+
+  const size = format ? sizeFor(format) : null;
+  const shownWords = shown.text.trim() ? shown.text.trim().split(/\s+/).filter(Boolean).length : 0;
+  const progress = wordProgress(size, shownWords);
+
+  return (
+    <div className="mb-3 rounded-lg border border-space-700 bg-space-950 p-3">
+      <div className="flex flex-wrap items-center justify-between gap-2">
+        <p className="text-[10px] font-display uppercase tracking-widest text-signal-cyan">{shown.label}</p>
+        <span className="text-[11px] text-ink-500">
+          {progress ? progress.label : `${shownWords} words`}
+          {size ? ` · target ${size.headline}` : ''}
+        </span>
+      </div>
+      <div className="mt-2 max-h-72 overflow-y-auto whitespace-pre-line text-sm leading-relaxed text-ink-200">
+        {shown.text}
+      </div>
+      {/* His notes are working material, not the submission, so they sit under
+          the report rather than competing with it. */}
+      {assignment.notesText && (
+        <details className="mt-2">
+          <summary className="cursor-pointer text-[11px] text-ink-500 hover:text-ink-300">
+            His notes ({assignment.notesTextWords || 0} words)
+          </summary>
+          <div className="mt-1.5 max-h-40 overflow-y-auto whitespace-pre-line text-xs leading-relaxed text-ink-400">
+            {assignment.notesText}
+          </div>
+        </details>
+      )}
     </div>
   );
 }
@@ -107,33 +168,9 @@ function RubricScorer({ assignment, format }) {
    * Grading a rough draft while believing it is the finished copy is a worse
    * failure than not showing it at all.
    */
-  const shown = assignment.finalText
-    ? { text: assignment.finalText, label: 'His finished copy' }
-    : assignment.draftText
-      ? { text: assignment.draftText, label: 'His rough draft — he has not saved a finished copy yet' }
-      : null;
-  const size = sizeFor(format);
-  const shownWords = shown?.text?.trim() ? shown.text.trim().split(/\s+/).filter(Boolean).length : 0;
-  const progress = wordProgress(size, shownWords);
-
   return (
     <div className="mt-3 rounded-lg border border-space-700 bg-space-900 px-3 py-3">
-      {shown && (
-        <div className="mb-3 rounded-lg border border-space-700 bg-space-950 p-3">
-          <div className="flex flex-wrap items-center justify-between gap-2">
-            <p className="text-[10px] font-display uppercase tracking-widest text-signal-cyan">
-              {shown.label}
-            </p>
-            <span className="text-[11px] text-ink-500">
-              {progress ? progress.label : `${shownWords} words`}
-              {size ? ` · target ${size.headline}` : ''}
-            </span>
-          </div>
-          <div className="mt-2 max-h-72 overflow-y-auto whitespace-pre-line text-sm leading-relaxed text-ink-200">
-            {shown.text}
-          </div>
-        </div>
-      )}
+      <SubmittedWork assignment={assignment} format={format} />
 
       <p className="text-[10px] font-display uppercase tracking-widest text-ink-600">
         Rubric — score each, then take the suggested grade or pick your own

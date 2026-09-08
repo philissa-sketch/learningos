@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useAppStore } from '../../store/useAppStore.js';
 import { getCurrentQuarter } from '../../lib/schoolQuarter.js';
 import {
@@ -42,7 +42,14 @@ const GRADE_OPTIONS = ['A', 'A-', 'B+', 'B', 'C', 'D', 'F'];
  * Dashboard login gate she asked for is still queued; this tab is the
  * natural thing to move behind it when it's built.
  */
-export function AcademicParentSetupView() {
+/**
+ * `focusAssignmentId` — open straight at the piece of work she is grading.
+ *
+ * The parent, Sep 8 2026: **"it doesn't link me to the completed work to
+ * read."** The rubric on this screen has shown his finished copy since Aug 26;
+ * nothing could point at it.
+ */
+export function AcademicParentSetupView({ focusAssignmentId = null }) {
   const [mode, setMode] = useState('assignments');
 
   return (
@@ -88,7 +95,7 @@ export function AcademicParentSetupView() {
         </div>
       </div>
 
-      {mode === 'books' ? <BookSetup /> : <AssignmentSetup />}
+      {mode === 'books' ? <BookSetup /> : <AssignmentSetup focusAssignmentId={focusAssignmentId} />}
     </div>
   );
 }
@@ -321,13 +328,23 @@ function AddCustomBook({ subject }) {
 // Assignments
 // ---------------------------------------------------------------------
 
-function AssignmentSetup() {
+function AssignmentSetup({ focusAssignmentId = null }) {
   const academicAssignments = useAppStore((s) => s.academicAssignments);
   const academicBooks = useAppStore((s) => s.academicBooks);
   const currentQuarter = getCurrentQuarter().batchLabel;
   const quarters = orderedQuarters(academicAssignments);
+  /**
+   * The quarter picker opens on the assignment she was sent to, not on today's
+   * quarter. A row she clicked in Q1 that renders under a Q2 tab is the same
+   * "go and find it yourself" the link was supposed to remove — and a piece of
+   * work can sit in a quarter that is no longer the current one.
+   */
+  const focused = focusAssignmentId != null
+    ? academicAssignments.find((a) => a.id === focusAssignmentId) || null
+    : null;
   const [quarter, setQuarter] = useState(
-    quarters.includes(currentQuarter) ? currentQuarter : quarters[0] || currentQuarter
+    (focused && quarters.includes(focused.quarter) && focused.quarter)
+      || (quarters.includes(currentQuarter) ? currentQuarter : quarters[0] || currentQuarter)
   );
 
   const inQuarter = academicAssignments.filter((a) => a.quarter === quarter);
@@ -375,6 +392,7 @@ function AssignmentSetup() {
                   key={assignment.id}
                   assignment={assignment}
                   booksForSubject={booksBySubject[subject] || []}
+                  focused={assignment.id === focusAssignmentId}
                 />
               ))}
           </div>
@@ -389,7 +407,17 @@ function AssignmentSetup() {
   );
 }
 
-function AssignmentEditor({ assignment, booksForSubject = [] }) {
+function AssignmentEditor({ assignment, booksForSubject = [], focused = false }) {
+  /**
+   * Scrolled to and ringed when she was sent here to grade this one. A page of
+   * twenty slots that happens to contain the right one is not a link.
+   */
+  const cardRef = useRef(null);
+  useEffect(() => {
+    if (focused && cardRef.current) {
+      cardRef.current.scrollIntoView({ block: 'center', behavior: 'smooth' });
+    }
+  }, [focused]);
   const scheduleAcademicAssignment = useAppStore((s) => s.scheduleAcademicAssignment);
   const moveAssignmentToQuarter = useAppStore((s) => s.moveAssignmentToQuarter);
   const removeAcademicAssignment = useAppStore((s) => s.removeAcademicAssignment);
@@ -413,7 +441,13 @@ function AssignmentEditor({ assignment, booksForSubject = [] }) {
   };
 
   return (
-    <div className="rounded-lg border border-space-700 bg-space-900 px-3 py-3">
+    <div
+      ref={cardRef}
+      className={
+        'rounded-lg border bg-space-900 px-3 py-3 transition ' +
+        (focused ? 'border-signal-cyan ring-1 ring-signal-cyan/60' : 'border-space-700')
+      }
+    >
       <div className="flex flex-wrap items-center gap-2">
         <span
           className={

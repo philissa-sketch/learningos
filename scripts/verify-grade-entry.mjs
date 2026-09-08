@@ -27,6 +27,7 @@ function ok(label, cond, detail = '') {
   else { failures.push(label); console.log('FAIL  ' + label + (detail ? `  ${detail}` : '')); }
 }
 const read = (rel) => fs.readFileSync(path.join(REPO, rel), 'utf8');
+const codeOnly = (t) => t.replace(/\/\*[\s\S]*?\*\//g, '').replace(/\{\/\*[\s\S]*?\*\/\}/g, '').replace(/^\s*\/\/.*$/gm, '');
 
 console.log('\n--- 1. the four scores on her screenshot ---');
 {
@@ -160,7 +161,6 @@ console.log('\n--- finished work is never invisible, and never in the wrong list
    * a product decision that changed; being invisible was the defect.
    */
   const board = read('src/components/Dashboard/MissionControlBoard.jsx');
-  const codeOnly = (t) => t.replace(/\/\*[\s\S]*?\*\//g, '').replace(/\{\/\*[\s\S]*?\*\/\}/g, '').replace(/^\s*\/\/.*$/gm, '');
   const code = codeOnly(board);
 
   ok('every finished, ungraded unit is collected before anything is filtered',
@@ -187,6 +187,73 @@ console.log('\n--- finished work is never invisible, and never in the wrong list
     'a count computed inside the filter can only ever report zero');
   ok('...and offers one tap to show them',
     /setQuarterFilter\('all'\); setGradeFilter\('ungraded'\)/.test(dash));
+}
+
+console.log('\n--- the row she grades from opens the work she is grading ---');
+{
+  /**
+   * ---- WHERE THIS CAME FROM (Sep 8, 2026) ----
+   *
+   * The parent: "I went to the Parent Dashboard to grade. It shows that it was
+   * done but it doesn't link me to the completed work to read. The open link
+   * sends me to Reading Books in the Academic Success Center."
+   *
+   * The grade queue's Open could only name a Parent Dashboard SECTION, and his
+   * report is not on one — it is in the Academic Center's Parent Setup tab.
+   * So the row was pointed at the nearest-sounding section, which opens with
+   * the Book Picker: "Change the book on an assignment."
+   *
+   * Fourth report of one rule: a row that names a thing must open THAT thing.
+   * This checks the whole route, because every previous fix broke at a seam
+   * between two files rather than inside one.
+   */
+  const board = codeOnly(read('src/components/Dashboard/MissionControlBoard.jsx'));
+  const parent = codeOnly(read('src/components/Dashboard/ParentDashboard.jsx'));
+  const app = codeOnly(read('src/App.jsx'));
+  const home = codeOnly(read('src/components/Academic/AcademicHome.jsx'));
+  const setup = codeOnly(read('src/components/Academic/AcademicParentSetupView.jsx'));
+  const picker = codeOnly(read('src/components/Academic/AssignmentFormatPicker.jsx'));
+
+  ok('the academic grade row carries the assignment id',
+    /onOpen: onOpenAcademicCenter \? \(\) => onOpenAcademicCenter\(\{ kind: 'grade', id: a\.id \}\) : null/.test(board),
+    'the row had no id at all — that is why it could only name a section');
+  ok('...and the button prefers it over the section jump',
+    /onClick=\{\(\) => \(item\.onOpen \? item\.onOpen\(\) : onGoTo\(item\.openSection\)\)\}/.test(board));
+  ok('...with the section kept as a fallback, not deleted',
+    /openSection: 'academic-success-center'/.test(board),
+    'a build not handed the handler must still land somewhere real');
+  ok('the board accepts the handler', /onOpenAcademicCenter = null/.test(board));
+  ok('...the Parent Dashboard passes it through',
+    /onOpenAcademicCenter = null/.test(parent) && /onOpenAcademicCenter=\{onOpenAcademicCenter\}/.test(parent),
+    'every previous version of this fault broke at a seam between two files');
+  ok('...and App gives the Parent Dashboard the same handler his board uses',
+    /<ParentDashboard onSignOut=\{onSignOut\} onOpenAcademicCenter=\{openAcademicCenter\} \/>/.test(app)
+      && /const openAcademicCenter = \(focus = null\) =>/.test(app));
+  ok("...which accepts 'grade' as a real kind",
+    /focus\.kind === 'grade'/.test(app) && /typeof focus\.id === 'number'/.test(app),
+    'the shape check is what tells a real request from a stray click event');
+
+  ok("'grade' lands on Parent Setup, not the assignments list",
+    /focus\?\.kind === 'grade' \? 'setup'/.test(home),
+    'the rubric and his finished copy are on Parent Setup');
+  ok('...and the id reaches that tab',
+    /<AcademicParentSetupView focusAssignmentId=\{focus\?\.kind === 'grade' \? focus\.id : null\} \/>/.test(home));
+  ok('...the setup view opens on the assignment\u2019s own quarter',
+    /focused && quarters\.includes\(focused\.quarter\) && focused\.quarter/.test(setup),
+    'a row she clicked in Q1 rendering under a Q2 tab is the same hunt the link removes');
+  ok('...and scrolls the card into view',
+    /cardRef\.current\.scrollIntoView/.test(setup) && /focused=\{assignment\.id === focusAssignmentId\}/.test(setup),
+    'a page of twenty slots that happens to contain the right one is not a link');
+
+  ok('his finished copy is readable without a format being picked',
+    /function SubmittedWork/.test(picker)
+      && /\{assignment\.status === 'completed' &&[\s\S]{0,220}?<SubmittedWork assignment=\{assignment\} \/>/.test(picker),
+    'it lived inside RubricScorer, which needs a format — a completed report with none showed nothing');
+  ok('...final first, and it says which it is showing',
+    /assignment\.finalText[\s\S]{0,120}?'His finished copy'[\s\S]{0,220}?'His rough draft/.test(picker),
+    'grading a rough draft believing it is the finished copy is worse than not showing it');
+  ok('...and his notes are there too, under the report rather than beside it',
+    /assignment\.notesText/.test(picker));
 }
 
 console.log(`\n${passed} passed, ${failures.length} failed`);

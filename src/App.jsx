@@ -152,6 +152,28 @@ export default function App({ initialView = 'dashboard', onSignOut }) {
    * A bare id cannot say what it is an id OF. This one does.
    */
   const [academicFocus, setAcademicFocus] = useState(null);
+
+  /**
+   * Open the Academic Success Center at one thing.
+   *
+   * Accepts `{ kind: 'book' | 'assignment' | 'grade', id }`, or nothing.
+   *
+   * The shape check is load-bearing: this handler is also passed straight to
+   * onClick in two places, where it receives a click EVENT. An event is an
+   * object, so `typeof === 'object'` alone would sail through — the kind and
+   * the numeric id are what tell a real request from a stray event.
+   *
+   * 'grade' is HERS (Sep 8, 2026) and it is a third kind rather than a flag on
+   * 'assignment', because it lands on a different tab: Parent Setup, where the
+   * rubric and his finished copy are, not the Assignments list he works from.
+   */
+  const openAcademicCenter = (focus = null) => {
+    const ok = focus
+      && (focus.kind === 'book' || focus.kind === 'assignment' || focus.kind === 'grade')
+      && typeof focus.id === 'number';
+    setAcademicFocus(ok ? { kind: focus.kind, id: focus.id } : null);
+    setView('academic');
+  };
   const [typingMode, setTypingMode] = useState(null); // null | 'home' | 'lessons' | 'speedtest'
   const [studySkill, setStudySkill] = useState(null); // 'spelling' | 'vocabulary' | null
   const [quizSkill, setQuizSkill] = useState(null);
@@ -406,13 +428,7 @@ export default function App({ initialView = 'dashboard', onSignOut }) {
              * would sail through — the kind and the numeric id are what tell
              * a real request from a stray event.
              */
-            onOpenAcademicCenter={(focus = null) => {
-              const ok = focus
-                && (focus.kind === 'book' || focus.kind === 'assignment')
-                && typeof focus.id === 'number';
-              setAcademicFocus(ok ? { kind: focus.kind, id: focus.id } : null);
-              setView('academic');
-            }}
+            onOpenAcademicCenter={openAcademicCenter}
             onOpenPE={() => setView('pe')}
             onOpenGuitar={() => setView('guitar')}
             onOpenGarden={() => setView('garden')}
@@ -507,7 +523,21 @@ export default function App({ initialView = 'dashboard', onSignOut }) {
         )}
         {view === 'parent' && (
           <ParentGate>
-            <ParentDashboard onSignOut={onSignOut} />
+            {/**
+              * SHE HAS TO REACH THE WORK SHE IS GRADING. (Sep 8, 2026.)
+              *
+              * The parent: **"I went to the Parent Dashboard to grade. It shows
+              * that it was done but it doesn't link me to the completed work to
+              * read. The open link sends me to Reading Books in the Academic
+              * Success Center."**
+              *
+              * The board could only jump between Parent Dashboard SECTIONS, so
+              * the one row whose target lives on another screen entirely sent
+              * her to the nearest-sounding section instead. This is the same
+              * handler his board already uses; the Parent Dashboard simply
+              * never had it.
+              */}
+            <ParentDashboard onSignOut={onSignOut} onOpenAcademicCenter={openAcademicCenter} />
           </ParentGate>
         )}
       </>

@@ -857,7 +857,7 @@ function SignOutSection({ onSignOut }) {
   );
 }
 
-export function ParentDashboard({ onSignOut }) {
+export function ParentDashboard({ onSignOut, onOpenAcademicCenter = null }) {
   const [section, setSection] = useState('mission-control-board');
   const [openGroup, setOpenGroup] = useState('board');
   const activeGroup = SECTION_GROUPS.find((g) => g.id === openGroup) || null;
@@ -945,6 +945,7 @@ export function ParentDashboard({ onSignOut }) {
             const group = SECTION_GROUPS.find((g) => g.sections.some((s) => s.id === target));
             if (group) setOpenGroup(group.id);
           }}
+          onOpenAcademicCenter={onOpenAcademicCenter}
         />
       )}
       {section === 'attendance' && <AttendanceSection />}

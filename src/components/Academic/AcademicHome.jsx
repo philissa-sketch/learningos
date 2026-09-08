@@ -76,8 +76,28 @@ const TABS = [
  * a different piece of work. `focus` is typed now: `{ kind, id }`. A bare id
  * cannot say what it is an id of.
  */
+/**
+ * ---- AND A FOURTH TIME, ON HER SIDE OF THE APP. (Sep 8, 2026.) ----
+ *
+ * The parent: **"I went to the Parent Dashboard to grade. It shows that it was
+ * done but it doesn't link me to the completed work to read. The open link
+ * sends me to Reading Books in the Academic Success Center."**
+ *
+ * Same rule, fourth report, and this one had a different cause: her Open did
+ * not carry an id at all. The Mission Control Board's grade queue could only
+ * jump between Parent Dashboard SECTIONS, so a row whose target lives on
+ * another screen was pointed at the nearest-sounding section — which opens
+ * with the Book Picker. Nothing on that page is his report.
+ *
+ * `kind: 'grade'` lands on Parent Setup, where the rubric already shows his
+ * finished copy. It is a separate kind from 'assignment' on purpose: the same
+ * assignment id means a different TAB depending on who is asking, and folding
+ * that into a boolean flag is how the next screen gets it wrong.
+ */
 export function AcademicHome({ focus = null }) {
-  const [tab, setTab] = useState(focus?.kind === 'assignment' ? 'assignments' : 'books');
+  const [tab, setTab] = useState(
+    focus?.kind === 'grade' ? 'setup' : focus?.kind === 'assignment' ? 'assignments' : 'books'
+  );
 
   return (
     <div className="mx-auto max-w-3xl space-y-6 px-4 py-6 sm:px-6">
@@ -113,7 +133,9 @@ export function AcademicHome({ focus = null }) {
         <AcademicAssignmentsView focusAssignmentId={focus?.kind === 'assignment' ? focus.id : null} />
       )}
       {tab === 'portfolio' && <AcademicPortfolioView />}
-      {tab === 'setup' && <AcademicParentSetupView />}
+      {tab === 'setup' && (
+        <AcademicParentSetupView focusAssignmentId={focus?.kind === 'grade' ? focus.id : null} />
+      )}
     </div>
   );
 }
