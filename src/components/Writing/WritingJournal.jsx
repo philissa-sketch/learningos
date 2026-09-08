@@ -3,6 +3,7 @@ import { useAppStore } from '../../store/useAppStore.js';
 import { scheduleForItem } from '../../lib/plannerFeeds.js';
 import { orderScheduledCards, scheduleSortDate } from '../../lib/academicOrder.js';
 import { todayDateStr, toDateStr, addDays, parseDateStr } from '../../lib/scheduler.js';
+import { pairedBuildFor, BUILD_DOCUMENTATION_PROMPTS } from '../../lib/weeklyPlan.js';
 import { academyContent } from '../../content/academyContent.js';
 
 const { gardenProjects = [] } = academyContent().electives;
@@ -192,6 +193,35 @@ export function WritingJournal({ onStartPrompt }) {
                     </p>
                   )}
                   <ScheduleLine schedule={schedule} today={today} />
+                  {/**
+                    * WHICH BUILD THIS IS A REPORT ON. (Sep 8, 2026.)
+                    *
+                    * The parent: **"there is a Lab report writing journal that
+                    * isn't connected to any lab experiment."** This card named
+                    * a form and a week and never the thing being documented,
+                    * so a lab report read as an essay topic.
+                    *
+                    * It answers for the occurrence the card is SHOWING, which
+                    * is the same one the schedule line above prints, so the two
+                    * lines can never describe different weeks.
+                    *
+                    * A week with no experiment says so rather than staying
+                    * quiet: an unanswered question looks like an oversight, and
+                    * this one is a real gap in the plan that only she can
+                    * close.
+                    */}
+                  {BUILD_DOCUMENTATION_PROMPTS.has(item.id) && schedule?.show?.dueDate && (() => {
+                    const build = pairedBuildFor(item.id, parseDateStr(schedule.show.dueDate));
+                    return build ? (
+                      <p className="mt-1 text-xs text-signal-green">
+                        Reports on {build.title} — built the same week
+                      </p>
+                    ) : (
+                      <p className="mt-1 text-xs text-ink-600">
+                        No build scheduled that week — write it up on one he has already done
+                      </p>
+                    );
+                  })()}
                   {item.topicPool && (
                     <p className="mt-1 text-xs text-ink-500">
                       {item.topicPool.length + 1} different topics - a fresh one each time

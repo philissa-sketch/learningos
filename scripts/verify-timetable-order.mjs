@@ -134,6 +134,15 @@ console.log('\n--- 3. every row declares its block ---');
   ok(`${blockIdCount} of ${rowCount} rows carry a blockId`,
     blockIdCount >= rowCount - 1,
     'only the bedtime book is allowed to have none');
+  /**
+   * AND ITS ONE DATE SAYS WHICH END IT IS. She read "due Fri, Sep 18" as a
+   * start date on Aug 26 and again on Sep 8; the Aug 26 fix reached the
+   * Assignments rows and this row was missed.
+   */
+  ok('the bedtime book row says which end of the reading its date is',
+    /finish by \$\{formatShortDate\(parseDateStr\(currentBook\.dueDate\)\)\}/.test(code)
+      && !/· due \$\{formatShortDate\(parseDateStr\(currentBook\.dueDate\)\)\}/.test(code),
+    'one bare date on three weeks of reading reads as the day to begin');
   ok('...and the one without it is the book, on purpose',
     /label="Book"/.test(code) && !/label="Book"[\s\S]{0,200}blockId/.test(code),
     'the parent: "I will have him read that book before bed" — it is not a school block');
@@ -150,7 +159,20 @@ console.log('\n--- 3. every row declares its block ---');
    * now, and it does not care how many rows there are.
    */
   const blockIdExprs = [...code.matchAll(/blockId=\{([^}]*)\}/g)].map((m) => m[1].trim());
-  const RESOLVERS = /BLOCK_FOR_SUBJECT|STRAND_BLOCK|blockForLesson|rowBlock/;
+  /**
+   * ---- AND A SECOND ROTATING SLOT MOVED THE ROWS AGAIN. (Sep 8, 2026.) ----
+   *
+   * `blockForSubjectToday` is the fourth resolver, added the day the parent
+   * reported Social Studies stamped "not on today's timetable" while the rail
+   * beside it ran Social Studies at 10:30. It answers the same question the
+   * other three answer — which block does this row belong to — and it answers
+   * it BY DATE, because since Aug 29 two blocks rotate and a fixed table cannot
+   * be right about both.
+   *
+   * Naming it here is not enough: a resolver that quietly stopped reading
+   * scheduledMinutes would pass. So the function's own body is checked below.
+   */
+  const RESOLVERS = /BLOCK_FOR_SUBJECT|STRAND_BLOCK|blockForLesson|rowBlock|blockForSubjectToday/;
   ok(`all ${blockIdExprs.length} blockId expressions resolve through scheduledMinutes`,
     blockIdExprs.length >= 8 && blockIdExprs.every((e) => RESOLVERS.test(e)),
     JSON.stringify(blockIdExprs.filter((e) => !RESOLVERS.test(e))));
@@ -160,6 +182,26 @@ console.log('\n--- 3. every row declares its block ---');
   ok("...so no row hard-codes a block id",
     !/blockId="block-/.test(code),
     'a literal here drifts from the credit rule the first time a block moves');
+
+  /**
+   * THE DATE-AWARE RESOLVER, CHECKED RATHER THAN TRUSTED.
+   *
+   * It must fall back to BLOCK_FOR_SUBJECT — so every non-rotating row is
+   * exactly where it always was — and it must use MORNING_BLOCK_ID rather than
+   * a typed 'block-5', which is the same literal-drift rule as the line above.
+   */
+  const resolver = code.match(/const blockForSubjectToday = [\s\S]{0,260}?;/);
+  ok('...and the date-aware resolver still falls back to BLOCK_FOR_SUBJECT',
+    Boolean(resolver) && /BLOCK_FOR_SUBJECT\[subject\]/.test(resolver[0]),
+    'every row that is not in a rotating slot must land exactly where it always did');
+  ok('...and names the morning block by its id, not a literal',
+    Boolean(resolver) && /MORNING_BLOCK_ID/.test(resolver[0]) && !/'block-5'/.test(resolver[0]));
+  ok('...and it is fed liveMorningSubject, the same function the rail reads',
+    /const morningOwner = liveMorningSubject\(new Date\(\), khanAcademyAssignments\)/.test(code),
+    'the rail and the list disagreeing about the day is the fault this whole file exists for');
+  ok('...and a subject that owns the 10:30 slot is never stamped off-timetable',
+    /const isOffTimetable = \(subject\) => \{[\s\S]{0,240}?subject === morningOwner\) return false;/.test(code),
+    'she reported exactly this: "not on today\'s timetable" beside a rail running it at 10:30');
 }
 
 console.log('\n--- 4. the time is printed, and "not today" is said in words ---');
@@ -502,7 +544,7 @@ console.log('\n--- 4. no two rows claim the same minute of the same subject ---'
   const code = codeOnly(read(DASH));
 
   ok("the week's project still carries its subject's block",
-    /blockId=\{BLOCK_FOR_SUBJECT\[weeksHandsOn\.subject\]\}/.test(code),
+    /blockId=\{(?:BLOCK_FOR_SUBJECT\[|blockForSubjectToday\()weeksHandsOn\.subject[\])]\}/.test(code),
     'without a block it sorts to the tail, which is the fault she already reported once');
   ok('...and shows the day it is due rather than that block\'s clock time',
     /when=\{parseDateStr\(handsOnDueFriday\)\.toLocaleDateString/.test(code),

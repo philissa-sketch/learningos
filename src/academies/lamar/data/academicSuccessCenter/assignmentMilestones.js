@@ -253,11 +253,49 @@ export function currentMilestone(assignment) {
  * Nothing new is stored. Both dates are derived from the one date the parent
  * actually chose — the assignment's due date.
  */
+/**
+ * ---- AND THE FIRST STEP SPENT THE LEAD TIME TWICE. (Sep 8, 2026.) ----
+ *
+ * The parent, on Sep 8: **"the Book Report book Hatchet is showing up when he
+ * isn't to start reading that book on Sept 18. It shouldn't show up on the
+ * Rest of the day."**
+ *
+ * She was right, and two functions in THIS FILE gave opposite answers about
+ * the same assignment on the same day:
+ *
+ *     startByFor(Hatchet book report)        2026-09-18   ->  leadStatus 'not-yet'
+ *     milestoneOpensOn(same, 0)              2026-08-28   ->  step live for three weeks
+ *
+ * `startByFor` says why the first of those is right, in a comment written
+ * before this function existed: *"For anything with milestones this is the
+ * FIRST milestone's date, so the two can never disagree ... computing a second
+ * answer beside it is how two dates that mean the same thing come to differ by
+ * a day."* This computed the second answer, and they differed by twenty-one.
+ *
+ * The arithmetic double-counted. `buildMilestones` dates the chain BACKWARD
+ * from the due date one week apart, so for a four-step Book Report the chain
+ * itself already spans twenty-one days — which is exactly what
+ * LEAD_DAYS_BY_TYPE means by 21, and its own comment says so: *"for types with
+ * milestones the lead time is already known: one week per step beyond the
+ * first."* Subtracting those twenty-one days AGAIN from the first step gave
+ * the assignment forty-two days of run-up on a twenty-one-day plan, and put
+ * "Read the book" on his board five and a half weeks before the plan starts.
+ *
+ * The rule the chain states is unchanged and now has no exception: a step
+ * opens when the step before it is due, and the first step opens when the
+ * ASSIGNMENT starts. That date has one owner. It is not recomputed here, it is
+ * asked for — so the two cannot drift apart again.
+ *
+ * The week of warning she still needs did not come from this function and does
+ * not go away: AcademicCenterCard's "Starts this week" list reads `startByFor`
+ * against a seven-day window, so the Hatchet report appears there on Sep 11
+ * saying it starts Friday, and becomes a live step on Sep 18.
+ */
 export function milestoneOpensOn(assignment, index) {
   const steps = milestonesFor(assignment);
   if (index < 0 || index >= steps.length) return null;
   if (index > 0) return steps[index - 1].dueDate;
-  return toDateStr(addDays(parseDateStr(steps[0].dueDate), -leadDaysFor(assignment?.type)));
+  return startByFor(assignment);
 }
 
 /**

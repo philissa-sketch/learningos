@@ -317,12 +317,50 @@ console.log('\n--- 4. a due date now carries its run-up ---');
    *
    * The run-up fix above stopped at the assignment. This is inside it.
    */
+  /**
+   * ---- AND THAT FIX SPENT THE LEAD TIME TWICE (Sep 8, 2026) ----
+   *
+   * This asserted `milestoneOpensOn(report, 0) === '2026-08-07'` — the first
+   * step's own deadline minus the 21 days LEAD_DAYS_BY_TYPE allows a Book
+   * Report. Those 21 days are the chain: `buildMilestones` dates four steps a
+   * week apart backward from the due date, so the first step ALREADY sits 21
+   * days before it. Subtracting them again gave a 21-day plan 42 days of
+   * run-up.
+   *
+   * What it cost, in the parent's words on Sep 8: **"the Book Report book
+   * Hatchet is showing up when he isn't to start reading that book on Sept 18.
+   * It shouldn't show up on the Rest of the day."** Two functions in one file
+   * disagreed about one assignment — `startByFor` said Sep 18 and `leadStatus`
+   * said 'not-yet', while `activeMilestone` had had it live since Aug 28.
+   *
+   * The rule now has no exception and no second arithmetic: a step opens when
+   * the step before it is due, and the first step opens when the ASSIGNMENT
+   * starts — `startByFor`, the one function that owns that date.
+   */
   const report = { type: 'Book Report', dueDate: '2026-09-18', title: 'A Long Walk to Water', status: 'not-started' };
-  ok('a step opens a lead time before its own deadline',
-    ms.milestoneOpensOn(report, 0) === '2026-08-07',
-    'read-by Aug 28 minus the 21 days the table already allows a Book Report');
-  ok('...so mid-August the reading step is live', Boolean(ms.activeMilestone(report, '2026-08-16')));
+  ok('the first step opens when the assignment starts, and not a day earlier',
+    ms.milestoneOpensOn(report, 0) === ms.startByFor(report),
+    'one date, one owner — the two cannot drift apart because there is only one of them');
+  ok('...which for a Book Report is its first milestone, 21 days out',
+    ms.milestoneOpensOn(report, 0) === '2026-08-28',
+    'the chain IS the lead time; subtracting it again gave 42 days on a 21-day plan');
+  ok('...so mid-August it is NOT live', ms.activeMilestone(report, '2026-08-16') === null,
+    'the Hatchet report she reported: start-by Sep 18, on his board Sep 8');
+  ok('...and on its start-by date it is', Boolean(ms.activeMilestone(report, '2026-08-28')));
   ok('...and in July it is not', ms.activeMilestone(report, '2026-07-20') === null);
+
+  /**
+   * The week of warning did not come from `activeMilestone` and must not have
+   * gone with it. AcademicCenterCard's "Starts this week" list reads
+   * `startByFor` against a seven-day window, so the Hatchet report announces
+   * itself on Sep 11 and becomes a live step on Sep 18.
+   */
+  const hatchet = { type: 'Book Report', dueDate: '2026-10-09', title: 'Hatchet — book jacket redesign', status: 'not-started' };
+  ok('a report that starts Sep 18 is silent on Sep 8',
+    ms.activeMilestone(hatchet, '2026-09-08') === null && ms.startByFor(hatchet) === '2026-09-18');
+  ok('...announces itself a week ahead', ms.startByFor(hatchet) <= '2026-09-18'
+    && ms.leadStatus(hatchet, '2026-09-11') === 'not-yet');
+  ok('...and is live on the day it starts', Boolean(ms.activeMilestone(hatchet, '2026-09-18')));
 
   const later = { type: 'Book Report', dueDate: '2026-11-20', title: 'Red-Tail Angels', status: 'not-started' };
   ok('a book report due in November shows nothing in August',
@@ -725,7 +763,7 @@ console.log("\n--- this week's build is in the day, not beside it ---");
       && /const weeksHandsOn =/.test(board),
     'a build with no subject could only ever have been a tile');
   ok('...so it can be given a timetable block',
-    /blockId=\{BLOCK_FOR_SUBJECT\[weeksHandsOn\.subject\]\}/.test(board),
+    /blockId=\{(?:BLOCK_FOR_SUBJECT\[|blockForSubjectToday\()weeksHandsOn\.subject[\])]\}/.test(board),
     'TimetableOrder sorts on the block — no block, no place in the day');
   ok('...and it names the Friday it is due',
     /handsOnDueFriday/.test(board) && /fridayOfSchoolWeek\(getSchoolWeekNumber\(/.test(board));

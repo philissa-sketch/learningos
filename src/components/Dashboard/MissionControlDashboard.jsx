@@ -19,8 +19,14 @@ import { DailyMissionCard } from './DailyMissionCard.jsx';
 import { WORD_ACTIVITIES } from '../../lib/weeklyWords.js';
 import { todayDateStr } from '../../lib/scheduler.js';
 import { TimetableOrder } from './TimetableOrder.jsx';
+import { pairedBuildFor } from '../../lib/weeklyPlan.js';
 import { BLOCK_FOR_SUBJECT, STRAND_BLOCK, khanReadingStrand, blockForLesson } from '../../lib/scheduledMinutes.js';
-import { liveRotatingSubjects, liveMorningSubject, ROTATING_BLOCK_ID } from '../../lib/rotatingBlock.js';
+import {
+  liveRotatingSubjects,
+  liveMorningSubject,
+  ROTATING_BLOCK_ID,
+  MORNING_BLOCK_ID
+} from '../../lib/rotatingBlock.js';
 import { useToday } from '../../lib/useToday.js';
 import { academyContent } from '../../content/academyContent.js';
 
@@ -406,6 +412,15 @@ export function MissionControlDashboard({
   const journalDoneThisWeek = weeksJournalPrompts.length > 0 && !nextJournalPrompt;
 
   /**
+   * The build this week's Journal piece is a report ON, when the schedule
+   * paired them — see pairedBuildFor() and the note in lib/weeklyPlan.js. The
+   * row says so, because "Lab Report: Document an Experiment · Writing in the
+   * structured format scientists use" does not tell him WHICH experiment, and
+   * the answer is two rows above his thumb.
+   */
+  const journalPairedBuild = nextJournalPrompt ? pairedBuildFor(nextJournalPrompt.id) : null;
+
+  /**
    * This week's hands-on build, resolved to a REAL prompt object.
    *
    * Bug found Aug 7, 2026 by clicking the tile: it was wired
@@ -589,6 +604,42 @@ export function MissionControlDashboard({
   /** The subject that actually owns the 2:15 block today, if any. */
   const rotatingOwners = liveRotatingSubjects(new Date(), khanAcademyAssignments);
 
+  /**
+   * ==========================================================================
+   * THE 10:30 SLOT ROTATES TOO, AND ONLY HALF THIS SCREEN KNEW. (Sep 8, 2026.)
+   * ==========================================================================
+   *
+   * The parent: **"Social Studies is showing that it isn't on today's
+   * timetable but it is showing up in Today's Routine."**
+   *
+   * Both halves were true on the same Tuesday, four inches apart:
+   *
+   *     Today's Routine   10:30  Social Studies
+   *     The rest of today  2:15  SOCIAL STUDIES  not on today's timetable
+   *
+   * Social Studies took Tuesday's 10:30 block on Aug 29 so it could run twice
+   * a week. `todaysSubjects` was taught about that slot the same day — which is
+   * why the row appears at all — and `whenFor` and `isOffTimetable` were not.
+   * They ask `BLOCK_FOR_SUBJECT`, a fixed table in which Social Studies is
+   * `block-9` on every day of the year, so the row printed the 2:15 clock time,
+   * sorted into the 2:15 slot, and was then stamped off-timetable for not
+   * owning the block it had been wrongly assigned to.
+   *
+   * That is the same shape as the Aug 20 fault this list already carries a
+   * comment about — the list and the rail computing "what runs today" from
+   * different sources — reappearing the moment a SECOND rotating slot existed.
+   * So the answer is not another special case: a subject's block is asked for
+   * BY DATE now, once, and every row on this screen reads that one answer.
+   */
+  const morningOwner = liveMorningSubject(new Date(), khanAcademyAssignments);
+
+  /**
+   * The block a subject really occupies TODAY. Identical to BLOCK_FOR_SUBJECT
+   * on every day but the one where the subject owns the rotating morning slot.
+   */
+  const blockForSubjectToday = (subject) =>
+    subject && subject === morningOwner ? MORNING_BLOCK_ID : BLOCK_FOR_SUBJECT[subject];
+
   // Same source the Progress screen uses, so the two meters can never disagree
   // about how far along he is.
   const totalMastered = totalMasteredCount({ lessonProgress, khanAcademyAssignments });
@@ -601,6 +652,8 @@ export function MissionControlDashboard({
    * school day.
    */
   const isOffTimetable = (subject) => {
+    // It owns the 10:30 slot today, so it is as on-timetable as Mathematics.
+    if (subject && subject === morningOwner) return false;
     if (BLOCK_FOR_SUBJECT[subject] !== ROTATING_BLOCK_ID) return false;
     return !rotatingOwners.includes(subject);
   };
@@ -919,8 +972,8 @@ export function MissionControlDashboard({
               <TodayRow
                 key={subject}
                 subject={subject}
-                blockId={BLOCK_FOR_SUBJECT[subject]}
-                when={whenFor(BLOCK_FOR_SUBJECT[subject])}
+                blockId={blockForSubjectToday(subject)}
+                when={whenFor(blockForSubjectToday(subject))}
                 offTimetable={isOffTimetable(subject)}
                 title={mission.title}
                 detail={mission.theme}
@@ -945,7 +998,7 @@ export function MissionControlDashboard({
             // English resolves through the strand of the unit he is actually
             // being handed. Every other subject is one block.
             const english = subject === 'reading' ? englishRow(khanReadingStrand(next)) : null;
-            const rowBlock = english ? english.blockId : BLOCK_FOR_SUBJECT[subject];
+            const rowBlock = english ? english.blockId : blockForSubjectToday(subject);
             return (
               <TodayRow
                 key={'khan-' + subject}
@@ -1046,9 +1099,22 @@ export function MissionControlDashboard({
               detail={
                 readingLoggedTonight
                   ? `Logged tonight — ${currentBook.pacingAmount || 2} ${currentBook.pacingUnit || 'chapters'}`
-                  : `Read before bed · tick to log ${currentBook.pacingAmount || 2} ${
+                  : /**
+                     * ---- "FINISH BY", NOT "DUE". (Sep 8, 2026.) ----
+                     *
+                     * The parent asked on Aug 26, of a card reading "Due Fri,
+                     * Sep 18": **"Does this actually mean to start sept 18th?"**
+                     * That fix reached the Assignments rows and the Academic
+                     * Center card. It did not reach THIS row, and on Sep 8 she
+                     * read the same date the same way again.
+                     *
+                     * One bare date on three weeks of reading reads as a start
+                     * date. This one is the far end, so it says so — the same
+                     * word AcademicAssignmentsView uses, for the same reason.
+                     */
+                    `Read before bed · tick to log ${currentBook.pacingAmount || 2} ${
                       currentBook.pacingUnit || 'chapters'
-                    } · due ${formatShortDate(parseDateStr(currentBook.dueDate))}`
+                    } · finish by ${formatShortDate(parseDateStr(currentBook.dueDate))}`
               }
               kind="rest"
               /**
@@ -1155,7 +1221,7 @@ export function MissionControlDashboard({
             <TodayRow
               subject={weeksHandsOn.subject}
               label={`${weeksHandsOn.label} project`}
-              blockId={BLOCK_FOR_SUBJECT[weeksHandsOn.subject]}
+              blockId={blockForSubjectToday(weeksHandsOn.subject)}
               /**
                * THE DUE DAY, NOT THE BLOCK'S CLOCK. Week-long work with a
                * Friday deadline has no single minute, and printing one put it
@@ -1216,7 +1282,11 @@ export function MissionControlDashboard({
               blockId={BLOCK_FOR_SUBJECT.ela}
               when={whenFor(BLOCK_FOR_SUBJECT.ela)}
               title={nextJournalPrompt.title}
-              detail={nextJournalPrompt.theme}
+              detail={
+                journalPairedBuild && nextJournalPrompt.pairedInstructions
+                  ? `Write it up on this week's build — ${journalPairedBuild.title}`
+                  : nextJournalPrompt.theme
+              }
               kind="mission"
               // Straight into THIS prompt. Routing to the journal list made him
               // hunt for the assignment he had just been told to do — the

@@ -111,6 +111,14 @@ export const writingPrompts = [
   },
   {
     id: 'w7-lab-report',
+    /**
+     * Used INSTEAD of `instructions` on a week whose schedule also holds a
+     * hands-on build \u2014 see pairedBuildFor() in lib/weeklyPlan.js. `{build}`
+     * is the build's own title. The form is identical; only the subject stops
+     * being invented.
+     */
+    pairedInstructions:
+      'Write the lab report for this week\u2019s build: {build}. Include these four labeled sections: Hypothesis (what you predicted before you started), Materials (what you actually used), Procedure (what you did, step by step), and Results/Conclusion (what really happened \u2014 your own measurements \u2014 and what they tell you). Report what you observed, not what you think should have happened.',
     subject: 'reading',
     tier: 1,
     category: 'skill',
@@ -185,6 +193,14 @@ export const writingPrompts = [
   // ---- Project prompts (doc's "Projects include" list — recurring) ----
   {
     id: 'w7-mission-report',
+    /**
+     * Used INSTEAD of `instructions` on a week whose schedule also holds a
+     * hands-on build \u2014 see pairedBuildFor() in lib/weeklyPlan.js. `{build}`
+     * is the build's own title. The form is identical; only the subject stops
+     * being invented.
+     */
+    pairedInstructions:
+      'Write a mission report on this week\u2019s build: {build}. Say what you set out to do, what you actually got done, one thing that was harder than you expected, and one thing you are proud of.',
     subject: 'reading',
     tier: 1,
     category: 'project',
@@ -218,6 +234,14 @@ export const writingPrompts = [
   },
   {
     id: 'w7-design-documentation',
+    /**
+     * Used INSTEAD of `instructions` on a week whose schedule also holds a
+     * hands-on build \u2014 see pairedBuildFor() in lib/weeklyPlan.js. `{build}`
+     * is the build's own title. The form is identical; only the subject stops
+     * being invented.
+     */
+    pairedInstructions:
+      'Write the design documentation for this week\u2019s build: {build}. Describe what it is for, its key parts, the materials and measurements you chose, and why you chose each one. Someone should be able to rebuild it from your document without asking you a single question.',
     subject: 'reading',
     tier: 1,
     category: 'project',
@@ -229,6 +253,14 @@ export const writingPrompts = [
   },
   {
     id: 'w7-scientific-observation',
+    /**
+     * Used INSTEAD of `instructions` on a week whose schedule also holds a
+     * hands-on build \u2014 see pairedBuildFor() in lib/weeklyPlan.js. `{build}`
+     * is the build's own title. The form is identical; only the subject stops
+     * being invented.
+     */
+    pairedInstructions:
+      'Write a scientific observation of this week\u2019s build: {build}. Describe exactly what you saw while it was running \u2014 times, sizes, distances, speeds, and what changed from one try to the next. Stick to what you observed; save why you think it happened for the conclusion of a lab report.',
     subject: 'reading',
     tier: 1,
     category: 'project',

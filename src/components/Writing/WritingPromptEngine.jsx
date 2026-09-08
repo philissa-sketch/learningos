@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useAppStore } from '../../store/useAppStore.js';
 import { WritingCheckerLink } from './WritingCheckerLink.jsx';
 import { checkWriting } from '../../lib/writingCheck.js';
+import { pairedBuildFor } from '../../lib/weeklyPlan.js';
 import { academyContent } from '../../content/academyContent.js';
 
 const { lessonForPrompt = () => null, requirementsFor = () => null } = academyContent().writing;
@@ -65,7 +66,37 @@ export function WritingPromptEngine({ prompt, onExit }) {
   // Attempt #0 uses the base instructions; each subsequent attempt advances
   // through topicPool, wrapping back around once every variation is used.
   const allVariations = prompt.topicPool ? [prompt.instructions, ...prompt.topicPool] : [prompt.instructions];
-  const activeInstructions = allVariations[pastEntries.length % allVariations.length];
+
+  /**
+   * ==========================================================================
+   * A LAB REPORT IS A REPORT ON SOMETHING. (Sep 8, 2026.)
+   * ==========================================================================
+   *
+   * The parent: **"there is a Lab report writing journal that isn't connected
+   * to any lab experiment."**
+   *
+   * The schedule had already connected them — week 6 is `['ae7-wind-tunnel',
+   * 'w7-lab-report']`, and `weeklySchedule.js` opens by saying it pairs each
+   * build with a matching documentation prompt. This screen never asked. It
+   * cycled the topicPool by attempt count and handed him "an experiment
+   * testing which material insulates heat best", in a week he had built a wind
+   * tunnel and watched real tissue strips move.
+   *
+   * Two costs, and the second is the one that matters. He writes about an
+   * experiment he did not run, so the report has no measurements in it — and a
+   * lab report with invented results is not a lab report, it is a paragraph in
+   * the shape of one. The whole reason the form exists is that someone else
+   * could repeat what you did.
+   *
+   * So when the week schedules a build beside a documentation prompt, the build
+   * IS the subject. `pairedBuildFor` returns null on every other week and the
+   * prompt keeps its own instructions and its topicPool cycling untouched.
+   */
+  const pairedBuild = pairedBuildFor(prompt.id);
+  const activeInstructions =
+    pairedBuild && prompt.pairedInstructions
+      ? prompt.pairedInstructions.replace('{build}', pairedBuild.title)
+      : allVariations[pastEntries.length % allVariations.length];
 
   /**
    * ==========================================================================
@@ -287,6 +318,25 @@ export function WritingPromptEngine({ prompt, onExit }) {
             </div>
           );
         })()}
+
+        {/* The build this is a report ON, named before the instruction that
+            refers to it — with the objective it was run to test, so he is not
+            writing a hypothesis from memory. */}
+        {pairedBuild && prompt.pairedInstructions && (
+          <div className="mt-4 rounded-lg border border-signal-green/30 bg-signal-green/5 p-3">
+            <p className="font-display text-[11px] uppercase tracking-widest text-signal-green">
+              This week's build
+            </p>
+            <p className="mt-1 font-display text-sm font-700 text-ink-100">{pairedBuild.title}</p>
+            {pairedBuild.objectives && (
+              <p className="mt-1 text-sm text-ink-300">{pairedBuild.objectives}</p>
+            )}
+            <p className="mt-2 text-xs text-ink-500">
+              Write this up from what actually happened when you ran it — your own numbers, not what
+              should have happened.
+            </p>
+          </div>
+        )}
 
         <p className="mt-4 leading-relaxed text-ink-100">{isDrill ? prompt.task : activeInstructions}</p>
 
