@@ -94,8 +94,8 @@ export const weeklyWritingSchedule = {
   // Week 6 keeps its writing prompt and has no hands-on project, which is the
   // true state of Q1 Aerospace: all three of its projects need Q2 or Summer
   // lessons. See the Q1 note in placeholders.js.
-  6: ['w7-lab-report'],
-  7: ['w7-technical-writing', 'w7-engineering-journal'],
+  6: ['w7-technical-writing'],
+  7: ['w7-engineering-journal'],
   8: ['w7-research-paper', 'w7-design-documentation'],
   9: ['w7-persuasive-writing', 'w7-presentation-skills', 'w7-space-journal', 'w7-engineering-notebook'],
 
@@ -152,7 +152,33 @@ export const weeklyWritingSchedule = {
    * the right one to end on: it asks him to look back over the year's build
    * log rather than start something he cannot finish by Wednesday.
    */
-  43: ['w7-engineering-notebook']
+  43: ['w7-engineering-notebook'],
+
+  // ---- Summer 2027 (weeks 44-52) ----
+  //
+  // THE WIND TUNNEL, WITH ITS LESSON AT LAST. (Sept 8, 2026.)
+  //
+  // The parent: "Put the wind tunnel with the lesson it is adjacent to."
+  //
+  // `ae7-wind-tunnels-flight-testing` declares `quarter: 'Summer 2027'`. This
+  // schedule ran weeks 1-43 and stopped at 2027-05-28, so it covered Q1-Q4 and
+  // had nowhere to put a Summer project — which is why the build was removed
+  // from week 6 on Sept 5 and left with no home at all. Nothing capped the
+  // year: `getSchoolWeekNumber` is plain arithmetic and `writingScheduleCalendarItems`
+  // iterates this map, so gaps and later weeks both work.
+  //
+  // Week 50 is Fri 2027-07-16. Its write-up, asg::aerospace::Summer::3, is due
+  // 2027-07-23 — the following week. So the build sits beside its lesson and
+  // one week ahead of the report on it, which is the run-up every other
+  // project here gets.
+  //
+  // The Lab Report comes with it. This file's own header pairs each hands-on
+  // project with a matching documentation prompt in the same week — Bottle
+  // Rocket to Mission Report, Parachute Drop to Scientific Observation, Wind
+  // Tunnel to Lab Report. Removing the build on Sept 5 left that prompt in
+  // week 6 documenting an experiment that was no longer there. This restores
+  // the pair the file was designed around.
+  50: ['ae7-wind-tunnel', 'w7-lab-report']
 };
 
 /** Returns the array of prompt/project ids scheduled for the CURRENT
