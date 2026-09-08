@@ -2001,3 +2001,115 @@ green that was not looking.
 - **Q1 Aerospace has no new project and cannot have one.** All three builds need
   Q2 or Summer lessons. Written into `placeholders.js` so it is not "fixed"
   by moving one back.
+
+---
+
+## The planner that emptied itself, and two wrong diagnoses before the right one (Sept 6-8, 2026)
+
+The parent, the day after the Sept 5 field trip fix shipped: **"I don't see the
+field trips."**
+
+Her database, read from the browser console:
+
+```
+database: LearningOSDB_lamar-junt
+field trip rows: 348 | visible: 1 | tombstoned: 347
+seed version: 4 | restore ran: true
+```
+
+**348 rows and one visible trip.** The survivor was her own completed Victory
+Creek Waterfall, and it survived only because it carried hours, so
+`fieldTripCarriesWork` protected it.
+
+### Two wrong answers first, and both were confidently given
+
+1. **"The dedupe reads a blank date as a match."** True, real, and fixed on
+   Sept 5 — and irrelevant here. Every one of the 21 default trips is DATED, so
+   that path never touched them.
+2. **"The restore will bring them back."** `planUndatedTripRestore` requires a
+   blank date for the same reason, so it ran, matched nothing, and set its
+   once-only flag.
+
+**Fixing a real bug is not evidence that it was the bug.** Both fixes were
+worth keeping. Neither addressed what the parent reported, and she was told
+otherwise twice.
+
+### The actual cause
+
+`planFieldTripDedupe` was handed **every row including tombstones** — the store
+passes `[...fieldTripRows]` and the `deletedAt` filter does not happen until the
+state boundary hundreds of lines later. `fieldTripKeepScore` has never known
+about `deletedAt` either.
+
+So a deleted row entered its group as a candidate, tied with the live row on
+score (both dated, +5), and **won the tie, because the tie-break is oldest
+`createdAt` and the deleted originals were older than every re-imported copy.**
+The live row then became an "other", matched on date, and was deleted in turn.
+
+One live trip died to an older ghost on every hydrate. Imports kept adding fresh
+copies; the loop kept killing them. That is 348 rows climbing while the visible
+count fell to one.
+
+Proved before fixing: a two-row case — one tombstone, one live, same
+destination and date — returns the LIVE row's id in `dropIds`.
+
+### The fix, and the recovery
+
+A tombstone is a record of a deletion, not a trip. It cannot be kept and cannot
+be deleted again, so it has no business in the ranking. `planFieldTripDedupe`
+now filters `deletedAt` at the top.
+
+`planDeletedTripRecovery` restores **exactly one row per destination, and only
+where nothing is visible.** The parent's instruction from the day before still
+governed — *make sure duplicates are not added* — and with ~16 copies of 21
+destinations, restoring by row would have rebuilt the pile that started this. A
+destination with any live row is untouched. One in, or none; there is no path
+through the function that makes two. The row chosen is the one the dedupe itself
+would keep: highest keep-score, oldest `createdAt`.
+
+Simulated against the real shape (348 rows, 1 visible) before shipping, then
+confirmed by the parent: **the trips are back.**
+
+Section 9, eight checks. **62 → 70.** Four of them fail when the tombstone
+filter is removed.
+
+### Why 47 checks, then 62, never caught it
+
+Section 6 was about a completed trip reaching the compliance packet. Sections
+7-8 were written for the blank-date bug and every row here is dated. Each suite
+measured the thing most recently gone wrong. None asked the general question —
+*what is this cleanup allowed to delete* — of the general case.
+
+---
+
+## The wind tunnel finally gets a week beside its lesson (Sept 8, 2026)
+
+The parent, on the Writing Journal: *"none of those writing assignments are
+connected to anything."* She was right, and week 6 was mine.
+
+The file pairs each hands-on project with a documentation prompt in the same
+week — Bottle Rocket to Mission Report, Parachute Drop to Scientific
+Observation, **Wind Tunnel to Lab Report**. Removing the wind tunnel build on
+Sept 5 left "Lab Report: Document an Experiment" in week 6 with no experiment.
+
+Her instruction: *"Move the Lab Report to a week with an experiment. And put the
+wind tunnel with the lesson it is adjacent to."* Those turned out to be one
+move.
+
+**The schedule was never capped at week 43.** It ended at 2027-05-28 and so
+covered Q1-Q4 with no Summer, which is why a Summer-lesson project had nowhere
+to go and was deleted from the schedule outright. But `getSchoolWeekNumber` is
+plain arithmetic and `writingScheduleCalendarItems` iterates the map, so gaps
+and later weeks both work. It had simply never been extended.
+
+- **Week 50 (2027-07-16): `['ae7-wind-tunnel', 'w7-lab-report']`.** Beside its
+  Summer lesson, one week before its write-up (`asg::aerospace::Summer::3`, due
+  2027-07-23) — the same run-up every other project gets. The original pairing,
+  restored.
+- **Week 6** would have been empty, so it took one of week 7's two prompts.
+  Nothing invented; an over-full week redistributed.
+
+The wind tunnel has dropped off `verify-planner-feeds`'s "scheduled before its
+lesson" failure. What remains there is the two builds already done, which the
+parent chose to leave in the past, and the four break weeks awaiting her
+week-by-week review.
