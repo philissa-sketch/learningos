@@ -35,6 +35,28 @@
 import './lib/academy-under-test.mjs';
 import fs from 'node:fs';
 import path from 'node:path';
+
+// ---- THE EFFECTIVE NAV, NOT THIS FILE'S TEXT ----
+//
+// This used to assert that NavBar.jsx contained a literal tab object. The nav
+// is a content slot now, so that assertion pinned an address rather than the
+// property it protects, and it failed the moment the platform stopped naming
+// anyone's tabs. Same mistake this repo has paid for three times.
+//
+// What matters is the nav an Academy actually receives: the template's generic
+// entries with that Academy's own declarations merged over them.
+async function effectiveNav(repo) {
+  const url = (rel) => 'file:///' + path.join(repo, rel).replace(/\\/g, '/');
+  const template = await import(url('src/academies/_template/content.js'));
+  const id = process.env.ACADEMY || '';
+  let academy = {};
+  if (id && fs.existsSync(path.join(repo, `src/academies/${id}/content.js`))) {
+    academy = await import(url(`src/academies/${id}/content.js`));
+  }
+  const nav = { ...(template.nav || {}), ...(academy.nav || {}) };
+  const groups = nav.navGroups || [];
+  return { nav, groups, tabs: groups.flatMap((g) => g.tabs || []), academy };
+}
 import { fileURLToPath } from 'node:url';
 
 const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -353,10 +375,11 @@ console.log('\n--- 6. it does not gate the day, and it is reachable ---');
   ok('the app has a route for it', /view === 'morning' && \(/.test(app));
   ok('...lazily, like every other screen', /const MorningMeeting = lazy\(/.test(app));
 
-  const nav = codeOnly(read('src/components/Navigation/NavBar.jsx'));
-  ok('it is in the nav', /\{ id: 'morning', label: 'Morning Meeting' \}/.test(nav));
-  ok('...FIRST, above Mission Control',
-    nav.indexOf("id: 'morning'") < nav.indexOf("id: 'dashboard'"),
+  const { tabs } = await effectiveNav(REPO);
+  const ids = tabs.map((t) => t.id);
+  ok('it is in the nav this Academy receives', ids.includes('morning'));
+  ok('...FIRST, ahead of the home screen',
+    ids.indexOf('morning') !== -1 && ids.indexOf('morning') < ids.indexOf('dashboard'),
     'a morning routine three items down is a morning routine that gets skipped');
 
   const dash = codeOnly(read('src/components/Dashboard/MissionControlDashboard.jsx'));

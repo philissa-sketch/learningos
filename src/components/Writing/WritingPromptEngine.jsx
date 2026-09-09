@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useAppStore } from '../../store/useAppStore.js';
 import { WritingCheckerLink } from './WritingCheckerLink.jsx';
 import { checkWriting } from '../../lib/writingCheck.js';
@@ -10,7 +10,69 @@ const { lessonForPrompt = () => null, requirementsFor = () => null } = academyCo
 export function WritingPromptEngine({ prompt, onExit }) {
   const submitWritingEntry = useAppStore((s) => s.submitWritingEntry);
   const getEntriesForPrompt = useAppStore((s) => s.getEntriesForPrompt);
-  const [text, setText] = useState('');
+  /**
+   * ==========================================================================
+   * HE TYPED IT AND THE APP KEPT NOTHING. (Sep 8, 2026.)
+   * ==========================================================================
+   *
+   * The parent: **"Lamar stated that he filled out the reflection question in
+   * the box."** There is no trace of it anywhere in his export.
+   *
+   * He was right. `text` was a plain `useState('')` and nothing was persisted
+   * until a save SUCCEEDED — and a save is two presses whenever the checker
+   * finds anything: the first runs the check and shows the list, the second is
+   * "Save anyway". Press once, see the screen respond, tap "← Exit mission",
+   * and every word is gone with no warning and no trace.
+   *
+   * `AssignmentWriter` never had this problem: it saves `draftText` on its own
+   * Save button, which is exactly why his book report survived the same day
+   * this reflection did not.
+   *
+   * The draft is now written as he types and restored when he comes back, and
+   * it is cleared the moment the real entry saves so it can never become a
+   * second copy of finished work. Leaving the screen is no longer a way to
+   * lose an afternoon.
+   */
+  const saveWritingDraft = useAppStore((s) => s.saveWritingDraft);
+  const clearWritingDraft = useAppStore((s) => s.clearWritingDraft);
+  const savedDraft = useAppStore((s) => s.promptDrafts?.[prompt.id]?.text) || '';
+  const [text, setText] = useState(savedDraft);
+  /**
+   * The draft as it stands on disk. Typing makes this stale, which is what
+   * turns the "Draft kept" line on — he should be able to see the difference
+   * between typed and kept without being told to trust it.
+   */
+  const [draftSaved, setDraftSaved] = useState(savedDraft);
+  const draftTimer = useRef(null);
+  const restoredDraft = savedDraft.trim().length > 0;
+
+  /**
+   * Debounced so it is one write a second at most rather than one per
+   * keystroke, and flushed on unmount so an exit two hundred milliseconds
+   * after the last character still keeps it.
+   */
+  useEffect(() => {
+    if (text === draftSaved) return undefined;
+    draftTimer.current = setTimeout(() => {
+      saveWritingDraft(prompt.id, text);
+      setDraftSaved(text);
+    }, 800);
+    return () => clearTimeout(draftTimer.current);
+  }, [text, draftSaved, prompt.id, saveWritingDraft]);
+
+  useEffect(
+    () => () => {
+      clearTimeout(draftTimer.current);
+    },
+    []
+  );
+
+  /** Exit keeps what is on screen, whether or not the debounce has fired. */
+  const exitKeepingDraft = () => {
+    clearTimeout(draftTimer.current);
+    if (text !== draftSaved) saveWritingDraft(prompt.id, text);
+    onExit();
+  };
   const [justSubmitted, setJustSubmitted] = useState(null); // { wordCount } | null
   /**
    * The last check he ran on THIS text, or null if he has not run one — or has
@@ -135,6 +197,10 @@ export function WritingPromptEngine({ prompt, onExit }) {
 
   const save = async (issueCount) => {
     const entry = await submitWritingEntry(prompt.id, text, { checkIssues: issueCount });
+    // The entry IS the record now; a leftover draft would be a second copy.
+    await clearWritingDraft(prompt.id);
+    // The entry IS the record now; a leftover draft would be a second copy.
+    setDraftSaved('');
     setJustSubmitted({ wordCount: entry.wordCount });
   };
 
@@ -177,7 +243,7 @@ export function WritingPromptEngine({ prompt, onExit }) {
             )}
             <button
               type="button"
-              onClick={onExit}
+              onClick={exitKeepingDraft}
               className="rounded-lg bg-signal-cyan px-4 py-2 font-display font-700 text-space-950 transition hover:brightness-110"
             >
               Return to Mission Control
@@ -191,7 +257,11 @@ export function WritingPromptEngine({ prompt, onExit }) {
   return (
     <div className="mx-auto max-w-2xl space-y-4 px-4 py-6 sm:px-6">
       <div className="flex items-center justify-between">
-        <button type="button" onClick={onExit} className="text-sm text-ink-500 hover:text-ink-100">
+        <button
+          type="button"
+          onClick={onExit}
+          className="text-sm text-ink-500 hover:text-ink-100"
+        >
           ← Exit mission
         </button>
         <span className="text-sm text-ink-500">
@@ -387,6 +457,14 @@ export function WritingPromptEngine({ prompt, onExit }) {
       )}
 
       <div className="rounded-xl border border-space-700 bg-space-800 p-4 shadow-panel">
+        {/* Picked up where he left off — said out loud, because a box that
+            silently refills looks like a bug rather than a rescue. */}
+        {restoredDraft && !justSubmitted && (
+          <p className="mb-2 rounded-lg border border-signal-cyan/30 bg-signal-cyan/5 px-3 py-1.5 text-xs text-signal-cyan">
+            Picked up where you left off. This is still a draft — it is not saved to your journal
+            until you press the button below.
+          </p>
+        )}
         <textarea
           value={text}
           onChange={(e) => {
@@ -420,6 +498,17 @@ export function WritingPromptEngine({ prompt, onExit }) {
             </span>
           ) : null}
         </div>
+        {/* The one thing he could not tell before: that leaving is now safe.
+            It says DRAFT rather than "saved", because the entry his mother
+            grades is the one behind the button and the two must never read
+            the same. */}
+        {wordCount > 0 && (
+          <p className="mt-1.5 text-[11px] text-ink-600">
+            {text === draftSaved
+              ? 'Draft kept — you can leave and come back to it.'
+              : 'Keeping your draft…'}
+          </p>
+        )}
       </div>
 
       <div className="mt-3">

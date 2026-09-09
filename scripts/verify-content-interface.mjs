@@ -301,9 +301,18 @@ if (fs.existsSync(templateManifest)) {
    * `theme` is exempt because it is the one slot the school never destructures:
    * the Academy shell calls `theme.load()` itself, before the school mounts, so
    * its shape is a function rather than a list of names the inventory knows.
+   *
+   * `nav` is exempt for the same reason and it is worth stating, because the
+   * temptation is to add its names to the inventory instead. That inventory is
+   * the list of names EVERY Academy must provide. Nav is optional — a school
+   * with no nav of its own inherits the template's — so putting its names
+   * there would report both Academies as missing content they are right not to
+   * have. It is one shape rendered by one component, not a list of names
+   * screens look up. `verify-nav-declared.mjs` is what holds it instead, and
+   * that check asserts its names stay OUT of the inventory.
    */
   const templateNames = [...template.matchAll(/export const (\w+) = \{([^}]*)\}/g)]
-    .filter(([, slot]) => slot !== 'theme')
+    .filter(([, slot]) => slot !== 'theme' && slot !== 'nav')
     .flatMap(([, , body]) =>
       body
         .split(',')

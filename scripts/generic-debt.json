@@ -139,11 +139,6 @@
    "learner",
    "school-name"
   ],
-  "src/components/Navigation/NavBar.jsx": [
-   "learner",
-   "school-name",
-   "subject"
-  ],
   "src/components/Rewards/CadetAvatar.jsx": [
    "learner"
   ],
@@ -301,5 +296,5 @@
    "subject"
   ]
  },
- "_shrunk": "131 -> 85 on 2026-09-01, when the school moved onto the content interface"
+ "_shrunk": "131 -> 85 on 2026-09-01, when the school moved onto the content interface; 85 -> 84 on 2026-09-09, when the nav became a declared slot"
 }

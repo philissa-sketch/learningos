@@ -981,6 +981,33 @@ const initialState = {
    */
   boardDensity: 'comfortable',
   /**
+   * ======================================================================
+   * WHAT HE TYPED, KEPT BEFORE HE SAVES IT. (Sep 8, 2026.)
+   * ======================================================================
+   *
+   * The parent: **"Lamar stated that he filled out the reflection question
+   * in the box."** Nothing about the parachute drop exists anywhere in his
+   * export — not a writing entry, not a word of the text.
+   *
+   * He is almost certainly right and the app lost it. `WritingPromptEngine`
+   * held his answer in a plain `useState('')` and persisted NOTHING until a
+   * save succeeded, and a save is two presses when the checker finds
+   * anything: the first press runs the check and shows the list, the second
+   * is "Save anyway". A twelve-year-old who presses Save, sees the screen
+   * respond, and then taps "← Exit mission" has lost every word, with no
+   * warning and no trace.
+   *
+   * `AssignmentWriter` never had this problem — it saves `draftText`
+   * explicitly, which is exactly why his book report survived the same day
+   * this reflection did not.
+   *
+   * Keyed by promptId, kept in `meta` so it needs no schema change on a
+   * database that holds a school record. A draft is cleared the moment the
+   * real entry is saved, so this can never become a second copy of finished
+   * work.
+   */
+  promptDrafts: {},
+  /**
    * Avatar Gear, one item per slot: { hair, face, body, hands, expression,
    * victory } -> item id. An object rather than a list because a slot holds
    * exactly one thing, and "which hat is on" is a different question from
@@ -5049,6 +5076,7 @@ export const useAppStore = create((set, get) => ({
       // Added Aug 25 2026 with the theme store — see lib/themes.js.
       equippedTheme: meta?.equippedTheme ?? null,
       boardDensity: meta?.boardDensity === 'compact' ? 'compact' : 'comfortable',
+      promptDrafts: meta?.promptDrafts ?? {},
       equippedGear: meta?.equippedGear ?? {},
       hqLayout: meta?.hqLayout ?? {},
       hqCrewPosts: meta?.hqCrewPosts ?? {},
@@ -12579,6 +12607,39 @@ export const useAppStore = create((set, get) => ({
     set({ boardDensity: value });
     await saveMeta({ boardDensity: value });
     return { ok: true, density: value };
+  },
+
+  /**
+   * Keep an in-progress answer. Called as he types, so it must be cheap and
+   * must never throw into the typing path — a failed draft write is a thing
+   * to survive, not a thing to interrupt him with.
+   */
+  async saveWritingDraft(promptId, text) {
+    if (!promptId) return;
+    const value = String(text ?? '');
+    const drafts = { ...get().promptDrafts };
+    if (value.trim()) drafts[promptId] = { text: value, updatedAt: new Date().toISOString() };
+    else delete drafts[promptId];
+    set({ promptDrafts: drafts });
+    try {
+      await saveMeta({ promptDrafts: drafts });
+    } catch {
+      // The words are still on screen and still in state. Losing the disk
+      // copy of a draft must not take the draft with it.
+    }
+  },
+
+  /** The saved entry now IS the record, so the draft stops existing. */
+  async clearWritingDraft(promptId) {
+    if (!promptId || !get().promptDrafts[promptId]) return;
+    const drafts = { ...get().promptDrafts };
+    delete drafts[promptId];
+    set({ promptDrafts: drafts });
+    try {
+      await saveMeta({ promptDrafts: drafts });
+    } catch {
+      /* same reasoning as above */
+    }
   },
 
   /**

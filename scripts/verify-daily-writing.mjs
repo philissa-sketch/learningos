@@ -381,6 +381,79 @@ console.log('\n--- he has to look at it before it is saved ---');
     /Number\.isFinite\(entry\.checkIssues\) && \(/.test(parent));
 }
 
+console.log('\n--- what he typed survives leaving the screen ---');
+{
+  /**
+   * ---- WHERE THIS CAME FROM (Sep 8, 2026) ----
+   *
+   * The parent: "Lamar stated that he filled out the reflection question in
+   * the box." Nothing about that reflection exists anywhere in his export —
+   * not an entry, not a word of the text.
+   *
+   * He was right and the app lost it. `text` was a plain useState('') and
+   * NOTHING was persisted until a save succeeded — and a save is two presses
+   * whenever the checker finds anything: the first runs the check and shows
+   * the list, the second is "Save anyway". Press once, see the screen
+   * respond, tap "Exit mission", and every word is gone with no warning.
+   *
+   * AssignmentWriter never had this problem — it saves draftText on its own
+   * button, which is why his book report survived the same day this did not.
+   */
+  const engine = codeOnly(read('src/components/Writing/WritingPromptEngine.jsx'));
+  const store = codeOnly(read('src/store/useAppStore.js'));
+  const db = read('src/db/db.js');
+
+  ok('the box opens on whatever draft he left behind',
+    /const savedDraft = useAppStore\(\(s\) => s\.promptDrafts\?\.\[prompt\.id\]\?\.text\) \|\| '';/.test(engine)
+      && /const \[text, setText\] = useState\(savedDraft\);/.test(engine),
+    'an empty box is how he finds out the app threw his afternoon away');
+  ok('...and it is written as he types, not only when he saves',
+    /saveWritingDraft\(prompt\.id, text\);/.test(engine) && /setTimeout\(/.test(engine),
+    'the save button is two presses; the draft cannot wait for the second one');
+  ok('...debounced rather than one write per keystroke',
+    /}, 800\);/.test(engine));
+  ok('...and leaving flushes whatever the debounce has not written yet',
+    /const exitKeepingDraft = \(\) => \{[\s\S]{0,220}?if \(text !== draftSaved\) saveWritingDraft\(prompt\.id, text\);[\s\S]{0,40}?onExit\(\);/.test(engine),
+    'an exit 200ms after the last character still has to keep it');
+  ok('...on the exit button he actually presses',
+    /onClick=\{exitKeepingDraft\}/.test(engine) && !/onClick=\{onExit\}[\s\S]{0,80}?← Exit mission/.test(engine));
+
+  ok('saving the entry clears the draft',
+    /await clearWritingDraft\(prompt\.id\);/.test(engine),
+    'a leftover draft beside a saved entry is a second copy of finished work');
+  ok('...and the screen never calls a draft "saved"',
+    /Draft kept/.test(engine) && !/Saved to your journal/.test(engine),
+    'the entry his mother grades is the one behind the button; the two must not read the same');
+  ok('...and a restored draft says so out loud',
+    /Picked up where you left off/.test(engine),
+    'a box that silently refills looks like a bug rather than a rescue');
+
+  ok('the store keeps drafts keyed by prompt',
+    /async saveWritingDraft\(promptId, text\)/.test(store)
+      && /async clearWritingDraft\(promptId\)/.test(store)
+      && /promptDrafts: meta\?\.promptDrafts \?\? \{\}/.test(store));
+  ok('...in meta, so a school-record database needs no migration for it',
+    /await saveMeta\(\{ promptDrafts: drafts \}\)/.test(store),
+    'a Dexie version bump to hold a scratch draft is the wrong trade');
+  ok('...and a failed draft write never interrupts his typing',
+    /try \{\s*await saveMeta\(\{ promptDrafts: drafts \}\);\s*\} catch/.test(store),
+    'the words are still on screen; losing the disk copy must not take them too');
+  ok('...and an emptied box drops the draft rather than storing blank',
+    /if \(value\.trim\(\)\) drafts\[promptId\] = /.test(store)
+      && /else delete drafts\[promptId\];/.test(store));
+
+  /**
+   * A draft must not travel. His export carries finished entries; a stale
+   * draft crossing to her machine could only ever compete with one.
+   */
+  const payload = store.slice(store.indexOf('const exportPayload = {'), store.indexOf('const exportPayload = {') + 6000);
+  ok('drafts stay on the machine they were typed on',
+    !/promptDrafts/.test(payload),
+    'a stale draft arriving beside a saved entry is a second copy of the same work');
+  ok('...which is what the meta policy already says',
+    /meta: 'Scalars and keyed maps inside it are exported individually/.test(db));
+}
+
 console.log(`\n${passed} passed, ${failures.length} failed`);
 if (failures.length) {
   console.log(`\n${failures.length} CHECK(S) FAILED`);

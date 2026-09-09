@@ -84,10 +84,10 @@ const TABS = [
  * sends me to Reading Books in the Academic Success Center."**
  *
  * Same rule, fourth report, and this one had a different cause: her Open did
- * not carry an id at all. The Mission Control Board's grade queue could only
- * jump between Parent Dashboard SECTIONS, so a row whose target lives on
- * another screen was pointed at the nearest-sounding section — which opens
- * with the Book Picker. Nothing on that page is his report.
+ * not carry an id at all. The parent board's grade queue could only jump
+ * between Parent Dashboard SECTIONS, so a row whose target lives on another
+ * screen was pointed at the nearest-sounding section — which opens with the
+ * Book Picker. Nothing on that page is the work she clicked.
  *
  * `kind: 'grade'` lands on Parent Setup, where the rubric already shows his
  * finished copy. It is a separate kind from 'assignment' on purpose: the same

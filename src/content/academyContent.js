@@ -132,6 +132,7 @@ export const CONTENT_SLOTS = Object.freeze([
   'timetable',
   'guide',
   'theme',
+  'nav',
   'projects',
   'exams',
   'writing',

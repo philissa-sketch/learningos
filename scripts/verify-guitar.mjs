@@ -12,6 +12,28 @@ import './lib/academy-under-test.mjs';
 import { readsFromAcademy } from './lib/reads-content.mjs';
 import fs from 'node:fs';
 import path from 'node:path';
+
+// ---- THE EFFECTIVE NAV, NOT THIS FILE'S TEXT ----
+//
+// This used to assert that NavBar.jsx contained a literal tab object. The nav
+// is a content slot now, so that assertion pinned an address rather than the
+// property it protects, and it failed the moment the platform stopped naming
+// anyone's tabs. Same mistake this repo has paid for three times.
+//
+// What matters is the nav an Academy actually receives: the template's generic
+// entries with that Academy's own declarations merged over them.
+async function effectiveNav(repo) {
+  const url = (rel) => 'file:///' + path.join(repo, rel).replace(/\\/g, '/');
+  const template = await import(url('src/academies/_template/content.js'));
+  const id = process.env.ACADEMY || '';
+  let academy = {};
+  if (id && fs.existsSync(path.join(repo, `src/academies/${id}/content.js`))) {
+    academy = await import(url(`src/academies/${id}/content.js`));
+  }
+  const nav = { ...(template.nav || {}), ...(academy.nav || {}) };
+  const groups = nav.navGroups || [];
+  return { nav, groups, tabs: groups.flatMap((g) => g.tabs || []), academy };
+}
 import { fileURLToPath } from 'node:url';
 
 import {
@@ -615,9 +637,20 @@ const appSrc = fs.readFileSync(path.join(REPO, 'src/App.jsx'), 'utf8');
 ok((appSrc.match(/view === 'guitar'/g) || []).length === 1, 'App.jsx routes the guitar view exactly once');
 ok((appSrc.match(/import\('\.\/components\/Guitar\/GuitarHome\.jsx'\)/g) || []).length === 1,
   'GuitarHome is lazy-loaded exactly once');
-const navSrc = fs.readFileSync(path.join(REPO, 'src/components/Navigation/NavBar.jsx'), 'utf8');
-ok((navSrc.match(/\{ id: 'guitar', label: 'Guitar' \}/g) || []).length === 1,
-  'the nav carries exactly one Guitar tab');
+// An Academy that teaches guitar offers exactly one guitar tab. An Academy
+// that does not teach it offers none — and neither case is this file's text.
+{
+  const { tabs, academy } = await effectiveNav(REPO);
+  const guitarTabs = tabs.filter((t) => t.id === 'guitar');
+  const declaresGuitar = Object.keys(academy?.electives || {}).some((n) => /guitar/i.test(n));
+  if (declaresGuitar) {
+    ok(guitarTabs.length === 1,
+      `this Academy declares guitar content, so its nav must offer exactly one guitar tab (found ${guitarTabs.length}) — declare it in src/academies/${process.env.ACADEMY}/content.js`);
+  } else {
+    ok(guitarTabs.length === 0,
+      'an Academy that does not teach guitar must not be offered a guitar tab');
+  }
+}
 
 // ===========================================================================
 console.log(`\n${failures === 0 ? 'ALL CHECKS PASSED' : failures + ' CHECK(S) FAILED'}`);

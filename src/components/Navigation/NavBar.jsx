@@ -2,73 +2,38 @@ import { useEffect, useRef, useState } from 'react';
 import { useAppStore } from '../../store/useAppStore.js';
 import { avatarIconFor } from '../../lib/rewards.js';
 import { BUILD_STAMP } from '../../lib/buildStamp.js';
+import { academyContent } from '../../content/academyContent.js';
 
-// Grouped navigation (Aug 2026, parent feedback — 9 flat top-level tabs
-// felt cluttered/confusing). Every page still exists at the exact same
-// `view` id App.jsx already switches on; this only changes how they're
-// organized and reached, not what they are. Grouping confirmed with the
-// parent directly:
-//   Learn    — subject content Lamar actually studies from
-//   Practice — skill reps and low-stakes play, not graded subject content
-//   Plan     — looking back (Progress), looking ahead (Schedule), and the
-//              Academic Success Center (Part 9, built Aug 2026 — books,
-//              major assignments, and the portfolio, which is exactly the
-//              "what's coming and how is it going" work this group is
-//              for; it joined here as originally expected)
-//   Parent Dashboard — stays its own top-level item, different audience
-const NAV_GROUPS = [
-  {
-    id: 'learn',
-    label: 'Learn',
-    tabs: [
-      // FIRST, and above Mission Control on purpose: it is the 08:30 block, it
-      // is the first thing he does, and a morning routine buried three items
-      // down is a morning routine that gets skipped.
-      { id: 'morning', label: 'Morning Meeting' },
-      { id: 'dashboard', label: 'Mission Control' },
-      { id: 'lessons', label: 'Lesson Roster' },
-      { id: 'pe', label: 'PE & Nutrition' },
-      // Gardening sits in Learn beside PE & Nutrition — the app's two
-      // PARTICIPATION subjects, both real work recorded by what he did.
-      { id: 'garden', label: 'Garden' },
-      // Guitar joins PE and Garden here — this app's three PARTICIPATION
-      // subjects, all real work recorded by what he did rather than graded.
-      { id: 'guitar', label: 'Guitar' }
-    ]
-  },
-  {
-    id: 'practice',
-    label: 'Practice',
-    tabs: [
-      { id: 'journal', label: 'Writing Journal' },
-      { id: 'typing', label: 'Typing' },
-      { id: 'games', label: 'Games' },
-      { id: 'rewards', label: 'Rewards' }
-    ]
-  },
-  {
-    id: 'plan',
-    label: 'Plan',
-    tabs: [
-      { id: 'progress', label: 'Progress' },
-      { id: 'schedule', label: 'Schedule' },
-      { id: 'academic', label: 'Academic Center' }
-    ]
-  }
-];
+// ---- THE NAV IS DECLARED BY THE ACADEMY, NOT BY THIS FILE ----
+//
+// This file used to carry a fixed list of tabs, handed to every Academy
+// whether or not it had anything behind them. A second Academy inherited the
+// first one's electives as empty screens, and a school had no way to add a tab
+// of its own.
+//
+// The list now comes from the `nav` content slot. The template declares the
+// generic entries — screens the platform itself provides — and an Academy
+// declares its own on top of them. This file renders what it is handed and
+// knows the name of no school, no subject and no elective.
+//
+// Grouping is the Academy's decision too. The template groups by cadence
+// rather than topic, which is what a parent navigates by, but nothing here
+// enforces that.
+//
+// A blank slot renders as an absent nav, never a broken one: no groups means
+// no group buttons, and no parent tab means no Parent Dashboard button.
 
-const PARENT_TAB = { id: 'parent', label: 'Parent Dashboard' };
 
-function findGroupFor(view) {
-  return NAV_GROUPS.find((g) => g.tabs.some((t) => t.id === view)) || null;
+function findGroupFor(groups, view) {
+  return groups.find((g) => g.tabs.some((t) => t.id === view)) || null;
 }
 
-function findTabLabel(view) {
-  for (const g of NAV_GROUPS) {
+function findTabLabel(groups, parentTab, view) {
+  for (const g of groups) {
     const tab = g.tabs.find((t) => t.id === view);
     if (tab) return tab.label;
   }
-  if (view === PARENT_TAB.id) return PARENT_TAB.label;
+  if (parentTab && view === parentTab.id) return parentTab.label;
   return 'Menu';
 }
 
@@ -77,14 +42,24 @@ function findTabLabel(view) {
  *   door. See the sign-out button below for why a child can reach it.
  */
 export function NavBar({ view, onNavigate, onSignOut }) {
+  // Read per render, never at module scope: a content-pack destructure at the
+  // top of a module runs before the pack is installed. See the crash recorded
+  // in docs/GENERIC_CARRYOVER.md.
+  const {
+    navGroups: groups = [],
+    navParentTab: parentTab = null,
+    navSchoolName: schoolName = '',
+    navSchoolTagline: schoolTagline = ''
+  } = academyContent().nav || {};
+
   const [openGroup, setOpenGroup] = useState(null); // desktop dropdown
   const [confirmSignOut, setConfirmSignOut] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false); // mobile sheet
-  const [expandedMobileGroup, setExpandedMobileGroup] = useState(findGroupFor(view)?.id || null);
+  const [expandedMobileGroup, setExpandedMobileGroup] = useState(findGroupFor(groups, view)?.id || null);
   const navRef = useRef(null);
 
-  const currentLabel = findTabLabel(view);
-  const activeGroup = findGroupFor(view);
+  const currentLabel = findTabLabel(groups, parentTab, view);
+  const activeGroup = findGroupFor(groups, view);
 
   // Coin balance + equipped avatar (Part 5 gamification) — always visible, and
   // a shortcut into the Rewards area.
@@ -153,12 +128,20 @@ export function NavBar({ view, onNavigate, onSignOut }) {
 
       <div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-3 sm:px-6">
         <div className="flex items-center gap-2">
-          <span className="text-lg font-display font-700 tracking-wide text-signal-cyan">
-            MISSION CONTROL
-          </span>
-          <span className="hidden font-display text-sm text-ink-500 sm:inline">
-            Homeschool Academy
-          </span>
+          {/*
+            The school's name comes from its own theme slot. An Academy that has
+            not named itself yet shows no name rather than someone else's.
+          */}
+          {schoolName ? (
+            <span className="text-lg font-display font-700 tracking-wide text-signal-cyan">
+              {schoolName}
+            </span>
+          ) : null}
+          {schoolTagline ? (
+            <span className="hidden font-display text-sm text-ink-500 sm:inline">
+              {schoolTagline}
+            </span>
+          ) : null}
           {/**
             * THE BUILD STAMP, ON BOTH COMPUTERS. (Aug 10, 2026.)
             *
@@ -230,7 +213,7 @@ export function NavBar({ view, onNavigate, onSignOut }) {
 
         {/* Desktop: 4 group buttons (3 dropdowns + Parent Dashboard direct link) */}
         <nav ref={navRef} className="hidden items-center gap-1 rounded-lg bg-space-800 p-1 shadow-panel md:flex" aria-label="Primary">
-          {NAV_GROUPS.map((group) => {
+          {groups.map((group) => {
             const isActiveGroup = activeGroup?.id === group.id;
             const isOpen = openGroup === group.id;
             return (
@@ -273,17 +256,19 @@ export function NavBar({ view, onNavigate, onSignOut }) {
             );
           })}
 
-          <button
-            type="button"
-            onClick={() => handleNavigate(PARENT_TAB.id)}
-            aria-current={view === PARENT_TAB.id ? 'page' : undefined}
-            className={
-              'rounded-md px-3 py-1.5 text-sm font-display font-600 transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-signal-cyan ' +
-              (view === PARENT_TAB.id ? 'bg-signal-cyan/15 text-signal-cyan' : 'text-ink-300 hover:text-ink-100')
-            }
-          >
-            {PARENT_TAB.label}
-          </button>
+          {parentTab ? (
+            <button
+              type="button"
+              onClick={() => handleNavigate(parentTab.id)}
+              aria-current={view === parentTab.id ? 'page' : undefined}
+              className={
+                'rounded-md px-3 py-1.5 text-sm font-display font-600 transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-signal-cyan ' +
+                (view === parentTab.id ? 'bg-signal-cyan/15 text-signal-cyan' : 'text-ink-300 hover:text-ink-100')
+              }
+            >
+              {parentTab.label}
+            </button>
+          ) : null}
         </nav>
 
         {/* Mobile: hamburger toggle showing the current page, opens a grouped accordion below */}
@@ -304,7 +289,7 @@ export function NavBar({ view, onNavigate, onSignOut }) {
       {/* Mobile dropdown menu — grouped accordion, each row a real 44px+ touch target */}
       {menuOpen && (
         <nav aria-label="Primary" className="border-t border-space-700 bg-space-900 md:hidden">
-          {NAV_GROUPS.map((group) => {
+          {groups.map((group) => {
             const isExpanded = expandedMobileGroup === group.id;
             const isActiveGroup = activeGroup?.id === group.id;
             return (
@@ -344,17 +329,19 @@ export function NavBar({ view, onNavigate, onSignOut }) {
               </div>
             );
           })}
-          <button
-            type="button"
-            onClick={() => handleNavigate(PARENT_TAB.id)}
-            aria-current={view === PARENT_TAB.id ? 'page' : undefined}
-            className={
-              'block min-h-[44px] w-full px-4 py-3 text-left font-display text-sm font-700 uppercase tracking-wide transition-colors ' +
-              (view === PARENT_TAB.id ? 'bg-signal-cyan/15 text-signal-cyan' : 'text-ink-300 hover:bg-space-800 hover:text-ink-100')
-            }
-          >
-            {PARENT_TAB.label}
-          </button>
+          {parentTab ? (
+            <button
+              type="button"
+              onClick={() => handleNavigate(parentTab.id)}
+              aria-current={view === parentTab.id ? 'page' : undefined}
+              className={
+                'block min-h-[44px] w-full px-4 py-3 text-left font-display text-sm font-700 uppercase tracking-wide transition-colors ' +
+                (view === parentTab.id ? 'bg-signal-cyan/15 text-signal-cyan' : 'text-ink-300 hover:bg-space-800 hover:text-ink-100')
+              }
+            >
+              {parentTab.label}
+            </button>
+          ) : null}
         </nav>
       )}
     </header>
