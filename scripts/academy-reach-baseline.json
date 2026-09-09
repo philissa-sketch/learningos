@@ -1,0 +1,40 @@
+{
+ "_why": "The tabs each Academy's nav must still reach. THE LIST MAY GROW AND MUST NEVER SHRINK BY ACCIDENT. A platform change that stops providing a tab fails this check until the Academy declares it back — which is what forces the removal and the replacement into one commit. Shrinking a line is a deliberate edit, reviewed in the diff that shrinks it.",
+ "_baselined": "2026-09-09, from the tab list the nav bar hardcoded before it became a declared slot (commit 43f2878's parent). Every Academy received the same 14. An Academy with no elective content was recorded WITHOUT the two elective tabs, because it never had content behind them — that is a measured fact (its electives slot declares zero names), not a decision about its curriculum.",
+ "academies": {
+  "lamar": {
+   "tabs": [
+    "morning",
+    "dashboard",
+    "lessons",
+    "pe",
+    "journal",
+    "typing",
+    "games",
+    "rewards",
+    "progress",
+    "schedule",
+    "academic",
+    "parent",
+    "garden",
+    "guitar"
+   ]
+  },
+  "petal-pestle-academy": {
+   "tabs": [
+    "morning",
+    "dashboard",
+    "lessons",
+    "pe",
+    "journal",
+    "typing",
+    "games",
+    "rewards",
+    "progress",
+    "schedule",
+    "academic",
+    "parent"
+   ]
+  }
+ }
+}

@@ -131,6 +131,39 @@ for (const name of NEEDS.names) {
   mods.get(module).push(name);
 }
 
+// ---- SHAPE SLOTS ----
+//
+// The loop above walks the INVENTORY: the names every Academy must provide.
+// That is the right list for a slot whose names screens ask for individually,
+// and the wrong one for a slot that is a single shape read by one component.
+// The contract names those in SHAPE_SLOTS and says why; this pass emits
+// whatever an Academy puts in one, without demanding every Academy fill it.
+const contentSrc = fs.readFileSync(path.join(REPO, 'src/content/academyContent.js'), 'utf8');
+const shapeSlots = (contentSrc.match(/SHAPE_SLOTS = Object\.freeze\(\[([\s\S]*?)\]\)/)?.[1] || '')
+  .match(/'[A-Za-z]+'/g)?.map((x) => x.replace(/'/g, '')) || [];
+
+let shapeNames = 0;
+for (const [name, candidates] of exporters) {
+  const bySlotName = new Map();
+  for (const c of candidates.filter((c) => shapeSlots.includes(c.slot))) {
+    if (!bySlotName.has(c.slot)) bySlotName.set(c.slot, []);
+    bySlotName.get(c.slot).push(c.module);
+  }
+  for (const [slot, modules] of bySlotName) {
+    if (modules.length > 1) {
+      ambiguous.push(`${name} exported by ${modules.join(' AND ')}`);
+      continue;
+    }
+    if (!bySlot.has(slot)) bySlot.set(slot, new Map());
+    const mods = bySlot.get(slot);
+    if (!mods.has(modules[0])) mods.set(modules[0], []);
+    if (!mods.get(modules[0]).includes(name)) {
+      mods.get(modules[0]).push(name);
+      shapeNames += 1;
+    }
+  }
+}
+
 if (ambiguous.length) {
   console.error(`\n${ambiguous.length} ambiguous name(s) — manifest NOT written:\n`);
   for (const a of ambiguous) console.error('  ' + a);
@@ -186,7 +219,11 @@ fs.writeFileSync(path.join(folder, 'content.js'), lines.join('\n'));
 
 const total = slotNames.reduce((a, s) => a + [...bySlot.get(s).values()].flat().length, 0);
 console.log(`src/academies/${academy}/content.js`);
-console.log(`  ${slotNames.length} slots filled, ${total} of ${NEEDS.names.length} names`);
+console.log(
+  `  ${slotNames.length} slots filled, ${total - shapeNames} of ` +
+    `${NEEDS.names.length} required names` +
+    (shapeNames ? `, plus ${shapeNames} in shape slots` : '')
+);
 for (const slot of slotNames) {
   console.log(`    ${slot.padEnd(16)} ${String([...bySlot.get(slot).values()].flat().length).padStart(3)}`);
 }

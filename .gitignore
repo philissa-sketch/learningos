@@ -82,3 +82,25 @@ desktop.ini
 .vscode/
 .idea/
 *.log
+
+# ---- THE DESKTOP APP'S SAVE FOLDER. (Sept 9, 2026.) ----
+#
+# A document delivered in chat and saved from there lands in the folder this
+# session has connected, and the connected folder is this repo. Nobody chose
+# that location; two copies of the same file arrived two minutes apart without
+# anyone doing anything unusual, and it will happen again for the same reason.
+Claude outputs/
+
+# ---- AND BY SHAPE, NOT JUST THAT ONE FOLDER. (Sept 9, 2026.) ----
+#
+# The folder rule above was added minutes too late: two copies of the same
+# Word document had already been committed and pushed, one of them in docs/,
+# which the folder rule would never have caught. Same lesson as the exported
+# databases above — guard the property, not the location. Nothing in a Vite
+# app is a Word document, a spreadsheet or a slide deck, so none of them are
+# source and none of them belong here whatever they are named or wherever
+# they land.
+*.docx
+*.doc
+*.xlsx
+*.pptx

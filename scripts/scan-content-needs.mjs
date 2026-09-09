@@ -42,6 +42,7 @@ const ACADEMIES = path.join(SRC, 'academies');
  */
 export const SLOT_RULES = [
   [/^subjects\.js$/, 'subjects'],
+  [/^data\/nav\//, 'nav'],
   [/^data\/lessons\//, 'lessons'],
   [/^data\/socialStudies\//, 'lessons'],
   [/^data\/diagnostic\//, 'placement'],

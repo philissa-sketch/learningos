@@ -163,6 +163,37 @@ export const REQUIRED_SLOTS = Object.freeze([
 ]);
 
 /**
+ * Slots that are ONE SHAPE read by ONE component, rather than a bag of names
+ * individual screens look up.
+ *
+ * The difference decides how an Academy fills a slot, so the contract has to
+ * state it rather than leave it to be guessed.
+ *
+ * Most slots are inventory-driven: the manifest generator scans the school for
+ * destructures that read a slot, and every name it finds
+ * becomes a name every Academy must provide. That is the right mechanism for
+ * `subjects` or `academicCenter`, where thirty screens each want their own
+ * function.
+ *
+ * It is the wrong mechanism for a slot like `nav`: one value, one consumer,
+ * and optional — an Academy with no nav of its own inherits the template's.
+ * Its names must stay OUT of the inventory, because the inventory is what
+ * every Academy is REQUIRED to fill.
+ *
+ * Which left a hole worth recording, because it was silent and total: an
+ * optional slot had no route into a generated manifest at all. An Academy
+ * could author the file perfectly and the generator would skip it, so the slot
+ * could never be filled by anything but the template. Listing a slot here is
+ * what tells the generator to emit whatever the Academy puts in it.
+ *
+ * A slot belongs here when a screen reads it as a whole rather than by name.
+ * `placement` will qualify when it is built; `exams` deliberately does not —
+ * nothing reads it as a shape today, and adding it would start emitting
+ * content into manifests for no reader.
+ */
+export const SHAPE_SLOTS = Object.freeze(['nav']);
+
+/**
  * Thrown when an Academy is registered in the household database but has no
  * content folder in this build.
  *
