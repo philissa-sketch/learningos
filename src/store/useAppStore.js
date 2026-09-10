@@ -9142,6 +9142,16 @@ export const useAppStore = create((set, get) => ({
         measurements: kindCount('measurement'),
         observations: kindCount('observation'),
         harvests: kindCount('harvest'),
+        /**
+         * The Improvement Project tab's work, which lives in the portfolio and
+         * touched no garden field until Sep 10, 2026. Counted by the project's
+         * own domain rather than the entry's subject — that tab hardcodes
+         * `subject: 'gardening'` while offering Garden, Room and Body, so a
+         * bedroom shelf would otherwise be counted as garden work.
+         */
+        improvementProjects: (state.portfolio || []).filter(
+          (e) => e?.kind === 'domain-project' && e?.project?.domain === 'garden'
+        ).length,
         entriesLogged: log.length
       };
     }

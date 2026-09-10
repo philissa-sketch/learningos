@@ -20,6 +20,7 @@ import { gardenBriefs, getGardenBriefById } from '../src/academies/lamar/data/ga
 import { gardenCalendar, GARDEN_Q1_START, GARDEN_Q1_END, GARDEN_Q2_START, GARDEN_Q2_END, GARDEN_Q3_START, GARDEN_Q3_END, GARDEN_Q4_START, GARDEN_Q4_END, GARDEN_SUMMER_START, GARDEN_SUMMER_END, getGardenDayForDate, getGardenDayForWeekOf, getNextGardenDay } from '../src/academies/lamar/data/gardening/gardenCalendar.js';
 import { gardenBuildTrack, gardenCapstone, buildsUnlockedBy } from '../src/academies/lamar/data/gardening/gardenBuildTrack.js';
 import { ACTIVE_SUBJECTS, PARTICIPATION_SUBJECTS, SUBJECT_LABELS, subjectCardLabel } from '../src/academies/lamar/subjects.js';
+import { participationFieldsFor } from '../src/lib/participationRecord.js';
 import { WEEK_PATTERN, daysForSubject, FRIDAY_BUFFER_PLAN } from '../src/academies/lamar/data/schedule/weekPattern.js';
 import { defaultSchedule } from '../src/academies/lamar/data/schedule/defaultSchedule.js';
 
@@ -236,6 +237,44 @@ ok(rec.daysInTheGarden === 3, `distinct days counted: ${rec.daysInTheGarden}`);
 ok(rec.waterings === 2, `waterings counted (two on the same day, both kept): ${rec.waterings}`);
 ok(rec.seasonChangeovers === 1, `changeovers counted: ${rec.seasonChangeovers}`);
 ok(rec.entriesLogged === 7, `total entries counted: ${rec.entriesLogged}`);
+
+/**
+ * ---- THE IMPROVEMENT PROJECTS WERE COUNTED BY NOTHING (Sep 10, 2026) ----
+ *
+ * The Improvement Project tab writes a portfolio entry and nothing else — no
+ * garden log row — and not one participation field looked at it. The longest,
+ * most deliberate work the garden asks for was invisible in the record a
+ * reviewer reads about Gardening.
+ *
+ * Counted by the project's own DOMAIN. The tab hardcodes
+ * `subject: 'gardening'` while offering Garden, Room and Body, so a bedroom
+ * shelf filed from that screen must not land in the garden's record. The Body
+ * row below is the one that proves it.
+ */
+useAppStore.setState({
+  portfolio: [
+    { id: 1, kind: 'domain-project', subject: 'gardening', project: { domain: 'garden' } },
+    { id: 2, kind: 'domain-project', subject: 'gardening', project: { domain: 'garden' } },
+    { id: 3, kind: 'domain-project', subject: 'gardening', project: { domain: 'body' } },
+    { id: 4, kind: 'field-trip', subject: 'gardening', title: 'not a project' }
+  ]
+});
+const withProjects = useAppStore.getState().getParticipationRecord('gardening');
+ok(withProjects.improvementProjects === 2,
+  `improvement projects counted: ${withProjects.improvementProjects}`,
+  'two garden-domain projects; the Body one and the field trip must not count');
+ok(participationFieldsFor('gardening').some((f) => f.key === 'improvementProjects'),
+  '...and the records packet has a field to print them in',
+  'a count nothing renders is a count nobody reads');
+/**
+ * ATTENDANCE IS DELIBERATELY UNTOUCHED. Whether an afternoon on an improvement
+ * project is a day of garden INSTRUCTION is the parent's call and it moves a
+ * number on a legal record. This made the work visible, not countable.
+ */
+ok(!/addDomainProject[\s\S]{0,1400}?bumpAttendanceOn/.test(read('src/store/useAppStore.js')),
+  '...without quietly crediting it toward the 180 days',
+  'that is a decision about a legal record, and it has not been made');
+useAppStore.setState({ portfolio: [] });
 
 const card = useAppStore.getState().getReportCardData();
 const gRow = card.find((r) => r.subject === 'gardening');
@@ -929,6 +968,55 @@ console.log('\n--- 14. a garden day is recorded on the day it happened ---');
     'one of the two using today is how a day gets half-credited');
   ok(!/todayStr\(\)/.test(fn.replace(/const date = dateStr \|\| todayStr\(\);/, '')),
     '...and today appears nowhere else in it');
+}
+
+// ===========================================================================
+console.log('\n--- 15. the planting panel knows what season it is ---');
+{
+  /**
+   * ---- FOUND IN THE GARDENING AUDIT (Sep 10, 2026) ----
+   *
+   * PLANTING_WINDOWS is a FALL set — Aug 15 to Oct 15 — and gardenCalendar
+   * runs August 2026 to July 2027. For nine of those twelve months the panel
+   * showed dates that had gone or were a year away, headed as though they were
+   * this week's guidance.
+   *
+   * The fix is a label, NOT invented spring dates. The comment above those
+   * windows names its source and says "do NOT re-derive them" — UGA Extension
+   * C1258, because B577 is written for MIDDLE Georgia and north plants about
+   * two weeks earlier in fall. A boy sowing on a date this app guessed at is a
+   * crop that fails in a way nobody traces back to a screen.
+   */
+  const codeOnly = (t) => t
+    .replace(/\/\*[\s\S]*?\*\//g, '')
+    .replace(/\{\/\*[\s\S]*?\*\/\}/g, '')
+    .replace(/^\s*\/\/.*$/gm, '');
+  const season = codeOnly(read('src/components/Garden/SeasonCalendarView.jsx'));
+
+  ok(/function inFallPlantingSeason\(dateStr\)/.test(season),
+    'the panel can tell whether its own dates are current');
+  ok(/const FALL_PLANTING_FROM = '08-01';/.test(season) && /const FALL_PLANTING_TO = '10-15';/.test(season),
+    '...against a month-day range, so it stays right every year without an edit',
+    'a full date here would need editing each August, and would be silently wrong the year nobody did');
+  ok(/\{!inSeason && \(/.test(season),
+    '...and it says so out of season rather than staying quiet');
+  ok(/spring window for North Georgia has not\s*\n?\s*been added/.test(season)
+      || /spring window for North Georgia/.test(season),
+    '...naming the gap as a gap');
+
+  /**
+   * THE LINE THAT MUST NOT MOVE: no spring dates in the file. If a future pass
+   * adds them, they arrive with a source and this check is updated on purpose
+   * rather than passing by accident.
+   */
+  const springish = /(March|April|May)\s*\d{1,2}/.test(season);
+  ok(!springish, 'no spring planting dates have been invented',
+    'the fall set is sourced to UGA C1258; a guessed spring date is a failed crop nobody traces to a screen');
+
+  /** The three fall windows are still exactly the sourced ones. */
+  for (const w of ['August 15', 'August 30 – September 1', 'September 15 – October 15']) {
+    ok(season.includes(w), `the sourced window "${w}" is unchanged`);
+  }
 }
 
 // ===========================================================================

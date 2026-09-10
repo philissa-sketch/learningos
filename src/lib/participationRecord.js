@@ -72,6 +72,27 @@ const PARTICIPATION_FIELDS = {
     { key: 'measurements', label: 'measurements', one: 'measurement' },
     { key: 'observations', label: 'observations', one: 'observation' },
     { key: 'seasonChangeovers', label: 'season changeovers', one: 'season changeover' },
+    /**
+     * ---- THE IMPROVEMENT PROJECTS WERE INVISIBLE HERE (Sep 10, 2026) ----
+     *
+     * Found in the Gardening audit. The Improvement Project tab writes a
+     * portfolio entry and nothing else — no garden log row, and until now not
+     * one of the fields above counted it. So the longest, most deliberate work
+     * the garden asks for — pick a problem, find sources, change one thing,
+     * measure it before and after — appeared nowhere in the record a reviewer
+     * reads about Gardening.
+     *
+     * Counted by the project's own DOMAIN, not by the entry's subject: the tab
+     * hardcodes `subject: 'gardening'` while letting him file the project under
+     * Garden, Room or Body, so a shelf he built in his bedroom would otherwise
+     * land in the garden's record.
+     *
+     * ATTENDANCE IS DELIBERATELY NOT TOUCHED by this. Whether an afternoon on
+     * an improvement project is a day of garden instruction is the parent's
+     * call, and it moves a number on a legal record. This makes the work
+     * visible; it does not make it count toward the 180 days.
+     */
+    { key: 'improvementProjects', label: 'improvement projects', one: 'improvement project' },
     { key: 'entriesLogged', label: 'log entries in total', one: 'log entry in total', always: true }
   ],
   guitar: [

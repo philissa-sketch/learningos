@@ -23,6 +23,39 @@ const PLANTING_WINDOWS = [
 
 /**
  * ===========================================================================
+ * THE PANEL SAYS FALL. THE CALENDAR RUNS ALL YEAR. (Sep 10, 2026.)
+ * ===========================================================================
+ *
+ * Found in the Gardening audit. `PLANTING_WINDOWS` is a fall set — Aug 15
+ * through Oct 15 — and `gardenCalendar` runs August 2026 to July 2027. For
+ * NINE of those twelve months the panel shows dates that have gone or are a
+ * year away, headed as though they were this week's guidance.
+ *
+ * NO SPRING DATES ARE INVENTED HERE, and that is deliberate rather than lazy.
+ * The comment above these windows says where they came from and says "do NOT
+ * re-derive them": UGA Extension C1258, chosen because B577 is written for
+ * MIDDLE Georgia and north plants about two weeks earlier in fall. A spring
+ * set is real horticultural data for a real garden, and a boy sowing on a date
+ * this app guessed at is a crop that fails in a way nobody traces back to a
+ * screen. It needs the same sourcing the fall set got.
+ *
+ * So the panel keeps its reference value and stops pretending to be current:
+ * inside the window it reads exactly as it did, and outside it says which
+ * season these are and that the spring set is not in the app yet.
+ *
+ * Month-day rather than a full date, so it is right every year without being
+ * edited.
+ */
+const FALL_PLANTING_FROM = '08-01';
+const FALL_PLANTING_TO = '10-15';
+
+function inFallPlantingSeason(dateStr) {
+  const md = (dateStr || '').slice(5);
+  return md >= FALL_PLANTING_FROM && md <= FALL_PLANTING_TO;
+}
+
+/**
+ * ===========================================================================
  * "NO RECORD" WAS A STATUS PRETENDING TO BE A SLOT. (Sep 9, 2026.)
  * ===========================================================================
  *
@@ -50,6 +83,8 @@ export function SeasonCalendarView() {
   const recordGardenLogEntry = useAppStore((s) => s.recordGardenLogEntry);
   const today = useToday();
   const [saving, setSaving] = useState(null);
+  const inSeason = inFallPlantingSeason(today);
+  const monthName = new Date(today + 'T12:00:00').toLocaleDateString(undefined, { month: 'long' });
 
   const logDay = async (day, brief) => {
     setSaving(day.date);
@@ -68,6 +103,14 @@ export function SeasonCalendarView() {
         <p className="text-xs font-display uppercase tracking-widest text-signal-cyan">
           Fall planting windows — North Georgia
         </p>
+        {!inSeason && (
+          <p className="mt-2 rounded-lg border border-signal-amber/40 bg-signal-amber/5 px-3 py-2 text-xs text-signal-amber">
+            These are the <span className="font-display font-700">fall</span> dates, and it is{' '}
+            {monthName}. Nothing below is plantable now. The spring window for North Georgia has not
+            been added to the app yet — it needs the same UGA source the fall dates came from, so it is
+            not guessed at here.
+          </p>
+        )}
         <ul className="mt-2 space-y-2 text-sm text-ink-300">
           {PLANTING_WINDOWS.map((w) => (
             <li key={w.window}>

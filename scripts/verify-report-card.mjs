@@ -590,13 +590,35 @@ console.log('--- participation subjects report their own counts ---');
    * the subject does not produce. Add a fourth participation subject and this
    * fails until it is given its own fields.
    */
+  /**
+   * ---- THIS LIST USED TO BE TYPED OUT, AND IT WENT STALE (Sep 10, 2026) ----
+   *
+   * It was a hand-written mirror of what `getParticipationRecord` returns, and
+   * it did its job: adding `improvementProjects` to the garden's record failed
+   * this check the moment the store produced a key the list had never heard of.
+   *
+   * That is the right failure and the wrong maintenance burden — a mirror only
+   * catches the mismatch it is updated for, and the next field added by someone
+   * in a hurry gets the list edited rather than the record examined. So the
+   * keys are now ASKED FOR: the real getter, run against an empty store, which
+   * returns every key it can ever produce because each one is a count.
+   *
+   * What is still checked is unchanged, and it is the part that matters: the
+   * two sides must agree in both directions. A count nothing describes is a
+   * number that never prints; a description nothing counts is how Gardening
+   * came to report workouts.
+   */
+  const { useAppStore } = await import(REPO + '/src/store/useAppStore.js');
+  const keysFor = (subject) => Object.keys(useAppStore.getState().getParticipationRecord(subject) || {});
   const SUBJECT_KEYS = {
-    pe: ['workouts', 'daysTracked', 'mealsLogged', 'weeklyGoalsSet', 'weeklyGoalsMet', 'checkIns'],
-    gardening: ['sessions', 'daysInTheGarden', 'seasonChangeovers', 'sunReadings', 'plantings',
-                'waterings', 'measurements', 'observations', 'harvests', 'entriesLogged'],
-    guitar: ['practiceSessions', 'daysPractised', 'minutesPractised', 'theoryItemsRead',
-             'skillsCleared', 'songsChosen', 'songsLearned', 'recordings', 'entriesLogged']
+    pe: keysFor('pe'),
+    gardening: keysFor('gardening'),
+    guitar: keysFor('guitar')
   };
+  for (const [subject, keys] of Object.entries(SUBJECT_KEYS)) {
+    ok(`${subject}: the getter really produced its key list`, keys.length >= 5,
+      `${keys.length} keys — an empty list would make both checks below vacuous`);
+  }
 
   for (const [subject, keys] of Object.entries(SUBJECT_KEYS)) {
     const fields = pr.participationFieldsFor(subject);
