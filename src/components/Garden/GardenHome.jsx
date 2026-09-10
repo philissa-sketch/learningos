@@ -9,7 +9,11 @@ import { NovaGardenGuide } from './NovaGardenGuide.jsx';
 import { DomainProjectView } from '../Domains/DomainProjectView.jsx';
 import { academyContent } from '../../content/academyContent.js';
 
-const { getGardenDayForWeekOf = () => null, getNextGardenDay = () => null } = academyContent().electives;
+const {
+  gardenProjects = [],
+  getGardenDayForWeekOf = () => null,
+  getNextGardenDay = () => null
+} = academyContent().electives;
 
 const TABS = [
   { id: 'friday', label: 'Mission' },
@@ -40,6 +44,44 @@ export function GardenHome({ onExit, onStartPrompt }) {
   // The Friday of the current week, so the brief is reachable on a Wednesday.
   // Falls forward to the next scheduled day outside the Q1 window.
   const day = getGardenDayForWeekOf() || getNextGardenDay();
+
+  /**
+   * ==========================================================================
+   * "OPEN THIS BUILD" HAD NEVER RENDERED, ON ANY BUILD, EVER. (Sep 9, 2026.)
+   * ==========================================================================
+   *
+   * Found auditing the Gardening tabs. `BuildTrackView` takes an
+   * `onOpenProject` prop and gates its button on it —
+   * `{build.projectId && onOpenProject && unlocked && (...)}` — and this file
+   * rendered the view with no props at all. The prop was
+   * `undefined`, so the condition was false for every build on every render.
+   *
+   * All five builds carry a real `projectId` and every one of them resolves to
+   * a real garden project. The button was written, the data was correct, and
+   * the two were never introduced. Same shape as the three components found
+   * "written, complete, and mounted NOWHERE" in the Aug 9 pass.
+   *
+   * ---- AND WIRING IT STRAIGHT THROUGH WOULD HAVE BROKEN IT DIFFERENTLY ----
+   *
+   * The two callers do not agree on what they hand over:
+   *
+   *     GardenBriefView   onOpenProject(project)          <- the OBJECT
+   *     BuildTrackView    onOpenProject(build.projectId)  <- the ID string
+   *
+   * `onStartPrompt` is `setActivePrompt`, and the writing engine reads
+   * `prompt.id`, `prompt.title`, `prompt.category`. Handing it a bare string
+   * renders the blank "Writing Skill / 0 words" shell this project already
+   * shipped once, on Aug 7, from exactly this mistake.
+   *
+   * So the id is resolved HERE, where the project list already lives, and
+   * `BuildTrackView` keeps the id-based API its own code was written against.
+   * A project id that matches nothing opens nothing rather than opening an
+   * empty engine.
+   */
+  const openProjectById = (projectId) => {
+    const project = (gardenProjects || []).find((p) => p.id === projectId);
+    if (project && onStartPrompt) onStartPrompt(project);
+  };
 
   return (
     <div className="mx-auto max-w-3xl space-y-6 px-4 py-6 sm:px-6">
@@ -86,7 +128,7 @@ export function GardenHome({ onExit, onStartPrompt }) {
       {tab === 'friday' && <GardenBriefView day={day} onOpenProject={onStartPrompt} />}
       {tab === 'survey' && <SunSurveyView />}
       {tab === 'log' && <GardenLogView />}
-      {tab === 'builds' && <BuildTrackView />}
+      {tab === 'builds' && <BuildTrackView onOpenProject={openProjectById} />}
       {tab === 'project' && <DomainProjectView defaultDomain="garden" />}
       {tab === 'season' && <SeasonCalendarView />}
 

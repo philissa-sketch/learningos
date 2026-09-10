@@ -6273,7 +6273,7 @@ export const useAppStore = create((set, get) => ({
 
     set({ peWorkoutLog, xp, currentRank });
     await saveMeta({ xp, streak: state.streak, lastActiveDate: state.lastActiveDate });
-    await get().bumpTodayAttendance('lessonsCompleted');
+    await get().bumpAttendanceOn(entry.date, 'lessonsCompleted');
     return { xpEarned };
   },
 
@@ -6319,6 +6319,11 @@ export const useAppStore = create((set, get) => ({
 
     set({ gardenLog, xp, currentRank });
     await saveMeta({ xp, streak: state.streak, lastActiveDate: state.lastActiveDate });
+    /**
+     * The ENTRY'S date, not today. A garden day recorded after the fact has to
+     * put its attendance where its minutes already go, or the two halves of
+     * the same day's record name different days — see bumpAttendanceOn.
+     */
     await get().bumpTodayAttendance('lessonsCompleted');
     return { xpEarned };
   },
@@ -8383,13 +8388,40 @@ export const useAppStore = create((set, get) => ({
    * calendar and goal-setting is instruction; it is not a lesson.
    */
   async bumpTodayAttendance(field, by = 1) {
+    return get().bumpAttendanceOn(todayStr(), field, by);
+  },
+
+  /**
+   * ========================================================================
+   * ATTENDANCE FOLLOWS THE DAY THE WORK HAPPENED. (Sep 9, 2026.)
+   * ========================================================================
+   *
+   * The parent, on the garden Season tab: **"It says no record like something
+   * is to be recorded there."** She was right, and behind it sat a split this
+   * function is half of.
+   *
+   * Every garden row is credited toward Georgia's 180 days by the ROW's date —
+   * `coveredBlockIds(dateStr, …)` matches `r.date === dateStr`. Attendance was
+   * credited by TODAY, always. So a session logged on Wednesday for Friday put
+   * the minutes on Friday and the attendance on Wednesday, and neither day had
+   * both.
+   *
+   * Asked with the arithmetic in front of her, she chose the day he gardened:
+   * *"Aug 14 work counts as Aug 14."* Georgia counts days of INSTRUCTION, and
+   * the day the instruction happened is the honest one — the day someone typed
+   * it in is a fact about the typing.
+   *
+   * `bumpTodayAttendance` is unchanged in behaviour and every existing caller
+   * keeps it. This is the same function with the date made explicit.
+   */
+  async bumpAttendanceOn(dateStr, field, by = 1) {
+    const date = dateStr || todayStr();
     const state = get();
-    const today = todayStr();
-    const prior = state.allAttendance[today] || { activeMinutes: 0, lessonsCompleted: 0, writingEntries: 0, typingSessions: 0 };
+    const prior = state.allAttendance[date] || { activeMinutes: 0, lessonsCompleted: 0, writingEntries: 0, typingSessions: 0 };
     const updated = { ...prior, [field]: (prior[field] || 0) + by };
-    const allAttendance = { ...state.allAttendance, [today]: updated };
+    const allAttendance = { ...state.allAttendance, [date]: updated };
     set({ allAttendance });
-    await saveAttendanceRecord(today, updated);
+    await saveAttendanceRecord(date, updated);
   },
 
   /**

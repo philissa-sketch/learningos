@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useAppStore } from '../../store/useAppStore.js';
+import { useToday } from '../../lib/useToday.js';
 import { academyContent } from '../../content/academyContent.js';
 
 const { gardenProjects = [], getGardenBriefById = () => null } = academyContent().electives;
@@ -13,6 +14,7 @@ const { SUBJECT_LABELS = {} } = academyContent().subjects;
  * days if real activity is recorded on it, so the log button is here too.
  */
 export function GardenBriefView({ day, onOpenProject }) {
+  const today = useToday();
   const gardenLog = useAppStore((s) => s.gardenLog);
   const recordGardenLogEntry = useAppStore((s) => s.recordGardenLogEntry);
   const [saving, setSaving] = useState(false);
@@ -53,6 +55,24 @@ export function GardenBriefView({ day, onOpenProject }) {
 
   const brief = day.briefId ? getGardenBriefById(day.briefId) : null;
   const alreadyLogged = gardenLog.some((r) => r.date === day.date && r.kind === 'session');
+  /**
+   * ---- AND IT COULD BE PRESSED FOR A FRIDAY THAT HAS NOT HAPPENED ----
+   * (Sep 9, 2026.)
+   *
+   * This tab shows the current week's Friday from Monday onward, on purpose —
+   * the brief has to be readable before the day. The log button underneath
+   * writes `date: day.date`, so on a Wednesday it filed a garden day dated two
+   * days into the future.
+   *
+   * That was already wrong and it was survivable while attendance was credited
+   * to today. It stopped being survivable the moment attendance began
+   * following the row's date, because a future row would then put a day of
+   * INSTRUCTION on a day nobody has lived through — on the record Georgia
+   * asks about.
+   *
+   * Read the brief whenever. Record the day on the day.
+   */
+  const notYet = day.date > today;
   const project = brief?.opensProjectId
     ? gardenProjects.find((p) => p.id === brief.opensProjectId)
     : brief?.closesProjectId
@@ -193,16 +213,26 @@ export function GardenBriefView({ day, onOpenProject }) {
       <button
         type="button"
         onClick={handleLogSession}
-        disabled={alreadyLogged || saving}
+        disabled={alreadyLogged || saving || notYet}
         className={
           'w-full rounded-lg px-4 py-3 text-sm font-display font-700 transition ' +
-          (alreadyLogged
+          (alreadyLogged || notYet
             ? 'cursor-default bg-space-700 text-ink-500'
             : 'bg-signal-green text-space-950 hover:brightness-110')
         }
       >
-        {alreadyLogged ? 'Garden day recorded' : "Record today's garden work"}
+        {alreadyLogged
+          ? 'Garden day recorded'
+          : notYet
+            ? 'Read it now — record it on the day'
+            : "Record today's garden work"}
       </button>
+      {notYet && (
+        <p className="text-center text-xs text-ink-600">
+          This is {prettyDate}. The brief is here early so you can plan it; the day gets recorded when you
+          have actually worked it. A Friday you missed can still be logged from the Season tab.
+        </p>
+      )}
     </div>
   );
 }

@@ -779,5 +779,158 @@ console.log('\n--- 12. the watering log, and the dates on the builds ---');
 }
 
 // ===========================================================================
+console.log('\n--- 13. every tab is wired to what it opens ---');
+{
+  /**
+   * ---- WHERE THIS CAME FROM (Sep 9, 2026) ----
+   *
+   * The parent: "Can you audit the Gardening tabs and make sure everything is
+   * linked and the information recorded going to the correct place."
+   *
+   * The Build Track's "Open this build" button had NEVER rendered. It is gated
+   * on an `onOpenProject` prop, and GardenHome mounted the view with no props
+   * at all — so the condition was false for every build on every render. Five
+   * builds, every one carrying a real projectId that resolves to a real
+   * project. The button was written, the data was right, and the two were
+   * never introduced.
+   *
+   * Comments are stripped before matching: this fix is DESCRIBED in a comment
+   * that names the very expressions being asserted, and a guard that reads its
+   * own explanation is the fault this repo has already recorded twice.
+   */
+  const codeOnly = (t) => t
+    .replace(/\/\*[\s\S]*?\*\//g, '')
+    .replace(/\{\/\*[\s\S]*?\*\/\}/g, '')
+    .replace(/^\s*\/\/.*$/gm, '');
+  const home = codeOnly(read('src/components/Garden/GardenHome.jsx'));
+  const track = codeOnly(read('src/components/Garden/BuildTrackView.jsx'));
+  const briefView = codeOnly(read('src/components/Garden/GardenBriefView.jsx'));
+
+  ok(/<BuildTrackView onOpenProject=\{openProjectById\} \/>/.test(home),
+    'the Build Track is handed a way to open a build',
+    'mounted bare, its button is gated on an undefined prop and never renders');
+  ok(/<GardenBriefView day=\{day\} onOpenProject=\{onStartPrompt\} \/>/.test(home),
+    '...and the Mission tab still opens its project');
+
+  /**
+   * THE TWO CALLERS DISAGREE ON WHAT THEY PASS, which is fine only while the
+   * resolver sits between them. BuildTrackView passes an ID; the writing engine
+   * needs an OBJECT and reads prompt.id / prompt.title. Handing it the string
+   * renders the blank "Writing Skill / 0 words" shell shipped once on Aug 7.
+   */
+  ok(/const openProjectById = \(projectId\) => \{[\s\S]{0,240}?\.find\(\(p\) => p\.id === projectId\)/.test(home),
+    'the id from the Build Track is resolved to a real project first',
+    'a bare string reaching the writing engine opens an empty screen');
+  ok(/if \(project && onStartPrompt\) onStartPrompt\(project\);/.test(home),
+    '...and an id matching nothing opens nothing');
+  ok(/gardenProjects = \[\],/.test(home),
+    '...which is why GardenHome reads the project list at all');
+  ok(/onOpenProject\(build\.projectId\)/.test(track),
+    'the Build Track still asks by id, as its own code was written to');
+  ok(/onOpenProject\(project\)/.test(briefView),
+    '...and the Mission tab still hands over the object');
+
+  const unresolved = (gardenBuildTrack || [])
+    .filter((b) => b.projectId)
+    .filter((b) => !(gardenProjects || []).some((p) => p.id === b.projectId));
+  ok(unresolved.length === 0,
+    'every build on the track points at a real project',
+    unresolved.map((b) => b.id + ' -> ' + b.projectId).join(', '));
+
+  /**
+   * Six tabs, each mounted. A tab in the list with no branch below it is a
+   * button that does nothing, and nobody finds out until they press it.
+   */
+  for (const [tab, view] of [
+    ['friday', 'GardenBriefView'],
+    ['survey', 'SunSurveyView'],
+    ['log', 'GardenLogView'],
+    ['builds', 'BuildTrackView'],
+    ['project', 'DomainProjectView'],
+    ['season', 'SeasonCalendarView']
+  ]) {
+    ok(new RegExp(`tab === '${tab}' && <${view}`).test(home), `the ${tab} tab renders ${view}`);
+  }
+}
+
+// ===========================================================================
+console.log('\n--- 14. a garden day is recorded on the day it happened ---');
+{
+  /**
+   * ---- WHERE THIS CAME FROM (Sep 9, 2026) ----
+   *
+   * The parent, on four Fridays badged `no record`: "It says no record like
+   * something is to be recorded there."
+   *
+   * The badge told the truth about the record and lied about what she could do
+   * next. Every logging surface could only write TODAY — the log form has no
+   * date field, the Mission tab offers only this week's Friday — so a garden
+   * day that had passed could not be recorded from anywhere, and the card
+   * offered nothing to press.
+   *
+   * Behind it sat a split: garden MINUTES are credited by the row's date
+   * (`coveredBlockIds` matches `r.date === dateStr`) while ATTENDANCE was
+   * credited to today, always. Her decision, with the arithmetic in front of
+   * her: the day he gardened. Aug 14 work counts as Aug 14.
+   */
+  const codeOnly = (t) => t
+    .replace(/\/\*[\s\S]*?\*\//g, '')
+    .replace(/\{\/\*[\s\S]*?\*\/\}/g, '')
+    .replace(/^\s*\/\/.*$/gm, '');
+  const store = codeOnly(read('src/store/useAppStore.js'));
+  const season = codeOnly(read('src/components/Garden/SeasonCalendarView.jsx'));
+  const briefView = codeOnly(read('src/components/Garden/GardenBriefView.jsx'));
+
+  ok(/async bumpAttendanceOn\(dateStr, field, by = 1\)/.test(store),
+    'attendance can be credited to a stated day');
+  ok(/async bumpTodayAttendance\(field, by = 1\) \{\s*return get\(\)\.bumpAttendanceOn\(todayStr\(\), field, by\);/.test(store),
+    '...and today is that same function with today passed in',
+    'two attendance writers is how the two would drift');
+  ok(/await get\(\)\.bumpAttendanceOn\(entry\.date, 'lessonsCompleted'\);/.test(store),
+    'a garden row credits attendance to the ROW\u2019s date',
+    'the minutes already went there; the attendance has to follow or the day is half-recorded');
+
+  ok(/Log this day/.test(season) && /recordGardenLogEntry\(\{/.test(season),
+    'a Friday that was missed can be logged from the Season tab');
+  ok(/date: day\.date/.test(season),
+    '...dated to that Friday, not to the day it was typed');
+  ok(/not logged/.test(season) && !/no record/.test(season),
+    '...and the badge says what is missing rather than implying a slot');
+
+  /**
+   * THE OTHER HALF OF HER DECISION. Attendance following the row's date means
+   * a FUTURE row would put a day of instruction on a day nobody has lived
+   * through — so the Mission tab, which shows the coming Friday from Monday,
+   * must not log one.
+   */
+  ok(/const notYet = day\.date > today;/.test(briefView),
+    'the coming Friday is readable but not loggable');
+  ok(/disabled=\{alreadyLogged \|\| saving \|\| notYet\}/.test(briefView),
+    '...the button is actually disabled, not merely relabelled');
+  ok(/Read it now — record it on the day/.test(briefView),
+    '...and it says why rather than looking broken');
+
+  /**
+   * NOT BEHAVIOURAL, AND THE REASON IS WORTH WRITING DOWN. The obvious check
+   * here is to call `bumpAttendanceOn('2026-08-14', …)` and read the row back.
+   * It cannot run: a guard has no open Dexie database, and the store throws
+   * "the database was used before an Academy was opened" the moment it tries
+   * to save. Section 5 above is behavioural only because it reads state.
+   *
+   * So the property is asserted on the function's own body instead — that the
+   * date it was given is the key it writes and the key it saves, with no
+   * `todayStr()` anywhere between.
+   */
+  const fn = (store.match(/async bumpAttendanceOn\(dateStr, field, by = 1\) \{[\s\S]*?\n  \},/) || [''])[0];
+  ok(/const date = dateStr \|\| todayStr\(\);/.test(fn),
+    'the given date is what it writes, falling back to today only when none is given');
+  ok(/\[date\]: updated/.test(fn) && /saveAttendanceRecord\(date, updated\)/.test(fn),
+    '...to both the state key and the saved row',
+    'one of the two using today is how a day gets half-credited');
+  ok(!/todayStr\(\)/.test(fn.replace(/const date = dateStr \|\| todayStr\(\);/, '')),
+    '...and today appears nowhere else in it');
+}
+
+// ===========================================================================
 console.log(`\n${failures === 0 ? 'ALL CHECKS PASSED' : failures + ' CHECK(S) FAILED'}`);
 process.exit(failures === 0 ? 0 : 1);

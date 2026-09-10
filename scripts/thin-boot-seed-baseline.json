@@ -1,0 +1,35 @@
+{
+  "_generated": "2026-09-09 — measured by scripts/verify-thin-boot.mjs section 6",
+  "_why": [
+    "WHAT THE PLATFORM PUTS INTO A SCHOOL THAT SUPPLIED NO CURRICULUM AT ALL.",
+    "",
+    "Measured, not argued. The boot check installs a manifest whose every required",
+    "slot is an empty object, hydrates the store against it, and counts what is in",
+    "state afterwards. Anything counted here came from the platform, because the",
+    "school supplied nothing.",
+    "",
+    "Same ratchet as generic-debt.json and academy-reach-baseline.json: a number",
+    "may SHRINK freely, and grows only by editing this file, which puts the",
+    "decision in the diff where a person sees it. A new key that is not listed",
+    "here fails the same way.",
+    "",
+    "Not every line is a fault. parentAuth and currentRank are platform state that",
+    "any school has -- an unset lock and a starting rank. The curriculum lines are",
+    "the debt, and two of them are already named in docs/GENERIC_CARRYOVER.md:",
+    "  fieldTrips 21           -- carryover item 1, one region's trips on real dates",
+    "  khanAcademyAssignments  -- one course sequence, seeded for everybody",
+    "  rewards 25              -- a catalog the platform ships rather than a school",
+    "Zero is the target for those. It is not the target for every line, which is",
+    "why this file counts rather than forbids."
+  ],
+  "seeded": {
+    "currentRank": 5,
+    "evidenceLinks": 8,
+    "fieldTrips": 21,
+    "khanAcademyAssignments": 130,
+    "ledger": 1,
+    "parentAuth": 3,
+    "rewards": 25,
+    "weeklyWords": 2
+  }
+}

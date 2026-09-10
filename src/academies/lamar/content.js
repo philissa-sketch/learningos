@@ -95,4 +95,4 @@ export const writing = { EDCLUB_PORTAL_URL, ERGONOMICS_CHECKLIST, SCHOOL_YEAR_ST
  * would put every Academy's theme in every learner's download, which is the
  * thing the folder split exists to prevent.
  */
-export const theme = { load: () => import('./academy.css') };
+export const theme = { appearance: () => import('./academy.css') };

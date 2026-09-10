@@ -206,12 +206,14 @@ if (hasCss) {
   lines.push('/**');
   lines.push(" * This Academy's palette and print rules.");
   lines.push(' *');
-  lines.push(' * A function rather than a static import so the stylesheet travels in this');
+  lines.push(' * The theme slot answers one question: what does this school look like?');
+  lines.push(' *');
+  lines.push(' * A loader rather than a static import so the stylesheet travels in this');
   lines.push(" * Academy's chunk and loads when this Academy does. A static import here");
   lines.push(" * would put every Academy's theme in every learner's download, which is the");
   lines.push(' * thing the folder split exists to prevent.');
   lines.push(' */');
-  lines.push("export const theme = { load: () => import('./academy.css') };");
+  lines.push("export const theme = { appearance: () => import('./academy.css') };");
   lines.push('');
 }
 

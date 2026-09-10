@@ -374,4 +374,4 @@ export const exams = {
  * folder split exists to prevent.
  * ======================================================================== */
 
-export const theme = { load: () => import('./academy.css') };
+export const theme = { appearance: () => import('./academy.css') };

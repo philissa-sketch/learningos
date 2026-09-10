@@ -49,7 +49,7 @@ export const guide = { getDailyLine };
  * gets a plain, readable school rather than a white page, which is what makes
  * the Configured state survivable while a family is still setting up.
  */
-export const theme = { load: () => import('./theme/template.css') };
+export const theme = { appearance: () => import('./theme/template.css') };
 
 
 /**

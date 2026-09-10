@@ -7,6 +7,7 @@ import {
   contentPackFor,
   loadAcademyContent
 } from '../../content/academyContent.js';
+import { applyAppearance } from '../../content/slots/theme.js';
 import '../FrontDoor/frontDoor.css';
 
 /**
@@ -66,10 +67,13 @@ export default function AcademyShell({ academy, enteredAs, onSignOut, onAcademyC
       try {
         const loaded = await loadAcademyContent(pack);
         if (cancelled) return;
-        // The stylesheet travels in this Academy's chunk. Loading it here, once
-        // content has resolved, is what keeps one Academy's palette out of
-        // every other learner's download.
-        await loaded.theme?.load?.();
+        // The platform asks the theme slot what this school looks like and
+        // applies whatever it answers. A folder answers with a loader, so the
+        // stylesheet still travels in that Academy's own chunk and stays out of
+        // every other learner's download; a school that is data answers with
+        // CSS text. Neither shape is this file's business — see
+        // src/content/slots/theme.js.
+        await applyAppearance(loaded.theme);
         if (!cancelled) setContent('ready');
       } catch (error) {
         if (cancelled) return;

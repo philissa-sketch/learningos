@@ -299,8 +299,9 @@ if (fs.existsSync(templateManifest)) {
    * A default nobody reads is dead weight that still has to be maintained.
    *
    * `theme` is exempt because it is the one slot the school never destructures:
-   * the Academy shell calls `theme.load()` itself, before the school mounts, so
-   * its shape is a function rather than a list of names the inventory knows.
+   * the Academy shell asks it one question before the school mounts, so its
+   * shape is an answer rather than a list of names the inventory knows.
+   * `verify-slot-theme.mjs` is what holds that slot instead.
    *
    * `nav` is exempt for the same reason and it is worth stating, because the
    * temptation is to add its names to the inventory instead. That inventory is

@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useAppStore } from '../../store/useAppStore.js';
 import { todayDateStr } from '../../lib/scheduler.js';
 import { useToday } from '../../lib/useToday.js';
@@ -20,10 +21,46 @@ const PLANTING_WINDOWS = [
   { window: 'September 15 – October 15', crops: 'Leaf lettuces, radishes' }
 ];
 
-/** Every Friday of the fall season, with the four open ones shown as open. */
+/**
+ * ===========================================================================
+ * "NO RECORD" WAS A STATUS PRETENDING TO BE A SLOT. (Sep 9, 2026.)
+ * ===========================================================================
+ *
+ * The parent, looking at four Fridays in a row badged `no record`: **"It says
+ * no record like something is to be recorded there."**
+ *
+ * Exactly right. The badge told the truth about the record and lied about what
+ * she could do next — every logging surface in the garden could only ever
+ * write TODAY. The Garden Log form has no date field; the Mission tab offers
+ * only the current week's Friday. A garden day that had passed could not be
+ * recorded from anywhere in the app, so every one of those badges was
+ * permanent and the card offered nothing to press.
+ *
+ * A past Friday is loggable here now. Her decision on where the attendance
+ * lands, asked with the arithmetic in front of her: **the day he gardened.**
+ * The row and the attendance both take that Friday's date, which is also what
+ * `coveredBlockIds` has always done with the minutes.
+ *
+ * NOT LOGGABLE: a Friday that has not happened yet, and a school holiday.
+ * Attendance now follows the row's date, so a future row would put a day of
+ * instruction on a day nobody has lived through.
+ */
 export function SeasonCalendarView() {
   const gardenLog = useAppStore((s) => s.gardenLog);
+  const recordGardenLogEntry = useAppStore((s) => s.recordGardenLogEntry);
   const today = useToday();
+  const [saving, setSaving] = useState(null);
+
+  const logDay = async (day, brief) => {
+    setSaving(day.date);
+    await recordGardenLogEntry({
+      kind: 'session',
+      briefId: day.briefId || null,
+      title: brief ? brief.title : 'Open Friday in the garden',
+      date: day.date
+    });
+    setSaving(null);
+  };
 
   return (
     <div className="space-y-4">
@@ -98,15 +135,37 @@ export function SeasonCalendarView() {
                     closed
                   </span>
                 ) : isPast ? (
-                  <span className="flex-none rounded-full border border-space-600 px-2 py-1 text-xs font-display text-ink-500">
-                    no record
-                  </span>
+                  /**
+                    * The badge names the state and the button offers the only
+                    * thing that can change it. "Not logged" rather than "no
+                    * record": the record is fine, it is this day that is
+                    * missing from it.
+                    */
+                  <div className="flex flex-none flex-col items-end gap-1">
+                    <span className="rounded-full border border-space-600 px-2 py-1 text-xs font-display text-ink-500">
+                      not logged
+                    </span>
+                    <button
+                      type="button"
+                      disabled={saving === day.date}
+                      onClick={() => logDay(day, brief)}
+                      className="rounded-lg bg-signal-cyan px-2.5 py-1 text-xs font-display font-700 text-space-950 transition hover:brightness-110 disabled:opacity-40"
+                    >
+                      {saving === day.date ? 'Saving…' : 'Log this day'}
+                    </button>
+                  </div>
                 ) : null}
               </div>
             </div>
           );
         })}
       </div>
+
+      <p className="text-xs text-ink-600">
+        A Friday marked <span className="text-ink-400">not logged</span> can still be recorded — the entry
+        is dated to that Friday, not to today, so the day counts where the work actually happened. A
+        Friday that has not arrived yet cannot be logged.
+      </p>
 
       <p className="text-xs text-ink-600">
         Not every Friday carries a brief, on purpose — some weeks the garden needs nothing, and a lesson
