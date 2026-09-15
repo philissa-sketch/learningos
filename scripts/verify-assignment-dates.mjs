@@ -37,9 +37,20 @@
 import './lib/academy-under-test.mjs';
 import fs from 'node:fs';
 import path from 'node:path';
-import { fileURLToPath } from 'node:url';
-
+import { fileURLToPath, pathToFileURL } from 'node:url';
 const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+/**
+ * A repo-relative path as a module URL.
+ *
+ * `await import(REPO + '/src/…')` worked everywhere it was ever run and could
+ * never work on Windows: REPO is `C:\Users\…` there, so the string handed to
+ * import() begins `C:` and Node rejects it as an unknown URL scheme —
+ * ERR_UNSUPPORTED_ESM_URL_SCHEME, protocol 'c:'. pathToFileURL is the Node API
+ * for exactly this; do not hand-build a file:// string, because a drive letter,
+ * a space in a folder name and a backslash each break a different naive version.
+ */
+const moduleUrl = (rel) => pathToFileURL(path.join(REPO, rel)).href;
+
 
 let passed = 0;
 const failures = [];
@@ -53,7 +64,7 @@ function ok(label, cond, detail = '') {
  * a second thing to keep in agreement, and this repo has shipped that mistake
  * with the perspective box and with the lesson-count calibration.
  */
-const { EXCLUDED_RANGES } = await import(REPO + '/src/academies/lamar/data/academicSuccessCenter/assignmentRecommendations.js');
+const { EXCLUDED_RANGES } = await import(moduleUrl('src/academies/lamar/data/academicSuccessCenter/assignmentRecommendations.js'));
 const recSrc = fs.readFileSync(
   path.join(REPO, 'src/academies/lamar/data/academicSuccessCenter/assignmentRecommendations.js'), 'utf8'
 );
@@ -233,9 +244,7 @@ console.log('\n--- 4. the shape of the load ---');
     'zero parsed corrections means the regex stopped matching, not that the table emptied');
 
   // Imported, not transcribed — same rule as the windows above.
-  const { quarterlyAcademicPlaceholders: seeds } = await import(
-    REPO + '/src/academies/lamar/data/academicSuccessCenter/placeholders.js'
-  );
+  const { quarterlyAcademicPlaceholders: seeds } = await import(moduleUrl('src/academies/lamar/data/academicSuccessCenter/placeholders.js'));
 
   const seedDates = {};
   for (const subject of Object.values(seeds)) {

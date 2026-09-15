@@ -36,17 +36,28 @@ import './lib/academy-under-test.mjs';
 import { readsFromAcademy } from './lib/reads-content.mjs';
 import fs from 'node:fs';
 import path from 'node:path';
-import { fileURLToPath } from 'node:url';
-
+import { fileURLToPath, pathToFileURL } from 'node:url';
 const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const gc = await import(REPO + '/src/academies/lamar/data/admin/georgiaCompliance.js');
+/**
+ * A repo-relative path as a module URL.
+ *
+ * `await import(REPO + '/src/…')` worked everywhere it was ever run and could
+ * never work on Windows: REPO is `C:\Users\…` there, so the string handed to
+ * import() begins `C:` and Node rejects it as an unknown URL scheme —
+ * ERR_UNSUPPORTED_ESM_URL_SCHEME, protocol 'c:'. pathToFileURL is the Node API
+ * for exactly this; do not hand-build a file:// string, because a drive letter,
+ * a space in a folder name and a backslash each break a different naive version.
+ */
+const moduleUrl = (rel) => pathToFileURL(path.join(REPO, rel)).href;
+
+const gc = await import(moduleUrl('src/academies/lamar/data/admin/georgiaCompliance.js'));
 // instructionMinutes left this Academy's folder for the platform on Sept 1,
 // 2026 (§3c Step 1). The thresholds it is checked against are still the
 // school's, which is why only this one name moved.
-const { instructionMinutes } = await import(REPO + '/src/lib/instructionTime.js');
-const { isSchoolDay } = await import(REPO + '/src/academies/lamar/data/schedule/schoolHolidays.js');
-const sm = await import(REPO + '/src/lib/scheduledMinutes.js');
-const { defaultSchedule } = await import(REPO + '/src/academies/lamar/data/schedule/defaultSchedule.js');
+const { instructionMinutes } = await import(moduleUrl('src/lib/instructionTime.js'));
+const { isSchoolDay } = await import(moduleUrl('src/academies/lamar/data/schedule/schoolHolidays.js'));
+const sm = await import(moduleUrl('src/lib/scheduledMinutes.js'));
+const { defaultSchedule } = await import(moduleUrl('src/academies/lamar/data/schedule/defaultSchedule.js'));
 
 let passed = 0;
 const failures = [];

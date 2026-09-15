@@ -1,0 +1,2251 @@
+LearningOS check run
+Academy : lamar
+Mode    : all
+When    : Sun 09/13/2026  8:11:42.95
+Folder  : C:\Users\pknot\Downloads\learningos\
+
+v24.16.0
+
+
+=========================================================
+===== verify-academic-order
+=========================================================
+node:internal/modules/esm/load:199
+    throw new ERR_UNSUPPORTED_ESM_URL_SCHEME(parsed, schemes);
+          ^
+
+Error [ERR_UNSUPPORTED_ESM_URL_SCHEME]: Only URLs with a scheme in: file, data, and node are supported by the default ESM loader. On Windows, absolute paths must be valid file:// URLs. Received protocol 'c:'
+    at throwIfUnsupportedURLScheme (node:internal/modules/esm/load:199:11)
+    at defaultLoadSync (node:internal/modules/esm/load:146:3)
+    at #loadAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:770:12)
+    at #loadSync (node:internal/modules/esm/loader:790:49)
+    at ModuleLoader.load (node:internal/modules/esm/loader:756:26)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:488:31)
+    at #getOrCreateModuleJobAfterResolve (node:internal/modules/esm/loader:549:36)
+    at afterResolve (node:internal/modules/esm/loader:597:52)
+    at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:603:12)
+    at node:internal/modules/esm/loader:622:32 {
+  code: 'ERR_UNSUPPORTED_ESM_URL_SCHEME'
+}
+
+Node.js v24.16.0
+----- RESULT: FAIL
+
+=========================================================
+===== verify-academic-schedule
+=========================================================
+node:internal/modules/esm/load:199
+    throw new ERR_UNSUPPORTED_ESM_URL_SCHEME(parsed, schemes);
+          ^
+
+Error [ERR_UNSUPPORTED_ESM_URL_SCHEME]: Only URLs with a scheme in: file, data, and node are supported by the default ESM loader. On Windows, absolute paths must be valid file:// URLs. Received protocol 'c:'
+    at throwIfUnsupportedURLScheme (node:internal/modules/esm/load:199:11)
+    at defaultLoadSync (node:internal/modules/esm/load:146:3)
+    at #loadAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:770:12)
+    at #loadSync (node:internal/modules/esm/loader:790:49)
+    at ModuleLoader.load (node:internal/modules/esm/loader:756:26)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:488:31)
+    at #getOrCreateModuleJobAfterResolve (node:internal/modules/esm/loader:549:36)
+    at afterResolve (node:internal/modules/esm/loader:597:52)
+    at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:603:12)
+    at node:internal/modules/esm/loader:622:32 {
+  code: 'ERR_UNSUPPORTED_ESM_URL_SCHEME'
+}
+
+Node.js v24.16.0
+----- RESULT: FAIL
+
+=========================================================
+===== verify-academy-css
+=========================================================
+--- 6 stylesheets: 1 entry, 5 imported ---
+
+--- 1. exactly one file emits Tailwind ---
+PASS  only index.css has @tailwind directives
+PASS  ...and it has all three
+
+--- 2. no imported stylesheet uses @layer ---
+PASS  no imported stylesheet declares a @layer
+
+--- 3. an Academy stylesheet is loaded by its Academy, not the platform ---
+PASS  the platform entry does not import an Academy stylesheet
+PASS  academy.css is imported by something
+PASS  academy.css is imported by something
+PASS  template.css is imported by something
+
+--- 4. the theme variables survived the move ---
+PASS  academy.css keeps its palette as RGB channels, not hex
+PASS  academy.css keeps its palette as RGB channels, not hex
+PASS  template.css keeps its palette as RGB channels, not hex
+
+10 passed, 0 failed
+
+ALL CHECKS PASSED
+----- RESULT: pass
+
+=========================================================
+===== verify-academy-db
+=========================================================
+--- 1. connections are built in one place, and built late ---
+PASS  only db.js, householdDb.js and importRunner.js construct a Dexie
+PASS  ...and the foreign one is opened without declaring a version
+PASS  neither is constructed at module load
+PASS  ...db.js constructs one inside openAcademy()
+PASS  ...and householdDb.js inside openHousehold()
+PASS  db is a reassignable live binding
+PASS  openAcademy takes the database name rather than deriving it
+PASS  there is a way back out (sign-out)
+
+--- 2. reaching a table before sign-in fails loudly ---
+PASS  an unopened db throws rather than returning undefined
+PASS  ...and the error names the property that was reached for
+PASS  ...and says what to call instead
+PASS  the household database says the same when used early
+
+--- 3. the schema is recorded where it is written, and replayed ---
+PASS  db.js declares its versions as db.version(n)
+PASS  ...in ascending order, with none skipped
+PASS  openAcademy replays every recorded version onto the new connection
+PASS  ...and every recorded connection handler
+PASS  ...and refuses to open a connection with no schema at all
+
+--- 4. who is allowed to import db.js ---
+PASS  exactly four files import db.js
+PASS  the import screen takes the live connection and the export policy, nothing else
+PASS  the boot gate imports only the connection lifecycle
+PASS  no file but the store reads a table directly
+PASS  the store's direct reads are all inside db.transaction() calls
+
+--- 5. boot order: nothing renders before a database is open ---
+PASS  the boot gate opens an Academy
+PASS  ...using the registry naming rule, never a literal
+PASS  ...and refuses an id the household has not registered
+PASS  the signed-in shell is rendered in exactly one place
+PASS  ...and after every early return, so no un-opened path reaches it
+PASS  the booting frame renders nothing about anybody
+
+--- 6. naming rules live in one file ---
+PASS  every Academy database name is built from one prefix
+PASS  ...and the household name is built from the same one
+PASS  an unregistered id throws instead of opening an empty database
+PASS  ids get a random suffix, so two children can share a first name
+
+32 passed, 0 failed
+
+ALL CHECKS PASSED
+----- RESULT: pass
+
+=========================================================
+===== verify-academy-reach
+=========================================================
+PASS  there is at least one Academy to check
+PASS  the shell was actually read
+
+--- lamar ---
+PASS  lamar: is recorded in the baseline
+PASS  lamar: still reaches every tab it used to
+PASS  lamar: every tab points at a screen the shell renders
+
+--- petal-pestle-academy ---
+PASS  petal-pestle-academy: is recorded in the baseline
+PASS  petal-pestle-academy: still reaches every tab it used to
+PASS  petal-pestle-academy: every tab points at a screen the shell renders
+PASS  the contract names its shape slots
+PASS  lamar: its manifest exports the 'nav' slot it has content for
+
+10 passed, 0 failed
+
+ALL CHECKS PASSED
+----- RESULT: pass
+
+=========================================================
+===== verify-academy
+=========================================================
+
+=== the household — that they are SEPARATE ===
+
+      2 Academies on this machine: lamar, petal-pestle-academy
+
+PASS  no Academy imports another Academy
+PASS  the platform ships no list of Academies
+PASS  Academy folders are found by looking, not by a list
+PASS  no two Academies resolve to one database
+PASS  lamar stands up on its own
+      lamar: 356 lessons
+PASS  petal-pestle-academy stands up on its own
+      petal-pestle-academy: 256 lessons
+
+6 checks · ALL PASSED
+
+----- RESULT: pass
+
+=========================================================
+===== verify-assignment-dates
+=========================================================
+node:internal/modules/esm/load:199
+    throw new ERR_UNSUPPORTED_ESM_URL_SCHEME(parsed, schemes);
+          ^
+
+Error [ERR_UNSUPPORTED_ESM_URL_SCHEME]: Only URLs with a scheme in: file, data, and node are supported by the default ESM loader. On Windows, absolute paths must be valid file:// URLs. Received protocol 'c:'
+    at throwIfUnsupportedURLScheme (node:internal/modules/esm/load:199:11)
+    at defaultLoadSync (node:internal/modules/esm/load:146:3)
+    at #loadAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:770:12)
+    at #loadSync (node:internal/modules/esm/loader:790:49)
+    at ModuleLoader.load (node:internal/modules/esm/loader:756:26)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:488:31)
+    at #getOrCreateModuleJobAfterResolve (node:internal/modules/esm/loader:549:36)
+    at afterResolve (node:internal/modules/esm/loader:597:52)
+    at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:603:12)
+    at node:internal/modules/esm/loader:622:32 {
+  code: 'ERR_UNSUPPORTED_ESM_URL_SCHEME'
+}
+
+Node.js v24.16.0
+----- RESULT: FAIL
+
+=========================================================
+===== verify-audit-aug23
+=========================================================
+node:internal/modules/esm/load:199
+    throw new ERR_UNSUPPORTED_ESM_URL_SCHEME(parsed, schemes);
+          ^
+
+Error [ERR_UNSUPPORTED_ESM_URL_SCHEME]: Only URLs with a scheme in: file, data, and node are supported by the default ESM loader. On Windows, absolute paths must be valid file:// URLs. Received protocol 'c:'
+    at throwIfUnsupportedURLScheme (node:internal/modules/esm/load:199:11)
+    at defaultLoadSync (node:internal/modules/esm/load:146:3)
+    at #loadAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:770:12)
+    at #loadSync (node:internal/modules/esm/loader:790:49)
+    at ModuleLoader.load (node:internal/modules/esm/loader:756:26)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:488:31)
+    at #getOrCreateModuleJobAfterResolve (node:internal/modules/esm/loader:549:36)
+    at afterResolve (node:internal/modules/esm/loader:597:52)
+    at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:603:12)
+    at node:internal/modules/esm/loader:622:32 {
+  code: 'ERR_UNSUPPORTED_ESM_URL_SCHEME'
+}
+
+Node.js v24.16.0
+----- RESULT: FAIL
+
+=========================================================
+===== verify-book-swap
+=========================================================
+node:internal/modules/esm/load:199
+    throw new ERR_UNSUPPORTED_ESM_URL_SCHEME(parsed, schemes);
+          ^
+
+Error [ERR_UNSUPPORTED_ESM_URL_SCHEME]: Only URLs with a scheme in: file, data, and node are supported by the default ESM loader. On Windows, absolute paths must be valid file:// URLs. Received protocol 'c:'
+    at throwIfUnsupportedURLScheme (node:internal/modules/esm/load:199:11)
+    at defaultLoadSync (node:internal/modules/esm/load:146:3)
+    at #loadAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:770:12)
+    at #loadSync (node:internal/modules/esm/loader:790:49)
+    at ModuleLoader.load (node:internal/modules/esm/loader:756:26)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:488:31)
+    at #getOrCreateModuleJobAfterResolve (node:internal/modules/esm/loader:549:36)
+    at afterResolve (node:internal/modules/esm/loader:597:52)
+    at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:603:12)
+    at node:internal/modules/esm/loader:622:32 {
+  code: 'ERR_UNSUPPORTED_ESM_URL_SCHEME'
+}
+
+Node.js v24.16.0
+----- RESULT: FAIL
+
+=========================================================
+===== verify-class-bell
+=========================================================
+
+--- 1. the schedule parses, and is a timeline ---
+PASS  every one of the 13 blocks has usable times (13 parsed)
+PASS  no block ends before it starts
+PASS  no two blocks overlap
+      day runs 8:30 AM – 4:45 PM, 13 blocks
+PASS  a block with an impossible time is dropped, not defaulted to midnight
+PASS  a block that ends before it starts is dropped
+
+--- 2. where are we in the day ---
+PASS  before the first block: "before"
+PASS  and it names the morning meeting as next
+PASS  9:30am is Mathematics
+PASS  the middle of the Science block is Science
+PASS  1:35pm is Spelling & Vocabulary
+PASS  3:05pm is guitar practice
+PASS  8pm is after the school day
+PASS  a weekend is "no-school" whatever the time
+PASS  on the boundary, the new block is the current one (Reading Lesson)
+PASS  the whole of Science is left at the top of Science (45 min)
+PASS  the garden block declares Friday and only Friday
+PASS  on Friday, 3:20pm is the garden
+PASS  on Tuesday, 3:20pm is nothing — school is over
+PASS  on Tuesday the day is already "after" by 3:20pm
+PASS  across the whole garden window, no Tuesday bell or block is ever the garden
+PASS  the bell still rings at 3:15 on a Friday
+PASS  the garden runs to its end on a Friday
+PASS  the printed schedule carries the typing block
+PASS  typing runs 15 minutes
+PASS  typing starts the moment Science ends
+PASS  typing ends the moment lunch starts — a hard edge, not a judgement call
+PASS  the home screen carries a typing row
+PASS  the typing row is tickable — EdClub progress is invisible to this app, so his tick is the only signal
+PASS  the typing row actually opens the typing screen
+PASS  ...and the router has a typing screen to land on — the half that was missing
+PASS  ...landing on Typing home rather than resuming an old sub-screen
+PASS  the non-Khan daily key is declared once, not scattered as a literal
+PASS  the Khan daily streak excludes typing
+PASS  typing has a streak of its own
+PASS  the EdClub portal URL is where the app says it is
+PASS  the typing screen links EdClub
+PASS  the EdClub card warns about the sign-in wall — a login screen reads as a broken link
+PASS  one minute left one minute before Science ends
+PASS  an hour until school at 7:30
+
+--- 3. the bell rings when it should, and only then ---
+PASS  no bell mid-block
+PASS  switch bell when Maths ends at 10:00
+PASS  warning two minutes before, at 9:58
+PASS  no warning at all when the lead is set to zero
+PASS  a five-minute lead warns at 9:55
+PASS  the day opens with the start bell
+PASS  nothing rings at the weekend
+PASS  nothing rings long after the last block
+PASS  a tab that wakes 30 seconds late still rings the switch
+PASS  but a boundary five minutes gone is not rung — too late to be useful
+PASS  the same boundary yields the same key, so it rings once
+PASS  a different boundary yields a different key
+PASS  the same boundary tomorrow rings again
+PASS  a warning landing on the start of the day defers to the start bell
+PASS  a warning landing on a switch defers to the switch — "move now" beats "move soon"
+PASS  a warning as long as the block does not fire at the moment the block begins
+
+--- 4. gaps are a real state ---
+PASS  ten minutes with nothing scheduled is a gap, not the previous block
+PASS  and nothing is reported as running
+PASS  the gap still names what is coming
+PASS  no bell rings during a gap — he is not late for anything
+
+--- 5. how it reads ---
+PASS  under a minute shows seconds
+PASS  ten minutes reads as minutes
+PASS  over an hour reads in hours and minutes
+PASS  times are shown as a twelve-year-old reads a clock
+PASS  midnight is 12 AM, not 0 AM
+
+--- 6. wiring ---
+PASS  the card is mounted on the student dashboard
+PASS  mounted exactly once
+PASS  arming the bell unlocks the audio context
+PASS  armed is read from the audio engine, not remembered on the card
+PASS  ...and the card re-renders when any other tap in the app unlocks audio
+PASS  isAudioUnlocked reports the context state rather than a remembered flag
+PASS  armed state is still NOT persisted across reloads — it cannot be, and pretending it is would mute the bell silently
+PASS  the card plays the bell sounds
+PASS  sfx exports playBellWarning
+PASS  sfx exports playBellSwitch
+PASS  sfx exports playBellStart
+PASS  there is an actual school bell to ring
+PASS  it is built from INHARMONIC partials — the reason a bell sounds like a bell
+PASS  each strike has a noise transient — the clack of the hammer on metal
+PASS  the clapper strikes repeatedly — the rattle IS the school bell
+PASS  the switch bell is the school bell
+PASS  the school bell does not glide, so it cannot be mistaken for a reward chime
+PASS  the 2-minute warning is ONE tap of the same bell — recognisable, but not the full ring
+PASS  the parent can turn the bell on and off
+PASS  the warning lead is loaded from meta with a sane default
+PASS  the warning lead is clamped to 0-15 minutes
+
+--- the clock conversion (the caller, not just the library) ---
+PASS  midnight is 0
+PASS  8:30 AM is 510
+PASS  10:52 AM is 652 -- not 10.87
+PASS  11:59 PM is 1439
+PASS  seconds move it by less than a minute
+PASS  it climbs all day and never wraps
+PASS  10:52 on a Wednesday is IN a block, not before school
+PASS  ...and the block it names is Science
+PASS  ClassBellCard.jsx uses minutesSinceMidnight
+PASS  ClassBellCard.jsx does not roll its own hour maths
+PASS  TodaysRoutineRail.jsx uses minutesSinceMidnight
+PASS  TodaysRoutineRail.jsx does not roll its own hour maths
+
+ALL CHECKS PASSED
+
+----- RESULT: pass
+
+=========================================================
+===== verify-compliance-deadline
+=========================================================
+node:internal/modules/esm/load:199
+    throw new ERR_UNSUPPORTED_ESM_URL_SCHEME(parsed, schemes);
+          ^
+
+Error [ERR_UNSUPPORTED_ESM_URL_SCHEME]: Only URLs with a scheme in: file, data, and node are supported by the default ESM loader. On Windows, absolute paths must be valid file:// URLs. Received protocol 'c:'
+    at throwIfUnsupportedURLScheme (node:internal/modules/esm/load:199:11)
+    at defaultLoadSync (node:internal/modules/esm/load:146:3)
+    at #loadAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:770:12)
+    at #loadSync (node:internal/modules/esm/loader:790:49)
+    at ModuleLoader.load (node:internal/modules/esm/loader:756:26)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:488:31)
+    at #getOrCreateModuleJobAfterResolve (node:internal/modules/esm/loader:549:36)
+    at afterResolve (node:internal/modules/esm/loader:597:52)
+    at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:603:12)
+    at node:internal/modules/esm/loader:622:32 {
+  code: 'ERR_UNSUPPORTED_ESM_URL_SCHEME'
+}
+
+Node.js v24.16.0
+----- RESULT: FAIL
+
+=========================================================
+===== verify-content-interface
+=========================================================
+
+--- 1. the acceptance test: no file compiles an Academy in ---
+PASS  no file outside an Academy folder statically imports one
+
+--- 2. the platform does not pull the school in with it ---
+PASS  the boot path reaches the school only through a dynamic import
+PASS  the shell loads content BEFORE it renders the school
+PASS  an Academy with no content gets its own screen, never another school
+
+--- 3. nothing an Academy imports may read content at load time ---
+PASS  no module reachable from Academy content reads content at module scope
+PASS  the check is actually looking at something
+
+--- 4. every Academy answers the contract ---
+PASS  every slot the school reads is one the platform declares
+PASS  there is at least one Academy to check against
+PASS  lamar: no name is filled twice
+PASS  lamar: provides every name the school asks for
+PASS  lamar: fills only declared slots
+PASS  petal-pestle-academy: no name is filled twice
+FAIL  petal-pestle-academy: provides every name the school asks for
+      140 missing: ACADEMIC_ASSIGNMENT_TYPES, ACADEMIC_BOOK_TYPES, ACADEMIC_SUBJECT_ORDER, ACADEMIC_SUCCESS_CENTER_QUARTER_ORDER, AVATAR_GEAR, BLACK_EXCELLENCE_KNOWN_GAPS, BOOK_RANGE_LABELS, BUDGET_CATEGORIES
+PASS  petal-pestle-academy: fills only declared slots
+
+--- 5. the platform still contains no Academy name ---
+PASS  the content interface names no Academy
+PASS  Academy folders are found by looking, not by a list
+
+--- 6. the template is a floor, not a curriculum ---
+PASS  the template exists
+PASS  it fills at least one slot
+PASS  it never fills subjects or lessons
+PASS  it fills only declared slots
+PASS  every default it provides is one the school actually reads
+PASS  the check found names to check
+PASS  the template is not offered as an Academy
+PASS  the loader merges the template under the Academy
+PASS  the loader refuses a template that fills subjects or lessons
+PASS  required slots are checked AFTER the merge
+
+--- 7. an Academy that fills few slots still opens ---
+PASS  absent slots resolve to an empty object rather than undefined
+PASS  absent slots are filled AFTER the required check, never before
+PASS  ...and the check scripts see the school the same way the browser does
+PASS  a filled-in slot is empty, not populated
+
+29 passed, 1 failed
+
+1 CHECK(S) FAILED
+----- RESULT: FAIL
+
+=========================================================
+===== verify-content-pack
+=========================================================
+
+--- the field is still a field ---
+PASS  the pack is read from a field, falling back to the id
+
+--- something can WRITE it ---
+PASS  a control offers the Academy folders this build carries
+PASS  choosing one writes contentPack to the household record
+PASS  the write is persisted, not held in a component
+
+--- both screens a family can be stranded on ---
+PASS  the Empty screen offers it
+PASS  the no-curriculum screen offers it
+
+--- who may change it ---
+PASS  only a grown-up is offered the choice
+PASS  a learner is told a grown-up can do it, rather than shown nothing
+
+--- it never guesses ---
+PASS  no Academy folder name is hardcoded in the shell
+
+ALL CHECKS PASSED
+
+----- RESULT: pass
+
+=========================================================
+===== verify-curriculum
+=========================================================
+PASS  rank gates calibrated against current curriculum (356 lessons vs CALIBRATED_LESSON_COUNT 356)
+PASS  top rank reachable (Tier 8 needs 333/356 = 94% of the curriculum)
+PASS  every rank gate is strictly harder than the one below it
+PASS  no duplicate lesson ids (356 lessons)
+PASS  exam exam-aerospace-q1-2026-2027 is positioned after all 10 lessons it gates
+PASS  exam exam-aerospace-q2-2026-2027 is positioned after all 10 lessons it gates
+PASS  exam exam-aerospace-q3-2026-2027 is positioned after all 10 lessons it gates
+PASS  exam exam-aerospace-q4-2026-2027 is positioned after all 10 lessons it gates
+PASS  exam exam-aerospace-summer-2027 is positioned after all 9 lessons it gates
+PASS  exam exam-technology-q1-2026-2027 is positioned after all 22 lessons it gates
+PASS  exam exam-technology-q2-2026-2027 is positioned after all 10 lessons it gates
+PASS  exam exam-technology-q3-2026-2027 is positioned after all 8 lessons it gates
+PASS  exam exam-socialStudies-q1-2026-2027 is positioned after all 10 lessons it gates
+PASS  exam exam-socialStudies-q2-2026-2027 is positioned after all 8 lessons it gates
+PASS  exam exam-socialStudies-q4-2026-2027 is positioned after all 8 lessons it gates
+PASS  exam exam-robotics-q4-2026-2027 is positioned after all 8 lessons it gates
+PASS  every practiceGeneratorId resolves to a real generator
+PASS  every referenced generator build() runs and returns a problem
+PASS  question shape valid across every lesson
+PASS  every Social Studies generator offers at least 6 distinct prompts
+
+--- teaching depth by subject (teachingText + example, per lesson) ---
+    aerospace       49 lessons · avg 1935 chars · 0 below the 900-char floor
+    technology      40 lessons · avg 1532 chars · 0 below the 900-char floor
+    socialStudies   26 lessons · avg 3495 chars · 0 below the 900-char floor
+    robotics        8 lessons · avg 2988 chars · 0 below the 900-char floor
+PASS  every active-subject lesson carries at least 900 characters of teaching
+PASS  every active subject averages at least 1200 characters of teaching per lesson
+PASS  every subject with quarter-tagged lessons appears on at least one core day
+PASS  Aerospace still runs twice a week
+PASS  aerospace appears on at least one core day
+PASS  technology appears on at least one core day
+PASS  robotics appears on at least one core day
+PASS  socialStudies appears on at least one core day
+PASS  no core day carries more than two specialized subjects LIVE in any quarter
+
+--- live specialized subjects per core day, by quarter ---
+    Monday    Q1:1  Q2:1  Q3:1  Q4:1  Summer:1   [aerospace]
+    Tuesday   Q1:1  Q2:1  Q3:1  Q4:1  Summer:0   [technology, robotics]
+    Wednesday Q1:1  Q2:2  Q3:2  Q4:2  Summer:1   [aerospace, socialStudies]
+    Thursday  Q1:1  Q2:2  Q3:2  Q4:1  Summer:0   [socialStudies, technology]
+    Friday    Q1:0  Q2:0  Q3:0  Q4:0  Summer:0   []
+
+--- Khan coverage: science ---
+    Q1 2026-2027    10 units · 75 items · 8.3 items/week over 9 weeks
+    Q2 2026-2027    5 units · 36 items · 5.1 items/week over 7 weeks
+    Q3 2026-2027    6 units · 36 items · 4.0 items/week over 9 weeks
+    Q4 2026-2027    5 units · 37 items · 4.1 items/week over 9 weeks
+    Summer 2027     0 units · 0 items · summer, open-ended
+PASS  every science quarter carries at least 3 Khan items per week
+PASS  no science quarter exceeds the parent's 12-unit cap
+PASS  every school quarter has a science sequence
+PASS  every science Khan URL is an absolute khanacademy.org https URL
+PASS  no two science assignments point at the same Khan URL
+PASS  no duplicate science skill titles
+PASS  science sequenceInQuarter is unique within every quarter
+PASS  every science course challenge is well-formed and in a real quarter
+PASS  no actively-seeded science unit is also listed for retirement
+PASS  every seeded science row is covered by SCIENCE_CANONICAL_KEYS
+PASS  every seeded science title is in SCIENCE_CANONICAL_TITLES
+PASS  SCIENCE_CANONICAL_KEYS has no extra or duplicate entries
+PASS  science sequenceInQuarter runs 1..n with no gaps in every quarter
+
+--- Khan coverage: every science course unit, exactly once ---
+PASS  Biology: all 10 content units are scheduled
+PASS  Biology: no unit is scheduled twice
+PASS  Biology: nothing is scheduled beyond unit 10
+PASS  Biology: Khan shows 11 units, 10 are his + 1 teacher unit
+PASS  Biology: 9 graded units + 1 simulations unit that earns no mastery
+PASS  Chemistry: all 5 content units are scheduled
+PASS  Chemistry: no unit is scheduled twice
+PASS  Chemistry: nothing is scheduled beyond unit 5
+PASS  Chemistry: Khan shows 6 units, 5 are his + 1 teacher unit
+PASS  Chemistry: 4 graded units + 1 simulations unit that earns no mastery
+PASS  Physics: all 5 content units are scheduled
+PASS  Physics: no unit is scheduled twice
+PASS  Physics: nothing is scheduled beyond unit 5
+PASS  Physics: Khan shows 6 units, 5 are his + 1 teacher unit
+PASS  Physics: 4 graded units + 1 simulations unit that earns no mastery
+PASS  Earth & Space: all 6 content units are scheduled
+PASS  Earth & Space: no unit is scheduled twice
+PASS  Earth & Space: nothing is scheduled beyond unit 6
+PASS  Earth & Space: Khan shows 7 units, 6 are his + 1 teacher unit
+PASS  Earth & Space: 5 graded units + 1 simulations unit that earns no mastery
+PASS  all 26 content units across the four courses are scheduled (26)
+PASS  every course challenge sits in the quarter where that course finishes
+PASS  every simulations unit is scheduled, and last in its course
+PASS  every course links its teacher-resources unit
+PASS  Q1 science is biology and nothing else
+PASS  Q1 holds exactly 10 science units (10)
+PASS  no high-school science units are scheduled this year
+PASS  no quarter mixes two science courses
+PASS  Summer carries no Khan science — it is reserved for summer reading and book reports
+PASS  all 10 biology units are in Q1 (10)
+PASS  the Biology Course Challenge is in Q1
+PASS  every chemistry unit sits in Q2
+PASS  every course's units run in Khan's own order across the year
+
+ALL CHECKS PASSED
+----- RESULT: pass
+
+=========================================================
+===== verify-daily-writing
+=========================================================
+node:internal/modules/esm/load:199
+    throw new ERR_UNSUPPORTED_ESM_URL_SCHEME(parsed, schemes);
+          ^
+
+Error [ERR_UNSUPPORTED_ESM_URL_SCHEME]: Only URLs with a scheme in: file, data, and node are supported by the default ESM loader. On Windows, absolute paths must be valid file:// URLs. Received protocol 'c:'
+    at throwIfUnsupportedURLScheme (node:internal/modules/esm/load:199:11)
+    at defaultLoadSync (node:internal/modules/esm/load:146:3)
+    at #loadAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:770:12)
+    at #loadSync (node:internal/modules/esm/loader:790:49)
+    at ModuleLoader.load (node:internal/modules/esm/loader:756:26)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:488:31)
+    at #getOrCreateModuleJobAfterResolve (node:internal/modules/esm/loader:549:36)
+    at afterResolve (node:internal/modules/esm/loader:597:52)
+    at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:603:12)
+    at node:internal/modules/esm/loader:622:32 {
+  code: 'ERR_UNSUPPORTED_ESM_URL_SCHEME'
+}
+
+Node.js v24.16.0
+----- RESULT: FAIL
+
+=========================================================
+===== verify-dream-goals
+=========================================================
+node:internal/modules/esm/load:199
+    throw new ERR_UNSUPPORTED_ESM_URL_SCHEME(parsed, schemes);
+          ^
+
+Error [ERR_UNSUPPORTED_ESM_URL_SCHEME]: Only URLs with a scheme in: file, data, and node are supported by the default ESM loader. On Windows, absolute paths must be valid file:// URLs. Received protocol 'c:'
+    at throwIfUnsupportedURLScheme (node:internal/modules/esm/load:199:11)
+    at defaultLoadSync (node:internal/modules/esm/load:146:3)
+    at #loadAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:770:12)
+    at #loadSync (node:internal/modules/esm/loader:790:49)
+    at ModuleLoader.load (node:internal/modules/esm/loader:756:26)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:488:31)
+    at #getOrCreateModuleJobAfterResolve (node:internal/modules/esm/loader:549:36)
+    at afterResolve (node:internal/modules/esm/loader:597:52)
+    at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:603:12)
+    at node:internal/modules/esm/loader:622:32 {
+  code: 'ERR_UNSUPPORTED_ESM_URL_SCHEME'
+}
+
+Node.js v24.16.0
+----- RESULT: FAIL
+
+=========================================================
+===== verify-ela-sequence
+=========================================================
+
+--- 1. the course order file itself ---
+PASS  Khan's Grammar course has 10 units (10)
+PASS  unit numbers run 1..10 with no gaps
+PASS  every unit has a distinct URL slug
+PASS  unit 1 is the noun
+PASS  unit 2 is THE VERB — the unit that was stranded at slot 10
+PASS  Q1 holds 11 units (11) — the plan's figure
+
+--- 2. the store agrees with the course order ---
+PASS  q1RestructureMap found in useAppStore
+PASS  elaSequenceMap found in useAppStore
+PASS  ELA_PLACEMENT_MAP found in useAppStore
+PASS  q1RestructureMap matches the Khan course order
+PASS  elaSequenceMap matches the Khan course order
+PASS  ELA_PLACEMENT_MAP matches the Khan course order
+PASS  ELA_PLACEMENT_MAP places every one of the 11 Q1 units
+
+--- 3. the maps agree with each other ---
+PASS  no two maps give the same Q1 row different sequences
+PASS  the Q1 restructure pass defers to the placement map
+PASS  the sequence-repair pass defers to the placement map
+PASS  the placement map is hoisted to module scope so the earlier passes can see it
+
+--- 4. position matches the page that actually opens ---
+PASS  every grammar row sits at the slot its Khan URL says it should
+PASS  "Roots, prefixes, and suffixes" is correctly NOT a Grammar-course unit
+PASS  "Roots, prefixes, and suffixes" follows all ten grammar units
+
+--- 5. one unit per slot ---
+PASS  no two Q1 units share a sequence number
+PASS  Q1 sequences run 1..11 with no gaps
+
+--- 6. placement survives a renamed row ---
+PASS  hydrate places grammar rows by their Khan URL, not their title
+PASS  and it uses the general-course-only matcher, so it cannot move other courses into Q1
+PASS  and renames each one to Khan's own title, so the row and the page agree
+PASS  the legacy title "Verb tenses, including the perfect tenses" is still recognised as Parts of speech: the verb
+PASS  "Verb tenses, including the perfect tenses" and "Parts of speech: the verb" resolve to the same slot
+PASS  the verb unit is seeded under one of its two names
+PASS  the import merge normalises a legacy grammar title before matching
+PASS  and so does the de-duplication pass
+
+ALL CHECKS PASSED
+
+----- RESULT: pass
+
+=========================================================
+===== verify-export-completeness
+=========================================================
+node:internal/modules/esm/load:199
+    throw new ERR_UNSUPPORTED_ESM_URL_SCHEME(parsed, schemes);
+          ^
+
+Error [ERR_UNSUPPORTED_ESM_URL_SCHEME]: Only URLs with a scheme in: file, data, and node are supported by the default ESM loader. On Windows, absolute paths must be valid file:// URLs. Received protocol 'c:'
+    at throwIfUnsupportedURLScheme (node:internal/modules/esm/load:199:11)
+    at defaultLoadSync (node:internal/modules/esm/load:146:3)
+    at #loadAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:770:12)
+    at #loadSync (node:internal/modules/esm/loader:790:49)
+    at ModuleLoader.load (node:internal/modules/esm/loader:756:26)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:488:31)
+    at #getOrCreateModuleJobAfterResolve (node:internal/modules/esm/loader:549:36)
+    at afterResolve (node:internal/modules/esm/loader:597:52)
+    at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:603:12)
+    at node:internal/modules/esm/loader:622:32 {
+  code: 'ERR_UNSUPPORTED_ESM_URL_SCHEME'
+}
+
+Node.js v24.16.0
+----- RESULT: FAIL
+
+=========================================================
+===== verify-field-trip-records
+=========================================================
+node:internal/modules/esm/load:199
+    throw new ERR_UNSUPPORTED_ESM_URL_SCHEME(parsed, schemes);
+          ^
+
+Error [ERR_UNSUPPORTED_ESM_URL_SCHEME]: Only URLs with a scheme in: file, data, and node are supported by the default ESM loader. On Windows, absolute paths must be valid file:// URLs. Received protocol 'c:'
+    at throwIfUnsupportedURLScheme (node:internal/modules/esm/load:199:11)
+    at defaultLoadSync (node:internal/modules/esm/load:146:3)
+    at #loadAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:770:12)
+    at #loadSync (node:internal/modules/esm/loader:790:49)
+    at ModuleLoader.load (node:internal/modules/esm/loader:756:26)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:488:31)
+    at #getOrCreateModuleJobAfterResolve (node:internal/modules/esm/loader:549:36)
+    at afterResolve (node:internal/modules/esm/loader:597:52)
+    at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:603:12)
+    at node:internal/modules/esm/loader:622:32 {
+  code: 'ERR_UNSUPPORTED_ESM_URL_SCHEME'
+}
+
+Node.js v24.16.0
+----- RESULT: FAIL
+
+=========================================================
+===== verify-front-door
+=========================================================
+node:internal/modules/esm/load:199
+    throw new ERR_UNSUPPORTED_ESM_URL_SCHEME(parsed, schemes);
+          ^
+
+Error [ERR_UNSUPPORTED_ESM_URL_SCHEME]: Only URLs with a scheme in: file, data, and node are supported by the default ESM loader. On Windows, absolute paths must be valid file:// URLs. Received protocol 'c:'
+    at throwIfUnsupportedURLScheme (node:internal/modules/esm/load:199:11)
+    at defaultLoadSync (node:internal/modules/esm/load:146:3)
+    at #loadAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:770:12)
+    at #loadSync (node:internal/modules/esm/loader:790:49)
+    at ModuleLoader.load (node:internal/modules/esm/loader:756:26)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:488:31)
+    at #getOrCreateModuleJobAfterResolve (node:internal/modules/esm/loader:549:36)
+    at afterResolve (node:internal/modules/esm/loader:597:52)
+    at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:603:12)
+    at node:internal/modules/esm/loader:622:32 {
+  code: 'ERR_UNSUPPORTED_ESM_URL_SCHEME'
+}
+
+Node.js v24.16.0
+----- RESULT: FAIL
+
+=========================================================
+===== verify-gardening
+=========================================================
+node:internal/modules/esm/load:199
+    throw new ERR_UNSUPPORTED_ESM_URL_SCHEME(parsed, schemes);
+          ^
+
+Error [ERR_UNSUPPORTED_ESM_URL_SCHEME]: Only URLs with a scheme in: file, data, and node are supported by the default ESM loader. On Windows, absolute paths must be valid file:// URLs. Received protocol 'c:'
+    at throwIfUnsupportedURLScheme (node:internal/modules/esm/load:199:11)
+    at defaultLoadSync (node:internal/modules/esm/load:146:3)
+    at #loadAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:770:12)
+    at #loadSync (node:internal/modules/esm/loader:790:49)
+    at ModuleLoader.load (node:internal/modules/esm/loader:756:26)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:488:31)
+    at #getOrCreateModuleJobAfterResolve (node:internal/modules/esm/loader:549:36)
+    at afterResolve (node:internal/modules/esm/loader:597:52)
+    at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:603:12)
+    at node:internal/modules/esm/loader:622:32 {
+  code: 'ERR_UNSUPPORTED_ESM_URL_SCHEME'
+}
+
+Node.js v24.16.0
+----- RESULT: FAIL
+
+=========================================================
+===== verify-georgia-hours
+=========================================================
+node:internal/modules/esm/load:199
+    throw new ERR_UNSUPPORTED_ESM_URL_SCHEME(parsed, schemes);
+          ^
+
+Error [ERR_UNSUPPORTED_ESM_URL_SCHEME]: Only URLs with a scheme in: file, data, and node are supported by the default ESM loader. On Windows, absolute paths must be valid file:// URLs. Received protocol 'c:'
+    at throwIfUnsupportedURLScheme (node:internal/modules/esm/load:199:11)
+    at defaultLoadSync (node:internal/modules/esm/load:146:3)
+    at #loadAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:770:12)
+    at #loadSync (node:internal/modules/esm/loader:790:49)
+    at ModuleLoader.load (node:internal/modules/esm/loader:756:26)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:488:31)
+    at #getOrCreateModuleJobAfterResolve (node:internal/modules/esm/loader:549:36)
+    at afterResolve (node:internal/modules/esm/loader:597:52)
+    at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:603:12)
+    at node:internal/modules/esm/loader:622:32 {
+  code: 'ERR_UNSUPPORTED_ESM_URL_SCHEME'
+}
+
+Node.js v24.16.0
+----- RESULT: FAIL
+
+=========================================================
+===== verify-grade-entry
+=========================================================
+
+--- 1. the four scores on her screenshot ---
+PASS  Decimal place value: 9/11 is 82%
+PASS  Cells and organisms: 8/10 is 80%
+PASS  Parts of speech: the noun: 8/10 is 80%
+PASS  9/11 does NOT land on an A
+
+--- 2. it still takes a percentage, exactly as before ---
+PASS  '82' is 82
+PASS  '82%' is 82
+PASS  ' 82.4 ' rounds to 82
+PASS  a bare number still works
+PASS  a stored value round-trips
+
+--- 3. it refuses a score it cannot trust ---
+PASS  every unusable entry is rejected rather than guessed at
+PASS  more correct than there were questions is a typo, not 120%
+PASS  a zero denominator does not divide by zero
+PASS  nothing out of range is silently clamped to 100
+
+--- 4. the arithmetic, exhaustively ---
+PASS  every fraction up to 40 questions converts correctly
+PASS  a fraction and its percentage always get the same letter
+PASS  0 out of anything is an F
+PASS  full marks is the top band
+
+--- 5. the fraction is kept, not just the percentage ---
+PASS  the raw fraction survives parsing
+PASS  and so do both numbers
+PASS  spaces around the slash are tolerated
+PASS  a typed percentage has no fraction to keep
+PASS  the store writes gradeRaw beside gradePercent
+PASS  clearing a grade clears the fraction too
+PASS  the two-computer merge carries gradeRaw
+PASS  the store no longer parses percentages a second way
+PASS  the store uses the one shared parser
+
+--- 6. the box says what it takes, in both places ---
+PASS  the input parses with parseScore
+PASS  the placeholder shows the fraction form
+PASS  the computed percentage is shown live
+PASS  the error text names both accepted forms
+PASS  the commit hands the fraction on
+PASS  a graded row re-opens showing the fraction she typed
+PASS  MissionControlBoard.jsx passes the stored fraction back in
+PASS  MissionControlBoard.jsx passes it on to the store
+PASS  ParentDashboard.jsx passes the stored fraction back in
+PASS  ParentDashboard.jsx passes it on to the store
+
+--- finished work is never invisible, and never in the wrong list ---
+PASS  every finished, ungraded unit is collected before anything is filtered
+PASS  ...this quarter goes to the grading queue
+PASS  ...every other quarter goes to the watch panel
+PASS  ...and the watch item names the unit, its quarter and when it was ticked
+PASS  ...framed as a decision, not a score to enter
+PASS  the queue is sorted oldest first, so the longest wait is on top
+PASS  the Khan screen still counts ungraded work its own filter is hiding
+PASS  ...counted against the whole record, not the filtered view
+PASS  ...and offers one tap to show them
+
+--- the row she grades from opens the work she is grading ---
+PASS  the academic grade row carries the assignment id
+PASS  ...and the button prefers it over the section jump
+PASS  ...with the section kept as a fallback, not deleted
+PASS  the board accepts the handler
+PASS  ...the Parent Dashboard passes it through
+PASS  ...and App gives the Parent Dashboard the same handler his board uses
+PASS  ...which accepts 'grade' as a real kind
+PASS  'grade' lands on Parent Setup, not the assignments list
+PASS  ...and the id reaches that tab
+PASS  ...the setup view opens on the assignment’s own quarter
+PASS  ...and scrolls the card into view
+PASS  his finished copy is readable without a format being picked
+PASS  ...final first, and it says which it is showing
+PASS  ...and his notes are there too, under the report rather than beside it
+
+59 passed, 0 failed
+
+ALL CHECKS PASSED
+----- RESULT: pass
+
+=========================================================
+===== verify-grammar-ladder
+=========================================================
+node:internal/modules/esm/load:199
+    throw new ERR_UNSUPPORTED_ESM_URL_SCHEME(parsed, schemes);
+          ^
+
+Error [ERR_UNSUPPORTED_ESM_URL_SCHEME]: Only URLs with a scheme in: file, data, and node are supported by the default ESM loader. On Windows, absolute paths must be valid file:// URLs. Received protocol 'c:'
+    at throwIfUnsupportedURLScheme (node:internal/modules/esm/load:199:11)
+    at defaultLoadSync (node:internal/modules/esm/load:146:3)
+    at #loadAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:770:12)
+    at #loadSync (node:internal/modules/esm/loader:790:49)
+    at ModuleLoader.load (node:internal/modules/esm/loader:756:26)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:488:31)
+    at #getOrCreateModuleJobAfterResolve (node:internal/modules/esm/loader:549:36)
+    at afterResolve (node:internal/modules/esm/loader:597:52)
+    at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:603:12)
+    at node:internal/modules/esm/loader:622:32 {
+  code: 'ERR_UNSUPPORTED_ESM_URL_SCHEME'
+}
+
+Node.js v24.16.0
+----- RESULT: FAIL
+
+=========================================================
+===== verify-guitar
+=========================================================
+node:internal/modules/esm/load:199
+    throw new ERR_UNSUPPORTED_ESM_URL_SCHEME(parsed, schemes);
+          ^
+
+Error [ERR_UNSUPPORTED_ESM_URL_SCHEME]: Only URLs with a scheme in: file, data, and node are supported by the default ESM loader. On Windows, absolute paths must be valid file:// URLs. Received protocol 'c:'
+    at throwIfUnsupportedURLScheme (node:internal/modules/esm/load:199:11)
+    at defaultLoadSync (node:internal/modules/esm/load:146:3)
+    at #loadAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:770:12)
+    at #loadSync (node:internal/modules/esm/loader:790:49)
+    at ModuleLoader.load (node:internal/modules/esm/loader:756:26)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:488:31)
+    at #getOrCreateModuleJobAfterResolve (node:internal/modules/esm/loader:549:36)
+    at afterResolve (node:internal/modules/esm/loader:597:52)
+    at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:603:12)
+    at node:internal/modules/esm/loader:622:32 {
+  code: 'ERR_UNSUPPORTED_ESM_URL_SCHEME'
+}
+
+Node.js v24.16.0
+----- RESULT: FAIL
+
+=========================================================
+===== verify-handoff
+=========================================================
+node:internal/modules/esm/load:199
+    throw new ERR_UNSUPPORTED_ESM_URL_SCHEME(parsed, schemes);
+          ^
+
+Error [ERR_UNSUPPORTED_ESM_URL_SCHEME]: Only URLs with a scheme in: file, data, and node are supported by the default ESM loader. On Windows, absolute paths must be valid file:// URLs. Received protocol 'c:'
+    at throwIfUnsupportedURLScheme (node:internal/modules/esm/load:199:11)
+    at defaultLoadSync (node:internal/modules/esm/load:146:3)
+    at #loadAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:770:12)
+    at #loadSync (node:internal/modules/esm/loader:790:49)
+    at ModuleLoader.load (node:internal/modules/esm/loader:756:26)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:488:31)
+    at #getOrCreateModuleJobAfterResolve (node:internal/modules/esm/loader:549:36)
+    at afterResolve (node:internal/modules/esm/loader:597:52)
+    at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:603:12)
+    at node:internal/modules/esm/loader:622:32 {
+  code: 'ERR_UNSUPPORTED_ESM_URL_SCHEME'
+}
+
+Node.js v24.16.0
+----- RESULT: FAIL
+
+=========================================================
+===== verify-hq-room
+=========================================================
+node:internal/modules/esm/load:199
+    throw new ERR_UNSUPPORTED_ESM_URL_SCHEME(parsed, schemes);
+          ^
+
+Error [ERR_UNSUPPORTED_ESM_URL_SCHEME]: Only URLs with a scheme in: file, data, and node are supported by the default ESM loader. On Windows, absolute paths must be valid file:// URLs. Received protocol 'c:'
+    at throwIfUnsupportedURLScheme (node:internal/modules/esm/load:199:11)
+    at defaultLoadSync (node:internal/modules/esm/load:146:3)
+    at #loadAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:770:12)
+    at #loadSync (node:internal/modules/esm/loader:790:49)
+    at ModuleLoader.load (node:internal/modules/esm/loader:756:26)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:488:31)
+    at #getOrCreateModuleJobAfterResolve (node:internal/modules/esm/loader:549:36)
+    at afterResolve (node:internal/modules/esm/loader:597:52)
+    at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:603:12)
+    at node:internal/modules/esm/loader:622:32 {
+  code: 'ERR_UNSUPPORTED_ESM_URL_SCHEME'
+}
+
+Node.js v24.16.0
+----- RESULT: FAIL
+
+=========================================================
+===== verify-import
+=========================================================
+node:internal/modules/esm/load:199
+    throw new ERR_UNSUPPORTED_ESM_URL_SCHEME(parsed, schemes);
+          ^
+
+Error [ERR_UNSUPPORTED_ESM_URL_SCHEME]: Only URLs with a scheme in: file, data, and node are supported by the default ESM loader. On Windows, absolute paths must be valid file:// URLs. Received protocol 'c:'
+    at throwIfUnsupportedURLScheme (node:internal/modules/esm/load:199:11)
+    at defaultLoadSync (node:internal/modules/esm/load:146:3)
+    at #loadAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:770:12)
+    at #loadSync (node:internal/modules/esm/loader:790:49)
+    at ModuleLoader.load (node:internal/modules/esm/loader:756:26)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:488:31)
+    at #getOrCreateModuleJobAfterResolve (node:internal/modules/esm/loader:549:36)
+    at afterResolve (node:internal/modules/esm/loader:597:52)
+    at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:603:12)
+    at node:internal/modules/esm/loader:622:32 {
+  code: 'ERR_UNSUPPORTED_ESM_URL_SCHEME'
+}
+
+Node.js v24.16.0
+----- RESULT: FAIL
+
+=========================================================
+===== verify-khan-unit-completion
+=========================================================
+
+files reachable from main.jsx: 211
+
+--- 1. nothing he can reach marks a unit finished ---
+PASS  the student-facing completion action is gone from the store
+PASS  ...and the deletion is explained where the action used to be
+PASS  no reachable screen can finish a Khan unit
+PASS  ...and no dead component is holding a copy of it
+
+--- 2. no feature lives ONLY in a component nothing renders ---
+PASS  every store action with a caller has a caller the app can reach
+      dead components under Dashboard/ (harmless, but real): 0
+PASS  the amount of dead code has not grown
+
+--- 3. a score is what finishes a unit, and it pays once ---
+PASS  there is a single, shared award for finishing a unit
+PASS  it is still 20 XP - the same as the button paid
+PASS  it pays only if this unit has never been paid for
+PASS  ...and it writes that receipt onto the row
+PASS  it re-derives his rank
+PASS  the percentage she copies off Khan marks the unit completed
+PASS  ...and pays the unit XP through the shared award
+PASS  ...and persists the new total
+PASS  the letter-only entry marks the unit completed
+PASS  ...and pays the unit XP through the shared award
+PASS  ...and persists the new total
+PASS  "next" is still the lowest-sequence unfinished unit
+PASS  the home screen explains why there is no finish control here
+
+--- 4. his row has exactly one control, and it is the harmless one ---
+PASS  the finish button is gone from the row
+PASS  ...along with its two-tap confirm machinery
+PASS  ...and no unused react hooks were left behind
+PASS  the daily tick survives, and it is the only control
+PASS  the tick is offered by the row that owns the fact, not by kind
+PASS  ...and a MISSION row never supplies one
+PASS  ...and the row says out loud that a Khan tick records THE DAY, not the unit
+PASS  the whole reversal is written down where the next person will look
+
+--- 5. a wrongly-ticked unit can be put back ---
+PASS  the store can mark a unit not-done
+PASS  it clears the grade with it
+PASS  it writes to disk, not just to state
+PASS  it refuses on a unit that is not marked done
+PASS  XP and attendance are not clawed back
+PASS  she has a control for it on the grades screen
+PASS  ...and it asks twice, because it clears the grade
+PASS  ...and the armed state says which unit it is about to undo
+PASS  ...and says what score it is about to clear
+PASS  a completed-but-unscored unit is flagged where she reads grades
+PASS  the import still only ever moves completion FORWARD
+PASS  undoing a completion does NOT tear up the XP receipt
+PASS  ...and neither does clearing a grade
+
+40 passed, 0 failed
+
+ALL CHECKS PASSED
+----- RESULT: pass
+
+=========================================================
+===== verify-khan-unit-names
+=========================================================
+
+seeded Q1 maths rows: 16
+
+--- 1. every unit Khan teaches is here, in Khan's order ---
+PASS  all sixteen units are seeded
+PASS  unit 1 is "Decimal place value"
+PASS  unit 2 is "Add decimals"
+PASS  unit 3 is "Subtract decimals"
+PASS  unit 4 is "Add and subtract fractions"
+PASS  unit 5 is "Multi-digit multiplication and division"
+PASS  unit 6 is "Multiply fractions"
+PASS  unit 7 is "Divide fractions"
+PASS  unit 8 is "Multiply decimals"
+PASS  unit 9 is "Divide decimals"
+PASS  unit 10 is "Powers of ten"
+PASS  unit 11 is "Volume"
+PASS  unit 12 is "Coordinate plane"
+PASS  unit 13 is "Algebraic thinking"
+PASS  unit 14 is "Converting units of measure"
+PASS  unit 15 is "Line plots"
+PASS  unit 16 is "Properties of shapes"
+
+--- 2. every link opens the UNIT, in the right course ---
+PASS  unit 1 links to /imp-place-value-and-decimals
+PASS  unit 2 links to /imp-addition-and-subtraction-3
+PASS  unit 3 links to /subtract-decimals
+PASS  unit 4 links to /imp-fractions-3
+PASS  unit 5 links to /multi-digit-multiplication-and-division
+PASS  unit 6 links to /5th-multiply-fractions
+PASS  unit 7 links to /divide-fractions
+PASS  unit 8 links to /imp-multiplication-and-division-3
+PASS  unit 9 links to /divide-decimals
+PASS  unit 10 links to /powers-of-ten
+PASS  unit 11 links to /5th-volume
+PASS  unit 12 links to /imp-geometry-3
+PASS  unit 13 links to /imp-algebraic-thinking
+PASS  unit 14 links to /imp-measurement-and-data-3
+PASS  unit 15 links to /line-plots
+PASS  unit 16 links to /properties-of-shapes
+PASS  no row links to a single exercise instead of its unit
+PASS  no row points at a different course
+
+--- 3. rows already in her database get corrected too ---
+PASS  a correction map exists for existing rows
+PASS  "Add and Subtract Decimals…" is corrected
+PASS  "Add fractions with unlike denomina…" is corrected
+PASS  "Volume of cubes and rectangular pr…" is corrected
+PASS  it is keyed on the WRONG title, so a rename of hers is left alone
+PASS  ...and the correction is written to disk
+PASS  every corrected title matches what the seed now says
+
+42 passed, 0 failed
+
+ALL CHECKS PASSED
+----- RESULT: pass
+
+=========================================================
+===== verify-lesson-before-assignment
+=========================================================
+node:internal/modules/esm/load:199
+    throw new ERR_UNSUPPORTED_ESM_URL_SCHEME(parsed, schemes);
+          ^
+
+Error [ERR_UNSUPPORTED_ESM_URL_SCHEME]: Only URLs with a scheme in: file, data, and node are supported by the default ESM loader. On Windows, absolute paths must be valid file:// URLs. Received protocol 'c:'
+    at throwIfUnsupportedURLScheme (node:internal/modules/esm/load:199:11)
+    at defaultLoadSync (node:internal/modules/esm/load:146:3)
+    at #loadAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:770:12)
+    at #loadSync (node:internal/modules/esm/loader:790:49)
+    at ModuleLoader.load (node:internal/modules/esm/loader:756:26)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:488:31)
+    at #getOrCreateModuleJobAfterResolve (node:internal/modules/esm/loader:549:36)
+    at afterResolve (node:internal/modules/esm/loader:597:52)
+    at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:603:12)
+    at node:internal/modules/esm/loader:622:32 {
+  code: 'ERR_UNSUPPORTED_ESM_URL_SCHEME'
+}
+
+Node.js v24.16.0
+----- RESULT: FAIL
+
+=========================================================
+===== verify-local-dates
+=========================================================
+node:internal/modules/esm/load:199
+    throw new ERR_UNSUPPORTED_ESM_URL_SCHEME(parsed, schemes);
+          ^
+
+Error [ERR_UNSUPPORTED_ESM_URL_SCHEME]: Only URLs with a scheme in: file, data, and node are supported by the default ESM loader. On Windows, absolute paths must be valid file:// URLs. Received protocol 'c:'
+    at throwIfUnsupportedURLScheme (node:internal/modules/esm/load:199:11)
+    at defaultLoadSync (node:internal/modules/esm/load:146:3)
+    at #loadAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:770:12)
+    at #loadSync (node:internal/modules/esm/loader:790:49)
+    at ModuleLoader.load (node:internal/modules/esm/loader:756:26)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:488:31)
+    at #getOrCreateModuleJobAfterResolve (node:internal/modules/esm/loader:549:36)
+    at afterResolve (node:internal/modules/esm/loader:597:52)
+    at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:603:12)
+    at node:internal/modules/esm/loader:622:32 {
+  code: 'ERR_UNSUPPORTED_ESM_URL_SCHEME'
+}
+
+Node.js v24.16.0
+----- RESULT: FAIL
+
+=========================================================
+===== verify-migration
+=========================================================
+node:internal/modules/esm/load:199
+    throw new ERR_UNSUPPORTED_ESM_URL_SCHEME(parsed, schemes);
+          ^
+
+Error [ERR_UNSUPPORTED_ESM_URL_SCHEME]: Only URLs with a scheme in: file, data, and node are supported by the default ESM loader. On Windows, absolute paths must be valid file:// URLs. Received protocol 'c:'
+    at throwIfUnsupportedURLScheme (node:internal/modules/esm/load:199:11)
+    at defaultLoadSync (node:internal/modules/esm/load:146:3)
+    at #loadAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:770:12)
+    at #loadSync (node:internal/modules/esm/loader:790:49)
+    at ModuleLoader.load (node:internal/modules/esm/loader:756:26)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:488:31)
+    at #getOrCreateModuleJobAfterResolve (node:internal/modules/esm/loader:549:36)
+    at afterResolve (node:internal/modules/esm/loader:597:52)
+    at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:603:12)
+    at node:internal/modules/esm/loader:622:32 {
+  code: 'ERR_UNSUPPORTED_ESM_URL_SCHEME'
+}
+
+Node.js v24.16.0
+----- RESULT: FAIL
+
+=========================================================
+===== verify-mission-grades
+=========================================================
+node:internal/modules/esm/load:199
+    throw new ERR_UNSUPPORTED_ESM_URL_SCHEME(parsed, schemes);
+          ^
+
+Error [ERR_UNSUPPORTED_ESM_URL_SCHEME]: Only URLs with a scheme in: file, data, and node are supported by the default ESM loader. On Windows, absolute paths must be valid file:// URLs. Received protocol 'c:'
+    at throwIfUnsupportedURLScheme (node:internal/modules/esm/load:199:11)
+    at defaultLoadSync (node:internal/modules/esm/load:146:3)
+    at #loadAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:770:12)
+    at #loadSync (node:internal/modules/esm/loader:790:49)
+    at ModuleLoader.load (node:internal/modules/esm/loader:756:26)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:488:31)
+    at #getOrCreateModuleJobAfterResolve (node:internal/modules/esm/loader:549:36)
+    at afterResolve (node:internal/modules/esm/loader:597:52)
+    at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:603:12)
+    at node:internal/modules/esm/loader:622:32 {
+  code: 'ERR_UNSUPPORTED_ESM_URL_SCHEME'
+}
+
+Node.js v24.16.0
+----- RESULT: FAIL
+
+=========================================================
+===== verify-mission-schedule
+=========================================================
+node:internal/modules/esm/load:199
+    throw new ERR_UNSUPPORTED_ESM_URL_SCHEME(parsed, schemes);
+          ^
+
+Error [ERR_UNSUPPORTED_ESM_URL_SCHEME]: Only URLs with a scheme in: file, data, and node are supported by the default ESM loader. On Windows, absolute paths must be valid file:// URLs. Received protocol 'c:'
+    at throwIfUnsupportedURLScheme (node:internal/modules/esm/load:199:11)
+    at defaultLoadSync (node:internal/modules/esm/load:146:3)
+    at #loadAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:770:12)
+    at #loadSync (node:internal/modules/esm/loader:790:49)
+    at ModuleLoader.load (node:internal/modules/esm/loader:756:26)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:488:31)
+    at #getOrCreateModuleJobAfterResolve (node:internal/modules/esm/loader:549:36)
+    at afterResolve (node:internal/modules/esm/loader:597:52)
+    at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:603:12)
+    at node:internal/modules/esm/loader:622:32 {
+  code: 'ERR_UNSUPPORTED_ESM_URL_SCHEME'
+}
+
+Node.js v24.16.0
+----- RESULT: FAIL
+
+=========================================================
+===== verify-morning-meeting
+=========================================================
+node:internal/modules/esm/load:199
+    throw new ERR_UNSUPPORTED_ESM_URL_SCHEME(parsed, schemes);
+          ^
+
+Error [ERR_UNSUPPORTED_ESM_URL_SCHEME]: Only URLs with a scheme in: file, data, and node are supported by the default ESM loader. On Windows, absolute paths must be valid file:// URLs. Received protocol 'c:'
+    at throwIfUnsupportedURLScheme (node:internal/modules/esm/load:199:11)
+    at defaultLoadSync (node:internal/modules/esm/load:146:3)
+    at #loadAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:770:12)
+    at #loadSync (node:internal/modules/esm/loader:790:49)
+    at ModuleLoader.load (node:internal/modules/esm/loader:756:26)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:488:31)
+    at #getOrCreateModuleJobAfterResolve (node:internal/modules/esm/loader:549:36)
+    at afterResolve (node:internal/modules/esm/loader:597:52)
+    at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:603:12)
+    at node:internal/modules/esm/loader:622:32 {
+  code: 'ERR_UNSUPPORTED_ESM_URL_SCHEME'
+}
+
+Node.js v24.16.0
+----- RESULT: FAIL
+
+=========================================================
+===== verify-nav-declared
+=========================================================
+--- 1. the slot exists, and is optional ---
+PASS  'nav' is a content slot
+PASS  'nav' is NOT required
+
+--- 2. the nav bar declares nothing ---
+PASS  no hardcoded group list
+PASS  no hardcoded parent tab
+PASS  no tab literal anywhere in the file
+PASS  the nav bar names no school, elective or guide
+
+--- 3. it reads the slot, and survives a blank one ---
+PASS  reads the nav slot
+PASS  an absent slot yields no groups
+PASS  an absent parent tab yields none
+PASS  both parent-tab buttons are conditional
+PASS  the slot is read per render, not at module scope
+
+--- 4. the template declares a generic nav ---
+PASS  the template has a nav
+PASS  ...and a parent tab
+PASS  ...and leaves its own name blank
+PASS  every group has an id, a label and at least one tab
+PASS  no tab appears twice
+PASS  group ids are unique
+PASS  the template names no school, elective or guide
+
+--- 5. every declared id is a screen the shell renders ---
+PASS  no tab points at a view that does not exist
+PASS  the shell was actually read
+
+--- 6. the slot stays optional ---
+PASS  the nav slot's names are not in the mandatory inventory
+PASS  the slot export is flat
+
+22 passed, 0 failed
+
+ALL CHECKS PASSED
+----- RESULT: pass
+
+=========================================================
+===== verify-no-learner
+=========================================================
+--- 448 files: 21 platform · 236 academy · 191 school ---
+
+--- 1. the platform zone is absolutely clean ---
+PASS  no platform file names a learner, school, guide or subject
+PASS  the platform zone is not empty — the check is actually looking at something
+
+--- 2. the school zone may only get cleaner ---
+PASS  no file has newly started naming an Academy
+PASS  every listed file still exists
+
+      generic debt: 83 of 191 school files still name an Academy
+      1 listed file(s) are now clean — remove them from generic-debt.json:
+        src/components/ErrorBoundary.jsx
+
+--- 3. no age, grade or reading level is assumed in the platform ---
+PASS  no platform file hardcodes an age, grade or reading level
+
+--- 4. the static registry is empty, and stays empty ---
+PASS  registry.js exports an empty ACADEMIES array
+node:internal/modules/esm/load:199
+    throw new ERR_UNSUPPORTED_ESM_URL_SCHEME(parsed, schemes);
+          ^
+
+Error [ERR_UNSUPPORTED_ESM_URL_SCHEME]: Only URLs with a scheme in: file, data, and node are supported by the default ESM loader. On Windows, absolute paths must be valid file:// URLs. Received protocol 'c:'
+    at throwIfUnsupportedURLScheme (node:internal/modules/esm/load:199:11)
+    at defaultLoadSync (node:internal/modules/esm/load:146:3)
+    at #loadAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:770:12)
+    at #loadSync (node:internal/modules/esm/loader:790:49)
+    at ModuleLoader.load (node:internal/modules/esm/loader:756:26)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:488:31)
+    at #getOrCreateModuleJobAfterResolve (node:internal/modules/esm/loader:549:36)
+    at afterResolve (node:internal/modules/esm/loader:597:52)
+    at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:603:12)
+    at node:internal/modules/esm/loader:622:32 {
+  code: 'ERR_UNSUPPORTED_ESM_URL_SCHEME'
+}
+
+Node.js v24.16.0
+----- RESULT: FAIL
+
+=========================================================
+===== verify-pacing
+=========================================================
+node:internal/modules/esm/load:199
+    throw new ERR_UNSUPPORTED_ESM_URL_SCHEME(parsed, schemes);
+          ^
+
+Error [ERR_UNSUPPORTED_ESM_URL_SCHEME]: Only URLs with a scheme in: file, data, and node are supported by the default ESM loader. On Windows, absolute paths must be valid file:// URLs. Received protocol 'c:'
+    at throwIfUnsupportedURLScheme (node:internal/modules/esm/load:199:11)
+    at defaultLoadSync (node:internal/modules/esm/load:146:3)
+    at #loadAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:770:12)
+    at #loadSync (node:internal/modules/esm/loader:790:49)
+    at ModuleLoader.load (node:internal/modules/esm/loader:756:26)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:488:31)
+    at #getOrCreateModuleJobAfterResolve (node:internal/modules/esm/loader:549:36)
+    at afterResolve (node:internal/modules/esm/loader:597:52)
+    at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:603:12)
+    at node:internal/modules/esm/loader:622:32 {
+  code: 'ERR_UNSUPPORTED_ESM_URL_SCHEME'
+}
+
+Node.js v24.16.0
+----- RESULT: FAIL
+
+=========================================================
+===== verify-parses
+=========================================================
+
+526/526 files parse
+ALL CHECKS PASSED
+----- RESULT: pass
+
+=========================================================
+===== verify-pe-videos
+=========================================================
+
+exercises: 70   curated: 69
+
+--- 1. no url is ever assembled at render time ---
+PASS  peVideoSource builds no youtube url at all
+PASS  ...and no search url of any kind
+PASS  the creator-channel default is gone for good
+PASS  the curated table builds only watch urls
+PASS  ...and every one of them is watch?v=
+PASS  the student workout screen builds no url either
+PASS  it renders nothing when there is no link
+
+--- 2. the curated table is well-formed ---
+PASS  every videoId is a real 11-character YouTube id
+PASS  every entry records its title, channel and running time
+PASS  no entry points at an exercise that does not exist
+PASS  no two exercises share a video id
+PASS  the table records when the ids were last confirmed to resolve
+
+--- 3. every exercise is either covered or covered by a decision ---
+PASS  no exercise silently lacks a video
+PASS  the deliberate-exception list has no stale entries
+PASS  every exception carries a stated reason
+
+--- 4. precedence: hers, then the default, then nothing ---
+PASS  her saved video is what he opens
+PASS  ...and it is marked as hers
+PASS  ...even though a curated default exists for it
+PASS  with nothing saved, the curated default is shown
+PASS  ...and it is marked as a default, not as hers
+PASS  ...and it carries the title and channel for the parent screen
+PASS  HIDDEN means nothing, not the default
+PASS  the master switch still silences everything
+PASS  a missing exercise does not throw
+PASS  an exercise with no curated video and nothing saved gets nothing
+PASS  a video saved for ANOTHER exercise never leaks across
+PASS  the store accepts the HIDDEN sentinel
+PASS  ...and still refuses anything that is not http(s)
+
+--- 5. the parent screen describes what the code actually does ---
+PASS  the old promise is gone
+PASS  the screen says the defaults are NOT watched
+PASS  ...and that hers replaces them
+PASS  she can remove a default she does not want
+PASS  each row shows what he would actually open
+PASS  she still gets a search, on her own gated screen
+PASS  she can see the coverage count
+PASS  ...and how many are her own picks
+
+--- 6. an exercise with no video is still teachable ---
+PASS  every exercise carries at least two form cues
+PASS  every exercise carries a real safety note
+PASS  every exercise has a name and a focus
+
+--- 7. a held position gets a timer; a bike ride does not ---
+PASS  every rounds-and-seconds hold is timeable
+PASS  nothing measured in minutes gets a countdown
+PASS  a minutes-only session is not timed
+PASS  a reps target is not timed
+PASS  wall sit reads as 2-3 rounds of 20-40 seconds
+PASS  ...so the default offered is 40 seconds, the top of the range
+PASS  per-leg and per-side holds are recognised as such
+PASS  the countdown runs off wall-clock time, not accumulated ticks
+PASS  it ends with a sound
+PASS  ...and warns at ten seconds
+PASS  the first tap unlocks audio, like the bell
+PASS  the timer sounds are NOT the class bell
+PASS  it counts rounds
+PASS  a per-side hold says to switch
+PASS  the workout screen renders it
+PASS  a warm-up written in minutes is parseable
+PASS  a recovery day carries no minutes, so it gets no timer
+PASS  the warm-up timer is mounted
+PASS  ...as a single round, so no "Round 1 of 1" appears
+PASS  a minute-scale timer is labelled in minutes, not 300s
+
+--- 8. the alarms are actually audible ---
+PASS  there is a limiter across the whole output
+PASS  every voice is routed through it, not straight at the speakers
+PASS  the limiter is built once and reused
+PASS  a failure to build it still leaves sound working
+PASS  the end-of-set chime is loud
+PASS  ...and sounds twice, because once is missable
+PASS  the ten-second warning is audible but not startling
+PASS  the school bell is loud
+PASS  the bell warning was raised with it
+PASS  her volume setting still applies to all of it
+
+69 passed, 0 failed
+
+ALL CHECKS PASSED
+----- RESULT: pass
+
+=========================================================
+===== verify-planner-feeds
+=========================================================
+node:internal/modules/esm/load:199
+    throw new ERR_UNSUPPORTED_ESM_URL_SCHEME(parsed, schemes);
+          ^
+
+Error [ERR_UNSUPPORTED_ESM_URL_SCHEME]: Only URLs with a scheme in: file, data, and node are supported by the default ESM loader. On Windows, absolute paths must be valid file:// URLs. Received protocol 'c:'
+    at throwIfUnsupportedURLScheme (node:internal/modules/esm/load:199:11)
+    at defaultLoadSync (node:internal/modules/esm/load:146:3)
+    at #loadAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:770:12)
+    at #loadSync (node:internal/modules/esm/loader:790:49)
+    at ModuleLoader.load (node:internal/modules/esm/loader:756:26)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:488:31)
+    at #getOrCreateModuleJobAfterResolve (node:internal/modules/esm/loader:549:36)
+    at afterResolve (node:internal/modules/esm/loader:597:52)
+    at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:603:12)
+    at node:internal/modules/esm/loader:622:32 {
+  code: 'ERR_UNSUPPORTED_ESM_URL_SCHEME'
+}
+
+Node.js v24.16.0
+----- RESULT: FAIL
+
+=========================================================
+===== verify-printouts
+=========================================================
+node:internal/modules/esm/load:199
+    throw new ERR_UNSUPPORTED_ESM_URL_SCHEME(parsed, schemes);
+          ^
+
+Error [ERR_UNSUPPORTED_ESM_URL_SCHEME]: Only URLs with a scheme in: file, data, and node are supported by the default ESM loader. On Windows, absolute paths must be valid file:// URLs. Received protocol 'c:'
+    at throwIfUnsupportedURLScheme (node:internal/modules/esm/load:199:11)
+    at defaultLoadSync (node:internal/modules/esm/load:146:3)
+    at #loadAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:770:12)
+    at #loadSync (node:internal/modules/esm/loader:790:49)
+    at ModuleLoader.load (node:internal/modules/esm/loader:756:26)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:488:31)
+    at #getOrCreateModuleJobAfterResolve (node:internal/modules/esm/loader:549:36)
+    at afterResolve (node:internal/modules/esm/loader:597:52)
+    at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:603:12)
+    at node:internal/modules/esm/loader:622:32 {
+  code: 'ERR_UNSUPPORTED_ESM_URL_SCHEME'
+}
+
+Node.js v24.16.0
+----- RESULT: FAIL
+
+=========================================================
+===== verify-prompt-lessons
+=========================================================
+node:internal/modules/esm/load:199
+    throw new ERR_UNSUPPORTED_ESM_URL_SCHEME(parsed, schemes);
+          ^
+
+Error [ERR_UNSUPPORTED_ESM_URL_SCHEME]: Only URLs with a scheme in: file, data, and node are supported by the default ESM loader. On Windows, absolute paths must be valid file:// URLs. Received protocol 'c:'
+    at throwIfUnsupportedURLScheme (node:internal/modules/esm/load:199:11)
+    at defaultLoadSync (node:internal/modules/esm/load:146:3)
+    at #loadAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:770:12)
+    at #loadSync (node:internal/modules/esm/loader:790:49)
+    at ModuleLoader.load (node:internal/modules/esm/loader:756:26)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:488:31)
+    at #getOrCreateModuleJobAfterResolve (node:internal/modules/esm/loader:549:36)
+    at afterResolve (node:internal/modules/esm/loader:597:52)
+    at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:603:12)
+    at node:internal/modules/esm/loader:622:32 {
+  code: 'ERR_UNSUPPORTED_ESM_URL_SCHEME'
+}
+
+Node.js v24.16.0
+----- RESULT: FAIL
+
+=========================================================
+===== verify-quarter-gating
+=========================================================
+node:internal/modules/esm/load:199
+    throw new ERR_UNSUPPORTED_ESM_URL_SCHEME(parsed, schemes);
+          ^
+
+Error [ERR_UNSUPPORTED_ESM_URL_SCHEME]: Only URLs with a scheme in: file, data, and node are supported by the default ESM loader. On Windows, absolute paths must be valid file:// URLs. Received protocol 'c:'
+    at throwIfUnsupportedURLScheme (node:internal/modules/esm/load:199:11)
+    at defaultLoadSync (node:internal/modules/esm/load:146:3)
+    at #loadAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:770:12)
+    at #loadSync (node:internal/modules/esm/loader:790:49)
+    at ModuleLoader.load (node:internal/modules/esm/loader:756:26)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:488:31)
+    at #getOrCreateModuleJobAfterResolve (node:internal/modules/esm/loader:549:36)
+    at afterResolve (node:internal/modules/esm/loader:597:52)
+    at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:603:12)
+    at node:internal/modules/esm/loader:622:32 {
+  code: 'ERR_UNSUPPORTED_ESM_URL_SCHEME'
+}
+
+Node.js v24.16.0
+----- RESULT: FAIL
+
+=========================================================
+===== verify-quiz-games
+=========================================================
+node:internal/modules/esm/load:199
+    throw new ERR_UNSUPPORTED_ESM_URL_SCHEME(parsed, schemes);
+          ^
+
+Error [ERR_UNSUPPORTED_ESM_URL_SCHEME]: Only URLs with a scheme in: file, data, and node are supported by the default ESM loader. On Windows, absolute paths must be valid file:// URLs. Received protocol 'c:'
+    at throwIfUnsupportedURLScheme (node:internal/modules/esm/load:199:11)
+    at defaultLoadSync (node:internal/modules/esm/load:146:3)
+    at #loadAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:770:12)
+    at #loadSync (node:internal/modules/esm/loader:790:49)
+    at ModuleLoader.load (node:internal/modules/esm/loader:756:26)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:488:31)
+    at #getOrCreateModuleJobAfterResolve (node:internal/modules/esm/loader:549:36)
+    at afterResolve (node:internal/modules/esm/loader:597:52)
+    at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:603:12)
+    at node:internal/modules/esm/loader:622:32 {
+  code: 'ERR_UNSUPPORTED_ESM_URL_SCHEME'
+}
+
+Node.js v24.16.0
+----- RESULT: FAIL
+
+=========================================================
+===== verify-readiness-record
+=========================================================
+node:internal/modules/esm/load:199
+    throw new ERR_UNSUPPORTED_ESM_URL_SCHEME(parsed, schemes);
+          ^
+
+Error [ERR_UNSUPPORTED_ESM_URL_SCHEME]: Only URLs with a scheme in: file, data, and node are supported by the default ESM loader. On Windows, absolute paths must be valid file:// URLs. Received protocol 'c:'
+    at throwIfUnsupportedURLScheme (node:internal/modules/esm/load:199:11)
+    at defaultLoadSync (node:internal/modules/esm/load:146:3)
+    at #loadAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:770:12)
+    at #loadSync (node:internal/modules/esm/loader:790:49)
+    at ModuleLoader.load (node:internal/modules/esm/loader:756:26)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:488:31)
+    at #getOrCreateModuleJobAfterResolve (node:internal/modules/esm/loader:549:36)
+    at afterResolve (node:internal/modules/esm/loader:597:52)
+    at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:603:12)
+    at node:internal/modules/esm/loader:622:32 {
+  code: 'ERR_UNSUPPORTED_ESM_URL_SCHEME'
+}
+
+Node.js v24.16.0
+----- RESULT: FAIL
+
+=========================================================
+===== verify-reflections
+=========================================================
+
+--- 1. the app does not contradict itself ---
+PASS  the lesson tells him his answer may be graded
+PASS  ...and no line anywhere still claims it is ungraded
+PASS  ...while keeping the low-stakes framing the technique depends on
+PASS  the board offers a grade on a reflection row
+PASS  ...and still saves a reply beside it
+PASS  ...and the board hint no longer says it is ungraded
+PASS  grading it reaches the store
+
+--- 2. it is counted as reading, not as grading ---
+PASS  the "needs a grade" count excludes reflections
+PASS  unread reflections have their own queue
+PASS  the panel only renders when something is unread
+PASS  respondToSelfExplanation exists and stamps readAt
+PASS  the two-computer merge carries readAt back with the note
+
+--- 3. retakes collapse, and the row says which lesson ---
+PASS  attempts are grouped by lesson and beat
+PASS  the newest attempt is the one shown, with a count
+PASS  the row is titled with the lesson, not just the beat
+
+--- 4. a drill beat is never asked to explain itself ---
+PASS  the engine lets a beat decline
+PASS  declining is opt-OUT, so a new conceptual lesson still gets the step
+PASS  the engine advances past a declining beat instead of hanging
+PASS  both typing lessons are still in the curriculum
+PASS  every typing beat declines the reflection
+PASS  typing is still assessed by its own test
+PASS  no conceptual lesson lost its teach-it-back step
+PASS  there are plenty of lessons still asking
+
+--- the board notices a reflection that is not one ---
+PASS  a one- or two-word reflection is a signal, not silence
+PASS  ...measured in words, not characters
+PASS  ...and it clears once she has read it or answered it
+PASS  ...and an empty box is not counted as a thin answer
+PASS  ...it reaches the watch panel
+PASS  ...quoting what he actually wrote, so she can see it without navigating
+PASS  ...and it is framed as a conversation, not a mark
+PASS  ...and it is a WATCH item, never in the grading queue
+
+--- she can read the whole thing he wrote ---
+PASS  the full text travels with the queue row
+PASS  ...and the row can open it
+PASS  ...only when the quote was actually cut short
+PASS  ...rendered with his line breaks intact
+PASS  ...and it toggles shut again
+PASS  the reply box is still there beside it
+PASS  ...and the grade sits on the same control
+
+38 passed, 0 failed
+
+ALL CHECKS PASSED
+----- RESULT: pass
+
+=========================================================
+===== verify-report-card
+=========================================================
+node:internal/modules/esm/load:199
+    throw new ERR_UNSUPPORTED_ESM_URL_SCHEME(parsed, schemes);
+          ^
+
+Error [ERR_UNSUPPORTED_ESM_URL_SCHEME]: Only URLs with a scheme in: file, data, and node are supported by the default ESM loader. On Windows, absolute paths must be valid file:// URLs. Received protocol 'c:'
+    at throwIfUnsupportedURLScheme (node:internal/modules/esm/load:199:11)
+    at defaultLoadSync (node:internal/modules/esm/load:146:3)
+    at #loadAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:770:12)
+    at #loadSync (node:internal/modules/esm/loader:790:49)
+    at ModuleLoader.load (node:internal/modules/esm/loader:756:26)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:488:31)
+    at #getOrCreateModuleJobAfterResolve (node:internal/modules/esm/loader:549:36)
+    at afterResolve (node:internal/modules/esm/loader:597:52)
+    at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:603:12)
+    at node:internal/modules/esm/loader:622:32 {
+  code: 'ERR_UNSUPPORTED_ESM_URL_SCHEME'
+}
+
+Node.js v24.16.0
+----- RESULT: FAIL
+
+=========================================================
+===== verify-roster-trim
+=========================================================
+node:internal/modules/esm/load:199
+    throw new ERR_UNSUPPORTED_ESM_URL_SCHEME(parsed, schemes);
+          ^
+
+Error [ERR_UNSUPPORTED_ESM_URL_SCHEME]: Only URLs with a scheme in: file, data, and node are supported by the default ESM loader. On Windows, absolute paths must be valid file:// URLs. Received protocol 'c:'
+    at throwIfUnsupportedURLScheme (node:internal/modules/esm/load:199:11)
+    at defaultLoadSync (node:internal/modules/esm/load:146:3)
+    at #loadAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:770:12)
+    at #loadSync (node:internal/modules/esm/loader:790:49)
+    at ModuleLoader.load (node:internal/modules/esm/loader:756:26)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:488:31)
+    at #getOrCreateModuleJobAfterResolve (node:internal/modules/esm/loader:549:36)
+    at afterResolve (node:internal/modules/esm/loader:597:52)
+    at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:603:12)
+    at node:internal/modules/esm/loader:622:32 {
+  code: 'ERR_UNSUPPORTED_ESM_URL_SCHEME'
+}
+
+Node.js v24.16.0
+----- RESULT: FAIL
+
+=========================================================
+===== verify-rotating-block
+=========================================================
+node:internal/modules/esm/load:199
+    throw new ERR_UNSUPPORTED_ESM_URL_SCHEME(parsed, schemes);
+          ^
+
+Error [ERR_UNSUPPORTED_ESM_URL_SCHEME]: Only URLs with a scheme in: file, data, and node are supported by the default ESM loader. On Windows, absolute paths must be valid file:// URLs. Received protocol 'c:'
+    at throwIfUnsupportedURLScheme (node:internal/modules/esm/load:199:11)
+    at defaultLoadSync (node:internal/modules/esm/load:146:3)
+    at #loadAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:770:12)
+    at #loadSync (node:internal/modules/esm/loader:790:49)
+    at ModuleLoader.load (node:internal/modules/esm/loader:756:26)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:488:31)
+    at #getOrCreateModuleJobAfterResolve (node:internal/modules/esm/loader:549:36)
+    at afterResolve (node:internal/modules/esm/loader:597:52)
+    at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:603:12)
+    at node:internal/modules/esm/loader:622:32 {
+  code: 'ERR_UNSUPPORTED_ESM_URL_SCHEME'
+}
+
+Node.js v24.16.0
+----- RESULT: FAIL
+
+=========================================================
+===== verify-schedule-times
+=========================================================
+--- her saved schedule through the migration ---
+--- idempotence ---
+--- a parent who moved her own morning is left alone ---
+--- a schedule already on the new times is not re-shifted ---
+--- defaultSchedule.js itself ---
+
+59 passed, 0 failed
+----- RESULT: pass
+
+=========================================================
+===== verify-school-calendar
+=========================================================
+node:internal/modules/esm/load:199
+    throw new ERR_UNSUPPORTED_ESM_URL_SCHEME(parsed, schemes);
+          ^
+
+Error [ERR_UNSUPPORTED_ESM_URL_SCHEME]: Only URLs with a scheme in: file, data, and node are supported by the default ESM loader. On Windows, absolute paths must be valid file:// URLs. Received protocol 'c:'
+    at throwIfUnsupportedURLScheme (node:internal/modules/esm/load:199:11)
+    at defaultLoadSync (node:internal/modules/esm/load:146:3)
+    at #loadAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:770:12)
+    at #loadSync (node:internal/modules/esm/loader:790:49)
+    at ModuleLoader.load (node:internal/modules/esm/loader:756:26)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:488:31)
+    at #getOrCreateModuleJobAfterResolve (node:internal/modules/esm/loader:549:36)
+    at afterResolve (node:internal/modules/esm/loader:597:52)
+    at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:603:12)
+    at node:internal/modules/esm/loader:622:32 {
+  code: 'ERR_UNSUPPORTED_ESM_URL_SCHEME'
+}
+
+Node.js v24.16.0
+----- RESULT: FAIL
+
+=========================================================
+===== verify-slot-theme
+=========================================================
+--- 1. the platform asks a question ---
+PASS  the slot declares its questions
+PASS  'appearance' is one of them
+PASS  the platform provides the answer handler
+
+--- 2. every shape of answer does the right thing ---
+PASS  a loader answer is called and reported as a module
+PASS  a text answer is attached to the document
+PASS  a second answer replaces the first rather than stacking
+PASS  an unanswered slot is absent, not broken
+PASS  a missing slot is absent, not broken
+PASS  an unusable answer degrades rather than throwing
+
+--- 3. the platform no longer names a function on the slot ---
+PASS  the shell reaches appearance through the platform
+PASS  the shell imports it from the slot module
+PASS  no platform file calls a named function on the theme slot
+PASS  the platform was actually read
+
+--- 4. every school answers, in a shape the platform can use ---
+PASS  there are schools to check
+PASS  lamar answers appearance usably
+PASS  petal-pestle-academy answers appearance usably
+PASS  _template answers appearance usably
+
+--- 5. a new school is generated asking the same question ---
+PASS  the generator emits an appearance answer
+PASS  the generator emits no load answer
+
+19 passed, 0 failed
+
+ALL CHECKS PASSED
+----- RESULT: pass
+
+=========================================================
+===== verify-splice-regression
+=========================================================
+PASS  Aerospace order unchanged (54 entries)
+PASS  Technology order unchanged (42 entries)
+PASS  Social Studies order unchanged (28 entries)
+PASS  zero duplicate lesson ids (356 total lessons)
+----- RESULT: pass
+
+=========================================================
+===== verify-store-visibility
+=========================================================
+
+--- 1. avatars are drawn characters, not glyphs ---
+PASS  every avatar in the catalogue has a drawn form
+PASS  no drawn form exists for an avatar nobody can buy
+PASS  all 10 avatar forms are visually distinct from each other
+PASS  the shop offers 10 characters
+PASS  every non-human form draws its own head
+PASS  the Inventory screen passes the equipped avatar to the drawing
+PASS  ...and an unknown avatar id falls back to the cadet rather than drawing nothing
+PASS  gear he bought outranks the form default, so a uniform survives a character change
+PASS  ...and so does a pose, unless a station stance is overriding it
+PASS  ...and with no stance passed, the pose is what shows
+PASS  the face is still drawn after the hairline — no hairstyle can cover his face
+
+--- 2. rocket skins are visible before AND after buying ---
+PASS  every rocket skin is a different colour
+PASS  each id resolves to its own colour
+PASS  the rocket icons really are all identical (this is why the card cannot use them)
+PASS  the store card draws the rocket in its actual colour
+PASS  ...and the avatar card draws the actual character
+PASS  the skin colours the fins too, not only the body tube
+PASS  the rocket meter is on the Mission Control board, not only the Progress screen
+
+--- 3. mission equipment reaches the rack and the ship ---
+PASS  the rack hangs no item that does not exist in the catalogue
+PASS  every suit item in the catalogue has a place on the rack
+PASS  the rack reserves exactly 8 slots for 8 items
+PASS  no drawing exists for an item nobody can buy
+PASS  the ship-parts panel no longer says mounting them is "still to come"
+PASS  the HQ list no longer says the room view is "still being built"
+PASS  the Inventory screen tells him where his equipment actually went
+
+--- 4. themes repaint the app, and are visible in the shop ---
+PASS  6 themes exist
+PASS  exactly one theme is free, like the Cadet and Classic White
+PASS  the default theme is the free one
+PASS  an unknown theme id falls back rather than crashing
+PASS  every theme has a different accent colour
+PASS  ...and a different page colour
+PASS  every theme sets every variable
+PASS  colours are space-separated RGB channels, not hex
+PASS  the accent is wired to the variable, so one assignment repaints everything
+PASS  ...and so is the page background
+PASS  amber, green and red stay fixed — they mean something, they are not decoration
+PASS  applyTheme is safe to call with no DOM
+PASS  the store swatch resolves real colours, so a theme is visible before it is bought
+PASS  the store shows a painted preview of each theme
+
+--- 5. the choices persist, sync, and equip to the right field ---
+PASS  the equipped theme is read back on load
+PASS  ...travels in the export to the other computer
+PASS  ...and merges on import
+PASS  the board density is read back on load
+PASS  ...and travels too
+PASS  equipping dispatches on type explicitly rather than falling through to rocket
+PASS  ...and an unrecognised type is refused instead of silently absorbed
+PASS  the theme is painted from one watched value, not at each place it can change
+
+--- 6. against what he actually owns ---
+PASS  every item he has bought still exists in the catalogue
+PASS  Robo-Helper — the 150 coins he spent on Aug 17 — is now a drawn robot
+PASS  Deep-Space Violet still resolves to violet
+PASS  the two free defaults stay free, so he always has an avatar and a rocket
+PASS  every paid cosmetic has a current price
+PASS  the small nav-bar glyph still resolves (a 20px chip is too small for a drawing)
+
+--- 7. eleven tabs became four, and nothing was lost ---
+PASS  the Rewards screen has 4 tabs
+PASS  it opens on a tab that exists (shop)
+PASS  every section that was reachable before is still rendered
+PASS  both halves of the store are mounted — coins in Shop, credits in Rewards
+PASS  MissionsSection is gone, not merely unmounted
+PASS  CertificatesSection is gone, not merely unmounted
+PASS  printing survived the tab it used to live in
+PASS  ...as a button on the badge that earns it
+PASS  the mastery certificate is keyed by its BADGE id, not its own
+PASS  Nova has no guide for a tab that no longer exists
+PASS  ...and every tab has a guide
+
+--- 8. equipment is worn, and the room can be used ---
+PASS  every piece of wearable equipment has a slot
+PASS  ...and the four ship parts have none, because a boy cannot wear a heat shield
+PASS  every wearable piece is drawn on the cadet
+PASS  every equipment slot is resolved by the drawing
+PASS  the helmet is drawn before the gold visor comes down over it
+PASS  equipment is tappable to wear, the same control as Avatar Gear
+PASS  ...and a worn piece appears in the loadout row
+PASS  no station exists for an item nobody can buy
+PASS  all 19 HQ items can be walked to and used
+PASS  every station has a spot, a stance and a line about what he is doing
+PASS  every MOVABLE piece stores where to stand as an offset, not a fixed spot
+PASS  ...and a piece that cannot move keeps an absolute one
+PASS  ...and the standing spot is resolved from where the piece is NOW
+PASS  a station uses the 'type' stance
+PASS  a station uses the 'gaze' stance
+PASS  a station uses the 'lift' stance
+PASS  every stance a station uses actually moves
+PASS  the animation adds to the transform already on the group rather than replacing it
+PASS  ...and a machine asking for reduced motion gets a still figure
+PASS  motion is off by default and on only in the room
+PASS  what he picks up rides in the same group as the hand carrying it
+PASS  ...and is positioned on the hand, wherever the reach has put it
+PASS  every stance a station asks for is drawn
+PASS  sitting actually moves the legs, not just the arms
+PASS  only a piece he owns can be walked to
+PASS  the cadet is drawn in the room, wearing what he has equipped
+PASS  ...and is told how high the surface he walked up to actually is
+PASS  ...and scaled by depth like every other object in the perspective
+PASS  ...as a bare <g>, not a nested <svg> that would clip and refuse to scale
+
+9. WHAT HE OWNS CAN BE CHOSEN WHERE HE OWNS IT
+PASS  My Stuff can equip a cosmetic at all
+PASS  ...its avatar tiles are buttons
+PASS  ...and so are its rockets
+PASS  ...each knowing whether it is the one in use
+PASS  ...drawn as the real thing, not an emoji
+PASS  ...and it no longer sends him to the shop for something he owns
+PASS  the rocket is drawn from one file, used by both screens
+PASS  equipCosmetic knows what to do with a avatar
+PASS  equipCosmetic knows what to do with a rocket
+PASS  equipCosmetic knows what to do with a theme
+PASS  ...and every avatar and rocket declares the type it dispatches on
+PASS  ...across all 10 avatars and 5 rockets
+PASS  "Avatars" appears only in the coins half of the store
+PASS  "Board Themes" appears only in the coins half of the store
+PASS  "Rocket Skins" appears only in the coins half of the store
+PASS  "Real-World Rewards" appears only in the credits half of the store
+PASS  "Dream Rewards" appears only in the credits half of the store
+PASS  ...and all 5 store sections were checked
+
+ALL CHECKS PASSED
+----- RESULT: pass
+
+=========================================================
+===== verify-technology-khan
+=========================================================
+Technology Q1: 12 rows · Q3: 8 rows · total 20
+
+--- Q1 in seeded order ---
+   1  Digital information
+   2  Computers
+   3  The Internet
+   4  Online data security
+   5  Computing innovations
+   6  Computational thinking with variables  [project-graded]
+   7  Designing algorithms with conditionals  [project-graded]
+   8  Simulating phenomena with loops  [project-graded]
+   9  Playing games with functions  [project-graded]
+  10  Automating tasks with lists  [project-graded]
+  11  Analyzing data with dictionaries  [project-graded]
+  99  Course Challenge — Computers and the Internet  [course challenge]
+
+--- Q3 in seeded order ---
+   1  Building software with classes  [project-graded]
+   2  Intro to JS: Drawing & Animation  [project-graded]
+   3  Intro to HTML/CSS: Making webpages  [project-graded]
+   4  Intro to SQL: Querying and managing data  [project-graded]
+   5  Advanced JS: Games & Visualizations  [project-graded]
+   6  Advanced JS: Natural Simulations  [project-graded]
+   7  HTML/JS: Making webpages interactive  [project-graded]
+   8  HTML/JS: Making webpages interactive with jQuery  [project-graded]
+
+PASS  every row is subject "technology"
+PASS  every URL is a real Khan Academy computing URL
+PASS  no duplicate skill titles across quarters
+PASS  no duplicate unit URLs
+PASS  Q1 sequenceInQuarter is 1..11 with no gaps or repeats
+PASS  Q3 sequenceInQuarter is 1..8 with no gaps or repeats
+PASS  each Course Challenge sorts last (sequence 99)
+PASS  the move relabels the existing rows instead of adding a second copy
+PASS  all eight end up in Q3 and none are left behind in Q2
+PASS  running it a second time adds nothing
+PASS  a fresh install seeds these units into Q3, not Q2
+PASS  a completed unit is not dragged into another quarter
+PASS  Q1 row count (12) matches the ~12 target
+PASS  Q3 row count (8) matches the ~8 target
+
+ALL CHECKS PASSED
+----- RESULT: pass
+
+=========================================================
+===== verify-thin-boot
+=========================================================
+--- 1. the manifest is the floor, not a school ---
+PASS  the manifest fills the required slots and nothing else
+PASS  there are required slots to fill
+PASS  every required slot is filled after the merge
+PASS  every declared slot is present, empty rather than missing
+
+--- 2. every platform module loads against it ---
+PASS  the sweep found the platform
+PASS  all 207 platform modules load
+PASS  the .jsx transform ran
+
+--- 3. the exemptions are honest ---
+PASS  skipped: src/main.jsx — the browser entry — it mounts React onto a real document, so it is not a module a school loads
+PASS  the sweep skips no more than it declares
+
+--- 4. the platform reached no school ---
+PASS  no Academy folder was pulled in by the platform
+PASS  the load record is real
+
+--- 5. the store hydrates against it ---
+PASS  an in-memory IndexedDB is available
+PASS  the database opens against the recorded schema
+PASS  hydrate resolves for a school with no curriculum
+PASS  the store reports itself hydrated
+
+--- 6. what the platform seeded into a school that supplied nothing ---
+PASS  nothing the platform seeds into an empty school grew
+PASS  no new platform seed appeared
+PASS  the measurement is real
+
+18 passed, 0 failed
+
+ALL CHECKS PASSED
+----- RESULT: pass
+
+=========================================================
+===== verify-three-doors
+=========================================================
+--- 1. the parent door ends at a choice, never at an Academy ---
+PASS  no code path enters an Academy by list position
+PASS  a verified passcode lands on the choosing phase
+PASS  ...and an empty machine goes to creating the first Academy instead
+PASS  the gate has a choosing phase at all
+PASS  opening a chosen Academy passes THAT id
+
+--- 2. the screen that shows names is behind the passcode ---
+PASS  ParentCorner has exactly one caller
+PASS  ...and it is not rendered from the home phase
+PASS  the door itself still renders no name
+PASS  ParentCorner says in prose why it may do what the door may not
+
+--- 3. adding a second Academy does not sign into the first ---
+PASS  the grown-up corner offers adding one
+PASS  ...and the gate routes that to first run
+PASS  ...which does not ask for a passcode that already exists
+PASS  ...and cancelling returns to the corner she came from
+
+--- 4. contentPack has a writer reachable from a WORKING school ---
+PASS  the working-school branch can reach the curriculum picker
+PASS  ...and it is offered to a parent only
+PASS  a working school displays which curriculum it is running
+PASS  repointing writes the field and then reloads
+PASS  the writer returns the record as read back out of the database
+PASS  ...and repointing refuses to reload until the field actually carries the new pack
+PASS  ...and a failed save says so on screen instead of vanishing
+PASS  the change screen names the current pack before offering to change it
+
+--- 5. nothing here learned a learner's name ---
+PASS  no door imports a guide or a learner name
+PASS  ...and no door imports one Academy's folder
+
+23 passed, 0 failed
+
+ALL CHECKS PASSED
+----- RESULT: pass
+
+=========================================================
+===== verify-timetable-order
+=========================================================
+node:internal/modules/esm/load:199
+    throw new ERR_UNSUPPORTED_ESM_URL_SCHEME(parsed, schemes);
+          ^
+
+Error [ERR_UNSUPPORTED_ESM_URL_SCHEME]: Only URLs with a scheme in: file, data, and node are supported by the default ESM loader. On Windows, absolute paths must be valid file:// URLs. Received protocol 'c:'
+    at throwIfUnsupportedURLScheme (node:internal/modules/esm/load:199:11)
+    at defaultLoadSync (node:internal/modules/esm/load:146:3)
+    at #loadAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:770:12)
+    at #loadSync (node:internal/modules/esm/loader:790:49)
+    at ModuleLoader.load (node:internal/modules/esm/loader:756:26)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:488:31)
+    at #getOrCreateModuleJobAfterResolve (node:internal/modules/esm/loader:549:36)
+    at afterResolve (node:internal/modules/esm/loader:597:52)
+    at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:603:12)
+    at node:internal/modules/esm/loader:622:32 {
+  code: 'ERR_UNSUPPORTED_ESM_URL_SCHEME'
+}
+
+Node.js v24.16.0
+----- RESULT: FAIL
+
+=========================================================
+===== verify-typing
+=========================================================
+node:internal/modules/esm/load:199
+    throw new ERR_UNSUPPORTED_ESM_URL_SCHEME(parsed, schemes);
+          ^
+
+Error [ERR_UNSUPPORTED_ESM_URL_SCHEME]: Only URLs with a scheme in: file, data, and node are supported by the default ESM loader. On Windows, absolute paths must be valid file:// URLs. Received protocol 'c:'
+    at throwIfUnsupportedURLScheme (node:internal/modules/esm/load:199:11)
+    at defaultLoadSync (node:internal/modules/esm/load:146:3)
+    at #loadAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:770:12)
+    at #loadSync (node:internal/modules/esm/loader:790:49)
+    at ModuleLoader.load (node:internal/modules/esm/loader:756:26)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:488:31)
+    at #getOrCreateModuleJobAfterResolve (node:internal/modules/esm/loader:549:36)
+    at afterResolve (node:internal/modules/esm/loader:597:52)
+    at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:603:12)
+    at node:internal/modules/esm/loader:622:32 {
+  code: 'ERR_UNSUPPORTED_ESM_URL_SCHEME'
+}
+
+Node.js v24.16.0
+----- RESULT: FAIL
+
+=========================================================
+===== verify-word-study
+=========================================================
+node:internal/modules/esm/load:199
+    throw new ERR_UNSUPPORTED_ESM_URL_SCHEME(parsed, schemes);
+          ^
+
+Error [ERR_UNSUPPORTED_ESM_URL_SCHEME]: Only URLs with a scheme in: file, data, and node are supported by the default ESM loader. On Windows, absolute paths must be valid file:// URLs. Received protocol 'c:'
+    at throwIfUnsupportedURLScheme (node:internal/modules/esm/load:199:11)
+    at defaultLoadSync (node:internal/modules/esm/load:146:3)
+    at #loadAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:770:12)
+    at #loadSync (node:internal/modules/esm/loader:790:49)
+    at ModuleLoader.load (node:internal/modules/esm/loader:756:26)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:488:31)
+    at #getOrCreateModuleJobAfterResolve (node:internal/modules/esm/loader:549:36)
+    at afterResolve (node:internal/modules/esm/loader:597:52)
+    at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:603:12)
+    at node:internal/modules/esm/loader:622:32 {
+  code: 'ERR_UNSUPPORTED_ESM_URL_SCHEME'
+}
+
+Node.js v24.16.0
+----- RESULT: FAIL
+
+=========================================================
+===== verify-writing-pairing
+=========================================================
+node:internal/modules/esm/load:199
+    throw new ERR_UNSUPPORTED_ESM_URL_SCHEME(parsed, schemes);
+          ^
+
+Error [ERR_UNSUPPORTED_ESM_URL_SCHEME]: Only URLs with a scheme in: file, data, and node are supported by the default ESM loader. On Windows, absolute paths must be valid file:// URLs. Received protocol 'c:'
+    at throwIfUnsupportedURLScheme (node:internal/modules/esm/load:199:11)
+    at defaultLoadSync (node:internal/modules/esm/load:146:3)
+    at #loadAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:770:12)
+    at #loadSync (node:internal/modules/esm/loader:790:49)
+    at ModuleLoader.load (node:internal/modules/esm/loader:756:26)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:488:31)
+    at #getOrCreateModuleJobAfterResolve (node:internal/modules/esm/loader:549:36)
+    at afterResolve (node:internal/modules/esm/loader:597:52)
+    at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:603:12)
+    at node:internal/modules/esm/loader:622:32 {
+  code: 'ERR_UNSUPPORTED_ESM_URL_SCHEME'
+}
+
+Node.js v24.16.0
+----- RESULT: FAIL
+
+=========================================================
+===== verify-wrong-answer-diagnosis
+=========================================================
+node:internal/modules/esm/load:199
+    throw new ERR_UNSUPPORTED_ESM_URL_SCHEME(parsed, schemes);
+          ^
+
+Error [ERR_UNSUPPORTED_ESM_URL_SCHEME]: Only URLs with a scheme in: file, data, and node are supported by the default ESM loader. On Windows, absolute paths must be valid file:// URLs. Received protocol 'c:'
+    at throwIfUnsupportedURLScheme (node:internal/modules/esm/load:199:11)
+    at defaultLoadSync (node:internal/modules/esm/load:146:3)
+    at #loadAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:770:12)
+    at #loadSync (node:internal/modules/esm/loader:790:49)
+    at ModuleLoader.load (node:internal/modules/esm/loader:756:26)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:488:31)
+    at #getOrCreateModuleJobAfterResolve (node:internal/modules/esm/loader:549:36)
+    at afterResolve (node:internal/modules/esm/loader:597:52)
+    at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:603:12)
+    at node:internal/modules/esm/loader:622:32 {
+  code: 'ERR_UNSUPPORTED_ESM_URL_SCHEME'
+}
+
+Node.js v24.16.0
+----- RESULT: FAIL
+
+=========================================================
+===== verify-xp-and-rank
+=========================================================
+node:internal/modules/esm/load:199
+    throw new ERR_UNSUPPORTED_ESM_URL_SCHEME(parsed, schemes);
+          ^
+
+Error [ERR_UNSUPPORTED_ESM_URL_SCHEME]: Only URLs with a scheme in: file, data, and node are supported by the default ESM loader. On Windows, absolute paths must be valid file:// URLs. Received protocol 'c:'
+    at throwIfUnsupportedURLScheme (node:internal/modules/esm/load:199:11)
+    at defaultLoadSync (node:internal/modules/esm/load:146:3)
+    at #loadAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:770:12)
+    at #loadSync (node:internal/modules/esm/loader:790:49)
+    at ModuleLoader.load (node:internal/modules/esm/loader:756:26)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:488:31)
+    at #getOrCreateModuleJobAfterResolve (node:internal/modules/esm/loader:549:36)
+    at afterResolve (node:internal/modules/esm/loader:597:52)
+    at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:603:12)
+    at node:internal/modules/esm/loader:622:32 {
+  code: 'ERR_UNSUPPORTED_ESM_URL_SCHEME'
+}
+
+Node.js v24.16.0
+----- RESULT: FAIL
+
+=========================================================
+===== SUMMARY
+=========================================================
+passed : 22
+failed : 43
+failing: verify-academic-order verify-academic-schedule verify-assignment-dates verify-audit-aug23 verify-book-swap verify-compliance-deadline verify-content-interface verify-daily-writing verify-dream-goals verify-export-completeness verify-field-trip-records verify-front-door verify-gardening verify-georgia-hours verify-grammar-ladder verify-guitar verify-handoff verify-hq-room verify-import verify-lesson-before-assignment verify-local-dates verify-migration verify-mission-grades verify-mission-schedule verify-morning-meeting verify-no-learner verify-pacing verify-planner-feeds verify-printouts verify-prompt-lessons verify-quarter-gating verify-quiz-games verify-readiness-record verify-report-card verify-roster-trim verify-rotating-block verify-school-calendar verify-timetable-order verify-typing verify-word-study verify-writing-pairing verify-wrong-answer-diagnosis verify-xp-and-rank

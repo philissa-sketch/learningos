@@ -30,7 +30,7 @@
 // ---------------------------------------------------------------------------
 import fs from 'node:fs';
 import path from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 
 const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 const ACADEMIES = path.join(REPO, 'src/academies');
@@ -52,8 +52,19 @@ if (!chosen) {
   );
 }
 
-const manifest = await import(path.join(ACADEMIES, chosen, 'content.js'));
-const { installAcademyContent } = await import(path.join(REPO, 'src/content/academyContent.js'));
+// ---- WHY THESE TWO GO THROUGH pathToFileURL ----
+//
+// They were `await import(path.join(...))`. path.join returns a PATH, and on
+// Windows that path starts with a drive letter, so import() reads `C:` as a URL
+// scheme and throws ERR_UNSUPPORTED_ESM_URL_SCHEME before this module's first
+// line of work. Because every check that runs against a school imports this file
+// FIRST, those two lines took 31 of the 65 checks down on her machine — and the
+// codemod that fixed the other 37 scripts never saw them, because it scanned
+// scripts/*.mjs and this lives in scripts/lib/.
+const manifest = await import(pathToFileURL(path.join(ACADEMIES, chosen, 'content.js')).href);
+const { installAcademyContent } = await import(
+  pathToFileURL(path.join(REPO, 'src/content/academyContent.js')).href
+);
 
 installAcademyContent(manifest, chosen);
 

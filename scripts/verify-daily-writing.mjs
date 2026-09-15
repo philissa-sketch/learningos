@@ -33,14 +33,25 @@
 import './lib/academy-under-test.mjs';
 import fs from 'node:fs';
 import path from 'node:path';
-import { fileURLToPath } from 'node:url';
-
+import { fileURLToPath, pathToFileURL } from 'node:url';
 const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const { dailyDrills } = await import(REPO + '/src/academies/lamar/data/writing/dailyDrills.js');
-const dw = await import(REPO + '/src/lib/dailyWriting.js');
-const { QUARTER_SPANS } = await import(REPO + '/src/lib/yearPlan.js');
-const { getSchoolWeekNumber } = await import(REPO + '/src/academies/lamar/data/writing/weeklySchedule.js');
-const { parseDateStr } = await import(REPO + '/src/lib/scheduler.js');
+/**
+ * A repo-relative path as a module URL.
+ *
+ * `await import(REPO + '/src/…')` worked everywhere it was ever run and could
+ * never work on Windows: REPO is `C:\Users\…` there, so the string handed to
+ * import() begins `C:` and Node rejects it as an unknown URL scheme —
+ * ERR_UNSUPPORTED_ESM_URL_SCHEME, protocol 'c:'. pathToFileURL is the Node API
+ * for exactly this; do not hand-build a file:// string, because a drive letter,
+ * a space in a folder name and a backslash each break a different naive version.
+ */
+const moduleUrl = (rel) => pathToFileURL(path.join(REPO, rel)).href;
+
+const { dailyDrills } = await import(moduleUrl('src/academies/lamar/data/writing/dailyDrills.js'));
+const dw = await import(moduleUrl('src/lib/dailyWriting.js'));
+const { QUARTER_SPANS } = await import(moduleUrl('src/lib/yearPlan.js'));
+const { getSchoolWeekNumber } = await import(moduleUrl('src/academies/lamar/data/writing/weeklySchedule.js'));
+const { parseDateStr } = await import(moduleUrl('src/lib/scheduler.js'));
 
 let passed = 0;
 const failures = [];
@@ -267,8 +278,8 @@ console.log('\n--- he has to look at it before it is saved ---');
    * saved it and paid 15 XP. **The system only ever counted, so he wrote to the
    * count.**
    */
-  const wc = await import(REPO + '/src/lib/writingCheck.js');
-  const dr = await import(REPO + '/src/academies/lamar/data/writing/drillRequirements.js');
+  const wc = await import(moduleUrl('src/lib/writingCheck.js'));
+  const dr = await import(moduleUrl('src/academies/lamar/data/writing/drillRequirements.js'));
 
   // ---- the measure that separates his real work ----
   const goodSentence = 'The rocket did not reach orbit because it was too heavy.';
@@ -327,9 +338,9 @@ console.log('\n--- he has to look at it before it is saved ---');
    * exactly why deriving these from the text would have failed him for doing
    * the task.
    */
-  const q2 = (await import(REPO + '/src/academies/lamar/data/writing/dailyDrillsQ2.js')).dailyDrillsQ2;
-  const q3 = (await import(REPO + '/src/academies/lamar/data/writing/dailyDrillsQ3.js')).dailyDrillsQ3;
-  const q4 = (await import(REPO + '/src/academies/lamar/data/writing/dailyDrillsQ4.js')).dailyDrillsQ4;
+  const q2 = (await import(moduleUrl('src/academies/lamar/data/writing/dailyDrillsQ2.js'))).dailyDrillsQ2;
+  const q3 = (await import(moduleUrl('src/academies/lamar/data/writing/dailyDrillsQ3.js'))).dailyDrillsQ3;
+  const q4 = (await import(moduleUrl('src/academies/lamar/data/writing/dailyDrillsQ4.js'))).dailyDrillsQ4;
   const everyDrill = [...dailyDrills, ...q2, ...q3, ...q4];
   const quoting = [...new Set(everyDrill.filter((d) => /["“]/.test(d.task || '')).map((d) => d.id))];
   const undecided = quoting.filter(

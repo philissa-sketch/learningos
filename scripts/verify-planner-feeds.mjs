@@ -36,20 +36,31 @@
 import './lib/academy-under-test.mjs';
 import fs from 'node:fs';
 import path from 'node:path';
-import { fileURLToPath } from 'node:url';
-
+import { fileURLToPath, pathToFileURL } from 'node:url';
 const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const pf = await import(REPO + '/src/lib/plannerFeeds.js');
-const pc = await import(REPO + '/src/lib/plannerCalendar.js');
-const ms = await import(REPO + '/src/academies/lamar/data/academicSuccessCenter/assignmentMilestones.js');
-const { weeklyWritingSchedule } = await import(REPO + '/src/academies/lamar/data/writing/weeklySchedule.js');
-const { gardenCalendar } = await import(REPO + '/src/academies/lamar/data/gardening/gardenCalendar.js');
-const { isHoliday } = await import(REPO + '/src/academies/lamar/data/schedule/schoolHolidays.js');
-const { roboticsProjects } = await import(REPO + '/src/academies/lamar/data/robotics/roboticsProjects.js');
-const { technologyProjects } = await import(REPO + '/src/academies/lamar/data/technology/technologyProjects.js');
-const { roboticsLessons7 } = await import(REPO + '/src/academies/lamar/data/lessons/robotics7.js');
-const { technologyLessons7 } = await import(REPO + '/src/academies/lamar/data/lessons/technology7.js');
-const { gardenBuildTrack } = await import(REPO + '/src/academies/lamar/data/gardening/gardenBuildTrack.js');
+/**
+ * A repo-relative path as a module URL.
+ *
+ * `await import(REPO + '/src/…')` worked everywhere it was ever run and could
+ * never work on Windows: REPO is `C:\Users\…` there, so the string handed to
+ * import() begins `C:` and Node rejects it as an unknown URL scheme —
+ * ERR_UNSUPPORTED_ESM_URL_SCHEME, protocol 'c:'. pathToFileURL is the Node API
+ * for exactly this; do not hand-build a file:// string, because a drive letter,
+ * a space in a folder name and a backslash each break a different naive version.
+ */
+const moduleUrl = (rel) => pathToFileURL(path.join(REPO, rel)).href;
+
+const pf = await import(moduleUrl('src/lib/plannerFeeds.js'));
+const pc = await import(moduleUrl('src/lib/plannerCalendar.js'));
+const ms = await import(moduleUrl('src/academies/lamar/data/academicSuccessCenter/assignmentMilestones.js'));
+const { weeklyWritingSchedule } = await import(moduleUrl('src/academies/lamar/data/writing/weeklySchedule.js'));
+const { gardenCalendar } = await import(moduleUrl('src/academies/lamar/data/gardening/gardenCalendar.js'));
+const { isHoliday } = await import(moduleUrl('src/academies/lamar/data/schedule/schoolHolidays.js'));
+const { roboticsProjects } = await import(moduleUrl('src/academies/lamar/data/robotics/roboticsProjects.js'));
+const { technologyProjects } = await import(moduleUrl('src/academies/lamar/data/technology/technologyProjects.js'));
+const { roboticsLessons7 } = await import(moduleUrl('src/academies/lamar/data/lessons/robotics7.js'));
+const { technologyLessons7 } = await import(moduleUrl('src/academies/lamar/data/lessons/technology7.js'));
+const { gardenBuildTrack } = await import(moduleUrl('src/academies/lamar/data/gardening/gardenBuildTrack.js'));
 
 let passed = 0;
 const failures = [];
@@ -723,10 +734,10 @@ console.log('\n--- 5. he can write the report in the app ---');
    * The app gave him the PACE and never the SIZE. "One paragraph a day" with
    * no total is a treadmill with no off switch.
    */
-  const rf = await import(REPO + '/src/academies/lamar/data/academicSuccessCenter/reportFormats.js');
+  const rf = await import(moduleUrl('src/academies/lamar/data/academicSuccessCenter/reportFormats.js'));
   // wordProgress moved to the platform on Sept 1, 2026 (§3c Step 1). The size
   // targets it is measured against are still this school's.
-  const { wordProgress } = await import(REPO + '/src/lib/writingCheck.js');
+  const { wordProgress } = await import(moduleUrl('src/lib/writingCheck.js'));
   const everyFormat = [
     ...rf.BOOK_REPORT_FORMATS,
     ...rf.PRESENTATION_FORMATS,
@@ -835,9 +846,9 @@ console.log("\n--- this week's build is in the day, not beside it ---");
 
   // The behaviour: on Aug 26 2026 the scheduled build is the parachute drop,
   // it resolves to Aerospace, and Aerospace has a block.
-  const { getThisWeeksScheduledIds } = await import(REPO + '/src/academies/lamar/data/writing/weeklySchedule.js');
-  const { aerospaceProjects } = await import(REPO + '/src/academies/lamar/data/aerospace/aerospaceProjects.js');
-  const { BLOCK_FOR_SUBJECT } = await import(REPO + '/src/lib/scheduledMinutes.js');
+  const { getThisWeeksScheduledIds } = await import(moduleUrl('src/academies/lamar/data/writing/weeklySchedule.js'));
+  const { aerospaceProjects } = await import(moduleUrl('src/academies/lamar/data/aerospace/aerospaceProjects.js'));
+  const { BLOCK_FOR_SUBJECT } = await import(moduleUrl('src/lib/scheduledMinutes.js'));
   const ids = getThisWeeksScheduledIds(new Date('2026-08-26T12:00:00'));
   const build = ids.map((id) => aerospaceProjects.find((p) => p.id === id)).filter(Boolean)[0];
   ok("the week of Aug 26 really does carry a build", Boolean(build), ids.join(', '));
@@ -923,9 +934,9 @@ console.log('\n--- 6. the journal says when things are due ---');
 
 console.log('\n--- 7. every journal item is dated somewhere ---');
 {
-  const { writingPrompts } = await import(REPO + '/src/academies/lamar/data/writing/writingPrompts.js');
-  const { scienceExperiments } = await import(REPO + '/src/academies/lamar/data/science/scienceExperiments.js');
-  const { gardenProjects } = await import(REPO + '/src/academies/lamar/data/gardening/gardenProjects.js');
+  const { writingPrompts } = await import(moduleUrl('src/academies/lamar/data/writing/writingPrompts.js'));
+  const { scienceExperiments } = await import(moduleUrl('src/academies/lamar/data/science/scienceExperiments.js'));
+  const { gardenProjects } = await import(moduleUrl('src/academies/lamar/data/gardening/gardenProjects.js'));
   const everything = [...writingPrompts, ...scienceExperiments, ...gardenProjects];
   const undated = everything.filter((i) => !pf.scheduleForItem(i.id, { today: '2026-08-17' })).map((i) => i.id);
 
@@ -1050,12 +1061,12 @@ console.log('\n--- the done-check gets the evidence it decides on ---');
 // ---------------------------------------------------------------------------
 console.log('\n--- every pool: a project never precedes its lesson ---');
 {
-  const { aerospaceProjects } = await import(REPO + '/src/academies/lamar/data/aerospace/aerospaceProjects.js');
-  const { scienceExperiments } = await import(REPO + '/src/academies/lamar/data/science/scienceExperiments.js');
-  const { aerospaceLessons7 } = await import(REPO + '/src/academies/lamar/data/lessons/aerospace7.js');
-  const { scienceLessons7 } = await import(REPO + '/src/academies/lamar/data/lessons/science7.js');
-  const { EXCLUDED_RANGES } = await import(REPO + '/src/academies/lamar/data/academicSuccessCenter/assignmentRecommendations.js');
-  const { getCurrentQuarter } = await import(REPO + '/src/lib/schoolQuarter.js');
+  const { aerospaceProjects } = await import(moduleUrl('src/academies/lamar/data/aerospace/aerospaceProjects.js'));
+  const { scienceExperiments } = await import(moduleUrl('src/academies/lamar/data/science/scienceExperiments.js'));
+  const { aerospaceLessons7 } = await import(moduleUrl('src/academies/lamar/data/lessons/aerospace7.js'));
+  const { scienceLessons7 } = await import(moduleUrl('src/academies/lamar/data/lessons/science7.js'));
+  const { EXCLUDED_RANGES } = await import(moduleUrl('src/academies/lamar/data/academicSuccessCenter/assignmentRecommendations.js'));
+  const { getCurrentQuarter } = await import(moduleUrl('src/lib/schoolQuarter.js'));
 
   const ORDER = ['Q1', 'Q2', 'Q3', 'Q4', 'Summer'];
   const key = (label) => String(label || '').trim().split(' ')[0];

@@ -37,9 +37,20 @@
 // ---------------------------------------------------------------------------
 import fs from 'node:fs';
 import path from 'node:path';
-import { fileURLToPath } from 'node:url';
-
+import { fileURLToPath, pathToFileURL } from 'node:url';
 const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+/**
+ * A repo-relative path as a module URL.
+ *
+ * `await import(REPO + '/src/…')` worked everywhere it was ever run and could
+ * never work on Windows: REPO is `C:\Users\…` there, so the string handed to
+ * import() begins `C:` and Node rejects it as an unknown URL scheme —
+ * ERR_UNSUPPORTED_ESM_URL_SCHEME, protocol 'c:'. pathToFileURL is the Node API
+ * for exactly this; do not hand-build a file:// string, because a drive letter,
+ * a space in a folder name and a backslash each break a different naive version.
+ */
+const moduleUrl = (rel) => pathToFileURL(path.join(REPO, rel)).href;
+
 const read = (rel) => fs.readFileSync(path.join(REPO, rel), 'utf8');
 
 const DEBT = JSON.parse(read('scripts/generic-debt.json'));
@@ -200,7 +211,7 @@ ok('registry.js exports an empty ACADEMIES array',
   /export const ACADEMIES = \[\];/.test(registry),
   'a name here means a learner has been welded into the platform');
 
-const { ACADEMIES, DB_PREFIX, newAcademyId } = await import(REPO + '/src/academies/registry.js');
+const { ACADEMIES, DB_PREFIX, newAcademyId } = await import(moduleUrl('src/academies/registry.js'));
 ok('...and it really is empty at runtime',
   Array.isArray(ACADEMIES) && ACADEMIES.length === 0, JSON.stringify(ACADEMIES));
 ok('the database prefix belongs to the platform, not to a school',

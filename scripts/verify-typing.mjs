@@ -13,8 +13,7 @@
 import './lib/academy-under-test.mjs';
 import fs from 'node:fs';
 import path from 'node:path';
-import { fileURLToPath } from 'node:url';
-
+import { fileURLToPath, pathToFileURL } from 'node:url';
 import { allLessons } from '../src/academies/lamar/data/lessons/index.js';
 import {
   ERGONOMICS_CHECKLIST,
@@ -24,7 +23,19 @@ import {
 } from '../src/academies/lamar/data/writing/typingLessons.js';
 
 const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const sm = await import(REPO + '/src/lib/scheduledMinutes.js');
+/**
+ * A repo-relative path as a module URL.
+ *
+ * `await import(REPO + '/src/…')` worked everywhere it was ever run and could
+ * never work on Windows: REPO is `C:\Users\…` there, so the string handed to
+ * import() begins `C:` and Node rejects it as an unknown URL scheme —
+ * ERR_UNSUPPORTED_ESM_URL_SCHEME, protocol 'c:'. pathToFileURL is the Node API
+ * for exactly this; do not hand-build a file:// string, because a drive letter,
+ * a space in a folder name and a backslash each break a different naive version.
+ */
+const moduleUrl = (rel) => pathToFileURL(path.join(REPO, rel)).href;
+
+const sm = await import(moduleUrl('src/lib/scheduledMinutes.js'));
 const read = (rel) => fs.readFileSync(path.join(REPO, rel), 'utf8');
 /**
  * The file with every comment removed. A presence check whose subject is also
@@ -35,7 +46,7 @@ const codeOnly = (rel) =>
     .replace(/\/\*[\s\S]*?\*\//g, '')
     .replace(/\{\/\*[\s\S]*?\*\/\}/g, '')
     .replace(/^\s*\/\/.*$/gm, '');
-const tr = await import(REPO + '/src/lib/typingRecord.js');
+const tr = await import(moduleUrl('src/lib/typingRecord.js'));
 let passed = 0;
 const failures = [];
 function ok(label, cond, detail = '') {

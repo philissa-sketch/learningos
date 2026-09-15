@@ -13,8 +13,7 @@ import './lib/academy-under-test.mjs';
 import { countReadsFromAcademy, bodyWithoutContentReads } from './lib/reads-content.mjs';
 import fs from 'node:fs';
 import path from 'node:path';
-import { fileURLToPath } from 'node:url';
-
+import { fileURLToPath, pathToFileURL } from 'node:url';
 import { gardenProjects } from '../src/academies/lamar/data/gardening/gardenProjects.js';
 import { gardenBriefs, getGardenBriefById } from '../src/academies/lamar/data/gardening/gardenBriefs.js';
 import { gardenCalendar, GARDEN_Q1_START, GARDEN_Q1_END, GARDEN_Q2_START, GARDEN_Q2_END, GARDEN_Q3_START, GARDEN_Q3_END, GARDEN_Q4_START, GARDEN_Q4_END, GARDEN_SUMMER_START, GARDEN_SUMMER_END, getGardenDayForDate, getGardenDayForWeekOf, getNextGardenDay } from '../src/academies/lamar/data/gardening/gardenCalendar.js';
@@ -39,6 +38,18 @@ import { roboticsProjects } from '../src/academies/lamar/data/robotics/roboticsP
 const { useAppStore } = await import('../src/store/useAppStore.js');
 
 const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+/**
+ * A repo-relative path as a module URL.
+ *
+ * `await import(REPO + '/src/…')` worked everywhere it was ever run and could
+ * never work on Windows: REPO is `C:\Users\…` there, so the string handed to
+ * import() begins `C:` and Node rejects it as an unknown URL scheme —
+ * ERR_UNSUPPORTED_ESM_URL_SCHEME, protocol 'c:'. pathToFileURL is the Node API
+ * for exactly this; do not hand-build a file:// string, because a drive letter,
+ * a space in a folder name and a backslash each break a different naive version.
+ */
+const moduleUrl = (rel) => pathToFileURL(path.join(REPO, rel)).href;
+
 const read = (rel) => fs.readFileSync(path.join(REPO, rel), 'utf8');
 let failures = 0;
 const ok = (cond, msg, detail) => {
@@ -620,7 +631,7 @@ ok(namingBrief?.connectsTo?.some((c) => c.subject === 'robotics'),
 // ===========================================================================
 console.log('\n--- the sun survey ---');
 {
-  const sun = await import(REPO + '/src/lib/sunSurvey.js');
+  const sun = await import(moduleUrl('src/lib/sunSurvey.js'));
   const surveyView = read('src/components/Garden/SunSurveyView.jsx');
   const buildView = read('src/components/Garden/BuildTrackView.jsx');
 

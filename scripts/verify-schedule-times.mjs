@@ -11,10 +11,22 @@
  */
 import fs from 'node:fs';
 import path from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const root = ROOT;
-const { defaultSchedule } = await import('file://' + root + '/src/academies/lamar/data/schedule/defaultSchedule.js');
+/**
+ * A repo-relative path as a module URL.
+ *
+ * `await import(root + '/src/…')` worked everywhere it was ever run and could
+ * never work on Windows: root is `C:\Users\…` there, so the string handed to
+ * import() begins `C:` and Node rejects it as an unknown URL scheme —
+ * ERR_UNSUPPORTED_ESM_URL_SCHEME, protocol 'c:'. pathToFileURL is the Node API
+ * for exactly this; do not hand-build a file:// string, because a drive letter,
+ * a space in a folder name and a backslash each break a different naive version.
+ */
+const moduleUrl = (rel) => pathToFileURL(path.join(root, rel)).href;
+
+const { defaultSchedule } = await import(moduleUrl('src/academies/lamar/data/schedule/defaultSchedule.js'));
 
 // Extract migrateSavedSchedule from the SHIPPED file rather than reimplementing it.
 const src = fs.readFileSync(root + '/src/store/useAppStore.js', 'utf8');

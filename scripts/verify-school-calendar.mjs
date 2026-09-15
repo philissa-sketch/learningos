@@ -8,19 +8,31 @@
 import './lib/academy-under-test.mjs';
 import { readsFromAcademy } from './lib/reads-content.mjs';
 import path from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+/**
+ * A repo-relative path as a module URL.
+ *
+ * `await import(ROOT + '/src/…')` worked everywhere it was ever run and could
+ * never work on Windows: ROOT is `C:\Users\…` there, so the string handed to
+ * import() begins `C:` and Node rejects it as an unknown URL scheme —
+ * ERR_UNSUPPORTED_ESM_URL_SCHEME, protocol 'c:'. pathToFileURL is the Node API
+ * for exactly this; do not hand-build a file:// string, because a drive letter,
+ * a space in a folder name and a backslash each break a different naive version.
+ */
+const moduleUrl = (rel) => pathToFileURL(path.join(ROOT, rel)).href;
 
-const H = await import(ROOT + '/src/academies/lamar/data/schedule/schoolHolidays.js');
-const { QUARTER_SPANS, schoolDaysBetween, holidaysBetween } = await import(ROOT + '/src/lib/yearPlan.js');
-const { dayPattern } = await import(ROOT + '/src/academies/lamar/data/schedule/weekPattern.js');
+
+const H = await import(moduleUrl('src/academies/lamar/data/schedule/schoolHolidays.js'));
+const { QUARTER_SPANS, schoolDaysBetween, holidaysBetween } = await import(moduleUrl('src/lib/yearPlan.js'));
+const { dayPattern } = await import(moduleUrl('src/academies/lamar/data/schedule/weekPattern.js'));
 // isSchoolDay used to exist in weekPattern.js too, with a second implementation
 // and nothing importing it. It was deleted Aug 31 2026 after both were run over
 // 400 days and agreed on every one. This is the survivor, and the one every
 // Georgia hour is already filed through.
-const { isSchoolDay } = await import(ROOT + '/src/academies/lamar/data/schedule/schoolHolidays.js');
-const { GEORGIA_DAYS_REQUIRED } = await import(ROOT + '/src/academies/lamar/data/admin/georgiaCompliance.js');
-const { gardenCalendar } = await import(ROOT + '/src/academies/lamar/data/gardening/gardenCalendar.js');
+const { isSchoolDay } = await import(moduleUrl('src/academies/lamar/data/schedule/schoolHolidays.js'));
+const { GEORGIA_DAYS_REQUIRED } = await import(moduleUrl('src/academies/lamar/data/admin/georgiaCompliance.js'));
+const { gardenCalendar } = await import(moduleUrl('src/academies/lamar/data/gardening/gardenCalendar.js'));
 
 let pass = 0, fail = 0;
 const ok = (n, c, e = '') => { if (c) pass++; else { fail++; console.log('  FAIL:', n, e); } };
@@ -201,7 +213,7 @@ console.log('\n--- ONE CALENDAR (audit item O-4) ---');
    * beside them.
    */
   const fs = await import('node:fs');
-  const rp = await import(ROOT + '/src/lib/readingPlan.js');
+  const rp = await import(moduleUrl('src/lib/readingPlan.js'));
   const src = fs.readFileSync(ROOT + '/src/lib/readingPlan.js', 'utf8');
   const code = src.replace(/\/\*[\s\S]*?\*\//g, '').replace(/^\s*\/\/.*$/gm, '');
 

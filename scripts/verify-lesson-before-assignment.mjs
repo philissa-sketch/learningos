@@ -45,9 +45,20 @@
 // ---------------------------------------------------------------------------
 import './lib/academy-under-test.mjs';
 import path from 'node:path';
-import { fileURLToPath } from 'node:url';
-
+import { fileURLToPath, pathToFileURL } from 'node:url';
 const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+/**
+ * A repo-relative path as a module URL.
+ *
+ * `await import(REPO + '/src/…')` worked everywhere it was ever run and could
+ * never work on Windows: REPO is `C:\Users\…` there, so the string handed to
+ * import() begins `C:` and Node rejects it as an unknown URL scheme —
+ * ERR_UNSUPPORTED_ESM_URL_SCHEME, protocol 'c:'. pathToFileURL is the Node API
+ * for exactly this; do not hand-build a file:// string, because a drive letter,
+ * a space in a folder name and a backslash each break a different naive version.
+ */
+const moduleUrl = (rel) => pathToFileURL(path.join(REPO, rel)).href;
+
 
 let passed = 0;
 const failures = [];
@@ -56,9 +67,7 @@ function ok(label, cond, detail = '') {
   else { failures.push(label); console.log('FAIL  ' + label + (detail ? `  ${detail}` : '')); }
 }
 
-const { quarterlyAcademicPlaceholders } = await import(
-  REPO + '/src/academies/lamar/data/academicSuccessCenter/placeholders.js'
-);
+const { quarterlyAcademicPlaceholders } = await import(moduleUrl('src/academies/lamar/data/academicSuccessCenter/placeholders.js'));
 
 /** Q1 < Q2 < Q3 < Q4 < Summer, the order the school year actually runs in. */
 const QUARTER_ORDER = ['Q1', 'Q2', 'Q3', 'Q4', 'Summer'];
@@ -69,7 +78,7 @@ const quarterRank = (label) => QUARTER_ORDER.indexOf(quarterKey(label));
 const lessons = new Map();
 for (const file of ['aerospace7', 'technology7', 'science7', 'robotics7', 'socialStudies7', 'reading7', 'writing7', 'math7']) {
   try {
-    const mod = await import(`${REPO}/src/academies/lamar/data/lessons/${file}.js`);
+    const mod = await import(moduleUrl(`src/academies/lamar/data/lessons/${file}.js`));
     const arr = Object.values(mod).find((v) => Array.isArray(v) && v[0] && v[0].id);
     if (arr) arr.forEach((l, i) => lessons.set(l.id, { file, index: i + 1, total: arr.length, quarter: l.quarter }));
   } catch { /* a subject with no lesson file is not an error here */ }

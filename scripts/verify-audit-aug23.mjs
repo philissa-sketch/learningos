@@ -1,8 +1,7 @@
 import './lib/academy-under-test.mjs';
 import fs from 'node:fs';
 import path from 'node:path';
-import { fileURLToPath } from 'node:url';
-
+import { fileURLToPath, pathToFileURL } from 'node:url';
 /**
  * ============================================================================
  * THE AUG 23 2026 AUDIT — ONE GUARD PER THING THAT WAS WRONG.
@@ -28,6 +27,18 @@ import { fileURLToPath } from 'node:url';
  */
 
 const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+/**
+ * A repo-relative path as a module URL.
+ *
+ * `await import(REPO + '/src/…')` worked everywhere it was ever run and could
+ * never work on Windows: REPO is `C:\Users\…` there, so the string handed to
+ * import() begins `C:` and Node rejects it as an unknown URL scheme —
+ * ERR_UNSUPPORTED_ESM_URL_SCHEME, protocol 'c:'. pathToFileURL is the Node API
+ * for exactly this; do not hand-build a file:// string, because a drive letter,
+ * a space in a folder name and a backslash each break a different naive version.
+ */
+const moduleUrl = (rel) => pathToFileURL(path.join(REPO, rel)).href;
+
 const read = (rel) => fs.readFileSync(path.join(REPO, rel), 'utf8');
 /** Comments stripped — absence is asserted against code, never raw source. */
 const codeOnlyStore = (t) => t
@@ -476,8 +487,8 @@ console.log('\n--- O-2: the 12:30 block has grammar again, and it credits 60 min
    * fifteen minutes of reading — recreating the exact fault, inside its own
    * fix. That is what most of these checks are for.
    */
-  const gco = await import(REPO + '/src/academies/lamar/data/khan/grammarCourseOrder.js');
-  const sm = await import(REPO + '/src/lib/scheduledMinutes.js');
+  const gco = await import(moduleUrl('src/academies/lamar/data/khan/grammarCourseOrder.js'));
+  const sm = await import(moduleUrl('src/lib/scheduledMinutes.js'));
 
   ok('the grade 7-8 grammar course has all nine units',
     gco.KHAN_G78_GRAMMAR_UNITS.length === 9,

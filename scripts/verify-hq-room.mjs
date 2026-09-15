@@ -27,10 +27,21 @@
 import './lib/academy-under-test.mjs';
 import fs from 'node:fs';
 import path from 'node:path';
-import { fileURLToPath } from 'node:url';
-
+import { fileURLToPath, pathToFileURL } from 'node:url';
 const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const { HQ_ITEMS } = await import(REPO + '/src/academies/lamar/data/rewardCatalog.js');
+/**
+ * A repo-relative path as a module URL.
+ *
+ * `await import(REPO + '/src/…')` worked everywhere it was ever run and could
+ * never work on Windows: REPO is `C:\Users\…` there, so the string handed to
+ * import() begins `C:` and Node rejects it as an unknown URL scheme —
+ * ERR_UNSUPPORTED_ESM_URL_SCHEME, protocol 'c:'. pathToFileURL is the Node API
+ * for exactly this; do not hand-build a file:// string, because a drive letter,
+ * a space in a folder name and a backslash each break a different naive version.
+ */
+const moduleUrl = (rel) => pathToFileURL(path.join(REPO, rel)).href;
+
+const { HQ_ITEMS } = await import(moduleUrl('src/academies/lamar/data/rewardCatalog.js'));
 
 let passed = 0;
 const failures = [];
@@ -71,7 +82,7 @@ const code = src
  * `src/lib/hqGeometry.js`, so the suite and the room cannot disagree, and the
  * component is checked for having stopped keeping a second copy.
  */
-const { BACK, VB } = await import(REPO + '/src/lib/hqGeometry.js');
+const { BACK, VB } = await import(moduleUrl('src/lib/hqGeometry.js'));
 ok('the room and this suite read one copy of the perspective',
   !/^const BACK = \{ x1:/m.test(src) && !/^const VB = \{ w:/m.test(src)
     && /from '\.\.\/\.\.\/lib\/hqGeometry\.js'/.test(src),
@@ -648,7 +659,7 @@ console.log('\n--- his hands reach the thing he walked up to ---');
    * The geometry now lives in `src/lib/hqGeometry.js`, which is plain
    * JavaScript, and this is the check that could not exist before.
    */
-  const g = await import(REPO + '/src/lib/hqGeometry.js');
+  const g = await import(moduleUrl('src/lib/hqGeometry.js'));
   ok('the room geometry is importable without a browser',
     typeof g.projectFloor === 'function' && typeof g.reachYFor === 'function',
     'the whole reason this fault survived three reports');
@@ -755,7 +766,7 @@ console.log('\n--- his hands reach the thing he walked up to ---');
  * =========================================================================== */
 console.log('\n--- 9. the room is lit, and everything in it touches the floor ---');
 {
-  const G = await import(REPO + '/src/lib/hqGeometry.js');
+  const G = await import(moduleUrl('src/lib/hqGeometry.js'));
 
   /* ---- the numbers live in hqGeometry, not in the JSX ---- */
   ok('the light and the shadows are arithmetic the guard can run',
@@ -993,9 +1004,9 @@ console.log('\n--- 9. the room is lit, and everything in it touches the floor --
  * =========================================================================== */
 console.log('\n--- 10. the room tells the truth ---');
 {
-  const T = await import(REPO + '/src/lib/hqTruth.js');
-  const { allLessons } = await import(REPO + '/src/academies/lamar/data/lessons/index.js');
-  const { READINESS_SKILLS } = await import(REPO + '/src/lib/readiness.js');
+  const T = await import(moduleUrl('src/lib/hqTruth.js'));
+  const { allLessons } = await import(moduleUrl('src/academies/lamar/data/lessons/index.js'));
+  const { READINESS_SKILLS } = await import(moduleUrl('src/lib/readiness.js'));
   const truthSrc = fs.readFileSync(path.join(REPO, 'src/lib/hqTruth.js'), 'utf8');
 
   ok('the selectors are plain JS a guard can execute',
@@ -1378,10 +1389,10 @@ console.log('\n--- 11. the room breathes ---');
  * =========================================================================== */
 console.log('\n--- 12. the crew ---');
 {
-  const C = await import(REPO + '/src/lib/hqCrew.js');
-  const { HQ_CREW } = await import(REPO + '/src/academies/lamar/data/hqCrew.js');
-  const G = await import(REPO + '/src/lib/hqGeometry.js');
-  const { allLessons } = await import(REPO + '/src/academies/lamar/data/lessons/index.js');
+  const C = await import(moduleUrl('src/lib/hqCrew.js'));
+  const { HQ_CREW } = await import(moduleUrl('src/academies/lamar/data/hqCrew.js'));
+  const G = await import(moduleUrl('src/lib/hqGeometry.js'));
+  const { allLessons } = await import(moduleUrl('src/academies/lamar/data/lessons/index.js'));
   const crewSrc = fs.readFileSync(path.join(REPO, 'src/lib/hqCrew.js'), 'utf8');
   const store = fs.readFileSync(path.join(REPO, 'src/store/useAppStore.js'), 'utf8');
 
@@ -1573,9 +1584,9 @@ console.log('\n--- 12. the crew ---');
  * of hoped for.
  * ========================================================================== */
 {
-  const W = await import(REPO + '/src/lib/hqWander.js');
-  const C = await import(REPO + '/src/lib/hqCrew.js');
-  const G = await import(REPO + '/src/lib/hqGeometry.js');
+  const W = await import(moduleUrl('src/lib/hqWander.js'));
+  const C = await import(moduleUrl('src/lib/hqCrew.js'));
+  const G = await import(moduleUrl('src/lib/hqGeometry.js'));
 
   /* ---- the rules are runnable at all ---- */
   ok('the roaming rules are plain JS a guard can execute',
@@ -1959,10 +1970,10 @@ console.log('\n--- 12. the crew ---');
  * ======================================================================== */
 console.log('\n--- 13. the room model ---');
 {
-  const ROOMS = await import(REPO + '/src/lib/hqRooms.js');
-  const { standingSpotFor } = await import(REPO + '/src/lib/hqCrew.js');
-  const { WANDER_MIN_GAP_PX } = await import(REPO + '/src/lib/hqWander.js');
-  const { projectFloor } = await import(REPO + '/src/lib/hqGeometry.js');
+  const ROOMS = await import(moduleUrl('src/lib/hqRooms.js'));
+  const { standingSpotFor } = await import(moduleUrl('src/lib/hqCrew.js'));
+  const { WANDER_MIN_GAP_PX } = await import(moduleUrl('src/lib/hqWander.js'));
+  const { projectFloor } = await import(moduleUrl('src/lib/hqGeometry.js'));
 
   const roomsSrc = fs.readFileSync(path.join(REPO, 'src/lib/hqRooms.js'), 'utf8');
   const roomsCode = roomsSrc

@@ -22,14 +22,25 @@
 import './lib/academy-under-test.mjs';
 import fs from 'node:fs';
 import path from 'node:path';
-import { fileURLToPath } from 'node:url';
-
+import { fileURLToPath, pathToFileURL } from 'node:url';
 import { letterToPercent, GRADE_SCALE } from '../src/lib/gradeScale.js';
 import { appendQuizResult, quizAveragesByQuarter, computeWeeklyWordState } from '../src/lib/weeklyWords.js';
 import { spellingWordPool } from '../src/academies/lamar/data/writing/spellingWordPool.js';
 import { SCHOOL_YEAR_START_DATE } from '../src/lib/schoolQuarter.js';
 
 const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+/**
+ * A repo-relative path as a module URL.
+ *
+ * `await import(REPO + '/src/…')` worked everywhere it was ever run and could
+ * never work on Windows: REPO is `C:\Users\…` there, so the string handed to
+ * import() begins `C:` and Node rejects it as an unknown URL scheme —
+ * ERR_UNSUPPORTED_ESM_URL_SCHEME, protocol 'c:'. pathToFileURL is the Node API
+ * for exactly this; do not hand-build a file:// string, because a drive letter,
+ * a space in a folder name and a backslash each break a different naive version.
+ */
+const moduleUrl = (rel) => pathToFileURL(path.join(REPO, rel)).href;
+
 let passed = 0;
 const failures = [];
 function ok(label, cond, detail = '') {
@@ -581,7 +592,7 @@ console.log('\n--- 10. school-year scoping and the word-study weight ---');
 // ---------------------------------------------------------------------------
 console.log('--- participation subjects report their own counts ---');
 {
-  const pr = await import(REPO + '/src/lib/participationRecord.js');
+  const pr = await import(moduleUrl('src/lib/participationRecord.js'));
   const store = read('src/store/useAppStore.js');
 
   /**
@@ -608,7 +619,7 @@ console.log('--- participation subjects report their own counts ---');
    * number that never prints; a description nothing counts is how Gardening
    * came to report workouts.
    */
-  const { useAppStore } = await import(REPO + '/src/store/useAppStore.js');
+  const { useAppStore } = await import(moduleUrl('src/store/useAppStore.js'));
   const keysFor = (subject) => Object.keys(useAppStore.getState().getParticipationRecord(subject) || {});
   const SUBJECT_KEYS = {
     pe: keysFor('pe'),

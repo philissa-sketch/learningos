@@ -8,18 +8,29 @@
 import './lib/academy-under-test.mjs';
 import fs from 'node:fs';
 import path from 'node:path';
-import { fileURLToPath } from 'node:url';
-
+import { fileURLToPath, pathToFileURL } from 'node:url';
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+/**
+ * A repo-relative path as a module URL.
+ *
+ * `await import(root + '/src/…')` worked everywhere it was ever run and could
+ * never work on Windows: root is `C:\Users\…` there, so the string handed to
+ * import() begins `C:` and Node rejects it as an unknown URL scheme —
+ * ERR_UNSUPPORTED_ESM_URL_SCHEME, protocol 'c:'. pathToFileURL is the Node API
+ * for exactly this; do not hand-build a file:// string, because a drive letter,
+ * a space in a folder name and a backslash each break a different naive version.
+ */
+const moduleUrl = (rel) => pathToFileURL(path.join(root, rel)).href;
+
 const {
   liveRotatingSubjects, rotatingBlockLabel, resolveBlockLabel, rotatingWeek,
   SHIPPED_ROTATING_LABELS, ROTATING_BLOCK_ID,
   liveMorningSubject, MORNING_BLOCK_ID
-} = await import(root + '/src/lib/rotatingBlock.js');
-const { defaultSchedule } = await import(root + '/src/academies/lamar/data/schedule/defaultSchedule.js');
-const { WEEK_PATTERN } = await import(root + '/src/academies/lamar/data/schedule/weekPattern.js');
-const { getCurrentQuarter } = await import(root + '/src/lib/schoolQuarter.js');
-const { SUBJECT_LABELS } = await import(root + '/src/academies/lamar/subjects.js');
+} = await import(moduleUrl('src/lib/rotatingBlock.js'));
+const { defaultSchedule } = await import(moduleUrl('src/academies/lamar/data/schedule/defaultSchedule.js'));
+const { WEEK_PATTERN } = await import(moduleUrl('src/academies/lamar/data/schedule/weekPattern.js'));
+const { getCurrentQuarter } = await import(moduleUrl('src/lib/schoolQuarter.js'));
+const { SUBJECT_LABELS } = await import(moduleUrl('src/academies/lamar/subjects.js'));
 
 let pass = 0, fail = 0;
 const ok = (name, cond, extra = '') => { if (cond) pass++; else { fail++; console.log('  FAIL:', name, extra); } };
@@ -217,7 +228,7 @@ console.log('--- friday shows everything, because it is the overflow day ---');
     /todayPattern\.kind === 'core' && !todayPattern\.flex/.test(dash));
   ok('...and Friday is still the flex day in the pattern',
     WEEK_PATTERN[5].flex === true && WEEK_PATTERN[5].subjects.length === 0);
-  const { subjectsForDay } = await import(root + '/src/academies/lamar/data/schedule/weekPattern.js');
+  const { subjectsForDay } = await import(moduleUrl('src/academies/lamar/data/schedule/weekPattern.js'));
   ok('...so subjectsForDay(Friday) is empty and the dashboard must not filter on it',
     subjectsForDay(D(2026, 8, 14)).length === 0);
 }
@@ -243,10 +254,10 @@ console.log('--- friday shows everything, because it is the overflow day ---');
 // and made the KHAN rows agree. The lesson loop kept its own answer.
 // ---------------------------------------------------------------------------
 {
-  const { subjectsForDay, dayPattern } = await import(root + '/src/academies/lamar/data/schedule/weekPattern.js');
+  const { subjectsForDay, dayPattern } = await import(moduleUrl('src/academies/lamar/data/schedule/weekPattern.js'));
   // patternSubjects moved to the platform on Sept 1, 2026 (§3c Step 1). The
   // week pattern it reads is still this school's.
-  const { patternSubjects } = await import(root + '/src/lib/timetable.js');
+  const { patternSubjects } = await import(moduleUrl('src/lib/timetable.js'));
 
   /** Every school day of a Q1 week, and one from Q2 where the override lifts. */
   const days = [D(2026, 8, 24), D(2026, 8, 25), D(2026, 8, 26), D(2026, 8, 27), D(2026, 11, 4)];

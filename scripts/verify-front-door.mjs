@@ -20,10 +20,27 @@
 // ---------------------------------------------------------------------------
 import fs from 'node:fs';
 import path from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 
 const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const read = (rel) => fs.readFileSync(path.join(REPO, rel), 'utf8');
+
+/**
+ * A repo-relative path as a module URL.
+ *
+ * `await import(REPO + '/src/...')` worked everywhere it was ever run and could
+ * never work on Windows: REPO is `C:\Users\...` there, so the string handed to
+ * import() begins `C:` and Node rejects it as an unknown URL scheme —
+ * ERR_UNSUPPORTED_ESM_URL_SCHEME, protocol 'c:'. The suite was only ever green
+ * on a POSIX path, where the same string starts with a slash and happens to
+ * parse. 37 of the 65 check scripts carry this, and four already carry a
+ * hand-rolled Windows-safe helper — the class was found one file at a time.
+ *
+ * pathToFileURL is the Node API for exactly this. Do not hand-build a file://
+ * string: a drive letter, a space in a folder name and a backslash each break a
+ * different naive version of it.
+ */
+const moduleUrl = (rel) => pathToFileURL(path.join(REPO, rel)).href;
 const codeOnly = (rel) =>
   read(rel)
     .replace(/\/\*[\s\S]*?\*\//g, '')
@@ -51,7 +68,7 @@ function ok(label, cond, detail = '') {
   }
 }
 
-const fd = await import(REPO + '/src/lib/frontDoor.js');
+const fd = await import(moduleUrl('src/lib/frontDoor.js'));
 
 console.log('--- 1. a wrong name and a wrong PIN are the same failure ---');
 

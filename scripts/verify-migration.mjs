@@ -20,9 +20,20 @@
 // ---------------------------------------------------------------------------
 import fs from 'node:fs';
 import path from 'node:path';
-import { fileURLToPath } from 'node:url';
-
+import { fileURLToPath, pathToFileURL } from 'node:url';
 const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+/**
+ * A repo-relative path as a module URL.
+ *
+ * `await import(REPO + '/src/…')` worked everywhere it was ever run and could
+ * never work on Windows: REPO is `C:\Users\…` there, so the string handed to
+ * import() begins `C:` and Node rejects it as an unknown URL scheme —
+ * ERR_UNSUPPORTED_ESM_URL_SCHEME, protocol 'c:'. pathToFileURL is the Node API
+ * for exactly this; do not hand-build a file:// string, because a drive letter,
+ * a space in a folder name and a backslash each break a different naive version.
+ */
+const moduleUrl = (rel) => pathToFileURL(path.join(REPO, rel)).href;
+
 const read = (rel) => fs.readFileSync(path.join(REPO, rel), 'utf8');
 const codeOnly = (rel) =>
   read(rel)
@@ -30,11 +41,9 @@ const codeOnly = (rel) =>
     .replace(/\{\/\*[\s\S]*?\*\/\}/g, '')
     .replace(/^\s*\/\/.*$/gm, '');
 
-const M = await import(REPO + '/src/lib/migrationFile.js');
-const { EXPORT_TABLE_POLICY } = await import(REPO + '/src/db/db.js');
-const { summarizeSource, buildImportPlan, rowsToCopy, verifyCopy } = await import(
-  REPO + '/src/lib/importSchool.js'
-);
+const M = await import(moduleUrl('src/lib/migrationFile.js'));
+const { EXPORT_TABLE_POLICY } = await import(moduleUrl('src/db/db.js'));
+const { summarizeSource, buildImportPlan, rowsToCopy, verifyCopy } = await import(moduleUrl('src/lib/importSchool.js'));
 
 let passed = 0;
 const failures = [];

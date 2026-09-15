@@ -27,10 +27,21 @@
 import './lib/academy-under-test.mjs';
 import fs from 'node:fs';
 import path from 'node:path';
-import { fileURLToPath } from 'node:url';
-
+import { fileURLToPath, pathToFileURL } from 'node:url';
 const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const ec = await import(REPO + '/src/lib/economy.js');
+/**
+ * A repo-relative path as a module URL.
+ *
+ * `await import(REPO + '/src/…')` worked everywhere it was ever run and could
+ * never work on Windows: REPO is `C:\Users\…` there, so the string handed to
+ * import() begins `C:` and Node rejects it as an unknown URL scheme —
+ * ERR_UNSUPPORTED_ESM_URL_SCHEME, protocol 'c:'. pathToFileURL is the Node API
+ * for exactly this; do not hand-build a file:// string, because a drive letter,
+ * a space in a folder name and a backslash each break a different naive version.
+ */
+const moduleUrl = (rel) => pathToFileURL(path.join(REPO, rel)).href;
+
+const ec = await import(moduleUrl('src/lib/economy.js'));
 
 let passed = 0;
 const failures = [];
@@ -190,8 +201,8 @@ console.log('\n--- 7. it is reachable from his screen ---');
 
 console.log('\n--- 8. the monthly crate is a surprise, not a gamble ---');
 {
-  const sc = await import(REPO + '/src/lib/supplyCrate.js');
-  const { COIN_CATALOG } = await import(REPO + '/src/academies/lamar/data/rewardCatalog.js');
+  const sc = await import(moduleUrl('src/lib/supplyCrate.js'));
+  const { COIN_CATALOG } = await import(moduleUrl('src/academies/lamar/data/rewardCatalog.js'));
 
   /**
    * D11, approved months ago and never built. Every clause of it is doing

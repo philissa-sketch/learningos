@@ -21,10 +21,23 @@
  */
 import './lib/academy-under-test.mjs';
 import { readFileSync } from 'node:fs';
-import { fileURLToPath } from 'node:url';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 import { dirname, join } from 'node:path';
 
+import path from 'node:path';
 const REPO = join(dirname(fileURLToPath(import.meta.url)), '..');
+/**
+ * A repo-relative path as a module URL.
+ *
+ * `await import(REPO + '/src/…')` worked everywhere it was ever run and could
+ * never work on Windows: REPO is `C:\Users\…` there, so the string handed to
+ * import() begins `C:` and Node rejects it as an unknown URL scheme —
+ * ERR_UNSUPPORTED_ESM_URL_SCHEME, protocol 'c:'. pathToFileURL is the Node API
+ * for exactly this; do not hand-build a file:// string, because a drive letter,
+ * a space in a folder name and a backslash each break a different naive version.
+ */
+const moduleUrl = (rel) => pathToFileURL(path.join(REPO, rel)).href;
+
 const read = (p) => readFileSync(join(REPO, p), 'utf8');
 
 let passed = 0;
@@ -34,8 +47,8 @@ function ok(label, cond, detail = '') {
   else { failures.push(label); console.log('FAIL  ' + label + (detail ? '  ' + detail : '')); }
 }
 
-const P = await import(REPO + '/src/lib/pacing.js');
-const sci = await import(REPO + '/src/academies/lamar/data/khan/scienceSequence.js');
+const P = await import(moduleUrl('src/lib/pacing.js'));
+const sci = await import(moduleUrl('src/academies/lamar/data/khan/scienceSequence.js'));
 const storeSrc = read('src/store/useAppStore.js');
 
 // ===========================================================================
