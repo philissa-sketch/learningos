@@ -338,12 +338,48 @@ ok('...and a losing copy holding only hours is kept too',
   ]).dropIds.length === 0,
   'hours with no status are still hours she logged');
 
-ok('an undated copy collapses into the dated one',
+/**
+ * THIS ASSERTION USED TO REQUIRE THE BUG. (Corrected Sept 15, 2026.)
+ *
+ * It read 'an undated copy collapses into the dated one', on the reasoning
+ * that 'the seeder backfills dates, so a blank one is the same trip'. That was
+ * the exact behaviour the parent reported on Sept 5: *"There were field trips
+ * planned for the year and I no longer see them."* Planning a year means
+ * choosing the places first and the dates later, so an undated second visit is
+ * the NORMAL shape of a plan, not a duplicate -- four visits to one library had
+ * become one.
+ *
+ * fieldTrips.js was fixed that day: *a blank date is not a matching date.* The
+ * check was not, so it went on demanding the deleted behaviour and failed on
+ * the repair. A guard that asserts what the code used to do will, sooner or
+ * later, be satisfied by putting the fault back.
+ *
+ * What it asserts now is the rule as it stands: two rows are the same visit
+ * only when they SAY so -- identical dates, both actually set.
+ */
+ok('an undated copy is a second visit, and is KEPT',
   ft.planFieldTripDedupe([
     { id: 1, destination: 'Georgia Aquarium', date: '2027-04-16', status: 'planned', createdAt: 'a' },
     { id: 2, destination: 'Georgia Aquarium', date: '', status: 'planned', createdAt: 'b' }
+  ]).dropIds.length === 0,
+  'a cleanup that deletes a plan is as bad as one that deletes a finished trip');
+ok('...and it is given an id of its own, so no import merges it back',
+  (() => {
+    const p = ft.planFieldTripDedupe([
+      { id: 1, destination: 'Georgia Aquarium', date: '2027-04-16', status: 'planned', createdAt: 'a' },
+      { id: 2, destination: 'Georgia Aquarium', date: '', status: 'planned', createdAt: 'b' }
+    ]);
+    const second = p.idWrites.find((w) => w.id === 2);
+    const first = p.idWrites.find((w) => w.id === 1);
+    return Boolean(second) && (!first || first.syncId !== second.syncId);
+  })(),
+  'two rows sharing a syncId are one trip to the next import');
+ok('two copies that BOTH name the same date still collapse',
+  ft.planFieldTripDedupe([
+    { id: 1, destination: 'Georgia Aquarium', date: '2027-04-16', status: 'planned', createdAt: 'a' },
+    { id: 2, destination: 'Georgia Aquarium', date: '2027-04-16', status: 'planned', createdAt: 'b' }
   ]).dropIds.join() === '2',
-  'the seeder backfills dates, so a blank one is the same trip');
+  'the dedupe must still catch what it was built for');
 
 ok('a renamed library trip collapses into the trip it was renamed to',
   ft.planFieldTripDedupe([

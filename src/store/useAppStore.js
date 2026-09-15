@@ -4325,7 +4325,17 @@ export const useAppStore = create((set, get) => ({
       'asg::writing::Q2::1':      { format: 'person-study' },
       'asg::writing::Q4::1':      { fromDueDate: '2027-05-26', dueDate: '2027-05-21', format: 'failure-analysis' },
       'asg::writing::Summer::1':  { format: 'writing-sample' },
-      'asg::aerospace::Q1::2':    { format: 'investigation' },
+      // `asg::aerospace::Q1::2` WAS CORRECTED HERE UNTIL SEPT 15, 2026, and the
+      // slot it named no longer exists. Aerospace Q1 was cut to slots 1 and 4 on
+      // Sept 5 -- the parent, against the usual middle-school load: about one
+      // book report per quarter and ONLY in language arts. The correction was
+      // left behind, so this list and placeholders.js disagreed about a slot,
+      // and whichever ran last would have won.
+      //
+      // Removing it takes nothing off his screen. The seeder only ever creates
+      // rows from placeholders.js, so no row with that id can be made again; any
+      // row an older database still holds was corrected on an earlier hydrate
+      // and keeps that format. Caught by verify-academic-schedule.
       'asg::aerospace::Summer::2':{ format: 'build' },
       'asg::science::Q2::1':      { fromDueDate: '2026-11-25', dueDate: '2026-12-02', format: 'investigation' },
       'asg::science::Q4::1':      { format: 'investigation' },

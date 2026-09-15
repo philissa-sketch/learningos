@@ -278,8 +278,27 @@ console.log('\n--- 7. the corrections actually reach a database that already exi
   ok('...and it is still an exact match, never a range or a comparison',
     !/row\.dueDate\s*[<>]/.test(store),
     'anything looser than equality would sweep up dates she chose');
+  /**
+   * WIDENED THE SAME WAY `fromDueDate` WAS, AND FOR THE SAME REASON.
+   *
+   * `fromNote` became a LIST when a row could have shipped with more than one
+   * prior text -- a database that took the Sept 1 correction sits on different
+   * words than one that never did, and both are still untouched by her. The
+   * date assertion above was widened on that day. This one was not, so it went
+   * on matching the single-value spelling and failed on correct code.
+   *
+   * The SAFETY PROPERTY is what matters and it is unchanged: the note moves
+   * only on an exact match against text the app itself shipped, so a note she
+   * wrote is never recognised and never overwritten. Both spellings satisfy
+   * that; neither a range nor a comparison would.
+   */
   ok('a note only changes off the exact text that shipped',
-    /row\.note === fix\.fromNote/.test(store));
+    /\[\]\.concat\(fix\.fromNote\)\.includes\(row\.note\)/.test(store)
+      || /row\.note === fix\.fromNote/.test(store),
+    'a note she wrote herself must never be overwritten');
+  ok('...and it is still an exact match, never a substring or a comparison',
+    !/row\.note\.(includes|startsWith|indexOf|match)\(/.test(store),
+    'anything looser than equality would sweep up notes she wrote');
   ok('a format is only ever added, never replaced',
     /fix\.format && !row\.format/.test(store),
     'picking a different format is a real editorial choice and this must not undo one');

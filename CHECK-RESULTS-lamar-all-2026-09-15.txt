@@ -1,7 +1,7 @@
 LearningOS check run
 Academy : lamar
 Mode    : all
-When    : Tue 09/15/2026 17:54:43.33
+When    : Tue 09/15/2026 18:26:03.17
 Folder  : C:\Users\pknot\Downloads\learningos\
 
 v24.16.0
@@ -118,11 +118,12 @@ PASS  no stale quill.org link survives anywhere in the writing path
 PASS  a correction pass exists for rows that already exist
 PASS  a date only moves off an exact value that shipped
 PASS  ...and it is still an exact match, never a range or a comparison
-FAIL  a note only changes off the exact text that shipped
+PASS  a note only changes off the exact text that shipped
+PASS  ...and it is still an exact match, never a substring or a comparison
 PASS  a format is only ever added, never replaced
 PASS  the corrections are written to disk, not just to state
 PASS  the correction list is not empty
-FAIL  every correction matches what placeholders.js now says  asg::aerospace::Q1::2 is not a real slot
+PASS  every correction matches what placeholders.js now says
 
 --- 8. importing his progress does not undo her schedule ---
 PASS  the import splits student-owned fields from hers
@@ -163,10 +164,10 @@ PASS  heavy multi-week work has weekly steps
 PASS  Portfolio Entry deliberately does NOT
 PASS  Reading Assignment deliberately does NOT
 
-70 passed, 2 failed
+73 passed, 0 failed
 
-2 CHECK(S) FAILED
------ RESULT: FAIL
+ALL CHECKS PASSED
+----- RESULT: pass
 
 =========================================================
 ===== verify-academy-css   (ACADEMY=lamar)
@@ -487,7 +488,9 @@ PASS  ...and the second one gets an id of its own so no import merges them
 PASS  a duplicate carrying work is kept, and it is the EMPTY one that goes
 PASS  THE CHECK: two copies BOTH carrying work are both kept
 PASS  ...and a losing copy holding only hours is kept too
-FAIL  an undated copy collapses into the dated one  the seeder backfills dates, so a blank one is the same trip
+PASS  an undated copy is a second visit, and is KEPT
+PASS  ...and it is given an id of its own, so no import merges it back
+PASS  two copies that BOTH name the same date still collapse
 PASS  a renamed library trip collapses into the trip it was renamed to
 PASS  a row with no destination is left completely alone
 PASS  running the plan a second time is a no-op
@@ -511,10 +514,10 @@ PASS  NovaScheduleGuide.jsx passes fieldTrips at all 1 call site(s)
 PASS  NovaScheduleGuide.jsx subscribes to fieldTrips
 PASS  no call site anywhere is left without fieldTrips
 
-78 passed, 1 failed
+81 passed, 0 failed
 
-1 CHECK(S) FAILED
------ RESULT: FAIL
+ALL CHECKS PASSED
+----- RESULT: pass
 
 =========================================================
 ===== verify-class-bell   (ACADEMY=lamar)
@@ -4381,13 +4384,16 @@ PASS  ...and with no evidence passed, the same item reads unfinished
 PASS  all four lesson-backed pools are measured, not two
 PASS  ...and every one of them names the lesson it needs
 PASS  ...pointing at a lesson that exists
-FAIL  no project is scheduled before the quarter its lesson is taught  ae7-bottle-rocket is week 2 (2026-08-14, Q1) but ae7-rocket-design is taught in Q2; ae7-parachute-drop is week 4 (2026-08-28, Q1) but ae7-reentry-heat-shields is taught in Summer
+PASS  a project built before its lesson has a write-up that waits for the lesson
+PASS  ...and a project built early is never left with NOTHING collecting it
+PASS  ...and no write-up that names a lesson is due before that lesson is taught
+PASS  the exemption is real, not vacuous — some project is covered this way
 PASS  nothing in the Writing Journal falls inside a school break
 
-194 passed, 1 failed
+198 passed, 0 failed
 
-1 CHECK(S) FAILED
------ RESULT: FAIL
+ALL CHECKS PASSED
+----- RESULT: pass
 
 =========================================================
 ===== verify-printouts   (ACADEMY=lamar)
@@ -5851,6 +5857,6 @@ ALL CHECKS PASSED
 =========================================================
 ===== SUMMARY   ACADEMY=lamar  MODE=all
 =========================================================
-passed : 63
-failed : 4
-failing: verify-academic-schedule verify-book-swap verify-content-interface verify-planner-feeds
+passed : 66
+failed : 1
+failing: verify-content-interface

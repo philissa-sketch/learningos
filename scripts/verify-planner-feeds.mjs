@@ -1101,6 +1101,7 @@ console.log('\n--- every pool: a project never precedes its lesson ---');
   const { aerospaceLessons7 } = await import(moduleUrl('src/academies/lamar/data/lessons/aerospace7.js'));
   const { scienceLessons7 } = await import(moduleUrl('src/academies/lamar/data/lessons/science7.js'));
   const { EXCLUDED_RANGES } = await import(moduleUrl('src/academies/lamar/data/academicSuccessCenter/assignmentRecommendations.js'));
+  const { quarterlyAcademicPlaceholders } = await import(moduleUrl('src/academies/lamar/data/academicSuccessCenter/placeholders.js'));
   const { getCurrentQuarter } = await import(moduleUrl('src/lib/schoolQuarter.js'));
 
   const ORDER = ['Q1', 'Q2', 'Q3', 'Q4', 'Summer'];
@@ -1126,19 +1127,118 @@ console.log('\n--- every pool: a project never precedes its lesson ---');
     dangling.length === 0,
     dangling.map((p) => `${p.id} -> ${p.relatedLessonId}`).join(', '));
 
+  /**
+   * ---- BUILDING EARLY IS NOT THE FAULT. WRITING IT UP EARLY IS. (Sept 15, 2026.)
+   *
+   * This asserted that no hands-on project may be SCHEDULED before its lesson,
+   * and on that reading two builds he finished in August were still failing it
+   * a month later, with nothing left to fix.
+   *
+   * The header above already names the real fault, in the sentence that
+   * prompted the whole section: *"he was asked to explain Newton's Third Law a
+   * quarter before Rocket Design."* Not that he launched a bottle rocket in
+   * week 2 -- a child may absolutely build a thing and meet the theory after,
+   * which is most of what a hands-on project is for. The damage was the
+   * WRITE-UP demanding physics he had not been taught. He scored a C.
+   *
+   * Two schedulers, two jobs, and the check was asking one of them to do both:
+   *
+   *   weeklySchedule.js       WHEN HE BUILDS IT
+   *   placeholders.js         WHEN THE WRITE-UP IS COLLECTED
+   *
+   * So a project is measured against the write-up the Success Centre already
+   * carries for it, and is early only when nothing there has taken it up.
+   *
+   * A COLLECTION COUNTS TWO WAYS, and the second is not a loophole:
+   *
+   *   GATED    `needsLesson` names the project's lesson -- the write-up waits
+   *            for the teaching. `asg::aerospace::Q2::2`, the bottle rocket's
+   *            second launch, due Dec 4 after Rocket Design.
+   *   UNGATED  the slot names the project and declares NO `needsLesson` -- a
+   *            deliberate decision to collect what he OBSERVED and leave the
+   *            theory to the later lesson. `asg::aerospace::Q1::4` states the
+   *            reasoning: gating a build he finished in August on a Summer
+   *            lesson *"would leave it uncollected for eleven months."*
+   *
+   * What still fails, and must: a project scheduled early that NOTHING
+   * collects -- the exact fault found on Sept 5, when the parachute drop he
+   * had done reached no portfolio entry, no grade and no transcript line --
+   * and a gated write-up that is itself due before its lesson.
+   */
+  const ASG = [];
+  for (const [subject, byQuarter] of Object.entries(quarterlyAcademicPlaceholders)) {
+    for (const [quarter, slots] of Object.entries(byQuarter)) {
+      for (const slot of slots) ASG.push({ subject, quarter, ...slot });
+    }
+  }
+  /** 'Parachute Drop Test' -> 'parachute drop', so it matches the slot that names it. */
+  const phraseFor = (title) =>
+    String(title || '').toLowerCase().replace(/[^a-z ]+/g, ' ')
+      .replace(/\b(test|model|project|build)\b/g, ' ')
+      .split(/\s+/).filter(Boolean).join(' ');
+  const namesProject = (row, p) => {
+    const phrase = phraseFor(p.title);
+    if (!phrase || phrase.split(' ').length < 2) return false;
+    return String(row.title || '').toLowerCase().includes(phrase);
+  };
+
   const early = [];
+  const uncollected = [];
+  const gatedEarly = [];
   for (const p of allProjects) {
     const item = feed.find((i) => String(i.key || '').includes(p.id));
     const lesson = allLessons.get(p.relatedLessonId);
     if (!item || !lesson || !lesson.quarter) continue;
     const lands = key(getCurrentQuarter(parseLocal(item.dueDate))?.id);
-    if (ORDER.indexOf(lands) < ORDER.indexOf(key(lesson.quarter))) {
+    if (ORDER.indexOf(lands) >= ORDER.indexOf(key(lesson.quarter))) continue;
+
+    const collections = ASG.filter((r) => namesProject(r, p) || r.needsLesson === p.relatedLessonId);
+    const gated = collections.filter((r) => r.needsLesson === p.relatedLessonId);
+    // AN UNGATED COLLECTION MUST SIT WITH THE WORK IT RECORDS, not later.
+    //
+    // Without that, the exemption has a hole: strip `needsLesson` from a gated
+    // write-up and it silently becomes an "ungated" one, still naming the
+    // project, and the check goes on passing while the gate it was built to
+    // enforce is gone. Verified by mutation -- that edit alone slipped through
+    // every assertion here until this clause was added.
+    //
+    // The reasoning that licenses un-gating is that the slot collects a build
+    // he has ALREADY finished rather than stranding it for months. A slot
+    // sitting in a later quarter is not doing that: it is either mis-dated or
+    // it should name its lesson.
+    const ungated = collections.filter((r) =>
+      namesProject(r, p) && !r.needsLesson &&
+      ORDER.indexOf(key(getCurrentQuarter(parseLocal(r.dueDate))?.id)) <= ORDER.indexOf(lands));
+
+    for (const r of gated) {
+      const writeUp = key(getCurrentQuarter(parseLocal(r.dueDate))?.id);
+      if (ORDER.indexOf(writeUp) < ORDER.indexOf(key(lesson.quarter))) {
+        gatedEarly.push(`${r.slotId} is due ${r.dueDate} (${writeUp}) but needs ${r.needsLesson}, taught in ${key(lesson.quarter)}`);
+      }
+    }
+
+    const covered = gated.some((r) =>
+      ORDER.indexOf(key(getCurrentQuarter(parseLocal(r.dueDate))?.id)) >= ORDER.indexOf(key(lesson.quarter)))
+      || ungated.length > 0;
+
+    if (!collections.length) {
+      uncollected.push(`${p.id} is week ${item.schoolWeek} (${item.dueDate}, ${lands}), ${p.relatedLessonId} is taught in ${key(lesson.quarter)}, and NOTHING collects it`);
+    } else if (!covered) {
       early.push(`${p.id} is week ${item.schoolWeek} (${item.dueDate}, ${lands}) but ${p.relatedLessonId} is taught in ${key(lesson.quarter)}`);
     }
   }
-  ok('no project is scheduled before the quarter its lesson is taught',
+  ok('a project built before its lesson has a write-up that waits for the lesson',
     early.length === 0,
     early.join('; '));
+  ok('...and a project built early is never left with NOTHING collecting it',
+    uncollected.length === 0,
+    uncollected.join('; '));
+  ok('...and no write-up that names a lesson is due before that lesson is taught',
+    gatedEarly.length === 0,
+    gatedEarly.join('; '));
+  ok('the exemption is real, not vacuous — some project is covered this way',
+    ASG.some((r) => allProjects.some((p) => namesProject(r, p) || r.needsLesson === p.relatedLessonId)),
+    'if nothing matches, the three checks above pass by finding nothing to measure');
 
   const inBreak = [];
   for (const item of feed) {
