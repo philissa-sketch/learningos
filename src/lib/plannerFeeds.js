@@ -47,10 +47,11 @@
 // ---------------------------------------------------------------------------
 import { toDateStr, addDays, todayDateStr, parseDateStr } from './scheduler.js';
 import { academyContent } from '../content/academyContent.js';
+import { QUARTER_SPANS } from './yearPlan.js';
 
 const { gardenBriefs = [], gardenBuildTrack = [], gardenCalendar = [], gardenProjects = [] } = academyContent().electives;
 const { aerospaceProjects = [], roboticsProjects = [], scienceExperiments = [], technologyProjects = [] } = academyContent().projects;
-const { isHoliday = () => false } = academyContent().timetable;
+const { isHoliday = () => false, isSchoolDay = () => false } = academyContent().timetable;
 const { SCHOOL_YEAR_START, getSchoolWeekNumber = () => false, weeklyWritingSchedule = {}, writingPrompts = [] } = academyContent().writing;
 
 /** Every pool a scheduled id might resolve against. Same six as weeklyPlan.js. */
@@ -65,7 +66,7 @@ function findItemById(id) {
 }
 
 /**
- * The last SCHOOL day of a given school week — normally the Friday.
+ * The day a given school week's work is due.
  *
  * Week 1 begins on SCHOOL_YEAR_START (a Monday), so the Friday of week N is
  * four days into that week. Computed through addDays/toDateStr rather than
@@ -82,22 +83,100 @@ function findItemById(id) {
  *
  * Which meant a science experiment and a writing piece were both dated to
  * Christmas Day, in a planner whose entire purpose is telling a twelve-year-old
- * what is due. Nothing crashed and nothing looked broken — the date was simply
+ * what is due. Nothing crashed and nothing looked broken -- the date was simply
  * a day nobody was going to work.
  *
- * The app already owns a list of the days it is closed. It just was not asked.
- * A deadline now walks BACK to the last open day of its own week — never
- * forward, because moving a deadline later is a decision about his workload and
- * this function does not get to make one. If a whole week is closed there is no
- * deadline to give, and it returns null rather than inventing one.
+ * ---- WHY THAT WALK-BACK WAS NOT ENOUGH (Sept 15, 2026) ----
+ *
+ * A school answers TWO questions about its calendar, and they are not the same
+ * question. Reading one as the other is what left four deadlines standing.
+ *
+ *   IS SCHOOL OPEN?      the timetable slot -- isHoliday, isSchoolDay
+ *   MAY WORK BE DUE?     the academic centre slot -- EXCLUDED_RANGES
+ *
+ * READ THIS BEFORE "FIXING" isHoliday. It is not missing the school breaks. It
+ * is single days BY THE PARENT'S DECISION, stated Aug 9 2026 and recorded in
+ * the timetable slot: *"we will take the actual holiday off for rest but not
+ * the weeks."* For this family Thanksgiving week and the fortnight around
+ * Christmas ARE school. Widening isHoliday to swallow the ranges would cancel
+ * school on days she deliberately kept, and would quietly take eleven weekdays
+ * back out of the year that yearPlan.js re-span to recover.
+ *
+ * What the ranges mean is narrower and separate: school runs, but nothing NEW
+ * falls due -- a rest week, or the closing-out week at the end of the year. So
+ * a deadline must clear BOTH, and the two lists stay two lists.
+ *
+ * ---- WHERE A DEADLINE GOES WHEN ITS WHOLE WEEK IS CLOSED TO DEADLINES ----
+ *
+ * Four weeks have no day that clears both: 17, 21, 22 and 43. Returning null
+ * for them, which is what this did, drops seven real pieces of work out of the
+ * planner -- a research paper and an engineering notebook among them. A
+ * deadline nobody can see is worse than a deadline on a bad day.
+ *
+ * Parent's decision, Sept 15 2026: **the work is due the week school comes
+ * back.** So the search is: back within the week first, because a nearer
+ * deadline is never a surprise; then FORWARD to the first day that is open and
+ * allows a deadline. Moving work later is a real decision about his workload,
+ * and it is made here only when the alternative is the work vanishing.
+ *
+ * The exception is the end of the year, where there is no "comes back": the
+ * closing-out window runs past the last day of school, so forward finds
+ * nothing and the deadline goes to the last open day BEFORE it instead.
+ *
+ * Summer is deliberately not counted as somewhere the year can continue into.
+ * yearPlan.js: *"Summer sits outside both on purpose -- it is a lighter
+ * continuation, not a third semester."* A notebook due in May must not be
+ * pushed into June.
  */
+
+/** Days either side the search may reach. Bounded so a bad range cannot run away. */
+const FORWARD_LIMIT_DAYS = 28;
+const BACK_LIMIT_DAYS = 14;
+
+/**
+ * Why a deadline may not land on this date: 'closed', 'window', or null.
+ *
+ * The academic centre slot is read HERE rather than at module scope. The reads
+ * at the top of this file are the older pattern and are evaluated once, before
+ * a school can be switched; nothing new should join them.
+ */
+export function deadlineBlockedOn(dateStr) {
+  if (isHoliday(dateStr)) return 'closed';
+  const { EXCLUDED_RANGES = [] } = academyContent().academicCenter || {};
+  const hit = (EXCLUDED_RANGES || []).find(([from, to]) => dateStr >= from && dateStr <= to);
+  return hit ? 'window' : null;
+}
+
+/** The last day of school, ignoring Summer. Null if this school has no spans. */
+function lastDayOfSchoolYear() {
+  const ends = QUARTER_SPANS.filter((q) => q.id !== 'Summer').map((q) => q.end).filter(Boolean).sort();
+  return ends.length ? ends[ends.length - 1] : null;
+}
+
 export function fridayOfSchoolWeek(week) {
   if (!Number.isFinite(week) || week < 1) return null;
   const monday = addDays(SCHOOL_YEAR_START, (week - 1) * 7);
+
+  // 1. The latest day inside the week itself. Friday if it is free, else back.
   for (let back = 4; back >= 0; back -= 1) {
     const d = toDateStr(addDays(monday, back));
-    if (!isHoliday(d)) return d;
+    if (!deadlineBlockedOn(d)) return d;
   }
+
+  // 2. Nothing in the week is free. Forward to the day school comes back.
+  const yearEnd = lastDayOfSchoolYear();
+  for (let ahead = 5; ahead <= FORWARD_LIMIT_DAYS; ahead += 1) {
+    const d = toDateStr(addDays(monday, ahead));
+    if (yearEnd && d > yearEnd) break;
+    if (isSchoolDay(d) && !deadlineBlockedOn(d)) return d;
+  }
+
+  // 3. The year ends inside the window. Back to the last open day before it.
+  for (let back = 1; back <= BACK_LIMIT_DAYS; back += 1) {
+    const d = toDateStr(addDays(monday, -back));
+    if (isSchoolDay(d) && !deadlineBlockedOn(d)) return d;
+  }
+
   return null;
 }
 

@@ -20,8 +20,7 @@
 // ---------------------------------------------------------------------------
 import fs from 'node:fs';
 import path from 'node:path';
-import { fileURLToPath } from 'node:url';
-
+import { fileURLToPath, pathToFileURL } from 'node:url';
 const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const read = (rel) => fs.readFileSync(path.join(REPO, rel), 'utf8');
 
@@ -86,9 +85,12 @@ ok('the slot is read per render, not at module scope',
   'a content-pack destructure at module scope runs before the pack is installed');
 
 console.log('\n--- 4. the template declares a generic nav ---');
-const template = await import(
-  path.join(REPO, 'src/academies/_template/content.js').replace(/\\/g, '/').replace(/^/, 'file:///')
-);
+// pathToFileURL already produces the whole `file:///C:/...` URL. An earlier
+// automated pass also hand-built one and fed it back in, so the drive-letter
+// URL was read as a RELATIVE path and joined onto the repo root —
+//   C:\\Users\\...\\learningos\\file:\\C:\\Users\\...\\content.js
+// Do not add a second conversion here. One call does the whole job.
+const template = await import(pathToFileURL(path.join(REPO, 'src/academies/_template/content.js')).href);
 const nav = template.nav;
 const groups = nav?.navGroups || [];
 ok('the template has a nav', !!nav && Array.isArray(nav.navGroups) && groups.length > 0);

@@ -61,6 +61,9 @@ const { technologyProjects } = await import(moduleUrl('src/academies/lamar/data/
 const { roboticsLessons7 } = await import(moduleUrl('src/academies/lamar/data/lessons/robotics7.js'));
 const { technologyLessons7 } = await import(moduleUrl('src/academies/lamar/data/lessons/technology7.js'));
 const { gardenBuildTrack } = await import(moduleUrl('src/academies/lamar/data/gardening/gardenBuildTrack.js'));
+// The no-new-deadlines ranges. A DIFFERENT list from the holidays above, answering a
+// different question: school is open, but nothing new falls due. Section 1 needs both.
+const { EXCLUDED_RANGES: NO_DEADLINE_RANGES } = await import(moduleUrl('src/academies/lamar/data/academicSuccessCenter/assignmentRecommendations.js'));
 
 let passed = 0;
 const failures = [];
@@ -103,14 +106,46 @@ console.log('\n--- 1. week-numbered work now has a real date ---');
    *
    * A science experiment and a writing piece were due on Christmas Day. The
    * app knew it was closed. Nothing asked.
+   *
+   * ---- AND THE FOUR WEEKS THAT WERE CLOSED TO DEADLINES (Sept 15, 2026) ----
+   *
+   * The walk-back cleared the closed DAYS and still left four deadlines inside
+   * the no-new-work RANGES, which are a different list answering a different
+   * question. Weeks 17, 21, 22 and 43 have no day that clears both.
+   *
+   * These assertions no longer pin the exact dates the old rule produced -- it
+   * produced Dec 24 and Dec 31, both inside the winter range. They assert the
+   * PROPERTY instead: a deadline is never on a closed day and never inside a
+   * range, and the four rehoused weeks land where the parent said they should.
    */
-  ok('a deadline never lands on Christmas Day', pf.fridayOfSchoolWeek(21) === '2026-12-24',
-    pf.fridayOfSchoolWeek(21));
-  ok('...nor on New Year\'s Day', pf.fridayOfSchoolWeek(22) === '2026-12-31',
-    pf.fridayOfSchoolWeek(22));
-  ok('...and it walks BACK, never forward',
-    pf.fridayOfSchoolWeek(21) < '2026-12-25',
-    'moving a deadline later is a decision about his workload; this function does not get to make one');
+  const insideRange = (d) => NO_DEADLINE_RANGES.some(([a, b]) => d >= a && d <= b);
+
+  ok('a deadline never lands on Christmas Day',
+    pf.fridayOfSchoolWeek(21) !== '2026-12-25', pf.fridayOfSchoolWeek(21));
+  ok('...nor on New Year\'s Day',
+    pf.fridayOfSchoolWeek(22) !== '2027-01-01', pf.fridayOfSchoolWeek(22));
+  ok('...nor inside a week closed to new deadlines',
+    ![17, 21, 22, 43].some((w) => insideRange(pf.fridayOfSchoolWeek(w))),
+    [17, 21, 22, 43].map((w) => w + ':' + pf.fridayOfSchoolWeek(w)).join(' '));
+  ok('a week with a free day still uses it, and still walks BACK to reach it',
+    pf.fridayOfSchoolWeek(20) === '2026-12-18',
+    'a nearer deadline is never a surprise; only a fully closed week may move later');
+  ok('a week closed all through moves to the day school comes back',
+    pf.fridayOfSchoolWeek(17) === '2026-11-30' &&
+      pf.fridayOfSchoolWeek(21) === '2027-01-05' &&
+      pf.fridayOfSchoolWeek(22) === '2027-01-05',
+    `17:${pf.fridayOfSchoolWeek(17)} 21:${pf.fridayOfSchoolWeek(21)} 22:${pf.fridayOfSchoolWeek(22)}`);
+  ok('...and never onto a weekend on the way there',
+    [17, 21, 22, 43].every((w) => {
+      const day = new Date(pf.fridayOfSchoolWeek(w) + 'T12:00:00').getDay();
+      return day >= 1 && day <= 5;
+    }));
+  ok('the closing-out week has no "comes back", so it goes to the last school day',
+    pf.fridayOfSchoolWeek(43) === '2027-05-21',
+    'the year ends May 26, inside the range — forward would push a notebook past the end of school');
+  ok('NO week is left without a deadline at all',
+    Object.keys(weeklyWritingSchedule).every((w) => pf.fridayOfSchoolWeek(Number(w))),
+    'returning null drops the work out of the planner entirely, which is worse than a bad date');
   ok('NO scheduled item lands on a school holiday',
     pf.writingScheduleCalendarItems({ writingEntries: [] }).every((i) => !isHoliday(i.dueDate)),
     'the whole planner, not just the two weeks that prompted the fix');

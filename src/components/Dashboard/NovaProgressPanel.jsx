@@ -4,33 +4,35 @@ import { evaluateBadges } from '../../lib/badges.js';
 import { getShipStatus } from '../../lib/shipSystems.js';
 import { todayDateStr } from '../../lib/scheduler.js';
 import { academyContent } from '../../content/academyContent.js';
-
-const { getDailyLine = () => null } = academyContent().guide;
+import { dailyLineFor } from '../../content/slots/guide.js';
 
 // ---------------------------------------------------------------------------
-// NOVA ON THE PROGRESS SCREEN.
-// (Built Aug 9, 2026.)
+// THE GUIDE ON THE PROGRESS SCREEN.
+// (Built Aug 9, 2026. Moved onto the guide slot Sept 15, 2026.)
 //
 // Two jobs, and they are different in kind.
 //
 // 1. A DAILY LINE — one per day, date-seeded so it does not change on reload.
-//    Mostly Nova in her own voice; occasionally a genuinely documented quote,
-//    named. See dailyLines.js for why invented attributions were refused.
+//    The pick itself now belongs to the platform (content/slots/guide.js); a
+//    school supplies a pool of lines and nothing more. dailyLineFor always
+//    returns { text, who }, so nothing below has to guard for a missing line —
+//    and a school with no pool shows no quote instead of throwing, which is
+//    what the old default did on its very first read.
 //
 // 2. A LIVE READ OF THE PAGE — what these numbers actually say today. This is
 //    the part that makes it worth opening: a wall of figures does not tell a
-//    twelve-year-old what to DO with them, and "you are 4 lessons from Rocket
-//    Builder" does.
+//    twelve-year-old what to DO with them, and "you are 4 lessons from the next
+//    rank" does.
 //
 // THE OBSERVATIONS ARE RANKED AND CAPPED AT TWO. Everything here is true, so
 // the temptation is to say all of it — and six true observations is a lecture
 // nobody reads. Nearest-thing-to-finishing comes first, because it is the one
-// that changes what he does next.
+// that changes what they do next.
 //
-// NOTHING HERE SCOLDS. The weakest ship system is reported as information
-// ("comms is furthest behind — that runs on writing"), never as a failing. Same
-// rule the ship summary already follows, for the same reason: a telling-off
-// delivered by a character he likes is how you lose the character.
+// NOTHING HERE SCOLDS. The weakest system is reported as information ("comms is
+// furthest behind — that runs on writing"), never as a failing. Same rule the
+// ship summary already follows, for the same reason: a telling-off delivered by
+// a character they like is how you lose the character.
 // ---------------------------------------------------------------------------
 
 /**
@@ -38,7 +40,7 @@ const { getDailyLine = () => null } = academyContent().guide;
  *
  * Deliberately silent when there is nothing real to report. A brand-new account
  * has no nearly-finished badge and no meaningful weakest system, and inventing
- * encouragement for a boy who has not started yet is how a mentor stops being
+ * encouragement for someone who has not started yet is how a mentor stops being
  * believable.
  */
 function observationsFor({ journey, stats }) {
@@ -64,7 +66,7 @@ function observationsFor({ journey, stats }) {
     out.push(`${left} more and "${nearest.name}" unlocks — you are at ${nearest.progress.current} of ${nearest.progress.target}.`);
   }
 
-  // 3. Only if neither of the above had anything: name the system waiting on him.
+  // 3. Only if neither of the above had anything: name the system waiting on them.
   if (out.length < 2) {
     const ship = getShipStatus(stats);
     const w = ship.weakest;
@@ -82,21 +84,26 @@ function observationsFor({ journey, stats }) {
 
 export function NovaProgressPanel({ journey, stats }) {
   const today = todayDateStr();
-  const line = useMemo(() => getDailyLine(today), [today]);
+  // The slot is read HERE, not at module scope. A module-scope destructure is
+  // evaluated once, before a school can be switched, and reading a content pack
+  // that way is the exact shape of the white-page fault this repo has paid for.
+  const line = useMemo(() => dailyLineFor(academyContent().guide, today), [today]);
   const observations = useMemo(() => observationsFor({ journey, stats }), [journey, stats]);
 
   // The spoken version reads the quote, the attribution, then the observations —
-  // in the order they appear, so hearing it and reading it match.
+  // in the order they appear, so hearing it and reading it match. A school with
+  // no pool contributes nothing to speak rather than an empty pair of quotes.
   const speak = useMemo(() => {
-    const quote = line.who ? `${line.text} That was ${line.who}.` : line.text;
-    return [quote, ...observations].join(' ');
+    const parts = [];
+    if (line.text) parts.push(line.who ? `${line.text} That was ${line.who}.` : line.text);
+    return [...parts, ...observations].join(' ');
   }, [line, observations]);
 
   return (
     <div className="mb-4">
       <NovaMessage tone="brief" speak={speak}>
-        <p className="italic text-ink-200">&ldquo;{line.text}&rdquo;</p>
-        {line.who && <p className="mt-1 text-[11px] text-ink-500">— {line.who}</p>}
+        {line.text && <p className="italic text-ink-200">&ldquo;{line.text}&rdquo;</p>}
+        {line.text && line.who && <p className="mt-1 text-[11px] text-ink-500">— {line.who}</p>}
 
         {observations.length > 0 && (
           <div className="mt-3 border-t border-space-700 pt-2">
