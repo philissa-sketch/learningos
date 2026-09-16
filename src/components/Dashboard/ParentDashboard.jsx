@@ -18,6 +18,7 @@ import { LearningAnalyticsSection } from './LearningAnalyticsSection.jsx';
 import { YearPlanSection } from './YearPlanSection.jsx';
 import { MissionControlBoard } from './MissionControlBoard.jsx';
 import { BackupStatusCard } from './BackupStatusCard.jsx';
+import { StorageSafetyCard } from './StorageSafetyCard.jsx';
 import { WordStudyRecordSection } from './WordStudyRecordSection.jsx';
 import { TypingRecordSection } from './TypingRecordSection.jsx';
 import { ScienceCourseMapSection } from './ScienceCourseMapSection.jsx';
@@ -3993,6 +3994,7 @@ function SyncSection() {
           the last copy made" is the question this screen exists to answer
           and it was the one thing it could not tell her. */}
       <BackupStatusCard tone="parent" onExport={handleExport} />
+      <StorageSafetyCard />
 
       <div className="rounded-xl border border-space-700 bg-space-800 p-5 shadow-panel">
         <p className="text-xs font-display uppercase tracking-widest text-signal-cyan">Export / Import</p>

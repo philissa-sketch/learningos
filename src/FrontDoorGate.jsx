@@ -4,6 +4,7 @@ import FrontDoor from './components/FrontDoor/FrontDoor.jsx';
 import FirstRun from './components/FrontDoor/FirstRun.jsx';
 import ParentCorner from './components/FrontDoor/ParentCorner.jsx';
 import AcademyShell from './components/Academy/AcademyShell.jsx';
+import AutoBackupBanner from './components/Academy/AutoBackupBanner.jsx';
 import { closeAcademy, openAcademy } from './db/db.js';
 import {
   clearSession,
@@ -266,7 +267,10 @@ export default function FrontDoorGate() {
 
   const open = academies.find((a) => a.id === openId);
 
+  // Automatic backup runs only while a school is open (Sept 16, 2026).
   return (
+    <>
+    <AutoBackupBanner />
     <AcademyShell
       academy={open}
       enteredAs={enteredAs}
@@ -306,5 +310,6 @@ export default function FrontDoorGate() {
         return stored || null;
       }}
     />
+    </>
   );
 }

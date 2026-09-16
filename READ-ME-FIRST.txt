@@ -1,7 +1,10 @@
 LEARNINGOS - how to open it
 ===========================
 
-Go to:   https://mission-control-homeschool.netlify.app
+Go to:   https://learningos-academy.netlify.app
+
+(The OLD address, mission-control-homeschool.netlify.app, is a frozen
+archive. Delete any bookmark or pinned tab that still points to it.)
 
 That is the whole thing. Bookmark it on both computers.
 

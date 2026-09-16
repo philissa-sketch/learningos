@@ -2,6 +2,11 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import FrontDoorGate from './FrontDoorGate.jsx';
 import './index.css';
+import { requestPersistentStorage } from './lib/storageSafety.js';
+
+// Ask the browser not to throw the school away on its own (Sept 16, 2026 —
+// a restart left his computer empty). See lib/storageSafety.js.
+requestPersistentStorage();
 
 /**
  * ---- A HANDLE ON THE STORE, IN DEV ONLY ----

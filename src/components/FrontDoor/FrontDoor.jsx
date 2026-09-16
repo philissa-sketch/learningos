@@ -138,6 +138,12 @@ function NoAcademyHere() {
         done is safe on the computer you did it on.
       </p>
       <p className="fd-helper">Nothing is broken. This computer just hasn&apos;t met you yet.</p>
+      <p className="fd-note">
+        <strong>Was school already on this computer?</strong> (Sept 16, 2026 — a restart can
+        clear it.) First check the address bar says the usual school address and that this is
+        your usual browser, not a private window. If it still looks empty, your grown-up can set
+        the computer up and restore everything from the latest full backup file.
+      </p>
     </div>
   );
 }
@@ -258,6 +264,12 @@ function SetUpThisComputer({ onSetUpThisComputer }) {
         Setting up takes a couple of minutes: choose a passcode for this computer, then add the
         Academy. Afterwards you can bring the schoolwork across from a migration file, and nothing
         on the other computer is touched.
+      </p>
+      <p className="fd-note">
+        <strong>Was the school already on this computer?</strong> Check the address bar and that
+        this is your usual browser first. If it is truly empty, set up, then open the Academy and
+        use Import &rarr; from a file. Pick <em>learningos-migration-auto-latest.json</em> from
+        Documents &rsaquo; LearningOS Backups (or your newest downloaded full backup).
       </p>
       {onSetUpThisComputer ? (
         <button className="fd-btn" type="button" onClick={onSetUpThisComputer}>
