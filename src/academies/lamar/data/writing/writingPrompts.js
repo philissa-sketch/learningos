@@ -112,6 +112,29 @@ export const writingPrompts = [
   {
     id: 'w7-lab-report',
     /**
+     * WHICH BUILDS THIS FORM CAN HONESTLY DESCRIBE, in preference order.
+     *
+     * Moved out of lib/weeklyPlan.js on Sept 15, 2026. The platform used to
+     * hold a table mapping these four prompt ids to lists of our subjects —
+     * our curriculum decision, written down in the engine where we could not
+     * reach it, and where no other family's forms could be described at all.
+     *
+     * The decision itself is unchanged and is the one from Sept 8: a Lab
+     * Report and a Scientific Observation take an EXPERIMENT — something with
+     * a hypothesis, a measurement and a result. They never take a CAD
+     * exercise. A Tinkercad model has nothing to report, and a lab report
+     * pointed at the wrong build is worse than one pointed at none.
+     *
+     * Order matters: the first subject with a build scheduled that week wins,
+     * so an Aerospace or Science experiment beats the robotics task sharing
+     * some weeks.
+     *
+     * A prompt with no `documents` is never paired with a build — which is
+     * right for an essay, creative writing or the space journal, whose subject
+     * is whatever he chooses.
+     */
+    documents: ['aerospace', 'science', 'robotics', 'gardening'],
+    /**
      * Used INSTEAD of `instructions` on a week whose schedule also holds a
      * hands-on build \u2014 see pairedBuildFor() in lib/weeklyPlan.js. `{build}`
      * is the build's own title. The form is identical; only the subject stops
@@ -194,6 +217,29 @@ export const writingPrompts = [
   {
     id: 'w7-mission-report',
     /**
+     * WHICH BUILDS THIS FORM CAN HONESTLY DESCRIBE, in preference order.
+     *
+     * Moved out of lib/weeklyPlan.js on Sept 15, 2026. The platform used to
+     * hold a table mapping these four prompt ids to lists of our subjects —
+     * our curriculum decision, written down in the engine where we could not
+     * reach it, and where no other family's forms could be described at all.
+     *
+     * The decision itself is unchanged and is the one from Sept 8: a Lab
+     * Report and a Scientific Observation take an EXPERIMENT — something with
+     * a hypothesis, a measurement and a result. They never take a CAD
+     * exercise. A Tinkercad model has nothing to report, and a lab report
+     * pointed at the wrong build is worse than one pointed at none.
+     *
+     * Order matters: the first subject with a build scheduled that week wins,
+     * so an Aerospace or Science experiment beats the robotics task sharing
+     * some weeks.
+     *
+     * A prompt with no `documents` is never paired with a build — which is
+     * right for an essay, creative writing or the space journal, whose subject
+     * is whatever he chooses.
+     */
+    documents: ['aerospace', 'science', 'technology', 'robotics', 'gardening'],
+    /**
      * Used INSTEAD of `instructions` on a week whose schedule also holds a
      * hands-on build \u2014 see pairedBuildFor() in lib/weeklyPlan.js. `{build}`
      * is the build's own title. The form is identical; only the subject stops
@@ -235,6 +281,29 @@ export const writingPrompts = [
   {
     id: 'w7-design-documentation',
     /**
+     * WHICH BUILDS THIS FORM CAN HONESTLY DESCRIBE, in preference order.
+     *
+     * Moved out of lib/weeklyPlan.js on Sept 15, 2026. The platform used to
+     * hold a table mapping these four prompt ids to lists of our subjects —
+     * our curriculum decision, written down in the engine where we could not
+     * reach it, and where no other family's forms could be described at all.
+     *
+     * The decision itself is unchanged and is the one from Sept 8: a Lab
+     * Report and a Scientific Observation take an EXPERIMENT — something with
+     * a hypothesis, a measurement and a result. They never take a CAD
+     * exercise. A Tinkercad model has nothing to report, and a lab report
+     * pointed at the wrong build is worse than one pointed at none.
+     *
+     * Order matters: the first subject with a build scheduled that week wins,
+     * so an Aerospace or Science experiment beats the robotics task sharing
+     * some weeks.
+     *
+     * A prompt with no `documents` is never paired with a build — which is
+     * right for an essay, creative writing or the space journal, whose subject
+     * is whatever he chooses.
+     */
+    documents: ['aerospace', 'science', 'technology', 'robotics', 'gardening'],
+    /**
      * Used INSTEAD of `instructions` on a week whose schedule also holds a
      * hands-on build \u2014 see pairedBuildFor() in lib/weeklyPlan.js. `{build}`
      * is the build's own title. The form is identical; only the subject stops
@@ -253,6 +322,29 @@ export const writingPrompts = [
   },
   {
     id: 'w7-scientific-observation',
+    /**
+     * WHICH BUILDS THIS FORM CAN HONESTLY DESCRIBE, in preference order.
+     *
+     * Moved out of lib/weeklyPlan.js on Sept 15, 2026. The platform used to
+     * hold a table mapping these four prompt ids to lists of our subjects —
+     * our curriculum decision, written down in the engine where we could not
+     * reach it, and where no other family's forms could be described at all.
+     *
+     * The decision itself is unchanged and is the one from Sept 8: a Lab
+     * Report and a Scientific Observation take an EXPERIMENT — something with
+     * a hypothesis, a measurement and a result. They never take a CAD
+     * exercise. A Tinkercad model has nothing to report, and a lab report
+     * pointed at the wrong build is worse than one pointed at none.
+     *
+     * Order matters: the first subject with a build scheduled that week wins,
+     * so an Aerospace or Science experiment beats the robotics task sharing
+     * some weeks.
+     *
+     * A prompt with no `documents` is never paired with a build — which is
+     * right for an essay, creative writing or the space journal, whose subject
+     * is whatever he chooses.
+     */
+    documents: ['aerospace', 'science', 'robotics', 'gardening'],
     /**
      * Used INSTEAD of `instructions` on a week whose schedule also holds a
      * hands-on build \u2014 see pairedBuildFor() in lib/weeklyPlan.js. `{build}`

@@ -1,7 +1,7 @@
 LearningOS check run
 Academy : lamar
 Mode    : all
-When    : Tue 09/15/2026 18:26:03.17
+When    : Tue 09/15/2026 20:08:53.78
 Folder  : C:\Users\pknot\Downloads\learningos\
 
 v24.16.0
@@ -1441,13 +1441,16 @@ PASS  WeeklyView.jsx still exists to be checked
 PASS  MissionControlDashboard.jsx still exists to be checked
 PASS  AcademicPortfolioView.jsx still exists to be checked
 PASS  useAppStore.js still exists to be checked
+PASS  the projects slot hands over all 6 garden projects
+PASS  the pool carries the subject the garden projects declare
+PASS  a garden project is findable by id through the slot
 PASS  the week's hands-on project row reads the garden list, so the deleted card left nothing behind
-PASS  WritingJournal.jsx reads AND uses gardenProjects — he can find the project at all
-PASS  FeedbackPanel.jsx reads AND uses gardenProjects — finishing a lesson suggests it
-PASS  WeeklyView.jsx reads AND uses gardenProjects — it appears on the weekly schedule
-PASS  MissionControlDashboard.jsx reads AND uses gardenProjects — its id resolves to a title, and it can be this week's project
-PASS  AcademicPortfolioView.jsx reads AND uses gardenProjects — completing it becomes a Portfolio entry
-PASS  useAppStore.js reads AND uses gardenProjects — the app recognises it as a completable project
+PASS  WritingJournal.jsx reaches the garden — he can find the project at all  [via the projects slot]
+PASS  FeedbackPanel.jsx reaches the garden — finishing a lesson suggests it  [via the projects slot]
+PASS  WeeklyView.jsx reaches the garden — it appears on the weekly schedule  [via the projects slot]
+PASS  MissionControlDashboard.jsx reaches the garden — its id resolves to a title, and it can be this week's project  [names it directly]
+PASS  AcademicPortfolioView.jsx reaches the garden — completing it becomes a Portfolio entry  [via the projects slot]
+PASS  useAppStore.js reaches the garden — the app recognises it as a completable project  [names it directly]
 
 --- 4. Dexie v28 ---
 PASS  Dexie v28 (gardening's version) exists (versions: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35)
@@ -3310,7 +3313,7 @@ ALL CHECKS PASSED
 ===== verify-khan-unit-completion   (ACADEMY=lamar)
 =========================================================
 
-files reachable from main.jsx: 212
+files reachable from main.jsx: 213
 
 --- 1. nothing he can reach marks a unit finished ---
 PASS  the student-facing completion action is gone from the store
@@ -3461,8 +3464,8 @@ PASS  ...and it round-trips through parseDateStr
 PASS  todayDateStr agrees with toDateStr(now)
 
 --- 2. nothing in the app asks UTC what day it is ---
-PASS  no file derives "today" from UTC (447 files scanned)
-PASS  no guard reads the clock and then asks UTC what day it is (84 scripts scanned)
+PASS  no file derives "today" from UTC (448 files scanned)
+PASS  no guard reads the clock and then asks UTC what day it is (85 scripts scanned)
 PASS  ...and the only exempt guards are the ones that quote the bug on purpose
 PASS  the exemption for src/lib/weeklyWords.js still points at a real file
 PASS  MissionControlDashboard.jsx uses a shared local-date helper
@@ -3738,11 +3741,13 @@ PASS  exactly two of the twelve missions are flagged
 PASS  the overlap is matched against the pools, not hardcoded
 PASS  the notice renders on the proposal card, where she chooses
 PASS  ...and does NOT disable the option
-PASS  the project pool list is built from the pools themselves
+PASS  the project pool list comes from the slot, not from a hand-written spread
+PASS  ...and no pool is named one by one here any more
+PASS  ...and the slot is read inside the component, not at module scope
 PASS  completions are read from the Writing Journal entry that records them
 PASS  ...taking the most recent write-up per project
 
-113 passed, 0 failed
+115 passed, 0 failed
 
 ALL CHECKS PASSED
 ----- RESULT: pass
@@ -3943,7 +3948,7 @@ ALL CHECKS PASSED
 =========================================================
 ===== verify-no-learner   (ACADEMY=lamar)
 =========================================================
---- 453 files: 22 platform · 240 academy · 191 school ---
+--- 454 files: 23 platform · 240 academy · 191 school ---
 
 --- 1. the platform zone is absolutely clean ---
 PASS  no platform file names a learner, school, guide or subject
@@ -3953,9 +3958,7 @@ PASS  the platform zone is not empty — the check is actually looking at someth
 PASS  no file has newly started naming an Academy
 PASS  every listed file still exists
 
-      generic debt: 83 of 191 school files still name an Academy
-      1 listed file(s) are now clean — remove them from generic-debt.json:
-        src/components/ErrorBoundary.jsx
+      generic debt: 82 of 191 school files still name an Academy
 
 --- 3. no age, grade or reading level is assumed in the platform ---
 PASS  no platform file hardcodes an age, grade or reading level
@@ -4066,7 +4069,7 @@ ALL CHECKS PASSED
 ===== verify-parses   (ACADEMY=lamar)
 =========================================================
 
-534/534 files parse
+536/536 files parse
 ALL CHECKS PASSED
 ----- RESULT: pass
 
@@ -5067,6 +5070,81 @@ ALL CHECKS PASSED
 ----- RESULT: pass
 
 =========================================================
+===== verify-slot-projects   (ACADEMY=lamar)
+=========================================================
+--- 1. the slot module exists and states its question ---
+PASS  the slot module is present
+PASS  it names the question it asks
+PASS  it exports the four readers the screens need
+PASS  it names the legacy pools it still understands
+
+--- 2. a school that is DATA can answer ---
+PASS  two pools resolve
+PASS  ...flattened to every project
+PASS  ...found by id across pools
+PASS  ...and the pool it came from is answerable
+PASS  a pool with only a label still works
+PASS  a pool with only a subject gets a readable label
+PASS  a pool that names nothing takes its id from its own items
+
+--- 3. the schools in this build still answer, and ALL FIVE pools count ---
+PASS  every legacy pool resolves
+PASS  THE GARDEN IS ONE OF THEM
+PASS  ...in the order the screens used to hand-write
+PASS  a modern answer wins over a legacy one
+
+--- 4. an unanswered or unusable slot degrades, and never throws ---
+PASS  nothing resolves instead of throwing
+PASS  ...and nothing yields an empty list, never undefined
+PASS  null resolves instead of throwing
+PASS  ...and null yields an empty list, never undefined
+PASS  an empty pack resolves instead of throwing
+PASS  ...and an empty pack yields an empty list, never undefined
+PASS  empty slots resolves instead of throwing
+PASS  ...and empty slots yields an empty list, never undefined
+PASS  an answer of the wrong type resolves instead of throwing
+PASS  ...and an answer of the wrong type yields an empty list, never undefined
+PASS  a pool with no items resolves instead of throwing
+PASS  ...and a pool with no items yields an empty list, never undefined
+PASS  a pool naming nothing, with items that declare nothing resolves instead of throwing
+PASS  ...and a pool naming nothing, with items that declare nothing yields an empty list, never undefined
+PASS  items that are not objects resolves instead of throwing
+PASS  ...and items that are not objects yields an empty list, never undefined
+PASS  items with no id resolves instead of throwing
+PASS  ...and items with no id yields an empty list, never undefined
+PASS  a pool that is itself an array resolves instead of throwing
+PASS  ...and a pool that is itself an array yields an empty list, never undefined
+
+--- 5. a duplicate id is reported, never silently dropped ---
+PASS  both copies survive the flatten
+PASS  ...and the lookup is stable — first pool wins
+
+--- 6. no screen rebuilds the pool list by hand ---
+PASS  at most 2 files still name the pools one by one
+PASS  ...and none of them names only SOME of the pools
+
+--- 6b. the slot module names no subject of its own ---
+PASS  no subject id is quoted anywhere in the slot module
+PASS  ...and the legacy table carries export names and nothing else
+
+--- 7. every Academy in this build answers usably ---
+PASS  there is at least one content folder to check
+PASS  lamar: its content loads
+PASS  lamar: its answer is a usable list
+PASS  lamar: no project id appears in two pools
+PASS  petal-pestle-academy: its content loads
+PASS  petal-pestle-academy: its answer is a usable list
+PASS  petal-pestle-academy: no project id appears in two pools
+PASS  _template: its content loads
+PASS  _template: its answer is a usable list
+PASS  _template: no project id appears in two pools
+
+51 passed, 0 failed
+
+ALL CHECKS PASSED
+----- RESULT: pass
+
+=========================================================
 ===== verify-slot-theme   (ACADEMY=lamar)
 =========================================================
 --- 1. the platform asks a question ---
@@ -5306,7 +5384,7 @@ PASS  every declared slot is present, empty rather than missing
 
 --- 2. every platform module loads against it ---
 PASS  the sweep found the platform
-PASS  all 208 platform modules load
+PASS  all 209 platform modules load
 PASS  the .jsx transform ran
 
 --- 3. the exemptions are honest ---
@@ -5857,6 +5935,6 @@ ALL CHECKS PASSED
 =========================================================
 ===== SUMMARY   ACADEMY=lamar  MODE=all
 =========================================================
-passed : 66
+passed : 67
 failed : 1
 failing: verify-content-interface

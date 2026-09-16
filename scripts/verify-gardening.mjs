@@ -149,6 +149,28 @@ ok(CONSUMERS.length === 6, 'the consumer list is six files long');
 for (const [rel] of CONSUMERS) {
   ok(fs.existsSync(path.join(REPO, rel)), `${path.basename(rel)} still exists to be checked`);
 }
+/**
+ * THE GARDEN IS ACTUALLY IN WHAT THE SLOT RETURNS.
+ *
+ * The consumer assertions above accept a file that reads the slot. That is only
+ * worth anything if the slot yields this school's garden, so it is proved here
+ * rather than assumed — the half of the old check that was behaviour, kept.
+ */
+{
+  const slot = await import(pathToFileURL(path.join(REPO, 'src/content/slots/projects.js')).href);
+  const content = { projects: {}, electives: { gardenProjects }, subjects: { SUBJECT_LABELS } };
+  const pools = slot.projectPools(content);
+  const garden = pools.find((pool) => pool.items.some((i) => i.id === gardenProjects[0]?.id));
+  ok(Boolean(garden) && garden.items.length === gardenProjects.length,
+    `the projects slot hands over all ${gardenProjects.length} garden projects`,
+    JSON.stringify(pools.map((pool) => `${pool.subject}:${pool.items.length}`)));
+  ok(garden?.subject === 'gardening',
+    'the pool carries the subject the garden projects declare',
+    `got ${garden?.subject}`);
+  ok(slot.findProjectById(content, gardenProjects[0]?.id)?.id === gardenProjects[0]?.id,
+    'a garden project is findable by id through the slot');
+}
+
 /** And the role that left the deleted card really did land on the dashboard. */
 {
   const dash = fs.readFileSync(
@@ -157,15 +179,33 @@ for (const [rel] of CONSUMERS) {
   ok(/HANDS_ON_SOURCES/.test(dash) && /weeksHandsOn/.test(dash) && /list: gardenProjects/.test(dash),
     "the week's hands-on project row reads the garden list, so the deleted card left nothing behind");
 }
+/**
+ * ---- THE NAME STOPPED BEING THE POINT (Sept 15, 2026) ----
+ *
+ * This required each consumer to name `gardenProjects` itself. Four of the six
+ * now reach it through `src/content/slots/projects.js`, which asks a school
+ * what pools it has instead of naming five in advance — so they stopped
+ * spelling the word and this went red on correct code.
+ *
+ * What it was ever really asserting is that a garden project REACHES these six
+ * places, and the child can find his garden work there. Both routes satisfy
+ * that, so both are accepted, and the check says which route each file takes.
+ *
+ * The legacy route disappears when the last two convert. This assertion does
+ * not: it will read the slot for all six, and the section below it proves the
+ * garden is actually in what the slot returns.
+ */
 for (const [rel, why] of CONSUMERS) {
   const text = fs.readFileSync(path.join(REPO, rel), 'utf8');
-  // The list now arrives from whichever Academy is signed in, rather than from
-  // one Academy's folder by name. Same assertion, current shape — see
-  // scripts/lib/reads-content.mjs.
   const reads = countReadsFromAcademy(text, 'gardenProjects');
   const uses = (bodyWithoutContentReads(text).match(/\bgardenProjects\b/g) || []).length;
-  ok(reads === 1 && uses >= 1,
-    `${path.basename(rel)} reads AND uses gardenProjects — ${why}`,
+  const byName = reads === 1 && uses >= 1;
+  const body = bodyWithoutContentReads(text);
+  const bySlot = /content\/slots\/projects\.js/.test(text)
+    && /\b(projectPools|allProjects|findProjectById|poolForProject)\s*\(/.test(body);
+  ok(byName || bySlot,
+    `${path.basename(rel)} reaches the garden — ${why}` +
+      (bySlot ? '  [via the projects slot]' : byName ? '  [names it directly]' : ''),
     `reads=${reads} uses=${uses}`);
 }
 

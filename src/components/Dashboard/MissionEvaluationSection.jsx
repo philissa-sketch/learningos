@@ -5,23 +5,31 @@ import { getCurrentQuarter } from '../../lib/schoolQuarter.js';
 import { EvidenceLinkEditor } from './EvidenceLink.jsx';
 import { overlapNotice, missionTiming, missionTimingNote } from '../../lib/missionSchedule.js';
 import { academyContent } from '../../content/academyContent.js';
+import { allProjects } from '../../content/slots/projects.js';
 
 const { RUBRIC_LEVELS = [] } = academyContent().academicCenter;
 const { MISSION_QUARTERS, MISSION_RUBRIC_CRITERIA = [], MISSION_STATUS_LABELS = {}, draftMissionFeedback = () => null, findProposal = () => null, missionGrowth = () => null, missionScoreTotals = () => null, proposalsForQuarter = () => [] } = academyContent().compliance;
-const { aerospaceProjects = [], roboticsProjects = [], scienceExperiments = [], technologyProjects = [] } = academyContent().projects;
 const { ACTIVE_SUBJECTS = [], KHAN_TAUGHT_SUBJECTS = [], PARTICIPATION_SUBJECTS = [], SUBJECT_LABELS = {} } = academyContent().subjects;
 
 /**
  * Every hands-on project in the curriculum, for the duplicate check below.
- * Built from the pools themselves so a project added later is covered without
- * anyone remembering to update a list here.
+ *
+ * ---- WHAT THIS SAID, AND WHAT IT DID (fixed Sept 15, 2026) ----
+ *
+ * It said: *"Built from the pools themselves so a project added later is
+ * covered without anyone remembering to update a list here."* It then listed
+ * four pools of five by hand, and the one it left out was the garden — so six
+ * garden projects were invisible to the overlap notice below, and a mission
+ * proposing work he had already done in the garden said nothing.
+ *
+ * The comment described this module; the code was the fault it warned about.
+ * `allProjects` reads whatever pools the school declares, so a school that
+ * takes up pottery is covered without anyone editing this file.
+ *
+ * READ INSIDE THE COMPONENT, not at module scope: a module-scope read is
+ * evaluated once, before a school can be switched, and this repo has paid for
+ * that shape before.
  */
-const ALL_PROJECTS = [
-  ...aerospaceProjects,
-  ...scienceExperiments,
-  ...technologyProjects,
-  ...roboticsProjects
-];
 
 /**
  * The subjects a mission can grade — everything that carries a letter grade.
@@ -116,6 +124,7 @@ function ProposalPicker({ quarter, mission }) {
    */
   const getProjectCompletions = useAppStore((s) => s.getProjectCompletions);
   const writingEntries = useAppStore((s) => s.writingEntries);
+  const everyProject = useMemo(() => allProjects(academyContent()), []);
   const completions = useMemo(
     () => getProjectCompletions(),
     [getProjectCompletions, writingEntries]
@@ -161,7 +170,7 @@ function ProposalPicker({ quarter, mission }) {
             render, so a future overlap announces itself.
           */}
           {(() => {
-            const notice = overlapNotice(proposal, ALL_PROJECTS, completions);
+            const notice = overlapNotice(proposal, everyProject, completions);
             if (!notice) return null;
             return (
               <p

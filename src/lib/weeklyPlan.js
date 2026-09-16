@@ -37,27 +37,20 @@
  * to live. Nothing else about them changed.
  */
 import { academyContent } from '../content/academyContent.js';
+import { projectPools, findProjectById } from '../content/slots/projects.js';
 
-const { gardenProjects = [] } = academyContent().electives;
-const { aerospaceProjects = [], roboticsProjects = [], scienceExperiments = [], technologyProjects = [] } = academyContent().projects;
 const { getThisWeeksScheduledIds = () => [], writingPrompts = [] } = academyContent().writing;
 
-const SOURCES = [
-  writingPrompts,
-  aerospaceProjects,
-  scienceExperiments,
-  technologyProjects,
-  roboticsProjects,
-  gardenProjects
-];
-
-/** Resolve a scheduled id against every pool it could belong to. */
+/**
+ * Resolve a scheduled id against everything it could belong to.
+ *
+ * Was a hand-written list of six pools, five of them subjects the platform had
+ * chosen in advance. The project half comes from the slot now.
+ */
 export function findScheduledItemById(id) {
-  for (const pool of SOURCES) {
-    const hit = (pool || []).find((p) => p.id === id);
-    if (hit) return hit;
-  }
-  return null;
+  return (writingPrompts || []).find((p) => p.id === id)
+    || findProjectById(academyContent(), id)
+    || null;
 }
 
 /**
@@ -117,47 +110,53 @@ export function getWeeklyWritingItem(date = new Date()) {
  * same rule this project keeps arriving at: a row that names a thing must open
  * that thing, and a form that documents a build must name the build.
  *
- * WHICH build, when a week holds more than one: the pools are consulted in the
- * order below, so an Aerospace or Science experiment wins over the CAD and
- * robotics tasks that share some weeks. Those are lesson exercises attached to
- * a Technology unit; the experiment is the thing with a hypothesis and a
- * result, which is what these four forms are for.
+ * WHICH build, when a week holds more than one: the prompt itself says, in
+ * preference order, and this function reads that order without opinion. See the
+ * note below on where that decision moved to and why it is not ours to hold.
  */
 /**
  * ---- AND THE FORM DECIDES WHICH POOLS COUNT. (Sep 8, 2026.) ----
  *
  * Read against the real schedule, a flat "first build in the week" rule paired
- * week 13's Lab Report with `tech7-tinkercad-low-poly`. A Tinkercad model has
- * no hypothesis, no measurement and no result — there is nothing to report.
- * Design Documentation is the form for a CAD build, and it has one.
+ * week 13's Lab Report with a CAD model. A CAD model has no hypothesis, no
+ * measurement and no result — there is nothing to report.
  *
- * So a Lab Report and a Scientific Observation take an experiment: Aerospace,
- * Science, Robotics or the Garden, all of which produce something that
- * happens. They never take a CAD exercise, and on a week that holds only one
- * they pair with nothing and say so — a lab report pointed at the wrong build
- * is worse than a lab report pointed at none.
+ * ---- WHERE THAT DECISION LIVES NOW (Sept 15, 2026) ----
  *
- * Preference order inside each list is the order below: an Aerospace or
- * Science experiment wins over the robotics task that shares some weeks.
+ * It used to live HERE, as a table mapping four of one school's writing-prompt
+ * ids to lists of that school's subjects:
+ *
+ *     const POOLS_FOR_FORM = { [a prompt id]: [a fixed list of pools], ... };
+ *
+ * Two faults in one table. It is a CURRICULUM decision — which forms can
+ * honestly describe which work — sitting in the engine, where the school that
+ * made it could not reach it. And it named four prompts and five subjects in
+ * advance, so a school whose forms or subjects differ got no pairing at all.
+ *
+ * A writing prompt now says for itself what it can document, in preference
+ * order, and the engine only reads it:
+ *
+ *     { id: [a prompt id], documents: [subject ids, most apt first] }
+ *
+ * ---- AND WHY THIS COMMENT NAMES NEITHER ----
+ *
+ * The example above used to carry the real ids. `verify-no-learner` failed on
+ * it, correctly: this file is in the school zone and is NOT on
+ * scripts/generic-debt.json, so it is one of the files that is already clean
+ * and may not become dirty again — and the check reads comments, on purpose,
+ * because a comment naming one school's subjects is how a generic file quietly
+ * turns back into a specific one. The fix is always to reword the prose, never
+ * to loosen the check.
+ *
+ * The decision is unchanged; it moved. This cost the contract NOTHING — a
+ * field on a prompt, inside `writingPrompts`, which every Academy already
+ * supplies. A prompt with no `documents` is never paired, which is right for
+ * an essay or a journal, whose subject is whatever the child chooses.
  */
-const EXPERIMENT_POOLS = () => [aerospaceProjects, scienceExperiments, roboticsProjects, gardenProjects];
-const ALL_BUILD_POOLS = () => [aerospaceProjects, scienceExperiments, technologyProjects, roboticsProjects, gardenProjects];
+const documentingPrompts = () =>
+  (writingPrompts || []).filter((p) => Array.isArray(p?.documents) && p.documents.length);
 
-/**
- * The four writing forms that DOCUMENT something built rather than invent a
- * subject of their own, each with the pools its form can honestly describe.
- * The rest of the pool (essay, creative writing, the space journal) is about
- * whatever he chooses, and pinning those to the week's build would take that
- * choice away for no gain.
- */
-const POOLS_FOR_FORM = {
-  'w7-lab-report': EXPERIMENT_POOLS,
-  'w7-scientific-observation': EXPERIMENT_POOLS,
-  'w7-mission-report': ALL_BUILD_POOLS,
-  'w7-design-documentation': ALL_BUILD_POOLS
-};
-
-export const BUILD_DOCUMENTATION_PROMPTS = new Set(Object.keys(POOLS_FOR_FORM));
+export const BUILD_DOCUMENTATION_PROMPTS = new Set(documentingPrompts().map((p) => p.id));
 
 /**
  * The hands-on build this documentation prompt is scheduled beside, or null.
@@ -167,12 +166,16 @@ export const BUILD_DOCUMENTATION_PROMPTS = new Set(Object.keys(POOLS_FOR_FORM));
  * here invents a pairing that the schedule did not make.
  */
 export function pairedBuildFor(promptId, date = new Date()) {
-  const pools = POOLS_FOR_FORM[promptId];
-  if (!pools) return null;
+  const prompt = (writingPrompts || []).find((p) => p.id === promptId);
+  const documents = Array.isArray(prompt?.documents) ? prompt.documents : null;
+  if (!documents || !documents.length) return null;
   const ids = getThisWeeksScheduledIds(date);
   if (!ids.includes(promptId)) return null;
-  for (const pool of pools()) {
-    const hit = (pool || []).find((p) => ids.includes(p.id));
+  const pools = projectPools(academyContent());
+  // The prompt's own order decides which build wins on a week holding several.
+  for (const subject of documents) {
+    const pool = pools.find((p) => p.subject === subject);
+    const hit = (pool?.items || []).find((p) => ids.includes(p.id));
     if (hit) return hit;
   }
   return null;

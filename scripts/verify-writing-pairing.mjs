@@ -82,12 +82,23 @@ console.log('\n--- 0. the module loads at all ---');
    */
   ok('weeklyPlan.js evaluates without throwing', typeof wp.pairedBuildFor === 'function',
     'a ReferenceError here is invisible to a parse check and fatal in the browser');
+  /**
+   * The property is that a `const` read of the content pack sits ABOVE
+   * everything that uses it, because import is hoisted and const is not.
+   *
+   * This used to find the use site by looking for `const SOURCES = [` — one
+   * hand-written list of five named pools, which went when the projects slot
+   * landed on Sept 15, 2026. Naming a variable was never the point; the order
+   * was. It now measures the order against the first exported function, which
+   * is true of the file whatever its internals are called.
+   */
   const lib = read('src/lib/weeklyPlan.js');
-  const declLine = lib.split('\n').findIndex((l) => /const \{[^}]*\} = academyContent\(\)/.test(l));
-  const useLine = lib.split('\n').findIndex((l) => /^const SOURCES = \[/.test(l));
+  const lines = lib.split('\n');
+  const declLine = lines.findIndex((l) => /const \{[^}]*\} = academyContent\(\)/.test(l));
+  const useLine = lines.findIndex((l) => /^export (function|const) /.test(l));
   ok('...because its content declarations sit above the code that uses them',
     declLine > -1 && useLine > -1 && declLine < useLine,
-    'import is hoisted; const is not');
+    `import is hoisted; const is not  (decl line ${declLine + 1}, first export line ${useLine + 1})`);
 }
 
 console.log('\n--- 1. the four documentation forms, and only those ---');

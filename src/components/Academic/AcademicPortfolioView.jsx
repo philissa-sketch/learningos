@@ -3,9 +3,8 @@ import { useAppStore } from '../../store/useAppStore.js';
 import { buildAcademicPortfolio } from '../../lib/academicPortfolio.js';
 import { formatCompletedAt } from './academicUi.js';
 import { academyContent } from '../../content/academyContent.js';
+import { projectPools } from '../../content/slots/projects.js';
 
-const { gardenProjects = [] } = academyContent().electives;
-const { aerospaceProjects = [], roboticsProjects = [], scienceExperiments = [], technologyProjects = [] } = academyContent().projects;
 const { SUBJECT_LABELS = {} } = academyContent().subjects;
 const { writingPrompts = [] } = academyContent().writing;
 
@@ -39,7 +38,8 @@ export function AcademicPortfolioView() {
     writingEntries,
     academicAssignments,
     portfolio,
-    promptPools: [writingPrompts, aerospaceProjects, scienceExperiments, technologyProjects, roboticsProjects, gardenProjects]
+    // The writing prompts, then every project pool this school declares.
+    promptPools: [writingPrompts, ...projectPools(academyContent()).map((p) => p.items)]
   });
 
   const visible = filter === 'all' ? items : items.filter((i) => i.source === filter);

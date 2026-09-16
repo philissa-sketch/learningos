@@ -48,21 +48,26 @@
 import { toDateStr, addDays, todayDateStr, parseDateStr } from './scheduler.js';
 import { academyContent } from '../content/academyContent.js';
 import { QUARTER_SPANS } from './yearPlan.js';
+import { findProjectById } from '../content/slots/projects.js';
 
-const { gardenBriefs = [], gardenBuildTrack = [], gardenCalendar = [], gardenProjects = [] } = academyContent().electives;
-const { aerospaceProjects = [], roboticsProjects = [], scienceExperiments = [], technologyProjects = [] } = academyContent().projects;
+const { gardenBriefs = [], gardenBuildTrack = [], gardenCalendar = [] } = academyContent().electives;
 const { isHoliday = () => false, isSchoolDay = () => false } = academyContent().timetable;
 const { SCHOOL_YEAR_START, getSchoolWeekNumber = () => false, weeklyWritingSchedule = {}, writingPrompts = [] } = academyContent().writing;
 
-/** Every pool a scheduled id might resolve against. Same six as weeklyPlan.js. */
-const POOLS = [writingPrompts, aerospaceProjects, scienceExperiments, technologyProjects, roboticsProjects, gardenProjects];
-
+/**
+ * The scheduled item with this id — a writing prompt, or a project from any
+ * pool this school declares.
+ *
+ * Was a hand-written list of six pools, five of them named subjects the
+ * platform had chosen in advance. The project half comes from the slot now, so
+ * a school that takes up an elective nobody anticipated is searched without a
+ * line being added here. The writing prompts stay named because they are one
+ * pool, from one slot, and there is nothing to generalise.
+ */
 function findItemById(id) {
-  for (const pool of POOLS) {
-    const hit = (pool || []).find((p) => p.id === id);
-    if (hit) return hit;
-  }
-  return null;
+  return (writingPrompts || []).find((p) => p.id === id)
+    || findProjectById(academyContent(), id)
+    || null;
 }
 
 /**

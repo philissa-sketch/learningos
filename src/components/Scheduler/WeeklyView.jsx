@@ -9,21 +9,20 @@ import {
 } from '../../lib/scheduler.js';
 import { buildPlannerItemsByDate } from '../../lib/plannerCalendar.js';
 import { academyContent } from '../../content/academyContent.js';
+import { findProjectById } from '../../content/slots/projects.js';
 
-const { gardenProjects = [] } = academyContent().electives;
-const { aerospaceProjects = [], roboticsProjects = [], scienceExperiments = [], technologyProjects = [] } = academyContent().projects;
 const { getThisWeeksScheduledIds = () => [], writingPrompts = [] } = academyContent().writing;
 
+/**
+ * The scheduled item with this id — a writing prompt, or a project from any
+ * pool this school declares.
+ *
+ * Was a chain of six hand-written lookups. The project half now comes from the
+ * slot, so a school that takes up a new elective is searched without anyone
+ * adding a line here.
+ */
 function findItemById(id) {
-  return (
-    writingPrompts.find((p) => p.id === id) ||
-    aerospaceProjects.find((p) => p.id === id) ||
-    scienceExperiments.find((p) => p.id === id) ||
-    technologyProjects.find((p) => p.id === id) ||
-    roboticsProjects.find((p) => p.id === id) ||
-    gardenProjects.find((p) => p.id === id) ||
-    null
-  );
+  return writingPrompts.find((p) => p.id === id) || findProjectById(academyContent(), id) || null;
 }
 
 /**

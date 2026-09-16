@@ -3,13 +3,18 @@ import { NovaMessage } from '../Mentor/NovaMessage.jsx';
 import { getMasteryMessage, getReviewMessage, getEnrichmentSuggestion } from '../../lib/novaVoice.js';
 import { playMastery } from '../../lib/sfx.js';
 import { academyContent } from '../../content/academyContent.js';
+import { allProjects } from '../../content/slots/projects.js';
 
-const { gardenProjects = [] } = academyContent().electives;
-const { aerospaceProjects = [], roboticsProjects = [], scienceExperiments = [], technologyProjects = [] } = academyContent().projects;
 
-const allHandsOnProjects = [...aerospaceProjects, ...scienceExperiments, ...technologyProjects, ...roboticsProjects, ...gardenProjects];
+/**
+ * Every hands-on project, from whatever pools this school declares.
+ *
+ * Was a hand-written spread of five named pools. Read inside the component so
+ * the slot is not evaluated before a school can be switched.
+ */
 
 export function FeedbackPanel({ attemptResult, lesson, onDone, onExitCheck, onOpenView }) {
+  const allHandsOnProjects = useMemo(() => allProjects(academyContent()), []);
   const pct = Math.round(attemptResult.accuracy * 100);
   const relatedProject = lesson.relatedProjectId
     ? allHandsOnProjects.find((p) => p.id === lesson.relatedProjectId)

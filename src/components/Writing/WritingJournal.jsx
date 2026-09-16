@@ -5,9 +5,9 @@ import { orderScheduledCards, scheduleSortDate } from '../../lib/academicOrder.j
 import { todayDateStr, toDateStr, addDays, parseDateStr } from '../../lib/scheduler.js';
 import { pairedBuildFor, BUILD_DOCUMENTATION_PROMPTS } from '../../lib/weeklyPlan.js';
 import { academyContent } from '../../content/academyContent.js';
+import { projectPools } from '../../content/slots/projects.js';
 
-const { gardenProjects = [] } = academyContent().electives;
-const { aerospaceProjects = [], roboticsProjects = [], scienceExperiments = [], technologyProjects = [] } = academyContent().projects;
+const { subjectCardLabel = () => null } = academyContent().subjects;
 const { writingPrompts = [] } = academyContent().writing;
 
 /** Short, readable, and never through new Date('YYYY-MM-DD') - that is UTC. */
@@ -28,12 +28,27 @@ function monthLabel(dateStr) {
  * organising principle until Aug 17; now they are one word on the card, which
  * is all the job they were ever really doing once every card had a date.
  */
+/**
+ * The kinds of work a card can be.
+ *
+ * The five project pools were listed here by hand, each with a label typed in
+ * the platform — a school's word for its own subject, written down somewhere
+ * the school cannot reach. They come from the slot now.
+ *
+ * THE LABEL IS THE CARD LABEL, not the formal one. The school keeps two names
+ * per subject and asked for the split in August: *"the formal name on the
+ * records, the plainer one on the card."* SUBJECT_LABELS says "Gardening &
+ * Applied Engineering"; a card says "Garden". These are cards, so they ask
+ * `subjectCardLabel`, which every other card in the app already asks — and
+ * which falls through to the formal name for a subject that needs no plainer
+ * one. Using the pool's own `label` here would have quietly lengthened four
+ * headings on his screen.
+ *
+ * The two writing kinds stay, because they are not pools — they are one pool
+ * split by a category the writing slot defines.
+ */
 const KINDS = [
-  { label: 'Science', items: scienceExperiments },
-  { label: 'Aerospace', items: aerospaceProjects },
-  { label: 'Technology', items: technologyProjects },
-  { label: 'Robotics', items: roboticsProjects },
-  { label: 'Garden', items: gardenProjects },
+  ...projectPools(academyContent()).map((p) => ({ label: subjectCardLabel(p.subject) || p.label, items: p.items })),
   { label: 'Writing skill', items: writingPrompts.filter((p) => p.category === 'skill') },
   { label: 'Recurring project', items: writingPrompts.filter((p) => p.category === 'project') }
 ];

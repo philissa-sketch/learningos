@@ -306,14 +306,36 @@ ok('the overlap is matched against the pools, not hardcoded',
   'a hardcoded sentence goes stale the moment a project is renamed');
 
 const uiSrc = read('src/components/Dashboard/MissionEvaluationSection.jsx');
+/**
+ * ---- THESE TWO PINNED THE OLD SPELLING (corrected Sept 15, 2026) ----
+ *
+ * The first required the literal `ALL_PROJECTS`. The second required
+ * `const ALL_PROJECTS = [...aerospaceProjects` — under the label *"the project
+ * pool list is built from the pools themselves"*, which is precisely what a
+ * hand-written spread of four named pools is NOT. It demanded the fault it
+ * was named for, and the fault was live: the garden was missing from that
+ * spread, so six garden projects never reached the overlap notice.
+ *
+ * They assert the property now. The notice is computed on the proposal card
+ * from a list of every project, and that list comes from the slot rather than
+ * from anybody's memory of which pools exist.
+ */
 ok('the notice renders on the proposal card, where she chooses',
-  /overlapNotice\(proposal, ALL_PROJECTS, completions\)/.test(uiSrc));
+  /overlapNotice\(\s*proposal\s*,\s*\w+\s*,\s*completions\s*\)/.test(uiSrc),
+  'she sees it where the choice is made, not on a later screen');
 ok('...and does NOT disable the option',
   !/disabled=\{[^}]*notice/.test(uiSrc),
   'it reports; she decides');
-ok('the project pool list is built from the pools themselves',
-  /const ALL_PROJECTS = \[\s*\.\.\.aerospaceProjects/.test(uiSrc),
-  'a hand-maintained list is one someone forgets to update');
+const uiCode = uiSrc.replace(/\/\*[\s\S]*?\*\//g, '').replace(/^\s*\/\/.*$/gm, '');
+ok('the project pool list comes from the slot, not from a hand-written spread',
+  /allProjects\(/.test(uiCode) && /content\/slots\/projects\.js/.test(uiCode),
+  'a hand-maintained list is one someone forgets to update — and someone did');
+ok('...and no pool is named one by one here any more',
+  !/(aerospaceProjects|scienceExperiments|technologyProjects|roboticsProjects|gardenProjects)/.test(uiCode),
+  'naming four of the five is how the garden fell out of this check for weeks');
+ok('...and the slot is read inside the component, not at module scope',
+  /useMemo\(\s*\(\)\s*=>\s*allProjects\(/.test(uiCode),
+  'a module-scope read is evaluated once, before a school can be switched');
 
 const storeSrc = read('src/store/useAppStore.js');
 ok('completions are read from the Writing Journal entry that records them',
