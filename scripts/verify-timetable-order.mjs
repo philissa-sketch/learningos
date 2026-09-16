@@ -603,6 +603,163 @@ console.log('\n--- 4. no two rows claim the same minute of the same subject ---'
    */
 }
 
+console.log('\n--- 8. Friday offers what is behind, not everything ---');
+{
+  /**
+   * =====================================================================
+   * "MAKE IT THAT ONLY SUBJECTS AND PROJECTS THAT ARE DUE SHOWS UP IN THE
+   * 'REST OF THE DAY' ON FRIDAYS." (Sep 16, 2026.)
+   * =====================================================================
+   *
+   * Friday is `{ kind: 'core', flex: true, subjects: [] }` — a catch-up day
+   * that names no subject, on purpose. `todaysSubjects` read that empty list,
+   * fell through to `allSubjects`, and put every rotating subject on the board:
+   * aerospace, technology, socialStudies, robotics, on top of the nine daily
+   * rows. Four of them were work no timetable had asked him for.
+   *
+   * The opposite fault is on record too, from Aug 12: *"The catch-up day had
+   * nothing on it to catch up on."* Empty is not the fix.
+   *
+   * Put to her with both named, she chose: only what is behind, plus what is
+   * dated. So Friday asks a question with an answer — did this subject get the
+   * day the timetable gave it? — and reads it off the record.
+   *
+   * ---- WHAT IS GUARDED HERE, AND WHY IT IS SHAPED THIS WAY ----
+   *
+   * The walk lives inside a JSX component, so node cannot call it. Rather than
+   * re-implement it here — a second copy of a rule is how two facts that must
+   * agree come to differ, the exact fault verify-writing-pairing was written
+   * for — this asserts the two properties that make the walk possible at all,
+   * behaviourally, against her real curriculum, plus the wiring that carries
+   * the result to the screen.
+   */
+  const code = codeOnly(read(DASH));
+
+  ok('the flex branch offers what is behind, not every subject',
+    /todayPattern\.flex\s*\?\s*subjectsBehindThisWeek/.test(code),
+    'falling through to allSubjects is the row she reported: four subjects nothing had assigned');
+  /**
+   * ANCHORED TO THE BRANCH, NOT TO THE CALL. Written as a bare search for
+   * `liveRotatingSubjects(new Date(), ...)` this passed while the branch itself
+   * was gutted — the same call appears again at `rotatingOwners`, sixty lines
+   * down, and satisfied the pattern. A check that a second line happens to
+   * satisfy is not checking the first one.
+   */
+  ok('...and a non-flex core day is untouched — the rotation still owns it',
+    /todayPattern\.flex\s*\?\s*subjectsBehindThisWeek\s*:\s*\[\s*\.\.\.liveRotatingSubjects\(new Date\(\), khanAcademyAssignments\),/.test(code),
+    'Tuesday and Thursday must keep answering from the timetable, not from the record');
+
+  /**
+   * ONE WALK, TWO ANSWERS. Asked separately, the label function returned the
+   * first day that OWNED the subject rather than the day it was MISSED — so a
+   * subject that ran Tuesday and Thursday and was skipped on Thursday was
+   * reported as "Missed Tuesday". A row that names the wrong day is a row she
+   * cannot act on.
+   */
+  ok('the missed-day label is read from the same walk that found it behind',
+    /const missedDayLabel = \(subject\) =>\s*behindThisWeek\.find/.test(code),
+    'a second walk answered with the day he did the work, not the day he skipped');
+  ok('...and the subject list is derived from that walk too',
+    /const subjectsBehindThisWeek = behindThisWeek\.map\(\(b\) => b\.subject\);/.test(code));
+  ok('...and a subject already behind is not pushed twice',
+    /if \(behind\.some\(\(b\) => b\.subject === subject\)\) continue;/.test(code),
+    'the 2:15 slot can hand the same subject two days in one week');
+  ok('...and a day that has not happened yet cannot have been missed',
+    /if \(date >= today\) continue;/.test(code),
+    'without this, Friday morning reports Friday itself as skipped');
+  ok('the row says which day it missed',
+    /Missed \$\{missed\} — the 2:15 block is open for it/.test(code),
+    '"aerospace" alone does not tell her whether this is catch-up or a new ask');
+
+  /**
+   * NOT off-timetable on a flex day. `offTimetable` means "assigned to him,
+   * but today has no slot for it". Friday's whole purpose is to be the slot,
+   * so stamping the warning on a catch-up row makes it argue with itself —
+   * the same contradiction she caught on the project row in August.
+   */
+  ok('nothing on a flex day is stamped "not on today\'s timetable"',
+    /const isOffTimetable = \(subject\) => \{[\s\S]{0,80}?if \(todayPattern\.flex\) return false;/
+      .test(code.replace(/\n\s*\n/g, '\n')),
+    'Friday IS the slot; the warning would contradict the row it sits on');
+
+  /**
+   * ---- THE BEHAVIOURAL HALF ----
+   *
+   * A subject is "not behind" if he ticked it on Khan OR finished a Mission
+   * Control lesson in it that day. aerospace and robotics own the 2:15 block on
+   * some days but have NO Khan rows at all, so for them the tick can never
+   * fire and the lesson is the only signal there is. A rotating subject with
+   * neither would be permanently behind — it would sit on every Friday of the
+   * year with no way for him to clear it.
+   */
+  /**
+   * moduleUrl(), not REPO + '/…'. This file already defines that helper at the
+   * top and explains why: her machine is Windows, REPO begins `C:`, and Node
+   * rejects a concatenated path with ERR_UNSUPPORTED_ESM_URL_SCHEME. I wrote
+   * the concatenated form here anyway and verify-script-imports caught it —
+   * which is the fifth instance of that exact fault, and the first one found
+   * before it reached her.
+   */
+  const { academyContent } = await import(moduleUrl('src/content/academyContent.js'));
+  const { liveRotatingSubjects, liveMorningSubject } = await import(moduleUrl('src/lib/rotatingBlock.js'));
+  const { toDateStr, addDays } = await import(moduleUrl('src/lib/scheduler.js'));
+  const content = academyContent();
+  const { dayPattern } = content.timetable;
+  const { allLessons } = content.lessons;
+  /**
+   * HIS ASSIGNMENT ROWS ARE NOT CURRICULUM, so they are not in the content pack
+   * and a static check cannot have them. Passed `null`, both resolvers name the
+   * day's real owner from the timetable's own preference list — which is the
+   * question here — rather than falling back to Science. Passing `[]` instead
+   * says "I looked and he has nothing assigned", and silently emptied the
+   * morning half of this set on the first run of this section.
+   */
+  const owners = new Set();
+  const start = new Date(content.writing.SCHOOL_YEAR_START.getTime());
+  let scanned = 0;
+  for (let i = 0; i < 400; i += 1) {
+    const d = new Date(toDateStr(addDays(start, i)) + 'T12:00:00');
+    const pattern = dayPattern(d);
+    if (!pattern || pattern.kind !== 'core' || pattern.flex) continue;
+    scanned += 1;
+    for (const s of liveRotatingSubjects(d, null)) owners.add(s);
+    const m = liveMorningSubject(d, null);
+    if (m) owners.add(m);
+  }
+  /**
+   * NO COUNT IS ASSERTED. My first pass said `>= 4` — a number I guessed rather
+   * than counted, which is the tripwire this file warns about four sections up,
+   * and it failed on sight: robotics owns the 2:15 block exactly twice, both
+   * late in the year. How many subjects rotate is her curriculum's business and
+   * changes when she moves one. That the set is not EMPTY is this suite's
+   * business, because an empty set would let every check below pass vacuously.
+   */
+  ok(`the rotation names ${owners.size} subjects across ${scanned} timetabled days`,
+    owners.size > 0 && scanned > 100,
+    'an empty set would make every check below pass by having nothing to check');
+
+  /**
+   * A subject clears itself two ways: the Khan tick he makes himself, or a
+   * Mission Control lesson finished that day. Only the SECOND can be checked
+   * here — whether he has Khan rows in a subject is his data, not curriculum,
+   * and the daily tick is keyed by subject rather than by a fixed list, so no
+   * static claim about which subjects can be ticked would be honest.
+   *
+   * (KHAN_TAUGHT_SUBJECTS is not that list. It is the three subjects with their
+   * own DAILY block — math, reading, science — none of which rotate. Reaching
+   * for it here made this check report that socialStudies and technology have
+   * "no Khan row to tick", which his own export contradicts.)
+   *
+   * So: the lesson signal must exist for every rotating subject. That is the
+   * one that is always available to him, and a rotating subject without it
+   * would sit on every Friday of the year with no way to clear it.
+   */
+  const unclearable = [...owners].filter((s) => !allLessons.some((l) => l.subject === s));
+  ok('every rotating subject can be cleared by finishing a lesson in it',
+    unclearable.length === 0,
+    `no lessons at all in: ${unclearable.join(', ')} — it would sit on every Friday forever`);
+}
+
 console.log(`\n${passed} passed, ${failures.length} failed`);
 if (failures.length) {
   console.log(`\n${failures.length} CHECK(S) FAILED`);

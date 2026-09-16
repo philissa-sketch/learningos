@@ -251,15 +251,6 @@ export function MissionControlDashboard({
    * Today's routine."* Adding a slot without adding it here would have been the
    * third time, in the same subject, for the same reason.
    */
-  const todaysSubjects = todayPattern.kind === 'core' && !todayPattern.flex
-    ? [
-        ...liveRotatingSubjects(new Date(), khanAcademyAssignments),
-        ...(liveMorningSubject(new Date(), khanAcademyAssignments)
-          ? [liveMorningSubject(new Date(), khanAcademyAssignments)]
-          : [])
-      ]
-    : allSubjects;
-
   /**
    * LOCAL DATE, NEVER UTC. (Fixed Aug 10, 2026, ~9pm Eastern.)
    *
@@ -279,6 +270,95 @@ export function MissionControlDashboard({
    */
   const today = useToday();
   const dailyDone = (khanDailyLog && khanDailyLog[today]) || {};
+
+  /**
+   * ==========================================================================
+   * FRIDAY SHOWS WHAT IS BEHIND, NOT EVERYTHING. (Sep 16, 2026.)
+   * ==========================================================================
+   *
+   * The parent: **"Make it that only subjects and projects that are due shows
+   * up in the Rest of the day on Fridays."**
+   *
+   * ---- READ THE AUG 12 COMMENT ABOVE BEFORE CHANGING THIS AGAIN ----
+   *
+   * The OPPOSITE fault was reported five weeks ago: Friday showed no
+   * specialised subject at all, because `kind === 'core'` filtered against
+   * Friday's deliberately empty `subjects: []`. *"The catch-up day had nothing
+   * on it to catch up on."* The fix was `flex` falling through to the weekend
+   * branch — show everything.
+   *
+   * Everything turned out to be too much. Friday carried a mission row for
+   * Aerospace, Technology, Social Studies AND Robotics plus Khan rows for
+   * Social Studies and Technology, on top of nine daily rows, whether or not
+   * any of it was owed. A list that always shows the same eleven things is not
+   * a list of what to do; it is wallpaper.
+   *
+   * Put to her with both failures named, she chose neither extreme: **only
+   * what is behind, plus what is dated.** So Friday asks a real question —
+   * did this subject get the day the timetable gave it? — and answers it from
+   * the record rather than from the day of the week.
+   *
+   *   a week he kept up with  ->  a short Friday, daily blocks and the build
+   *   a week he slipped       ->  exactly what slipped, and nothing else
+   *
+   * DATED WORK IS UNAFFECTED and always was: the week's hands-on build, the
+   * weekly Journal piece, the Friday word-study quiz, the garden, and anything
+   * from the Academic Center have their own rows and do not pass through here.
+   */
+  const behindThisWeek = (() => {
+    const monday = addDays(parseDateStr(today), -((new Date(today + 'T12:00:00').getDay() + 6) % 7));
+    const behind = [];
+    for (let i = 0; i < 4; i += 1) {
+      const date = toDateStr(addDays(monday, i));
+      // A day that has not happened cannot have been missed.
+      if (date >= today) continue;
+      const d = new Date(date + 'T12:00:00');
+      const pattern = dayPattern(d);
+      if (!pattern || pattern.kind !== 'core') continue;
+      const morning = liveMorningSubject(d, khanAcademyAssignments);
+      const owners = [
+        ...liveRotatingSubjects(d, khanAcademyAssignments),
+        ...(morning ? [morning] : [])
+      ];
+      for (const subject of owners) {
+        /**
+         * Either signal counts as having done it: the Khan tick he makes
+         * himself, or a Mission Control lesson finished that day. Requiring
+         * both would call a real day missed.
+         */
+        const ticked = khanDailyLog?.[date]?.[subject] === true;
+        const taught = allLessons.some(
+          (l) => l.subject === subject && lessonProgress[l.id]?.lastCompletedDate === date
+        );
+        if (ticked || taught) continue;
+        if (behind.some((b) => b.subject === subject)) continue;
+        behind.push({ subject, label: pattern.label });
+      }
+    }
+    return behind;
+  })();
+
+  const subjectsBehindThisWeek = behindThisWeek.map((b) => b.subject);
+
+  /**
+   * Which day each behind subject actually missed, so the row can say so.
+   * Read from the SAME walk that decided it was behind — asked separately it
+   * answered with the first day that OWNED the subject, which on a
+   * Tuesday/Thursday pair is the day he did the work, not the day he skipped.
+   */
+  const missedDayLabel = (subject) =>
+    behindThisWeek.find((b) => b.subject === subject)?.label ?? null;
+
+  const todaysSubjects = todayPattern.kind === 'core'
+    ? todayPattern.flex
+      ? subjectsBehindThisWeek
+      : [
+          ...liveRotatingSubjects(new Date(), khanAcademyAssignments),
+          ...(liveMorningSubject(new Date(), khanAcademyAssignments)
+            ? [liveMorningSubject(new Date(), khanAcademyAssignments)]
+            : [])
+        ]
+    : allSubjects;
 
   /**
    * Khan subjects that genuinely run EVERY school day, because the printed
@@ -690,6 +770,16 @@ export function MissionControlDashboard({
    * school day.
    */
   const isOffTimetable = (subject) => {
+    /**
+     * FRIDAY IS NEVER OFF-TIMETABLE. (Sep 16, 2026.)
+     *
+     * Its 2:15 block is OPEN — "whatever is behind gets it" — and since this
+     * day now only lists subjects that are actually behind, every row here is
+     * precisely what that block is for. Stamping them "not on today's
+     * timetable" would be the screen arguing with itself, which is the exact
+     * complaint that started this whole thread.
+     */
+    if (todayPattern.flex) return false;
     // It owns the 10:30 slot today, so it is as on-timetable as Mathematics.
     if (subject && subject === morningOwner) return false;
     if (BLOCK_FOR_SUBJECT[subject] !== ROTATING_BLOCK_ID) return false;
@@ -1006,6 +1096,13 @@ export function MissionControlDashboard({
 
           {remainingMissions.map(({ subject, mission }) => {
             const n = lessonNote({ ...mission, subject });
+            /**
+             * ON FRIDAY, WHY IT IS HERE COMES FIRST. A row that appears only
+             * because the subject missed its day should say which day — a bare
+             * row on the open block reads as one more thing, not as the thing
+             * he skipped on Tuesday.
+             */
+            const missed = todayPattern.flex ? missedDayLabel(subject) : null;
             return (
               <TodayRow
                 key={subject}
@@ -1016,8 +1113,8 @@ export function MissionControlDashboard({
                 title={mission.title}
                 detail={mission.theme}
                 kind="mission"
-                progressNote={n?.note}
-                progressTone={n?.tone}
+                progressNote={missed ? `Missed ${missed} — the 2:15 block is open for it` : n?.note}
+                progressTone={missed ? 'partial' : n?.tone}
                 onAction={() => onStartLesson(mission)}
                 actionLabel={n?.action || 'Start'}
               />

@@ -221,11 +221,44 @@ for (const d of week) console.log('   ', d.weekday.padEnd(10), d.label);
 // with. `flex` is the flag that separates "this day names its subject" from
 // "this day takes whatever is behind".
 // ---------------------------------------------------------------------------
-console.log('--- friday shows everything, because it is the overflow day ---');
+/**
+ * ---- AND ON SEP 16 2026 SHE REVERSED THE OTHER HALF OF IT ----
+ *
+ * "Make it that only subjects and projects that are due shows up in the 'Rest
+ * of the day' on Fridays."
+ *
+ * The Aug 12 fix above sent Friday to `allSubjects`, which put aerospace,
+ * technology, socialStudies and robotics on the board every Friday whether or
+ * not anything was owed in them — four rows no timetable had asked for, on top
+ * of the nine daily ones.
+ *
+ * Both failures are real and they are opposite. Put to her with both named,
+ * she chose neither: **only what is behind, plus what is dated.** Friday now
+ * asks the record — did this subject get the day the timetable gave it? — and
+ * a week he kept up with yields a short Friday ON PURPOSE.
+ *
+ * SO THE PROPERTY THESE TWO CHECKS DEFEND HAS NARROWED, AND IS RESTATED, NOT
+ * DELETED: Friday must never be reduced to its own empty `subjects: []` list.
+ * That was the Aug 12 bug and it is still a bug. What is no longer asserted is
+ * that Friday shows EVERYTHING — that was one answer to it, and it is now hers
+ * to have changed. Asserting today's answer here is what made this suite fail
+ * on a screen that had just been corrected.
+ */
+console.log('--- friday draws on the record, never on its own empty subject list ---');
 {
-  const dash = fs.readFileSync(root + '/src/components/Dashboard/MissionControlDashboard.jsx', 'utf8');
+  /**
+   * COMMENTS STRIPPED, like the block at the foot of this file already does.
+   * Read raw, the negative clause below matched the dashboard's own comment
+   * QUOTING the Aug 26 bug — `allSubjects.filter((s) => scheduledToday…` — and
+   * reported a corrected screen as broken. Eighth instance in this repo of a
+   * guard matching an explanation of the thing it forbids.
+   */
+  const dash = fs.readFileSync(root + '/src/components/Dashboard/MissionControlDashboard.jsx', 'utf8')
+    .replace(/\/\*[\s\S]*?\*\//g, '').replace(/\{\/\*[\s\S]*?\*\/\}/g, '').replace(/^\s*\/\/.*$/gm, '');
   ok('a flex day is not filtered down to its (empty) subject list',
-    /todayPattern\.kind === 'core' && !todayPattern\.flex/.test(dash));
+    !/allSubjects\.filter\(\(\w+\) => (?:scheduledToday|todayPattern\.subjects)/.test(dash)
+      && /todayPattern\.flex\s*\?\s*subjectsBehindThisWeek/.test(dash),
+    'an empty preference list means "this day takes what is behind", never "this day has nothing"');
   ok('...and Friday is still the flex day in the pattern',
     WEEK_PATTERN[5].flex === true && WEEK_PATTERN[5].subjects.length === 0);
   const { subjectsForDay } = await import(moduleUrl('src/academies/lamar/data/schedule/weekPattern.js'));
@@ -326,9 +359,15 @@ console.log('--- friday shows everything, because it is the overflow day ---');
   ok('...and his mission list counts the 10:30 slot too',
     /liveMorningSubject\(new Date\(\), khanAcademyAssignments\)/.test(dash),
     'a subject with a day on the timetable and nothing on his screen is the bug this project keeps finding');
-  ok('...and a flex day still shows everything',
-    /todayPattern\.kind === 'core' && !todayPattern\.flex/.test(dash),
-    'Friday is the overflow day — narrowing it is the Aug 12 bug');
+  /**
+   * Was `...and a flex day still shows everything`, pinned to the same literal
+   * as the Aug 12 section. See the note there: she replaced "everything" with
+   * "what is behind" on Sep 16. The half that survives is that a flex day is
+   * answered by its own branch rather than falling through the rotation.
+   */
+  ok('...and a flex day is answered from the record, not from the rotation',
+    /todayPattern\.flex\s*\?\s*subjectsBehindThisWeek\s*:/.test(dash),
+    'Friday owns no subject; reading the rotation there gives it Thursday\u2019s');
 }
 
 
