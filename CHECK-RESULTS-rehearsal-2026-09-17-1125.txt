@@ -1,0 +1,163 @@
+LearningOS CI rehearsal
+When   : Thu 09/17/2026 11:25:41.28
+Commit :
+7f9eff5 Audit fix
+v24.16.0
+
+
+added 133 packages, and audited 134 packages in 3s
+
+25 packages are looking for funding
+  run `npm fund` for details
+
+2 vulnerabilities (1 moderate, 1 high)
+
+To address all issues (including breaking changes), run:
+  npm audit fix --force
+
+Run `npm audit` for details.
+
+> learningos@0.1.0 prebuild
+> node scripts/run-checks.mjs
+
+
+=== build gate: 71 checks, ACADEMY=lamar ===
+  pass   verify-academic-order  (1.6s)
+  pass   verify-academic-schedule  (0.1s)
+  pass   verify-academy-css  (3.5s)
+  pass   verify-academy-db  (0.5s)
+  pass   verify-academy-reach  (0.3s)
+  pass   verify-academy  (0.3s)
+  pass   verify-assignment-dates  (0.1s)
+  pass   verify-audit-aug23  (3.5s)
+  pass   verify-book-swap  (0.1s)
+  pass   verify-class-bell  (0.1s)
+  pass   verify-compliance-deadline  (0.2s)
+  red    verify-content-interface  (0.7s)  — known red, allowed
+  pass   verify-content-pack  (0.0s)
+  pass   verify-curriculum  (0.1s)
+  pass   verify-daily-writing  (0.2s)
+  pass   verify-dream-goals  (0.1s)
+  pass   verify-ela-sequence  (0.1s)
+  pass   verify-export-completeness  (0.4s)
+  pass   verify-field-trip-records  (0.3s)
+  pass   verify-front-door  (0.1s)
+  pass   verify-gardening  (0.2s)
+  pass   verify-georgia-hours  (0.2s)
+  pass   verify-grade-entry  (0.1s)
+  pass   verify-grammar-ladder  (0.1s)
+  pass   verify-guitar  (0.2s)
+  pass   verify-handoff  (0.2s)
+  pass   verify-hq-room  (0.2s)
+  pass   verify-import  (0.1s)
+  pass   verify-khan-unit-completion  (0.9s)
+  pass   verify-khan-unit-names  (0.1s)
+  pass   verify-lesson-before-assignment  (0.1s)
+  pass   verify-local-dates  (0.3s)
+  pass   verify-migration  (0.1s)
+  pass   verify-mission-grades  (0.2s)
+  pass   verify-mission-schedule  (0.1s)
+  pass   verify-morning-meeting  (0.2s)
+  pass   verify-nav-declared  (0.1s)
+  pass   verify-no-learner  (0.2s)
+  pass   verify-pacing  (0.2s)
+  pass   verify-parent-time-and-attendance  (0.1s)
+  pass   verify-parses  (0.7s)
+  pass   verify-pe-videos  (0.1s)
+  pass   verify-planner-feeds  (0.2s)
+  pass   verify-printouts  (0.1s)
+  pass   verify-prompt-lessons  (0.1s)
+  pass   verify-quarter-gating  (0.1s)
+  pass   verify-quiz-games  (0.1s)
+  pass   verify-readiness-record  (0.2s)
+  pass   verify-reflections  (0.1s)
+  pass   verify-report-card  (0.2s)
+  pass   verify-restart-protection  (0.2s)
+  pass   verify-roster-trim  (0.1s)
+  pass   verify-rotating-block  (0.1s)
+  pass   verify-schedule-times  (0.0s)
+  pass   verify-school-calendar  (0.1s)
+  pass   verify-script-imports  (0.2s)
+  pass   verify-slot-guide  (0.3s)
+  pass   verify-slot-projects  (0.6s)
+  pass   verify-slot-theme  (0.3s)
+  pass   verify-social-studies-pace  (0.1s)
+  pass   verify-splice-regression  (0.1s)
+  pass   verify-store-visibility  (0.1s)
+  pass   verify-technology-khan  (0.1s)
+  pass   verify-thin-boot  (1.3s)
+  pass   verify-three-doors  (0.2s)
+  pass   verify-timetable-order  (0.2s)
+  pass   verify-typing  (0.1s)
+  pass   verify-word-study  (0.4s)
+  pass   verify-writing-pairing  (0.1s)
+  pass   verify-wrong-answer-diagnosis  (0.1s)
+  pass   verify-xp-and-rank  (0.2s)
+
+=== build gate summary ===
+passed      : 70
+known red   : 1  verify-content-interface (lamar)
+NEW red     : 0
+gate issues : 0
+time        : 23s
+
+Gate green. Building.
+
+
+> learningos@0.1.0 build
+> vite build
+
+[36mvite v5.4.21 [32mbuilding for production...[36m[39m
+transforming...
+[32m✓[39m 478 modules transformed.
+rendering chunks...
+computing gzip size...
+[2mdist/[22m[32mindex.html                              [39m[1m[2m    1.30 kB[22m[1m[22m[2m │ gzip:   0.73 kB[22m
+[2mdist/[22m[35massets/template-DdXuuC1W.css            [39m[1m[2m    0.57 kB[22m[1m[22m[2m │ gzip:   0.36 kB[22m
+[2mdist/[22m[35massets/academy-w6hxMABX.css             [39m[1m[2m    0.91 kB[22m[1m[22m[2m │ gzip:   0.46 kB[22m
+[2mdist/[22m[35massets/academy-DncqgNXz.css             [39m[1m[2m    1.82 kB[22m[1m[22m[2m │ gzip:   0.68 kB[22m
+[2mdist/[22m[35massets/index-BdMSmcUj.css               [39m[1m[2m   45.42 kB[22m[1m[22m[2m │ gzip:   9.02 kB[22m
+[2mdist/[22m[36massets/glossary-dATgBESv.js             [39m[1m[2m    0.52 kB[22m[1m[22m[2m │ gzip:   0.37 kB[22m
+[2mdist/[22m[36massets/plannerCalendar-BdlBrseD.js      [39m[1m[2m    1.31 kB[22m[1m[22m[2m │ gzip:   0.69 kB[22m
+[2mdist/[22m[36massets/StudyGuide-CBl4YaM5.js           [39m[1m[2m    2.35 kB[22m[1m[22m[2m │ gzip:   0.92 kB[22m
+[2mdist/[22m[36massets/MissionCommsHome-DRYA8N9F.js     [39m[1m[2m    2.85 kB[22m[1m[22m[2m │ gzip:   1.30 kB[22m
+[2mdist/[22m[36massets/content-D4ljwdbx.js              [39m[1m[2m    3.03 kB[22m[1m[22m[2m │ gzip:   1.54 kB[22m
+[2mdist/[22m[36massets/WeakSpotDrill-CjEiWSXe.js        [39m[1m[2m    3.09 kB[22m[1m[22m[2m │ gzip:   1.23 kB[22m
+[2mdist/[22m[36massets/TypingHome-CgUnl5fb.js           [39m[1m[2m    3.13 kB[22m[1m[22m[2m │ gzip:   1.17 kB[22m
+[2mdist/[22m[36massets/ReviewGame-dugNIIeJ.js           [39m[1m[2m    3.97 kB[22m[1m[22m[2m │ gzip:   1.38 kB[22m
+[2mdist/[22m[36massets/PrintoutSheet-Dd_-CHs5.js        [39m[1m[2m    4.49 kB[22m[1m[22m[2m │ gzip:   1.35 kB[22m
+[2mdist/[22m[36massets/QuestionCard-CxYb49Kg.js         [39m[1m[2m    4.60 kB[22m[1m[22m[2m │ gzip:   1.83 kB[22m
+[2mdist/[22m[36massets/GamesHome-C8NNiLPp.js            [39m[1m[2m    4.89 kB[22m[1m[22m[2m │ gzip:   1.74 kB[22m
+[2mdist/[22m[36massets/writingCheck-0mYmx46r.js         [39m[1m[2m    5.06 kB[22m[1m[22m[2m │ gzip:   2.10 kB[22m
+[2mdist/[22m[36massets/TypingLessons-00AIWOFK.js        [39m[1m[2m    5.80 kB[22m[1m[22m[2m │ gzip:   1.84 kB[22m
+[2mdist/[22m[36massets/WritingJournal-CzU4HVNd.js       [39m[1m[2m    5.84 kB[22m[1m[22m[2m │ gzip:   2.09 kB[22m
+[2mdist/[22m[36massets/TypingPractice-CYng0eXn.js       [39m[1m[2m    6.26 kB[22m[1m[22m[2m │ gzip:   2.62 kB[22m
+[2mdist/[22m[36massets/schoolQuarter-DFxMwbnB.js        [39m[1m[2m    9.47 kB[22m[1m[22m[2m │ gzip:   3.79 kB[22m
+[2mdist/[22m[36massets/NationCommand-CGzQDxuN.js        [39m[1m[2m   10.15 kB[22m[1m[22m[2m │ gzip:   2.98 kB[22m
+[2mdist/[22m[36massets/LaunchDirector-CM8RvCJv.js       [39m[1m[2m   10.33 kB[22m[1m[22m[2m │ gzip:   2.94 kB[22m
+[2mdist/[22m[36massets/LessonRoster-bqgzanG3.js         [39m[1m[2m   11.32 kB[22m[1m[22m[2m │ gzip:   3.56 kB[22m
+[2mdist/[22m[36massets/WritingPromptEngine-DLHkE65z.js  [39m[1m[2m   12.26 kB[22m[1m[22m[2m │ gzip:   3.30 kB[22m
+[2mdist/[22m[36massets/shipSystems-CFDwoykJ.js          [39m[1m[2m   14.51 kB[22m[1m[22m[2m │ gzip:   4.98 kB[22m
+[2mdist/[22m[36massets/ProgressView-BJFTiEXz.js         [39m[1m[2m   14.64 kB[22m[1m[22m[2m │ gzip:   4.11 kB[22m
+[2mdist/[22m[36massets/MorningMeeting-C8t3YAMs.js       [39m[1m[2m   17.98 kB[22m[1m[22m[2m │ gzip:   5.04 kB[22m
+[2mdist/[22m[36massets/WordActivityRouter-B-oHELl_.js   [39m[1m[2m   22.95 kB[22m[1m[22m[2m │ gzip:   5.37 kB[22m
+[2mdist/[22m[36massets/SchedulerHome-CW5zXQ0k.js        [39m[1m[2m   24.87 kB[22m[1m[22m[2m │ gzip:   6.56 kB[22m
+[2mdist/[22m[36massets/GuitarHome-D9NGxx1K.js           [39m[1m[2m   30.46 kB[22m[1m[22m[2m │ gzip:   7.55 kB[22m
+[2mdist/[22m[36massets/PEHome-BN0srCk9.js               [39m[1m[2m   30.88 kB[22m[1m[22m[2m │ gzip:   7.70 kB[22m
+[2mdist/[22m[36massets/LessonEngine-ByK3tPPe.js         [39m[1m[2m   31.50 kB[22m[1m[22m[2m │ gzip:   8.26 kB[22m
+[2mdist/[22m[36massets/GardenHome-Btd4FZxL.js           [39m[1m[2m   54.95 kB[22m[1m[22m[2m │ gzip:  14.01 kB[22m
+[2mdist/[22m[36massets/AcademicHome-W3xppzqd.js         [39m[1m[2m   73.92 kB[22m[1m[22m[2m │ gzip:  16.03 kB[22m
+[2mdist/[22m[36massets/RewardsHome-Dg6v6zdG.js          [39m[1m[2m  146.21 kB[22m[1m[22m[2m │ gzip:  38.44 kB[22m
+[2mdist/[22m[36massets/ParentDashboard-BWd3_nEw.js      [39m[1m[2m  292.61 kB[22m[1m[22m[2m │ gzip:  73.46 kB[22m
+[2mdist/[22m[36massets/index-BBk6ZBmZ.js                [39m[1m[2m  348.52 kB[22m[1m[22m[2m │ gzip: 104.78 kB[22m
+[2mdist/[22m[36massets/SchoolBoot-D_16v31n.js           [39m[1m[33m1,528.98 kB[39m[22m[2m │ gzip: 424.00 kB[22m
+[2mdist/[22m[36massets/content-DL9NbJ_Y.js              [39m[1m[33m2,813.49 kB[39m[22m[2m │ gzip: 822.06 kB[22m
+[2mdist/[22m[36massets/content-BlXfpeg3.js              [39m[1m[33m3,171.55 kB[39m[22m[2m │ gzip: 920.88 kB[22m
+[33m
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.[39m
+[32m✓ built in 12.53s[39m
+
+===== REHEARSAL RESULT: GREEN

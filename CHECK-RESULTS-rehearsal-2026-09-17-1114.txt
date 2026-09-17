@@ -1,0 +1,347 @@
+LearningOS CI rehearsal
+When   : Thu 09/17/2026 11:14:18.47
+Commit :
+7f9eff5 Audit fix
+v24.16.0
+
+
+added 133 packages, and audited 134 packages in 10s
+
+25 packages are looking for funding
+  run `npm fund` for details
+
+2 vulnerabilities (1 moderate, 1 high)
+
+To address all issues (including breaking changes), run:
+  npm audit fix --force
+
+Run `npm audit` for details.
+
+> learningos@0.1.0 prebuild
+> node scripts/run-checks.mjs
+
+
+=== build gate: 71 checks, ACADEMY=lamar ===
+  pass   verify-academic-order  (1.7s)
+  pass   verify-academic-schedule  (0.1s)
+  pass   verify-academy-css  (3.5s)
+  pass   verify-academy-db  (0.5s)
+  pass   verify-academy-reach  (0.3s)
+  pass   verify-academy  (0.3s)
+  pass   verify-assignment-dates  (0.1s)
+  pass   verify-audit-aug23  (3.5s)
+  pass   verify-book-swap  (0.1s)
+  pass   verify-class-bell  (0.1s)
+  pass   verify-compliance-deadline  (0.2s)
+  red    verify-content-interface  (0.7s)  — known red, allowed
+  pass   verify-content-pack  (0.1s)
+  pass   verify-curriculum  (0.1s)
+  pass   verify-daily-writing  (0.2s)
+  pass   verify-dream-goals  (0.1s)
+  FAIL   verify-ela-sequence  (0.1s)
+         | PASS  every unit has a distinct URL slug
+         | PASS  unit 1 is the noun
+         | PASS  unit 2 is THE VERB — the unit that was stranded at slot 10
+         | PASS  Q1 holds 11 units (11) — the plan's figure
+         | 
+         | --- 2. the store agrees with the course order ---
+         | PASS  q1RestructureMap found in useAppStore
+         | PASS  elaSequenceMap found in useAppStore
+         | PASS  ELA_PLACEMENT_MAP found in useAppStore
+         | PASS  q1RestructureMap matches the Khan course order
+         | PASS  elaSequenceMap matches the Khan course order
+         | PASS  ELA_PLACEMENT_MAP matches the Khan course order
+         | PASS  ELA_PLACEMENT_MAP places every one of the 11 Q1 units
+         | 
+         | --- 3. the maps agree with each other ---
+         | PASS  no two maps give the same Q1 row different sequences
+         | PASS  the Q1 restructure pass defers to the placement map
+         | PASS  the sequence-repair pass defers to the placement map
+         | PASS  the placement map is hoisted to module scope so the earlier passes can see it
+         | 
+         | --- 4. position matches the page that actually opens ---
+         | PASS  every grammar row sits at the slot its Khan URL says it should
+         | PASS  "Roots, prefixes, and suffixes" is correctly NOT a Grammar-course unit
+         | PASS  "Roots, prefixes, and suffixes" follows all ten grammar units
+         | 
+         | --- 5. one unit per slot ---
+         | PASS  no two Q1 units share a sequence number
+         | PASS  Q1 sequences run 1..11 with no gaps
+         | 
+         | --- 6. placement survives a renamed row ---
+         | PASS  hydrate places grammar rows by their Khan URL, not their title
+         | PASS  and it uses the general-course-only matcher, so it cannot move other courses into Q1
+         | PASS  and renames each one to Khan's own title, so the row and the page agree
+         | PASS  the legacy title "Verb tenses, including the perfect tenses" is still recognised as Parts of speech: the verb
+         | PASS  "Verb tenses, including the perfect tenses" and "Parts of speech: the verb" resolve to the same slot
+         | PASS  the verb unit is seeded under one of its two names
+         | PASS  the import merge normalises a legacy grammar title before matching
+         | FAIL  and so does the de-duplication pass
+         | 
+         | 1 CHECK(S) FAILED
+  pass   verify-export-completeness  (0.4s)
+  FAIL   verify-field-trip-records  (0.3s)
+         | PASS  ...pre-filled with what the record currently says
+         | PASS  ...and it edits rather than deleting and recreating
+         | 
+         | --- 6. the packet is actually given the trips ---
+         | PASS  ComplianceSection subscribes to fieldTrips
+         | FAIL  ...and passes them to buildCompliancePacket  the merge above is dead code if the only caller never sends the table
+         | PASS  no other screen builds a packet without the trips
+         | 
+         | --- 7. the dedupe never deletes a plan ---
+         | PASS  an undated repeat visit is never deleted
+         | PASS  ...nor when every visit to every place is undated
+         | PASS  visits to the same place on different dates are kept
+         | PASS  but exact dated copies STILL collapse — the Aug 28 duplicates
+         | PASS  ...including a copy still wearing the old library name
+         | PASS  a trip carrying real work is never the one dropped
+         | PASS  a dated duplicate goes while an undated plan beside it stays
+         | 
+         | --- 8. the restore adds no duplicates ---
+         | PASS  undated plans with their own instants all come back
+         | PASS  an import copy stays deleted — same instant as the visible row
+         | PASS  two tombstones sharing one instant return only once
+         | PASS  a real plan returns while the copies beside it do not
+         | PASS  a DATED tombstone is never restored — she deleted that herself
+         | PASS  a tombstone carrying work is out of scope
+         | PASS  a destination she emptied entirely stays empty
+         | PASS  a row with no createdAt cannot be proved distinct, so it stays deleted
+         | 
+         | --- 9. a tombstone never competes with a live trip ---
+         | PASS  a deleted row never causes a live row to be deleted
+         | PASS  ...however many ghosts share the destination
+         | PASS  ...and a deleted row is never itself "dropped" again
+         | PASS  two live duplicates still collapse — the Aug 28 fix is intact
+         | PASS  recovery brings back exactly one row per buried destination
+         | PASS  ...so no destination comes back twice
+         | PASS  a destination that still has a live row is left alone entirely
+         | PASS  ...and what it restores survives the next dedupe
+         | 
+         | 69 passed, 1 failed
+         | 
+         | 1 CHECK(S) FAILED
+  pass   verify-front-door  (0.1s)
+  pass   verify-gardening  (0.3s)
+  pass   verify-georgia-hours  (0.2s)
+  pass   verify-grade-entry  (0.1s)
+  FAIL   verify-grammar-ladder  (0.1s)
+         | PASS  canonical title matches the seeded title for g78 "Pronouns"
+         | PASS  canonical title matches the seeded title for g78 "Verbs"
+         | PASS  canonical title matches the seeded title for g78 "Adjectives and adverbs"
+         | PASS  canonical title matches the seeded title for g78 "Prepositions and interjections"
+         | PASS  canonical title matches the seeded title for g78 "Sentences, clauses, and phrases"
+         | PASS  canonical title matches the seeded title for g78 "Punctuation and capitalization"
+         | PASS  canonical title matches the seeded title for g78 "Word study"
+         | PASS  canonical title matches the seeded title for g78 "Style and tone"
+         | PASS  canonicalGrammarTitle leaves a non-grammar row alone
+         | 
+         | --- 8. the store repairs rather than duplicates ---
+         | PASS  the ladder seeder matches on the URL, not the title
+         | PASS  ...and repairs an existing row in place instead of adding one
+         | PASS  ...and only deletes a stale row that is uncompleted
+         | PASS  pass (a2) uses the general-only matcher
+         | PASS  ...and nothing hands the WIDE matcher to a pass that writes a quarter
+         | FAIL  the store builds its row titles with grammarRowTitle, not a template string  a hand-built title is what drifted from the rename pass and caused the re-seed loop
+         | FAIL  the store builds its URLs with grammarUnitUrl
+         | FAIL  the store numbers units at 20 + i, after the quarter's reading rows  reading is the 10:00 block, grammar the 12:30 — the list order should say so
+         | FAIL  the store puts the course challenge last, at 97
+         | FAIL  the store FLAGS the course challenge row isCourseChallenge: true  without the flag her gradebook labels a Course Challenge a Unit Test
+         | FAIL  ...and flags the unit rows false
+         | PASS  the repair pass carries the challenge flag too
+         | 
+         | --- 9. the shipped repair, run against the damaged database ---
+         | PASS  the ladder block can be located in the shipped store
+         | PASS  the damaged database really does hand him "Nouns" (the bug reproduces)
+         | FAIL  after the repair, NO other grammar course is left in Q1  Nouns, Pronouns, Verbs, Adjectives and adverbs, Prepositions and interjections, Sentences, clauses, and phrases, Punctuation and capitalization, Word study, Style and tone, Grammar course challenge
+         | FAIL  THE CHECK: his 12:30 row now reads "Syntax: sentences and clauses"  Nouns
+         | FAIL  ...and it opens Khan unit 8 of the course he is actually in  https://www.khanacademy.org/ela/7th-and-8th-grade-grammar/x9e6f4267f632f2c6:nouns-7
+         | FAIL  the general course challenge now has a row, flagged, at the end of Q1  the test he is sitting right now reached no grade before this
+         | FAIL  the 5-6 course lands in Q2, all nine units plus its challenge
+         | FAIL  the 7-8 course splits 6 units into Q3 and 3 plus its challenge into Q4
+         | FAIL  the stale re-seed duplicate is gone
+         | PASS  all seven graded units kept their completion AND their grade
+         | PASS  a second startup changes nothing — the repair is a fixed point
+         | 
+         | 121 passed, 13 failed
+         | 
+         | 13 CHECK(S) FAILED
+  pass   verify-guitar  (0.2s)
+  pass   verify-handoff  (0.2s)
+  pass   verify-hq-room  (0.2s)
+  pass   verify-import  (0.1s)
+  pass   verify-khan-unit-completion  (0.9s)
+  pass   verify-khan-unit-names  (0.0s)
+  pass   verify-lesson-before-assignment  (0.1s)
+  pass   verify-local-dates  (0.3s)
+  pass   verify-migration  (0.1s)
+  pass   verify-mission-grades  (0.2s)
+  pass   verify-mission-schedule  (0.1s)
+  FAIL   verify-morning-meeting  (0.2s)
+         | PASS  ...into the Scheduler
+         | PASS  the Scheduler accepts an opening view
+         | PASS  ...validated against its own tab list, not trusted
+         | PASS  ...and everything else still opens on Daily
+         | PASS  whether he looked is recorded
+         | PASS  ...survives the merge from either machine
+         | PASS  ...and reaches the meeting row from the screen
+         | PASS  ...and she can see it
+         | 
+         | --- 10. he can see that he is getting better, not just what he owes ---
+         | PASS  there is a progress step
+         | PASS  ...placed right after the file trade
+         | PASS  it shows his rank and streak
+         | PASS  ...and lessons mastered, total and this week
+         | PASS  ...where the weekly figure is what answers "am I getting anywhere"
+         | PASS  ...and a week of nothing says so plainly
+         | PASS  newly graded writingEntries are surfaced
+         | PASS  ...and writingEntries is subscribed
+         | PASS  newly graded selfExplanations are surfaced
+         | PASS  ...and selfExplanations is subscribed
+         | PASS  newly graded khanAcademyAssignments are surfaced
+         | PASS  ...and khanAcademyAssignments is subscribed
+         | PASS  ...dated in HIS timezone, not UTC
+         | PASS  lessons he attempted and did not clear are named, with the number
+         | PASS  the button opens the real progress screen
+         | PASS  whether he looked is recorded
+         | PASS  ...survives the merge from either machine
+         | PASS  ...and she can see it
+         | 
+         | --- the deploy goes one way, and nothing says otherwise ---
+         | PASS  there is no hand-build-and-drag deploy script left in the repo
+         | PASS  ...but the offline fallback is still there
+         | PASS  READ-ME-FIRST.txt does not tell anyone to deploy by hand
+         | PASS  ...and says the push is what rebuilds the site
+         | PASS  README.md does not tell anyone to deploy by hand
+         | PASS  ...and says the push is what rebuilds the site
+         | 
+         | 118 passed, 2 failed
+         | 
+         | 2 CHECK(S) FAILED
+  pass   verify-nav-declared  (0.1s)
+  pass   verify-no-learner  (0.2s)
+  pass   verify-pacing  (0.1s)
+  pass   verify-parent-time-and-attendance  (0.1s)
+  pass   verify-parses  (0.7s)
+  pass   verify-pe-videos  (0.1s)
+  pass   verify-planner-feeds  (0.2s)
+  pass   verify-printouts  (0.1s)
+  pass   verify-prompt-lessons  (0.1s)
+  pass   verify-quarter-gating  (0.1s)
+  FAIL   verify-quiz-games  (0.1s)
+         | PASS  Gimkit tells HER what to paste
+         | PASS  lookup by id works
+         | PASS  ...and an unknown id returns null, not undefined-dot-crash
+         | 
+         | --- 2. NO GUESSED URLs ANYWHERE ---
+         | PASS  the platform data contains no URL at all
+         | PASS  ...and no url-ish field either
+         | PASS  the card hard-codes no address of its own
+         | PASS  ...the only href is the one she pasted
+         | 
+         | --- 3. no dead ends ---
+         | PASS  a platform with no link still appears
+         | PASS  ...and says to ask her, naming the platform
+         | PASS  ...and is not a link
+         | PASS  a platform WITH a link opens in a new tab, safely
+         | PASS  the section explains who sets these up
+         | 
+         | --- 4. she can set them, and only to something safe ---
+         | PASS  there is a setter
+         | PASS  ...that refuses an unknown platform
+         | PASS  ...and refuses anything that is not http(s)
+         | PASS  ...and an empty value clears it rather than storing blank
+         | PASS  ...persisted to meta, not just memory
+         | PASS  she has a screen for it
+         | PASS  ...that is actually rendered
+         | PASS  ...and reachable from the navigation
+         | PASS  ...with a box per platform, driven by the data file
+         | PASS  ...and a bad address is explained, not swallowed
+         | 
+         | --- 5. the link reaches his computer ---
+         | PASS  quizLinks is in the export payload
+         | PASS  ...read back on import, with her copy winning
+         | FAIL  ...reaching the live store after an import
+         | PASS  ...and written to meta on that path too
+         | PASS  ...and hydrated on startup
+         | PASS  his screen subscribes to it
+         | 
+         | 33 passed, 1 failed
+         | 
+         | 1 CHECK(S) FAILED
+  pass   verify-readiness-record  (0.1s)
+  pass   verify-reflections  (0.1s)
+  FAIL   verify-report-card  (0.2s)
+         | PASS  a retake replaces its week rather than counting twice
+         | PASS  nine weeks of tests become ONE grade
+         | PASS  ...at the average of those weeks
+         | PASS  two quarters make two grades
+         | PASS  an unscored week is ignored rather than counted as zero
+         | PASS  spelling feeds Grammar & Writing and vocabulary feeds Reading
+         | PASS  the quarterly averages reach the subject grade
+         | PASS  ...and the strand they belong to
+         | PASS  only ELA has word study to add
+         | PASS  the 10:00 block is the reading lesson now
+         | PASS  ...still fifteen minutes
+         | PASS  the rename reaches a schedule she already saved
+         | PASS  his novel says it is a bedtime thing
+         | PASS  the book row is findable at all
+         | PASS  ...and does not compete with the school day
+         | PASS  ...and it can be logged from the row itself
+         | --- participation subjects report their own counts ---
+         | PASS  pe: the getter really produced its key list
+         | PASS  gardening: the getter really produced its key list
+         | PASS  guitar: the getter really produced its key list
+         | PASS  pe: every count it produces is described
+         | PASS  pe: nothing is described that it does not produce
+         | PASS  gardening: every count it produces is described
+         | PASS  gardening: nothing is described that it does not produce
+         | PASS  guitar: every count it produces is described
+         | PASS  guitar: nothing is described that it does not produce
+         | PASS  the garden no longer reports workouts
+         | PASS  ...and reports what it actually did
+         | PASS  the guitar no longer reports meals
+         | PASS  PE still reports its own
+         | PASS  a subject with nothing logged says so honestly
+         | PASS  singulars read like a person wrote them
+         | PASS  the compliance packet asks the subject
+         | PASS  the transcript asks the subject
+         | PASS  the report card asks the subject
+         | PASS  no site hardcodes PE's fields any more
+         | 
+         | 128 passed, 1 failed
+         | 
+         | 1 CHECK(S) FAILED
+  pass   verify-restart-protection  (0.3s)
+  pass   verify-roster-trim  (0.1s)
+  pass   verify-rotating-block  (0.1s)
+  pass   verify-schedule-times  (0.1s)
+  pass   verify-school-calendar  (0.1s)
+  pass   verify-script-imports  (0.2s)
+  pass   verify-slot-guide  (0.3s)
+  pass   verify-slot-projects  (0.6s)
+  pass   verify-slot-theme  (0.3s)
+  pass   verify-social-studies-pace  (0.1s)
+  pass   verify-splice-regression  (0.1s)
+  pass   verify-store-visibility  (0.1s)
+  pass   verify-technology-khan  (0.0s)
+  pass   verify-thin-boot  (1.4s)
+  pass   verify-three-doors  (0.2s)
+  pass   verify-timetable-order  (0.2s)
+  pass   verify-typing  (0.1s)
+  pass   verify-word-study  (0.4s)
+  pass   verify-writing-pairing  (0.1s)
+  pass   verify-wrong-answer-diagnosis  (0.1s)
+  pass   verify-xp-and-rank  (0.2s)
+
+=== build gate summary ===
+passed      : 64
+known red   : 1  verify-content-interface (lamar)
+NEW red     : 6  verify-ela-sequence (lamar), verify-field-trip-records (lamar), verify-grammar-ladder (lamar), verify-morning-meeting (lamar), verify-quiz-games (lamar), verify-report-card (lamar)
+gate issues : 0
+time        : 23s
+
+BUILD STOPPED. Nothing was published.
+
+
+===== REHEARSAL RESULT: STOPPED

@@ -42,7 +42,11 @@ set "OUT=%~dp0CHECK-RESULTS-rehearsal-%STAMP%.txt"
 
 echo.
 echo   Copying the last commit to %WORK% ...
-"%GIT%" clone --quiet "%~dp0." "%WORK%"
+REM core.autocrlf=false: check out the bytes exactly as Git stores them, the
+REM way Netlify's Linux build does. Without it, Git for Windows rewrites every
+REM line ending to CRLF and six checks that read code across lines go red
+REM for a reason Netlify never sees (found Sept 17, 2026).
+"%GIT%" -c core.autocrlf=false clone --quiet --config core.autocrlf=false --config core.eol=lf "%~dp0." "%WORK%"
 if errorlevel 1 (
   echo   Copy failed. Nothing was built.
   pause
