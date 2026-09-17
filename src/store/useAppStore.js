@@ -3056,7 +3056,7 @@ export const useAppStore = create((set, get) => ({
     );
     if (missingSocialStudiesQ1Rows.length > 0) {
       const createdAt = new Date().toISOString();
-      const preparedRows = missingSocialStudiesQ1Rows.map((r) => ({ ...r, completed: false, grade: null, completedAt: null, createdAt, batchLabel: socialStudiesQ1Label }));
+      const preparedRows = missingSocialStudiesQ1Rows.map((r) => ({ ...r, completed: false, grade: null, completedAt: null, createdAt, batchLabel: socialStudiesQ1Label })); // re-quartered by socialStudiesUnitPlan below
       const newIds = await Promise.all(preparedRows.map((r) => addKhanAcademyAssignmentRecord(r)));
       khanAcademyAssignments = [...khanAcademyAssignments, ...preparedRows.map((r, i) => ({ id: newIds[i], ...r }))];
     }
@@ -3532,25 +3532,40 @@ export const useAppStore = create((set, get) => ({
     // run on every hydrate. Completion state, grades and completedAt ride
     // along unchanged - moving a unit between quarters must never cost him
     // credit for work already done.
-    const socialStudiesQ1ConsolidationMap = {
-      'Origins of History': { sequenceInQuarter: 1 },
-      'Early Humans (250,000 BP to 3000 BCE)': { sequenceInQuarter: 2 },
-      'Early Agrarian Societies (Ancient Egypt, Ancient India & Early China)': { sequenceInQuarter: 3 },
-      'Empires and Belief Systems (Persia, Imperial China & Origins of Islam)': { sequenceInQuarter: 4 },
-      'Regional Webs (Islamic World, Golden Age of Islam, Silk Road & Song China)': { sequenceInQuarter: 5 },
-      'The First Global Age (1200 to 1750 CE)': { sequenceInQuarter: 6 },
-      'Industrial Imperialism & Resisting Colonialism (Africa & Asia)': { sequenceInQuarter: 7 },
-      'Decolonization (Africa & Asia)': { sequenceInQuarter: 8 },
-      'Globalization (1900 CE to the Present)': { sequenceInQuarter: 9 },
-      'World History — Course Challenge': { sequenceInQuarter: 99 }
+    /**
+     * ---- SPREAD ACROSS THE YEAR, SEPT 16 2026 ----
+     *
+     * The parent: "Lamar is behind in his social studies. The one x per week
+     * isn't enough. In each unit may have up to 11 lessons with multiple
+     * videos in each lesson." Counted off the live Khan pages that day, the
+     * course is 82 lessons, not nine sittings. Q1 cannot hold it at any pace,
+     * so — her choice — Social Studies went to three sessions a week and the
+     * units now run in course order across Q1-Q4. `lessons` is the Khan
+     * lesson count per unit; pacing.js costs a unit at one session a lesson.
+     *
+     * Only UNFINISHED units move. A completed unit keeps the quarter it was
+     * earned in, because the report card for that quarter already counted it.
+     */
+    const socialStudiesUnitPlan = {
+      'Origins of History': { sequenceInQuarter: 1, batchLabel: 'Q1 2026-2027', lessons: 4 },
+      'Early Humans (250,000 BP to 3000 BCE)': { sequenceInQuarter: 2, batchLabel: 'Q1 2026-2027', lessons: 5 },
+      'Early Agrarian Societies (Ancient Egypt, Ancient India & Early China)': { sequenceInQuarter: 3, batchLabel: 'Q1 2026-2027', lessons: 12 },
+      'Empires and Belief Systems (Persia, Imperial China & Origins of Islam)': { sequenceInQuarter: 4, batchLabel: 'Q2 2026-2027', lessons: 15 },
+      'Regional Webs (Islamic World, Golden Age of Islam, Silk Road & Song China)': { sequenceInQuarter: 5, batchLabel: 'Q3 2026-2027', lessons: 8 },
+      'The First Global Age (1200 to 1750 CE)': { sequenceInQuarter: 6, batchLabel: 'Q3 2026-2027', lessons: 10 },
+      'Industrial Imperialism & Resisting Colonialism (Africa & Asia)': { sequenceInQuarter: 7, batchLabel: 'Q3 2026-2027', lessons: 10 },
+      'Decolonization (Africa & Asia)': { sequenceInQuarter: 8, batchLabel: 'Q4 2026-2027', lessons: 9 },
+      'Globalization (1900 CE to the Present)': { sequenceInQuarter: 9, batchLabel: 'Q4 2026-2027', lessons: 8 },
+      'World History — Course Challenge': { sequenceInQuarter: 99, batchLabel: 'Q4 2026-2027', lessons: 1 }
     };
     const socialStudiesConsolidated = [];
     khanAcademyAssignments = khanAcademyAssignments.map((a) => {
       if (a.subject !== 'socialStudies') return a;
-      const target = socialStudiesQ1ConsolidationMap[a.skillTitle];
+      const target = socialStudiesUnitPlan[a.skillTitle];
       if (!target) return a;
-      if (a.batchLabel === socialStudiesQ1Label && a.sequenceInQuarter === target.sequenceInQuarter) return a;
-      const fixed = { ...a, batchLabel: socialStudiesQ1Label, sequenceInQuarter: target.sequenceInQuarter };
+      const batchLabel = a.completed ? a.batchLabel : target.batchLabel;
+      if (a.batchLabel === batchLabel && a.sequenceInQuarter === target.sequenceInQuarter && a.lessons === target.lessons) return a;
+      const fixed = { ...a, batchLabel, sequenceInQuarter: target.sequenceInQuarter, lessons: target.lessons };
       socialStudiesConsolidated.push(fixed);
       return fixed;
     });

@@ -149,6 +149,23 @@ export const WEEK_PATTERN = {
     kind: 'core',
     subjects: ['socialStudies', 'technology'],
     subjectsByQuarter: { Q1: ['technology', 'socialStudies'] },
+    /**
+     * ---- A THIRD SOCIAL STUDIES SESSION, THURSDAY AT 10:30. (Sept 16, 2026.) ----
+     *
+     * The parent: *"Lamar is behind in his social studies. The one x per week
+     * isn't enough. In each unit may have up to 11 lessons with multiple
+     * videos in each lesson."*
+     *
+     * Counted off the live Khan pages that day: the eight unfinished World
+     * History units hold 77 lessons (5, 12, 15, 8, 10, 10, 9, 8) — the
+     * pacing model's flat "4 days a unit" had understated them by more than
+     * half. She chose three sessions a week and spreading the units across
+     * the year.
+     *
+     * Science gives up Thursday as it gave up Tuesday. Its 26 units cost 70
+     * days; at Mon/Wed/Fri it still owns more than that. verify-pacing checks.
+     */
+    morningSubjects: ['socialStudies'],
     note: 'Core academics, then Social Studies — the full 45 minutes. Technology takes this day in Q1, when it carries 23 lessons and Social Studies has none.'
   },
   // FRIDAY WAS A 'buffer' DAY UNTIL AUG 9 2026 — no new academic material, and

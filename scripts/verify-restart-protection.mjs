@@ -5,13 +5,17 @@
  * and a full-backup file that restores through Import -> from a file.
  */
 import 'fake-indexeddb/auto';
+import { pathToFileURL } from 'node:url';
+import path from 'node:path';
+// One call builds the whole file URL — Windows drive letters break string joins.
+const mod = (rel) => pathToFileURL(path.join(process.cwd(), rel)).href;
 import fs from 'node:fs';
 import Dexie from 'dexie';
 const root = process.cwd();
 globalThis.location = { origin: 'https://test.example' };
 const mem = {}; globalThis.localStorage = { getItem:k=>mem[k]??null, setItem:(k,v)=>{mem[k]=v;} };
-const { buildFullBackup } = await import(root + '/src/lib/fullBackup.js');
-const { validateMigrationFile, likeliestSchoolDatabase, tablesForDatabase } = await import(root + '/src/lib/migrationFile.js');
+const { buildFullBackup } = await import(mod('src/lib/fullBackup.js'));
+const { validateMigrationFile, likeliestSchoolDatabase, tablesForDatabase } = await import(mod('src/lib/migrationFile.js'));
 const h = new Dexie('LearningOSDB_household'); h.version(1).stores({ academies: 'id', session: 'id' });
 await h.academies.put({ id: 'kid', name: 'Kid' }); await h.session.put({ id: 'current', academyId: 'kid' });
 const a = new Dexie('LearningOSDB_kid'); a.version(3).stores({ attendance: '++id', grades: '++id' });
@@ -37,7 +41,7 @@ ok(/<StorageSafetyCard\s*\/>/.test(read('src/components/Dashboard/ParentDashboar
 ok(!/^Go to:.*mission-control-homeschool/m.test(read('READ-ME-FIRST.txt')), 'READ-ME-FIRST does not send anyone to the old address');
 
 // ---- automatic backup to a folder ----
-const ab = await import(root + '/src/lib/autoBackup.js');
+const ab = await import(mod('src/lib/autoBackup.js'));
 const names = ['learningos-migration-auto-latest.json', 'notes.txt'];
 for (let i = 1; i <= 20; i++) names.push(`learningos-migration-auto-2026-09-${String(i).padStart(2, '0')}.json`);
 const pruned = ab.dailyFilesToPrune(names);
@@ -66,7 +70,7 @@ ok(/<AutoBackupBanner/.test(read('src/FrontDoorGate.jsx').slice(read('src/FrontD
   // Structured clone of a fake handle is not possible; keep it in memory instead.
   globalThis.window = { showDirectoryPicker: async () => dir };
   for (let i = 1; i <= 16; i++) files.set(`learningos-migration-auto-2026-08-${String(i).padStart(2, '0')}.json`, '{}');
-  const ab2 = await import(root + '/src/lib/autoBackup.js?e2e');
+  const ab2 = await import(mod('src/lib/autoBackup.js') + '?e2e');
   ab2.__useMemorySettingsForTest();
   let r;
   try { r = await ab2.chooseBackupFolder(); } catch (e) { r = { ok: false, error: e.message }; }

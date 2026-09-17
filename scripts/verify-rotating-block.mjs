@@ -389,14 +389,24 @@ console.log('\n--- 8. the second rotating slot, at 10:30 ---');
   ok('Tuesday 10:30 belongs to Social Studies',
     liveMorningSubject(day(1), rows) === 'socialStudies',
     String(liveMorningSubject(day(1), rows)));
-  for (const [i, name] of [[0, 'Monday'], [2, 'Wednesday'], [3, 'Thursday'], [4, 'Friday']]) {
+  /**
+   * THURSDAY JOINED TUESDAY, Sept 16 2026. The parent: *"Lamar is behind in
+   * his social studies. The one x per week isn't enough."* The eight open World
+   * History units hold 77 Khan lessons; she chose three sessions a week.
+   * Science's 26 units cost 70 days and Mon/Wed/Fri give it ~118 — it still
+   * fits, which is the property this section protects.
+   */
+  ok('Thursday 10:30 belongs to Social Studies',
+    liveMorningSubject(day(3), rows) === 'socialStudies',
+    String(liveMorningSubject(day(3), rows)));
+  for (const [i, name] of [[0, 'Monday'], [2, 'Wednesday'], [4, 'Friday']]) {
     ok(name + ' 10:30 stays Science',
       liveMorningSubject(day(i), rows) === null,
       String(liveMorningSubject(day(i), rows)));
   }
-  ok('so Science keeps FOUR days a week, not three',
-    [0, 2, 3, 4].filter((i) => liveMorningSubject(day(i), rows) === null).length === 4,
-    'the parent held all four science courses; four days is what makes them fit');
+  ok('so Science keeps THREE days a week, and never fewer',
+    [0, 2, 3, 4].filter((i) => liveMorningSubject(day(i), rows) === null).length === 3,
+    'all four science courses still fit at Mon/Wed/Fri; two days would not');
 
   ok('THE POINT: Social Studies now owns two days a week',
     liveMorningSubject(day(1), rows) === 'socialStudies'

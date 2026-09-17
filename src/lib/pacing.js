@@ -182,6 +182,13 @@ const MEASURED_UNIT_DAYS = {
 };
 
 export function khanUnitDays(row) {
+  /**
+   * 0. `row.lessons` — Khan lessons in the unit, counted off the course page.
+   *    One lesson is one sitting. Added Sept 16 2026 for World History, where
+   *    units run 4 to 15 lessons and the flat 4-day figure understated them.
+   */
+  const lessons = Number(row && row.lessons);
+  if (Number.isFinite(lessons) && lessons > 0) return lessons;
   const items = Number(row && row.items);
   if (Number.isFinite(items) && items > 0) {
     return Math.max(1, Math.ceil(items / ITEMS_PER_DAY));
