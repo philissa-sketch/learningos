@@ -1,0 +1,12 @@
+{
+  "_rule": "Read by scripts/run-checks.mjs at prebuild. knownRed may shrink and must never grow; lower KNOWN_RED_BASELINE in run-checks.mjs in the same commit that removes an entry. Add an Academy to gatedAcademies only when its full suite is green apart from listed known reds.",
+  "gatedAcademies": ["lamar"],
+  "knownRed": [
+    {
+      "check": "verify-content-interface",
+      "academy": "lamar",
+      "reason": "The second Academy supplies 16 of the 156 names the contract requires. Architectural, not a bug (audit finding 4). Never cleared by weakening the check.",
+      "clearsAt": "Audit step 4 — slots that answer questions instead of handing over functions."
+    }
+  ]
+}

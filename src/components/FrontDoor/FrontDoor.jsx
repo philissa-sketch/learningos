@@ -260,16 +260,32 @@ function SetUpThisComputer({ onSetUpThisComputer }) {
         This computer hasn&apos;t been set up yet, so there is no passcode on it to check yours
         against. Schoolwork and passcodes are saved on each computer separately.
       </p>
+      {/* The same seven steps as the printed one-page setup guide (Sept 17,
+          2026, audit gate 1). A new or emptied computer lands here, so this
+          is where the written steps have to be. Change both together. */}
       <p className="fd-note">
-        Setting up takes a couple of minutes: choose a passcode for this computer, then add the
-        Academy. Afterwards you can bring the schoolwork across from a migration file, and nothing
-        on the other computer is touched.
+        <strong>Setting up a new or emptied computer</strong> takes about ten minutes:
       </p>
+      <ol className="fd-note" style={{ paddingLeft: '1.25rem', listStyle: 'decimal' }}>
+        <li>
+          Check the address bar says <strong>{typeof window !== 'undefined' ? window.location.host : 'this site'}</strong>,
+          and bookmark it.
+        </li>
+        <li>Use your usual browser (Chrome or Edge), not a private or incognito window.</li>
+        <li>Click <strong>Set up this computer</strong> below and choose a passcode. Write the recovery code down and keep it with the school records.</li>
+        <li>Add the Academy when asked.</li>
+        <li>
+          Bring the schoolwork back: open the Academy, then Import &rarr; From a file, and pick{' '}
+          <em>learningos-migration-auto-latest.json</em> from Documents &rsaquo; LearningOS Backups
+          (or your newest full backup file).
+        </li>
+        <li>In the Parent Dashboard, on the Restart protection card, turn on automatic backup and choose the same folder.</li>
+        <li>Have the learner sign in and check that yesterday&apos;s work is there.</li>
+      </ol>
       <p className="fd-note">
         <strong>Was the school already on this computer?</strong> Check the address bar and that
-        this is your usual browser first. If it is truly empty, set up, then open the Academy and
-        use Import &rarr; from a file. Pick <em>learningos-migration-auto-latest.json</em> from
-        Documents &rsaquo; LearningOS Backups (or your newest downloaded full backup).
+        this is your usual browser first. If it is truly empty, follow the steps above. Nothing on
+        the other computer is touched.
       </p>
       {onSetUpThisComputer ? (
         <button className="fd-btn" type="button" onClick={onSetUpThisComputer}>

@@ -1550,6 +1550,9 @@ const bookSwapMap = {
   'book::technology::2': { from: 'The Boy Who Harnessed the Wind: Young Readers Edition', title: 'Great Minds of Science (Black Lives #1): A Nonfiction Graphic Novel', author: 'Tonya Bolden' }
 };
 
+/** adminRecords kinds the Parent Time timer and the attendance calendar write. */
+const PARENT_RECORD_KINDS = ['parent-time', 'attendance-mark'];
+
 export const useAppStore = create((set, get) => ({
   ...initialState,
 
@@ -1901,7 +1904,12 @@ export const useAppStore = create((set, get) => ({
         lessonsCompleted: row.lessonsCompleted,
         writingEntries: row.writingEntries,
         typingSessions: row.typingSessions,
-        offlineMinutes: row.offlineMinutes || 0
+        offlineMinutes: row.offlineMinutes || 0,
+        // Loaded like every other field (Sept 17, 2026). It was missing here,
+        // so the first dashboard minute after any reload wrote the day back
+        // with parentMinutes restarted from zero — the import kept it, the
+        // reload threw it away.
+        parentMinutes: row.parentMinutes || 0
       };
     }
 
@@ -10198,6 +10206,37 @@ export const useAppStore = create((set, get) => ({
   async removeAdminRecord(id) {
     await deleteAdminRecordById(id);
     set({ adminRecords: get().adminRecords.filter((r) => r.id !== id) });
+  },
+
+  /**
+   * The parent's own dated rows that are not typed into the Records form —
+   * Parent Time sessions (lib/parentTime.js) and attendance marks
+   * (lib/attendanceDay.js). Sept 17, 2026.
+   *
+   * addAdminRecordEntry rebuilds a record from a fixed list of fields, so a
+   * session's start and end times would be dropped on the way in. These two
+   * store the row as given and keep the in-memory list in the same order as
+   * addAdminRecordEntry does. Only these two kinds are accepted, so this can
+   * never become a side door into the compliance records.
+   */
+  async addParentRecord(record) {
+    if (!record || !PARENT_RECORD_KINDS.includes(record.kind) || !record.date) return null;
+    const id = await addAdminRecord(record);
+    const withId = { id, ...record };
+    set({
+      adminRecords: [withId, ...get().adminRecords].sort((a, b) => (b.date || '').localeCompare(a.date || ''))
+    });
+    return withId;
+  },
+
+  async updateParentRecord(id, changes) {
+    const current = get().adminRecords.find((r) => r.id === id);
+    if (!current || !PARENT_RECORD_KINDS.includes(current.kind)) return null;
+    const { id: _ignored, kind: _kind, ...safe } = changes || {};
+    await updateAdminRecordFields(id, safe);
+    const updated = { ...current, ...safe };
+    set({ adminRecords: get().adminRecords.map((r) => (r.id === id ? updated : r)) });
+    return updated;
   },
 
   /**

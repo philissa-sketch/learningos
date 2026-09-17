@@ -19,6 +19,8 @@ import { YearPlanSection } from './YearPlanSection.jsx';
 import { MissionControlBoard } from './MissionControlBoard.jsx';
 import { BackupStatusCard } from './BackupStatusCard.jsx';
 import { StorageSafetyCard } from './StorageSafetyCard.jsx';
+import { AttendanceCalendar } from './AttendanceCalendar.jsx';
+import { ParentTimeTimer, ParentTimeSection } from './ParentTimeTimer.jsx';
 import { WordStudyRecordSection } from './WordStudyRecordSection.jsx';
 import { TypingRecordSection } from './TypingRecordSection.jsx';
 import { ScienceCourseMapSection } from './ScienceCourseMapSection.jsx';
@@ -89,12 +91,22 @@ const SECTION_GROUPS = [
     hint: 'What needs you right now, read from your real records.',
     sections: [{ id: 'mission-control-board', label: 'Mission Control Board' }]
   },
+  // Its own tab (Sept 17, 2026). Attendance sat third-from-nowhere under
+  // Every Day and could not open a past date — audit gate 31.
+  {
+    id: 'attendance',
+    label: 'Attendance',
+    hint: 'Any day of the year: what it counted as, what was done, and your own mark.',
+    sections: [
+      { id: 'attendance-calendar', label: 'Calendar' },
+      { id: 'attendance', label: 'Summary' }
+    ]
+  },
   {
     id: 'daily',
     label: 'Every Day',
     hint: 'The few minutes of recordkeeping that keep the year honest.',
     sections: [
-      { id: 'attendance', label: 'Attendance' },
       { id: 'coming-up', label: 'Coming Up' },
       { id: 'mission-comms', label: 'Mission Comms' }
     ]
@@ -139,6 +151,7 @@ const SECTION_GROUPS = [
       { id: 'analytics', label: 'Learning Analytics' },
       { id: 'compliance', label: 'Compliance (GA)' },
       { id: 'records', label: 'Records' },
+      { id: 'parent-time', label: 'Parent Time' },
       { id: 'course-descriptions', label: 'Course Descriptions' },
       { id: 'reading-log', label: 'Reading Log' },
       // Added Aug 9, 2026. Word study was the one daily strand with no record
@@ -864,6 +877,8 @@ export function ParentDashboard({ onSignOut, onOpenAcademicCenter = null }) {
   const activeGroup = SECTION_GROUPS.find((g) => g.id === openGroup) || null;
   const messages = useAppStore((s) => s.messages);
   const commsUnread = messages.filter((m) => m.sender === 'student' && !m.readByParent).length;
+  // Read inside the component, never at module scope.
+  const { GEORGIA_LAW_CITATION: lawCitation = null } = academyContent().compliance;
 
   return (
     <div className="mx-auto max-w-3xl space-y-6 px-4 py-6 sm:px-6">
@@ -937,6 +952,13 @@ export function ParentDashboard({ onSignOut, onOpenAcademicCenter = null }) {
         )}
       </div>
 
+      <ParentTimeTimer
+        onOpenLog={() => {
+          setOpenGroup('records');
+          setSection('parent-time');
+        }}
+      />
+
       <NovaParentGuide section={section} />
 
       {section === 'mission-control-board' && (
@@ -949,7 +971,15 @@ export function ParentDashboard({ onSignOut, onOpenAcademicCenter = null }) {
           onOpenAcademicCenter={onOpenAcademicCenter}
         />
       )}
+      {section === 'attendance-calendar' && (
+        <AttendanceCalendar
+          minutesPerDay={GEORGIA_DAILY_MINUTES_TARGET}
+          daysRequired={GEORGIA_DAYS_TARGET}
+          ruleSource={lawCitation}
+        />
+      )}
       {section === 'attendance' && <AttendanceSection />}
+      {section === 'parent-time' && <ParentTimeSection />}
       {section === 'coming-up' && <ComingUpSection />}
       {section === 'gradebook' && <GradebookSection />}
       {section === 'khan-academy' && <KhanAcademyGradesSection />}
