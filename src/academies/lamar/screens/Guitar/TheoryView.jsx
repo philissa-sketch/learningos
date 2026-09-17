@@ -1,8 +1,9 @@
 import { useState } from 'react';
-import { useAppStore } from '../../store/useAppStore.js';
-import { academyContent } from '../../content/academyContent.js';
+import { useAppStore } from '../../../../store/useAppStore.js';
+import { academyContent } from '../../../../content/academyContent.js';
+import { optionalContent } from '../../../../content/slots/optional.js';
 
-const { guitarTheory = [] } = academyContent().electives;
+const { guitarTheory = [] } = optionalContent(academyContent(), 'electives');
 
 /**
  * Guitar theory — short readings with ONE check question, recorded as

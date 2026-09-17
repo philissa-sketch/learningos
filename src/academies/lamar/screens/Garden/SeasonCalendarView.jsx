@@ -1,10 +1,11 @@
 import { useState } from 'react';
-import { useAppStore } from '../../store/useAppStore.js';
-import { todayDateStr } from '../../lib/scheduler.js';
-import { useToday } from '../../lib/useToday.js';
-import { academyContent } from '../../content/academyContent.js';
+import { useAppStore } from '../../../../store/useAppStore.js';
+import { todayDateStr } from '../../../../lib/scheduler.js';
+import { useToday } from '../../../../lib/useToday.js';
+import { academyContent } from '../../../../content/academyContent.js';
+import { optionalContent } from '../../../../content/slots/optional.js';
 
-const { gardenCalendar = [], getGardenBriefById = () => null } = academyContent().electives;
+const { gardenCalendar = [], getGardenBriefById = () => null } = optionalContent(academyContent(), 'electives');
 
 // Verified North Georgia fall windows (UGA Extension C1258). UGA's B577 chart
 // is written for MIDDLE Georgia; north plants about two weeks earlier in fall.

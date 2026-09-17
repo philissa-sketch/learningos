@@ -143,7 +143,9 @@ console.log('\n--- 6. no screen rebuilds the pool list by hand ---');
  * When it reaches 0 the five legacy names leave the mandatory inventory and
  * every Academy owes five fewer — 156 becomes 151.
  */
-const HAND_LISTERS_BASELINE = 2;
+// 9 -> 2 on Sept 15; 2 -> 0 on Sept 17, when the home screen and the store
+// were converted. Zero now: a file that names two or more pools is a regression.
+const HAND_LISTERS_BASELINE = 0;
 const POOL_NAMES = ['aerospaceProjects', 'scienceExperiments', 'technologyProjects',
                     'roboticsProjects', 'gardenProjects'];
 

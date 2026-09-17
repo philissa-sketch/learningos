@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react';
-import { useAppStore } from '../../store/useAppStore.js';
-import { todayDateStr } from '../../lib/scheduler.js';
-import { useToday } from '../../lib/useToday.js';
+import { useAppStore } from '../../../../store/useAppStore.js';
+import { todayDateStr } from '../../../../lib/scheduler.js';
+import { useToday } from '../../../../lib/useToday.js';
 import {
   SUN_ZONES as ZONES,
   SUN_HOURS as HOURS,
@@ -11,7 +11,7 @@ import {
   sunHourLabel as hourLabel,
   sunSurveyStats,
   zoneClass
-} from '../../lib/sunSurvey.js';
+} from '../../../../lib/sunSurvey.js';
 
 /**
  * The sun survey logger. One tap per zone per hour.

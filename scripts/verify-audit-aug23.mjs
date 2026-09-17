@@ -116,10 +116,13 @@ console.log('--- 1. every grade she enters reaches the record ---');
     '32 project write-ups (bottle rocket, sun survey, 13 experiments) resolved to null and could reach no subject'
   );
   ok(
-    '...built from all six pools, not just writingPrompts',
-    ['writingPrompts', 'aerospaceProjects', 'scienceExperiments', 'technologyProjects', 'roboticsProjects', 'gardenProjects'].every(
-      (pool) => new RegExp(`WRITING_PROMPT_POOLS = \\[[\\s\\S]{0,400}\\b${pool}\\b`).test(store)
-    )
+    '...built from every pool, not just writingPrompts',
+    // Re-pointed Sept 17, 2026: the store no longer names the five project
+    // pools; it asks the projects slot for all of them. What matters is that
+    // the list holds writingPrompts AND every pool the slot returns —
+    // verify-slot-projects proves the slot returns all five for this school.
+    /WRITING_PROMPT_POOLS = \[\s*writingPrompts,\s*\.\.\.projectPools\(academyContent\(\)\)\.map\(\(pool\) => pool\.items\)\s*\]/.test(store)
+      && /import \{[^}]*\bprojectPools\b[^}]*\} from '\.\.\/content\/slots\/projects\.js'/.test(store)
   );
   ok(
     'writing is scoped to the school year like every other source',

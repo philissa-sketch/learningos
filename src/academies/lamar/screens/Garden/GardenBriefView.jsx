@@ -1,9 +1,10 @@
 import { useState } from 'react';
-import { useAppStore } from '../../store/useAppStore.js';
-import { useToday } from '../../lib/useToday.js';
-import { academyContent } from '../../content/academyContent.js';
+import { useAppStore } from '../../../../store/useAppStore.js';
+import { useToday } from '../../../../lib/useToday.js';
+import { academyContent } from '../../../../content/academyContent.js';
+import { optionalContent } from '../../../../content/slots/optional.js';
 
-const { gardenProjects = [], getGardenBriefById = () => null } = academyContent().electives;
+const { gardenProjects = [], getGardenBriefById = () => null } = optionalContent(academyContent(), 'electives');
 const { SUBJECT_LABELS = {} } = academyContent().subjects;
 
 /**

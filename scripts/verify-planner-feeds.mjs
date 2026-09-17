@@ -265,7 +265,17 @@ console.log('\n--- 2. the garden reaches the planner ---');
   ok('the garden has a row on his home screen', /label="Garden"/.test(dash),
     'no gd7-* id is in weeklyWritingSchedule, so the old path could never match');
   ok('...reading the garden calendar directly', /gardenForDate\(today, \{ gardenLog \}\)/.test(dash));
-  ok('...and it opens the Garden screen', /onOpenGarden/.test(dash) && /onOpenGarden=\{\(\) => setView\('garden'\)\}/.test(read('src/App.jsx')));
+  /**
+   * ---- RE-POINTED SEPT 17, 2026 ----
+   *
+   * This read `onOpenGarden` in both files. The shell no longer names one
+   * child's activities: the row says which tab it opens and the shell takes an
+   * id, so a school can bring a screen the platform has never heard of. The
+   * property — this row opens the garden screen — is unchanged.
+   */
+  ok('...and it opens the Garden screen',
+    /onAction=\{\(\) => onOpenView\('garden'\)\}/.test(dash)
+      && /onOpenView=\{setView\}/.test(read('src/App.jsx')));
 
   const friday = pf.gardenForDate('2026-08-14', { gardenLog: [] });
   const monday = pf.gardenForDate('2026-08-17', { gardenLog: [] });
@@ -862,9 +872,11 @@ console.log("\n--- this week's build is in the day, not beside it ---");
    */
   const board = codeOnly('src/components/Dashboard/MissionControlDashboard.jsx');
   ok("this week's project carries its own subject",
-    /const HANDS_ON_SOURCES = \[/.test(board)
-      && /subject: 'aerospace'/.test(board)
-      && /subject: 'science'/.test(board)
+    // Re-pointed Sept 17, 2026: the subject now comes from the school's pool
+    // rather than a hand-written list; the behaviour below still proves the
+    // Aug 26 build resolves to Aerospace and gets a block.
+    /const HANDS_ON_SOURCES = projectPools\(academyContent\(\)\)/.test(board)
+      && /return \{ project, subject: pool\.subject,/.test(board)
       && /const weeksHandsOn =/.test(board),
     'a build with no subject could only ever have been a tile');
   ok('...so it can be given a timetable block',

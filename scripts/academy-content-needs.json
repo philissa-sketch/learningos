@@ -8,6 +8,7 @@
   "timetable",
   "guide",
   "theme",
+  "nav",
   "projects",
   "exams",
   "writing",
@@ -19,8 +20,8 @@
   "rewards",
   "compliance"
  ],
- "files": 84,
- "reads": 145,
+ "files": 75,
+ "reads": 122,
  "legacyImports": [],
  "names": [
   "ACADEMIC_ASSIGNMENT_TYPES",
@@ -47,9 +48,6 @@
   "GEORGIA_REQUIREMENTS",
   "GOVERNMENT_TYPES",
   "GRAMMAR_COURSES",
-  "GUITAR_DAILY_MINUTES",
-  "GUITAR_OWN_SLOTS",
-  "GUITAR_SESSION_SHAPE",
   "HIDDEN_VIDEO",
   "HQ_CREW",
   "HQ_ITEMS",
@@ -82,7 +80,6 @@
   "WEIGHT_BUDGET_CATEGORIES",
   "WEIGHT_BUDGET_TOTAL_POINTS",
   "activeMilestone",
-  "aerospaceProjects",
   "allLessons",
   "assignmentCandidatesForSlot",
   "availableDueDates",
@@ -106,30 +103,12 @@
   "findFormat",
   "findProposal",
   "formatsForType",
-  "gardenBriefs",
-  "gardenBuildTrack",
-  "gardenCalendar",
-  "gardenCapstone",
-  "gardenProjects",
   "generalGrammarUnitByUrl",
-  "getCurrentGuitarSkill",
-  "getDailyLine",
-  "getGardenBriefById",
-  "getGardenDayForWeekOf",
-  "getGuitarTool",
-  "getNextGardenDay",
   "getSchoolWeekNumber",
   "getThisWeeksScheduledIds",
   "getTodaysWorkout",
   "grammarRowTitle",
   "grammarUnitUrl",
-  "guitarEducators",
-  "guitarFeedbackPlaces",
-  "guitarOwnSongGuidance",
-  "guitarPerformanceMoment",
-  "guitarSkillLadder",
-  "guitarStarterSongs",
-  "guitarTheory",
   "hasMilestones",
   "holidaysInSpan",
   "instructionProgress",
@@ -158,12 +137,10 @@
   "reflectionPromptFor",
   "requirementsFor",
   "resolveSuggestedDueDate",
-  "roboticsProjects",
   "scienceCanonicalRow",
   "scienceCourseChallengeRows",
   "scienceCourseForUrl",
   "scienceCoverageByCourse",
-  "scienceExperiments",
   "scienceRowsFor",
   "shoppingListCategories",
   "sizeFor",
@@ -174,7 +151,6 @@
   "subjectCardLabel",
   "subjectsForDay",
   "suggestedGradeFromRubric",
-  "technologyProjects",
   "typingLessons",
   "vocabularyWordPool",
   "weeklyWritingSchedule",
@@ -193,11 +169,6 @@
   "ACADEMIC_ASSIGNMENT_TYPES": "academicCenter",
   "ACADEMIC_BOOK_TYPES": "academicCenter",
   "ACADEMIC_SUCCESS_CENTER_QUARTER_ORDER": "academicCenter",
-  "gardenProjects": "electives",
-  "aerospaceProjects": "projects",
-  "roboticsProjects": "projects",
-  "scienceExperiments": "projects",
-  "technologyProjects": "projects",
   "SUBJECT_LABELS": "subjects",
   "writingPrompts": "writing",
   "RUBRIC_LEVELS": "academicCenter",
@@ -216,21 +187,19 @@
   "ACADEMIC_SUBJECT_ORDER": "academicCenter",
   "isKhanTaughtSubject": "subjects",
   "activeMilestone": "academicCenter",
+  "isSchoolDay": "timetable",
+  "instructionProgress": "compliance",
   "dayPattern": "timetable",
   "GEORGIA_LAW_CITATION": "compliance",
   "GEORGIA_MINUTES_PER_DAY": "compliance",
   "GEORGIA_REQUIRED_SUBJECTS": "compliance",
   "GEORGIA_REQUIREMENTS": "compliance",
   "declarationCoversToday": "compliance",
-  "instructionProgress": "compliance",
   "nextDeclarationDeadline": "compliance",
-  "isSchoolDay": "timetable",
   "khanGrammarUnitForUrl": "khanSequences",
   "scienceCourseForUrl": "khanSequences",
   "subjectCardLabel": "subjects",
   "allLessons": "lessons",
-  "GUITAR_DAILY_MINUTES": "electives",
-  "getCurrentGuitarSkill": "electives",
   "getTodaysWorkout": "pe",
   "subjectsForDay": "timetable",
   "getThisWeeksScheduledIds": "writing",
@@ -245,7 +214,6 @@
   "ACTIVE_SUBJECTS": "subjects",
   "KHAN_TAUGHT_SUBJECTS": "subjects",
   "PARTICIPATION_SUBJECTS": "subjects",
-  "getDailyLine": "guide",
   "QUIZ_PLATFORMS": "games",
   "SCIENCE_COURSES": "khanSequences",
   "SCIENCE_COURSE_CHALLENGES": "khanSequences",
@@ -264,22 +232,6 @@
   "GOVERNMENT_TYPES": "games",
   "NATION_SCORE_LABELS": "games",
   "TRADE_EVENT": "games",
-  "gardenBuildTrack": "electives",
-  "gardenCapstone": "electives",
-  "getGardenBriefById": "electives",
-  "getGardenDayForWeekOf": "electives",
-  "getNextGardenDay": "electives",
-  "gardenCalendar": "electives",
-  "guitarSkillLadder": "electives",
-  "GUITAR_SESSION_SHAPE": "electives",
-  "getGuitarTool": "electives",
-  "guitarFeedbackPlaces": "electives",
-  "GUITAR_OWN_SLOTS": "electives",
-  "guitarEducators": "electives",
-  "guitarOwnSongGuidance": "electives",
-  "guitarPerformanceMoment": "electives",
-  "guitarStarterSongs": "electives",
-  "guitarTheory": "electives",
   "journalFor": "rewards",
   "printoutFor": "rewards",
   "CATEGORY_LABELS": "pe",
@@ -304,7 +256,6 @@
   "dailyDrills": "writing",
   "getSchoolWeekNumber": "writing",
   "HQ_CREW": "rewards",
-  "gardenBriefs": "electives",
   "isHoliday": "timetable",
   "SCHOOL_YEAR_START": "writing",
   "weeklyWritingSchedule": "writing",
@@ -366,21 +317,6 @@
    }
   ],
   "components/Academic/AcademicPortfolioView.jsx": [
-   {
-    "slot": "electives",
-    "names": [
-     "gardenProjects"
-    ]
-   },
-   {
-    "slot": "projects",
-    "names": [
-     "aerospaceProjects",
-     "roboticsProjects",
-     "scienceExperiments",
-     "technologyProjects"
-    ]
-   },
    {
     "slot": "subjects",
     "names": [
@@ -496,6 +432,20 @@
     ]
    }
   ],
+  "components/Dashboard/AttendanceCalendar.jsx": [
+   {
+    "slot": "timetable",
+    "names": [
+     "isSchoolDay"
+    ]
+   },
+   {
+    "slot": "compliance",
+    "names": [
+     "instructionProgress"
+    ]
+   }
+  ],
   "components/Dashboard/ClassBellCard.jsx": [
    {
     "slot": "timetable",
@@ -589,11 +539,9 @@
   ],
   "components/Dashboard/MissionControlDashboard.jsx": [
    {
-    "slot": "electives",
+    "slot": "academicCenter",
     "names": [
-     "GUITAR_DAILY_MINUTES",
-     "gardenProjects",
-     "getCurrentGuitarSkill"
+     "leadStatus"
     ]
    },
    {
@@ -606,15 +554,6 @@
     "slot": "pe",
     "names": [
      "getTodaysWorkout"
-    ]
-   },
-   {
-    "slot": "projects",
-    "names": [
-     "aerospaceProjects",
-     "roboticsProjects",
-     "scienceExperiments",
-     "technologyProjects"
     ]
    },
    {
@@ -659,29 +598,12 @@
     ]
    },
    {
-    "slot": "projects",
-    "names": [
-     "aerospaceProjects",
-     "roboticsProjects",
-     "scienceExperiments",
-     "technologyProjects"
-    ]
-   },
-   {
     "slot": "subjects",
     "names": [
      "ACTIVE_SUBJECTS",
      "KHAN_TAUGHT_SUBJECTS",
      "PARTICIPATION_SUBJECTS",
      "SUBJECT_LABELS"
-    ]
-   }
-  ],
-  "components/Dashboard/NovaProgressPanel.jsx": [
-   {
-    "slot": "guide",
-    "names": [
-     "getDailyLine"
     ]
    }
   ],
@@ -710,6 +632,12 @@
     "slot": "writing",
     "names": [
      "writingPrompts"
+    ]
+   },
+   {
+    "slot": "compliance",
+    "names": [
+     "GEORGIA_LAW_CITATION"
     ]
    }
   ],
@@ -823,14 +751,6 @@
   ],
   "components/Garden/BuildTrackView.jsx": [
    {
-    "slot": "electives",
-    "names": [
-     "gardenBuildTrack",
-     "gardenCapstone",
-     "gardenProjects"
-    ]
-   },
-   {
     "slot": "subjects",
     "names": [
      "SUBJECT_LABELS"
@@ -839,107 +759,9 @@
   ],
   "components/Garden/GardenBriefView.jsx": [
    {
-    "slot": "electives",
-    "names": [
-     "gardenProjects",
-     "getGardenBriefById"
-    ]
-   },
-   {
     "slot": "subjects",
     "names": [
      "SUBJECT_LABELS"
-    ]
-   }
-  ],
-  "components/Garden/GardenHome.jsx": [
-   {
-    "slot": "electives",
-    "names": [
-     "getGardenDayForWeekOf",
-     "getNextGardenDay"
-    ]
-   }
-  ],
-  "components/Garden/NovaGardenGuide.jsx": [
-   {
-    "slot": "electives",
-    "names": [
-     "getGardenBriefById"
-    ]
-   }
-  ],
-  "components/Garden/SeasonCalendarView.jsx": [
-   {
-    "slot": "electives",
-    "names": [
-     "gardenCalendar",
-     "getGardenBriefById"
-    ]
-   }
-  ],
-  "components/Guitar/GuitarHome.jsx": [
-   {
-    "slot": "electives",
-    "names": [
-     "guitarSkillLadder"
-    ]
-   }
-  ],
-  "components/Guitar/PracticeTrackerView.jsx": [
-   {
-    "slot": "electives",
-    "names": [
-     "GUITAR_DAILY_MINUTES",
-     "GUITAR_SESSION_SHAPE",
-     "getCurrentGuitarSkill",
-     "getGuitarTool",
-     "guitarSkillLadder"
-    ]
-   }
-  ],
-  "components/Guitar/RecordingView.jsx": [
-   {
-    "slot": "electives",
-    "names": [
-     "guitarFeedbackPlaces"
-    ]
-   }
-  ],
-  "components/Guitar/SongsView.jsx": [
-   {
-    "slot": "electives",
-    "names": [
-     "GUITAR_OWN_SLOTS",
-     "guitarEducators",
-     "guitarOwnSongGuidance",
-     "guitarPerformanceMoment",
-     "guitarStarterSongs"
-    ]
-   }
-  ],
-  "components/Guitar/TheoryView.jsx": [
-   {
-    "slot": "electives",
-    "names": [
-     "guitarTheory"
-    ]
-   }
-  ],
-  "components/Lesson/FeedbackPanel.jsx": [
-   {
-    "slot": "electives",
-    "names": [
-     "gardenProjects"
-    ]
-   },
-   {
-    "slot": "projects",
-    "names": [
-     "aerospaceProjects",
-     "roboticsProjects",
-     "scienceExperiments",
-     "technologyProjects"
     ]
    }
   ],
@@ -1107,21 +929,6 @@
   ],
   "components/Scheduler/WeeklyView.jsx": [
    {
-    "slot": "electives",
-    "names": [
-     "gardenProjects"
-    ]
-   },
-   {
-    "slot": "projects",
-    "names": [
-     "aerospaceProjects",
-     "roboticsProjects",
-     "scienceExperiments",
-     "technologyProjects"
-    ]
-   },
-   {
     "slot": "writing",
     "names": [
      "getThisWeeksScheduledIds",
@@ -1148,18 +955,9 @@
   ],
   "components/Writing/WritingJournal.jsx": [
    {
-    "slot": "electives",
+    "slot": "subjects",
     "names": [
-     "gardenProjects"
-    ]
-   },
-   {
-    "slot": "projects",
-    "names": [
-     "aerospaceProjects",
-     "roboticsProjects",
-     "scienceExperiments",
-     "technologyProjects"
+     "subjectCardLabel"
     ]
    },
    {
@@ -1293,27 +1091,10 @@
   ],
   "lib/plannerFeeds.js": [
    {
-    "slot": "electives",
-    "names": [
-     "gardenBriefs",
-     "gardenBuildTrack",
-     "gardenCalendar",
-     "gardenProjects"
-    ]
-   },
-   {
-    "slot": "projects",
-    "names": [
-     "aerospaceProjects",
-     "roboticsProjects",
-     "scienceExperiments",
-     "technologyProjects"
-    ]
-   },
-   {
     "slot": "timetable",
     "names": [
-     "isHoliday"
+     "isHoliday",
+     "isSchoolDay"
     ]
    },
    {
@@ -1409,21 +1190,6 @@
   ],
   "lib/weeklyPlan.js": [
    {
-    "slot": "electives",
-    "names": [
-     "gardenProjects"
-    ]
-   },
-   {
-    "slot": "projects",
-    "names": [
-     "aerospaceProjects",
-     "roboticsProjects",
-     "scienceExperiments",
-     "technologyProjects"
-    ]
-   },
-   {
     "slot": "writing",
     "names": [
      "getThisWeeksScheduledIds",
@@ -1468,12 +1234,6 @@
     ]
    },
    {
-    "slot": "electives",
-    "names": [
-     "gardenProjects"
-    ]
-   },
-   {
     "slot": "games",
     "names": [
      "QUIZ_PLATFORM_IDS"
@@ -1500,15 +1260,6 @@
     "slot": "lessons",
     "names": [
      "allLessons"
-    ]
-   },
-   {
-    "slot": "projects",
-    "names": [
-     "aerospaceProjects",
-     "roboticsProjects",
-     "scienceExperiments",
-     "technologyProjects"
     ]
    },
    {

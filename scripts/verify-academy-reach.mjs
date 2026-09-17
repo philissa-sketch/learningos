@@ -38,6 +38,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { slotFor } from './scan-content-needs.mjs';
+import { schoolViewIds } from '../src/content/slots/views.js';
 
 const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const read = (rel) => fs.readFileSync(path.join(REPO, rel), 'utf8');
@@ -95,9 +96,19 @@ for (const id of folders) {
   const gained = [...reach].filter((t) => !recorded.includes(t));
   if (gained.length) console.log(`NOTE  ${id}: also reaches ${gained.join(', ')} — record them if they are meant to stay`);
 
-  const broken = [...reach].filter((t) => !RENDERABLE.has(t));
+  // RE-POINTED SEPT 17, 2026. This read only App.jsx's own routing, which was
+  // the whole of the answer until a school could bring its own screens. A tab
+  // is renderable if the shell routes it OR this Academy supplies the screen
+  // behind it — src/content/slots/views.js. Asserting only the first would fail
+  // a school for doing exactly what the new slot is for.
+  const own = new Set(schoolViewIds(academy));
+  const broken = [...reach].filter((t) => !RENDERABLE.has(t) && !own.has(t));
   ok(`${id}: every tab points at a screen the shell renders`, broken.length === 0,
-    broken.length ? `not renderable: ${broken.join(', ')}` : '');
+    broken.length
+      ? `not renderable: ${broken.join(', ')}\n      `
+        + `Either the shell routes it, or declare a screen for it in this Academy's\n      `
+        + `views slot — src/academies/${id}/views.js — or drop the tab.`
+      : '');
 }
 
 // ---- THE GENERATOR MUST NOT SKIP A SHAPE SLOT ----

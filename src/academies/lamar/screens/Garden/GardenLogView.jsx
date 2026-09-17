@@ -1,11 +1,11 @@
 import { useMemo, useState } from 'react';
-import { useAppStore } from '../../store/useAppStore.js';
-import { useToday } from '../../lib/useToday.js';
+import { useAppStore } from '../../../../store/useAppStore.js';
+import { useToday } from '../../../../lib/useToday.js';
 import {
   wateringStats,
   formatAmounts,
   WEEKS_NEEDED_FOR_ZONE_RANKING
-} from '../../lib/wateringLog.js';
+} from '../../../../lib/wateringLog.js';
 
 const KINDS = [
   { id: 'watering', label: 'Watering', needsAmount: true },

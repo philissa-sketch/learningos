@@ -30,13 +30,36 @@ export function readsFromAcademy(source, name) {
   return countReadsFromAcademy(source, name) > 0;
 }
 
-/** How many slot reads in `source` mention `name`. */
+/**
+ * How many slot reads in `source` mention `name`.
+ *
+ * ---- TWO SHAPES SINCE SEPT 17, 2026 ----
+ *
+ * A REQUIRED read, which every Academy must answer:
+ *
+ *   const { isSchoolDay } = academyContent().timetable;
+ *
+ * An OPTIONAL one, for content a school may not have at all — the screen says
+ * what it does without it, and the name stays off every other school's bill:
+ *
+ *   const { someList = [] } = optionalContent(academyContent(), 'electives');
+ *
+ * Both are "this file gets the value from its Academy", which is the only
+ * question this helper exists to answer, so both count. Counting only the first
+ * turned every guard that uses this red the day a screen became optional —
+ * correct code, failing check, which is how a guard gets loosened by someone in
+ * a hurry.
+ */
 export function countReadsFromAcademy(source, name) {
-  const re = new RegExp(
+  const required = new RegExp(
     `const \\{[^}]*\\b${name}\\b[^}]*\\} = academyContent\\(\\)\\.\\w+;`,
     'g'
   );
-  return (source.match(re) || []).length;
+  const optional = new RegExp(
+    `const \\{[^}]*\\b${name}\\b[^}]*\\} = optionalContent\\(academyContent\\(\\), '\\w+'\\);`,
+    'g'
+  );
+  return (source.match(required) || []).length + (source.match(optional) || []).length;
 }
 
 /**
@@ -59,5 +82,6 @@ export function bodyWithoutContentReads(source) {
     .replace(/\{\/\*[\s\S]*?\*\/\}/g, '')
     .replace(/^\s*\/\/.*$/gm, '')
     .replace(/^const \{[^}]*\} = academyContent\(\)\.\w+;$/gm, '')
+    .replace(/^const \{[^}]*\} = optionalContent\(academyContent\(\), '\w+'\);$/gm, '')
     .replace(/^import[\s\S]*?from\s*['"][^'"]*['"];$/gm, '');
 }

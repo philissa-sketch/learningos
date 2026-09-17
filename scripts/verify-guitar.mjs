@@ -634,9 +634,46 @@ ok(readsFromAcademy(dashSrc, 'getCurrentGuitarSkill') && readsFromAcademy(dashSr
 ok((dashSrc.match(/getCurrentGuitarSkill\(guitarClearedNumbers\)/g) || []).length === 1,
   'the row shows the skill he is actually on');
 const appSrc = fs.readFileSync(path.join(REPO, 'src/App.jsx'), 'utf8');
-ok((appSrc.match(/view === 'guitar'/g) || []).length === 1, 'App.jsx routes the guitar view exactly once');
-ok((appSrc.match(/import\('\.\/components\/Guitar\/GuitarHome\.jsx'\)/g) || []).length === 1,
-  'GuitarHome is lazy-loaded exactly once');
+/**
+ * ---- RE-POINTED SEPT 17, 2026 ----
+ *
+ * These asserted that App.jsx routes `view === 'guitar'` and lazy-loads
+ * GuitarHome itself. It no longer does either, and it should not: the shell
+ * names no school's activity. A school declares its own screens in the `views`
+ * slot and the shell renders one for any tab id it does not own itself.
+ *
+ * The property is unchanged and still worth holding — the guitar screen is
+ * reachable exactly once, and it is not downloaded by a school that never opens
+ * it. Only where that is written has moved, from the platform to this Academy.
+ */
+ok((appSrc.match(/<SchoolScreen /g) || []).length === 1,
+  "the shell renders a school's own screen exactly once");
+ok(!/view === 'guitar'/.test(appSrc) && !/components\/Guitar\//.test(appSrc),
+  'App.jsx names no guitar screen of its own');
+// An Academy that teaches guitar brings its own guitar screen. One that does
+// not teach it brings none, and neither case is the platform's business.
+//
+// Read from views.js where the school has one: content.js is GENERATED and only
+// re-exports that slot, because nothing in a data folder could say which tab
+// opens which screen.
+{
+  const dir = path.join(REPO, `src/academies/${process.env.ACADEMY}`);
+  const own = path.join(dir, 'views.js');
+  const declaring = fs.existsSync(own) ? own : path.join(dir, 'content.js');
+  const source = fs.readFileSync(declaring, 'utf8');
+  const views = (source.match(/export const views = \{([\s\S]*?)\n\};/) || [])[1] || '';
+  const homes = (source.match(/import\('[^']*\/Guitar\/GuitarHome\.jsx'\)/g) || []).length;
+  const { academy } = await effectiveNav(REPO);
+  const teachesGuitar = Object.keys(academy?.electives || {}).some((n) => /guitar/i.test(n));
+  if (teachesGuitar) {
+    ok(/\bguitar\s*:/.test(views), 'this Academy declares its own guitar screen',
+      `declare it in the views slot — src/academies/${process.env.ACADEMY}/views.js`);
+    ok(homes === 1, 'GuitarHome is lazy-loaded exactly once, by the school that runs it');
+  } else {
+    ok(!/\bguitar\s*:/.test(views) && homes === 0,
+      'an Academy that does not teach guitar declares no guitar screen');
+  }
+}
 // An Academy that teaches guitar offers exactly one guitar tab. An Academy
 // that does not teach it offers none — and neither case is this file's text.
 {

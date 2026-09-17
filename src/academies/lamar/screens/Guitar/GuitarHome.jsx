@@ -1,13 +1,14 @@
 import { useState } from 'react';
-import { useAppStore } from '../../store/useAppStore.js';
+import { useAppStore } from '../../../../store/useAppStore.js';
 import { PracticeTrackerView } from './PracticeTrackerView.jsx';
 import { TheoryView } from './TheoryView.jsx';
 import { SongsView } from './SongsView.jsx';
 import { RecordingView } from './RecordingView.jsx';
 import { NovaGuitarGuide } from './NovaGuitarGuide.jsx';
-import { academyContent } from '../../content/academyContent.js';
+import { academyContent } from '../../../../content/academyContent.js';
+import { optionalContent } from '../../../../content/slots/optional.js';
 
-const { guitarSkillLadder = [] } = academyContent().electives;
+const { guitarSkillLadder = [] } = optionalContent(academyContent(), 'electives');
 
 const TABS = [
   { id: 'practice', label: 'Practice' },

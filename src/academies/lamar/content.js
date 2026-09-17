@@ -96,3 +96,9 @@ export const writing = { EDCLUB_PORTAL_URL, ERGONOMICS_CHECKLIST, SCHOOL_YEAR_ST
  * thing the folder split exists to prevent.
  */
 export const theme = { appearance: () => import('./academy.css') };
+
+// This school's own screens: tab id -> how to load it. Hand-written in
+// views.js, which this generated file only re-exports — see that file and
+// src/content/slots/views.js.
+export { views } from './views.js';
+

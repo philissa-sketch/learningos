@@ -29,12 +29,13 @@ import {
 } from '../../lib/rotatingBlock.js';
 import { useToday } from '../../lib/useToday.js';
 import { academyContent } from '../../content/academyContent.js';
+import { optionalContent } from '../../content/slots/optional.js';
+import { projectPools } from '../../content/slots/projects.js';
 
-const { GUITAR_DAILY_MINUTES, gardenProjects = [], getCurrentGuitarSkill = () => null } = academyContent().electives;
+const { GUITAR_DAILY_MINUTES = 0, getCurrentGuitarSkill = () => null } = optionalContent(academyContent(), 'electives');
 const { leadStatus = () => null } = academyContent().academicCenter;
 const { allLessons = [] } = academyContent().lessons;
 const { getTodaysWorkout = () => null } = academyContent().pe;
-const { aerospaceProjects = [], roboticsProjects = [], scienceExperiments = [], technologyProjects = [] } = academyContent().projects;
 const { subjectCardLabel = () => null } = academyContent().subjects;
 const { dayPattern = () => null, subjectsForDay = () => null } = academyContent().timetable;
 const { getThisWeeksScheduledIds = () => [], writingPrompts = [] } = academyContent().writing;
@@ -94,8 +95,7 @@ export function MissionControlDashboard({
   onPracticeWords,
   onOpenAcademicCenter,
   onOpenPE,
-  onOpenGuitar,
-  onOpenGarden,
+  onOpenView,
   onOpenTyping,
   onOpenMessages,
   onOpenSchedule,
@@ -484,7 +484,7 @@ export function MissionControlDashboard({
    *
    * It could not appear. Not a setting — a structural gap: the home screen
    * resolves this week's work against weeklyWritingSchedule, and no gd7-* id
-   * has ever been in that file. Three separate components import gardenProjects
+   * has ever been in that file. Three separate components import the garden pool
    * and search it by id; none of those searches could ever match. Meanwhile the
    * garden had its own calendar of 42 dated Fridays that nothing read.
    *
@@ -575,17 +575,23 @@ export function MissionControlDashboard({
    * TimetableOrder puts it where the rail already says it goes. A build with
    * no subject could only ever have been a tile.
    */
-  const HANDS_ON_SOURCES = [
-    { subject: 'aerospace', label: 'Aerospace', list: aerospaceProjects },
-    { subject: 'science', label: 'Science', list: scienceExperiments },
-    { subject: 'technology', label: 'Technology', list: technologyProjects },
-    { subject: 'robotics', label: 'Robotics', list: roboticsProjects },
-    { subject: 'gardening', label: 'Garden', list: gardenProjects }
-  ];
+  /**
+   * ---- THE POOLS COME FROM THE SCHOOL (Sept 17, 2026) ----
+   *
+   * This list used to name five pools and five short headings by hand — the
+   * last of the hand-listers the projects slot was built to retire. The school
+   * now says what hands-on pools it runs; each pool carries the subject its
+   * projects declare, and the row reads the school's own name for that
+   * subject — the same name the Writing Journal already shows, so the two
+   * screens cannot disagree.
+   */
+  const HANDS_ON_SOURCES = projectPools(academyContent());
   const resolveHandsOn = (id) => {
-    for (const source of HANDS_ON_SOURCES) {
-      const project = source.list.find((p) => p.id === id);
-      if (project) return { project, subject: source.subject, label: source.label };
+    for (const pool of HANDS_ON_SOURCES) {
+      const project = pool.items.find((p) => p.id === id);
+      if (project) {
+        return { project, subject: pool.subject, label: subjectCardLabel(pool.subject) || pool.label };
+      }
     }
     return null;
   };
@@ -1312,7 +1318,7 @@ export function MissionControlDashboard({
                       .join(' · ')
               }
               kind={todaysGarden.done ? 'done' : 'mission'}
-              onAction={onOpenGarden}
+              onAction={() => onOpenView('garden')}
               actionLabel={todaysGarden.done ? 'Open' : 'Start'}
             />
           )}
@@ -1571,7 +1577,7 @@ export function MissionControlDashboard({
                   : `${GUITAR_DAILY_MINUTES} minutes at 3:00 — tune first, then this`
             }
             kind={guitarDoneToday ? 'done' : 'mission'}
-            onAction={onOpenGuitar}
+            onAction={() => onOpenView('guitar')}
             actionLabel={guitarDoneToday ? 'Open' : 'Start'}
           />
           )}

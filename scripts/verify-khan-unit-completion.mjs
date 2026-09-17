@@ -91,9 +91,9 @@ function resolveImport(fromRel, spec) {
   return null;
 }
 
-function reachableFrom(entryRel) {
+function reachableFrom(...entries) {
   const seen = new Set();
-  const queue = [entryRel];
+  const queue = [...entries];
   while (queue.length) {
     const rel = queue.shift();
     if (seen.has(rel)) continue;
@@ -104,7 +104,12 @@ function reachableFrom(entryRel) {
     const specs = [
       ...[...src.matchAll(/(?:^|\n)\s*import\s[^;]*?from\s*['"]([^'"]+)['"]/g)].map((m) => m[1]),
       ...[...src.matchAll(/(?:^|\n)\s*import\s*['"]([^'"]+)['"]/g)].map((m) => m[1]),
-      ...[...src.matchAll(/import\(\s*['"]([^'"]+)['"]\s*\)/g)].map((m) => m[1])
+      ...[...src.matchAll(/import\(\s*['"]([^'"]+)['"]\s*\)/g)].map((m) => m[1]),
+      // `export { x } from './y.js'` reaches y just as surely as an import does,
+      // and this walk could not see it. A generated Academy manifest re-exports
+      // its hand-written views slot exactly that way (Sept 17, 2026), so every
+      // screen behind it read as unreachable.
+      ...[...src.matchAll(/(?:^|\n)\s*export\s[^;]*?from\s*['"]([^'"]+)['"]/g)].map((m) => m[1])
     ];
     for (const spec of specs) {
       const next = resolveImport(rel, spec);
@@ -126,7 +131,26 @@ function reachableFrom(entryRel) {
  * main.jsx is the real entry point and always was. Starting from it makes the
  * reachable set strictly larger and strictly more honest.
  */
-const live = reachableFrom('src/main.jsx');
+/**
+ * ---- AND EVERY ACADEMY'S MANIFEST (Sept 17, 2026) ----
+ *
+ * The shell reaches a school's content through `import.meta.glob` in
+ * src/content/academyContent.js. The bundler expands that at build time; no
+ * walk over source text can follow it, so a manifest is invisible here.
+ *
+ * That cost nothing while manifests held only data. Then a school started
+ * supplying its own SCREENS — src/content/slots/views.js — and four garden
+ * screens went from "named by App.jsx" to "reached only through a manifest".
+ * The actions only they call read as stranded, which is this check's alarm for
+ * something perfectly alive. A manifest is an entry point; it is listed as one.
+ */
+const ACADEMY_MANIFESTS = fs
+  .readdirSync(path.join(REPO, 'src/academies'), { withFileTypes: true })
+  .filter((e) => e.isDirectory())
+  .map((e) => `src/academies/${e.name}/content.js`)
+  .filter((rel) => fs.existsSync(path.join(REPO, rel)));
+
+const live = reachableFrom('src/main.jsx', ...ACADEMY_MANIFESTS);
 console.log(`\nfiles reachable from main.jsx: ${live.size}`);
 
 console.log('\n--- 1. nothing he can reach marks a unit finished ---');

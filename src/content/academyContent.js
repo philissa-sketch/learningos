@@ -133,6 +133,10 @@ export const CONTENT_SLOTS = Object.freeze([
   'guide',
   'theme',
   'nav',
+  // A school's own screens, keyed by the tab id its nav declares (Sept 17,
+  // 2026). Optional: a school with no screens of its own fills nothing here and
+  // the shell renders only its own. See src/content/slots/views.js.
+  'views',
   'projects',
   'exams',
   'writing',

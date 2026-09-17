@@ -200,9 +200,9 @@ console.log('\n--- 2. nothing in the app asks UTC what day it is ---');
     'src/components/Dashboard/ParentDashboard.jsx',
     'src/components/PE/WorkoutView.jsx',
     'src/components/PE/TrackersView.jsx',
-    'src/components/Guitar/PracticeTrackerView.jsx',
-    'src/components/Garden/SeasonCalendarView.jsx',
-    'src/components/Garden/SunSurveyView.jsx',
+    'src/academies/lamar/screens/Guitar/PracticeTrackerView.jsx',
+    'src/academies/lamar/screens/Garden/SeasonCalendarView.jsx',
+    'src/academies/lamar/screens/Garden/SunSurveyView.jsx',
     'src/components/Lesson/StudyCycleTracker.jsx',
     'src/engine/dailyPractice.js',
     'src/store/useAppStore.js'

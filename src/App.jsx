@@ -1,7 +1,9 @@
-import { lazy, Suspense, useEffect, useState } from 'react';
+import { lazy, Suspense, useEffect, useMemo, useState } from 'react';
 import { useAppStore } from './store/useAppStore.js';
 import { applyTheme } from './lib/themes.js';
 import { NavBar } from './components/Navigation/NavBar.jsx';
+import { academyContent } from './content/academyContent.js';
+import { schoolViewLoader } from './content/slots/views.js';
 import { MissionControlDashboard } from './components/Dashboard/MissionControlDashboard.jsx';
 // ParentGate is deliberately NOT lazy-loaded like the dashboard it wraps.
 // It is small, and it has to render the lock screen without pulling the
@@ -92,8 +94,6 @@ const SchedulerHome = lazy(() =>
   import('./components/Scheduler/SchedulerHome.jsx').then((m) => ({ default: m.SchedulerHome }))
 );
 const PEHome = lazy(() => import('./components/PE/PEHome.jsx').then((m) => ({ default: m.PEHome })));
-const GardenHome = lazy(() => import('./components/Garden/GardenHome.jsx').then((m) => ({ default: m.GardenHome })));
-const GuitarHome = lazy(() => import('./components/Guitar/GuitarHome.jsx').then((m) => ({ default: m.GuitarHome })));
 const MissionCommsHome = lazy(() => import('./components/Messages/MissionCommsHome.jsx').then((m) => ({ default: m.MissionCommsHome })));
 const MorningMeeting = lazy(() => import('./components/Morning/MorningMeeting.jsx').then((m) => ({ default: m.MorningMeeting })));
 const AcademicHome = lazy(() =>
@@ -130,7 +130,19 @@ export default function App({ initialView = 'dashboard', onSignOut }) {
   const [dbNotice, setDbNotice] = useState(null);
   const recordActiveMinute = useAppStore((s) => s.recordActiveMinute);
   const recordStudyCycleDay = useAppStore((s) => s.recordStudyCycleDay);
-  const [view, setView] = useState(initialView); // 'dashboard' | 'progress' | 'lessons' | 'games' | 'journal' | 'typing' | 'schedule' | 'academic' | 'pe' | 'garden' | 'guitar' | 'messages' | 'morning' | 'parent'
+  // 'dashboard' | 'progress' | 'lessons' | 'games' | 'journal' | 'typing' |
+  // 'schedule' | 'academic' | 'pe' | 'messages' | 'morning' | 'parent', plus
+  // any tab id this school brings a screen of its own for.
+  const [view, setView] = useState(initialView);
+  /**
+   * The school's own screen for this tab, if the shell does not own the id.
+   * Read per render rather than at module scope: a content-pack read that runs
+   * before the pack is installed throws on the way in.
+   */
+  const SchoolScreen = useMemo(() => {
+    const load = schoolViewLoader(academyContent(), view);
+    return load ? lazy(load) : null;
+  }, [view]);
   // Which Scheduler view to open on. Set by the Morning Meeting's look-ahead
   // step; 'daily' everywhere else, which is what the nav has always done.
   const [scheduleMode, setScheduleMode] = useState('daily');
@@ -430,8 +442,13 @@ export default function App({ initialView = 'dashboard', onSignOut }) {
              */
             onOpenAcademicCenter={openAcademicCenter}
             onOpenPE={() => setView('pe')}
-            onOpenGuitar={() => setView('guitar')}
-            onOpenGarden={() => setView('garden')}
+            /**
+             * One handler, any tab (Sept 17, 2026). This was `onOpenGuitar`
+             * and `onOpenGarden`: two activities belonging to one child, named
+             * in the shell. A row on the home screen knows which tab it opens;
+             * the shell only needs to be told which.
+             */
+            onOpenView={setView}
             /**
              * WAS `setTypingMode('home')`, WHICH DID NOTHING. (Aug 10, 2026.)
              *
@@ -491,18 +508,22 @@ export default function App({ initialView = 'dashboard', onSignOut }) {
         {view === 'academic' && <AcademicHome focus={academicFocus} />}
         {view === 'rewards' && <RewardsHome />}
         {view === 'pe' && <PEHome onExit={() => setView('dashboard')} />}
-        {/* onStartPrompt is the SAME handler the Writing Journal uses: a garden
-            project is a `category: 'experiment'` prompt, so opening one from the
-            garden and opening it from the Journal land in the same engine and
-            produce the same graded entry. */}
-        {view === 'garden' && (
-          <GardenHome onExit={() => setView('dashboard')} onStartPrompt={setActivePrompt} />
+        {/* ---- THIS SCHOOL'S OWN SCREENS (Sept 17, 2026) ----
+
+            Two activities belonging to one child used to be wired in here by
+            name, so the shell could render exactly the screens someone had
+            written into it and a school's own tab had nothing behind it.
+
+            A school now declares `views` in its Academy — tab id to component —
+            and the shell asks for one only when the id is not its own, so no
+            Academy can replace the dashboard or the parent area.
+
+            onStartPrompt is the SAME handler the Writing Journal uses, so a
+            project opened from a school's screen and one opened from the
+            Journal land in the same engine and produce the same graded entry. */}
+        {SchoolScreen && (
+          <SchoolScreen onExit={() => setView('dashboard')} onStartPrompt={setActivePrompt} />
         )}
-        {/* Electric Guitar takes no props but onExit: unlike the garden, nothing
-            here routes into the writing engine. Its theory items are readings
-            with a check, NOT rows in allLessons — see config/subjects.js for why
-            that distinction is load-bearing. */}
-        {view === 'guitar' && <GuitarHome onExit={() => setView('dashboard')} />}
         {view === 'messages' && <MissionCommsHome onExit={() => setView('dashboard')} />}
         {/* block-1, 08:30-09:00. See components/Morning/MorningMeeting.jsx for
             why a timetable row that existed in one file and nowhere else had to

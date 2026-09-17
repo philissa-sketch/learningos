@@ -1,19 +1,20 @@
 import { useState } from 'react';
-import { useAppStore } from '../../store/useAppStore.js';
+import { useAppStore } from '../../../../store/useAppStore.js';
 import { GardenBriefView } from './GardenBriefView.jsx';
 import { SunSurveyView } from './SunSurveyView.jsx';
 import { GardenLogView } from './GardenLogView.jsx';
 import { BuildTrackView } from './BuildTrackView.jsx';
 import { SeasonCalendarView } from './SeasonCalendarView.jsx';
 import { NovaGardenGuide } from './NovaGardenGuide.jsx';
-import { DomainProjectView } from '../Domains/DomainProjectView.jsx';
-import { academyContent } from '../../content/academyContent.js';
+import { DomainProjectView } from '../../../../components/Domains/DomainProjectView.jsx';
+import { academyContent } from '../../../../content/academyContent.js';
+import { optionalContent } from '../../../../content/slots/optional.js';
 
 const {
   gardenProjects = [],
   getGardenDayForWeekOf = () => null,
   getNextGardenDay = () => null
-} = academyContent().electives;
+} = optionalContent(academyContent(), 'electives');
 
 const TABS = [
   { id: 'friday', label: 'Mission' },

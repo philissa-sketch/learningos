@@ -191,6 +191,7 @@ import {
   cryptoAvailable
 } from '../lib/parentAuth.js';
 import { academyContent } from '../content/academyContent.js';
+import { projectPools, allProjects } from '../content/slots/projects.js';
 
 /**
  * ---- EMPTY OF THE RIGHT SHAPE (Sept 1, 2026) ----
@@ -244,11 +245,9 @@ import { academyContent } from '../content/academyContent.js';
  */
 const { availableDueDates = () => [], bookRationale = {}, hasMilestones = () => false, milestonesFor = () => [], quarterlyAcademicPlaceholders = {}, subjectBookPlaceholders = {} } = academyContent().academicCenter;
 const { findProposal = () => null, missionScoreTotals = () => null } = academyContent().compliance;
-const { gardenProjects = [] } = academyContent().electives;
 const { QUIZ_PLATFORM_IDS = [] } = academyContent().games;
 const { GRAMMAR_COURSES = {}, KHAN_GRAMMAR_UNITS = [], LEGACY_GRAMMAR_TITLES = {}, SCIENCE_CANONICAL_KEYS = new Set(), SCIENCE_CANONICAL_TITLES = new Set(), generalGrammarUnitByUrl = () => null, grammarRowTitle, grammarUnitUrl, khanGrammarUnitByUrl = () => null, scienceCanonicalRow = () => null, scienceCourseChallengeRows = () => [], scienceRowsFor = () => [] } = academyContent().khanSequences;
 const { allLessons = [] } = academyContent().lessons;
-const { aerospaceProjects = [], roboticsProjects = [], scienceExperiments = [], technologyProjects = [] } = academyContent().projects;
 const { SEEDED_REWARD_LADDER_MAP = {}, catalogRewardRows = () => [] } = academyContent().rewards;
 const { ACTIVE_SUBJECTS = [], KHAN_TAUGHT_SUBJECTS = [], LESSON_TRACK_SUBJECTS = [], PARTICIPATION_SUBJECTS = [], canonicalSubject = () => null, strandsForSubject = () => [] } = academyContent().subjects;
 const { defaultSchedule = [] } = academyContent().timetable;
@@ -837,13 +836,11 @@ export function totalMasteredCount(state) {
  * all six pools. Two functions were answering the same question and only one
  * of them was right; this is the other one being brought into line.
  */
+// Every hands-on pool the school runs, read through the projects slot
+// (Sept 17, 2026) rather than named here one by one.
 const WRITING_PROMPT_POOLS = [
   writingPrompts,
-  aerospaceProjects,
-  scienceExperiments,
-  technologyProjects,
-  roboticsProjects,
-  gardenProjects
+  ...projectPools(academyContent()).map((pool) => pool.items)
 ];
 
 /** promptId -> subject, built once from every pool the prompt engine can serve. */
@@ -5680,11 +5677,7 @@ export const useAppStore = create((set, get) => ({
     const skillCompleted = skillPrompts.filter((p) => completedSkillIds.has(p.id)).length;
     const projectIds = new Set([
       ...projectPrompts.map((p) => p.id),
-      ...aerospaceProjects.map((p) => p.id),
-      ...scienceExperiments.map((p) => p.id),
-      ...technologyProjects.map((p) => p.id),
-      ...roboticsProjects.map((p) => p.id),
-      ...gardenProjects.map((p) => p.id)
+      ...allProjects(academyContent()).map((p) => p.id)
     ]);
     const projectEntryCount = writingEntries.filter((e) => projectIds.has(e.promptId)).length;
     return {

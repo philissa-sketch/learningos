@@ -47,10 +47,11 @@
 // ---------------------------------------------------------------------------
 import { toDateStr, addDays, todayDateStr, parseDateStr } from './scheduler.js';
 import { academyContent } from '../content/academyContent.js';
+import { optionalContent } from '../content/slots/optional.js';
 import { QUARTER_SPANS } from './yearPlan.js';
 import { findProjectById } from '../content/slots/projects.js';
 
-const { gardenBriefs = [], gardenBuildTrack = [], gardenCalendar = [] } = academyContent().electives;
+const { gardenBriefs = [], gardenBuildTrack = [], gardenCalendar = [] } = optionalContent(academyContent(), 'electives');
 const { isHoliday = () => false, isSchoolDay = () => false } = academyContent().timetable;
 const { SCHOOL_YEAR_START, getSchoolWeekNumber = () => false, weeklyWritingSchedule = {}, writingPrompts = [] } = academyContent().writing;
 

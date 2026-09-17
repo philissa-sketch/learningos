@@ -90,10 +90,63 @@ function resolve(fromFile, spec) {
 const REGISTRY = path.join(ACADEMIES, 'registry.js');
 const isAcademyFile = (abs) => abs && abs.startsWith(ACADEMIES + path.sep) && abs !== REGISTRY;
 
-/** `const { A, B: c } = academyContent().slot;` — the shape the school uses. */
-const SLOT_READ = /const \{([^}]*)\} = academyContent\(\)\.(\w+);/g;
+/**
+ * `const { A, B: c, D = [] } = academyContent().slot;` — the shape the school uses.
+ *
+ * ---- READ FROM THE SYNTAX TREE, NOT A REGEX (Sept 17, 2026) ----
+ *
+ * This used to be `/const \{([^}]*)\} = academyContent\(\)\.(\w+);/`. It was
+ * written before the school gave its reads fallbacks, and it broke three ways
+ * the day it was re-run:
+ *
+ *   `allLessons = []`         the default was kept as part of the NAME, so the
+ *                             contract asked for a name no school exports
+ *   `bookRationale = {}`      the `}` of the default ended the match early, so
+ *                             every name on that line vanished — 15 files fell
+ *                             out of the inventory entirely
+ *   `// technologyProjects`   a comment inside the braces became a name
+ *
+ * It reported success and wrote 109 names where the truth was near 150. The
+ * parser below already builds the tree for the import check, so the reads come
+ * from the same tree: only the KEY of each destructured property is a name.
+ */
+export function slotReadsIn(ast) {
+  const found = [];
+  const visit = (node) => {
+    if (!node || typeof node.type !== 'string') return;
+    if (
+      node.type === 'VariableDeclarator' &&
+      node.id?.type === 'ObjectPattern' &&
+      node.init?.type === 'MemberExpression' &&
+      !node.init.computed &&
+      node.init.property?.type === 'Identifier' &&
+      node.init.object?.type === 'CallExpression' &&
+      node.init.object.callee?.type === 'Identifier' &&
+      node.init.object.callee.name === 'academyContent'
+    ) {
+      const names = node.id.properties.map((prop) => {
+        if (prop.type === 'RestElement') {
+          throw new Error('`...rest` in an academyContent() read cannot be listed — name each export');
+        }
+        if (prop.computed) throw new Error('a computed key in an academyContent() read cannot be listed');
+        return prop.key.type === 'Identifier' ? prop.key.name : String(prop.key.value);
+      });
+      found.push({ slot: node.init.property.name, names });
+    }
+    for (const key of Object.keys(node)) {
+      if (key === 'loc' || key === 'start' || key === 'end' || key.endsWith('Comments')) continue;
+      const child = node[key];
+      if (Array.isArray(child)) child.forEach(visit);
+      else if (child && typeof child === 'object') visit(child);
+    }
+  };
+  visit(ast.program);
+  return found;
+}
 
-export function scan({ quiet = false } = {}) {
+const IDENTIFIER = /^[A-Za-z_$][\w$]*$/;
+
+export function scan({ quiet = false, write = true } = {}) {
   const schoolFiles = walk(SRC).filter((f) => !f.startsWith(ACADEMIES + path.sep));
 
   const nameToSlot = {};
@@ -123,15 +176,10 @@ export function scan({ quiet = false } = {}) {
       if (isAcademyFile(target)) legacyImports.push(`${rel} → ${spec}`);
     }
 
-    for (const m of source.matchAll(SLOT_READ)) {
+    for (const { slot, names } of slotReadsIn(ast)) {
       reads += 1;
-      const slot = m[2];
-      const names = m[1]
-        .split(',')
-        .map((s) => s.trim())
-        .filter(Boolean)
-        // `IMPORTED: local` — the contract is the imported name, on the left.
-        .map((s) => s.split(':')[0].trim());
+      const bad = names.filter((n) => !IDENTIFIER.test(n));
+      if (bad.length) throw new Error(`${rel}: not a name: ${bad.join(', ')}`);
 
       byFile[rel] = byFile[rel] || [];
       byFile[rel].push({ slot, names });
@@ -189,7 +237,9 @@ export function scan({ quiet = false } = {}) {
     byFile
   };
 
-  fs.writeFileSync(path.join(REPO, 'scripts/academy-content-needs.json'), `${JSON.stringify(out, null, 1)}\n`);
+  if (write) {
+    fs.writeFileSync(path.join(REPO, 'scripts/academy-content-needs.json'), `${JSON.stringify(out, null, 1)}\n`);
+  }
 
   if (!quiet) {
     console.log(`${out.files} school files read Academy content`);
@@ -199,7 +249,7 @@ export function scan({ quiet = false } = {}) {
       console.log(`\n!! ${legacyImports.length} static import(s) into an Academy folder — a C1 regression:`);
       legacyImports.forEach((l) => console.log('   ' + l));
     }
-    console.log('wrote scripts/academy-content-needs.json');
+    if (write) console.log('wrote scripts/academy-content-needs.json');
   }
   return out;
 }

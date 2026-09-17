@@ -1,13 +1,14 @@
 import { useMemo } from 'react';
-import { useAppStore } from '../../store/useAppStore.js';
-import { SUN_ZONES, SURVEY_DAYS_WANTED, sunSurveyStats, zoneClass } from '../../lib/sunSurvey.js';
-import { gardenCalendarItems } from '../../lib/plannerFeeds.js';
-import { wateringStats, formatAmounts } from '../../lib/wateringLog.js';
-import { useToday } from '../../lib/useToday.js';
-import { parseDateStr } from '../../lib/scheduler.js';
-import { academyContent } from '../../content/academyContent.js';
+import { useAppStore } from '../../../../store/useAppStore.js';
+import { SUN_ZONES, SURVEY_DAYS_WANTED, sunSurveyStats, zoneClass } from '../../../../lib/sunSurvey.js';
+import { gardenCalendarItems } from '../../../../lib/plannerFeeds.js';
+import { wateringStats, formatAmounts } from '../../../../lib/wateringLog.js';
+import { useToday } from '../../../../lib/useToday.js';
+import { parseDateStr } from '../../../../lib/scheduler.js';
+import { academyContent } from '../../../../content/academyContent.js';
+import { optionalContent } from '../../../../content/slots/optional.js';
 
-const { gardenBuildTrack = [], gardenCapstone = {}, gardenProjects = [] } = academyContent().electives;
+const { gardenBuildTrack = [], gardenCapstone = {}, gardenProjects = [] } = optionalContent(academyContent(), 'electives');
 const { SUBJECT_LABELS = {} } = academyContent().subjects;
 
 /** 'Fri 14 Aug'. */

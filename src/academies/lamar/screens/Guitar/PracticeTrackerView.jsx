@@ -1,10 +1,11 @@
 import { useState } from 'react';
-import { useAppStore } from '../../store/useAppStore.js';
-import { todayDateStr } from '../../lib/scheduler.js';
-import { toDateStr } from '../../lib/scheduler.js';
-import { academyContent } from '../../content/academyContent.js';
+import { useAppStore } from '../../../../store/useAppStore.js';
+import { todayDateStr } from '../../../../lib/scheduler.js';
+import { toDateStr } from '../../../../lib/scheduler.js';
+import { academyContent } from '../../../../content/academyContent.js';
+import { optionalContent } from '../../../../content/slots/optional.js';
 
-const { GUITAR_DAILY_MINUTES, GUITAR_SESSION_SHAPE = [], getCurrentGuitarSkill = () => null, getGuitarTool = () => null, guitarSkillLadder = [] } = academyContent().electives;
+const { GUITAR_DAILY_MINUTES = 0, GUITAR_SESSION_SHAPE = [], getCurrentGuitarSkill = () => null, getGuitarTool = () => null, guitarSkillLadder = [] } = optionalContent(academyContent(), 'electives');
 
 /**
  * THE PRACTICE TRACKER — the Habit Tracker widget from PROJECT_PLAN.md Part 5,

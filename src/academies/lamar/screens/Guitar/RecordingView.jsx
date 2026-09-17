@@ -1,8 +1,9 @@
 import { useState } from 'react';
-import { useAppStore } from '../../store/useAppStore.js';
-import { academyContent } from '../../content/academyContent.js';
+import { useAppStore } from '../../../../store/useAppStore.js';
+import { academyContent } from '../../../../content/academyContent.js';
+import { optionalContent } from '../../../../content/slots/optional.js';
 
-const { guitarFeedbackPlaces = [] } = academyContent().electives;
+const { guitarFeedbackPlaces = [] } = optionalContent(academyContent(), 'electives');
 
 /**
  * THE RECORDING ROUTINE — and the parent-facing safety text, which is NOT

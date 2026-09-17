@@ -176,7 +176,9 @@ for (const [rel] of CONSUMERS) {
   const dash = fs.readFileSync(
     path.join(REPO, 'src/components/Dashboard/MissionControlDashboard.jsx'), 'utf8'
   ).replace(/\/\*[\s\S]*?\*\//g, '').replace(/\{\/\*[\s\S]*?\*\/\}/g, '').replace(/^\s*\/\/.*$/gm, '');
-  ok(/HANDS_ON_SOURCES/.test(dash) && /weeksHandsOn/.test(dash) && /list: gardenProjects/.test(dash),
+  // Re-pointed Sept 17, 2026: the row no longer names the garden list; it reads
+  // every pool the school runs, and the section above proves the garden is one.
+  ok(/const HANDS_ON_SOURCES = projectPools\(academyContent\(\)\)/.test(dash) && /weeksHandsOn/.test(dash),
     "the week's hands-on project row reads the garden list, so the deleted card left nothing behind");
 }
 /**
@@ -672,8 +674,8 @@ ok(namingBrief?.connectsTo?.some((c) => c.subject === 'robotics'),
 console.log('\n--- the sun survey ---');
 {
   const sun = await import(moduleUrl('src/lib/sunSurvey.js'));
-  const surveyView = read('src/components/Garden/SunSurveyView.jsx');
-  const buildView = read('src/components/Garden/BuildTrackView.jsx');
+  const surveyView = read('src/academies/lamar/screens/Garden/SunSurveyView.jsx');
+  const buildView = read('src/academies/lamar/screens/Garden/BuildTrackView.jsx');
 
   ok(sun.CHECKS_PER_DAY === sun.SUN_HOURS.length && sun.SUN_HOURS.length === 10,
     `a survey day is every hour 9am-6pm (${sun.CHECKS_PER_DAY} checks)`);
@@ -737,8 +739,8 @@ console.log('\n--- 12. the watering log, and the dates on the builds ---');
 {
   const water = await import('../src/lib/wateringLog.js');
   const { gardenCalendarItems } = await import('../src/lib/plannerFeeds.js');
-  const logView = read('src/components/Garden/GardenLogView.jsx');
-  const buildView = read('src/components/Garden/BuildTrackView.jsx');
+  const logView = read('src/academies/lamar/screens/Garden/GardenLogView.jsx');
+  const buildView = read('src/academies/lamar/screens/Garden/BuildTrackView.jsx');
 
   const TODAY = '2026-08-24'; // a Monday, so week boundaries in these fixtures are unambiguous
   const w = (date, amount = 4, unit = 'cups', zone = 'A1') => ({
@@ -892,9 +894,9 @@ console.log('\n--- 13. every tab is wired to what it opens ---');
     .replace(/\/\*[\s\S]*?\*\//g, '')
     .replace(/\{\/\*[\s\S]*?\*\/\}/g, '')
     .replace(/^\s*\/\/.*$/gm, '');
-  const home = codeOnly(read('src/components/Garden/GardenHome.jsx'));
-  const track = codeOnly(read('src/components/Garden/BuildTrackView.jsx'));
-  const briefView = codeOnly(read('src/components/Garden/GardenBriefView.jsx'));
+  const home = codeOnly(read('src/academies/lamar/screens/Garden/GardenHome.jsx'));
+  const track = codeOnly(read('src/academies/lamar/screens/Garden/BuildTrackView.jsx'));
+  const briefView = codeOnly(read('src/academies/lamar/screens/Garden/GardenBriefView.jsx'));
 
   ok(/<BuildTrackView onOpenProject=\{openProjectById\} \/>/.test(home),
     'the Build Track is handed a way to open a build',
@@ -968,8 +970,8 @@ console.log('\n--- 14. a garden day is recorded on the day it happened ---');
     .replace(/\{\/\*[\s\S]*?\*\/\}/g, '')
     .replace(/^\s*\/\/.*$/gm, '');
   const store = codeOnly(read('src/store/useAppStore.js'));
-  const season = codeOnly(read('src/components/Garden/SeasonCalendarView.jsx'));
-  const briefView = codeOnly(read('src/components/Garden/GardenBriefView.jsx'));
+  const season = codeOnly(read('src/academies/lamar/screens/Garden/SeasonCalendarView.jsx'));
+  const briefView = codeOnly(read('src/academies/lamar/screens/Garden/GardenBriefView.jsx'));
 
   ok(/async bumpAttendanceOn\(dateStr, field, by = 1\)/.test(store),
     'attendance can be credited to a stated day');
@@ -1042,7 +1044,7 @@ console.log('\n--- 15. the planting panel knows what season it is ---');
     .replace(/\/\*[\s\S]*?\*\//g, '')
     .replace(/\{\/\*[\s\S]*?\*\/\}/g, '')
     .replace(/^\s*\/\/.*$/gm, '');
-  const season = codeOnly(read('src/components/Garden/SeasonCalendarView.jsx'));
+  const season = codeOnly(read('src/academies/lamar/screens/Garden/SeasonCalendarView.jsx'));
 
   ok(/function inFallPlantingSeason\(dateStr\)/.test(season),
     'the panel can tell whether its own dates are current');

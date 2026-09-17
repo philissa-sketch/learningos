@@ -1,4 +1,4 @@
-import { NovaMessage } from '../Mentor/NovaMessage.jsx';
+import { NovaMessage } from '../../../../components/Mentor/NovaMessage.jsx';
 
 // ---------------------------------------------------------------------------
 // NOVA ON THE GUITAR SCREEN.
