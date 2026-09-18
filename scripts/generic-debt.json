@@ -1,52 +1,103 @@
 {
  "_baseline": "2026-08-31, the day the school moved into LearningOS",
- "_why": "Files in the school zone that still name one Academy. This list may SHRINK and must never GROW. See scripts/verify-no-learner.mjs.",
+ "_why": "Files that still name one Academy. This list may SHRINK and must never GROW. See scripts/verify-no-learner.mjs. 'files' is the school zone, against all nine categories since Sept 18, 2026. 'platform' is the platform zone, and ONLY ever for the five categories added that day — the original four are still zero-tolerance there.",
  "files": {
   "src/App.jsx": [
    "learner",
    "school-name",
-   "subject"
+   "place"
+  ],
+  "src/components/Academic/AcademicAssignmentsView.jsx": [
+   "family-role",
+   "service"
   ],
   "src/components/Academic/AcademicParentSetupView.jsx": [
-   "learner"
+   "learner",
+   "service"
   ],
   "src/components/Academic/BookLibraryView.jsx": [
    "learner"
   ],
+  "src/components/Academic/NovaAcademicGuide.jsx": [
+   "family-role"
+  ],
+  "src/components/Academic/academicUi.js": [
+   "service"
+  ],
+  "src/components/Dashboard/AcademicCenterCard.jsx": [
+   "service"
+  ],
+  "src/components/Dashboard/AdminRecordsSection.jsx": [
+   "place"
+  ],
+  "src/components/Dashboard/BackupStatusCard.jsx": [
+   "place",
+   "family-role"
+  ],
   "src/components/Dashboard/ClassBellCard.jsx": [
-   "school-name"
+   "school-name",
+   "electives"
+  ],
+  "src/components/Dashboard/ComplianceSection.jsx": [
+   "place",
+   "service"
   ],
   "src/components/Dashboard/DailyMissionCard.jsx": [
-   "subject"
+   "subject",
+   "electives"
+  ],
+  "src/components/Dashboard/EvidenceLink.jsx": [
+   "place"
   ],
   "src/components/Dashboard/FeedbackFromMomCard.jsx": [
-   "guide"
+   "guide",
+   "family-role"
   ],
   "src/components/Dashboard/GradeControls.jsx": [
    "school-name"
   ],
   "src/components/Dashboard/KhanAcademyMissionsCard.jsx": [
    "school-name",
-   "subject"
+   "subject",
+   "service"
   ],
   "src/components/Dashboard/MissionControlBoard.jsx": [
    "learner",
    "school-name",
-   "guide"
+   "guide",
+   "pathway",
+   "place",
+   "family-role",
+   "electives"
   ],
   "src/components/Dashboard/MissionControlDashboard.jsx": [
    "learner",
    "school-name",
    "guide",
-   "subject"
+   "subject",
+   "pathway",
+   "place",
+   "family-role",
+   "electives",
+   "service"
+  ],
+  "src/components/Dashboard/MissionEvaluationSection.jsx": [
+   "pathway",
+   "electives"
   ],
   "src/components/Dashboard/NovaParentGuide.jsx": [
-   "school-name"
+   "school-name",
+   "place"
   ],
   "src/components/Dashboard/ParentDashboard.jsx": [
    "learner",
    "school-name",
-   "subject"
+   "subject",
+   "pathway",
+   "place",
+   "family-role",
+   "electives",
+   "service"
   ],
   "src/components/Dashboard/ParentGate.jsx": [
    "learner",
@@ -54,41 +105,74 @@
   ],
   "src/components/Dashboard/ProgressView.jsx": [
    "school-name",
-   "subject"
+   "subject",
+   "electives",
+   "service"
+  ],
+  "src/components/Dashboard/RocketProgressMeter.jsx": [
+   "pathway"
+  ],
+  "src/components/Dashboard/ScienceCourseMapSection.jsx": [
+   "service"
   ],
   "src/components/Dashboard/StudentGradesCard.jsx": [
    "learner",
-   "school-name"
+   "school-name",
+   "family-role",
+   "service"
   ],
   "src/components/Dashboard/StudentHandoffCard.jsx": [
-   "learner"
+   "learner",
+   "family-role"
   ],
   "src/components/Dashboard/SubjectProgressOverview.jsx": [
-   "school-name"
+   "school-name",
+   "service"
   ],
   "src/components/Dashboard/TimetableOrder.jsx": [
-   "learner"
+   "learner",
+   "place",
+   "electives"
   ],
   "src/components/Dashboard/TodayRow.jsx": [
    "learner",
    "school-name",
-   "subject"
+   "subject",
+   "service"
   ],
   "src/components/Dashboard/TodaysRoutineRail.jsx": [
    "school-name"
   ],
+  "src/components/Dashboard/TypingRecordSection.jsx": [
+   "place"
+  ],
   "src/components/Dashboard/WeekInReviewCard.jsx": [
    "guide"
   ],
+  "src/components/Dashboard/WordStudyRecordSection.jsx": [
+   "place"
+  ],
+  "src/components/Dashboard/XPBar.jsx": [
+   "pathway"
+  ],
+  "src/components/Dashboard/YearPlanSection.jsx": [
+   "place"
+  ],
   "src/components/Domains/DomainProjectView.jsx": [
-   "subject"
+   "subject",
+   "place",
+   "electives"
   ],
   "src/components/Games/GamesHome.jsx": [
    "school-name",
-   "subject"
+   "subject",
+   "family-role",
+   "electives",
+   "service"
   ],
   "src/components/Games/LaunchDirector.jsx": [
-   "guide"
+   "guide",
+   "pathway"
   ],
   "src/components/Games/NationCommand.jsx": [
    "guide"
@@ -100,11 +184,13 @@
    "guide"
   ],
   "src/components/Lesson/LessonRoster.jsx": [
-   "subject"
+   "subject",
+   "service"
   ],
   "src/components/Lesson/QuietQuarterNote.jsx": [
    "learner",
-   "school-name"
+   "school-name",
+   "service"
   ],
   "src/components/Lesson/ReviewGame.jsx": [
    "subject"
@@ -112,11 +198,21 @@
   "src/components/Lesson/StudyGuide.jsx": [
    "subject"
   ],
+  "src/components/Lesson/diagrams/OrbitDiagram.jsx": [
+   "pathway"
+  ],
+  "src/components/Lesson/diagrams/RocketStagingDiagram.jsx": [
+   "pathway"
+  ],
+  "src/components/Lesson/diagrams/index.js": [
+   "pathway"
+  ],
   "src/components/Mentor/NovaAvatar.jsx": [
    "guide"
   ],
   "src/components/Mentor/NovaDashboardGreeting.jsx": [
-   "guide"
+   "guide",
+   "electives"
   ],
   "src/components/Mentor/NovaMessage.jsx": [
    "guide"
@@ -127,32 +223,62 @@
   ],
   "src/components/Mentor/VoiceSettingsPanel.jsx": [
    "learner",
-   "guide"
+   "guide",
+   "electives"
   ],
   "src/components/Messages/MissionCommsHome.jsx": [
    "school-name"
   ],
   "src/components/Morning/MorningMeeting.jsx": [
    "learner",
-   "school-name"
+   "school-name",
+   "pathway",
+   "place",
+   "family-role"
   ],
   "src/components/Rewards/CadetAvatar.jsx": [
-   "learner"
+   "learner",
+   "pathway"
   ],
   "src/components/Rewards/ChallengesSection.jsx": [
-   "subject"
+   "subject",
+   "electives"
+  ],
+  "src/components/Rewards/DreamGoalSection.jsx": [
+   "family-role"
   ],
   "src/components/Rewards/HQRoom.jsx": [
    "learner",
-   "school-name"
+   "school-name",
+   "pathway",
+   "place",
+   "electives"
   ],
   "src/components/Rewards/InventorySection.jsx": [
    "learner",
-   "school-name"
+   "school-name",
+   "pathway"
+  ],
+  "src/components/Rewards/MissionJourney.jsx": [
+   "pathway"
+  ],
+  "src/components/Rewards/NovaTabGuide.jsx": [
+   "pathway",
+   "family-role"
   ],
   "src/components/Rewards/RewardsHome.jsx": [
    "school-name",
-   "guide"
+   "guide",
+   "pathway",
+   "place",
+   "family-role",
+   "electives"
+  ],
+  "src/components/Rewards/RocketSwatch.jsx": [
+   "pathway"
+  ],
+  "src/components/Rewards/ShipDiagram.jsx": [
+   "pathway"
   ],
   "src/components/Rewards/SupplyStore.jsx": [
    "school-name"
@@ -160,22 +286,29 @@
   "src/components/Scheduler/DailyView.jsx": [
    "learner",
    "school-name",
-   "subject"
+   "subject",
+   "electives",
+   "service"
   ],
   "src/components/Scheduler/MonthlyView.jsx": [
-   "school-name"
+   "school-name",
+   "electives"
   ],
   "src/components/Scheduler/WeeklyView.jsx": [
-   "school-name"
+   "school-name",
+   "electives"
   ],
   "src/components/Writing/TypedWordEngine.jsx": [
    "school-name"
   ],
   "src/components/Writing/TypingHome.jsx": [
-   "school-name"
+   "school-name",
+   "service"
   ],
   "src/components/Writing/TypingPractice.jsx": [
-   "school-name"
+   "school-name",
+   "pathway",
+   "place"
   ],
   "src/components/Writing/WeeklyQuizEngine.jsx": [
    "school-name"
@@ -186,50 +319,98 @@
   "src/components/Writing/WordSearchGame.jsx": [
    "school-name"
   ],
+  "src/components/Writing/WritingCheckerLink.jsx": [
+   "service"
+  ],
+  "src/components/Writing/WritingJournal.jsx": [
+   "electives"
+  ],
   "src/components/Writing/WritingPromptEngine.jsx": [
-   "school-name"
+   "learner",
+   "school-name",
+   "family-role"
   ],
   "src/engine/LessonEngine.jsx": [
    "school-name",
-   "guide"
+   "guide",
+   "family-role",
+   "service"
   ],
   "src/engine/problemTemplates.js": [
    "learner",
    "school-name",
-   "subject"
+   "subject",
+   "pathway",
+   "place"
   ],
   "src/lib/academicOrder.js": [
-   "learner"
+   "learner",
+   "pathway",
+   "electives"
   ],
   "src/lib/badges.js": [
-   "subject"
+   "subject",
+   "electives",
+   "service"
   ],
   "src/lib/challenges.js": [
-   "subject"
+   "subject",
+   "electives"
+  ],
+  "src/lib/classBell.js": [
+   "electives"
   ],
   "src/lib/compliancePacket.js": [
-   "school-name"
+   "school-name",
+   "place",
+   "electives",
+   "service"
   ],
   "src/lib/dailyWriting.js": [
    "learner"
   ],
+  "src/lib/driveLinks.js": [
+   "place",
+   "electives",
+   "service"
+  ],
   "src/lib/economy.js": [
-   "school-name"
+   "school-name",
+   "pathway"
   ],
   "src/lib/fieldTrips.js": [
-   "subject"
+   "subject",
+   "place"
   ],
   "src/lib/gradeScale.js": [
-   "school-name"
+   "school-name",
+   "place"
   ],
   "src/lib/hqRooms.js": [
-   "school-name"
+   "school-name",
+   "pathway",
+   "electives"
   ],
   "src/lib/hqTruth.js": [
-   "subject"
+   "subject",
+   "place",
+   "electives"
   ],
   "src/lib/hqWander.js": [
    "learner"
+  ],
+  "src/lib/journey.js": [
+   "pathway"
+  ],
+  "src/lib/learningAnalytics.js": [
+   "service"
+  ],
+  "src/lib/migrationFile.js": [
+   "place"
+  ],
+  "src/lib/missionSchedule.js": [
+   "pathway",
+   "service"
   ],
   "src/lib/novaVoice.js": [
    "learner",
@@ -239,41 +420,65 @@
   "src/lib/pacing.js": [
    "learner",
    "school-name",
-   "subject"
+   "subject",
+   "service"
   ],
   "src/lib/participationRecord.js": [
-   "subject"
+   "subject",
+   "place",
+   "electives"
+  ],
+  "src/lib/plannerCalendar.js": [
+   "electives"
   ],
   "src/lib/plannerFeeds.js": [
    "school-name",
-   "subject"
+   "subject",
+   "electives"
   ],
   "src/lib/quarterAvailability.js": [
    "learner",
    "school-name"
   ],
+  "src/lib/ranks.js": [
+   "pathway"
+  ],
   "src/lib/readiness.js": [
    "subject"
   ],
+  "src/lib/rewards.js": [
+   "pathway",
+   "electives"
+  ],
   "src/lib/rotatingBlock.js": [
-   "school-name"
+   "school-name",
+   "electives",
+   "service"
   ],
   "src/lib/scheduledMinutes.js": [
    "learner",
    "school-name",
-   "subject"
+   "subject",
+   "place",
+   "electives"
   ],
   "src/lib/scheduler.js": [
-   "learner"
+   "learner",
+   "pathway"
   ],
   "src/lib/schoolQuarter.js": [
-   "school-name"
+   "school-name",
+   "place",
+   "service"
   ],
   "src/lib/sfx.js": [
-   "school-name"
+   "school-name",
+   "electives"
   ],
   "src/lib/shipSystems.js": [
-   "subject"
+   "subject",
+   "pathway",
+   "electives"
   ],
   "src/lib/speech.js": [
    "learner",
@@ -283,12 +488,49 @@
   "src/lib/studyCycle.js": [
    "learner"
   ],
+  "src/lib/themes.js": [
+   "pathway"
+  ],
+  "src/lib/typingRecord.js": [
+   "place"
+  ],
+  "src/lib/wateringLog.js": [
+   "electives"
+  ],
+  "src/lib/weeklyPlan.js": [
+   "pathway"
+  ],
+  "src/lib/weeklyWords.js": [
+   "place"
+  ],
+  "src/lib/writingCheck.js": [
+   "pathway"
+  ],
+  "src/lib/yearPlan.js": [
+   "place",
+   "service"
+  ],
   "src/store/useAppStore.js": [
    "learner",
    "school-name",
    "guide",
-   "subject"
+   "subject",
+   "pathway",
+   "place",
+   "family-role",
+   "electives",
+   "service"
   ]
  },
- "_shrunk": "131 -> 85 on 2026-09-01, when the school moved onto the content interface; 85 -> 84 on 2026-09-09, when the nav became a declared slot; 84 -> 82 on 2026-09-15, when the projects slot landed: WritingJournal.jsx stopped naming the five pools, and ErrorBoundary.jsx stopped naming the school"
+ "_shrunk": "131 -> 85 on 2026-09-01, when the school moved onto the content interface; 85 -> 84 on 2026-09-09, when the nav became a declared slot; 84 -> 82 on 2026-09-15, when the projects slot landed: WritingJournal.jsx stopped naming the five pools, and ErrorBoundary.jsx stopped naming the school; 82 -> 123 on 2026-09-18, when the guard went from four categories to nine (audit finding 6) — 41 files it had been calling clean, absorbed at that day's count",
+ "platform": {
+  "src/db/db.js": [
+   "pathway",
+   "place",
+   "family-role",
+   "electives",
+   "service"
+  ]
+ },
+ "_platform_why": "db.js has TABLES called gardenLog and guitarLog: one child's two hobbies compiled into the platform's schema. That is a data migration, not a comment reword, so it is recorded here at its Sept 18, 2026 count rather than rushed. The rest of its hits are history comments in the same file and go with it when the tables do."
 }

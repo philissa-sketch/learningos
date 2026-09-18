@@ -134,8 +134,12 @@ import {
   bulkPutPortfolio,
   bulkPutPEMeals,
   bulkPutAssignments,
-  bulkPutSelfExplanations
+  bulkPutSelfExplanations,
+  loadLearnerProfile,
+  saveLearnerProfileSection,
+  deleteLearnerProfileSection
 } from '../db/db.js';
+import { profileFromRows, sectionRecord } from '../lib/learnerProfile.js';
 import { getCurrentRank as computeRankFromGates, RANKS } from '../lib/ranks.js';
 import { CRATE_COST, crateMonthKey, crateOfferFor, crateOpenedIn, crateSourceKey } from '../lib/supplyCrate.js';
 import {
@@ -920,6 +924,12 @@ const initialState = {
    * in the app could ever mark as having happened.
    */
   morningMeetings: {},
+  /**
+   * What the family said about this learner — section id -> { section,
+   * answers, updatedAt }. The engine's input, never curriculum.
+   * Shape and merge rule: src/lib/learnerProfile.js. Table: db.js v36.
+   */
+  learnerProfile: {},
   reviewSchedule: {}, // generatorId -> { intervalDays, nextDueDate, lastResult, lastReviewedDate } — real spaced-repetition due dates (PROJECT_PLAN.md instructional-design audit, gap 1)
   studyCycles: {}, // `${subject}::${quarter}` -> { day1CompletedAt, day2CompletedAt, day3CompletedAt, day4CompletedAt } — the 5-day spaced-retrieval study cycle (PROJECT_PLAN.md Part 4)
   peBodyMetrics: [], // [{ id, date, heightIn, weightLb, note, createdAt }, ...] — periodic height/weight check-ins, health-framed only
@@ -4063,6 +4073,8 @@ export const useAppStore = create((set, get) => ({
     // Same 60-day working window and the same reason: enough for the streak,
     // the attendance view and a quarter-to-date glance. Export and import use
     // loadAllMorningMeetings, never this — a backup must hold every row.
+    const learnerProfileRows = await loadLearnerProfile();
+
     const morningMeetingRows = await loadMorningMeetings(
       toDateStr(new Date(Date.now() - 60 * 864e5))
     );
@@ -5066,6 +5078,7 @@ export const useAppStore = create((set, get) => ({
       khanAcademyAssignments,
       khanDailyLog,
       morningMeetings,
+      learnerProfile: profileFromRows(learnerProfileRows),
       reviewSchedule,
       studyCycles,
       peBodyMetrics: [...peBodyMetricsRows].sort((a, b) => new Date(a.date) - new Date(b.date)),
@@ -10194,6 +10207,36 @@ export const useAppStore = create((set, get) => ({
       adminRecords: [withId, ...get().adminRecords].sort((a, b) => (b.date || '').localeCompare(a.date || ''))
     });
     return withId;
+  },
+
+  /**
+   * ---- THE LEARNER PROFILE (Sept 17, 2026, audit finding 5) ----
+   *
+   * One section at a time, deliberately. Saving "what he is interested in"
+   * must not be able to touch "where he is academically", because the two get
+   * answered weeks apart and on different computers.
+   *
+   * A refusal comes back with a sentence in it rather than being swallowed:
+   * a parent typed these answers, and an hour of onboarding vanishing with
+   * nothing on screen to say it did is the failure this shape prevents.
+   *
+   * @returns {Promise<{ok:true, record:object}|{ok:false, reason:string, message:string}>}
+   */
+  async saveProfileSection(section, answers) {
+    const outcome = sectionRecord(section, answers);
+    if (!outcome.ok) return outcome;
+    await saveLearnerProfileSection(outcome.record);
+    set({ learnerProfile: { ...get().learnerProfile, [section]: outcome.record } });
+    return outcome;
+  },
+
+  /** Unanswer a section. An absent section is an unanswered one, not an empty one. */
+  async clearProfileSection(section) {
+    const { [section]: removed, ...rest } = get().learnerProfile;
+    if (!removed) return false;
+    await deleteLearnerProfileSection(section);
+    set({ learnerProfile: rest });
+    return true;
   },
 
   async removeAdminRecord(id) {

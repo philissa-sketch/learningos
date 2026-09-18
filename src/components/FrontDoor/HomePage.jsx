@@ -238,7 +238,7 @@ export default function HomePage({ onOpenStudent, onOpenParent, onCreateAcademy 
           <div>
             <Fact
               title="Days and hours, counted automatically"
-              body="Every finished block adds to the ledger — including the garden, the instrument, and the field trip."
+              body="Every finished block adds to the ledger — the hands-on work and the days out as much as the desk work."
             />
             <Fact
               title="Your state's rules, not ours"

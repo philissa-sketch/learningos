@@ -2468,6 +2468,76 @@ db.version(35).stores({
   dreamGoals: 'syncId, status, createdAt',
   morningMeetings: 'date'
 });
+/**
+ * ---------------------------------------------------------------------------
+ * v36 — SOMEWHERE TO PUT A LEARNER PROFILE. (Sept 17, 2026, audit finding 5.)
+ * ---------------------------------------------------------------------------
+ *
+ * *"No learner profile, and nowhere to put one."*
+ *
+ * Forty tables and not one could hold a questionnaire answer, a reading level,
+ * a career pathway or a parent's priority. `placement` was a declared content
+ * slot nothing read, and the front door promised setup questions that did not
+ * exist. So the only way a child could get a curriculum was for someone to
+ * hand-author a folder and ship a build: one family per deploy.
+ *
+ * Keyed by SECTION, not one row for the whole profile. Two computers, and she
+ * fills in his interests on hers while correcting his reading level on his —
+ * one row means the older file wins the lot and one of those edits is gone
+ * with nothing on screen to say so. Per section, only a section edited on both
+ * machines has to pick a winner. It also means a new section is not a
+ * migration: an absent section is an unanswered section, which is what every
+ * section is on day one.
+ *
+ * The shape and the merge rule live in src/lib/learnerProfile.js, which holds
+ * answers and nothing else. A child who decides he wants to be a marine
+ * biologist instead must be an EDIT HERE that regenerates a curriculum, never
+ * a rebuild of a school — see docs/MASTER_PLAN_COMMERCIAL.md.
+ */
+db.version(36).stores({
+  meta: 'id',
+  lessonProgress: 'lessonId',
+  writingEntries: '++id, promptId, completedAt',
+  typingScores: 'passageId',
+  weeklyWordState: 'skill',
+  schedule: 'id',
+  typingLessonProgress: 'lessonId',
+  attendance: 'date',
+  parentNotes: '++id, createdAt',
+  assignments: '++id, dueDate, completed, syncId',
+  readingLog: '++id, date, syncId', // v34: syncId
+  portfolio: '++id, dateCompleted, syncId', // v34: syncId
+  khanAcademyAssignments: '++id, subject, completed',
+  reviewSchedule: 'generatorId',
+  selfExplanations: '++id, lessonId, completedAt, syncId',
+  studyCycle: 'key',
+  peBodyMetrics: '++id, date',
+  peDailyLog: 'date',
+  peWorkoutLog: '++id, date, category',
+  peWeeklyGoals: 'weekKey',
+  peMeals: '++id, date, mealType, syncId', // v34: syncId
+  academicBooks: '++id, subject, slotId, status',
+  academicAssignments: '++id, subject, slotId, quarter, status, dueDate',
+  adminRecords: '++id, kind, date',
+  courseDescriptions: 'subject',
+  complianceChecks: 'key',
+  evidenceLinks: 'key',
+  parentAuth: 'id',
+  missionEvaluations: 'quarter',
+  rewards: '++id, active, createdAt, syncId',
+  rewardRedemptions: '++id, status, createdAt, syncId',
+  readinessAwards: 'skillId',
+  fieldTrips: '++id, date, status, syncId',
+  messages: '++id, createdAt',
+  khanDailyLog: 'date',
+  gardenLog: '++id, date, kind',
+  guitarLog: '++id, date, kind',
+  typingLog: '++id, date, kind',
+  ledger: 'entryId, currency, kind, at',
+  dreamGoals: 'syncId, status, createdAt',
+  morningMeetings: 'date',
+  learnerProfile: 'section'
+});
 
 /**
  * A globally unique id for a row that has to survive being merged with the
@@ -2555,7 +2625,19 @@ export const EXPORT_TABLE_POLICY = {
    * would understate every school day by half an hour, which is the exact
    * bug this feature was built to fix.
    */
-  morningMeetings: true
+  morningMeetings: true,
+  /**
+   * Her answers about her child, from onboarding. EXCLUDED for the same reason
+   * as adminRecords and courseDescriptions: a file leaving his computer must
+   * not be able to overwrite what she wrote on hers. The handoff carries his
+   * work; it does not carry her account of him.
+   *
+   * It reaches his machine on the path she already uses and that is already
+   * verified — the full backup (lib/fullBackup.js), which reads every object
+   * store there is, so this table travels in it without being named anywhere.
+   */
+  learnerProfile:
+    'Her onboarding answers about her child. A file leaving his computer must not be able to overwrite them — same rule as adminRecords. The full backup carries it.'
 };
 
 // ---------------------------------------------------------------------------
@@ -2616,6 +2698,24 @@ export async function loadAllTypingLog() {
 export async function saveTypingLogEntry(entry) {
   // entry: { date, kind, passageId, lessonId, wpm, accuracy, createdAt }
   return db.typingLog.add(entry);
+}
+
+/**
+ * The whole profile, always. It is at most one row per section and it is the
+ * engine's input, so there is no window to load and never a reason to have
+ * part of it.
+ */
+export async function loadLearnerProfile() {
+  return db.learnerProfile.toArray();
+}
+
+/** One section. Built by lib/learnerProfile.js sectionRecord(), never by hand. */
+export async function saveLearnerProfileSection(record) {
+  return db.learnerProfile.put(record);
+}
+
+export async function deleteLearnerProfileSection(section) {
+  return db.learnerProfile.delete(section);
 }
 
 export async function loadRecentMessages(limit = 500) {

@@ -260,7 +260,7 @@ function AcademyStep({ existingAcademies, showStepNumbers, onDone }) {
       displayName: name,
       pin: record,
       // Empty — §1's first state. It exists and can be signed into; it has no
-      // subjects, theme or guide until the questionnaire runs.
+      // subjects, theme or guide until it is pointed at a curriculum.
       state: 'empty',
       createdAt: new Date().toISOString()
     });
@@ -276,8 +276,9 @@ function AcademyStep({ existingAcademies, showStepNumbers, onDone }) {
       </p>
 
       <p className="fd-note">
-        This creates the Academy and its own private database. It starts empty: you&apos;ll answer
-        the setup questions and enter their placement next, and that is what fills it in.
+        This creates the Academy and its own private database. It starts empty: choose a
+        curriculum for it next, then answer the setup questions in the parent area, a section at a
+        time, whenever you have ten minutes. They can be changed whenever they stop being true.
       </p>
 
       {error ? (

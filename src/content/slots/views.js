@@ -12,8 +12,8 @@
  * was only half the sentence. The screens themselves still sat in the shared
  * folder and were wired into the shell by name:
  *
- *     const GardenHome = lazy(() => import('./components/Garden/GardenHome.jsx')…);
- *     {view === 'garden' && <GardenHome … />}
+ *     const SomeHome = lazy(() => import('./components/Some/SomeHome.jsx')…);
+ *     {view === 'some' && <SomeHome … />}
  *
  * So the shell could render exactly the screens someone had written into it. A
  * school could already declare a tab of its own in the `nav` slot — and there
@@ -60,8 +60,8 @@ export const PLATFORM_VIEWS = Object.freeze([
 /**
  * A school declares HOW to load a screen, not a React component:
  *
- *     views = { garden: { load: () => import('./views/GardenHome.jsx')
- *                                     .then((m) => ({ default: m.GardenHome })) } }
+ *     views = { workshop: { load: () => import('./screens/WorkshopHome.jsx')
+ *                                     .then((m) => ({ default: m.WorkshopHome })) } }
  *
  * Two reasons it is a loader and not the component itself. A manifest that
  * imported React could not be read by the check scripts, which load every

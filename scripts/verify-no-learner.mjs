@@ -72,7 +72,11 @@ const PLATFORM = [
   'src/lib/frontDoor.js',
   'src/lib/parentAuth.js',
   'src/lib/importSchool.js',
-  'src/lib/buildStamp.js'
+  'src/lib/buildStamp.js',
+  // The learner profile (Sept 17, 2026, audit finding 5). Platform, not school:
+  // it is the multi-tenant engine's INPUT, and a profile that starts naming one
+  // family is the whole plan undone in the one file designed to prevent it.
+  'src/lib/learnerProfile.js'
 ];
 
 function zoneOf(rel) {
@@ -120,7 +124,95 @@ const SUBJECT_IDS = [
   'social-studies'
 ];
 
-function findings(text) {
+/**
+ * ---- THE FIVE ADDED SEPT 18, 2026 (audit finding 6) ----
+ *
+ * *"The guard is green, and 55 files it calls clean are not. It looks for four
+ * things: a learner name, a school name, a guide name, a subject id. It does
+ * not look for a career pathway, a place, a family role, one child's electives,
+ * or a named outside service."*
+ *
+ * So `RocketProgressMeter.jsx`, the aerospace diagrams and `lib/hqCrew.js`
+ * passed a check whose whole job is to catch them.
+ *
+ * WORD MATCHES, NOT IDENTIFIER MATCHES — and that is the opposite choice to
+ * SUBJECT_IDS above, for a reason. A subject leaks as a compiled-in decision
+ * (`'aerospace'` as a key), so quotes are what make it a finding. These five
+ * leak as PROSE: a progress meter shaped like a rocket, a sentence about what
+ * Georgia requires, a button that says Mom. There is no quoted form to look
+ * for, so the word itself is the finding.
+ *
+ * The one deliberate gap is the same one SUBJECT_IDS already argues for: "an
+ * aerospace engineer" in the home page's marketing copy is an example of an
+ * answer a child might give, which is what that page is about. `aerospace` is
+ * therefore a SUBJECT_ID and not a PATHWAY word, and the home page keeps its
+ * two example children.
+ */
+
+/** A career this platform assumes its learner is heading for. */
+const PATHWAYS = [
+  'astronaut', 'spacecraft', 'launchpad', 'rocket', 'rocket scientist',
+  'nasa', 'apollo', 'mission specialist'
+];
+
+/** One family's town, county or state. A platform has users in all of them. */
+const PLACES = [
+  'georgia', 'atlanta', 'ellenwood', 'clayton county', 'dekalb', 'fulton county'
+];
+
+/**
+ * One family's word for a parent. The audit counted 33 live lines of it.
+ * "Mom" is not a synonym for "the grown-up who signed in": plenty of children
+ * are schooled by a father, a grandparent, or an aunt.
+ */
+const FAMILY_ROLES = ['mom', 'mum', 'mommy', 'momma', 'mama', 'dad', 'daddy', 'papa'];
+
+/**
+ * One child's electives, as bare words.
+ *
+ * `gardening` and `guitar` are already SUBJECT_IDS, and that is exactly how
+ * thirteen screens slipped through: the pattern wanted `'gardening'` in quotes
+ * and the files said `garden` in a folder name and a sentence.
+ */
+const ELECTIVES = [
+  'garden', 'guitar', 'piano', 'violin', 'ukulele', 'karate', 'ballet', 'scouts'
+];
+
+/**
+ * A named outside service. A platform may integrate with one; it may not
+ * assume one, and it certainly may not name one in a schema comment as though
+ * every family subscribes to it.
+ */
+const SERVICES = [
+  'khan academy', 'khanacademy', 'edclub', 'ixl', 'quillbot', 'blooket',
+  'kahoot', 'gimkit', 'duolingo', 'outschool', 'readtheory'
+];
+
+/** The four this check has always looked for. Zero tolerance in the platform zone. */
+const ORIGINAL_CATEGORIES = ['learner', 'school-name', 'guide', 'subject'];
+
+/** The five added Sept 18. Ratcheted, in both zones, at the count of that day. */
+const ADDED_CATEGORIES = ['pathway', 'place', 'family-role', 'electives', 'service'];
+
+/**
+ * A CSS font stack is not prose, and Georgia is a typeface.
+ *
+ * `--fd-display: Newsreader, Georgia, 'Times New Roman', serif;` is the front
+ * door's heading font. It is not a claim about a state, and a check that calls
+ * it one teaches whoever reads the output to stop believing the output — which
+ * costs more than the category is worth.
+ *
+ * The test is CSS's own: a declaration whose value ends in a generic family
+ * (serif, sans-serif, monospace, cursive, system-ui) IS a font stack. A comment
+ * or a class name mentioning the state survives this and is still a finding.
+ */
+const FONT_STACK = /^[^\n]*:[^\n]*\b(?:sans-serif|serif|monospace|cursive|system-ui)\s*;?\s*$/gim;
+const withoutFontStacks = (text) => text.replace(FONT_STACK, '');
+
+const anyWord = (words, low) => words.some((w) => new RegExp(`\\b${w.replace(/[-]/g, '\\-')}\\b`).test(low));
+
+function findings(source) {
+  const text = withoutFontStacks(source);
   const low = text.toLowerCase();
   const hits = [];
   if (LEARNER_NAMES.some((n) => new RegExp(`\\b${n}\\b`).test(low))) hits.push('learner');
@@ -129,7 +221,19 @@ function findings(text) {
   if (SUBJECT_IDS.some((s) => new RegExp(`['"\`]${s}['"\`]|\\b${s}\\s*:`, 'i').test(text))) {
     hits.push('subject');
   }
+  if (anyWord(PATHWAYS, low)) hits.push('pathway');
+  if (anyWord(PLACES, low)) hits.push('place');
+  if (anyWord(FAMILY_ROLES, low)) hits.push('family-role');
+  if (anyWord(ELECTIVES, low)) hits.push('electives');
+  if (anyWord(SERVICES, low)) hits.push('service');
   return hits;
+}
+
+const only = (hits, categories) => hits.filter((h) => categories.includes(h));
+
+/** The block to paste into generic-debt.json, so absorbing a count is mechanical. */
+function debtBlock(entries) {
+  return Object.fromEntries([...entries].sort((a, b) => a[0].localeCompare(b[0])));
 }
 
 let passed = 0;
@@ -153,10 +257,54 @@ console.log(
     `${zones.academy.length} academy · ${zones.school.length} school ---\n`
 );
 
+console.log('--- 0. the detector finds all nine, on text it is handed ---');
+{
+  // Every check below trusts findings(). Empty one of the word lists and the
+  // whole file goes green while the tree gets worse — the exact failure mode
+  // the content scanner had in September, when it reported 109 names instead
+  // of 151 and called it success. So the detector is tested on a stand-in
+  // before it is trusted on the real files.
+  const samples = {
+    learner: 'a note about Lamar, filed by hand',
+    'school-name': 'Mission Control opens at nine',
+    guide: 'Commander Nova says hello',
+    subject: "const pools = { 'aerospace': [] };",
+    pathway: 'the rocket climbs as the week fills up',
+    place: 'what Georgia actually requires',
+    'family-role': 'Send my work to Mom',
+    electives: 'a row for the garden on Friday',
+    service: 'his Khan Academy score for the unit'
+  };
+  for (const [category, text] of Object.entries(samples)) {
+    ok(`it finds ${category}`, findings(text).includes(category), JSON.stringify(findings(text)));
+  }
+  ok('a font stack naming the Georgia typeface is not a place',
+    findings("  --fd-display: Newsreader, Georgia, 'Times New Roman', serif;").length === 0,
+    'the front door\'s heading font is not a claim about a state');
+  ok('...while a sentence about the state still is',
+    findings('/* what Georgia requires of a homeschool */').includes('place'),
+    'stripping font stacks must not strip the finding');
+
+  ok('...and finds nothing in a sentence about none of them',
+    findings('A parent signs in, and the week begins.').length === 0,
+    JSON.stringify(findings('A parent signs in, and the week begins.')));
+  ok('the nine are exactly the four plus the five',
+    ORIGINAL_CATEGORIES.length === 4 && ADDED_CATEGORIES.length === 5
+      && new Set([...ORIGINAL_CATEGORIES, ...ADDED_CATEGORIES]).size === 9);
+  ok('every word list has words in it',
+    [PATHWAYS, PLACES, FAMILY_ROLES, ELECTIVES, SERVICES, LEARNER_NAMES, SCHOOL_NAMES, GUIDES, SUBJECT_IDS]
+      .every((list) => Array.isArray(list) && list.length > 0),
+    'an emptied list is a category that silently stops being checked');
+}
+
 console.log('--- 1. the platform zone is absolutely clean ---');
 
-const dirtyPlatform = zones.platform
-  .map((f) => ({ f, hits: findings(read(f)) }))
+const platformHits = zones.platform.map((f) => ({ f, hits: findings(read(f)) }));
+
+// 1a. THE ORIGINAL FOUR. Zero tolerance, unchanged, and not negotiable: this is
+// the rule the whole multi-tenant plan rests on.
+const dirtyPlatform = platformHits
+  .map((x) => ({ f: x.f, hits: only(x.hits, ORIGINAL_CATEGORIES) }))
   .filter((x) => x.hits.length);
 ok('no platform file names a learner, school, guide or subject',
   dirtyPlatform.length === 0,
@@ -164,6 +312,39 @@ ok('no platform file names a learner, school, guide or subject',
 
 ok('the platform zone is not empty — the check is actually looking at something',
   zones.platform.length >= 10, `${zones.platform.length} files`);
+
+/**
+ * 1b. THE FIVE ADDED SEPT 18 — a ratchet, not a wall, and only here.
+ *
+ * Widening the categories turned one platform file red, and it is not one a
+ * reword can fix: `db.js` has TABLES called `gardenLog` and `guitarLog`. One
+ * child's two hobbies are compiled into the platform's schema, and changing
+ * that is a data migration, not a comment. The audit's instruction for exactly
+ * this was to *"let the debt list absorb the new entries at today's count"* —
+ * so it is recorded, countable, and may only ever shrink.
+ *
+ * Nothing that was forbidden becomes allowed. A previously invisible problem
+ * becomes a listed one.
+ */
+const platformDebt = DEBT.platform || {};
+const platformNow = new Map();
+for (const { f, hits } of platformHits) {
+  const added = only(hits, ADDED_CATEGORIES);
+  if (added.length) platformNow.set(f, added);
+}
+const platformNew = [...platformNow.keys()].filter((f) => !platformDebt[f]);
+ok('no platform file has newly started naming a pathway, place, family role, elective or service',
+  platformNew.length === 0,
+  platformNew.map((f) => `${f} (${platformNow.get(f).join(', ')})`).join('\n      ') +
+    '\n      The platform zone is not where this belongs. Reword it, or — only if it is a' +
+    '\n      migration rather than a sentence — add it to the "platform" block of' +
+    '\n      scripts/generic-debt.json with a reason.');
+
+const platformFixed = Object.keys(platformDebt).filter((f) => !platformNow.has(f));
+ok('...and a listed platform file that is now clean has left the list',
+  platformFixed.length === 0,
+  `${platformFixed.join(', ')} — clean now. Remove it from the "platform" block: the ratchet` +
+    '\n      only works if a fixed file leaves.');
 
 console.log('\n--- 2. the school zone may only get cleaner ---');
 
@@ -181,15 +362,36 @@ ok('no file has newly started naming an Academy',
     '\n      Reach content through the Academy, or add it to scripts/generic-debt.json with a reason.');
 
 const nowClean = [...listed].filter((f) => !dirtyNow.has(f) && fs.existsSync(path.join(REPO, f)));
+
+// MINOR FINDING 8, made a check rather than a note. It had been printing
+// "1 listed file(s) are now clean — remove them" for days, and printing is not
+// a mechanism. A ratchet only ratchets if a fixed file leaves the list.
+ok('every listed file is still dirty — a fixed one has left the list',
+  nowClean.length === 0,
+  `${nowClean.slice(0, 12).join(', ')}\n      clean now, still listed. Remove them: a list that keeps` +
+    '\n      names it has already fixed stops being a measure of anything.');
+
+// Absorbing a widened count by hand across dozens of files is how a list ends
+// up wrong on the day it is written. When the list and the tree disagree, the
+// WHOLE corrected block is printed — additions, category changes and removals
+// together — so absorbing it is a replacement rather than an edit.
+if (newlyDirty.length || nowClean.length || [...dirtyNow].some(([f, h]) =>
+  listed.has(f) && JSON.stringify(DEBT.files[f]) !== JSON.stringify(h))) {
+  const block = debtBlock([...dirtyNow.entries()]);
+  console.log(
+    `\n      ---- the "files" block of scripts/generic-debt.json, as the tree reads today ----\n` +
+      `      ---- ${Object.keys(block).length} files: ${newlyDirty.length} new, ${nowClean.length} now clean ----`
+  );
+  console.log(JSON.stringify(block, null, 2).split('\n').map((l) => `      ${l}`).join('\n'));
+  console.log('      ---- end ----');
+}
+
 const gone = [...listed].filter((f) => !fs.existsSync(path.join(REPO, f)));
 ok('every listed file still exists', gone.length === 0, gone.join(', '));
 
 console.log(
-  `\n      generic debt: ${dirtyNow.size} of ${zones.school.length} school files still name an Academy` +
-    (nowClean.length
-      ? `\n      ${nowClean.length} listed file(s) are now clean — remove them from generic-debt.json:\n        ` +
-        nowClean.slice(0, 12).join('\n        ')
-      : '')
+  `\n      generic debt: ${dirtyNow.size} of ${zones.school.length} school files name one Academy,` +
+    ` across ${ORIGINAL_CATEGORIES.length + ADDED_CATEGORIES.length} categories`
 );
 
 console.log('\n--- 3. no age, grade or reading level is assumed in the platform ---');

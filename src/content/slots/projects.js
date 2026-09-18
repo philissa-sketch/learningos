@@ -25,7 +25,7 @@
 //     const ALL_PROJECTS = [...aerospaceProjects, ...scienceExperiments,
 //                           ...technologyProjects, ...roboticsProjects];
 //
-// Four of five. The garden is missing, so every garden project is invisible to
+// Four of five. One pool is missing, so every project in it is invisible to
 // the duplicate check that list exists to perform. The comment describes this
 // module and the code beneath it does the opposite.
 //
@@ -73,7 +73,8 @@
 // Every other slot interface takes its own slot and nothing else. This one
 // takes the whole content pack, because the thing it is unpicking is precisely
 // that ONE kind of content was split across two slots for no reason a school
-// could explain: a garden project and an aerospace project are the same shape,
+// could explain: a project from one pool and a project from another are the
+// same shape,
 // scheduled by the same planner, found by the same lookup, and filed under
 // different slots. `projectPools` is one answer in one slot, and when the
 // legacy path goes, so does the second argument.

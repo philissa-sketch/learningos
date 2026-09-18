@@ -23,6 +23,7 @@ import { AttendanceCalendar } from './AttendanceCalendar.jsx';
 import { ParentTimeTimer, ParentTimeSection } from './ParentTimeTimer.jsx';
 import { WordStudyRecordSection } from './WordStudyRecordSection.jsx';
 import { TypingRecordSection } from './TypingRecordSection.jsx';
+import { LearnerProfileSection } from './LearnerProfileSection.jsx';
 import { ScienceCourseMapSection } from './ScienceCourseMapSection.jsx';
 import { NovaParentGuide } from './NovaParentGuide.jsx';
 import { VoiceSettingsPanel } from '../Mentor/VoiceSettingsPanel.jsx';
@@ -178,6 +179,13 @@ const SECTION_GROUPS = [
     label: 'Settings',
     hint: 'Rarely. Two of these are permanent.',
     sections: [
+      // The setup questions the front door has promised since it was built
+      // (Sept 18, 2026, audit finding 5). Here rather than under Records
+      // because it is what the school is set up FROM, not something it
+      // produced — and here rather than only at the front door because that
+      // screen is shown to an Academy with no records, which a running
+      // school is not.
+      { id: 'learner-profile', label: 'Setup Questions' },
       { id: 'voice', label: "Nova's Voice & Sounds" },
       { id: 'passcode', label: 'Passcode' },
       { id: 'signout', label: 'Sign Out' },
@@ -1007,6 +1015,7 @@ export function ParentDashboard({ onSignOut, onOpenAcademicCenter = null }) {
       {section === 'portfolio' && <PortfolioSection />}
       {section === 'notes' && <NotesSection />}
       {section === 'quiz-games' && <QuizGameLinksSection />}
+      {section === 'learner-profile' && <LearnerProfileSection />}
       {section === 'voice' && <VoiceSettingsPanel />}
       {section === 'passcode' && <ParentPasscodeSection />}
       {section === 'signout' && <SignOutSection onSignOut={onSignOut} />}

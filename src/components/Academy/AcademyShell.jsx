@@ -283,8 +283,16 @@ export default function AcademyShell({ academy, enteredAs, onSignOut, onAcademyC
 
       <SignOutButton onSignOut={onSignOut} />
 
+      {/*
+        This line used to read "the questions and the placement — is the next
+        thing being built", which was true and had been true for a long time.
+        The questions exist as of Sept 18, 2026 (audit finding 5); the
+        placement does not, and this says so rather than promising it again.
+      */}
       <p className="fd-helper">
-        Setting up from scratch — the questions and the placement — is the next thing being built.
+        Once it has a curriculum, the setup questions are in the parent area, under Settings. They
+        ask about the learner rather than about what to teach, and they can be answered a section
+        at a time. Entering a placement is still to come.
       </p>
     </Panel>
   );
