@@ -31,6 +31,7 @@ import { LAUNCH_SCORE_LABELS, PROPELLANT_OPTIONS, STAGING_OPTIONS, TRAJECTORY_EV
 import { BUDGET_CATEGORIES, BUDGET_TOTAL_POINTS, ECONOMIC_SYSTEMS, GOVERNMENT_TYPES, NATION_SCORE_LABELS, TRADE_EVENT } from './data/games/nationCommandContent.js';
 import { QUIZ_PLATFORMS, QUIZ_PLATFORM_IDS } from './data/games/quizPlatforms.js';
 import { DAILY_LINE_COUNT, NOVA_LINES, QUOTED, getDailyLine } from './data/mentor/dailyLines.js';
+import { KHAN_FIRST_SEED, KHAN_RETITLES, KHAN_SEED_BATCHES, KHAN_URL_FIXES } from './data/khanSeed/khanSeedBatches.js';
 import { GRAMMAR_COURSES, KHAN_GRAMMAR_UNITS, LEGACY_GRAMMAR_TITLES, generalGrammarUnitByUrl, grammarRowTitle, grammarUnitUrl, khanGrammarUnitByUrl, khanGrammarUnitForUrl } from './data/khan/grammarCourseOrder.js';
 import { SCIENCE_CANONICAL_KEYS, SCIENCE_CANONICAL_TITLES, SCIENCE_COURSES, SCIENCE_COURSE_CHALLENGES, scienceCanonicalRow, scienceCourseChallengeRows, scienceCourseForUrl, scienceCoverageByCourse, scienceRowsFor } from './data/khan/scienceSequence.js';
 import { allLessons } from './data/lessons/index.js';
@@ -73,6 +74,8 @@ export const fieldTrips = { DEFAULT_FIELD_TRIPS, LIBRARY_TRIP_RENAMES };
 export const games = { BUDGET_CATEGORIES, BUDGET_TOTAL_POINTS, ECONOMIC_SYSTEMS, EXTERNAL_GAMES_LIBRARY, GOVERNMENT_TYPES, LAUNCH_SCORE_LABELS, NATION_SCORE_LABELS, PROPELLANT_OPTIONS, QUIZ_PLATFORMS, QUIZ_PLATFORM_IDS, STAGING_OPTIONS, TRADE_EVENT, TRAJECTORY_EVENT, WEIGHT_BUDGET_CATEGORIES, WEIGHT_BUDGET_TOTAL_POINTS };
 
 export const guide = { DAILY_LINE_COUNT, NOVA_LINES, QUOTED, getDailyLine };
+
+export const khanSeed = { KHAN_FIRST_SEED, KHAN_RETITLES, KHAN_SEED_BATCHES, KHAN_URL_FIXES };
 
 export const khanSequences = { GRAMMAR_COURSES, KHAN_GRAMMAR_UNITS, LEGACY_GRAMMAR_TITLES, SCIENCE_CANONICAL_KEYS, SCIENCE_CANONICAL_TITLES, SCIENCE_COURSES, SCIENCE_COURSE_CHALLENGES, generalGrammarUnitByUrl, grammarRowTitle, grammarUnitUrl, khanGrammarUnitByUrl, khanGrammarUnitForUrl, scienceCanonicalRow, scienceCourseChallengeRows, scienceCourseForUrl, scienceCoverageByCourse, scienceRowsFor };
 

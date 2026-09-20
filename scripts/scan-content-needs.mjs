@@ -50,6 +50,7 @@ export const SLOT_RULES = [
   [/^data\/mentor\//, 'guide'],
   [/^data\/exams\//, 'exams'],
   [/^data\/writing\//, 'writing'],
+  [/^data\/khanSeed\//, 'khanSeed'],
   [/^data\/khan\//, 'khanSequences'],
   [/^data\/pe\//, 'pe'],
   [/^data\/guitar\//, 'electives'],

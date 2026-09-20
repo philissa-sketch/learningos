@@ -34,7 +34,8 @@
 // ---------------------------------------------------------------------------
 import fs from 'node:fs';
 import path from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { fileURLToPath, pathToFileURL } from 'node:url';
+import { academyUnderTest } from './lib/academy-under-test.mjs';
 
 import {
   KHAN_GRAMMAR_UNITS,
@@ -190,12 +191,24 @@ console.log('\n--- 4. position matches the page that actually opens ---');
  * compares numbers to numbers; this compares a row's POSITION to the Khan URL
  * it links to, and a URL cannot be wrong about which page it opens.
  */
+// Built from the seeded rows as DATA. The batches moved into this Academy's
+// own folder on Sept 20, 2026 (GENERIC_CARRYOVER fault 2), and this used to
+// scrape them out of the store's source with a regex that required title and
+// URL on the same line. Both halves of that were fragile: the file moved, and
+// a reformat would have emptied the map just as thoroughly while every
+// assertion below went on reporting a curriculum fault.
 const seededUrls = new Map();
-for (const m of storeSrc.matchAll(
-  /skillTitle:\s*'((?:[^'\\]|\\.)+)',[^}]*?khanAcademyUrl:\s*'([^']+)'/g
-)) {
-  const title = m[1].replace(/\\'/g, "'");
-  if (!seededUrls.has(title)) seededUrls.set(title, m[2]);
+{
+  const seed = await import(
+    pathToFileURL(path.join(REPO, `src/academies/${academyUnderTest}/data/khanSeed/khanSeedBatches.js`)).href
+  );
+  const batches = seed.KHAN_SEED_BATCHES || {};
+  const everyRow = [...Object.values(batches).flat(), ...(seed.KHAN_FIRST_SEED || [])];
+  for (const r of everyRow) {
+    if (r.skillTitle && r.khanAcademyUrl && !seededUrls.has(r.skillTitle)) {
+      seededUrls.set(r.skillTitle, r.khanAcademyUrl);
+    }
+  }
 }
 
 const mismatched = [];

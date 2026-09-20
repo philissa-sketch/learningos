@@ -1,31 +1,42 @@
 // Migration simulation for the Technology Khan Academy seed — same method
 // used to verify the math passes: order, counts, duplicates, and the
 // idempotency of the missing-rows check against an existing install.
-import { readFileSync } from 'node:fs';
-const src = readFileSync(new URL('../src/store/useAppStore.js', import.meta.url), 'utf8');
+import path from 'node:path';
+import { fileURLToPath, pathToFileURL } from 'node:url';
+import { academyUnderTest } from './lib/academy-under-test.mjs';
+
+const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+
+/**
+ * ---- READ AS DATA, NOT SCRAPED OUT OF SOURCE (Sept 20, 2026) ----
+ *
+ * This used to find `const technologyQ1Rows = [` in src/store/useAppStore.js,
+ * bracket-match to its close, and pull each field back out with a regex per
+ * key. Two things were wrong with that, and the batches moving into this
+ * Academy's own folder (GENERIC_CARRYOVER fault 2) only exposed the first:
+ *
+ *   * it broke the moment the declaration moved — `technologyQ1Rows not found`
+ *   * it would have broken just as completely on a reformat, while every
+ *     assertion below went on describing a curriculum fault that did not exist
+ *
+ * The rows are data. Importing them is both shorter and impossible to
+ * mis-parse.
+ */
+const seed = await import(
+  pathToFileURL(path.join(REPO, `src/academies/${academyUnderTest}/data/khanSeed/khanSeedBatches.js`)).href
+);
 
 function grabRows(varName) {
-  const start = src.indexOf(`const ${varName} = [`);
-  if (start === -1) throw new Error(`${varName} not found`);
-  const open = src.indexOf('[', start);
-  let depth = 0, i = open;
-  for (; i < src.length; i++) {
-    if (src[i] === '[') depth++;
-    else if (src[i] === ']') { depth--; if (depth === 0) break; }
-  }
-  const body = src.slice(open, i + 1);
-  const rows = [];
-  for (const m of body.matchAll(/\{[^{}]*\}/g)) {
-    const o = m[0];
-    const g = (k) => (o.match(new RegExp(`${k}:\\s*'([^']*)'`)) || [])[1];
-    const n = (k) => { const r = o.match(new RegExp(`${k}:\\s*(\\d+)`)); return r ? Number(r[1]) : null; };
-    rows.push({
-      subject: g('subject'), skillTitle: g('skillTitle'), url: g('khanAcademyUrl'),
-      seq: n('sequenceInQuarter'), gradedBy: g('gradedBy'),
-      isCourseChallenge: /isCourseChallenge:\s*true/.test(o)
-    });
-  }
-  return rows;
+  const rows = (seed.KHAN_SEED_BATCHES || {})[varName];
+  if (!Array.isArray(rows)) throw new Error(`${varName} not found in this Academy's khanSeed batches`);
+  return rows.map((r) => ({
+    subject: r.subject,
+    skillTitle: r.skillTitle,
+    url: r.khanAcademyUrl,
+    seq: r.sequenceInQuarter ?? null,
+    gradedBy: r.gradedBy,
+    isCourseChallenge: r.isCourseChallenge === true
+  }));
 }
 
 let fail = 0;

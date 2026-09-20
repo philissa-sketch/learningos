@@ -38,7 +38,8 @@
 // ---------------------------------------------------------------------------
 import fs from 'node:fs';
 import path from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { fileURLToPath, pathToFileURL } from 'node:url';
+import { academyUnderTest } from './lib/academy-under-test.mjs';
 
 const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 let passed = 0;
@@ -68,10 +69,24 @@ const KHAN_5TH = [
   [16, 'Properties of shapes', 'properties-of-shapes']
 ];
 
+// The 132 seeded Khan rows moved into this Academy's own folder on Sept 20,
+// 2026 (GENERIC_CARRYOVER fault 2). The seeding PASS is still the platform's
+// and is still what the rest of this file guards; the rows are asked for
+// rather than scraped out of the store.
+//
+// Read as DATA, not by regex over source. The old version matched three
+// fields on one line and would have gone quiet the moment a row was
+// reformatted onto two — reporting "0 found" as if the curriculum had
+// vanished, which is exactly what it did when the rows moved.
 const store = fs.readFileSync(path.join(REPO, 'src/store/useAppStore.js'), 'utf8');
-const block = store.slice(store.indexOf('const mathQ1Rows = ['), store.indexOf('const missingMathQ1Rows'));
-const rows = [...block.matchAll(/skillTitle: '((?:[^'\\]|\\.)*)'[^\n]*?khanAcademyUrl: '([^']+)'[^\n]*?sequenceInQuarter: (\d+)/g)]
-  .map((m) => ({ title: m[1].replace(/\\'/g, "'"), url: m[2], seq: Number(m[3]) }));
+const batches = (await import(
+  pathToFileURL(path.join(REPO, `src/academies/${academyUnderTest}/data/khanSeed/khanSeedBatches.js`)).href
+)).KHAN_SEED_BATCHES;
+const rows = (batches.mathQ1Rows || []).map((r) => ({
+  title: r.skillTitle,
+  url: r.khanAcademyUrl,
+  seq: r.sequenceInQuarter
+}));
 
 console.log(`\nseeded Q1 maths rows: ${rows.length}`);
 
@@ -109,8 +124,17 @@ console.log('\n--- 3. rows already in her database get corrected too ---');
 {
   // Fixing the seed alone reaches nobody — both machines have carried these
   // rows since July. Same lesson as the schedule corrections.
-  ok('a correction map exists for existing rows', /const MATH_Q1_CORRECTIONS = new Map\(\[/.test(store));
-  const map = store.slice(store.indexOf('const MATH_Q1_CORRECTIONS'), store.indexOf('const mathRetitled'));
+  // Split on Sept 20, 2026: the Map is built in the store, its ENTRIES come
+  // from this school. Assert both — a pass with no entries and entries nothing
+  // applies each fail silently in their own way.
+  const retitles = (await import(
+    pathToFileURL(path.join(REPO, `src/academies/${academyUnderTest}/data/khanSeed/khanSeedBatches.js`)).href
+  )).KHAN_RETITLES;
+  ok('a correction map exists for existing rows',
+    /const MATH_Q1_CORRECTIONS = new Map\(khanRetitleEntries\(\)\)/.test(store)
+      && Array.isArray(retitles) && retitles.length > 0,
+    'the pass is the platform\'s and the titles are the school\'s');
+  const map = JSON.stringify(retitles);
   for (const wrong of ['Add and Subtract Decimals', 'Add fractions with unlike denominators', 'Volume of cubes and rectangular prisms: word problems']) {
     ok(`"${wrong.slice(0, 34)}…" is corrected`, map.includes(wrong));
   }
@@ -118,8 +142,12 @@ console.log('\n--- 3. rows already in her database get corrected too ---');
     /MATH_Q1_CORRECTIONS\.get\(a\.skillTitle\)/.test(store));
   ok('...and the correction is written to disk',
     /mathRetitled\.map\(\(r\) => updateKhanAcademyAssignmentRecord\(r\.id, r\)\)/.test(store));
+  // Read from the parsed entries, not from their source text. The old version
+  // matched `skillTitle: 'X'` as a STRING, which stopped meaning anything the
+  // moment the entries became data rather than a literal in this file's view.
+  const correctedTitles = retitles.map(([, fix]) => fix.skillTitle);
   ok('every corrected title matches what the seed now says',
-    ['Add decimals', 'Add and subtract fractions', 'Volume'].every((t) => map.includes(`skillTitle: '${t}'`)),
+    ['Add decimals', 'Add and subtract fractions', 'Volume'].every((t) => correctedTitles.includes(t)),
     'the seed and the migration must not disagree');
 }
 

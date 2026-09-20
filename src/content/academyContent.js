@@ -161,7 +161,12 @@ export const CONTENT_SLOTS = Object.freeze([
   // The generated practice questions this school drills from (Sept 20, 2026).
   // Optional. The ENGINE that builds and randomises a question is the
   // platform's; the questions are a curriculum. GENERIC_CARRYOVER fault 1.
-  'practice'
+  'practice',
+  // The Khan batches this school seeds its assignment board from (Sept 20,
+  // 2026). Its own slot rather than part of `khanSequences`, because that slot
+  // carries required names and a required name is one every Academy owes. A
+  // family that assigns no Khan work fills nothing. GENERIC_CARRYOVER fault 2.
+  'khanSeed'
 ]);
 
 /**

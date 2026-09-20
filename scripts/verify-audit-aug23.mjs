@@ -1,4 +1,4 @@
-import './lib/academy-under-test.mjs';
+import { academyUnderTest } from './lib/academy-under-test.mjs';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
@@ -450,16 +450,28 @@ console.log('\n--- O-1: the comments describe the app that exists ---');
   const elaSummer = [...storeCode.matchAll(/'[^']*(?:Borders|Long Passage Practice \(10th|ELA — Course Challenge)[^']*':\s*\{ batchLabel: 'Summer 2027'/g)];
   ok('no ELA unit is placed into a summer that has no ELA', elaSummer.length === 0,
     `${elaSummer.length} placements that can never match a row`);
+  // The batch is this school's content since Sept 20, 2026, so the emptiness
+  // has to be asserted where the batch now lives. Asserted as DATA, not as the
+  // source text `const readingSummerRows = [];` — that string stopped existing
+  // the moment the rows moved, and a check pinned to it would have reported a
+  // curriculum problem when the only thing that changed was a file.
+  const khanSeed = (await import(
+    pathToFileURL(path.join(REPO, `src/academies/${academyUnderTest}/data/khanSeed/khanSeedBatches.js`)).href
+  )).KHAN_SEED_BATCHES;
   ok('...and the summer reading seed is still empty',
-    /const readingSummerRows = \[\];/.test(storeCode),
+    Array.isArray(khanSeed.readingSummerRows) && khanSeed.readingSummerRows.length === 0,
     'summer English is a book he chooses, not a Khan roster');
 
+  // The explanation travelled with the batch it explains, which is the point
+  // of moving a comment alongside its data rather than leaving it behind to
+  // describe something that is no longer there.
+  const seedRaw = read(`src/academies/${academyUnderTest}/data/khanSeed/khanSeedBatches.js`);
   const storeRaw = read('src/store/useAppStore.js');
   ok('...and says WHY it is empty, where the wrong story used to be',
-    /DELIBERATELY EMPTY/.test(storeRaw) && /Reserved for summer reading/.test(storeRaw),
+    /DELIBERATELY EMPTY/.test(seedRaw) && /Reserved for summer reading/.test(seedRaw),
     'an empty array with no explanation is the next person filling it back in');
   ok('...with the reversed plan no longer stated as fact',
-    !/each individually verified/.test(storeRaw),
+    !/each individually verified/.test(seedRaw) && !/each individually verified/.test(storeRaw),
     'it described five units being pulled in, beside an array that adds none');
 }
 
