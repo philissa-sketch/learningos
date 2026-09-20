@@ -41,7 +41,7 @@ import { fileURLToPath } from 'node:url';
 import { parse } from '@babel/parser';
 
 // Defined once, in the scan — three things have to agree about slots.
-import { slotFor } from './scan-content-needs.mjs';
+import { SLOT_RULES, slotFor } from './scan-content-needs.mjs';
 
 const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const ACADEMIES = path.join(REPO, 'src/academies');
@@ -139,8 +139,49 @@ for (const name of NEEDS.names) {
 // The contract names those in SHAPE_SLOTS and says why; this pass emits
 // whatever an Academy puts in one, without demanding every Academy fill it.
 const contentSrc = fs.readFileSync(path.join(REPO, 'src/content/academyContent.js'), 'utf8');
-const shapeSlots = (contentSrc.match(/SHAPE_SLOTS = Object\.freeze\(\[([\s\S]*?)\]\)/)?.[1] || '')
+const declaredShapeSlots = (contentSrc.match(/SHAPE_SLOTS = Object\.freeze\(\[([\s\S]*?)\]\)/)?.[1] || '')
   .match(/'[A-Za-z]+'/g)?.map((x) => x.replace(/'/g, '')) || [];
+
+// ---- A SLOT THE INVENTORY NAMES NOTHING FROM (audit finding 11, Sept 19 2026)
+//
+// WHAT WENT WRONG. This script emitted only the names in
+// academy-content-needs.json, and on Sept 19 it deleted `guide`, `projects`,
+// `electives` and `exams` from a folder where every one of those data
+// directories still existed and still had files in it. It printed a per-slot
+// summary and the word success. Nothing crashed, because withAbsentSlots()
+// fills an absent slot with an empty object — so the content simply went
+// quiet.
+//
+// WHY. The inventory is the REQUIRED contract: names the platform destructures
+// out of a slot one at a time. There are two other ways a slot gets read, and
+// the scan can see neither:
+//
+//   1. WHOLE. `dailyLineFor(academyContent().guide, today)` names nothing.
+//   2. THROUGH A SLOT HELPER, by the Academy's own screens —
+//      `optionalContent(content, 'electives')`, `content?.projects?.projectPools`.
+//      Those callers live in src/academies/, which the scan does not walk.
+//
+// So a slot with no required names looked like a slot nobody wanted.
+// "Not required" became "not wanted".
+//
+// THE RULE NOW. If the inventory names nothing from a slot, the Academy's own
+// exports for it ARE the answer — emit all of them, the same wholesale pass
+// SHAPE_SLOTS already uses. If the inventory does name something, that list is
+// what the platform needs and the old behaviour stands.
+//
+// `theme` is a stylesheet and `views` is declared by hand in views.js; both are
+// emitted by their own passes below and are excluded here so nothing doubles.
+const HANDLED_ELSEWHERE = ['theme', 'views'];
+const namedSlots = new Set(Object.values(NEEDS.nameToSlot));
+const wholesaleSlots = [...new Set(SLOT_RULES.map(([, slot]) => slot))]
+  .filter((slot) => !namedSlots.has(slot) && !HANDLED_ELSEWHERE.includes(slot));
+
+const shapeSlots = [...new Set([...declaredShapeSlots, ...wholesaleSlots])];
+if (wholesaleSlots.length) {
+  console.log(
+    `  wholesale (inventory names nothing from them): ${wholesaleSlots.join(', ')}`
+  );
+}
 
 let shapeNames = 0;
 for (const [name, candidates] of exporters) {

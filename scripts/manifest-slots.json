@@ -1,6 +1,6 @@
 {
  "_baseline": "2026-09-19, the day the manifest generator was caught deleting four working slots",
- "_why": "Slots each Academy's content.js exports TODAY. This list may GROW and must never SHRINK. A slot that disappears from a manifest is content the school has silently stopped receiving - see scripts/verify-manifest-slots.mjs. Add a slot here in the same commit that adds it to a manifest.",
+ "_why": "Slots each Academy's content.js exports TODAY. This list may GROW and must never SHRINK. A slot that disappears from a manifest is content the school has silently stopped receiving - see scripts/verify-manifest-slots.mjs. Add a slot here in the same commit that adds it to a manifest. | 2026-09-19: 'exams' added for lamar. The generator was fixed (finding 11) to emit every name an Academy exports for a slot the inventory names nothing from, which wired up 12 exam files that had been sitting in the tree unreachable. Nothing in the platform reads the exams slot yet, so this is inert content that is now at least reachable.",
  "slots": {
   "_template": [
    "guide",
@@ -11,6 +11,7 @@
    "academicCenter",
    "compliance",
    "electives",
+   "exams",
    "games",
    "guide",
    "khanSequences",

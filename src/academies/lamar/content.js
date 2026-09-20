@@ -6,27 +6,6 @@
 // in each one. Re-run the generator after adding or removing a content file.
 //
 // A slot this Academy has nothing for is simply absent. Blank is expected.
-//
-// ---- ONE HAND-EDIT LIVES HERE, ON PURPOSE (Sept 19, 2026) ----
-//
-// `stateName` in the compliance slot below was added BY HAND and the generator
-// will delete it, along with four working slots, if anyone runs it today.
-//
-// The generator emits only the names in scripts/academy-content-needs.json,
-// which is the REQUIRED contract — 131 names. It has no list of optional or
-// wholesale-read content, so a slot the platform reads as a whole object
-// instead of destructuring name by name is invisible to the scan and gets
-// dropped as unwanted. Running it on this folder deletes `guide`, `projects`,
-// `electives` and `exams` while printing success. The app still boots, because
-// withAbsentSlots() fills the hole, and the content is simply gone.
-//
-// DO NOT run scripts/generate-academy-manifest.mjs until that is fixed.
-// scripts/verify-manifest-slots.mjs fails if it happens.
-//
-// UPDATE-CONTENT-LIST.bat IS SAFE and was wrongly named here at first: it runs
-// only scripts/scan-content-needs.mjs, which rebuilds the contract from what
-// the platform reads and never writes a manifest. Run it whenever the platform
-// starts reading a new slot name.
 // ---------------------------------------------------------------------------
 
 import { activeMilestone, hasMilestones, leadStatus, milestoneProgress, milestonesFor, startByFor } from './data/academicSuccessCenter/assignmentMilestones.js';
@@ -36,21 +15,33 @@ import { BOOK_RANGE_LABELS, bookRationale, rationaleFor } from './data/academicS
 import { bookRecommendations, candidatesForBook, nextRecommendationForBook } from './data/academicSuccessCenter/bookRecommendations.js';
 import { ACADEMIC_ASSIGNMENT_TYPES, ACADEMIC_BOOK_TYPES, ACADEMIC_SUBJECT_ORDER, ACADEMIC_SUCCESS_CENTER_QUARTER_ORDER, quarterlyAcademicPlaceholders, subjectBookPlaceholders } from './data/academicSuccessCenter/placeholders.js';
 import { RUBRIC_LEVELS, criteriaForFormat, findFormat, formatsForType, reflectionPromptFor, sizeFor, suggestedGradeFromRubric } from './data/academicSuccessCenter/reportFormats.js';
-import { GEORGIA_DAYS_REQUIRED, GEORGIA_LAW_CITATION, GEORGIA_MINUTES_PER_DAY, GEORGIA_REQUIRED_SUBJECTS, GEORGIA_REQUIREMENTS, stateName, declarationCoversToday, instructionProgress, nextDeclarationDeadline } from './data/admin/georgiaCompliance.js';
+import { GEORGIA_DAYS_REQUIRED, GEORGIA_LAW_CITATION, GEORGIA_MINUTES_PER_DAY, GEORGIA_REQUIRED_SUBJECTS, GEORGIA_REQUIREMENTS, declarationCoversToday, instructionProgress, nextDeclarationDeadline, stateName } from './data/admin/georgiaCompliance.js';
 import { MISSION_QUARTERS, MISSION_RUBRIC_CRITERIA, MISSION_STATUS_LABELS, draftMissionFeedback, findProposal, missionGrowth, missionScoreTotals, proposalsForQuarter } from './data/admin/missionEvaluations.js';
 import { gardenBriefs, getGardenBriefById } from './data/gardening/gardenBriefs.js';
-import { gardenBuildTrack, gardenCapstone } from './data/gardening/gardenBuildTrack.js';
-import { gardenCalendar, getGardenDayForWeekOf, getNextGardenDay } from './data/gardening/gardenCalendar.js';
+import { buildsUnlockedBy, gardenBuildTrack, gardenCapstone } from './data/gardening/gardenBuildTrack.js';
+import { GARDEN_Q1_END, GARDEN_Q1_START, GARDEN_Q2_END, GARDEN_Q2_START, GARDEN_Q3_END, GARDEN_Q3_START, GARDEN_Q4_END, GARDEN_Q4_START, GARDEN_SUMMER_END, GARDEN_SUMMER_START, gardenCalendar, getGardenDayForDate, getGardenDayForWeekOf, getNextGardenDay, getScheduledBriefDays, isClosedGardenDay } from './data/gardening/gardenCalendar.js';
 import { gardenProjects } from './data/gardening/gardenProjects.js';
-import { GUITAR_DAILY_MINUTES, GUITAR_SESSION_SHAPE, getCurrentGuitarSkill, guitarSkillLadder } from './data/guitar/guitarSkillLadder.js';
+import { GUITAR_DAILY_MINUTES, GUITAR_SESSION_SHAPE, getCurrentGuitarSkill, getGuitarSkillByNumber, guitarLadderProgress, guitarSkillLadder } from './data/guitar/guitarSkillLadder.js';
 import { GUITAR_OWN_SLOTS, guitarOwnSongGuidance, guitarPerformanceMoment, guitarStarterSongs } from './data/guitar/guitarSongs.js';
-import { guitarTheory } from './data/guitar/guitarTheory.js';
-import { getGuitarTool, guitarEducators, guitarFeedbackPlaces } from './data/guitar/guitarTools.js';
+import { GUITAR_THEORY_QUARTER, getGuitarTheoryItem, guitarTheory } from './data/guitar/guitarTheory.js';
+import { GUITAR_LINKS_VERIFIED_ON, getGuitarTool, guitarEducators, guitarFeedbackPlaces, guitarTools } from './data/guitar/guitarTools.js';
+import { aerospaceQ1Exam } from './data/exams/aerospaceQ1Exam.js';
+import { aerospaceQ2Exam } from './data/exams/aerospaceQ2Exam.js';
+import { aerospaceQ3Exam } from './data/exams/aerospaceQ3Exam.js';
+import { aerospaceQ4Exam } from './data/exams/aerospaceQ4Exam.js';
+import { aerospaceSummerExam } from './data/exams/aerospaceSummerExam.js';
+import { roboticsQ4Exam } from './data/exams/roboticsQ4Exam.js';
+import { socialStudiesQ1Exam } from './data/exams/socialStudiesQ1Exam.js';
+import { socialStudiesQ2Exam } from './data/exams/socialStudiesQ2Exam.js';
+import { socialStudiesQ4Exam } from './data/exams/socialStudiesQ4Exam.js';
+import { technologyQ1Exam } from './data/exams/technologyQ1Exam.js';
+import { technologyQ2Exam } from './data/exams/technologyQ2Exam.js';
+import { technologyQ3Exam } from './data/exams/technologyQ3Exam.js';
 import { EXTERNAL_GAMES_LIBRARY } from './data/games/externalGamesLibrary.js';
 import { LAUNCH_SCORE_LABELS, PROPELLANT_OPTIONS, STAGING_OPTIONS, TRAJECTORY_EVENT, WEIGHT_BUDGET_CATEGORIES, WEIGHT_BUDGET_TOTAL_POINTS } from './data/games/launchDirectorContent.js';
 import { BUDGET_CATEGORIES, BUDGET_TOTAL_POINTS, ECONOMIC_SYSTEMS, GOVERNMENT_TYPES, NATION_SCORE_LABELS, TRADE_EVENT } from './data/games/nationCommandContent.js';
 import { QUIZ_PLATFORMS, QUIZ_PLATFORM_IDS } from './data/games/quizPlatforms.js';
-import { getDailyLine } from './data/mentor/dailyLines.js';
+import { DAILY_LINE_COUNT, NOVA_LINES, QUOTED, getDailyLine } from './data/mentor/dailyLines.js';
 import { GRAMMAR_COURSES, KHAN_GRAMMAR_UNITS, LEGACY_GRAMMAR_TITLES, generalGrammarUnitByUrl, grammarRowTitle, grammarUnitUrl, khanGrammarUnitByUrl, khanGrammarUnitForUrl } from './data/khan/grammarCourseOrder.js';
 import { SCIENCE_CANONICAL_KEYS, SCIENCE_CANONICAL_TITLES, SCIENCE_COURSES, SCIENCE_COURSE_CHALLENGES, scienceCanonicalRow, scienceCourseChallengeRows, scienceCourseForUrl, scienceCoverageByCourse, scienceRowsFor } from './data/khan/scienceSequence.js';
 import { allLessons } from './data/lessons/index.js';
@@ -82,13 +73,15 @@ import { writingPrompts } from './data/writing/writingPrompts.js';
 
 export const academicCenter = { ACADEMIC_ASSIGNMENT_TYPES, ACADEMIC_BOOK_TYPES, ACADEMIC_SUBJECT_ORDER, ACADEMIC_SUCCESS_CENTER_QUARTER_ORDER, BLACK_EXCELLENCE_KNOWN_GAPS, BOOK_RANGE_LABELS, EXCLUDED_RANGES, RUBRIC_LEVELS, activeMilestone, assignmentCandidatesForSlot, availableDueDates, blackAmericanAuthorsForSubject, blackExcellenceBooksForSubject, bookRationale, bookRecommendations, candidatesForBook, criteriaForFormat, findFormat, formatsForType, hasMilestones, leadStatus, milestoneProgress, milestonesFor, nextAssignmentRecommendation, nextRecommendationForBook, quarterlyAcademicPlaceholders, rationaleFor, reflectionPromptFor, resolveSuggestedDueDate, sizeFor, startByFor, subjectBookPlaceholders, suggestedGradeFromRubric };
 
-export const compliance = { stateName, GEORGIA_DAYS_REQUIRED, GEORGIA_LAW_CITATION, GEORGIA_MINUTES_PER_DAY, GEORGIA_REQUIRED_SUBJECTS, GEORGIA_REQUIREMENTS, MISSION_QUARTERS, MISSION_RUBRIC_CRITERIA, MISSION_STATUS_LABELS, declarationCoversToday, draftMissionFeedback, findProposal, instructionProgress, missionGrowth, missionScoreTotals, nextDeclarationDeadline, proposalsForQuarter };
+export const compliance = { GEORGIA_DAYS_REQUIRED, GEORGIA_LAW_CITATION, GEORGIA_MINUTES_PER_DAY, GEORGIA_REQUIRED_SUBJECTS, GEORGIA_REQUIREMENTS, MISSION_QUARTERS, MISSION_RUBRIC_CRITERIA, MISSION_STATUS_LABELS, declarationCoversToday, draftMissionFeedback, findProposal, instructionProgress, missionGrowth, missionScoreTotals, nextDeclarationDeadline, proposalsForQuarter, stateName };
 
-export const electives = { GUITAR_DAILY_MINUTES, GUITAR_OWN_SLOTS, GUITAR_SESSION_SHAPE, gardenBriefs, gardenBuildTrack, gardenCalendar, gardenCapstone, gardenProjects, getCurrentGuitarSkill, getGardenBriefById, getGardenDayForWeekOf, getGuitarTool, getNextGardenDay, guitarEducators, guitarFeedbackPlaces, guitarOwnSongGuidance, guitarPerformanceMoment, guitarSkillLadder, guitarStarterSongs, guitarTheory };
+export const electives = { GARDEN_Q1_END, GARDEN_Q1_START, GARDEN_Q2_END, GARDEN_Q2_START, GARDEN_Q3_END, GARDEN_Q3_START, GARDEN_Q4_END, GARDEN_Q4_START, GARDEN_SUMMER_END, GARDEN_SUMMER_START, GUITAR_DAILY_MINUTES, GUITAR_LINKS_VERIFIED_ON, GUITAR_OWN_SLOTS, GUITAR_SESSION_SHAPE, GUITAR_THEORY_QUARTER, buildsUnlockedBy, gardenBriefs, gardenBuildTrack, gardenCalendar, gardenCapstone, gardenProjects, getCurrentGuitarSkill, getGardenBriefById, getGardenDayForDate, getGardenDayForWeekOf, getGuitarSkillByNumber, getGuitarTheoryItem, getGuitarTool, getNextGardenDay, getScheduledBriefDays, guitarEducators, guitarFeedbackPlaces, guitarLadderProgress, guitarOwnSongGuidance, guitarPerformanceMoment, guitarSkillLadder, guitarStarterSongs, guitarTheory, guitarTools, isClosedGardenDay };
+
+export const exams = { aerospaceQ1Exam, aerospaceQ2Exam, aerospaceQ3Exam, aerospaceQ4Exam, aerospaceSummerExam, roboticsQ4Exam, socialStudiesQ1Exam, socialStudiesQ2Exam, socialStudiesQ4Exam, technologyQ1Exam, technologyQ2Exam, technologyQ3Exam };
 
 export const games = { BUDGET_CATEGORIES, BUDGET_TOTAL_POINTS, ECONOMIC_SYSTEMS, EXTERNAL_GAMES_LIBRARY, GOVERNMENT_TYPES, LAUNCH_SCORE_LABELS, NATION_SCORE_LABELS, PROPELLANT_OPTIONS, QUIZ_PLATFORMS, QUIZ_PLATFORM_IDS, STAGING_OPTIONS, TRADE_EVENT, TRAJECTORY_EVENT, WEIGHT_BUDGET_CATEGORIES, WEIGHT_BUDGET_TOTAL_POINTS };
 
-export const guide = { getDailyLine };
+export const guide = { DAILY_LINE_COUNT, NOVA_LINES, QUOTED, getDailyLine };
 
 export const khanSequences = { GRAMMAR_COURSES, KHAN_GRAMMAR_UNITS, LEGACY_GRAMMAR_TITLES, SCIENCE_CANONICAL_KEYS, SCIENCE_CANONICAL_TITLES, SCIENCE_COURSES, SCIENCE_COURSE_CHALLENGES, generalGrammarUnitByUrl, grammarRowTitle, grammarUnitUrl, khanGrammarUnitByUrl, khanGrammarUnitForUrl, scienceCanonicalRow, scienceCourseChallengeRows, scienceCourseForUrl, scienceCoverageByCourse, scienceRowsFor };
 
@@ -111,7 +104,9 @@ export const writing = { EDCLUB_PORTAL_URL, ERGONOMICS_CHECKLIST, SCHOOL_YEAR_ST
 /**
  * This Academy's palette and print rules.
  *
- * A function rather than a static import so the stylesheet travels in this
+ * The theme slot answers one question: what does this school look like?
+ *
+ * A loader rather than a static import so the stylesheet travels in this
  * Academy's chunk and loads when this Academy does. A static import here
  * would put every Academy's theme in every learner's download, which is the
  * thing the folder split exists to prevent.
@@ -122,4 +117,3 @@ export const theme = { appearance: () => import('./academy.css') };
 // views.js, which this generated file only re-exports — see that file and
 // src/content/slots/views.js.
 export { views } from './views.js';
-

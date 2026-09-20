@@ -4,9 +4,10 @@
 C4 steps 2-5. Everything here is platform work — none of it can be fixed in an
 Academy folder.**
 
-**Updated Sept 19, 2026**, during audit step 7 (the wording sweep). One fault
-added — #6, the manifest generator — and the first habit's count raised from
-three to seven. Nothing already here was removed or downgraded.
+**Updated Sept 19-20, 2026**, across audit step 7 (the wording sweep). One
+fault added and then **fixed** — #6, the manifest generator — and the first
+habit's count raised from three to eight. Nothing already here was removed or
+downgraded.
 
 ## The standard
 
@@ -38,6 +39,7 @@ Detail for every item is in `docs/PROJECT_LOG.md`, entries dated Sept 5, 2026.
 |---|---|---|
 | **Field trip dedupe deleted undated repeat visits** | `src/lib/fieldTrips.js` | It read a blank date as matching the winner's date, so any second visit planned but not yet dated was soft-deleted on *every* hydrate. Every Academy would lose them. A parent lost a year of planned trips to this. |
 | **An unguarded date migration overwrote chosen dates** | `src/store/useAppStore.js` | `readingStaggerMap` wrote due dates with no from-guard, reverting any date a parent set for 21 slots, and fought the corrections table on three of them every boot. Removed; a from-guard was unimplementable because the values it replaced predate the first commit. |
+| **The manifest generator deleted working slots** | `scripts/generate-academy-manifest.mjs` | It emitted only the REQUIRED contract names, so a slot read whole, or read by an Academy's own screens through a slot helper, looked like a slot nobody wanted. Fixed Sept 20: a slot the inventory names nothing from is emitted wholesale. Full history kept at #6 below — the shape of the mistake is worth more than the patch. |
 
 Both are covered by checks now: `verify-field-trip-records` sections 7-8 (62
 checks) and `verify-assignment-dates`'s three new guards (15 checks). Both guards
@@ -161,7 +163,7 @@ left to its Success Center entry.
 Whatever replaces `weeklySchedule` at §3c must cover every period the quarter
 model defines, or the model and the schedule will keep disagreeing.
 
-### 6. The manifest generator deletes working slots and reports success
+### 6. The manifest generator deleted working slots and reported success — **FIXED Sept 20, 2026**
 
 `scripts/generate-academy-manifest.mjs` — the script the header of every
 `content.js` tells you to run — **silently drops any slot the platform reads as
@@ -199,13 +201,46 @@ It is generic in the strongest sense: it is not one Academy's problem, it is the
 **tool every Academy is built with**, and it gets worse as an Academy fills more
 optional slots.
 
-**Interim state.** `scripts/verify-manifest-slots.mjs` catches the damage — a
-ratchet over `scripts/manifest-slots.json` recording the slots each Academy
-exports today, which may grow and must never shrink. It does **not** fix the
-cause. Until the scan learns about optional and wholesale-read content, do not
-run the generator. The first Academy's `content.js`
-carries one deliberate hand-edit (`stateName` in the compliance slot), noted in
-its own header, which the generator would also delete.
+**THE FIX.** There turned out to be **three** ways a slot gets read, and the
+scan could see only the first:
+
+1. **Destructured** — `const { A, B } = academyContent().slot`. Seen.
+2. **Whole** — `dailyLineFor(academyContent().guide, today)` names nothing.
+   Three sites in the tree: `guide`, `nav`, `academicCenter`.
+3. **Through a slot helper, by the Academy's own screens** —
+   `optionalContent(content, 'electives')`, `content?.projects?.projectPools`.
+   Those callers live in `src/academies/`, which the scan does not walk at all.
+
+Detecting shapes 2 and 3 properly is a parser problem and a cross-zone walk.
+The fix sidesteps both by asserting the property instead:
+
+> **If the inventory names nothing from a slot, the Academy's own exports for
+> that slot ARE the answer — emit all of them.** If the inventory does name
+> something, that list is what the platform needs and the old behaviour stands.
+
+That is the wholesale pass `SHAPE_SLOTS` already ran for `nav`, widened by a
+rule rather than by a hand-maintained list. Six slots now qualify: `nav`,
+`placement`, `guide`, `exams`, `electives`, `projects`. `theme` and `views` are
+excluded — they have their own passes and would double.
+
+**Verified end to end.** With the rule removed, the old generator re-run on the
+first Academy still **exits 0, still prints success, and still deletes
+`guide`, `projects`, `electives` and `exams`** — and `verify-manifest-slots`
+goes red on it. With the rule in place all sixteen slots survive, and the
+deliberate hand-edit that had been holding `stateName` in the compliance slot
+is **gone**: the generator emits it unaided.
+
+Regenerating the second Academy is a **no-op** — checked, then restored
+byte-for-byte, since that folder belongs to another conversation.
+
+One deliberate change came with it: 12 exam files that had been sitting in the
+tree unreachable are now wired into the `exams` slot. Nothing in the platform
+reads that slot yet, so it is inert — but reachable, and recorded in
+`manifest-slots.json` as a deliberate addition rather than a surprise.
+
+`scripts/verify-manifest-slots.mjs` stays. It caught the new slot appearing,
+which is exactly its job, and it is now a safety net rather than the only
+defence.
 
 ---
 
