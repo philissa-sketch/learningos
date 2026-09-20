@@ -1,7 +1,7 @@
 // ---------------------------------------------------------------------------
 // WHICH WRITING DRILL IS DUE TODAY, AND WHETHER HE HAS DONE IT.
 //
-// The parent, Aug 13 2026: "I want Lamar to have daily journals, not weekly. He
+// The parent, Aug 13 2026: "I want [him] to have daily journals, not weekly. He
 // needs assistance building ELA and I think that will help him to begin to
 // create structural sentences and paragraphs."
 //

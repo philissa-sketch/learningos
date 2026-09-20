@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { fillWords, stateWord } from '../../lib/schoolWords.js';
 import { useAppStore } from '../../store/useAppStore.js';
 import {
   normalizeEvidenceUrl,
@@ -199,7 +200,7 @@ export function EvidenceFoldersSection() {
       <h3 className="mt-1 font-display text-lg font-700 text-ink-100">Google Drive Folders</h3>
       <p className="mt-2 text-sm text-ink-300">
         This app stores <strong>no files</strong> — only links. Scans, photos, certificates and score reports
-        go in Drive, where they're backed up and will outlive this app. That's the point: Georgia asks you to
+        go in Drive, where they're backed up and will outlive this app. That's the point: {stateWord()} asks you to
         retain records for at least three years, and a browser reset would take anything kept here.
       </p>
 
@@ -223,7 +224,7 @@ function FolderRow({ folder, url, onSave }) {
       <div className="flex flex-wrap items-start justify-between gap-2">
         <div className="min-w-0">
           <p className="font-display text-sm font-700 text-ink-100">{folder.label}</p>
-          <p className="mt-0.5 text-xs text-ink-500">{folder.blurb}</p>
+          <p className="mt-0.5 text-xs text-ink-500">{fillWords(folder.blurb)}</p>
         </div>
         {url && (
           <a

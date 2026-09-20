@@ -8,31 +8,16 @@
    "place"
   ],
   "src/components/Academic/AcademicAssignmentsView.jsx": [
-   "family-role",
    "service"
   ],
   "src/components/Academic/AcademicParentSetupView.jsx": [
-   "learner",
    "service"
-  ],
-  "src/components/Academic/BookLibraryView.jsx": [
-   "learner"
-  ],
-  "src/components/Academic/NovaAcademicGuide.jsx": [
-   "family-role"
   ],
   "src/components/Academic/academicUi.js": [
    "service"
   ],
   "src/components/Dashboard/AcademicCenterCard.jsx": [
    "service"
-  ],
-  "src/components/Dashboard/AdminRecordsSection.jsx": [
-   "place"
-  ],
-  "src/components/Dashboard/BackupStatusCard.jsx": [
-   "place",
-   "family-role"
   ],
   "src/components/Dashboard/ClassBellCard.jsx": [
    "school-name",
@@ -46,12 +31,8 @@
    "subject",
    "electives"
   ],
-  "src/components/Dashboard/EvidenceLink.jsx": [
-   "place"
-  ],
   "src/components/Dashboard/FeedbackFromMomCard.jsx": [
-   "guide",
-   "family-role"
+   "guide"
   ],
   "src/components/Dashboard/GradeControls.jsx": [
    "school-name"
@@ -86,8 +67,7 @@
    "electives"
   ],
   "src/components/Dashboard/NovaParentGuide.jsx": [
-   "school-name",
-   "place"
+   "school-name"
   ],
   "src/components/Dashboard/ParentDashboard.jsx": [
    "learner",
@@ -100,7 +80,6 @@
    "service"
   ],
   "src/components/Dashboard/ParentGate.jsx": [
-   "learner",
    "school-name"
   ],
   "src/components/Dashboard/ProgressView.jsx": [
@@ -121,10 +100,6 @@
    "family-role",
    "service"
   ],
-  "src/components/Dashboard/StudentHandoffCard.jsx": [
-   "learner",
-   "family-role"
-  ],
   "src/components/Dashboard/SubjectProgressOverview.jsx": [
    "school-name",
    "service"
@@ -143,17 +118,8 @@
   "src/components/Dashboard/TodaysRoutineRail.jsx": [
    "school-name"
   ],
-  "src/components/Dashboard/TypingRecordSection.jsx": [
-   "place"
-  ],
-  "src/components/Dashboard/WordStudyRecordSection.jsx": [
-   "place"
-  ],
   "src/components/Dashboard/XPBar.jsx": [
    "pathway"
-  ],
-  "src/components/Dashboard/YearPlanSection.jsx": [
-   "place"
   ],
   "src/components/Domains/DomainProjectView.jsx": [
    "subject",
@@ -163,7 +129,6 @@
   "src/components/Games/GamesHome.jsx": [
    "school-name",
    "subject",
-   "family-role",
    "electives",
    "service"
   ],
@@ -173,6 +138,15 @@
   ],
   "src/components/Games/NationCommand.jsx": [
    "guide"
+  ],
+  "src/components/Lesson/diagrams/index.js": [
+   "pathway"
+  ],
+  "src/components/Lesson/diagrams/OrbitDiagram.jsx": [
+   "pathway"
+  ],
+  "src/components/Lesson/diagrams/RocketStagingDiagram.jsx": [
+   "pathway"
   ],
   "src/components/Lesson/FeedbackPanel.jsx": [
    "school-name"
@@ -194,15 +168,6 @@
   ],
   "src/components/Lesson/StudyGuide.jsx": [
    "subject"
-  ],
-  "src/components/Lesson/diagrams/OrbitDiagram.jsx": [
-   "pathway"
-  ],
-  "src/components/Lesson/diagrams/RocketStagingDiagram.jsx": [
-   "pathway"
-  ],
-  "src/components/Lesson/diagrams/index.js": [
-   "pathway"
   ],
   "src/components/Mentor/NovaAvatar.jsx": [
    "guide"
@@ -241,9 +206,6 @@
    "subject",
    "electives"
   ],
-  "src/components/Rewards/DreamGoalSection.jsx": [
-   "family-role"
-  ],
   "src/components/Rewards/HQRoom.jsx": [
    "learner",
    "school-name",
@@ -260,8 +222,7 @@
    "pathway"
   ],
   "src/components/Rewards/NovaTabGuide.jsx": [
-   "pathway",
-   "family-role"
+   "pathway"
   ],
   "src/components/Rewards/RewardsHome.jsx": [
    "school-name",
@@ -330,7 +291,6 @@
   "src/engine/LessonEngine.jsx": [
    "school-name",
    "guide",
-   "family-role",
    "service"
   ],
   "src/engine/problemTemplates.js": [
@@ -363,11 +323,7 @@
    "electives",
    "service"
   ],
-  "src/lib/dailyWriting.js": [
-   "learner"
-  ],
   "src/lib/driveLinks.js": [
-   "place",
    "electives",
    "service"
   ],
@@ -393,17 +349,11 @@
    "place",
    "electives"
   ],
-  "src/lib/hqWander.js": [
-   "learner"
-  ],
   "src/lib/journey.js": [
    "pathway"
   ],
   "src/lib/learningAnalytics.js": [
    "service"
-  ],
-  "src/lib/migrationFile.js": [
-   "place"
   ],
   "src/lib/missionSchedule.js": [
    "pathway",
@@ -481,23 +431,14 @@
    "school-name",
    "guide"
   ],
-  "src/lib/studyCycle.js": [
-   "learner"
-  ],
   "src/lib/themes.js": [
    "pathway"
-  ],
-  "src/lib/typingRecord.js": [
-   "place"
   ],
   "src/lib/wateringLog.js": [
    "electives"
   ],
   "src/lib/weeklyPlan.js": [
    "pathway"
-  ],
-  "src/lib/weeklyWords.js": [
-   "place"
   ],
   "src/lib/writingCheck.js": [
    "pathway"
@@ -518,7 +459,7 @@
    "service"
   ]
  },
- "_shrunk": "131 -> 85 on 2026-09-01, when the school moved onto the content interface; 85 -> 84 on 2026-09-09, when the nav became a declared slot; 84 -> 82 on 2026-09-15, when the projects slot landed: WritingJournal.jsx stopped naming the five pools, and ErrorBoundary.jsx stopped naming the school; 82 -> 123 on 2026-09-18, when the guard went from four categories to nine (audit finding 6) \u2014 41 files it had been calling clean, absorbed at that day's count | 2026-09-19: step 7 began. WeekInReviewCard.jsx left the list - it named the guide only by importing his voice module, and now imports src/lib/schoolWords.js instead. novaVoice.js lost 'learner': the STUDENT_NAME constant the audit named by file and number is gone. 123 -> 122.",
+ "_shrunk": "131 -> 85 on 2026-09-01, when the school moved onto the content interface; 85 -> 84 on 2026-09-09, when the nav became a declared slot; 84 -> 82 on 2026-09-15, when the projects slot landed: WritingJournal.jsx stopped naming the five pools, and ErrorBoundary.jsx stopped naming the school; 82 -> 123 on 2026-09-18, when the guard went from four categories to nine (audit finding 6) \u2014 41 files it had been calling clean, absorbed at that day's count | 2026-09-19: step 7 began. WeekInReviewCard.jsx left the list - it named the guide only by importing his voice module, and now imports src/lib/schoolWords.js instead. novaVoice.js lost 'learner': the STUDENT_NAME constant the audit named by file and number is gone. 123 -> 122. | 2026-09-19: step 7's first sweep. 16 files left the list - 122 -> 106. Six were comments only. The rest were live screen text: 'Send my work to Mom', 'Last sent to Mom', 'Georgia's 180 days', the four Academic guide tabs. Nova's Academic guide had the same import-time trap novaVoice.js had - its JSX bodies are now functions called at render, because an element built at module load freezes whatever word was set then. | 2026-09-19, second sweep: 0 more files left the list. The parent gate, the two Nova tab guides, the games screen, the lesson engine's 'saved for your mom to read' lines, the Drive folder blurbs and the feedback card. Three module-level data tables now carry tokens filled at their render site, and verify-school-words section 8 asserts every read of those fields goes through fillWords - checked field by field, because checking that a file merely MENTIONS fillWords missed both mutations written against it.",
  "platform": {
   "src/db/db.js": [
    "pathway",

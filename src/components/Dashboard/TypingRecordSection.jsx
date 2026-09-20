@@ -1,4 +1,5 @@
 import { useAppStore } from '../../store/useAppStore.js';
+import { stateWord } from '../../lib/schoolWords.js';
 import { typingRecord, typingProgressNote } from '../../lib/typingRecord.js';
 import { BLOCK_FOR_SUBJECT, blockMinutes } from '../../lib/scheduledMinutes.js';
 import { academyContent } from '../../content/academyContent.js';
@@ -18,7 +19,7 @@ const { defaultSchedule = [] } = academyContent().timetable;
  *   * a mastery flag per lesson, visible only in the lesson list;
  *   * **no date on either**, so no calendar could read them, `coveredBlockIds`
  *     had no branch for typing, and about 45 hours a year could not be counted
- *     toward Georgia's 4.5-hour bar.
+ *     toward the state's 4.5-hour bar.
  *
  * This panel is the first half of that fixed — the record she can see. The
  * second half is `typingLog` (db.js v35), which is what it reads.
@@ -48,7 +49,7 @@ export function TypingRecordSection() {
           {block?.label || 'Typing Practice'} runs {minutes} minutes a day
           {block?.startTime ? ` at ${block.startTime}` : ''}. Every finished passage and every completed
           typing lesson now writes a dated row — which is what lets those minutes count toward his
-          Georgia hours. Until August 26 they could not: the app recorded his best speed and his lesson
+          {stateWord()} hours. Until August 26 they could not: the app recorded his best speed and his lesson
           mastery, and neither of those carries a date a calendar can read.
         </p>
       </div>

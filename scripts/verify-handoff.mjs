@@ -304,9 +304,19 @@ console.log('\n--- 6. the order of operations the handoff depends on ---');
    * rather than leaving it to memory on a Monday morning.
    */
   const handoff = read('src/components/Dashboard/StudentHandoffCard.jsx');
+  // The send button used to be matched by its full literal text, one family's
+  // word for the grown-up included. Step 7 replaced that word with a looked-up
+  // one, and this check went red on a change that was entirely correct — the
+  // assertion was pinned to the ADDRESS rather than to the property.
+  //
+  // What matters here has never been which word is on the button. It is that
+  // the card offers BOTH directions, so he cannot be stranded having done one.
   ok('his handoff card offers both directions',
-    /Send my work to Mom/.test(handoff) && /Get my graded work back/.test(handoff),
+    /Send my work to/.test(handoff) && /Get my graded work back/.test(handoff),
     'two buttons that have never been pressed on his own laptop');
+  ok('...and it asks the platform what to call her rather than assuming',
+    /guardianWord\(\)/.test(handoff),
+    'a button that says one household\'s word is a button every other household reads wrong');
   ok('...and the card explains what each one does before he presses it',
     handoff.length > 2000,
     'a bare pair of buttons on a legal record is not a workflow');

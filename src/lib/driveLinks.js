@@ -5,7 +5,7 @@
  * certificates and standardized test reports were the one Part 8 item
  * that stayed blocked, because storing the actual files meant putting
  * scans and photos into browser storage — which the parent declined,
- * correctly. IndexedDB is not a safe long-term home for records Georgia
+ * correctly. IndexedDB is not a safe long-term home for records the state
  * asks you to retain for three years; a browser reset would take them.
  *
  * A link solves it without that risk. The file lives in Drive, where it
@@ -140,7 +140,7 @@ export const EVIDENCE_FOLDERS = [
   {
     key: 'test',
     label: 'Standardized Tests',
-    blurb: 'Score reports. Georgia asks for one at least every three years.',
+    blurb: 'Score reports. {state} asks for one at least every three years.',
     recordKind: 'test'
   },
   {
@@ -164,7 +164,7 @@ export const EVIDENCE_FOLDERS = [
   {
     key: 'packets',
     label: 'Compliance Packets',
-    blurb: 'Downloaded records packets. Georgia asks you to retain records at least three years.',
+    blurb: 'Downloaded records packets. {state} asks you to retain records at least three years.',
     recordKind: null
   }
 ];

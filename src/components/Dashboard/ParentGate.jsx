@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { learnerWord } from '../../lib/schoolWords.js';
 import { useAppStore } from '../../store/useAppStore.js';
 import { IDLE_LOCK_MS, MIN_PASSCODE_LENGTH, cryptoAvailable } from '../../lib/parentAuth.js';
 
@@ -6,7 +7,7 @@ import { IDLE_LOCK_MS, MIN_PASSCODE_LENGTH, cryptoAvailable } from '../../lib/pa
  * The Parent Dashboard passcode gate.
  *
  * WHY: before this, "Parent Dashboard" was one tap from Mission Control,
- * and Lamar is in this app every school day. Grades, attendance,
+ * and the learner is in this app every school day. Grades, attendance,
  * compliance records, course descriptions and every grading screen were
  * open to him — readable and editable.
  *
@@ -105,7 +106,7 @@ function PasscodeSetup() {
         <p className="text-xs font-display uppercase tracking-widest text-signal-cyan">Parent Dashboard</p>
         <h2 className="mt-1 font-display text-xl font-700 text-ink-100">Set a Passcode</h2>
         <p className="mt-2 text-sm text-ink-300">
-          This dashboard holds grades, attendance, notes and your compliance records — and Lamar uses this app
+          This dashboard holds grades, attendance, notes and your compliance records — and {learnerWord() || 'your learner'} uses this app
           every school day. A passcode keeps him out of the screens that aren’t his.
         </p>
         <p className="mt-2 text-xs text-ink-500">
@@ -139,7 +140,7 @@ function PasscodeSetup() {
           type="text"
           value={hint}
           onChange={(e) => setHint(e.target.value)}
-          placeholder="Hint, if you want one (Lamar will see this)"
+          placeholder={`Hint, if you want one (${learnerWord() || 'your learner'} will see this)`}
           className="mt-2 w-full rounded-lg border border-space-600 bg-space-900 px-3 py-2 text-sm text-ink-100 placeholder:text-ink-500 focus:border-signal-cyan focus:outline-none"
         />
         {error && <p className="mt-2 text-xs text-signal-amber">{error}</p>}
@@ -334,7 +335,7 @@ function NotLockedNotice() {
   return (
     <div className="mb-4 flex flex-wrap items-center justify-between gap-2 rounded-xl border border-space-700 bg-space-800 px-4 py-2.5">
       <p className="text-xs text-ink-500">
-        No passcode set — Lamar can open this dashboard and change grades or attendance.
+        No passcode set — {learnerWord() || 'your learner'} can open this dashboard and change grades or attendance.
       </p>
       <button
         type="button"
@@ -437,7 +438,7 @@ export function ParentPasscodeSection() {
           type="text"
           value={hint}
           onChange={(e) => setHint(e.target.value)}
-          placeholder="Hint, if you want one (Lamar will see this)"
+          placeholder={`Hint, if you want one (${learnerWord() || 'your learner'} will see this)`}
           className="mt-2 w-full rounded-lg border border-space-600 bg-space-900 px-3 py-2 text-sm text-ink-100 placeholder:text-ink-500 focus:border-signal-cyan focus:outline-none"
         />
         {error && <p className="mt-2 text-xs text-signal-amber">{error}</p>}

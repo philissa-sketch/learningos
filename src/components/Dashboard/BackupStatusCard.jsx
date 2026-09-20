@@ -1,3 +1,4 @@
+import { guardianWord, stateWord } from '../../lib/schoolWords.js';
 import { useAppStore } from '../../store/useAppStore.js';
 
 /**
@@ -9,7 +10,7 @@ import { useAppStore } from '../../store/useAppStore.js';
  * Not a file she can see in a folder, not a document in Drive — a database
  * inside a browser profile. Clearing site data wipes it. A browser reinstall
  * can wipe it. A dead drive certainly does. And what goes with it is the
- * attendance log Georgia asks for, the portfolio, every grade, the ledger, and
+ * attendance log the state asks for, the portfolio, every grade, the ledger, and
  * a year of his written work.
  *
  * Nothing in the app had ever said this out loud, and nothing knew when a copy
@@ -76,7 +77,7 @@ export function BackupStatusCard({ tone = 'parent', onExport }) {
   if (tone === 'student') {
     return (
       <div className={'mt-3 rounded-lg border px-3 py-2 ' + border}>
-        <p className={'font-display text-xs uppercase tracking-widest ' + heading}>Last sent to Mom</p>
+        <p className={'font-display text-xs uppercase tracking-widest ' + heading}>Last sent to {guardianWord()}</p>
         <p className="mt-0.5 text-xs text-ink-300">
           {status.neverExported
             ? 'You have never sent your work across. Everything you have done is only on this computer — send it today.'
@@ -104,7 +105,7 @@ export function BackupStatusCard({ tone = 'parent', onExport }) {
         <p className="mt-2 text-sm text-ink-300">
           Everything — attendance, grades, the portfolio, the Credit ledger, and every word he has
           written — lives inside this browser on this computer. Clearing browsing data or losing the
-          drive loses the school year with it, including the attendance record Georgia asks for.
+          drive loses the school year with it, including the attendance record {stateWord()} asks for.
           Export once now, and keep the file somewhere that is not this machine.
         </p>
       ) : (

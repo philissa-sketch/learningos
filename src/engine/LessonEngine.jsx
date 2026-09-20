@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react';
+import { guardianWord } from '../lib/schoolWords.js';
 import { useAppStore } from '../store/useAppStore.js';
 import { isAnswerCorrect, scoreLessonAttempt, getWrongAnswerFeedback, isAutoGradable } from './lessonScoring.js';
 import { hashSeed, shuffleQuestionChoices, shuffleQuestionSet } from './shuffleChoices.js';
@@ -351,8 +352,8 @@ export function LessonEngine({ lesson, onExit, onOpenView }) {
         correct: null,
         awaitingParentGrade: true,
         feedback: question.explanation
-          ? `Saved for your mom to read and grade.\n\n${question.explanation}`
-          : 'Saved for your mom to read and grade. This one is not scored automatically.'
+          ? `Saved for ${guardianWord()} to read and grade.\n\n${question.explanation}`
+          : `Saved for ${guardianWord()} to read and grade. This one is not scored automatically.`
       });
       setAnswersById((prev) => ({ ...prev, [question.id]: submittedValue }));
       return;
@@ -644,7 +645,7 @@ export function LessonEngine({ lesson, onExit, onOpenView }) {
    *
    * The wording keeps the low-stakes part that makes the technique work — there
    * is no single right answer, he is not being caught out — while being
-   * straight that Mom reads it and may put a grade on it.
+   * straight that the grown-up reads it and may put a grade on it.
    */
   if (phase === 'beat-reflect') {
     return (
@@ -654,7 +655,7 @@ export function LessonEngine({ lesson, onExit, onOpenView }) {
           <p className="font-display text-sm font-700 text-signal-cyan">Explain it to me in your own words</p>
           <p className="mt-2">
             Before we move on — how would YOU explain {activeBeat?.label ? `"${activeBeat.label}"` : 'this'} to
-            a new recruit? There's no single right answer. Mom reads these, and she may put a grade on how
+            a new recruit? There's no single right answer. {guardianWord()} reads these, and may put a grade on how
             clearly you explained it — so write it properly, in your own words.
           </p>
         </NovaMessage>

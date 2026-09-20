@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react';
+import { guardianWord } from '../../lib/schoolWords.js';
 import { useAppStore } from '../../store/useAppStore.js';
 
 /**
@@ -65,7 +66,7 @@ export function FeedbackFromMomCard({ limit = 5 }) {
   return (
     <div className="mt-4 rounded-xl border border-space-700 bg-space-800 p-4 shadow-panel">
       <p className="text-xs font-display uppercase tracking-widest text-signal-cyan">
-        What you wrote — and what Mom said
+        What you wrote — and what {guardianWord()} said
       </p>
       <p className="mt-1 text-xs text-ink-500">
         {withNotes > 0

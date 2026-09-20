@@ -587,7 +587,7 @@ function buildNextList(pool, state) {
  *
  * `creditedDates` is deliberately absent from this list, and that absence is
  * load-bearing — see the comment on it in computeWeeklyWordState. Clearing it
- * would take word study out of his Georgia attendance record.
+ * would take word study out of his state attendance record.
  */
 function freshWeekFields(built) {
   return {
@@ -631,7 +631,7 @@ export function computeWeeklyWordState(pool, existingState, todayStr) {
    * ---- WHY THIS FIELD EXISTS (Aug 18, 2026) ----
    *
    * `completedDayTasks` was doing two jobs. It drives the week strip on his
-   * screen — five days, tick them off — and it is ALSO where his Georgia
+   * screen — five days, tick them off — and it is ALSO where his state-countable
    * instructional hours for word study come from: `wordStudyDates()` derives
    * the actual dates from `weekStartDate` plus the day keys, and those dates
    * credit the Spelling & Vocabulary block in the compliance packet.
@@ -642,7 +642,7 @@ export function computeWeeklyWordState(pool, existingState, todayStr) {
    * a button whose entire job is to clear `completedDayTasks` mid-week. Its
    * confirm dialog honestly said three completed days would be cleared. It did
    * not say that clearing them would also take three days of instruction out of
-   * the record the state of Georgia will ask about, **because nobody knew that
+   * the record the state will ask about, **because nobody knew that
    * is what it did.**
    *
    * So the dates are now written down when they happen and never derived,

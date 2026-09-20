@@ -126,7 +126,7 @@ export function BookLibraryView({ focusBookId = null }) {
 }
 
 /**
- * Lamar's own 1-5 rating. Nothing scores him on it — it exists so the
+ * The learner's own 1-5 rating. Nothing scores him on it — it exists so the
  * library remembers what he actually thought, which is what makes a
  * family library worth keeping.
  */
@@ -247,7 +247,7 @@ const NEXT_STATUS_ACTIONS = [
  * slot's note reverted to reading "book TBD" — so the app's own answer to "why
  * this book?" was "to be decided."
  *
- * Written to Lamar rather than about him. He is the one who asked to reference
+ * Written to the learner rather than about him. He is the one who asked to reference
  * it back, so it addresses him directly and it stays put.
  */
 function WhyThisBook({ book }) {

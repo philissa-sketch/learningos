@@ -16,7 +16,7 @@
  *
  * That is correct for a handoff, where the two machines already both have the
  * records and are exchanging the day's work. It is exactly wrong for a MOVE,
- * where the destination has nothing and the excluded tables are the Georgia
+ * where the destination has nothing and the excluded tables are the state
  * compliance file.
  *
  * So a migration file is a different thing with a different rule:

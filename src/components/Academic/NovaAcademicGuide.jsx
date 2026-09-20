@@ -1,12 +1,26 @@
 import { NovaMessage } from '../Mentor/NovaMessage.jsx';
+import { fillWords, guardianWord } from '../../lib/schoolWords.js';
 
 // ---------------------------------------------------------------------------
 // NOVA IN THE ACADEMIC SUCCESS CENTER.
 // (Built Aug 9, 2026.)
 //
 // Four tabs, and they are not all his. Books and Assignments are things he
-// acts on; Portfolio is a record that fills itself; Parent Setup belongs to his
-// mother and has no login in front of it yet.
+// acts on; Portfolio is a record that fills itself; Parent Setup belongs to the
+// grown-up and has no login in front of it yet.
+//
+// ---- WHY `body` IS A FUNCTION AND `speak` CARRIES A TOKEN ----
+//
+// These used to be a plain object of JSX elements and strings. A JSX element
+// is BUILT when this module is evaluated, so a `{guardianWord()}` sitting in
+// one would have been called once, at import, and frozen. Change the word in
+// Settings afterwards and these four tabs would go on using the old one with
+// nothing on screen to say why — which reads exactly like a parent's answer
+// being ignored.
+//
+// So the bodies are functions called at render, and the spoken lines carry the
+// same token the guide's greeting lines use, filled at the moment they are
+// handed over. See src/lib/schoolWords.js.
 //
 // THAT LAST ONE DECIDES THE TONE. A guide that spoke to him on all four tabs
 // would either invite him to change things that are not his, or waffle. Nova
@@ -25,21 +39,21 @@ import { NovaMessage } from '../Mentor/NovaMessage.jsx';
 
 const GUIDES = {
   books: {
-    body: (
+    body: () => (
       <>
         Every subject has slots, and an empty one is not a mistake — it is a book that has not been
         chosen yet. <strong>The one thing here that is yours is the status</strong>: not started,
         reading, finished. Keep it honest and the rest of the app stays honest with you, because
         finished books feed your Progress screen and your ship&rsquo;s sensors. Titles and slots are
-        your mom&rsquo;s to fill in.
+        {guardianWord()}&rsquo;s to fill in.
       </>
     ),
     speak:
-      'Every subject has slots, and an empty one is not a mistake. It is a book that has not been chosen yet. The one thing here that is yours is the status. Not started, reading, finished. Keep it honest and the rest of the app stays honest with you, because finished books feed your Progress screen and your ship’s sensors. Titles and slots are your mom’s to fill in.'
+      'Every subject has slots, and an empty one is not a mistake. It is a book that has not been chosen yet. The one thing here that is yours is the status. Not started, reading, finished. Keep it honest and the rest of the app stays honest with you, because finished books feed your Progress screen and your ship’s sensors. Titles and slots are {guardian}’s to fill in.'
   },
 
   assignments: {
-    body: (
+    body: () => (
       <>
         The real assignments for this quarter, with their due dates. Move each one along as you go —
         not started, in progress, completed. <strong>Big ones break into steps</strong>, and ticking
@@ -53,29 +67,29 @@ const GUIDES = {
   },
 
   portfolio: {
-    body: (
+    body: () => (
       <>
-        This one fills itself. Finished journal entries, completed assignments and projects your mom
-        logs all land here automatically, newest first — <strong>you do not have to remember to add
+        This one fills itself. Finished journal entries, completed assignments and projects{' '}
+        {guardianWord()} logs all land here automatically, newest first — <strong>you do not have to remember to add
         anything</strong>. It is worth knowing what this is for: it is the record that outlasts the
         school year. When somebody asks what you have actually built and written, this is the answer,
         and it is a great deal more convincing than a grade.
       </>
     ),
     speak:
-      'This one fills itself. Finished journal entries, completed assignments, and projects your mom logs all land here automatically, newest first. You do not have to remember to add anything. It is worth knowing what this is for. It is the record that outlasts the school year. When somebody asks what you have actually built and written, this is the answer, and it is a great deal more convincing than a grade.'
+      'This one fills itself. Finished journal entries, completed assignments, and projects {guardian} logs all land here automatically, newest first. You do not have to remember to add anything. It is worth knowing what this is for. It is the record that outlasts the school year. When somebody asks what you have actually built and written, this is the answer, and it is a great deal more convincing than a grade.'
   },
 
   setup: {
-    body: (
+    body: () => (
       <>
-        <strong>This tab is your mom&rsquo;s.</strong> It is where the real books and assignments get
+        <strong>This tab is {guardianWord()}&rsquo;s.</strong> It is where the real books and assignments get
         filled in, and there is nothing here for you to change. Worth a look anyway if you are curious
         about what is coming — knowing what is on the list is not cheating, it is planning.
       </>
     ),
     speak:
-      'This tab is your mom’s. It is where the real books and assignments get filled in, and there is nothing here for you to change. Worth a look anyway if you are curious about what is coming. Knowing what is on the list is not cheating, it is planning.'
+      'This tab is {guardian}’s. It is where the real books and assignments get filled in, and there is nothing here for you to change. Worth a look anyway if you are curious about what is coming. Knowing what is on the list is not cheating, it is planning.'
   }
 };
 
@@ -85,8 +99,8 @@ export function NovaAcademicGuide({ tab }) {
   if (!guide) return null;
   return (
     <div className="mb-4">
-      <NovaMessage tone="brief" speak={guide.speak}>
-        {guide.body}
+      <NovaMessage tone="brief" speak={fillWords(guide.speak)}>
+        {guide.body()}
       </NovaMessage>
     </div>
   );

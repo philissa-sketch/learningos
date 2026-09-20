@@ -1,4 +1,5 @@
 import { NovaMessage } from '../Mentor/NovaMessage.jsx';
+import { fillWords, guardianWord } from '../../lib/schoolWords.js';
 
 // ---------------------------------------------------------------------------
 // NOVA EXPLAINS EACH TAB.
@@ -42,7 +43,7 @@ import { NovaMessage } from '../Mentor/NovaMessage.jsx';
 
 const GUIDES = {
   shop: {
-    body: (
+    body: () => (
       <>
         This is the <strong>Coins</strong> half, and Coins are yours — anything here unlocks the
         second you can afford it, no asking. Themes repaint the whole app, avatars change who you
@@ -57,7 +58,7 @@ const GUIDES = {
   },
 
   mine: {
-    body: (
+    body: () => (
       <>
         Everything you own, and nothing you do not. Your cadet is wearing what you have equipped —
         tap any piece of gear to put it on, tap it again to take it off. The dashed shapes in your
@@ -72,26 +73,26 @@ const GUIDES = {
   },
 
   progress: {
-    body: (
+    body: () => (
       <>
         The top two cards are the only things on this screen you can act on today — the{' '}
         <strong>weekly challenge</strong> and the <strong>quarter operation</strong>. Both pay, and
         you have to press Claim yourself; I am not going to do it for you. Below them is the record:
         the route out to Deep Space, your badges, and the readiness skills. Badges calculate
         themselves from real work — pick the nearest one, it is usually one good afternoon away.
-        Readiness is different: <strong>your mom awards those</strong>, and they are the part a
+        Readiness is different: <strong>{guardianWord()} awards those</strong>, and they are the part a
         college actually reads. Any badge with a certificate has a Print button on it.
       </>
     ),
     speak:
-      'The top two cards are the only things on this screen you can act on today: the weekly challenge and the quarter operation. Both pay, and you have to press Claim yourself. I am not going to do it for you. Below them is the record. The route out to Deep Space, your badges, and the readiness skills. Badges calculate themselves from real work, so pick the nearest one. It is usually one good afternoon away. Readiness is different. Your mom awards those, and they are the part a college actually reads. Any badge with a certificate has a Print button on it.'
+      'The top two cards are the only things on this screen you can act on today: the weekly challenge and the quarter operation. Both pay, and you have to press Claim yourself. I am not going to do it for you. Below them is the record. The route out to Deep Space, your badges, and the readiness skills. Badges calculate themselves from real work, so pick the nearest one. It is usually one good afternoon away. Readiness is different. {guardian} awards those, and they are the part a college actually reads. Any badge with a certificate has a Print button on it.'
   },
 
   rewards: {
-    body: (
+    body: () => (
       <>
         This is the <strong>Credits</strong> half, and Credits are the slow money — they buy real
-        things, out in the world, and most of them need your mom to say yes. That is the whole rule:
+        things, out in the world, and most of them need {guardianWord()} to say yes. That is the whole rule:
         Coins are yours and unlock instantly; Credits buy things that cost somebody something. The
         dream goal at the bottom is a savings account for the big one, and{' '}
         <strong>she matches a quarter of everything you put in</strong>. Saving beats spending here,
@@ -99,7 +100,7 @@ const GUIDES = {
       </>
     ),
     speak:
-      'This is the Credits half, and Credits are the slow money. They buy real things, out in the world, and most of them need your mom to say yes. That is the whole rule. Coins are yours and unlock instantly. Credits buy things that cost somebody something. The dream goal at the bottom is a savings account for the big one, and she matches a quarter of everything you put in. Saving beats spending here, which is the opposite of the Shop, and that is on purpose.'
+      'This is the Credits half, and Credits are the slow money. They buy real things, out in the world, and most of them need {guardian} to say yes. That is the whole rule. Coins are yours and unlock instantly. Credits buy things that cost somebody something. The dream goal at the bottom is a savings account for the big one, and she matches a quarter of everything you put in. Saving beats spending here, which is the opposite of the Shop, and that is on purpose.'
   }
 };
 
@@ -109,8 +110,8 @@ export function NovaTabGuide({ tab }) {
   if (!guide) return null;
   return (
     <div className="mb-4">
-      <NovaMessage tone="brief" speak={guide.speak}>
-        {guide.body}
+      <NovaMessage tone="brief" speak={fillWords(guide.speak)}>
+        {guide.body()}
       </NovaMessage>
     </div>
   );

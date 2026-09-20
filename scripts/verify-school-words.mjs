@@ -154,6 +154,123 @@ console.log('\n--- 6. the words are set before a school can render ---');
     'a line firing during teardown must not still hold the last family\'s words');
 }
 
+// ---------------------------------------------------------------------------
+console.log('\n--- 7. the sweep only moves forward ---');
+// ---------------------------------------------------------------------------
+{
+  /**
+   * A count that may GROW and must never SHRINK — the same ratchet
+   * generic-debt.json runs, pointed the other way.
+   *
+   * The debt list measures what is still wrong. This measures what has been
+   * PUT RIGHT, and the two can come apart in one specific way that would
+   * otherwise pass both: a file can leave the debt list by having its sentence
+   * DELETED rather than reworded. "Send my work to Mom" scores exactly as
+   * clean when the button says nothing at all, and a screen that has quietly
+   * lost its words is a worse outcome than the one the audit complained about.
+   *
+   * Raise SWEPT_BASELINE in the same commit that sweeps a file, exactly as
+   * KNOWN_RED_BASELINE is lowered when a red is cleared.
+   */
+  const SWEPT_BASELINE = 23;
+
+  const walk = (dir, acc = []) => {
+    for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
+      const full = path.join(dir, e.name);
+      if (e.isDirectory()) walk(full, acc);
+      else if (/\.(js|jsx)$/.test(e.name)) acc.push(full);
+    }
+    return acc;
+  };
+
+  const ACCESSORS = ['learnerWord', 'guardianWord', 'stateWord', 'fillWords', 'installSchoolWords', 'unloadSchoolWords', 'schoolWordsAcademyId', 'GENERIC_WORDS'];
+  const importers = walk(path.join(REPO, 'src'))
+    .map((f) => [path.relative(REPO, f).split(path.sep).join('/'), fs.readFileSync(f, 'utf8')])
+    .filter(([, text]) => /from '[^']*schoolWords\.js'/.test(text));
+
+  ok(`at least ${SWEPT_BASELINE} files ask the platform for their words`,
+    importers.length >= SWEPT_BASELINE,
+    `${importers.length} do — a file that stopped asking either regressed or had its sentence deleted`);
+
+  const dead = importers.filter(([, text]) => {
+    const body = text.replace(/^import[\s\S]*?from '[^']*schoolWords\.js';$/m, '');
+    return !ACCESSORS.some((a) => new RegExp(`[^a-zA-Z]${a}\\b`).test(body));
+  }).map(([rel]) => rel);
+
+  ok('no file imports the words and then does not use them', dead.length === 0,
+    `${dead.join(', ')} — a dead import is what is left when a sentence was deleted instead of reworded`);
+}
+
+// ---------------------------------------------------------------------------
+console.log('\n--- 8. every token reaches a fillWords ---');
+// ---------------------------------------------------------------------------
+{
+  /**
+   * A token is only half a repair. `'{state} asks for one'` in a string is not
+   * a sentence until something calls fillWords on it, and an unfilled one does
+   * not throw or look broken in the source — it prints a literal `{state}` on
+   * a parent's screen.
+   *
+   * ---- WHY THIS CHECKS THE FIELD AND NOT THE FILE ----
+   *
+   * The first version asked "does this file mention fillWords?" and MISSED
+   * both mutations written against it: deleting the call left the import
+   * behind, and the word `fillWords` was still in the file. A check that an
+   * import exists is not a check that anything is filled.
+   *
+   * So it works field by field. A token lives in a data table under some key
+   * — `what`, `blurb`, `speak` — and the screen reads it back as `guide.what`.
+   * EVERY read of that key must sit inside a fillWords call. That is the
+   * property; which file it happens in does not matter, which is what makes it
+   * survive the table and the screen being moved apart.
+   */
+  const TOKEN_FIELDS = [
+    { carrier: 'src/lib/driveLinks.js', field: 'blurb', readers: ['src/components/Dashboard/EvidenceLink.jsx'] },
+    { carrier: 'src/components/Dashboard/NovaParentGuide.jsx', field: 'what', readers: ['src/components/Dashboard/NovaParentGuide.jsx'] },
+    { carrier: 'src/components/Rewards/NovaTabGuide.jsx', field: 'speak', readers: ['src/components/Rewards/NovaTabGuide.jsx'] },
+    { carrier: 'src/components/Academic/NovaAcademicGuide.jsx', field: 'speak', readers: ['src/components/Academic/NovaAcademicGuide.jsx'] },
+    { carrier: 'src/components/Dashboard/AdminRecordsSection.jsx', field: 'blurb', readers: ['src/components/Dashboard/AdminRecordsSection.jsx'] }
+  ];
+
+  const walk = (dir, acc = []) => {
+    for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
+      const full = path.join(dir, e.name);
+      if (e.isDirectory()) walk(full, acc);
+      else if (/\.(js|jsx)$/.test(e.name)) acc.push(full);
+    }
+    return acc;
+  };
+
+  const TOKEN_IN_SOURCE = /\{(?:[^|{}]*\|)?(?:learner|guardian|state)\}/;
+  const carriers = walk(path.join(REPO, 'src'))
+    .map((f) => path.relative(REPO, f).split(path.sep).join('/'))
+    .filter((rel) => TOKEN_IN_SOURCE.test(src(rel)));
+
+  ok('some file still carries a token', carriers.length > 0,
+    'the token form is how a vocative keeps its punctuation — losing it is a regression');
+
+  // Every token-carrying file is either declared above or fills inline.
+  const declared = new Set(TOKEN_FIELDS.map((t) => t.carrier));
+  const undeclared = carriers.filter((rel) => !declared.has(rel) && !/fillWords\(/.test(src(rel)));
+  ok('no token-carrying file is unaccounted for', undeclared.length === 0,
+    `${undeclared.join(', ')} — add it to TOKEN_FIELDS or fill its tokens inline`);
+
+  for (const { carrier, field, readers } of TOKEN_FIELDS) {
+    ok(`${carrier.split('/').pop()} still carries tokens in \`${field}\``,
+      carriers.includes(carrier),
+      'the entry is stale — remove it if the tokens are gone');
+
+    for (const reader of readers) {
+      const text = src(reader);
+      const reads = [...text.matchAll(new RegExp(`\\w+\\.${field}\\b`, 'g'))].map((m) => m[0]);
+      const filled = [...text.matchAll(new RegExp(`fillWords\\(\\s*\\w+\\.${field}\\b`, 'g'))].length;
+      ok(`${reader.split('/').pop()}: all ${reads.length} read(s) of .${field} go through fillWords`,
+        reads.length > 0 && filled === reads.length,
+        `${filled} of ${reads.length} filled — an unfilled read prints a literal token on screen`);
+    }
+  }
+}
+
 console.log(`\n${passed} passed, ${failures.length} failed`);
 if (failures.length) {
   console.log(`\n${failures.length} CHECK(S) FAILED`);

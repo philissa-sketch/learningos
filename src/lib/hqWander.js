@@ -4,7 +4,7 @@
  * =============================================================================
  *
  * Phase 2, Aug 30, 2026. The parent: **"I will like it that the avatar and the
- * worker are moving around the hq unless placed in a specific spot by Lamar. So
+ * worker are moving around the hq unless the learner placed them in a spot. So
  * periodically they will look through the microscope, look at pics, sit in a
  * chair, work at the work station etc."**
  *
@@ -144,7 +144,7 @@ export function nextStop(current, stops = [], taken = [], roll = 0, isClear = ()
  * ONE TICK OF THE ROOM.
  *
  * `state` is `{ [figureId]: { at, until } }`. `figures` is
- * `[{ id, pinned, at }]` — `pinned` meaning Lamar put them somewhere, `at`
+ * `[{ id, pinned, at }]` — `pinned` meaning the learner put them somewhere, `at`
  * being where a pinned figure is standing so the roamers can avoid it.
  *
  * Returns `{ state, changed }`. **When nothing is due, the state that came in
@@ -177,7 +177,7 @@ export function wanderTick({
     next[id] = value;
   };
 
-  // Anybody Lamar has posted since the last tick stops roaming immediately.
+  // Anybody the learner has posted since the last tick stops roaming immediately.
   for (const f of figures) {
     if (f.pinned && state[f.id]) {
       if (!changed) { next = { ...state }; changed = true; }

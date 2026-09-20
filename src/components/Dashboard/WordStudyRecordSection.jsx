@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { stateWord } from '../../lib/schoolWords.js';
 import { useAppStore } from '../../store/useAppStore.js';
 import { WORD_ACTIVITIES, DAY_TASK_ORDER } from '../../lib/weeklyWords.js';
 
@@ -218,7 +219,7 @@ function AdvanceListControl({ skill, record }) {
         : 'No days have been completed this week, so nothing re-opens.',
       '',
       days > 0
-        ? 'Those days stay on his attendance record — the hours he already put in still count toward Georgia.'
+        ? `Those days stay on his attendance record — the hours he already put in still count toward ${stateWord()}.`
         : 'His attendance record is not touched.',
       '',
       'His test scores and every answer he has ever given are kept.'

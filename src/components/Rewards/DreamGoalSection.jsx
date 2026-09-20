@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { guardianWord } from '../../lib/schoolWords.js';
 import { useAppStore } from '../../store/useAppStore.js';
 import { CREDIT_LADDER, DREAM_MATCH_RATE } from '../../lib/economy.js';
 
@@ -74,7 +75,7 @@ export function DreamGoalSection() {
   const onClaim = async () => {
     const res = await claimDreamGoal();
     say(res.ok
-      ? `Claimed — ${res.total} Credits, including ${res.match} from your match. Mom has to say yes to this one.`
+      ? `Claimed — ${res.total} Credits, including ${res.match} from your match. ${guardianWord()} has to say yes to this one.`
       : 'Not there yet.');
   };
 
@@ -87,7 +88,7 @@ export function DreamGoalSection() {
           <h3 className="mt-1 font-display text-lg font-700 text-ink-100">Save for something big</h3>
           <p className="mt-2 text-sm text-ink-300">
             Pick one thing worth saving for. Credits you put in stop being spendable — and for every{' '}
-            <span className="font-display font-700 text-ink-100">4</span> you save, Mom adds{' '}
+            <span className="font-display font-700 text-ink-100">4</span> you save, {guardianWord()} adds{' '}
             <span className="font-display font-700 text-signal-amber">1</span>. That is a{' '}
             {Math.round(DREAM_MATCH_RATE * 100)}% match, and it is why saving beats spending.
           </p>
@@ -157,7 +158,7 @@ export function DreamGoalSection() {
               <p className="mt-0.5 font-display text-xl font-700 text-ink-100">{progress.reserved}</p>
             </div>
             <div className="rounded-lg border border-signal-amber/40 bg-signal-amber/5 p-3">
-              <p className="text-[10px] font-display uppercase tracking-widest text-signal-amber">Mom's match</p>
+              <p className="text-[10px] font-display uppercase tracking-widest text-signal-amber">{guardianWord()}&rsquo;s match</p>
               <p className="mt-0.5 font-display text-xl font-700 text-signal-amber">+{progress.match}</p>
               <p className="mt-0.5 text-[11px] text-ink-500">1 for every 4 you save</p>
             </div>

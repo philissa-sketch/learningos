@@ -7,7 +7,7 @@
 // Parent-approved design (Aug 2026):
 //   - SOFT gate — never blocks the Quarterly Exam. It's a structured,
 //     tracked recommendation, not a hard requirement — a missed day or
-//     unusual week never locks Lamar out of taking the exam.
+//     unusual week never locks the learner out of taking the exam.
 //   - Real spacing, not five clicks in one sitting: each day only
 //     becomes available once the previous day is done AND at least one
 //     full calendar day has passed. That's what makes this genuinely

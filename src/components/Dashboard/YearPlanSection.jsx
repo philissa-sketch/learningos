@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { stateWord } from '../../lib/schoolWords.js';
 import { useAppStore } from '../../store/useAppStore.js';
 import { todayDateStr, parseDateStr } from '../../lib/scheduler.js';
 import { buildYearPlan, buildSemesterPlan, yearProgress, benchmarkGrowth } from '../../lib/yearPlan.js';
@@ -92,7 +93,7 @@ export function YearPlanSection() {
           (progress.onTrack ? 'border-space-700 bg-space-800' : 'border-signal-amber/50 bg-signal-amber/5')
         }
       >
-        <p className="text-xs font-display uppercase tracking-widest text-signal-cyan">Georgia’s 180 days</p>
+        <p className="text-xs font-display uppercase tracking-widest text-signal-cyan">{stateWord()}’s {progress.required} days</p>
         <p className="mt-1 font-display text-3xl font-700 text-signal-cyan">
           {progress.logged}
           <span className="text-base font-400 text-ink-500"> / {progress.required}</span>

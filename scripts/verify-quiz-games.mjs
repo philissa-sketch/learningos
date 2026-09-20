@@ -113,15 +113,23 @@ console.log('\n--- 3. no dead ends ---');
   ok('a platform with no link still appears',
     /if \(!link\) \{/.test(code),
     'hiding it would leave her wondering whether the app knows about the site at all');
+  // Both assertions below used to quote one household's word for the grown-up
+  // in full. Step 7 replaced it with a looked-up one and they went red on a
+  // change that was entirely correct — they were pinned to the ADDRESS.
+  //
+  // What matters is unchanged: the empty state names the platform so she knows
+  // which link is missing, and it points at a person rather than dead-ending.
   ok('...and says to ask her, naming the platform',
-    /No game set — ask Mom for this week&apos;s \{platform\.label\} link\./.test(src));
+    /No game set — ask \{guardianWord\(\)\} for this week&apos;s \{platform\.label\} link\./.test(src),
+    'the empty state must name the platform, or she cannot tell which link is missing');
   ok('...and is not a link',
     !/if \(!link\) \{[\s\S]{0,600}<a\b/.test(code),
     'a link to a game-code box he cannot fill is the dead end this avoids');
   ok('a platform WITH a link opens in a new tab, safely',
     /target="_blank"/.test(code) && /rel="noreferrer"/.test(code));
   ok('the section explains who sets these up',
-    /Quiz Games — Mom sets these up/.test(src));
+    /Quiz Games — \{guardianWord\(\)\} sets these up/.test(src),
+    'a heading that does not say whose job this is leaves him waiting on nobody');
 }
 
 console.log('\n--- 4. she can set them, and only to something safe ---');

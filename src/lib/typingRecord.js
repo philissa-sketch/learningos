@@ -13,7 +13,7 @@
  *      a time, and nowhere she could see it.
  *   2. **Neither typing table carried a date**, so no calendar could read them
  *      and `coveredBlockIds` had no branch for typing. Every one of those 45
- *      hours was structurally uncountable toward Georgia's 4.5-hour bar.
+ *      hours was structurally uncountable toward the state's 4.5-hour bar.
  *
  * `typingLog` (db.js v35) fixed the second. This file is the first: the dated
  * rows, read as a record — days, sessions, speed, accuracy, and whether the

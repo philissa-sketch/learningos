@@ -1,4 +1,5 @@
 import { useAppStore } from '../../store/useAppStore.js';
+import { guardianWord } from '../../lib/schoolWords.js';
 import { academyContent } from '../../content/academyContent.js';
 
 const { EXTERNAL_GAMES_LIBRARY = [], QUIZ_PLATFORMS = [] } = academyContent().games;
@@ -72,7 +73,7 @@ export function GamesHome({ onOpenNationCommand, onOpenLaunchDirector }) {
         * three by name.)
         *
         * They sit ABOVE the free library because they are the ones with real
-        * questions Mom chose behind them, and below the signature missions
+        * questions the grown-up chose behind them, and below the signature missions
         * because those are earned.
         *
         * A card with no link is not hidden and is not a dead link. It names the
@@ -82,10 +83,10 @@ export function GamesHome({ onOpenNationCommand, onOpenLaunchDirector }) {
         */}
       <div className="space-y-3">
         <h3 className="font-display text-sm font-700 uppercase tracking-wide text-signal-green">
-          Quiz Games — Mom sets these up
+          Quiz Games — {guardianWord()} sets these up
         </h3>
         <p className="text-sm text-ink-300">
-          Mom picks the questions, then puts the link here. If a card says to ask her, the game for
+          {guardianWord()} picks the questions, then puts the link here. If a card says to ask her, the game for
           that one is not set yet.
         </p>
         <div className="space-y-2">
@@ -102,7 +103,7 @@ export function GamesHome({ onOpenNationCommand, onOpenLaunchDirector }) {
                   </p>
                   <p className="mt-1 text-xs text-ink-500">{platform.blurb}</p>
                   <p className="mt-2 text-xs text-signal-amber">
-                    No game set — ask Mom for this week&apos;s {platform.label} link.
+                    No game set — ask {guardianWord()} for this week&apos;s {platform.label} link.
                   </p>
                 </div>
               );

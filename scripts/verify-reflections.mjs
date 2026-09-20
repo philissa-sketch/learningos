@@ -65,7 +65,16 @@ console.log('\n--- 1. the app does not contradict itself ---');
  * board tell him the same thing.** That is what the original check was really
  * protecting, and it is what is enforced below — in the other direction now.
  */
-const ENGINE_SAYS_GRADED = /she may put a grade on how/.test(engine);
+// Matched on the PROMISE, not on the pronoun. This was
+// `/she may put a grade on how/` until step 7 replaced one household's word
+// for the grown-up with a looked-up one — and dropped the "she" with it,
+// because the looked-up word is not always a her. The check went red on a
+// change that was entirely correct, which is the signature of an assertion
+// pinned to the address rather than to the property.
+//
+// The property, as the note above says, is that the lesson and the board tell
+// him the same thing: that what he writes here may carry a grade.
+const ENGINE_SAYS_GRADED = /may put a grade on how/.test(engine);
 ok('the lesson tells him his answer may be graded',
   ENGINE_SAYS_GRADED,
   'it promised the opposite until Aug 21 — telling him it is not graded and then grading it is the one thing that would make him stop writing honestly');

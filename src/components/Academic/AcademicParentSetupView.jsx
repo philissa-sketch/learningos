@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { learnerWord } from '../../lib/schoolWords.js';
 import { useAppStore } from '../../store/useAppStore.js';
 import { getCurrentQuarter } from '../../lib/schoolQuarter.js';
 import {
@@ -59,13 +60,13 @@ export function AcademicParentSetupView({ focusAssignmentId = null }) {
         <h3 className="mt-1 font-display text-lg font-700 text-ink-100">Fill In the Real Books &amp; Assignments</h3>
         <p className="mt-2 text-sm text-ink-300">
           Each subject comes with slots built from its real curriculum — a Q1 Book Report for Reading, a Q3
-          Research Paper for Aerospace, and so on. A slot doesn't become real work Lamar sees until you give it
+          Research Paper for Aerospace, and so on. A slot doesn't become real work {learnerWord() || 'your learner'} sees until you give it
           a title here. Nothing is auto-filled or suggested: the book is your call.
         </p>
         <p className="mt-2 rounded-lg border border-space-700 bg-space-900 px-3 py-2 text-xs text-ink-500">
           <span className="font-display uppercase tracking-widest text-ink-600">Academic Center or Planner? </span>
           Both exist on purpose, and anything with a due date shows up on the Scheduler, the Parent Dashboard's
-          Coming Up view, and Lamar's dashboard either way. Use <strong>here</strong> for book reports, research
+          Coming Up view, and the learner's dashboard either way. Use <strong>here</strong> for book reports, research
           papers, presentations, and portfolio work tied to a subject and quarter — this is what tracks reading
           status and carries a grade. Use the <strong>Planner</strong> (Parent Dashboard) for one-off work:
           field trips, labs, volunteering, competitions, extra practice.
@@ -608,7 +609,7 @@ function AssignmentFeedbackBox({ assignment }) {
   return (
     <div className="mt-3 border-t border-space-700 pt-2">
       <p className="text-[10px] font-display uppercase tracking-widest text-ink-600">
-        Feedback — Lamar sees this
+        Feedback — {learnerWord() || 'he'} sees this
       </p>
       <textarea
         value={text}

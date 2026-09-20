@@ -1,4 +1,5 @@
 import { NovaMessage } from '../Mentor/NovaMessage.jsx';
+import { fillWords } from '../../lib/schoolWords.js';
 
 // ---------------------------------------------------------------------------
 // NOVA IN THE PARENT DASHBOARD.
@@ -46,7 +47,7 @@ const GUIDES = {
   // ---- Every Day ----
   attendance: {
     cadence: 'Daily, 2 minutes',
-    what: 'App time is measured automatically; offline hours are not. Khan work, reading, field trips and anything away from the screen count as zero until you enter them here — and that is the number Georgia’s 180 days is built from.'
+    what: 'App time is measured automatically; offline hours are not. Khan work, reading, field trips and anything away from the screen count as zero until you enter them here — and that is the number {state}’s 180-day count is built from.'
   },
   'coming-up': {
     cadence: 'Daily glance',
@@ -90,7 +91,7 @@ const GUIDES = {
   },
   'field-trips': {
     cadence: 'Monthly',
-    what: 'Trips with dates, costs and travel times, seeded with real Georgia venues. Marking one complete records learning hours and writes a Portfolio entry automatically.'
+    what: 'Trips with dates, costs and travel times, seeded with real local venues. Marking one complete records learning hours and writes a Portfolio entry automatically.'
   },
   'pe-fitness-nutrition': {
     cadence: 'Weekly glance',
@@ -120,7 +121,7 @@ const GUIDES = {
   },
   compliance: {
     cadence: 'Monthly, and every September',
-    what: 'Georgia’s requirements — the Declaration of Intent deadline, the 180-day count, and the packet you would hand someone who asked. The deadline is computed, never hardcoded.'
+    what: '{state}’s requirements — the Declaration of Intent deadline, the 180-day count, and the packet you would hand someone who asked. The deadline is computed, never hardcoded.'
   },
   records: {
     cadence: 'As needed',
@@ -186,11 +187,13 @@ export function NovaParentGuide({ section }) {
 
   return (
     <div className="mb-4">
-      <NovaMessage tone="brief" speak={guide.what}>
+      {/* Filled here, not where GUIDES is declared: that object is built once
+          when this module is evaluated, so a word read into it there would freeze. */}
+      <NovaMessage tone="brief" speak={fillWords(guide.what)}>
         <span className="inline-block rounded-full border border-signal-cyan/40 bg-signal-cyan/10 px-2 py-0.5 text-[10px] font-display uppercase tracking-widest text-signal-cyan">
           {guide.cadence}
         </span>
-        <p className="mt-2 text-sm leading-relaxed text-ink-200">{guide.what}</p>
+        <p className="mt-2 text-sm leading-relaxed text-ink-200">{fillWords(guide.what)}</p>
       </NovaMessage>
     </div>
   );

@@ -1,9 +1,10 @@
 import { useState, useRef } from 'react';
+import { guardianWord } from '../../lib/schoolWords.js';
 import { useAppStore } from '../../store/useAppStore.js';
 import { BackupStatusCard } from './BackupStatusCard.jsx';
 
 /**
- * Lamar's half of the two-computer handoff.
+ * The learner's half of the two-computer handoff.
  *
  * Added Aug 8, 2026. Export / Import lived only inside the Parent Dashboard,
  * behind her passcode, so he had no way to send his work or load back what she
@@ -22,7 +23,7 @@ export function StudentHandoffCard() {
 
   const handleSend = () => {
     exportProgressData();
-    setResult({ ok: true, message: 'Saved. Send that file to Mom — then keep going, nothing here changed.' });
+    setResult({ ok: true, message: `Saved. Send that file to ${guardianWord()} — then keep going, nothing here changed.` });
   };
 
   const handleFile = async (e) => {
@@ -34,11 +35,11 @@ export function StudentHandoffCard() {
     try {
       const parsed = JSON.parse(await file.text());
       await importProgressData(parsed);
-      setResult({ ok: true, message: 'Loaded. Your grades and any new assignments from Mom are in.' });
+      setResult({ ok: true, message: `Loaded. Your grades and any new assignments from ${guardianWord()} are in.` });
     } catch (err) {
       setResult({
         ok: false,
-        message: "That file did not load — " + (err.message || 'it may not be the right file.') + ' Nothing was changed. Ask Mom to send it again.'
+        message: "That file did not load — " + (err.message || 'it may not be the right file.') + ` Nothing was changed. Ask ${guardianWord()} to send it again.`
       });
     } finally {
       setBusy(false);
@@ -47,7 +48,7 @@ export function StudentHandoffCard() {
 
   return (
     <div className="mt-4 rounded-xl border border-space-700 bg-space-800 p-4 shadow-panel">
-      <p className="text-xs font-display uppercase tracking-widest text-signal-cyan">Sending work to Mom</p>
+      <p className="text-xs font-display uppercase tracking-widest text-signal-cyan">Sending work to {guardianWord()}</p>
       <p className="mt-1 text-xs text-ink-500">
         Do this at the end of the day. Send yours first, then load hers back when she sends it.
       </p>
@@ -58,7 +59,7 @@ export function StudentHandoffCard() {
           onClick={handleSend}
           className="rounded-lg bg-signal-cyan px-4 py-2.5 text-left font-display text-sm font-700 text-space-950 transition hover:brightness-110"
         >
-          1 · Send my work to Mom
+          1 · Send my work to {guardianWord()}
           <span className="mt-0.5 block text-xs font-400 opacity-80">Saves a file to your downloads</span>
         </button>
 
@@ -69,7 +70,7 @@ export function StudentHandoffCard() {
           className="rounded-lg border border-signal-cyan/40 px-4 py-2.5 text-left font-display text-sm font-700 text-signal-cyan transition hover:bg-signal-cyan/10 disabled:opacity-50"
         >
           {busy ? 'Loading…' : '2 · Get my graded work back'}
-          <span className="mt-0.5 block text-xs font-400 text-ink-500">Pick the file Mom sent you</span>
+          <span className="mt-0.5 block text-xs font-400 text-ink-500">Pick the file {guardianWord()} sent you</span>
         </button>
       </div>
 

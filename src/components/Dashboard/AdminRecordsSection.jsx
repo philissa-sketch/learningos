@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { fillWords } from '../../lib/schoolWords.js';
 import { useAppStore } from '../../store/useAppStore.js';
 import { parseDateStr, todayDateStr } from '../../lib/scheduler.js';
 import { EvidenceLinkInput, EvidenceLinkEditor } from './EvidenceLink.jsx';
@@ -20,7 +21,7 @@ const { SUBJECT_LABELS = {} } = academyContent().subjects;
  *
  * Volunteer hours get a real hours field and a running total, because
  * that total is the thing anyone ever actually asks for. Test records
- * matter for Georgia's every-three-years requirement, which the
+ * matter for the state's every-three-years requirement, which the
  * Compliance section reads directly from these rows.
  *
  * WORK SAMPLES (added August 6, 2026): this kind was blocked for as long
@@ -36,7 +37,7 @@ const KINDS = [
   { id: 'volunteer', label: 'Volunteer Hours', blurb: 'Service hours, with a running total.' },
   { id: 'extracurricular', label: 'Extracurriculars', blurb: 'Clubs, teams, lessons, competitions.' },
   { id: 'award', label: 'Awards & Certificates', blurb: 'Anything he earned that is worth keeping on the record.' },
-  { id: 'test', label: 'Standardized Tests', blurb: 'Georgia asks for one at least every three years from the end of 3rd grade.' },
+  { id: 'test', label: 'Standardized Tests', blurb: '{state} asks for one at least every three years from the end of 3rd grade.' },
   { id: 'work-sample', label: 'Work Samples', blurb: 'Scanned or photographed worksheets, essays, lab write-ups and drawings — kept as Drive links.' }
 ];
 
@@ -101,7 +102,9 @@ export function AdminRecordsSection() {
             </button>
           ))}
         </div>
-        <p className="mt-2 text-xs text-ink-500">{active.blurb}</p>
+        {/* Filled here, not where KINDS is declared: that array is built once when
+            this module is evaluated, so a word read into it there would freeze. */}
+        <p className="mt-2 text-xs text-ink-500">{fillWords(active.blurb)}</p>
         {kind === 'volunteer' && totalHours > 0 && (
           <p className="mt-1 font-display text-sm font-700 text-signal-cyan">{totalHours} hours total</p>
         )}

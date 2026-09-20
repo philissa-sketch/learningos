@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import { guardianWord } from '../../lib/schoolWords.js';
 import { AssignmentWriter } from './AssignmentWriter.jsx';
 import { useAppStore } from '../../store/useAppStore.js';
 import { getCurrentQuarter } from '../../lib/schoolQuarter.js';
@@ -233,14 +234,14 @@ function AssignmentRow({ assignment, focused = false, onSetStatus, onToggleMiles
           </div>
 
           {/*
-            Feedback from his mom, shown to HIM. The grade tells him where
+            Feedback from the grown-up, shown to HIM. The grade tells him where
             he landed; this is the half he can act on, so it gets real
             visual weight rather than being tucked in as small print.
           */}
           {assignment.feedback && (
             <div className="mt-2 rounded-lg border border-signal-cyan/30 bg-signal-cyan/5 px-3 py-2">
               <p className="text-[10px] font-display uppercase tracking-widest text-signal-cyan">
-                Feedback from Mom
+                Feedback from {guardianWord()}
               </p>
               <p className="mt-1 whitespace-pre-line text-sm text-ink-200">{assignment.feedback}</p>
             </div>
