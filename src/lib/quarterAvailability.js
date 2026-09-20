@@ -3,7 +3,7 @@
 //
 // ---- WHY THIS EXISTS (Aug 16, 2026) ----
 //
-// The parent, Aug 14: **"Social studies isn't opened on Lamar's app."**
+// The parent, Aug 14: **"Social studies isn't opened on [his] app."**
 //
 // The first look found the cause of the blank screen — a stale build — and the
 // deeper fact: **zero of Social Studies' 29 lessons are tagged Q1.** Her

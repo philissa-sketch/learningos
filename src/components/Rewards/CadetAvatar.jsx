@@ -493,7 +493,7 @@ export const STANCES = {
 /* ===========================================================================
  * MISSION EQUIPMENT, DRAWN ON THE BODY.
  *
- * The parent: **"Lamar wants to use the equipment he purchases not just have
+ * The parent: **"[He] wants to use the equipment he purchases not just have
  * it sitting in the equipment app."**
  *
  * Until today the twelve equipment pieces had no `slot`, and `equipGear`

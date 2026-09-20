@@ -8,7 +8,7 @@ import { toMinutes } from '../../lib/classBell.js';
  *
  * ---- WHY THIS EXISTS (Aug 20, 2026) ----
  *
- * The student, via his parent: **"Lamar is complaining that he'd like the rest
+ * The student, via his parent: **"[He] is complaining that he'd like the rest
  * of his day to be in sync with his Today's Routine."**
  *
  * He was reading two different orders for the same day, side by side on one
@@ -38,7 +38,7 @@ import { toMinutes } from '../../lib/classBell.js';
  * the wrong place.
  *
  * So the rows no longer carry an order. They carry the BLOCK they belong to —
- * the same `block-2`, `block-7b`, `block-9` the Georgia counter credits and
+ * the same `block-2`, `block-7b`, `block-9` the compliance counter credits and
  * the rail draws — and this component reads her real `scheduleBlocks` for the
  * start times. Move Science to 8am in the Scheduler and this list moves with
  * it, because there is nothing here that could fail to be told.

@@ -12,12 +12,12 @@
 // Three separate screens rendered those counts, and **all three had PE's field
 // names hardcoded**:
 //
-//   compliancePacket.js   — the downloadable Georgia records packet
+//   compliancePacket.js   — the downloadable state records packet
 //   ParentDashboard.jsx   — the transcript download
 //   ParentDashboard.jsx   — the on-screen report card
 //
 // Gardening and Guitar have none of PE's keys, so every one fell through the
-// `|| 0`. The Georgia packet printed, for a boy who had worked in the garden all
+// `|| 0`. The records packet printed, for a boy who had worked outdoors all
 // season:
 //
 //     Gardening & Applied Engineering: participation credit — 0 workouts

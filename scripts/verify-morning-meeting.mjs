@@ -297,8 +297,12 @@ console.log('\n--- 5. everything she asked to be on the screen is on the screen 
    * Netlify serves the same code to both machines; it does not merge their
    * databases. His progress still travels by file, every single day.
    */
-  ok('...while trading files with Mom survives the change',
-    /Trade files with Mom/.test(src),
+  // Matched on the STEP, not on one household's word for the grown-up. This
+  // was /Trade files with Mom/ until the wording sweep looked that word up
+  // instead of compiling it in, and the check went red on a correct change —
+  // an assertion pinned to the address rather than the property.
+  ok('...while trading files survives the change',
+    /Trade files with/.test(src),
     'the deployment changed how CODE reaches him, not how WORK reaches her');
 
   // "export to import"
@@ -312,7 +316,8 @@ console.log('\n--- 5. everything she asked to be on the screen is on the screen 
     /e\.target\.value = ''/.test(code),
     'without this, picking yesterday-shaped filename twice silently does nothing');
   ok('...and a failed import says nothing was changed',
-    /Nothing was changed\. Ask Mom to send it again\./.test(src));
+    /Nothing was changed\. Ask \$\{guardianWord\(\)\} to send it again\./.test(src),
+    'the promise that nothing changed is the whole point of the message — the name on it is not');
 
   // "view what will be worked on for the day"
   ok('it lists today\'s blocks', /todaysBlocks\.map/.test(code));

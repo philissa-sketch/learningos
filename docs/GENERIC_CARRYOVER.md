@@ -164,8 +164,13 @@ model defines, or the model and the schedule will keep disagreeing.
 ### 6. The manifest generator deletes working slots and reports success
 
 `scripts/generate-academy-manifest.mjs` — the script the header of every
-`content.js` tells you to run, and the one `UPDATE-CONTENT-LIST.bat` runs —
-**silently drops any slot the platform reads as a whole object.**
+`content.js` tells you to run — **silently drops any slot the platform reads as
+a whole object.**
+
+*(`UPDATE-CONTENT-LIST.bat` is **not** affected and is safe to run. It calls
+only `scripts/scan-content-needs.mjs`, which rebuilds the contract from what the
+platform reads and never writes a manifest. An earlier note here named it
+alongside the generator; that was wrong and is corrected.)*
 
 Run on the first Academy on Sept 19 it removed `guide`, `projects`, `electives`
 and `exams`, with 21 import lines, from a folder where every one of those data
@@ -198,7 +203,7 @@ optional slots.
 ratchet over `scripts/manifest-slots.json` recording the slots each Academy
 exports today, which may grow and must never shrink. It does **not** fix the
 cause. Until the scan learns about optional and wholesale-read content, do not
-run the generator or `UPDATE-CONTENT-LIST.bat`. The first Academy's `content.js`
+run the generator. The first Academy's `content.js`
 carries one deliberate hand-edit (`stateName` in the compliance slot), noted in
 its own header, which the generator would also delete.
 
@@ -213,7 +218,7 @@ and carries no lessons, projects, schedule or placeholders. **The construction
 habits travel, because they are how the next Academy will be built.** Each
 occurred more than once in a single day:
 
-### A guard pinned to a NAME, not the property it protects — 7×
+### A guard pinned to a NAME, not the property it protects — 8×
 
 - `readingStaggerMap` guarded on `status`, never on the value it replaced.
 - `.gitignore` guarded `*-progress-*.json`; the exports were named `*-backup-*`
@@ -221,7 +226,7 @@ occurred more than once in a single day:
 - `verify-assignment-dates` knew two writers by name, so a third was invisible
   by construction.
 
-**Four more on Sept 19, all in one afternoon**, when the wording sweep replaced
+**Five more on Sept 19, all in one afternoon**, when the wording sweep replaced
 one household's word for the grown-up with a looked-up one:
 
 - `verify-handoff` asserted `/Send my work to Mom/`.
@@ -229,6 +234,7 @@ one household's word for the grown-up with a looked-up one:
   state by its full sentence.
 - `verify-reflections` asserted `/she may put a grade on how/` — pinned to a
   pronoun, and the looked-up word is not always a her.
+- `verify-morning-meeting` asserted `/Trade files with Mom/` as a step title.
 - `verify-school-words`, written **that same day to guard the sweep**, asked
   whether a file *mentions* `fillWords`. Deleting the call left the import
   behind, so both mutations written against it passed. A check that an import
@@ -239,7 +245,7 @@ as a guard failing on a correct change. It also runs the other way: **a guard
 passing over a wrong one**, and the fourth case above is both at once.
 
 The tell is exact and worth memorising: **a check that goes red when the code
-gets better was testing the wrong thing.** All three of the first batch failed
+gets better was testing the wrong thing.** All four of the first batch failed
 on changes that were entirely correct. Repoint the assertion at the property and
 write the reason into the check, or the next person rediscovers it.
 

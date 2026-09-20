@@ -399,7 +399,7 @@ function StoreSection({ coinBalance, creditBalance, half = 'both' }) {
         * This block used to sit ABOVE the `showCoins` wrapper, which meant it
         * rendered in both halves — so ten avatars priced in coins appeared in
         * the Rewards tab, which is the CREDITS wallet, next to the real-world
-        * rewards Mom has to approve. Themes and Rocket Skins were moved inside
+        * rewards the grown-up has to approve. Themes and Rocket Skins were moved inside
         * when the store was split two days ago. This one was already above the
         * line and nobody noticed it stayed there.
         *
@@ -692,7 +692,7 @@ function CertificateModal({ cert, onClose }) {
           <p className="font-display text-xs uppercase tracking-[0.3em] text-signal-cyan">Mission Control Homeschool Academy</p>
           <p className="mt-6 font-display text-sm uppercase tracking-widest text-ink-500">Certificate of Achievement</p>
           {/* Name and date added Aug 8, 2026. These print, they go in the
-              binder, and they are part of a Georgia homeschool record — a
+              binder, and they are part of a homeschool record the state may ask for — a
               certificate carrying neither is not evidence of anything. */}
           <p className="mt-4 text-[11px] font-display uppercase tracking-widest text-ink-500">Presented to</p>
           {/* A certificate with an empty name line looks like a bug; a
@@ -1002,7 +1002,7 @@ export function RewardsHome() {
           </div>
         )}
 
-        {/* ---- REWARDS — credits, real things, and Mom has to say yes ---- */}
+        {/* ---- REWARDS — credits, real things, and the grown-up has to say yes ---- */}
         {tab === 'rewards' && (
           <div className="space-y-6">
             <StoreSection coinBalance={coinBalance} creditBalance={creditBalance} half="credits" />

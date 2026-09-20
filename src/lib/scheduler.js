@@ -279,7 +279,7 @@ export function getUpcomingCalendarItems(items, fromDateStr, throughDateStr) {
  * ---- WHY THIS EXISTS (Aug 13, 2026) ----
  *
  * The parent: "in the parent dashboard there is a things due for the week and
- * its not showing me whats due... Lamar has a rocket project due and it didnt
+ * its not showing me whats due... [he] has a rocket project due and it didnt
  * show up."
  *
  * Nothing was broken. The Coming Up panel looks fourteen days ahead, and on

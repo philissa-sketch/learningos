@@ -1,4 +1,5 @@
 import { useState, useMemo, useRef } from 'react';
+import { guardianWord } from '../../lib/schoolWords.js';
 import { useAppStore } from '../../store/useAppStore.js';
 import { todayDateStr, formatShortDate, parseDateStr, addDays, toDateStr } from '../../lib/scheduler.js';
 import { buildPlannerItems, splitPlannerItems } from '../../lib/plannerCalendar.js';
@@ -18,7 +19,7 @@ const { writingPrompts = [] } = academyContent().writing;
  *
  * ---- WHY THIS EXISTS (Aug 20, 2026) ----
  *
- * The parent: **"Lamar logs in at 8:30 every morning and is working on his
+ * The parent: **"[He] logs in at 8:30 every morning and is working on his
  * school work until he completes everything. It has to be longer than 4 1/2
  * hrs."**
  *
@@ -33,7 +34,7 @@ const { writingPrompts = [] } = academyContent().writing;
  * belongs on it:
  *
  *   > "In there it can mention to check his email for downloads, export to
- *   > import, view what will be worked on for the day, talk to mom regarding
+ *   > import, view what will be worked on for the day, talk to the grown-up regarding
  *   > anything that he is confused about, etc."
  *
  * That list is not a wish list. It is, in order, the four things that go wrong
@@ -188,7 +189,7 @@ export function MorningMeeting({ onExit, onOpenSchedule, onOpenPlanner, onOpenPr
    * TODAY'S BLOCKS, in timetable order, with the rotating block resolved to
    * the subject that actually owns today. Break and Lunch are shown — he
    * should see when lunch is — but marked as not counting toward the day's
-   * instruction, using the same NON_INSTRUCTIONAL_BLOCKS set the Georgia
+   * instruction, using the same NON_INSTRUCTIONAL_BLOCKS set the compliance
    * counter uses rather than a second list that can drift from it.
    */
   const todaysBlocks = useMemo(() => {
@@ -263,7 +264,7 @@ export function MorningMeeting({ onExit, onOpenSchedule, onOpenPlanner, onOpenPr
   /**
    * WHERE HE ACTUALLY STANDS.
    *
-   * The parent: **"Add to the morning meeting to have Lamar check his
+   * The parent: **"Add to the morning meeting to have [him] check his
    * progress."**
    *
    * Every other step on this screen is about work — what is due, what is
@@ -271,7 +272,7 @@ export function MorningMeeting({ onExit, onOpenSchedule, onOpenPlanner, onOpenPr
    * BETTER at anything. A boy who only ever sees the list sees a list that
    * never ends; the thing that makes it bearable is watching a number move.
    *
-   * It sits directly after the file trade ON PURPOSE. He has just loaded Mom's
+   * It sits directly after the file trade ON PURPOSE. He has just loaded the
    * file, so anything she graded last night arrived thirty seconds ago. That
    * is the moment it is worth putting in front of him — not on a screen he has
    * to remember to go and open.
@@ -335,13 +336,13 @@ export function MorningMeeting({ onExit, onOpenSchedule, onOpenPlanner, onOpenPr
     return { masteredThisWeek, masteredTotal, recent, retry };
   }, [lessonProgress, writingEntries, selfExplanations, khanAcademyAssignments, today]);
 
-  /** Anything Mom has said since yesterday that he may not have opened. */
+  /** Anything the grown-up has said since yesterday that he may not have opened. */
   const unreadFromMom = (messages || []).filter((m) => m.sender === 'parent' && !m.readByStudent);
 
   const handleSend = () => {
     exportProgressData();
     setSyncedWork(true);
-    setSyncResult({ ok: true, message: 'Saved to your downloads. Send that file to Mom.' });
+    setSyncResult({ ok: true, message: `Saved to your downloads. Send that file to ${guardianWord()}.` });
   };
 
   const handleFile = async (e) => {
@@ -354,14 +355,14 @@ export function MorningMeeting({ onExit, onOpenSchedule, onOpenPlanner, onOpenPr
       const parsed = JSON.parse(await file.text());
       await importProgressData(parsed);
       setSyncedWork(true);
-      setSyncResult({ ok: true, message: 'Loaded. Your grades and anything new from Mom are in.' });
+      setSyncResult({ ok: true, message: `Loaded. Your grades and anything new from ${guardianWord()} are in.` });
     } catch (err) {
       setSyncResult({
         ok: false,
         message:
           'That file did not load — ' +
           (err.message || 'it may not be the right file.') +
-          ' Nothing was changed. Ask Mom to send it again.'
+          ` Nothing was changed. Ask ${guardianWord()} to send it again.`
       });
     } finally {
       setBusy(false);
@@ -438,7 +439,7 @@ export function MorningMeeting({ onExit, onOpenSchedule, onOpenPlanner, onOpenPr
           * ---- THE STEP THAT STOPPED BEING TRUE (Aug 24, 2026) ----
           *
           * Step 1 used to read "Check your email for a new version", and told
-          * him: *the app itself does not sync — when Mom changes something she
+          * him: *the app itself does not sync — when the grown-up changes something she
           * has to send you a new file.* That was exactly right for six weeks.
           *
           * Then the app moved to Netlify. She pushes to GitHub, Netlify builds,
@@ -463,13 +464,13 @@ export function MorningMeeting({ onExit, onOpenSchedule, onOpenPlanner, onOpenPr
           * Netlify build itself (see config/buildStamp.js), so for the first
           * time it moves on its own.
           *
-          * Trading files with Mom, below, is UNAFFECTED and still required.
+          * Trading files, below, is UNAFFECTED and still required.
           * Netlify serves the same code to both machines; it does not merge
           * their databases. His progress still travels by file.
           */}
 
         {/* ---- 1 · trade files ------------------------------------------ */}
-        <Step n={1} title="Trade files with Mom" done={syncedWork}>
+        <Step n={1} title={`Trade files with ${guardianWord()}`} done={syncedWork}>
           <p className="text-sm text-ink-400">
             Load her file first so you get yesterday&apos;s grades and any new assignments. Send yours
             at the end of the day.
@@ -482,14 +483,14 @@ export function MorningMeeting({ onExit, onOpenSchedule, onOpenPlanner, onOpenPr
               className="rounded-lg bg-signal-cyan px-4 py-2.5 text-left font-display text-sm font-700 text-space-950 transition hover:brightness-110 disabled:opacity-50"
             >
               {busy ? 'Loading…' : 'Get my graded work back'}
-              <span className="mt-0.5 block text-xs font-400 opacity-80">Pick the file Mom sent</span>
+              <span className="mt-0.5 block text-xs font-400 opacity-80">Pick the file {guardianWord()} sent</span>
             </button>
             <button
               type="button"
               onClick={handleSend}
               className="rounded-lg border border-signal-cyan/40 px-4 py-2.5 text-left font-display text-sm font-700 text-signal-cyan transition hover:bg-signal-cyan/10"
             >
-              Send my work to Mom
+              Send my work to {guardianWord()}
               <span className="mt-0.5 block text-xs font-400 text-ink-500">Saves a file to downloads</span>
             </button>
           </div>
@@ -567,7 +568,7 @@ export function MorningMeeting({ onExit, onOpenSchedule, onOpenPlanner, onOpenPr
           {progress.recent.length > 0 && (
             <div className="mt-3 rounded-lg border border-signal-cyan/40 bg-signal-cyan/10 p-3">
               <p className="font-display text-xs font-700 uppercase tracking-widest text-signal-cyan">
-                Mom graded this week
+                {guardianWord()} graded this week
               </p>
               <ul className="mt-1.5 space-y-1">
                 {progress.recent.slice(0, 4).map((r) => (
@@ -811,16 +812,16 @@ export function MorningMeeting({ onExit, onOpenSchedule, onOpenPlanner, onOpenPr
           />
         </Step>
 
-        {/* ---- 7 · ask Mom --------------------------------------------- */}
+        {/* ---- 7 · ask the grown-up ------------------------------------- */}
         <Step n={6} title="Anything you are stuck or confused about?" done={questionSent}>
           {unreadFromMom.length > 0 && (
             <p className="mb-2 rounded-lg border border-signal-amber/40 bg-signal-amber/10 px-3 py-2 text-xs text-signal-amber">
-              Mom has {unreadFromMom.length} message{unreadFromMom.length === 1 ? '' : 's'} you have not
+              {guardianWord()} has {unreadFromMom.length} message{unreadFromMom.length === 1 ? '' : 's'} you have not
               opened yet — check Mission Comms.
             </p>
           )}
           <p className="text-sm text-ink-400">
-            Ask now, not at 2 o&apos;clock. This goes straight to Mom in Mission Comms. Leave it blank
+            Ask now, not at 2 o&apos;clock. This goes straight to {guardianWord()} in Mission Comms. Leave it blank
             if there is nothing.
           </p>
           <textarea
@@ -833,7 +834,7 @@ export function MorningMeeting({ onExit, onOpenSchedule, onOpenPlanner, onOpenPr
             placeholder="I do not understand…"
             className="mt-2 w-full rounded-lg border border-space-600 bg-space-900 px-3 py-2 text-sm text-ink-100 placeholder:text-ink-500"
           />
-          {questionSent && <p className="mt-1 text-xs text-signal-green">Sent to Mom.</p>}
+          {questionSent && <p className="mt-1 text-xs text-signal-green">Sent to {guardianWord()}.</p>}
         </Step>
       </div>
 

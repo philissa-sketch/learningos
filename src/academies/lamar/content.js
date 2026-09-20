@@ -20,8 +20,13 @@
 // `electives` and `exams` while printing success. The app still boots, because
 // withAbsentSlots() fills the hole, and the content is simply gone.
 //
-// DO NOT run scripts/generate-academy-manifest.mjs, or UPDATE-CONTENT-LIST.bat,
-// until that is fixed. scripts/verify-manifest-slots.mjs fails if it happens.
+// DO NOT run scripts/generate-academy-manifest.mjs until that is fixed.
+// scripts/verify-manifest-slots.mjs fails if it happens.
+//
+// UPDATE-CONTENT-LIST.bat IS SAFE and was wrongly named here at first: it runs
+// only scripts/scan-content-needs.mjs, which rebuilds the contract from what
+// the platform reads and never writes a manifest. Run it whenever the platform
+// starts reading a new slot name.
 // ---------------------------------------------------------------------------
 
 import { activeMilestone, hasMilestones, leadStatus, milestoneProgress, milestonesFor, startByFor } from './data/academicSuccessCenter/assignmentMilestones.js';

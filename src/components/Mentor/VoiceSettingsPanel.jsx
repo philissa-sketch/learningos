@@ -31,7 +31,7 @@ import {
  *
  * WHY THE VOICE LIST IS BUILT AT RUNTIME RATHER THAN HARD-CODED: the installed
  * voices are a property of the computer. This app runs on the parent's machine
- * and on Lamar's, and may run on a replacement machine years from now. Listing
+ * and on the learner's, and may run on a replacement machine years from now. Listing
  * whatever is actually installed, and letting the voice be chosen by ear, is
  * what makes the feature survive a change of hardware. Expect the two machines
  * to offer different lists — that is normal, and each keeps its own choice.
@@ -74,7 +74,7 @@ export function VoiceSettingsPanel() {
         <p className="font-display text-sm font-700 text-ink-100">Commander Nova&rsquo;s Voice</p>
         <p className="mt-0.5 text-[11px] text-ink-500">
           Nova can read his briefings, hints and celebrations out loud. The voices listed here are the ones
-          installed on <em>this</em> computer, so pick one by ear. Lamar&rsquo;s computer will show its own list
+          installed on <em>this</em> computer, so pick one by ear. The other computer will show its own list
           and keeps its own choice.
         </p>
       </div>

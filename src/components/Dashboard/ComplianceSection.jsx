@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { stateWord } from '../../lib/schoolWords.js';
 import { useAppStore } from '../../store/useAppStore.js';
 import { buildCompliancePacket } from '../../lib/compliancePacket.js';
 import { parseDateStr, todayDateStr, toDateStr, daysUntil } from '../../lib/scheduler.js';
@@ -13,8 +14,8 @@ const { SUBJECT_LABELS = {} } = academyContent().subjects;
 const { isSchoolDay = () => false } = academyContent().timetable;
 
 /**
- * Georgia compliance — PROJECT_PLAN.md Part 8's "State compliance
- * checklist (Georgia)" and the combined compliance packet.
+ * State compliance — PROJECT_PLAN.md Part 8's "State compliance
+ * checklist" and the combined compliance packet.
  *
  * Every requirement was verified against two independent sources before
  * this was built (see data/admin/georgiaCompliance.js), and each one
@@ -88,7 +89,7 @@ export function ComplianceSection() {
    * nothing else, so the one item on this screen with a real legal date sat
    * permanently overdue-looking whatever she did.
    *
-   * THE FILING YEAR, NOT THE DATE, IS WHAT A TICK COVERS. Georgia's
+   * THE FILING YEAR, NOT THE DATE, IS WHAT A TICK COVERS. The state's
    * declaration is annual and due September 1. Filing it in August 2026 covers
    * the 2026-27 school year, so the banner should roll to September 1, 2027 —
    * not simply go quiet, which would leave her with no date at all.
@@ -122,7 +123,7 @@ export function ComplianceSection() {
    * Scoped to real school days. (Aug 16, 2026.) The minute-timer in App.jsx
    * writes an attendance row on any day the tab is open, including weekends,
    * days before the school year began, and time spent on the PARENT's computer.
-   * Counting all of it toward Georgia's 180 put a Saturday in July in her
+   * Counting all of it toward the state's 180 put a Saturday in July in her
    * record as a school day.
    */
   const scheduledByDate = scheduledMinutesByDate({
@@ -183,13 +184,13 @@ export function ComplianceSection() {
   return (
     <div className="space-y-4">
       <div className="rounded-xl border border-space-700 bg-space-800 p-5 shadow-panel">
-        <p className="text-xs font-display uppercase tracking-widest text-signal-cyan">Compliance — Georgia</p>
-        <h3 className="mt-1 font-display text-lg font-700 text-ink-100">What Georgia Actually Requires</h3>
+        <p className="text-xs font-display uppercase tracking-widest text-signal-cyan">Compliance — {stateWord()}</p>
+        <h3 className="mt-1 font-display text-lg font-700 text-ink-100">What {stateWord()} Actually Requires</h3>
         <p className="mt-2 text-sm text-ink-300">
           Every requirement below was checked against two independent sources, and each one links where it came
           from. <strong>This is not legal advice, and nothing here is filed with anyone.</strong> Ticking a box
           records what you say you've done — the app doesn't verify it. Confirm against {GEORGIA_LAW_CITATION} or
-          the Georgia DOE before relying on it.
+          the {stateWord()} DOE before relying on it.
         </p>
       </div>
 
@@ -229,7 +230,7 @@ export function ComplianceSection() {
               {daysLeft <= 0
                 ? 'That date has passed. File as soon as you can.'
                 : `${daysLeft} day${daysLeft === 1 ? '' : 's'} from today.`}{' '}
-              Filed with the Georgia Department of Education, every year by September 1.
+              Filed with the {stateWord()} Department of Education, every year by September 1.
             </>
           )}
         </p>
@@ -308,7 +309,7 @@ export function ComplianceSection() {
 
         <div className="mt-4">
           <p className="text-[10px] font-display uppercase tracking-widest text-ink-600">
-            The five subjects Georgia names
+            The five subjects {stateWord()} names
           </p>
           <div className="mt-1.5 flex flex-wrap gap-1.5">
             {GEORGIA_REQUIRED_SUBJECTS.map((required) => {
@@ -393,7 +394,7 @@ export function ComplianceSection() {
         <h3 className="mt-1 font-display text-lg font-700 text-ink-100">Everything in One File</h3>
         <p className="mt-2 text-sm text-ink-300">
           Attendance, grades, course descriptions, reading log, portfolio, activity and test records, and this
-          checklist — assembled from what's already in the app. Georgia keeps these records with you, not with the
+          checklist — assembled from what's already in the app. {stateWord()} keeps these records with you, not with the
           state; this just means you're not rebuilding a year from memory. Plain text, so it prints, emails, and
           still opens in ten years.
         </p>
@@ -414,7 +415,7 @@ export function ComplianceSection() {
           </button>
         </div>
         <p className="mt-2 text-xs text-ink-600">
-          Keep a copy somewhere outside this app. Georgia asks you to retain records for at least three years, and
+          Keep a copy somewhere outside this app. {stateWord()} asks you to retain records for at least three years, and
           browser storage is not a safe long-term home for them.
           {evidenceLinks.packets && (
             <>
@@ -448,7 +449,7 @@ export function ComplianceSection() {
  *
  * Without this, "Met 4.5 Hours" would have read near zero next to "Days
  * Logged: 180" all year, and a parent glancing at that could reasonably
- * think her records were deficient when they were fine. Georgia counts
+ * think her records were deficient when they were fine. The state counts
  * real instruction, not screen time.
  *
  * Deliberately hours-and-minutes rather than a start/stop timer: she is

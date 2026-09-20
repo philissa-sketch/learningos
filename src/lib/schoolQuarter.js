@@ -4,8 +4,8 @@
  * regular school year, plus Summer as its own distinct period — not
  * folded into Q4, and not treated as a break.
  *
- * Boundaries verified directly against the real Clayton County Public
- * Schools 2026-2027 calendar (parent-provided): school year runs
+ * Boundaries verified directly against the real district calendar for
+ * 2026-2027 (parent-provided): school year runs
  * Aug 3, 2026 (first day) through May 26, 2027 (last day); June-July is
  * summer. Month-level boundaries are used here rather than the exact
  * first/last day, since the few days at each edge (e.g. Aug 1-2, or
@@ -43,7 +43,7 @@ const PERIODS = [
 ];
 
 // The real, exact first day of school (confirmed against the actual
-// Clayton County Public Schools 2026-2027 calendar) — distinct from the
+// district calendar for 2026-2027) — distinct from the
 // month-level PERIODS boundaries above. Those intentionally treat the
 // few days right at each edge (e.g. Aug 1-2) as already "Q1" purely for
 // QUARTER-LABELING purposes, since it doesn't matter which quarter a

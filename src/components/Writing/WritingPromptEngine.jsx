@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { guardianWord } from '../../lib/schoolWords.js';
 import { useAppStore } from '../../store/useAppStore.js';
 import { WritingCheckerLink } from './WritingCheckerLink.jsx';
 import { checkWriting } from '../../lib/writingCheck.js';
@@ -15,7 +16,7 @@ export function WritingPromptEngine({ prompt, onExit }) {
    * HE TYPED IT AND THE APP KEPT NOTHING. (Sep 8, 2026.)
    * ==========================================================================
    *
-   * The parent: **"Lamar stated that he filled out the reflection question in
+   * The parent: **"[He] stated that he filled out the reflection question in
    * the box."** There is no trace of it anywhere in his export.
    *
    * He was right. `text` was a plain `useState('')` and nothing was persisted
@@ -545,7 +546,7 @@ export function WritingPromptEngine({ prompt, onExit }) {
             ))}
           </ul>
           <p className="mt-3 text-xs text-ink-500">
-            Fix them and this goes away on its own. You can save without fixing them — Mom will
+            Fix them and this goes away on its own. You can save without fixing them — {guardianWord()} will
             see what was left.
           </p>
         </div>

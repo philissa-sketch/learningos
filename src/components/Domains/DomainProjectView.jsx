@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react';
+import { stateWord } from '../../lib/schoolWords.js';
 import { useAppStore } from '../../store/useAppStore.js';
 
 /**
@@ -243,7 +244,7 @@ export function DomainProjectView({ defaultDomain = 'garden' }) {
                   type="text"
                   value={s.whyTrusted}
                   onChange={(e) => setSource(i, { whyTrusted: e.target.value })}
-                  placeholder="State university extension service, written for Georgia, no product to sell"
+                  placeholder={`State university extension service, written for ${stateWord()}, no product to sell`}
                   className="w-full rounded-lg border border-space-600 bg-space-950 px-3 py-2 text-sm text-ink-100 placeholder:text-ink-500"
                 />
               </div>

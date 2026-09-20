@@ -35,7 +35,7 @@
  * ---- AND IT READS ONLY ----
  *
  * Nothing in this file writes. Not a grade, not a date, not an attendance
- * record, not a Georgia hour. Every function is pure: data in, a small display
+ * record, not an instructional hour. Every function is pure: data in, a small display
  * object out. A room that could change his record by being looked at would be a
  * room worth more than it costs, and this one is not.
  * =============================================================================

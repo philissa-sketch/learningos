@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react';
+import { guardianWord, learnerWord, stateWord } from '../../lib/schoolWords.js';
 import { useAppStore } from '../../store/useAppStore.js';
 import { scheduledMinutesByDate } from '../../lib/scheduledMinutes.js';
 import { PercentGradeInput, LetterGradePicker } from './GradeControls.jsx';
@@ -599,7 +600,7 @@ export function MissionControlBoard({ onGoTo, onOpenAcademicCenter = null }) {
      * not.
      *
      * So it flags the days that are genuinely SHORT: credited time below
-     * Georgia's daily bar, with nothing logged offline to close the gap. On a
+     * the state's daily bar, with nothing logged offline to close the gap. On a
      * day he worked in the app and nowhere else, that is silent. On a day he
      * spent two hours at the kitchen table, it asks.
      */
@@ -1028,7 +1029,7 @@ export function MissionControlBoard({ onGoTo, onOpenAcademicCenter = null }) {
   if (board.daysMissingOfflineTime.length)
     doItems.push({ tone: 'urgent', count: board.daysMissingOfflineTime.length, label: 'Days with no offline minutes logged', detail: 'These days fall under the 4.5-hour bar on what is recorded. If he worked away from the app — reading, a field trip, work at the table — logging it closes the gap', go: 'attendance', actionLabel: 'Log' });
   if (board.unreadMessages.length)
-    doItems.push({ count: board.unreadMessages.length, label: 'Unread messages from Lamar', go: 'mission-comms', actionLabel: 'Read' });
+    doItems.push({ count: board.unreadMessages.length, label: `Unread messages from ${learnerWord() || 'your learner'}`, go: 'mission-comms', actionLabel: 'Read' });
   if (board.pendingRewards.length)
     doItems.push({
       tone: 'urgent',
@@ -1121,7 +1122,7 @@ export function MissionControlBoard({ onGoTo, onOpenAcademicCenter = null }) {
           (board.declarationDays <= 30 ? 'border-signal-amber/50 bg-signal-amber/5' : 'border-space-700 bg-space-800')
         }
       >
-        <p className="text-xs font-display uppercase tracking-widest text-signal-amber">Georgia deadline</p>
+        <p className="text-xs font-display uppercase tracking-widest text-signal-amber">{stateWord()} deadline</p>
         <p className="mt-1 text-sm text-ink-100">
           Declaration of Intent — due{' '}
           <span className="font-display font-700">
@@ -1220,7 +1221,7 @@ export function MissionControlBoard({ onGoTo, onOpenAcademicCenter = null }) {
       >
         <ol className="space-y-1.5 text-sm text-ink-300">
           {[
-            'He taps "Send my work to Mom" at the bottom of his dashboard, and sends you the file',
+            `He taps "Send my work to ${guardianWord()}" at the bottom of his dashboard, and sends you the file`,
             'You import it here — Settings → Export / Import',
             'You grade — the four screens under Grading',
             'You log offline minutes — Every Day → Attendance',

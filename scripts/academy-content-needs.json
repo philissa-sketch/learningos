@@ -9,6 +9,7 @@
   "guide",
   "theme",
   "nav",
+  "views",
   "projects",
   "exams",
   "writing",
@@ -20,8 +21,8 @@
   "rewards",
   "compliance"
  ],
- "files": 75,
- "reads": 122,
+ "files": 73,
+ "reads": 120,
  "legacyImports": [],
  "names": [
   "ACADEMIC_ASSIGNMENT_TYPES",
@@ -146,6 +147,7 @@
   "sizeFor",
   "spellingWordPool",
   "startByFor",
+  "stateName",
   "strandsForSubject",
   "subjectBookPlaceholders",
   "subjectCardLabel",
@@ -253,6 +255,7 @@
   "lessonForPrompt": "writing",
   "requirementsFor": "writing",
   "bookRecommendations": "academicCenter",
+  "stateName": "compliance",
   "dailyDrills": "writing",
   "getSchoolWeekNumber": "writing",
   "HQ_CREW": "rewards",
@@ -749,22 +752,6 @@
     ]
    }
   ],
-  "components/Garden/BuildTrackView.jsx": [
-   {
-    "slot": "subjects",
-    "names": [
-     "SUBJECT_LABELS"
-    ]
-   }
-  ],
-  "components/Garden/GardenBriefView.jsx": [
-   {
-    "slot": "subjects",
-    "names": [
-     "SUBJECT_LABELS"
-    ]
-   }
-  ],
   "components/Lesson/LessonRoster.jsx": [
    {
     "slot": "lessons",
@@ -988,6 +975,7 @@
    {
     "slot": "compliance",
     "names": [
+     "stateName",
      "GEORGIA_LAW_CITATION",
      "GEORGIA_REQUIREMENTS",
      "MISSION_RUBRIC_CRITERIA",

@@ -10,7 +10,7 @@
 //
 // WHY SETTINGS LIVE IN localStorage AND NOT THE DEXIE DATABASE: the installed
 // voice list is a property of the MACHINE, not the student. The parent works
-// on one Windows computer and Lamar on another; a voice chosen on hers may
+// on one Windows computer and the learner on another; a voice chosen on hers may
 // simply not exist on his. Everything in the Dexie tables travels between the
 // two in the JSON export, so putting the voice choice there would sync a
 // setting that is meaningless on the other side — and would collide with a

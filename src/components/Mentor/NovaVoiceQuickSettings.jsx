@@ -17,7 +17,7 @@ import { getSfxSettings, playCoin, setSfxSettings, unlockAudio } from '../../lib
  *
  * WHY THIS EXISTS SEPARATELY FROM VoiceSettingsPanel: the full panel lives in
  * the Parent Dashboard, which is behind the passcode gate. The parent asked
- * the obvious question — "how will Lamar change the voice?" — and the honest
+ * the obvious question — "how will the learner change the voice?" — and the honest
  * answer was that he couldn't. That matters more than it sounds, because voice
  * settings are stored PER MACHINE: he works on his own computer, so a choice
  * made on hers never reaches him. Without this he would be stuck with whatever

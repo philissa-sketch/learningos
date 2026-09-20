@@ -14,7 +14,7 @@
  * actually shows; the letter should be derived from it, not guessed alongside
  * it.
  *
- * THE SCALE is the standard US 10-point scale with plus/minus. Georgia does
+ * THE SCALE is the standard US 10-point scale with plus/minus. The state does
  * not prescribe a grading scale for home study programs — the parent sets it —
  * so the right default is the one a college admissions office reads without
  * needing a key, which is this one. It is defined as data below rather than a

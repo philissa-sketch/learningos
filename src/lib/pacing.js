@@ -163,7 +163,7 @@ export function ownedDaysInQuarter(quarter, khanAcademyAssignments) {
  *
  * The lesson of that morning: **units are not interchangeable.** Applying the
  * Technology figure to Science inflated Science by roughly three times and
- * nearly cost Lamar two courses he and his mother had chosen on purpose. So
+ * nearly cost the learner two courses he and his parent had chosen on purpose. So
  * this function prefers real data over any per-subject number:
  *
  *   1. `row.items` when the row carries it — the science sequence records the

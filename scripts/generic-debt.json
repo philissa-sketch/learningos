@@ -3,9 +3,7 @@
  "_why": "Files that still name one Academy. This list may SHRINK and must never GROW. See scripts/verify-no-learner.mjs. 'files' is the school zone, against all nine categories since Sept 18, 2026. 'platform' is the platform zone, and ONLY ever for the five categories added that day \u2014 the original four are still zero-tolerance there.",
  "files": {
   "src/App.jsx": [
-   "learner",
-   "school-name",
-   "place"
+   "school-name"
   ],
   "src/components/Academic/AcademicAssignmentsView.jsx": [
    "service"
@@ -24,7 +22,6 @@
    "electives"
   ],
   "src/components/Dashboard/ComplianceSection.jsx": [
-   "place",
    "service"
   ],
   "src/components/Dashboard/DailyMissionCard.jsx": [
@@ -43,22 +40,16 @@
    "service"
   ],
   "src/components/Dashboard/MissionControlBoard.jsx": [
-   "learner",
    "school-name",
    "guide",
    "pathway",
-   "place",
-   "family-role",
    "electives"
   ],
   "src/components/Dashboard/MissionControlDashboard.jsx": [
-   "learner",
    "school-name",
    "guide",
    "subject",
    "pathway",
-   "place",
-   "family-role",
    "electives",
    "service"
   ],
@@ -70,12 +61,9 @@
    "school-name"
   ],
   "src/components/Dashboard/ParentDashboard.jsx": [
-   "learner",
    "school-name",
    "subject",
    "pathway",
-   "place",
-   "family-role",
    "electives",
    "service"
   ],
@@ -95,9 +83,7 @@
    "service"
   ],
   "src/components/Dashboard/StudentGradesCard.jsx": [
-   "learner",
    "school-name",
-   "family-role",
    "service"
   ],
   "src/components/Dashboard/SubjectProgressOverview.jsx": [
@@ -105,12 +91,9 @@
    "service"
   ],
   "src/components/Dashboard/TimetableOrder.jsx": [
-   "learner",
-   "place",
    "electives"
   ],
   "src/components/Dashboard/TodayRow.jsx": [
-   "learner",
    "school-name",
    "subject",
    "service"
@@ -123,7 +106,6 @@
   ],
   "src/components/Domains/DomainProjectView.jsx": [
    "subject",
-   "place",
    "electives"
   ],
   "src/components/Games/GamesHome.jsx": [
@@ -159,7 +141,6 @@
    "service"
   ],
   "src/components/Lesson/QuietQuarterNote.jsx": [
-   "learner",
    "school-name",
    "service"
   ],
@@ -180,11 +161,9 @@
    "guide"
   ],
   "src/components/Mentor/NovaVoiceQuickSettings.jsx": [
-   "learner",
    "school-name"
   ],
   "src/components/Mentor/VoiceSettingsPanel.jsx": [
-   "learner",
    "guide",
    "electives"
   ],
@@ -192,14 +171,10 @@
    "school-name"
   ],
   "src/components/Morning/MorningMeeting.jsx": [
-   "learner",
    "school-name",
-   "pathway",
-   "place",
-   "family-role"
+   "pathway"
   ],
   "src/components/Rewards/CadetAvatar.jsx": [
-   "learner",
    "pathway"
   ],
   "src/components/Rewards/ChallengesSection.jsx": [
@@ -207,14 +182,11 @@
    "electives"
   ],
   "src/components/Rewards/HQRoom.jsx": [
-   "learner",
    "school-name",
    "pathway",
-   "place",
    "electives"
   ],
   "src/components/Rewards/InventorySection.jsx": [
-   "learner",
    "school-name",
    "pathway"
   ],
@@ -228,8 +200,6 @@
    "school-name",
    "guide",
    "pathway",
-   "place",
-   "family-role",
    "electives"
   ],
   "src/components/Rewards/RocketSwatch.jsx": [
@@ -242,7 +212,6 @@
    "school-name"
   ],
   "src/components/Scheduler/DailyView.jsx": [
-   "learner",
    "school-name",
    "subject",
    "electives",
@@ -265,8 +234,7 @@
   ],
   "src/components/Writing/TypingPractice.jsx": [
    "school-name",
-   "pathway",
-   "place"
+   "pathway"
   ],
   "src/components/Writing/WeeklyQuizEngine.jsx": [
    "school-name"
@@ -284,9 +252,7 @@
    "electives"
   ],
   "src/components/Writing/WritingPromptEngine.jsx": [
-   "learner",
-   "school-name",
-   "family-role"
+   "school-name"
   ],
   "src/engine/LessonEngine.jsx": [
    "school-name",
@@ -301,7 +267,6 @@
    "place"
   ],
   "src/lib/academicOrder.js": [
-   "learner",
    "pathway",
    "electives"
   ],
@@ -319,7 +284,6 @@
   ],
   "src/lib/compliancePacket.js": [
    "school-name",
-   "place",
    "electives",
    "service"
   ],
@@ -336,8 +300,7 @@
    "place"
   ],
   "src/lib/gradeScale.js": [
-   "school-name",
-   "place"
+   "school-name"
   ],
   "src/lib/hqRooms.js": [
    "school-name",
@@ -346,7 +309,6 @@
   ],
   "src/lib/hqTruth.js": [
    "subject",
-   "place",
    "electives"
   ],
   "src/lib/journey.js": [
@@ -364,14 +326,12 @@
    "guide"
   ],
   "src/lib/pacing.js": [
-   "learner",
    "school-name",
    "subject",
    "service"
   ],
   "src/lib/participationRecord.js": [
    "subject",
-   "place",
    "electives"
   ],
   "src/lib/plannerCalendar.js": [
@@ -383,7 +343,6 @@
    "electives"
   ],
   "src/lib/quarterAvailability.js": [
-   "learner",
    "school-name"
   ],
   "src/lib/ranks.js": [
@@ -402,19 +361,15 @@
    "service"
   ],
   "src/lib/scheduledMinutes.js": [
-   "learner",
    "school-name",
    "subject",
-   "place",
    "electives"
   ],
   "src/lib/scheduler.js": [
-   "learner",
    "pathway"
   ],
   "src/lib/schoolQuarter.js": [
    "school-name",
-   "place",
    "service"
   ],
   "src/lib/sfx.js": [
@@ -427,7 +382,6 @@
    "electives"
   ],
   "src/lib/speech.js": [
-   "learner",
    "school-name",
    "guide"
   ],
@@ -444,22 +398,19 @@
    "pathway"
   ],
   "src/lib/yearPlan.js": [
-   "place",
    "service"
   ],
   "src/store/useAppStore.js": [
-   "learner",
    "school-name",
    "guide",
    "subject",
    "pathway",
    "place",
-   "family-role",
    "electives",
    "service"
   ]
  },
- "_shrunk": "131 -> 85 on 2026-09-01, when the school moved onto the content interface; 85 -> 84 on 2026-09-09, when the nav became a declared slot; 84 -> 82 on 2026-09-15, when the projects slot landed: WritingJournal.jsx stopped naming the five pools, and ErrorBoundary.jsx stopped naming the school; 82 -> 123 on 2026-09-18, when the guard went from four categories to nine (audit finding 6) \u2014 41 files it had been calling clean, absorbed at that day's count | 2026-09-19: step 7 began. WeekInReviewCard.jsx left the list - it named the guide only by importing his voice module, and now imports src/lib/schoolWords.js instead. novaVoice.js lost 'learner': the STUDENT_NAME constant the audit named by file and number is gone. 123 -> 122. | 2026-09-19: step 7's first sweep. 16 files left the list - 122 -> 106. Six were comments only. The rest were live screen text: 'Send my work to Mom', 'Last sent to Mom', 'Georgia's 180 days', the four Academic guide tabs. Nova's Academic guide had the same import-time trap novaVoice.js had - its JSX bodies are now functions called at render, because an element built at module load freezes whatever word was set then. | 2026-09-19, second sweep: 0 more files left the list. The parent gate, the two Nova tab guides, the games screen, the lesson engine's 'saved for your mom to read' lines, the Drive folder blurbs and the feedback card. Three module-level data tables now carry tokens filled at their render site, and verify-school-words section 8 asserts every read of those fields goes through fillWords - checked field by field, because checking that a file merely MENTIONS fillWords missed both mutations written against it.",
+ "_shrunk": "131 -> 85 on 2026-09-01, when the school moved onto the content interface; 85 -> 84 on 2026-09-09, when the nav became a declared slot; 84 -> 82 on 2026-09-15, when the projects slot landed: WritingJournal.jsx stopped naming the five pools, and ErrorBoundary.jsx stopped naming the school; 82 -> 123 on 2026-09-18, when the guard went from four categories to nine (audit finding 6) \u2014 41 files it had been calling clean, absorbed at that day's count | 2026-09-19: step 7 began. WeekInReviewCard.jsx left the list - it named the guide only by importing his voice module, and now imports src/lib/schoolWords.js instead. novaVoice.js lost 'learner': the STUDENT_NAME constant the audit named by file and number is gone. 123 -> 122. | 2026-09-19: step 7's first sweep. 16 files left the list - 122 -> 106. Six were comments only. The rest were live screen text: 'Send my work to Mom', 'Last sent to Mom', 'Georgia's 180 days', the four Academic guide tabs. Nova's Academic guide had the same import-time trap novaVoice.js had - its JSX bodies are now functions called at render, because an element built at module load freezes whatever word was set then. | 2026-09-19, second sweep: 0 more files left the list. The parent gate, the two Nova tab guides, the games screen, the lesson engine's 'saved for your mom to read' lines, the Drive folder blurbs and the feedback card. Three module-level data tables now carry tokens filled at their render site, and verify-school-words section 8 asserts every read of those fields goes through fillWords - checked field by field, because checking that a file merely MENTIONS fillWords missed both mutations written against it. | 2026-09-19, third sweep: step-7 category entries 53 -> 4 across the list. Every remaining learner/place/family-role hit outside three files is gone. The three left are NOT wording: fieldTrips.js, problemTemplates.js and 14 comment lines in useAppStore.js state facts about one state's academic standards or name seeded local content - content in the platform zone, GENERIC_CARRYOVER fault 1 and 2, fixed by a MOVE and not by rewording. The file count stays at 106 because every swept file still carries service, school-name, pathway or electives, which step 7 does not touch.",
  "platform": {
   "src/db/db.js": [
    "pathway",

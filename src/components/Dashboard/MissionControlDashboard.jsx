@@ -1,4 +1,5 @@
 import { useAppStore, totalMasteredCount } from '../../store/useAppStore.js';
+import { guardianWord } from '../../lib/schoolWords.js';
 import { RocketProgressMeter } from './RocketProgressMeter.jsx';
 import { generateDailyPracticeSet } from '../../engine/dailyPractice.js';
 import { getTemplatesUpToTier } from '../../engine/problemTemplates.js';
@@ -119,7 +120,7 @@ export function MissionControlDashboard({
   const setBoardDensity = useAppStore((s) => s.setBoardDensity);
   const compact = boardDensity === 'compact';
   const currentRank = useAppStore((s) => s.currentRank);
-  // Messages from Mom he has not opened yet — see the note on the Messages tile.
+  // Messages from the grown-up he has not opened yet — see the note on the Messages tile.
   const unreadFromMom = useAppStore(
     (s) => (s.messages || []).filter((m) => m.sender === 'parent' && !m.readByStudent).length
   );
@@ -472,7 +473,7 @@ export function MissionControlDashboard({
   /**
    * THE DAILY DRILL — Monday to Thursday. (Aug 13, 2026.)
    *
-   * The parent: "I want Lamar to have daily journals, not weekly. He needs
+   * The parent: "I want [him] to have daily journals, not weekly. He needs
    * assistance building ELA... to begin to create structural sentences and
    * paragraphs." Mon-Thu is one named structure a day; Friday is the week's
    * real piece from the weekly schedule below, which the drills build toward.
@@ -649,7 +650,7 @@ export function MissionControlDashboard({
   /**
    * WHAT HE ALREADY DID IN THIS SUBJECT — the line the rows were missing.
    *
-   * The parent, Aug 11 2026: "Lamar states that he has completed assignments
+   * The parent, Aug 11 2026: "[He] states that he has completed assignments
    * for it and it doesn't mark off on the mission control board but shows a
    * different story when he selects start so he know it went through."
    *
@@ -698,7 +699,7 @@ export function MissionControlDashboard({
    * THE LIST AND THE RAIL NOW ANSWER THE SAME QUESTION.
    * ===================================================================
    *
-   * The student, via his parent (Aug 20, 2026): **"Lamar is complaining that
+   * The student, via his parent (Aug 20, 2026): **"[He] is complaining that
    * he'd like the rest of his day to be in sync with his Today's Routine.
    * Also, he has social studies to complete but it's not on Today's
    * routine."**
@@ -993,7 +994,7 @@ export function MissionControlDashboard({
               Start with the Morning Meeting
             </span>
             <span className="mt-0.5 block text-xs text-ink-400">
-              Check for a new version, trade files with Mom, see what today holds, and ask
+              Check for a new version, trade files with {guardianWord()}, see what today holds, and ask
               anything you are unsure about. 8:30–9:00.
             </span>
           </span>
@@ -1261,7 +1262,7 @@ export function MissionControlDashboard({
               /**
                * ONE TAP LOGS TONIGHT'S READING. The amount is the pacing SHE
                * stated — "2 chapters a day until he's finished" — shown on the
-               * row before he taps, so the number that reaches the Georgia
+               * row before he taps, so the number that reaches the state's
                * record is never one nobody chose.
                */
               dailyDone={readingLoggedTonight}
@@ -1593,7 +1594,7 @@ export function MissionControlDashboard({
         * PLANNER ITEMS AND BIG ASSIGNMENTS, ON HIS SCREEN (Aug 9, 2026).
         *
         * Two Parent Dashboard screens tell her that Planner work "shows up on
-        * the calendar, the Coming Up view, and Lamar's dashboard". That
+        * the calendar, the Coming Up view, and the learner's dashboard". That
         * sentence was false in two separate ways, and the audit caught the
         * first: the `assignments` table was not in the progress export, so on
         * his computer a Planner item did not exist at all.
@@ -1642,7 +1643,7 @@ export function MissionControlDashboard({
           {/**
             * THE UNREAD BADGE HE NEVER HAD. (Aug 23, 2026.)
             *
-            * This tile said "Mission comms" whether Mom had written to him or
+            * This tile said "Mission comms" whether the grown-up had written to him or
             * not. Nothing anywhere on his screen — not here, not the nav bar —
             * told him a message was waiting; he saw one only by wandering into
             * the thread. The store has carried `readByStudent` on every row
@@ -1660,7 +1661,7 @@ export function MissionControlDashboard({
             */}
           <QuietTile
             title="Messages"
-            detail={unreadFromMom > 0 ? `${unreadFromMom} new from Mom` : 'Mission comms'}
+            detail={unreadFromMom > 0 ? `${unreadFromMom} new from ${guardianWord()}` : 'Mission comms'}
             badge={unreadFromMom > 0 ? unreadFromMom : null}
             onOpen={onOpenMessages}
           />

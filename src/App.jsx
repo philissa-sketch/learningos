@@ -239,7 +239,7 @@ export default function App({ initialView = 'dashboard', onSignOut }) {
    * ---- AND NOT WHILE SHE IS GRADING (Aug 20, 2026) ----
    *
    * The parent, looking at two days she knew he had worked: "It only shows
-   * Lamar had 2 hrs of work but he completed everything."
+   * [He] had 2 hrs of work but he completed everything."
    *
    * Her own record for those two days:
    *
@@ -250,7 +250,7 @@ export default function App({ initialView = 'dashboard', onSignOut }) {
    * the app sitting open was HERS — the Parent Dashboard, while she graded, and
    * while this session read her records for hours. `recordActiveMinute` never
    * asked who was looking. **Her admin time was being written into his
-   * instructional minutes**, on the record Georgia asks about.
+   * instructional minutes**, on the record the state asks about.
    *
    * The minutes are not thrown away — an adult's time on the record is worth
    * knowing, and deleting data to fix a label is how the next question becomes

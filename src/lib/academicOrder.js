@@ -20,7 +20,7 @@
 //       Bottle rocket — design, launch, and write-up    due Aug 16   <- today
 //
 // That is the same assignment she had already reported once, in different
-// words: *"Lamar has a rocket project due and it didnt show up."* It did show
+// words: *"[He] has a rocket project due and it didnt show up."* It did show
 // up. It was underneath a book report due eight weeks later.
 //
 // BOOKS. Same cause, plus a second one: nothing distinguished the book he is

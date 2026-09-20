@@ -71,7 +71,7 @@ export function TodayRow({
   /**
    * WHAT HE ALREADY DID ON THIS ROW. (Aug 11, 2026.)
    *
-   * The parent: "Lamar states that he has completed assignments for it and it
+   * The parent: "[He] states that he has completed assignments for it and it
    * doesn't mark off on the mission control board but shows a different story
    * when he selects start so he know it went through."
    *
@@ -92,7 +92,7 @@ export function TodayRow({
   /**
    * WHICH TIMETABLE BLOCK THIS ROW BELONGS TO — e.g. 'block-2'.
    *
-   * Added Aug 20, 2026. The student, via his parent: **"Lamar is complaining
+   * Added Aug 20, 2026. The student, via his parent: **"[He] is complaining
    * that he'd like the rest of his day to be in sync with his Today's
    * Routine."** The list and the rail named the same work in two different
    * orders; see TimetableOrder.jsx, which reads this prop and sorts on it.

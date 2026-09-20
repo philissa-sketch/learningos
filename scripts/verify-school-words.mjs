@@ -172,7 +172,7 @@ console.log('\n--- 7. the sweep only moves forward ---');
    * Raise SWEPT_BASELINE in the same commit that sweeps a file, exactly as
    * KNOWN_RED_BASELINE is lowered when a red is cleared.
    */
-  const SWEPT_BASELINE = 23;
+  const SWEPT_BASELINE = 31;
 
   const walk = (dir, acc = []) => {
     for (const e of fs.readdirSync(dir, { withFileTypes: true })) {

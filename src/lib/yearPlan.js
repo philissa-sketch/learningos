@@ -49,7 +49,7 @@ export const QUARTER_SPANS = [
   // Aug 9 2026: it is the year's one spring break. This is not the same rule as
   // Thanksgiving and Christmas, where the parent takes the day and works the
   // week -- it is a rest week ruled on directly, and the year still clears
-  // Georgia's 180 by a wide margin without it. Do not "close" this gap.
+  // the state's 180 by a wide margin without it. Do not "close" this gap.
   { id: 'Q3', label: 'Innovation', batchLabel: 'Q3 2026-2027', start: '2027-01-04', end: '2027-03-26' },
   // ENDED MAY 28 UNTIL AUG 9 2026, against a gardening calendar that had said
   // May 26 was the last day since it was built. Two calendars, one of them
@@ -61,7 +61,7 @@ export const QUARTER_SPANS = [
 /**
  * Semesters. Summer sits outside both on purpose — it is a lighter
  * continuation, not a third semester, and folding it into Spring would
- * inflate that semester's day count against Georgia's 180.
+ * inflate that semester's day count against the state's 180.
  */
 export const SEMESTERS = [
   { id: 'fall', label: 'Fall Semester', quarters: ['Q1', 'Q2'] },
@@ -76,7 +76,7 @@ export function quarterSpan(id) {
  * Real instructional days between two dates, inclusive.
  *
  * COUNTED MON-FRI WITH NO HOLIDAY SUBTRACTED UNTIL AUG 9 2026. That made every
- * number downstream of it — the planner, the Georgia 180-day margin, the
+ * number downstream of it — the planner, the 180-day margin, the
  * per-quarter session counts the curriculum is paced against — optimistic by
  * exactly the number of holidays in the span. Eight weekday holidays fall
  * inside Aug 3 - May 28, so the year was being reported eight days longer than
@@ -191,7 +191,7 @@ export function buildYearPlan({
 }
 
 /**
- * The same data at semester resolution, plus the one number Georgia
+ * The same data at semester resolution, plus the one number the state
  * actually cares about.
  */
 export function buildSemesterPlan(yearPlan = []) {
@@ -223,7 +223,7 @@ export function buildSemesterPlan(yearPlan = []) {
 }
 
 /**
- * Days toward Georgia's 180, across the whole year.
+ * Days toward the state's 180, across the whole year.
  *
  * `projected` is what the calendar physically allows if every remaining
  * school day is used — NOT a prediction. It answers "is 180 still

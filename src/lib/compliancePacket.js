@@ -7,7 +7,12 @@ import { EVIDENCE_FOLDERS } from './driveLinks.js';
 import { READINESS_SKILLS } from './readiness.js';
 import { academyContent } from '../content/academyContent.js';
 
-const { GEORGIA_LAW_CITATION, GEORGIA_REQUIREMENTS = [], MISSION_RUBRIC_CRITERIA = [], findProposal = () => null, instructionProgress = () => null, missionScoreTotals = () => null } = academyContent().compliance;
+// `stateName` is the generic key every Academy's compliance slot answers; the
+// GEORGIA_* names beside it are still one state's and are the contract's next
+// job, not this sweep's. The default matters: this packet prints whether or
+// not the slot answered, and a records packet with a hole in it is worse than
+// one that says "your state".
+const { stateName = 'your state', GEORGIA_LAW_CITATION, GEORGIA_REQUIREMENTS = [], MISSION_RUBRIC_CRITERIA = [], findProposal = () => null, instructionProgress = () => null, missionScoreTotals = () => null } = academyContent().compliance;
 const { SUBJECT_LABELS = {} } = academyContent().subjects;
 const { isSchoolDay = () => false } = academyContent().timetable;
 
@@ -23,7 +28,7 @@ const { isSchoolDay = () => false } = academyContent().timetable;
  * type it into the packet.
  *
  * WHAT THIS DOCUMENT IS CAREFUL NOT TO CLAIM: it does not certify
- * compliance and it is not filed with anyone. Georgia keeps these
+ * compliance and it is not filed with anyone. The state keeps these
  * records with the parent — the point is that she can produce them in
  * one step instead of reconstructing a year from memory. The header of
  * the generated file says exactly that, so a printed copy carries the
@@ -101,7 +106,7 @@ export function buildCompliancePacket({
   out.push(line('Student', studentName));
   if (schoolYear) out.push(line('School year', schoolYear));
   out.push(line('Generated', formatDate(generatedOn)));
-  out.push(line('State requirements referenced', `Georgia, ${GEORGIA_LAW_CITATION}`));
+  out.push(line('State requirements referenced', `${stateName}, ${GEORGIA_LAW_CITATION}`));
   out.push('');
   out.push(
     'This packet is assembled from records kept in Mission Control Homeschool Academy.'
@@ -112,7 +117,7 @@ export function buildCompliancePacket({
   out.push(
     'any agency, it does not certify compliance, and it is not legal advice. Verify current'
   );
-  out.push('requirements against the statute or the Georgia Department of Education.');
+  out.push(`requirements against the statute or the ${stateName} Department of Education.`);
 
   // ---- Instruction ----
   // Same scoping as the on-screen counter — the packet and the screen must
@@ -156,7 +161,7 @@ export function buildCompliancePacket({
          *
          * This line had PE's field names hardcoded. Gardening and Guitar have
          * none of them, so every value fell through the `|| 0` and this packet
-         * told a Georgia reviewer, for a boy who had worked in the garden all
+         * told a state reviewer, for a boy who had worked outdoors all
          * season: "Gardening & Applied Engineering: participation credit — 0
          * workouts completed, 0 days tracked, 0 of 0 weekly goals met."
          *
@@ -226,7 +231,7 @@ export function buildCompliancePacket({
        * had — the schema is `portfolio: '++id, dateCompleted'` (db.js) and
        * addPortfolioEntry writes `dateCompleted`. So `formatDate(undefined)`
        * returned its 'no date' fallback and EVERY portfolio line in the
-       * Georgia records packet printed "no date — <title>". Every entry, for
+       * The records packet printed "no date — <title>". Every entry, for
        * as long as this section has existed.
        *
        * It survived because the fallback is graceful: a packet full of
@@ -251,10 +256,10 @@ export function buildCompliancePacket({
    *
    * This section used to read `adminRecords` alone. That table is what the
    * parent types by hand in Records. But the app also has a Field Trip
-   * Planner with 21 researched Georgia trips in it, and completing one there
+   * Planner with 21 researched local trips in it, and completing one there
    * wrote to `fieldTrips` — a table this packet never looked at.
    *
-   * So a trip she planned, drove to, and marked complete reached her Georgia
+   * So a trip she planned, drove to, and marked complete reached her
    * records only as a generic Portfolio line, while the section headed
    * "Field Trips" sat empty unless she typed the same trip in a second time.
    *
@@ -309,7 +314,7 @@ export function buildCompliancePacket({
          * `addAdminRecordEntry` stores a `score` on every `kind: 'test'` row,
          * deliberately, with a note about tracking growth across years. This
          * loop printed a date and a title and dropped it — so under the
-         * heading "Standardized Test Records", in the one document a Georgia
+         * heading "Standardized Test Records", in the one document a state
          * reviewer is handed, the packet named the test and withheld the
          * result. The number was on screen everywhere else and missing from
          * the only place it is evidence.
@@ -434,7 +439,7 @@ export function buildCompliancePacket({
   }
 
   // ---- Checklist ----
-  out.push(section('9. GEORGIA REQUIREMENTS CHECKLIST'));
+  out.push(section(`9. ${stateName.toUpperCase()} REQUIREMENTS CHECKLIST`));
   out.push('As marked by the parent. Ticking a box records her own confirmation;');
   out.push('this app does not verify or file anything.');
   out.push('');

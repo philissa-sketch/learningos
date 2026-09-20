@@ -665,7 +665,7 @@ function todayStr() {
   // and the calendar always agree on what "today" is. The old
   // toISOString() version was UTC — it stamped evening work (after ~8pm
   // Eastern) with TOMORROW'S date, misdating attendance, streaks, and the
-  // Georgia 180-day record. (Batch A fix, Aug 2026.)
+  // the state's 180-day record. (Batch A fix, Aug 2026.)
   return todayDateStr();
 }
 
@@ -758,7 +758,7 @@ let highWaterRankTier = 1;
  * WHEN each rank and mastery milestone was reached.
  *
  * WHY THIS EXISTS: certificates are printable and explicitly "for the binder" —
- * they are Georgia homeschool records. They carried no student name and no
+ * they are the state homeschool records. They carried no student name and no
  * date, which makes them decorative rather than evidence. A date has to be
  * captured at the moment the thing is achieved; it cannot be reconstructed
  * afterwards, so it is recorded here, in the one place rank advancement is
@@ -943,14 +943,14 @@ const initialState = {
    * One row per real piece of typing practice, CARRYING THE DATE IT HAPPENED
    * (db.js v35). `typingScores` and `typingLessonProgress` hold his bests and
    * his mastery and neither has ever held a date, which is why block-5b —
-   * fifteen minutes a day — could not be credited toward his Georgia hours.
+   * fifteen minutes a day — could not be credited toward his the state hours.
    * A personal best is not evidence of a school day.
    */
   typingLog: [], // [{ id, date, kind: 'lesson' | 'speed', passageId, lessonId, wpm, accuracy, createdAt }, ...]
   academicBooks: [], // [{ id, subject, slotId, type, title, author, note, status, startedAt, completedAt, isCustom, createdAt }, ...] — Academic Success Center Family/Subject Library (PROJECT_PLAN.md Part 9)
   adminRecords: [], // [{ id, kind, date, title, detail, hours, subject, createdAt }, ...] — Part 8 field trips, volunteer hours, extracurriculars, awards, test records
   courseDescriptions: {}, // subject -> { description, updatedAt } — formal per-subject descriptions for transcripts
-  complianceChecks: {}, // requirement id -> { done, completedAt, note } — Georgia checklist, what the PARENT says she did
+  complianceChecks: {}, // requirement id -> { done, completedAt, note } — the state checklist, what the PARENT says she did
   evidenceLinks: {}, // folder slot key (see lib/driveLinks.js EVIDENCE_FOLDERS) -> Drive URL or null. Where the actual scans, photos and certificates live, since the app deliberately stores no files itself.
   missionEvaluations: [], // [{ quarter, projectId, customTitle, status, scores, feedback, parentApproved, driveUrl, declinedIds, ... }] — ONE per quarter (PROJECT_PLAN.md Part 8)
   parentAuth: { configured: false, declined: false, hint: null }, // NEVER holds the passcode or its hash — just what the UI needs to decide which screen to show
@@ -992,7 +992,7 @@ const initialState = {
    * WHAT HE TYPED, KEPT BEFORE HE SAVES IT. (Sep 8, 2026.)
    * ======================================================================
    *
-   * The parent: **"Lamar stated that he filled out the reflection question
+   * The parent: **"[He] stated that he filled out the reflection question
    * in the box."** Nothing about the parachute drop exists anywhere in his
    * export — not a writing entry, not a word of the text.
    *
@@ -1033,7 +1033,7 @@ const initialState = {
    * else's layout.
    *
    * So this is her own alternative, taken: *"maybe that it can be moved around
-   * so Lamar can place them where he wants them."*
+   * so the learner can place them where he wants them."*
    *
    * Empty means the designed layout, so this table only ever holds the pieces
    * he has actually moved. That matters for the merge — an empty object is
@@ -1101,7 +1101,7 @@ const initialState = {
    * anywhere. That was survivable while the only thing at stake was a
    * score; it stopped being survivable the day Credits started
    * converting into real outings and the year's attendance record —
-   * which Georgia asks for — lived in one browser's IndexedDB on one
+   * which the state asks for — lived in one browser's IndexedDB on one
    * laptop. `null` means never.
    */
   /**
@@ -1941,7 +1941,7 @@ export const useAppStore = create((set, get) => ({
       .sort((a, b) => new Date(b.dateCompleted) - new Date(a.dateCompleted));
 
     // Seed the Khan Academy Assignments table on first run only, from the
-    // actual verified Month 1 plan (built July 27, 2026, from Lamar's real,
+    // actual verified Month 1 plan (built July 27, 2026, from the learner's real,
     // final IXL Diagnostic Action Plan before the subscription was
     // canceled — every link below was individually checked against Khan
     // Academy's live site, none guessed). IXL has no ongoing role in this
@@ -2301,7 +2301,7 @@ export const useAppStore = create((set, get) => ({
     }
 
     // Q2 2026-2027 Reading — continuing 7th grade depth (unlike Math,
-    // Reading's diagnostic showed Lamar already roughly at grade level,
+    // Reading's diagnostic showed the learner already roughly at grade level,
     // so there's no remediation-first need — Q1-Q2 were originally
     // planned to stay 7th grade, Q3-Q4 progress to 8th, Summer intros
     // 9th, one grade ahead of Math's equivalent progression since the
@@ -2671,7 +2671,7 @@ export const useAppStore = create((set, get) => ({
 
     // Q1 2026-2027 Language Arts (subject key: 'writing') — first
     // quarterly batch for this subject. Builds on the 2 real legacy
-    // skills already seeded from Lamar's actual IXL diagnostic (Roots/
+    // skills already seeded from the learner's actual IXL diagnostic (Roots/
     // prefixes/suffixes and the whole "Parts of speech: the verb" unit,
     // both genuine gaps at the 5th-grade level, same tier as Math's
     // legacy gaps) rather than replacing them. The other 9 units of Khan
@@ -2894,7 +2894,7 @@ export const useAppStore = create((set, get) => ({
     // One-time retirement of the old, mis-sequenced Science rows (Earth &
     // Space Science in Q1, High School Physics intro in Summer) now that
     // real Georgia standards research replaced them above. Only removes
-    // INCOMPLETE rows — if either Lamar or the parent already completed
+    // INCOMPLETE rows — if either the learner or the parent already completed
     // and graded one of these before the correction, it's left alone so
     // no real progress or grade history is ever silently erased. Runs
     // every hydrate so it retroactively cleans up anyone who already ran
@@ -3550,7 +3550,7 @@ export const useAppStore = create((set, get) => ({
     /**
      * ---- SPREAD ACROSS THE YEAR, SEPT 16 2026 ----
      *
-     * The parent: "Lamar is behind in his social studies. The one x per week
+     * The parent: "[He] is behind in his social studies. The one x per week
      * isn't enough. In each unit may have up to 11 lessons with multiple
      * videos in each lesson." Counted off the live Khan pages that day, the
      * course is 82 lessons, not nine sittings. Q1 cannot hold it at any pace,
@@ -3936,7 +3936,7 @@ export const useAppStore = create((set, get) => ({
      * per-unit cost I used came from the Technology unit and inflated Science
      * about threefold; the repaired `khanUnitDays` model puts all 26 units at
      * 70 days against 144 available. And Chemistry is recorded in
-     * `scienceSequence.js` as **the course Lamar asked for**. A roster cut that
+     * `scienceSequence.js` as **the course the learner asked for**. A roster cut that
      * deletes a course a twelve-year-old chose, to solve a shortage that was an
      * arithmetic error, is the worst thing in this file.
      *
@@ -4051,7 +4051,7 @@ export const useAppStore = create((set, get) => ({
      * into it, so days came out holding `date` (a string) and `subjects` (an
      * object) alongside the real flags. `coveredBlockIds` walks every truthy
      * entry here to credit instructional minutes, so junk in this map is junk
-     * in the Georgia attendance record.
+     * in the the state attendance record.
      *
      * Keeping only boolean-valued keys is the exact test, needs no list of
      * subject ids to fall out of date, and is idempotent — a clean row is
@@ -5192,7 +5192,7 @@ export const useAppStore = create((set, get) => ({
      * CAPPED AT 90 MINUTES, and the cap is the point: a lesson left open
      * over lunch would otherwise record two hours of "instruction" and
      * quietly corrupt both the analytics and — because attendance feeds
-     * Georgia's 4.5-hour figure — the compliance record. A stale tab is
+     * the state's 4.5-hour figure — the compliance record. A stale tab is
      * not instruction. Attempts with no duration (older rows, imports)
      * stay undefined rather than becoming a fake zero, so an average
      * over them is honest about what it does not know.
@@ -5769,7 +5769,7 @@ export const useAppStore = create((set, get) => ({
     /**
      * THE DATE HE DID IT, WRITTEN DOWN RATHER THAN DERIVED.
      *
-     * This is the half of `completedDayTasks` that feeds his Georgia hours, and
+     * This is the half of `completedDayTasks` that feeds his the state hours, and
      * it must survive every Monday rotation, every repair, and the parent's
      * "start the next list now" button. See the comment on creditedDates in
      * lib/weeklyWords.js for how that was found.
@@ -6324,7 +6324,7 @@ export const useAppStore = create((set, get) => ({
    * `data` carries whatever that kind needs — a sun reading has
    * { hour, zone, condition }, a watering has { zone, amount, unit }.
    *
-   * ATTENDANCE is the part that matters beyond XP. Georgia requires 180 days,
+   * ATTENDANCE is the part that matters beyond XP. The state requires 180 days,
    * and Friday only counts toward that if real activity is RECORDED on it (see
    * data/schedule/weekPattern.js). Gardening is the subject that now occupies
    * Friday, so a garden row has to bump attendance exactly the way a completed
@@ -6381,7 +6381,7 @@ export const useAppStore = create((set, get) => ({
    * has { itemId, correct }.
    *
    * ATTENDANCE bumps the same way a workout or a garden row does. He is a
-   * homeschooled boy doing fifteen minutes of a scheduled subject, and Georgia
+   * homeschooled boy doing fifteen minutes of a scheduled subject, and the state
    * counts a day on which real activity is recorded.
    */
   async recordGuitarLogEntry({ kind, skillId = null, theoryId = null, title = '', notes = '', data = null, date = null }) {
@@ -6594,7 +6594,7 @@ export const useAppStore = create((set, get) => ({
    *     it" forever, unapprovable, undeniable, unrefundable. Her catalog
    *     edits never reached his store either.
    *   assignments — the Planner. Two screens tell her these "show up on
-   *     Lamar's dashboard"; on his machine they did not exist at all.
+   *     the learner's dashboard"; on his machine they did not exist at all.
    *   readinessAwards — his Rewards screen read "0 of 11 started" no
    *     matter how many she awarded.
    *   fieldTrips — his Progress trip count, three badges and the
@@ -6770,7 +6770,7 @@ export const useAppStore = create((set, get) => ({
       // logs on his computer never reaches her records and Electric Guitar reads
       // as a subject he never touched.
       guitarLog: dbGuitarLog,
-      // Same rule again, and the one that carries his Georgia hours for
+      // Same rule again, and the one that carries his the state hours for
       // block-5b: fifteen minutes a day of typing that no calendar could read
       // until v35 gave it a date.
       typingLog: dbTypingLog,
@@ -6801,7 +6801,7 @@ export const useAppStore = create((set, get) => ({
       /**
        * His morning meetings. The goal he set and the question he asked are
        * for her to read, and each completed row is thirty minutes of
-       * instruction on the Georgia record — left behind, every school day
+       * instruction on the the state record — left behind, every school day
        * would understate by half an hour.
        */
       morningMeetings: dbMorningMeetings
@@ -6825,7 +6825,7 @@ export const useAppStore = create((set, get) => ({
      * it is not optional: from today Credits convert into real outings,
      * so "how old is the last copy of his record" stopped being a
      * housekeeping question and became "how much of his year would a
-     * dead hard drive take with it". Georgia wants attendance and
+     * dead hard drive take with it". The state wants attendance and
      * portfolio evidence for the whole year; this app is where both live.
      *
      * `lastExportBytes` and `lastExportRowCount` are stored alongside so
@@ -6917,7 +6917,7 @@ export const useAppStore = create((set, get) => ({
     // OVERWRITE and `bulkPut` replaced the local row.
     //
     // That is not a cosmetic loss. `khanDailyLog` is what `coveredBlockIds`
-    // turns into instructional minutes: it is the Georgia attendance evidence.
+    // turns into instructional minutes: it is the the state attendance evidence.
     // A subject he ticked on her machine, on a day more than two months back,
     // could be erased by importing his file — and nothing would say so.
     const [dbPeMeals, dbMessages, dbTypingScores, dbWeeklyWordState, dbKhanDailyLog, dbMorningMeetings] = await Promise.all([
@@ -6944,7 +6944,7 @@ export const useAppStore = create((set, get) => ({
      * subjects map, and every merged day came out carrying `date` and
      * `subjects` as if they were school subjects. It reached the parent's real
      * database on her next import. The tick data itself survived — the junk
-     * keys sat beside it — but this is the Georgia attendance table, and a
+     * keys sat beside it — but this is the the state attendance table, and a
      * repair pass in hydrate now strips them.
      *
      * Each baseline must mirror exactly what hydrate puts in state, because
@@ -7443,7 +7443,7 @@ export const useAppStore = create((set, get) => ({
      * AND THE REPORT HE ACTUALLY WROTE WAS NOT ON THAT LIST. (Sep 8, 2026.)
      * ======================================================================
      *
-     * The parent: **"Lamar did the book report on his phone. He sent his
+     * The parent: **"[he] did the book report on his phone. He sent his
      * export but the information for the book report didn't import."**
      *
      * His export carried all of it — `A Long Walk to Water — build or draw
@@ -7759,7 +7759,7 @@ export const useAppStore = create((set, get) => ({
      *
      * THIS MERGE IS THE HALF THAT MATTERS. The export was never the hard part —
      * a one-way export is half a round trip, and typing practice happens on HIS
-     * computer while the Georgia record is assembled on HERS. Without this the
+     * computer while the the state record is assembled on HERS. Without this the
      * fifteen minutes still never reaches the record it was created to reach.
      */
     const newTypingRows = collectNew(
@@ -8146,7 +8146,7 @@ export const useAppStore = create((set, get) => ({
      * the same one `mergeMonotonic` applies to the Khan ticks and for the same
      * reason: **a day that happened on either machine happened.** Letting a
      * file that predates the meeting blank out a completed row would delete
-     * thirty minutes off his Georgia record, silently, on import — which is
+     * thirty minutes off his the state record, silently, on import — which is
      * the shape of bug this table exists to fix, not one to reintroduce.
      *
      * The written fields — his goal, his question for her — are taken from
@@ -8421,7 +8421,7 @@ export const useAppStore = create((set, get) => ({
   /**
    * `by` defaults to 1 — every existing caller is counting one more of a
    * thing. The Morning Meeting passes 0: it needs the DAY to exist on the
-   * attendance record (the Georgia counter iterates attendance rows, so a day
+   * attendance record (the the state counter iterates attendance rows, so a day
    * with no row is a day that never happened, however many minutes its blocks
    * are worth) without pretending a lesson was completed. Half an hour of
    * calendar and goal-setting is instruction; it is not a lesson.
@@ -8439,14 +8439,14 @@ export const useAppStore = create((set, get) => ({
    * is to be recorded there."** She was right, and behind it sat a split this
    * function is half of.
    *
-   * Every garden row is credited toward Georgia's 180 days by the ROW's date —
+   * Every garden row is credited toward the state's 180 days by the ROW's date —
    * `coveredBlockIds(dateStr, …)` matches `r.date === dateStr`. Attendance was
    * credited by TODAY, always. So a session logged on Wednesday for Friday put
    * the minutes on Friday and the attendance on Wednesday, and neither day had
    * both.
    *
    * Asked with the arithmetic in front of her, she chose the day he gardened:
-   * *"Aug 14 work counts as Aug 14."* Georgia counts days of INSTRUCTION, and
+   * *"Aug 14 work counts as Aug 14."* The state counts days of INSTRUCTION, and
    * the day the instruction happened is the honest one — the day someone typed
    * it in is a fact about the typing.
    *
@@ -8467,7 +8467,7 @@ export const useAppStore = create((set, get) => ({
    * Called roughly once a minute by a Page-Visibility-aware timer (see
    * App.jsx) — only while the tab is actually visible/foregrounded, so
    * this reflects real active time, not just "the tab was left open."
-   * This is the app's contribution toward Georgia's 4.5-hours/day
+   * This is the app's contribution toward the state's 4.5-hours/day
    * homeschool requirement — a supporting proxy, not a certified log.
    */
   /**
@@ -8506,7 +8506,7 @@ export const useAppStore = create((set, get) => ({
    *
    * `parentView` decides whose column it lands in. Time on the Parent
    * Dashboard is hers — grading, records, exports — and counting it as his
-   * instructional minutes put her admin time on the Georgia record. See the
+   * instructional minutes put her admin time on the the state record. See the
    * comment on the timer in App.jsx for how that was found.
    *
    * Adult minutes are kept, not discarded. They are a real fact about the
@@ -8528,7 +8528,7 @@ export const useAppStore = create((set, get) => ({
 
   /**
    * Summary for the Parent Dashboard's Attendance section: total distinct
-   * days with any recorded activity (toward Georgia's 180-day
+   * days with any recorded activity (toward the state's 180-day
    * requirement), today's active minutes (toward the 4.5-hour/day
    * target), and the most recent 14 days as a simple list, newest first.
    */
@@ -8540,7 +8540,7 @@ export const useAppStore = create((set, get) => ({
      *
      * This counted `activeMinutes > 0`, and until today activeMinutes included
      * every minute the Parent Dashboard was open. A day she spent grading, on
-     * which he did nothing, counted toward Georgia's 180.
+     * which he did nothing, counted toward the state's 180.
      *
      * `parentMinutes` is deliberately absent from this test.
      */
@@ -8559,7 +8559,7 @@ export const useAppStore = create((set, get) => ({
      *
      * ---- WHERE THIS CAME FROM (Aug 20, 2026) ----
      *
-     * The parent: **"It only shows Lamar had 2 hrs of work but he completed
+     * The parent: **"It only shows [he] had 2 hrs of work but he completed
      * everything. Khan Academy work was supposed to log the time when he
      * checked them off as done."**
      *
@@ -8840,7 +8840,7 @@ export const useAppStore = create((set, get) => ({
    * it meant leaving the board, opening the Book Library, and typing four
    * fields about a book the app already knows he is reading.
    *
-   * So the log stayed empty, the Georgia record showed no independent reading,
+   * So the log stayed empty, the the state record showed no independent reading,
    * and the one screen that mentioned it did so as a reprimand.
    *
    * THE AMOUNT COMES FROM HER, NOT FROM A GUESS. She said: "He will read 2
@@ -9153,7 +9153,7 @@ export const useAppStore = create((set, get) => ({
    * reorganized for a formal document rather than an interactive list.
    */
   /**
-   * Letter grade cutoffs — standard scale, since Georgia's homeschool
+   * Letter grade cutoffs — standard scale, since the state's homeschool
    * standards (and colleges, eventually) grade this way.
    */
   /**
@@ -9386,7 +9386,7 @@ export const useAppStore = create((set, get) => ({
        * attemptedLessons.length === 0 meant letterGrade = null, so she could
        * enter Khan percentages every week for a year and the report card
        * would still read "Not yet graded" -- for three of the five subjects
-       * Georgia actually requires.
+       * the state actually requires.
        *
        * A grade written to a row that no record reads is not a grade.
        *
@@ -10148,7 +10148,7 @@ export const useAppStore = create((set, get) => ({
   },
 
   /**
-   * Lamar's own 1-5 rating, and deliberately his rather than a grade.
+   * the learner's own 1-5 rating, and deliberately his rather than a grade.
    * Tapping the same star again clears it. Nothing anywhere uses this to
    * score him — a rating that affected his marks would stop being honest
    * about whether he liked the book.
@@ -10621,7 +10621,7 @@ export const useAppStore = create((set, get) => ({
   },
 
   /**
-   * Ticks a Georgia requirement.
+   * Ticks a the state requirement.
    *
    * Records what the PARENT says she has done. This app files nothing
    * with the state, and a checkbox here must never be read as the app
@@ -11326,7 +11326,7 @@ export const useAppStore = create((set, get) => ({
    *
    * ---- WHY THIS EXISTS (Aug 20, 2026) ----
    *
-   * The parent: **"Lamar logs in at 8:30 every morning and is working on his
+   * The parent: **"[He] logs in at 8:30 every morning and is working on his
    * school work until he completes everything. It has to be longer than 4 1/2
    * hrs."**
    *
@@ -12202,7 +12202,7 @@ export const useAppStore = create((set, get) => ({
    *
    * Everything this app knows lives in one browser's IndexedDB on one
    * laptop. Clearing site data, a browser reinstall, or a dead drive
-   * takes the whole year with it — the attendance log Georgia asks for,
+   * takes the whole year with it — the attendance log the state asks for,
    * the portfolio, the grades, the ledger. Nothing in the app had ever
    * mentioned this, and nothing knew when a copy had last been made.
    *
@@ -12582,13 +12582,13 @@ export const useAppStore = create((set, get) => ({
   /**
    * WHERE HE GOES TO PLAY THIS WEEK'S BLOOKET / KAHOOT / GIMKIT.
    *
-   * The parent: **"add blooket, kahoot, and gimkit to Lamar game section"** —
+   * The parent: **"add blooket, kahoot, and gimkit to [his] game section"** —
    * and, asked how he should get in, she chose to paste the link herself.
    *
    * Same http(s)-only check as setExerciseVideo, and for the same reason: a
    * `javascript:` or `data:` URL typed here would be handed straight to a link
    * a twelve-year-old taps. Empty clears the link, which puts his card back to
-   * "ask Mom" rather than leaving a stale one from three weeks ago.
+   * "ask the grown-up" rather than leaving a stale one from three weeks ago.
    */
   async setQuizLink(platformId, url) {
     if (!platformId || !QUIZ_PLATFORM_IDS.includes(platformId)) return { ok: false, reason: 'unknown-platform' };
@@ -13021,7 +13021,7 @@ export const useAppStore = create((set, get) => ({
    *
    * ---- THE ONE HARD RULE HERE ----
    *
-   * This writes to her Georgia attendance record, so it has to be able to
+   * This writes to her the state attendance record, so it has to be able to
    * LOWER a number — that is the entire point of a correction — without ever
    * eating minutes she logged for something else that day.
    *

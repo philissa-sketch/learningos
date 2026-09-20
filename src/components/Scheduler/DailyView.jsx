@@ -344,7 +344,7 @@ export function DailyView({ date, onChangeDate }) {
           <div className="min-w-0">
             <p className="text-xs font-display uppercase tracking-widest text-signal-cyan">Class bell</p>
             <p className="mt-1 text-sm text-ink-300">
-              A countdown on Lamar&rsquo;s dashboard showing the block he is in and how long is left, with a
+              A countdown on the learner&rsquo;s dashboard showing the block he is in and how long is left, with a
               chime when it is time to switch.
             </p>
             <p className="mt-1 text-[11px] text-ink-500">

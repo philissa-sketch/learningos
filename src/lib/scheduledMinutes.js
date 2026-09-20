@@ -5,7 +5,7 @@
 //
 // The parent, after finding the 180-day counter was counting July and
 // Saturdays: **"it can enter in kahn hrs via the schedule time in the
-// scheduler. Lamar goes by the scheduler for his school day. when he selects
+// scheduler. The learner goes by the scheduler for his school day. when he selects
 // that he's done the time should be entered."**
 //
 // That is the right answer to the problem the previous fix could only report.
@@ -39,7 +39,7 @@
 // ---- WHAT IS DELIBERATELY NOT COUNTED ----
 //
 // Break and Lunch. They are on the timetable and they are not instruction, and
-// a records packet that counts lunch toward Georgia's 4.5 hours is the same
+// a records packet that counts lunch toward the state's 4.5 hours is the same
 // kind of wrong as one that counts a Saturday in July.
 // ---------------------------------------------------------------------------
 import { toMinutes } from './classBell.js';
@@ -70,7 +70,7 @@ export function wordStudyDates(weeklyWordState = {}) {
      * survives the Monday rotation, the rotation-rule repair, and the parent's
      * "start the next list now" button. Deriving the dates from
      * `completedDayTasks` — which all three of those reset — meant a day he
-     * genuinely worked could leave the Georgia record when the word list
+     * genuinely worked could leave the state record when the word list
      * moved, without anything failing or saying so.
      */
     for (const date of row?.creditedDates || []) {
@@ -130,7 +130,7 @@ export const BLOCK_FOR_SUBJECT = {
  *
  * ---- WHY THIS EXISTS (Aug 20, 2026) ----
  *
- * The parent: **"Lamar logs in at 8:30 every morning and is working on his
+ * The parent: **"[He] logs in at 8:30 every morning and is working on his
  * school work until he completes everything. It has to be longer than 4 1/2
  * hrs."**
  *
@@ -349,7 +349,7 @@ export function coveredBlockIds(dateStr, {
   /**
    * Writing and word study have no daily tick and never needed one — a journal
    * entry and a finished day-task ARE the record. Without these two the ticks
-   * could only ever account for 3h45 of a 5h30 day, which is under Georgia's
+   * could only ever account for 3h45 of a 5h30 day, which is under the state's
    * 4.5-hour bar: the feature would have looked broken on a day he did
    * everything asked of him.
    *
@@ -368,7 +368,7 @@ export function coveredBlockIds(dateStr, {
    * 'YYYY-MM-DD' — so it compares directly and needs no timezone handling.
    *
    * Mastery is deliberately NOT required. A lesson he sat through and got 60%
-   * on took the same forty-five minutes as one he aced, and Georgia counts
+   * on took the same forty-five minutes as one he aced, and the state counts
    * hours of instruction, not hours of success. Requiring `mastered` here
    * would have quietly punished exactly the days he found hardest.
    */

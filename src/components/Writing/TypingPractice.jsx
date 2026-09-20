@@ -151,7 +151,7 @@ export function TypingPractice({ onExit }) {
      * Four lines that saved a personal best and did nothing else — no
      * attendance bump, no dated row, no block credit. So a finished passage
      * was real work that booked NOTHING, and block-5b's fifteen minutes a day
-     * could not reach his Georgia record no matter how often he practised.
+     * could not reach his state record no matter how often he practised.
      *
      * The store action does all four. A screen writing to the database behind
      * the store is a screen that will keep missing whichever of the four gets

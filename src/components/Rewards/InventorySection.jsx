@@ -286,7 +286,7 @@ export function InventorySection() {
       {/**
         * ---- EQUIPMENT IS WORN NOW (Aug 25, 2026) ----
         *
-        * The parent: **"Lamar wants to use the equipment he purchases not just
+        * The parent: **"[He] wants to use the equipment he purchases not just
         * have it sitting in the equipment app."**
         *
         * This was a read-only receipt grid until today, because the equipment

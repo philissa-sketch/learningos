@@ -8,7 +8,7 @@ const { SUBJECT_LABELS = {} } = academyContent().subjects;
  *
  * ---- WHY THIS EXISTS (Aug 16, 2026) ----
  *
- * The parent, Aug 14: "Social studies isn't opened on Lamar's app."
+ * The parent, Aug 14: "Social studies isn't opened on [his] app."
  *
  * Zero of Social Studies' 29 Mission Control lessons are tagged Q1 — her
  * decision, and the right one: Q1 Social Studies is World History on Khan.

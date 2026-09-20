@@ -1884,7 +1884,7 @@ export function HQRoom() {
    * PHASE 2 — NOBODY STANDS STILL ALL DAY.
    *
    * The parent: **"I will like it that the avatar and the worker are moving
-   * around the hq unless placed in a specific spot by Lamar."**
+   * around the hq unless placed in a specific spot by [the learner]."**
    *
    * `{ [figureId]: { at, until } }`. Not persisted, for the same reason
    * `atId` is not: where somebody happened to be standing when he closed
@@ -1908,7 +1908,7 @@ export function HQRoom() {
    * PHASE 3 — THE ROOM TELLS THE TRUTH.
    *
    * Eight objects read his actual record. Everything below is a READ; not
-   * one line of it writes a grade, a date, an attendance row or a Georgia
+   * one line of it writes a grade, a date, an attendance row or a state
    * hour. The selectors themselves live in `lib/hqTruth.js`, in plain JS,
    * so a guard can execute them — the same reason the projection does.
    *
@@ -1961,7 +1961,7 @@ export function HQRoom() {
   /* =====================================================================
    * ARRANGING.
    *
-   * The parent: **"maybe that it can be moved around so Lamar can place them
+   * The parent: **"maybe that it can be moved around so [he] can place them
    * where he wants them."**
    *
    * A MODE rather than a permanent drag. Tapping a piece already means "walk
@@ -2265,7 +2265,7 @@ export function HQRoom() {
   }, [arranging]);
 
   /**
-   * A crew member stands at the post Lamar gave them; an unposted one
+   * A crew member stands at the post the learner gave them; an unposted one
    * stands wherever they have roamed to, falling back to their default
    * post until the first tick moves them.
    *
@@ -3031,7 +3031,7 @@ export function HQRoom() {
                 * ---- POSTED vs ROAMING, SAID HONESTLY (Aug 30, 2026) ----
                 *
                 * This highlighted `c.post`, which is the crew member's
-                * DEFAULT post when Lamar has not chosen one. So a roaming
+                * DEFAULT post when the learner has not chosen one. So a roaming
                 * engineer was shown as "Posted at Engineering Workstation"
                 * while standing at the telescope, and the "tap again to
                 * stand them down" hint was a no-op — unposting fell straight
@@ -3039,7 +3039,7 @@ export function HQRoom() {
                 *
                 * A control that claims a state the room contradicts, and
                 * does nothing when pressed, is worse than no control. Only a
-                * post LAMAR CHOSE is a post; everything else is roaming, and
+                * post THE LEARNER CHOSE is a post; everything else is roaming, and
                 * the panel now says which.
                 */}
               {c.arrived && (

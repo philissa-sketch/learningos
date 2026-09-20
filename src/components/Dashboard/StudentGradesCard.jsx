@@ -1,4 +1,5 @@
 import { useAppStore } from '../../store/useAppStore.js';
+import { guardianWord } from '../../lib/schoolWords.js';
 import { academyContent } from '../../content/academyContent.js';
 
 const { subjectCardLabel = () => null } = academyContent().subjects;
@@ -9,7 +10,7 @@ const { subjectCardLabel = () => null } = academyContent().subjects;
  * Built August 6, 2026 at the parent's request — and it closes a gap I
  * created earlier the same day. Locking the Parent Dashboard behind a
  * passcode was right, but the report card lived there and nowhere else,
- * so the only screen showing Lamar his grades became the one screen he
+ * so the only screen showing the learner his grades became the one screen he
  * could not open. A lock that also hides a kid's grades from him is a
  * bug, not a feature.
  *
@@ -44,7 +45,7 @@ export function StudentGradesCard() {
       <p className="text-xs font-display uppercase tracking-widest text-signal-cyan">Your Grades</p>
       <p className="mt-1 text-xs text-ink-500">
         Every subject you&rsquo;ve started &mdash; from the lessons you&rsquo;ve finished and the Khan Academy units
-        your mom has graded.
+        {guardianWord()} has graded.
       </p>
 
       <div className="mt-3 space-y-2">

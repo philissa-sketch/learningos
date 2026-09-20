@@ -1,4 +1,5 @@
 import { useState, useEffect, useMemo } from 'react';
+import { guardianWord, learnerWord, stateWord } from '../../lib/schoolWords.js';
 import { useAppStore, totalMasteredCount } from '../../store/useAppStore.js';
 import { XP_PER_COIN, XP_PER_CREDIT, CREDIT_AUTO_APPROVE_MAX } from '../../lib/economy.js';
 import { CurrencyControlsSection } from './CurrencyControlsSection.jsx';
@@ -135,7 +136,7 @@ const SECTION_GROUPS = [
       { id: 'field-trips', label: 'Field Trips' },
       { id: 'pe-fitness-nutrition', label: 'PE & Nutrition' },
       { id: 'readiness', label: 'Engineer Readiness' },
-      // Aug 20, 2026 — the parent: "add blooket, kahoot, and gimkit to Lamar
+      // Aug 20, 2026 — the parent: "add blooket, kahoot, and gimkit to [his]
       // game section". She hosts the games, so the link she pastes here is
       // the only thing that gets him in. See data/games/quizPlatforms.js.
       { id: 'quiz-games', label: 'Blooket / Kahoot / Gimkit' },
@@ -581,7 +582,7 @@ function TripCard({ trip }) {
             *
             * completeFieldTrip now books the hours as offline instruction
             * minutes against the trip's date, which is what finally makes a
-            * logged trip count toward Georgia's 180 days. A number that
+            * logged trip count toward the state's 180 days. A number that
             * appears in a compliance record should never be one she cannot
             * trace back to the thing that wrote it — so the card names the
             * minutes and the day, and points at where to change them.
@@ -639,7 +640,7 @@ function TripCard({ trip }) {
           * and Delete, and delete-and-recreate would have thrown away her
           * notes, the portfolio entry built from them, and the pack.
           *
-          * Hours and date are the two fields that reach her Georgia record, so
+          * Hours and date are the two fields that reach her state record, so
           * they are the two this corrects.
           */}
         {done && (
@@ -698,7 +699,7 @@ function TripCard({ trip }) {
       {done && editing && (
         <div className="mt-3 rounded-lg border border-space-700 bg-space-950 p-3">
           <p className="text-[11px] text-ink-500">
-            These two are what reach your Georgia record. Changing them re-books the instruction time —
+            These two are what reach your {stateWord()} record. Changing them re-books the instruction time —
             it can correct its own figure up or down, and never overwrites minutes you typed under
             Compliance for something else that day.
           </p>
@@ -1065,7 +1066,7 @@ function ComingUpSection() {
    * panel whose entire job is "what needs attention," not at all.
    *
    * This section's own comment says it "answers what needs attention." A dated
-   * commitment that costs money, travel time and a Georgia attendance hour is
+   * commitment that costs money, travel time and an attendance hour is
    * the most attention-needing thing the app holds.
    */
   const fieldTrips = useAppStore((s) => s.fieldTrips);
@@ -1141,7 +1142,7 @@ function ComingUpSection() {
             * ---- AND THEN WHAT IS DUE (Aug 13, 2026) ----
             *
             * The parent: "there is a things due for the week and its not showing
-            * me whats due... Lamar has a rocket project due and it didnt show
+            * me whats due... [he] has a rocket project due and it didnt show
             * up." The panel was right — her nearest item was Aug 28, one day
             * outside a fourteen-day window, and the bottle rocket is Sept 16.
             *
@@ -1269,7 +1270,7 @@ function AttendanceSection() {
       <p className="text-xs font-display uppercase tracking-widest text-signal-cyan">Attendance</p>
       <h3 className="mt-1 font-display text-lg font-700 text-ink-100">Recordkeeping</h3>
       <p className="mt-2 text-sm text-ink-300">
-        Georgia's homeschool requirement is 180 instructional days per year at 4.5 hours/day. This
+        {stateWord()}&rsquo;s homeschool requirement is 180 instructional days per year at 4.5 hours/day. This
         tracks real, verifiable activity — completed lessons, writing entries, and typing
         sessions — plus foreground time actually spent in the app, as supporting documentation.
         Treat this as a helpful record to reference, not a certified attendance log.
@@ -1642,7 +1643,7 @@ const GRADE_FILTERS = [
  * list and I will have to scroll to find the correct lesson to grade."
  *
  * She was describing 151 rows rendered in one flat column, sorted by the date
- * the row was created — an order that corresponds to nothing she or Lamar
+ * the row was created — an order that corresponds to nothing she or the learner
  * experiences. Finding "Decimal Place Value" meant scrolling past four
  * subjects and five quarters of work, most of it months away.
  *
@@ -2360,7 +2361,7 @@ function AcademicSuccessCenterSection() {
         <p className="text-xs font-display uppercase tracking-widest text-signal-cyan">Academic Success Center</p>
         <h3 className="mt-1 font-display text-lg font-700 text-ink-100">Completed Academic Work</h3>
         <p className="mt-2 text-sm text-ink-300">
-          Book reports, research papers, presentations, and portfolio entries Lamar has finished. Setting up
+          Book reports, research papers, presentations, and portfolio entries {learnerWord() || 'your learner'} has finished. Setting up
           books and assignments, and grading finished work, both happen on the <strong>Academic Center</strong>{' '}
           tab (under Plan) — this is the record view.
         </p>
@@ -2390,7 +2391,7 @@ function AcademicSuccessCenterSection() {
       {completed.length === 0 ? (
         <p className="text-sm text-ink-500">
           Nothing completed yet. Schedule assignments on the Academic Center tab and they'll show up here as
-          Lamar finishes them.
+          {learnerWord() || 'your learner'} finishes them.
         </p>
       ) : (
         <div className="rounded-xl border border-space-700 bg-space-800 p-5 shadow-panel">
@@ -3095,7 +3096,7 @@ function PlannerSection() {
         </p>
         <p className="mt-2 rounded-lg border border-space-700 bg-space-900 px-3 py-2 text-xs text-ink-500">
           <span className="font-display uppercase tracking-widest text-ink-600">Planner or Academic Center? </span>
-          Both exist on purpose and both show up on the calendar, the Coming Up view, and Lamar's dashboard —
+          Both exist on purpose and both show up on the calendar, the Coming Up view, and the learner&rsquo;s dashboard —
           so nothing gets lost either way. Rule of thumb: use the <strong>Academic Center</strong> for book
           reports, research papers, presentations, and portfolio work tied to a subject and quarter (it tracks
           reading status and grades those). Use the <strong>Planner</strong> here for one-off work — field trips,
@@ -3310,7 +3311,7 @@ function MissionCommsParentSection() {
     <div className="space-y-4">
       <div className="rounded-xl border border-space-700 bg-space-800 p-5 shadow-panel">
         <p className="text-xs font-display uppercase tracking-widest text-signal-cyan">Mission Comms</p>
-        <h3 className="mt-1 font-display text-lg font-700 text-ink-100">Messages with Lamar</h3>
+        <h3 className="mt-1 font-display text-lg font-700 text-ink-100">Messages with {learnerWord() || 'your learner'}</h3>
         <p className="mt-2 text-sm text-ink-300">
           A private two-way channel — leave encouragement, reminders, or answer his questions. He sees these on
           his dashboard with an unread badge, and can reply here.
@@ -3333,7 +3334,7 @@ function MissionCommsParentSection() {
                     }
                   >
                     <p className="text-[10px] font-display uppercase tracking-widest text-ink-500">
-                      {mine ? 'You' : 'Lamar'} · {formatDateTime(m.createdAt)}
+                      {mine ? 'You' : (learnerWord() || 'Your learner')} · {formatDateTime(m.createdAt)}
                     </p>
                     <p className="mt-1 whitespace-pre-wrap text-sm text-ink-100">{m.body}</p>
                   </div>
@@ -3348,7 +3349,7 @@ function MissionCommsParentSection() {
             value={draft}
             onChange={(e) => setDraft(e.target.value)}
             rows={2}
-            placeholder="Write a message to Lamar…"
+            placeholder={`Write a message to ${learnerWord() || 'your learner'}…`}
             className="flex-1 rounded-lg border border-space-600 bg-space-900 px-3 py-2 text-sm text-ink-100"
           />
           <button
@@ -3473,7 +3474,7 @@ function PEFitnessNutritionSection() {
         <p className="mt-3 text-xs text-ink-500">
           General population reference points shown to the student in-app (not personalized targets):
           roughly up to 24 fl oz of plain water/day and about 34g of protein/day for ages 9-13, per the
-          USDA and AAP. Any individualized target belongs with Lamar's pediatrician or a registered
+          USDA and AAP. Any individualized target belongs with the learner&rsquo;s pediatrician or a registered
           dietitian.
         </p>
       </div>
@@ -3829,7 +3830,7 @@ function formatSyncStamp(iso) {
  * Nothing is hard-coded, on purpose. All three are teacher-hosted: the address
  * that actually opens a game changes every time she sets one up, so a link in
  * the code would be wrong by the second week. His card shows what is here, and
- * says "ask Mom" when it is empty rather than sending him to a code box he
+ * says "ask the grown-up" when it is empty rather than sending him to a code box he
  * cannot fill.
  */
 function QuizGameLinksSection() {
@@ -3865,7 +3866,7 @@ function QuizGameLinksSection() {
       </p>
       <p className="mt-1 text-sm text-ink-300">
         You host these, so the link changes every time. Paste this week&apos;s and it appears on his
-        Games screen. Clear the box to take it down — his card goes back to &ldquo;ask Mom&rdquo;
+        Games screen. Clear the box to take it down — his card goes back to &ldquo;ask {guardianWord()}&rdquo;
         rather than keeping a dead link.
       </p>
       <p className="mt-1 text-xs text-ink-500">
@@ -4042,7 +4043,7 @@ function SyncSection() {
         <p className="text-xs font-display uppercase tracking-widest text-signal-cyan">Export / Import</p>
         <h3 className="mt-1 font-display text-lg font-700 text-ink-100">Progress Sync Between Computers</h3>
         <p className="mt-2 text-sm text-ink-300">
-          If Lamar does his lessons on a different computer than the one you use to grade and view the
+          If {learnerWord() || 'your learner'} does his lessons on a different computer than the one you use to grade and view the
           Parent Dashboard, progress won't appear here automatically — each computer keeps its own local
           copy. Export a file from his computer, send it to yours the way you already move files, then
           import it here. This is a manual, periodic sync, not real-time.
