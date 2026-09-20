@@ -58,6 +58,7 @@ export const SLOT_RULES = [
   [/^data\/academicSuccessCenter\//, 'academicCenter'],
   [/^data\/admin\//, 'compliance'],
   [/^data\/fieldTrips\//, 'fieldTrips'],
+  [/^data\/migrations\//, 'migrations'],
   [/^data\/(aerospace|robotics|technology|science)\//, 'projects'],
   [/^data\/rewardCatalog\.js$/, 'rewards'],
   [/^data\/hqCrew\.js$/, 'rewards'],

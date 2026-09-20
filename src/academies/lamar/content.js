@@ -34,6 +34,7 @@ import { DAILY_LINE_COUNT, NOVA_LINES, QUOTED, getDailyLine } from './data/mento
 import { GRAMMAR_COURSES, KHAN_GRAMMAR_UNITS, LEGACY_GRAMMAR_TITLES, generalGrammarUnitByUrl, grammarRowTitle, grammarUnitUrl, khanGrammarUnitByUrl, khanGrammarUnitForUrl } from './data/khan/grammarCourseOrder.js';
 import { SCIENCE_CANONICAL_KEYS, SCIENCE_CANONICAL_TITLES, SCIENCE_COURSES, SCIENCE_COURSE_CHALLENGES, scienceCanonicalRow, scienceCourseChallengeRows, scienceCourseForUrl, scienceCoverageByCourse, scienceRowsFor } from './data/khan/scienceSequence.js';
 import { allLessons } from './data/lessons/index.js';
+import { ASSIGNMENT_CORRECTIONS, ASSIGNMENT_RETITLES, BOOK_SWAPS, RETIRED_ASSIGNMENT_SLOTS } from './data/migrations/assignmentMigrations.js';
 import { navGroups, navParentTab, navSchoolName, navSchoolTagline } from './data/nav/nav.js';
 import { curatedDemoFor } from './data/pe/exerciseDemoVideos.js';
 import { CATEGORY_LABELS, exerciseLibrary } from './data/pe/exerciseLibrary.js';
@@ -75,6 +76,8 @@ export const guide = { DAILY_LINE_COUNT, NOVA_LINES, QUOTED, getDailyLine };
 export const khanSequences = { GRAMMAR_COURSES, KHAN_GRAMMAR_UNITS, LEGACY_GRAMMAR_TITLES, SCIENCE_CANONICAL_KEYS, SCIENCE_CANONICAL_TITLES, SCIENCE_COURSES, SCIENCE_COURSE_CHALLENGES, generalGrammarUnitByUrl, grammarRowTitle, grammarUnitUrl, khanGrammarUnitByUrl, khanGrammarUnitForUrl, scienceCanonicalRow, scienceCourseChallengeRows, scienceCourseForUrl, scienceCoverageByCourse, scienceRowsFor };
 
 export const lessons = { allLessons };
+
+export const migrations = { ASSIGNMENT_CORRECTIONS, ASSIGNMENT_RETITLES, BOOK_SWAPS, RETIRED_ASSIGNMENT_SLOTS };
 
 export const nav = { navGroups, navParentTab, navSchoolName, navSchoolTagline };
 

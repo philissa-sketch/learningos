@@ -34,7 +34,7 @@
 // suggestion. This makes it a rule, for hand-written dates and generated ones
 // alike, and it runs before any date is proposed to her again.
 // ---------------------------------------------------------------------------
-import './lib/academy-under-test.mjs';
+import { academyUnderTest } from './lib/academy-under-test.mjs';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
@@ -223,9 +223,18 @@ console.log('\n--- 4. the shape of the load ---');
 // the seeds: changing a dated seed requires a correction entry.
 // ---------------------------------------------------------------------------
 {
+  // The ENTRIES moved into this Academy's own folder on Sept 20, 2026
+  // (GENERIC_CARRYOVER fault 2); the pass that applies them stayed in the
+  // store. So the table is read from the school and the mechanism from the
+  // platform — which is also the only way this section keeps meaning anything
+  // for a second Academy with corrections of its own.
   const storeSrc = fs.readFileSync(path.join(REPO, 'src/store/useAppStore.js'), 'utf8');
-  const start = storeSrc.indexOf('const ASSIGNMENT_CORRECTIONS = {');
-  const body = start === -1 ? '' : storeSrc.slice(start, storeSrc.indexOf('\n    };', start));
+  const tablePath = `src/academies/${academyUnderTest}/data/migrations/assignmentMigrations.js`;
+  const tableSrc = fs.existsSync(path.join(REPO, tablePath))
+    ? fs.readFileSync(path.join(REPO, tablePath), 'utf8')
+    : '';
+  const start = tableSrc.indexOf('export const ASSIGNMENT_CORRECTIONS = {');
+  const body = start === -1 ? '' : tableSrc.slice(start, tableSrc.indexOf('\n};', start));
 
   ok('the corrections table was found and parsed',
     start !== -1 && body.length > 0,

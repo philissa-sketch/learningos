@@ -152,7 +152,12 @@ export const CONTENT_SLOTS = Object.freeze([
   // planned owes the contract nothing. GENERIC_CARRYOVER fault 1 — 21 real
   // venues on real dates used to sit in src/lib/fieldTrips.js, seeded into
   // every Academy that ever booted.
-  'fieldTrips'
+  'fieldTrips',
+  // One-off repairs to this school's own rows (Sept 20, 2026): its correction
+  // table, its retired slots, its book swaps. Optional. The MECHANISM that
+  // applies them is the platform's — only the entries are a family's.
+  // GENERIC_CARRYOVER fault 2.
+  'migrations'
 ]);
 
 /**

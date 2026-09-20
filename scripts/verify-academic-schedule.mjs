@@ -35,7 +35,7 @@
 // and a reading assignment whose note still described work that had since
 // been scheduled separately.
 // ---------------------------------------------------------------------------
-import './lib/academy-under-test.mjs';
+import { academyUnderTest } from './lib/academy-under-test.mjs';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -249,8 +249,11 @@ console.log('\n--- 7. the corrections actually reach a database that already exi
    * a fix; it is a fix for whoever installs the app next.
    */
   const store = read('src/store/useAppStore.js');
+  // Split on Sept 20, 2026: the pass is the platform's, the entries are the
+  // school's. Assert both halves — a pass with no table, or a table nothing
+  // applies, each fails silently in its own way.
   ok('a correction pass exists for rows that already exist',
-    /const ASSIGNMENT_CORRECTIONS = \{/.test(store),
+    /ASSIGNMENT_CORRECTIONS: assignmentCorrections = \{\}/.test(store),
     'without this the seed and the real database drift apart permanently');
   /**
    * ---- ONE CORRECTION MAY NAME SEVERAL WRONG VALUES (Aug 30, 2026) ----
@@ -307,7 +310,12 @@ console.log('\n--- 7. the corrections actually reach a database that already exi
 
   // Every correction must agree with what placeholders.js now says, or the
   // two sources of truth disagree and whichever runs last wins.
-  const block = store.slice(store.indexOf('const ASSIGNMENT_CORRECTIONS = {'), store.indexOf('const corrected = []'));
+  const tablePath = `src/academies/${academyUnderTest}/data/migrations/assignmentMigrations.js`;
+  const tableSrc = read(tablePath);
+  const block = tableSrc.slice(
+    tableSrc.indexOf('export const ASSIGNMENT_CORRECTIONS = {'),
+    tableSrc.indexOf('export const RETIRED_ASSIGNMENT_SLOTS')
+  );
   const pairs = [...block.matchAll(/'(asg::[^']+)':\s*\{([^}]*)\}/g)];
   ok('the correction list is not empty', pairs.length >= 20, `${pairs.length} entries`);
   const mismatched = [];

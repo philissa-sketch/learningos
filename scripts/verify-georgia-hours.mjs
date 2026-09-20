@@ -32,7 +32,7 @@
 // answer is offlineMinutes, which is hers to enter — so the screen now says
 // how many school days are short instead of leaving her to notice.
 // ---------------------------------------------------------------------------
-import './lib/academy-under-test.mjs';
+import { academyUnderTest } from './lib/academy-under-test.mjs';
 import { readsFromAcademy } from './lib/reads-content.mjs';
 import fs from 'node:fs';
 import path from 'node:path';
@@ -335,16 +335,37 @@ console.log('\n--- the Q1 aerospace portfolio slot names the project it is dated
   ok('the seed names the wind tunnel, not the bottle rocket',
     /Wind tunnel test — design, results, and what the airflow showed/.test(seed)
       && !/title: 'Bottle rocket — design, launch, and results'/.test(seed));
+  // ---- SPLIT ON SEPT 20, 2026 (GENERIC_CARRYOVER fault 2) ----
+  //
+  // This repair was one school's slot id, two of its titles and three of its
+  // dates, written inline in the platform store. The ENTRY moved to that
+  // school's folder; the guards stayed. Both assertions below were pinned to
+  // the inline shape and went red on a change that was entirely correct — the
+  // ninth and tenth time that habit has been recorded in this repo.
+  //
+  // They now assert the property across BOTH halves: the store applies a
+  // retitle table, and this school's table still names this slot. Either half
+  // alone passes while the repair is broken.
+  // Scoped to the RETITLES block on purpose. Testing the whole file for the
+  // slot id passed while the retitle entry was renamed away, because the same
+  // id also appears in RETIRED_ASSIGNMENT_SLOTS three exports below — the
+  // mutation test caught that, which is the only reason this line is scoped.
+  const migrations = read(`src/academies/${academyUnderTest}/data/migrations/assignmentMigrations.js`);
+  const retitleStart = migrations.indexOf('export const ASSIGNMENT_RETITLES = {');
+  const retitles = retitleStart === -1 ? '' : migrations.slice(retitleStart);
   ok('a row already in her database is retitled once',
-    /row\.slotId !== 'asg::aerospace::Q1::2'/.test(store));
+    /ASSIGNMENT_RETITLES\[row\.slotId\]/.test(store)
+      && /'asg::aerospace::Q1::2'/.test(retitles),
+    'the pass is the platform\'s and the slot is the school\'s — both have to be there');
   ok('...and skipped the moment he has touched it',
     /if \(row\.status && row\.status !== 'not-started'\) continue;[\s\S]{0,120}if \(row\.grade != null \|\| row\.completedAt\) continue;/.test(store),
     'a migration that overwrites work is worse than a stale title');
   ok('...the due date moves with the title, from the stale value only',
-    /row\.dueDate === '2026-08-16' \|\| row\.dueDate === '2026-09-16'/.test(store),
+    /\[\]\.concat\(retitle\.fromDueDate \|\| \[\]\)\.includes\(row\.dueDate\)/.test(store)
+      && /fromDueDate: \['2026-08-16', '2026-09-16'\]/.test(retitles),
     'retitling and leaving Aug 16 would date the write-up before the build');
   ok('...and any other date she chose is left alone',
-    /: \{\}\)/.test(store),
+    /includes\(row\.dueDate\)\s*\?\s*\{ dueDate: retitle\.dueDate \}\s*:\s*\{\}\)/.test(store),
     'due dates are hers — this is the one stale value, not a licence');
 }
 
