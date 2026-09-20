@@ -4,6 +4,10 @@
 C4 steps 2-5. Everything here is platform work — none of it can be fixed in an
 Academy folder.**
 
+**Updated Sept 19, 2026**, during audit step 7 (the wording sweep). One fault
+added — #6, the manifest generator — and the first habit's count raised from
+three to seven. Nothing already here was removed or downgraded.
+
 ## The standard
 
 **The generic version is completely generic. The platform contains no school's
@@ -80,6 +84,22 @@ plainly, and she was right: a school's field trips are that school's folder's
 business, and the only reason this is on a platform list at all is that the
 content is currently in the wrong place.
 
+**Confirmed and deliberately left alone, Sept 19, 2026.** The wording sweep
+reached this file independently — 15 live lines naming Clayton County Library,
+Fernbank, the Aquarium, and travel times measured from one front door — and
+stopped rather than rewording them. Turning *"Clayton County Library
+(Lovejoy)"* into *"your local library"* would delete a real programme on a real
+date that a child is meant to attend. **This is a move, not a sweep**, and the
+move has to split the file: the planner functions are platform,
+`DEFAULT_FIELD_TRIPS` and `LIBRARY_TRIP_RENAMES` are content.
+
+`src/engine/problemTemplates.js` is the same shape and is not yet on this list
+as its own item: its `Georgia` hits are `SS7E1`, `SS7G2a`, `SS7E10` — the actual
+state social-studies standards a child is taught against, correctly named — and
+its learner-name hits are Python examples using a child's name as a list value.
+14,164 lines of one school's curriculum in `src/engine/`. Same fix, same
+reason.
+
 ### 2. Forty of one school's slot ids are embedded in the platform store
 
 `src/store/useAppStore.js` carries **32 `asg::` and 8 `book::` slot ids** across
@@ -141,6 +161,49 @@ left to its Success Center entry.
 Whatever replaces `weeklySchedule` at §3c must cover every period the quarter
 model defines, or the model and the schedule will keep disagreeing.
 
+### 6. The manifest generator deletes working slots and reports success
+
+`scripts/generate-academy-manifest.mjs` — the script the header of every
+`content.js` tells you to run, and the one `UPDATE-CONTENT-LIST.bat` runs —
+**silently drops any slot the platform reads as a whole object.**
+
+Run on the first Academy on Sept 19 it removed `guide`, `projects`, `electives`
+and `exams`, with 21 import lines, from a folder where every one of those data
+directories still existed and still had files in it. It printed a per-slot
+summary and the word success.
+
+The cause is a missing distinction. The generator emits only names listed in
+`scripts/academy-content-needs.json`, which is the **required** contract — names
+the school destructures out of a slot one by one. There is no list of optional
+content and no list of slots consumed whole, and consuming a slot whole is
+ordinary:
+
+```js
+const line = dailyLineFor(academyContent().guide, today);   // NovaProgressPanel.jsx:90
+```
+
+No name is destructured, so the scan records none, so the generator concludes
+the Academy needs nothing from that slot. **"Not required" became "not wanted".**
+
+Nothing crashes. `withAbsentSlots()` fills an absent slot with an empty object —
+the very mechanism that lets a part-built Academy run — so the guide goes quiet
+and the app looks fine. This is the platform's own version of a fault already in
+this log: *a tool can report success and produce nothing.*
+
+It is generic in the strongest sense: it is not one Academy's problem, it is the
+**tool every Academy is built with**, and it gets worse as an Academy fills more
+optional slots.
+
+**Interim state.** `scripts/verify-manifest-slots.mjs` catches the damage — a
+ratchet over `scripts/manifest-slots.json` recording the slots each Academy
+exports today, which may grow and must never shrink. It does **not** fix the
+cause. Until the scan learns about optional and wholesale-read content, do not
+run the generator or `UPDATE-CONTENT-LIST.bat`. The first Academy's `content.js`
+carries one deliberate hand-edit (`stateName` in the compliance slot), noted in
+its own header, which the generator would also delete.
+
+---
+
 ---
 
 ## The four habits underneath. These are what actually propagate.
@@ -150,7 +213,7 @@ and carries no lessons, projects, schedule or placeholders. **The construction
 habits travel, because they are how the next Academy will be built.** Each
 occurred more than once in a single day:
 
-### A guard pinned to a NAME, not the property it protects — 3×
+### A guard pinned to a NAME, not the property it protects — 7×
 
 - `readingStaggerMap` guarded on `status`, never on the value it replaced.
 - `.gitignore` guarded `*-progress-*.json`; the exports were named `*-backup-*`
@@ -158,9 +221,30 @@ occurred more than once in a single day:
 - `verify-assignment-dates` knew two writers by name, so a third was invisible
   by construction.
 
+**Four more on Sept 19, all in one afternoon**, when the wording sweep replaced
+one household's word for the grown-up with a looked-up one:
+
+- `verify-handoff` asserted `/Send my work to Mom/`.
+- `verify-quiz-games` asserted `/Quiz Games — Mom sets these up/`, and the empty
+  state by its full sentence.
+- `verify-reflections` asserted `/she may put a grade on how/` — pinned to a
+  pronoun, and the looked-up word is not always a her.
+- `verify-school-words`, written **that same day to guard the sweep**, asked
+  whether a file *mentions* `fillWords`. Deleting the call left the import
+  behind, so both mutations written against it passed. A check that an import
+  exists is not a check that anything is filled.
+
 Already in this log as *assert the property, not the address* — recorded there
 as a guard failing on a correct change. It also runs the other way: **a guard
-passing over a wrong one.**
+passing over a wrong one**, and the fourth case above is both at once.
+
+The tell is exact and worth memorising: **a check that goes red when the code
+gets better was testing the wrong thing.** All three of the first batch failed
+on changes that were entirely correct. Repoint the assertion at the property and
+write the reason into the check, or the next person rediscovers it.
+
+That the newest guard in the repo made the same mistake on day one is the
+argument for mutation-testing every check, not just the interesting ones.
 
 ### A comment asserting something the code does not do — 3×
 
