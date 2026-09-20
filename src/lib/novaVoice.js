@@ -1,3 +1,4 @@
+import { fillWords } from './schoolWords.js';
 // ---------------------------------------------------------------------------
 // Commander Nova's voice. Kept in one place so his personality stays
 // consistent everywhere he shows up: lesson briefings, hints, mastery
@@ -77,8 +78,26 @@ export function getHintMessage(conceptReminder) {
 // about it, and hand back one small thing to do.
 // ---------------------------------------------------------------------------
 
-/** The one place the student's name is set for Nova's spoken lines. */
-export const STUDENT_NAME = 'Lamar';
+/**
+ * THE NAME IS NO LONGER IN THIS FILE.
+ *
+ * A `STUDENT_NAME` constant holding one child's first name stood on this
+ * line, and the audit of 15 September named it by file and number as the
+ * single worst instance of finding 7. Two other files imported it to print on screen, so one family's
+ * child was greeted by name inside the platform itself.
+ *
+ * It could not simply become a function call, either. These lines are
+ * module-level arrays: the name was interpolated ONCE, when the module was
+ * first imported, which on a lazy chunk is before anyone has signed in. A
+ * getter swapped in at that spot would have baked in whatever the answer was
+ * at import time and then never changed — the same bug wearing a function's
+ * clothes.
+ *
+ * So the lines carry a TOKEN and are filled at the moment one is picked. The
+ * token takes its own comma with it when there is no name to say, because
+ * "Welcome back, " is worse than "Welcome back." and "Welcome back, your
+ * learner" is worse than both. See src/lib/schoolWords.js.
+ */
 
 /**
  * Deterministic pick — the SAME line for the whole day, then a different one
@@ -98,41 +117,41 @@ function pickStable(list, seed) {
 }
 
 const FIRST_DAY = [
-  `Welcome to Mission Control, ${STUDENT_NAME}. I'm Commander Nova — I'll be with you the whole way. Every engineer starts at day one; let's get the first one on the board.`,
-  `Systems online, ${STUDENT_NAME}. This is day one of a long mission, and I'm glad to be flying it with you. Start anywhere — the first step is the only one that matters today.`
+  `Welcome to Mission Control{, |learner}. I'm Commander Nova — I'll be with you the whole way. Every engineer starts at day one; let's get the first one on the board.`,
+  `Systems online{, |learner}. This is day one of a long mission, and I'm glad to be flying it with you. Start anywhere — the first step is the only one that matters today.`
 ];
 
 const BACK_AFTER_A_WHILE = [
-  `Good to see you back, ${STUDENT_NAME}. No lecture, no catch-up speech — pick one small thing and we'll be moving again.`,
+  `Good to see you back{, |learner}. No lecture, no catch-up speech — pick one small thing and we'll be moving again.`,
   `There you are. Missions pause sometimes; that's normal, even the real ones. Let's start with something short and get the systems warm again.`,
-  `Welcome back, ${STUDENT_NAME}. I kept everything exactly where you left it. One task, then we'll see how you feel.`
+  `Welcome back{, |learner}. I kept everything exactly where you left it. One task, then we'll see how you feel.`
 ];
 
 const BACK_AFTER_A_DAY = [
-  `Back at it, ${STUDENT_NAME}. Yesterday's gap costs you nothing — let's pick up where we stopped.`,
+  `Back at it{, |learner}. Yesterday's gap costs you nothing — let's pick up where we stopped.`,
   `Good to see you. One day off is just a day off. Ready when you are.`
 ];
 
 const WEEKEND = [
-  `It's the weekend, ${STUDENT_NAME} — nothing here is due. If you want to poke at something anyway, I'm around.`,
+  `It's the weekend{, |learner} — nothing here is due. If you want to poke at something anyway, I'm around.`,
   `Weekend, cadet. Rest counts toward the mission too. Anything you do today is bonus.`
 ];
 
 const FRIDAY = [
   `Friday — no new material today. Catch-up, hands-on work, or a field trip. Finish what's open and the time is yours.`,
-  `Light day, ${STUDENT_NAME}. Fridays are for closing loops rather than opening new ones.`
+  `Light day{, |learner}. Fridays are for closing loops rather than opening new ones.`
 ];
 
 const MORNING = [
-  `Morning, ${STUDENT_NAME}. Systems are green and the board is ready when you are.`,
+  `Morning{, |learner}. Systems are green and the board is ready when you are.`,
   `Good morning. Best time to take the hardest thing on the list, while you're fresh.`,
   `Morning, cadet. Let's put a good first hour on the board.`
 ];
 
 const AFTERNOON = [
-  `Afternoon, ${STUDENT_NAME}. Plenty of runway left in the day.`,
+  `Afternoon{, |learner}. Plenty of runway left in the day.`,
   `Good afternoon. Pick the next thing and let's keep it moving.`,
-  `Still time on the clock, ${STUDENT_NAME}. What's next?`
+  `Still time on the clock{, |learner}. What's next?`
 ];
 
 const STREAK_NOTE = [
@@ -220,7 +239,18 @@ export function weekAheadLine(weekAhead, lead = 'This week') {
   return ` ${lead}: ${things} due.`;
 }
 
-export function getDashboardGreeting({ daysAway, streak = 0, patternKind = 'core', isFlex = false, today = '', hour = 9, nextUp = '', weekAhead = null, overdue = null }) {
+/**
+ * One exit, and everything leaves through `fillWords`.
+ *
+ * Deliberately a wrapper rather than a fill at each of the five returns: five
+ * places to remember is four places to forget, and a line that escapes unfilled
+ * shows a child a literal `{, |learner}` on the dashboard.
+ */
+export function getDashboardGreeting(options) {
+  return fillWords(buildDashboardGreeting(options));
+}
+
+function buildDashboardGreeting({ daysAway, streak = 0, patternKind = 'core', isFlex = false, today = '', hour = 9, nextUp = '', weekAhead = null, overdue = null }) {
   if (daysAway === null || daysAway === undefined) return pickStable(FIRST_DAY, today);
   if (daysAway >= 3) return pickStable(BACK_AFTER_A_WHILE, today);
   if (daysAway === 2) return pickStable(BACK_AFTER_A_DAY, today);

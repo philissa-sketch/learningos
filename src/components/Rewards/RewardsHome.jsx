@@ -14,7 +14,7 @@ import { NovaTabGuide } from './NovaTabGuide.jsx';
 // deleted — the Journey computes its own from the same source.
 import { RANKS } from '../../lib/ranks.js';
 import { READINESS_SKILLS, LEVEL_STYLE, nextLevel, criteriaFor } from '../../lib/readiness.js';
-import { STUDENT_NAME } from '../../lib/novaVoice.js';
+import { learnerWord } from '../../lib/schoolWords.js';
 import { playAchievement, playPurchase, unlockAudio } from '../../lib/sfx.js';
 import { RocketSwatch } from './RocketSwatch.jsx';
 import { academyContent } from '../../content/academyContent.js';
@@ -695,7 +695,17 @@ function CertificateModal({ cert, onClose }) {
               binder, and they are part of a Georgia homeschool record — a
               certificate carrying neither is not evidence of anything. */}
           <p className="mt-4 text-[11px] font-display uppercase tracking-widest text-ink-500">Presented to</p>
-          <p className="font-display text-xl font-700 text-signal-cyan">{STUDENT_NAME}</p>
+          {/* A certificate with an empty name line looks like a bug; a
+              certificate with a RULE to write on is how every paper award has
+              always handled a name it does not know. So the generic answer
+              here is not a word, it is a line — which is also the honest one
+              for a family that has not told the app what to call their
+              child. */}
+          {learnerWord() ? (
+            <p className="font-display text-xl font-700 text-signal-cyan">{learnerWord()}</p>
+          ) : (
+            <p className="mx-auto mt-1 h-7 w-64 border-b-2 border-signal-cyan/60" aria-label="Name" />
+          )}
           <p className="mt-4 text-4xl">{cert.icon}</p>
           <h2 className="mt-2 font-display text-2xl font-700 text-ink-100">{cert.title}</h2>
           <p className="mx-auto mt-3 max-w-md text-sm text-ink-300">{cert.subtitle}</p>

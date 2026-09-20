@@ -1,0 +1,37 @@
+{
+ "_baseline": "2026-09-19, the day the manifest generator was caught deleting four working slots",
+ "_why": "Slots each Academy's content.js exports TODAY. This list may GROW and must never SHRINK. A slot that disappears from a manifest is content the school has silently stopped receiving - see scripts/verify-manifest-slots.mjs. Add a slot here in the same commit that adds it to a manifest.",
+ "slots": {
+  "_template": [
+   "guide",
+   "nav",
+   "theme"
+  ],
+  "lamar": [
+   "academicCenter",
+   "compliance",
+   "electives",
+   "games",
+   "guide",
+   "khanSequences",
+   "lessons",
+   "nav",
+   "pe",
+   "projects",
+   "rewards",
+   "subjects",
+   "theme",
+   "timetable",
+   "writing"
+  ],
+  "petal-pestle-academy": [
+   "exams",
+   "guide",
+   "lessons",
+   "placement",
+   "subjects",
+   "theme",
+   "timetable"
+  ]
+ }
+}

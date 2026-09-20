@@ -28,6 +28,27 @@ import { instructionMinutes } from '../../../../lib/instructionTime.js';
  * evidence from real recorded data.
  */
 
+/**
+ * THE GENERIC CONTRACT KEY — deliberately lower-case among the constants.
+ *
+ * Every other name in this file is this state's, and is meant to be: the
+ * thresholds, the citation and the requirements ARE Georgia's, and a platform
+ * that pretended otherwise would be lying about the law.
+ *
+ * This one is different. It is the slot the PLATFORM reads when a screen needs
+ * to say which state a family homeschools in, and the platform must never read
+ * a key with a state's name in it — that is the leak, not the value. The
+ * lower-case spelling is the signal: SCREAMING_CASE here means "Georgia's
+ * answer", this means "the question every Academy answers".
+ *
+ * Named `stateName` and not `jurisdiction` on purpose. This platform's
+ * compliance model is US state homeschool law and nothing else today; calling
+ * it a jurisdiction would claim a generality that has never been built or
+ * tested. When a country or province has to fit, this key is what gets
+ * widened, and the widening will be a real piece of work rather than a rename.
+ */
+export const stateName = 'Georgia';
+
 export const GEORGIA_LAW_CITATION = 'O.C.G.A. § 20-2-690';
 
 const HSLDA = 'https://hslda.org/post/how-to-comply-with-georgias-homeschool-law';

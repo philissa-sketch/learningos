@@ -1,6 +1,6 @@
 {
  "_baseline": "2026-08-31, the day the school moved into LearningOS",
- "_why": "Files that still name one Academy. This list may SHRINK and must never GROW. See scripts/verify-no-learner.mjs. 'files' is the school zone, against all nine categories since Sept 18, 2026. 'platform' is the platform zone, and ONLY ever for the five categories added that day — the original four are still zero-tolerance there.",
+ "_why": "Files that still name one Academy. This list may SHRINK and must never GROW. See scripts/verify-no-learner.mjs. 'files' is the school zone, against all nine categories since Sept 18, 2026. 'platform' is the platform zone, and ONLY ever for the five categories added that day \u2014 the original four are still zero-tolerance there.",
  "files": {
   "src/App.jsx": [
    "learner",
@@ -145,9 +145,6 @@
   ],
   "src/components/Dashboard/TypingRecordSection.jsx": [
    "place"
-  ],
-  "src/components/Dashboard/WeekInReviewCard.jsx": [
-   "guide"
   ],
   "src/components/Dashboard/WordStudyRecordSection.jsx": [
    "place"
@@ -413,7 +410,6 @@
    "service"
   ],
   "src/lib/novaVoice.js": [
-   "learner",
    "school-name",
    "guide"
   ],
@@ -522,7 +518,7 @@
    "service"
   ]
  },
- "_shrunk": "131 -> 85 on 2026-09-01, when the school moved onto the content interface; 85 -> 84 on 2026-09-09, when the nav became a declared slot; 84 -> 82 on 2026-09-15, when the projects slot landed: WritingJournal.jsx stopped naming the five pools, and ErrorBoundary.jsx stopped naming the school; 82 -> 123 on 2026-09-18, when the guard went from four categories to nine (audit finding 6) — 41 files it had been calling clean, absorbed at that day's count",
+ "_shrunk": "131 -> 85 on 2026-09-01, when the school moved onto the content interface; 85 -> 84 on 2026-09-09, when the nav became a declared slot; 84 -> 82 on 2026-09-15, when the projects slot landed: WritingJournal.jsx stopped naming the five pools, and ErrorBoundary.jsx stopped naming the school; 82 -> 123 on 2026-09-18, when the guard went from four categories to nine (audit finding 6) \u2014 41 files it had been calling clean, absorbed at that day's count | 2026-09-19: step 7 began. WeekInReviewCard.jsx left the list - it named the guide only by importing his voice module, and now imports src/lib/schoolWords.js instead. novaVoice.js lost 'learner': the STUDENT_NAME constant the audit named by file and number is gone. 123 -> 122.",
  "platform": {
   "src/db/db.js": [
    "pathway",

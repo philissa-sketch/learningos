@@ -24,6 +24,7 @@ import { ParentTimeTimer, ParentTimeSection } from './ParentTimeTimer.jsx';
 import { WordStudyRecordSection } from './WordStudyRecordSection.jsx';
 import { TypingRecordSection } from './TypingRecordSection.jsx';
 import { LearnerProfileSection } from './LearnerProfileSection.jsx';
+import { GuardianWordSection } from './GuardianWordSection.jsx';
 import { ScienceCourseMapSection } from './ScienceCourseMapSection.jsx';
 import { NovaParentGuide } from './NovaParentGuide.jsx';
 import { VoiceSettingsPanel } from '../Mentor/VoiceSettingsPanel.jsx';
@@ -186,6 +187,7 @@ const SECTION_GROUPS = [
       // screen is shown to an Academy with no records, which a running
       // school is not.
       { id: 'learner-profile', label: 'Setup Questions' },
+      { id: 'guardian-word', label: 'What They Call You' },
       { id: 'voice', label: "Nova's Voice & Sounds" },
       { id: 'passcode', label: 'Passcode' },
       { id: 'signout', label: 'Sign Out' },
@@ -1016,6 +1018,7 @@ export function ParentDashboard({ onSignOut, onOpenAcademicCenter = null }) {
       {section === 'notes' && <NotesSection />}
       {section === 'quiz-games' && <QuizGameLinksSection />}
       {section === 'learner-profile' && <LearnerProfileSection />}
+      {section === 'guardian-word' && <GuardianWordSection />}
       {section === 'voice' && <VoiceSettingsPanel />}
       {section === 'passcode' && <ParentPasscodeSection />}
       {section === 'signout' && <SignOutSection onSignOut={onSignOut} />}

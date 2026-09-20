@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 import { useAppStore } from '../../store/useAppStore.js';
-import { STUDENT_NAME } from '../../lib/novaVoice.js';
+import { fillWords } from '../../lib/schoolWords.js';
 
 /**
  * THE FRIDAY DEBRIEF (audit MISSING 3, built Aug 9 2026).
@@ -70,7 +70,7 @@ export function WeekInReviewCard({ alwaysShow = false }) {
         </button>
       </div>
       <h3 className="mt-1 font-display text-lg font-700 text-ink-100">
-        {review.quiet ? 'A quiet week' : `Here is your week, ${STUDENT_NAME}`}
+        {review.quiet ? 'A quiet week' : fillWords('Here is your week{, |learner}')}
       </h3>
 
       {review.quiet ? (

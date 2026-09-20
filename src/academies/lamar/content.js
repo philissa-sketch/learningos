@@ -6,6 +6,22 @@
 // in each one. Re-run the generator after adding or removing a content file.
 //
 // A slot this Academy has nothing for is simply absent. Blank is expected.
+//
+// ---- ONE HAND-EDIT LIVES HERE, ON PURPOSE (Sept 19, 2026) ----
+//
+// `stateName` in the compliance slot below was added BY HAND and the generator
+// will delete it, along with four working slots, if anyone runs it today.
+//
+// The generator emits only the names in scripts/academy-content-needs.json,
+// which is the REQUIRED contract — 131 names. It has no list of optional or
+// wholesale-read content, so a slot the platform reads as a whole object
+// instead of destructuring name by name is invisible to the scan and gets
+// dropped as unwanted. Running it on this folder deletes `guide`, `projects`,
+// `electives` and `exams` while printing success. The app still boots, because
+// withAbsentSlots() fills the hole, and the content is simply gone.
+//
+// DO NOT run scripts/generate-academy-manifest.mjs, or UPDATE-CONTENT-LIST.bat,
+// until that is fixed. scripts/verify-manifest-slots.mjs fails if it happens.
 // ---------------------------------------------------------------------------
 
 import { activeMilestone, hasMilestones, leadStatus, milestoneProgress, milestonesFor, startByFor } from './data/academicSuccessCenter/assignmentMilestones.js';
@@ -15,7 +31,7 @@ import { BOOK_RANGE_LABELS, bookRationale, rationaleFor } from './data/academicS
 import { bookRecommendations, candidatesForBook, nextRecommendationForBook } from './data/academicSuccessCenter/bookRecommendations.js';
 import { ACADEMIC_ASSIGNMENT_TYPES, ACADEMIC_BOOK_TYPES, ACADEMIC_SUBJECT_ORDER, ACADEMIC_SUCCESS_CENTER_QUARTER_ORDER, quarterlyAcademicPlaceholders, subjectBookPlaceholders } from './data/academicSuccessCenter/placeholders.js';
 import { RUBRIC_LEVELS, criteriaForFormat, findFormat, formatsForType, reflectionPromptFor, sizeFor, suggestedGradeFromRubric } from './data/academicSuccessCenter/reportFormats.js';
-import { GEORGIA_DAYS_REQUIRED, GEORGIA_LAW_CITATION, GEORGIA_MINUTES_PER_DAY, GEORGIA_REQUIRED_SUBJECTS, GEORGIA_REQUIREMENTS, declarationCoversToday, instructionProgress, nextDeclarationDeadline } from './data/admin/georgiaCompliance.js';
+import { GEORGIA_DAYS_REQUIRED, GEORGIA_LAW_CITATION, GEORGIA_MINUTES_PER_DAY, GEORGIA_REQUIRED_SUBJECTS, GEORGIA_REQUIREMENTS, stateName, declarationCoversToday, instructionProgress, nextDeclarationDeadline } from './data/admin/georgiaCompliance.js';
 import { MISSION_QUARTERS, MISSION_RUBRIC_CRITERIA, MISSION_STATUS_LABELS, draftMissionFeedback, findProposal, missionGrowth, missionScoreTotals, proposalsForQuarter } from './data/admin/missionEvaluations.js';
 import { gardenBriefs, getGardenBriefById } from './data/gardening/gardenBriefs.js';
 import { gardenBuildTrack, gardenCapstone } from './data/gardening/gardenBuildTrack.js';
@@ -61,7 +77,7 @@ import { writingPrompts } from './data/writing/writingPrompts.js';
 
 export const academicCenter = { ACADEMIC_ASSIGNMENT_TYPES, ACADEMIC_BOOK_TYPES, ACADEMIC_SUBJECT_ORDER, ACADEMIC_SUCCESS_CENTER_QUARTER_ORDER, BLACK_EXCELLENCE_KNOWN_GAPS, BOOK_RANGE_LABELS, EXCLUDED_RANGES, RUBRIC_LEVELS, activeMilestone, assignmentCandidatesForSlot, availableDueDates, blackAmericanAuthorsForSubject, blackExcellenceBooksForSubject, bookRationale, bookRecommendations, candidatesForBook, criteriaForFormat, findFormat, formatsForType, hasMilestones, leadStatus, milestoneProgress, milestonesFor, nextAssignmentRecommendation, nextRecommendationForBook, quarterlyAcademicPlaceholders, rationaleFor, reflectionPromptFor, resolveSuggestedDueDate, sizeFor, startByFor, subjectBookPlaceholders, suggestedGradeFromRubric };
 
-export const compliance = { GEORGIA_DAYS_REQUIRED, GEORGIA_LAW_CITATION, GEORGIA_MINUTES_PER_DAY, GEORGIA_REQUIRED_SUBJECTS, GEORGIA_REQUIREMENTS, MISSION_QUARTERS, MISSION_RUBRIC_CRITERIA, MISSION_STATUS_LABELS, declarationCoversToday, draftMissionFeedback, findProposal, instructionProgress, missionGrowth, missionScoreTotals, nextDeclarationDeadline, proposalsForQuarter };
+export const compliance = { stateName, GEORGIA_DAYS_REQUIRED, GEORGIA_LAW_CITATION, GEORGIA_MINUTES_PER_DAY, GEORGIA_REQUIRED_SUBJECTS, GEORGIA_REQUIREMENTS, MISSION_QUARTERS, MISSION_RUBRIC_CRITERIA, MISSION_STATUS_LABELS, declarationCoversToday, draftMissionFeedback, findProposal, instructionProgress, missionGrowth, missionScoreTotals, nextDeclarationDeadline, proposalsForQuarter };
 
 export const electives = { GUITAR_DAILY_MINUTES, GUITAR_OWN_SLOTS, GUITAR_SESSION_SHAPE, gardenBriefs, gardenBuildTrack, gardenCalendar, gardenCapstone, gardenProjects, getCurrentGuitarSkill, getGardenBriefById, getGardenDayForWeekOf, getGuitarTool, getNextGardenDay, guitarEducators, guitarFeedbackPlaces, guitarOwnSongGuidance, guitarPerformanceMoment, guitarSkillLadder, guitarStarterSongs, guitarTheory };
 

@@ -8,6 +8,7 @@ import {
   loadAcademyContent
 } from '../../content/academyContent.js';
 import { applyAppearance } from '../../content/slots/theme.js';
+import { installSchoolWords } from '../../lib/schoolWords.js';
 import '../FrontDoor/frontDoor.css';
 
 /**
@@ -67,6 +68,17 @@ export default function AcademyShell({ academy, enteredAs, onSignOut, onAcademyC
       try {
         const loaded = await loadAcademyContent(pack);
         if (cancelled) return;
+        // The words this school uses for its own people and place, set from the
+        // household's record and this Academy's content — BEFORE anything
+        // behind the lazy boundary can render. A screen that renders first
+        // reads the generic word and never re-reads it, which looks exactly
+        // like a parent's answer having been ignored.
+        //
+        // Both halves are handed over here because this is the only place that
+        // holds both: the record is the household's and the content is the
+        // curriculum's, and src/lib/schoolWords.js deliberately fetches
+        // neither for itself.
+        installSchoolWords({ record: academy, content: loaded });
         // The platform asks the theme slot what this school looks like and
         // applies whatever it answers. A folder answers with a loader, so the
         // stylesheet still travels in that Academy's own chunk and stays out of

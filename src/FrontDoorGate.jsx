@@ -6,6 +6,7 @@ import ParentCorner from './components/FrontDoor/ParentCorner.jsx';
 import AcademyShell from './components/Academy/AcademyShell.jsx';
 import AutoBackupBanner from './components/Academy/AutoBackupBanner.jsx';
 import { closeAcademy, openAcademy } from './db/db.js';
+import { unloadSchoolWords } from './lib/schoolWords.js';
 import {
   clearSession,
   loadAcademyRecord,
@@ -135,6 +136,9 @@ export default function FrontDoorGate() {
   const signOut = useCallback(async () => {
     await clearSession();
     closeAcademy();
+    // Same reason as closeAcademy() above: a line rendering during
+    // teardown must not still be holding the last family's words.
+    unloadSchoolWords();
     setOpenId(null);
     setEnteredAs(null);
     setPhase('home');
