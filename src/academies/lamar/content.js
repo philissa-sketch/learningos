@@ -25,18 +25,7 @@ import { GUITAR_DAILY_MINUTES, GUITAR_SESSION_SHAPE, getCurrentGuitarSkill, getG
 import { GUITAR_OWN_SLOTS, guitarOwnSongGuidance, guitarPerformanceMoment, guitarStarterSongs } from './data/guitar/guitarSongs.js';
 import { GUITAR_THEORY_QUARTER, getGuitarTheoryItem, guitarTheory } from './data/guitar/guitarTheory.js';
 import { GUITAR_LINKS_VERIFIED_ON, getGuitarTool, guitarEducators, guitarFeedbackPlaces, guitarTools } from './data/guitar/guitarTools.js';
-import { aerospaceQ1Exam } from './data/exams/aerospaceQ1Exam.js';
-import { aerospaceQ2Exam } from './data/exams/aerospaceQ2Exam.js';
-import { aerospaceQ3Exam } from './data/exams/aerospaceQ3Exam.js';
-import { aerospaceQ4Exam } from './data/exams/aerospaceQ4Exam.js';
-import { aerospaceSummerExam } from './data/exams/aerospaceSummerExam.js';
-import { roboticsQ4Exam } from './data/exams/roboticsQ4Exam.js';
-import { socialStudiesQ1Exam } from './data/exams/socialStudiesQ1Exam.js';
-import { socialStudiesQ2Exam } from './data/exams/socialStudiesQ2Exam.js';
-import { socialStudiesQ4Exam } from './data/exams/socialStudiesQ4Exam.js';
-import { technologyQ1Exam } from './data/exams/technologyQ1Exam.js';
-import { technologyQ2Exam } from './data/exams/technologyQ2Exam.js';
-import { technologyQ3Exam } from './data/exams/technologyQ3Exam.js';
+import { DEFAULT_FIELD_TRIPS, LIBRARY_TRIP_RENAMES } from './data/fieldTrips/fieldTripSeed.js';
 import { EXTERNAL_GAMES_LIBRARY } from './data/games/externalGamesLibrary.js';
 import { LAUNCH_SCORE_LABELS, PROPELLANT_OPTIONS, STAGING_OPTIONS, TRAJECTORY_EVENT, WEIGHT_BUDGET_CATEGORIES, WEIGHT_BUDGET_TOTAL_POINTS } from './data/games/launchDirectorContent.js';
 import { BUDGET_CATEGORIES, BUDGET_TOTAL_POINTS, ECONOMIC_SYSTEMS, GOVERNMENT_TYPES, NATION_SCORE_LABELS, TRADE_EVENT } from './data/games/nationCommandContent.js';
@@ -77,7 +66,7 @@ export const compliance = { GEORGIA_DAYS_REQUIRED, GEORGIA_LAW_CITATION, GEORGIA
 
 export const electives = { GARDEN_Q1_END, GARDEN_Q1_START, GARDEN_Q2_END, GARDEN_Q2_START, GARDEN_Q3_END, GARDEN_Q3_START, GARDEN_Q4_END, GARDEN_Q4_START, GARDEN_SUMMER_END, GARDEN_SUMMER_START, GUITAR_DAILY_MINUTES, GUITAR_LINKS_VERIFIED_ON, GUITAR_OWN_SLOTS, GUITAR_SESSION_SHAPE, GUITAR_THEORY_QUARTER, buildsUnlockedBy, gardenBriefs, gardenBuildTrack, gardenCalendar, gardenCapstone, gardenProjects, getCurrentGuitarSkill, getGardenBriefById, getGardenDayForDate, getGardenDayForWeekOf, getGuitarSkillByNumber, getGuitarTheoryItem, getGuitarTool, getNextGardenDay, getScheduledBriefDays, guitarEducators, guitarFeedbackPlaces, guitarLadderProgress, guitarOwnSongGuidance, guitarPerformanceMoment, guitarSkillLadder, guitarStarterSongs, guitarTheory, guitarTools, isClosedGardenDay };
 
-export const exams = { aerospaceQ1Exam, aerospaceQ2Exam, aerospaceQ3Exam, aerospaceQ4Exam, aerospaceSummerExam, roboticsQ4Exam, socialStudiesQ1Exam, socialStudiesQ2Exam, socialStudiesQ4Exam, technologyQ1Exam, technologyQ2Exam, technologyQ3Exam };
+export const fieldTrips = { DEFAULT_FIELD_TRIPS, LIBRARY_TRIP_RENAMES };
 
 export const games = { BUDGET_CATEGORIES, BUDGET_TOTAL_POINTS, ECONOMIC_SYSTEMS, EXTERNAL_GAMES_LIBRARY, GOVERNMENT_TYPES, LAUNCH_SCORE_LABELS, NATION_SCORE_LABELS, PROPELLANT_OPTIONS, QUIZ_PLATFORMS, QUIZ_PLATFORM_IDS, STAGING_OPTIONS, TRADE_EVENT, TRAJECTORY_EVENT, WEIGHT_BUDGET_CATEGORIES, WEIGHT_BUDGET_TOTAL_POINTS };
 

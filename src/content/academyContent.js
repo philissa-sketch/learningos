@@ -146,7 +146,13 @@ export const CONTENT_SLOTS = Object.freeze([
   'games',
   'academicCenter',
   'rewards',
-  'compliance'
+  'compliance',
+  // A family's own planned outings (Sept 20, 2026). Optional, and read through
+  // optionalContent() rather than destructured, so a family with nothing
+  // planned owes the contract nothing. GENERIC_CARRYOVER fault 1 — 21 real
+  // venues on real dates used to sit in src/lib/fieldTrips.js, seeded into
+  // every Academy that ever booted.
+  'fieldTrips'
 ]);
 
 /**

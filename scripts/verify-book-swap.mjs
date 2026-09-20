@@ -23,7 +23,7 @@
  *
  * That case is check #1 below and it is the reason this file exists.
  */
-import './lib/academy-under-test.mjs';
+import { academyUnderTest } from './lib/academy-under-test.mjs';
 import { readFileSync } from 'node:fs';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { dirname, join } from 'node:path';
@@ -54,6 +54,9 @@ function ok(label, cond, detail = '') {
 const bs = await import(moduleUrl('src/lib/bookSwap.js'));
 const ft = await import(moduleUrl('src/lib/fieldTrips.js'));
 const sched = await import(moduleUrl('src/lib/scheduler.js'));
+
+// The Academy under test, for the content that used to be compiled in.
+const academy = await import(moduleUrl(`src/academies/${academyUnderTest}/content.js`));
 
 // ===========================================================================
 console.log('--- 1. the Hatchet case, exactly as it stands in her data ---');
@@ -168,20 +171,29 @@ ok('the picker only offers slots that actually name a book',
 // ===========================================================================
 console.log('\n--- 5. field trips: one stable identity ---');
 // ===========================================================================
-const ids = ft.DEFAULT_FIELD_TRIPS.map((t) => ft.fieldTripSyncId(t.destination));
+// The trip list and the rename map left the platform on Sept 20, 2026
+// (GENERIC_CARRYOVER fault 1) and are now this Academy's own content, read
+// through its manifest. The merge-key behaviour they exercise below is still
+// the platform's, which is why these checks stay here — but the data has to be
+// asked for rather than imported.
+const tripSeed = academy.fieldTrips || {};
+const DEFAULT_FIELD_TRIPS = tripSeed.DEFAULT_FIELD_TRIPS || [];
+const LIBRARY_TRIP_RENAMES = tripSeed.LIBRARY_TRIP_RENAMES || {};
+
+const ids = DEFAULT_FIELD_TRIPS.map((t) => ft.fieldTripSyncId(t.destination, LIBRARY_TRIP_RENAMES));
 ok('every default trip gets an id', ids.every(Boolean));
-ok('...and all 21 are distinct', new Set(ids).size === ft.DEFAULT_FIELD_TRIPS.length, String(new Set(ids).size));
+ok('...and all 21 are distinct', new Set(ids).size === DEFAULT_FIELD_TRIPS.length, String(new Set(ids).size));
 
 /**
  * THE LOAD-BEARING CHECKS. Both halves of the OLD key are rewritten by the
  * seeder itself, which is why the same trip ended up listed twice.
  */
 ok('the id does NOT change when the seeder backfills a date',
-  ft.fieldTripSyncId('Georgia Aquarium') === ft.fieldTripSyncId('Georgia Aquarium'),
+  ft.fieldTripSyncId('Georgia Aquarium', LIBRARY_TRIP_RENAMES) === ft.fieldTripSyncId('Georgia Aquarium', LIBRARY_TRIP_RENAMES),
   'the date is deliberately not part of the key');
-for (const [oldDest, newDest] of Object.entries(ft.LIBRARY_TRIP_RENAMES)) {
+for (const [oldDest, newDest] of Object.entries(LIBRARY_TRIP_RENAMES)) {
   ok(`the rename of "${oldDest.slice(0, 34)}..." collapses to one id`,
-    ft.fieldTripSyncId(oldDest) === ft.fieldTripSyncId(newDest),
+    ft.fieldTripSyncId(oldDest, LIBRARY_TRIP_RENAMES) === ft.fieldTripSyncId(newDest, LIBRARY_TRIP_RENAMES),
     'a rename that splits the id is how a trip becomes two trips');
 }
 ok('unicode in a destination does not break the id',
@@ -192,12 +204,14 @@ ok('a trip with no destination gets NO id rather than a made-up one',
   'an invented identity is something to collide on later');
 
 ok('the import merge keys on the stable id, not destination|date',
-  /\(t\) => fieldTripSyncId\(t\?\.destination\)/.test(storeSrc));
+  /\(t\) => fieldTripSyncId\(t\?\.destination, tripRenames\)/.test(storeSrc),
+  'and passes the rename map — without it the three renamed trips key differently on each machine');
 ok('...and the old mutable key is gone',
   !/\$\{t\.destination\}\|\$\{t\.date/.test(storeSrc),
   'that key is what produced the duplicates');
 ok('seeded trips are written WITH an id',
-  /syncId: fieldTripSyncId\(d\.destination\)/.test(storeSrc));
+  /syncId: fieldTripSyncId\(d\.destination, LIBRARY_TRIP_RENAMES\)/.test(storeSrc),
+  'and with the rename map — the seeder is where a trip first gets its identity');
 
 // ===========================================================================
 console.log('\n--- 6. collapsing the duplicates already in her database ---');
@@ -227,7 +241,7 @@ console.log('\n--- 6. collapsing the duplicates already in her database ---');
  * completed trip. If the plan does not turn 85 rows into 22, this fails.
  */
 ok('...and the repair runs every hydrate, not only on a seed bump',
-  storeSrc.indexOf('planFieldTripDedupe(fieldTripsList)') > storeSrc.indexOf('defaultFieldTripsSeedVersion: FIELD_TRIP_SEED_VERSION'),
+  storeSrc.indexOf('planFieldTripDedupe(fieldTripsList, LIBRARY_TRIP_RENAMES)') > storeSrc.indexOf('defaultFieldTripsSeedVersion: FIELD_TRIP_SEED_VERSION'),
   'duplicates arrive through the import, which can happen any day');
 
 const scores = [
@@ -245,7 +259,7 @@ const STAMPS = ['2026-08-24T02:20:10.207Z', '2026-08-06T18:20:46.380Z', '2026-08
 let nextId = 1;
 const HER_ROWS = [];
 for (let copy = 0; copy < 4; copy++) {
-  for (const d of ft.DEFAULT_FIELD_TRIPS) {
+  for (const d of DEFAULT_FIELD_TRIPS) {
     HER_ROWS.push({
       id: nextId++,
       destination: d.destination,
@@ -272,11 +286,11 @@ const tripPlan = ft.planFieldTripDedupe(HER_ROWS);
 const survivors = HER_ROWS.filter((t) => !tripPlan.dropIds.includes(t.id));
 
 ok('THE CHECK: her 85 rows collapse to one per destination',
-  HER_ROWS.length === ft.DEFAULT_FIELD_TRIPS.length * 4 + 1 &&
-  survivors.length === ft.DEFAULT_FIELD_TRIPS.length + 1,
+  HER_ROWS.length === DEFAULT_FIELD_TRIPS.length * 4 + 1 &&
+  survivors.length === DEFAULT_FIELD_TRIPS.length + 1,
   `${HER_ROWS.length} rows in, ${survivors.length} out`);
 ok('...which is exactly the 63 extra copies deleted, nothing else',
-  tripPlan.dropIds.length === ft.DEFAULT_FIELD_TRIPS.length * 3,
+  tripPlan.dropIds.length === DEFAULT_FIELD_TRIPS.length * 3,
   String(tripPlan.dropIds.length));
 ok('...and every destination still appears once',
   new Set(survivors.map((t) => t.destination)).size === survivors.length);
@@ -385,7 +399,8 @@ ok('a renamed library trip collapses into the trip it was renamed to',
   ft.planFieldTripDedupe([
     { id: 1, destination: 'Local Public Library — STEM & Homeschool Programs', date: '2026-08-28', status: 'planned', createdAt: 'a' },
     { id: 2, destination: 'FAB STEM Friday — Clayton County Library (Lovejoy)', date: '2026-08-28', status: 'planned', createdAt: 'b' }
-  ]).dropIds.length === 1);
+  ], LIBRARY_TRIP_RENAMES).dropIds.length === 1,
+  'the map is this school\'s now, so the dedupe has to be handed it — without it these are two trips');
 
 ok('a row with no destination is left completely alone',
   (() => {
@@ -403,7 +418,7 @@ ok('running the plan a second time is a no-op',
   'a repair that rewrites something every hydrate is a repair that never finished');
 
 ok('the store applies the plan rather than reimplementing it',
-  /const plan = planFieldTripDedupe\(fieldTripsList\)/.test(storeSrc) &&
+  /const plan = planFieldTripDedupe\(fieldTripsList, LIBRARY_TRIP_RENAMES\)/.test(storeSrc) &&
   /deleteFieldTripRecord\(id\)/.test(storeSrc));
 
 // ===========================================================================

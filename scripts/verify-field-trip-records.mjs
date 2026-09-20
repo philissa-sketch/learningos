@@ -33,7 +33,7 @@
 // PACKET from fixtures and reads the text that comes out, because the only
 // thing that matters here is what a Georgia reviewer would see on the page.
 // ---------------------------------------------------------------------------
-import './lib/academy-under-test.mjs';
+import { academyUnderTest } from './lib/academy-under-test.mjs';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
@@ -322,7 +322,13 @@ console.log('\n--- 7. the dedupe never deletes a plan ---');
   const T = (id, destination, date, extra = {}) => ({
     id, destination, date, status: 'planned', createdAt: '2026-08-0' + id, ...extra
   });
-  const dropped = (rows) => planFieldTripDedupe(rows).dropIds;
+  // The rename map is this Academy's content since Sept 20, 2026, so the
+  // dedupe has to be handed it — see scripts/verify-field-trip-move.mjs. A
+  // caller that forgets it stops collapsing a renamed copy, which is the very
+  // duplicate this section exists to catch.
+  const academy = await import(moduleUrl(`src/academies/${academyUnderTest}/content.js`));
+  const RENAMES = (academy.fieldTrips || {}).LIBRARY_TRIP_RENAMES || {};
+  const dropped = (rows) => planFieldTripDedupe(rows, RENAMES).dropIds;
 
   const LIB = 'FAB STEM Friday — Clayton County Library (Lovejoy)';
 

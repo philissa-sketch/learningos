@@ -171,7 +171,20 @@ const declaredShapeSlots = (contentSrc.match(/SHAPE_SLOTS = Object\.freeze\(\[([
 //
 // `theme` is a stylesheet and `views` is declared by hand in views.js; both are
 // emitted by their own passes below and are excluded here so nothing doubles.
-const HANDLED_ELSEWHERE = ['theme', 'views'];
+//
+// `exams` is excluded for a different and deliberate reason, recorded in the
+// SHAPE_SLOTS comment in src/content/academyContent.js:
+//
+//   "`exams` deliberately does not [qualify] — nothing reads it as a shape
+//    today, and adding it would start emitting content into manifests for no
+//    reader."
+//
+// This rule briefly overrode that decision, and shipped 12 exam modules into a
+// bundle with nothing reading them. The rule's job is to stop the generator
+// deleting content that HAS a consumer; `exams` is the one slot where "no
+// required names" and "no reader at all" are the same state, and the contract
+// already says so. When something reads the slot, delete it from this list.
+const HANDLED_ELSEWHERE = ['theme', 'views', 'exams'];
 const namedSlots = new Set(Object.values(NEEDS.nameToSlot));
 const wholesaleSlots = [...new Set(SLOT_RULES.map(([, slot]) => slot))]
   .filter((slot) => !namedSlots.has(slot) && !HANDLED_ELSEWHERE.includes(slot));

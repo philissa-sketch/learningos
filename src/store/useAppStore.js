@@ -157,7 +157,7 @@ import { todayDateStr, toDateStr } from '../lib/scheduler.js';
 import { scheduledMinutesByDate } from '../lib/scheduledMinutes.js';
 import { DEFAULT_REWARDS } from '../lib/rewards.js';
 import { applyTheme } from '../lib/themes.js';
-import { generateLearningPack, DEFAULT_FIELD_TRIPS, LIBRARY_TRIP_RENAMES, fieldTripSyncId, planFieldTripDedupe, planUndatedTripRestore, planDeletedTripRecovery } from '../lib/fieldTrips.js';
+import { generateLearningPack, fieldTripSyncId, planFieldTripDedupe, planUndatedTripRestore, planDeletedTripRecovery } from '../lib/fieldTrips.js';
 import { planBookSwap } from '../lib/bookSwap.js';
 import { READINESS_SKILLS } from '../lib/readiness.js';
 import { getCurrentQuarter, isQuarterlyBatchLabel, isSummerBatchLabel, groupByQuarter, isQuarterAvailable, getQuarterDateRange, quarterRank, SCHOOL_YEAR_START_DATE } from '../lib/schoolQuarter.js';
@@ -195,6 +195,7 @@ import {
   cryptoAvailable
 } from '../lib/parentAuth.js';
 import { academyContent } from '../content/academyContent.js';
+import { optionalContent } from '../content/slots/optional.js';
 import { projectPools, allProjects } from '../content/slots/projects.js';
 
 /**
@@ -4798,6 +4799,21 @@ export const useAppStore = create((set, get) => ({
     // builder that has to resolve it. It was declared here and used only here
     // until Aug 28, when the merge key started needing the same map — and a
     // rename map that exists in two places is how the two copies disagree.
+    // This school's own trips, read HERE and not at module scope — the rule
+    // GENERIC_CARRYOVER records, and the one that keeps a check script able to
+    // import this module without a school behind it.
+    //
+    // optionalContent() rather than a destructure with defaults: a destructure
+    // is counted by the content scan and would make these two names something
+    // EVERY Academy must supply, which is exactly backwards. A family with no
+    // trips planned fills nothing, gets {}, and the seeder below adds nothing.
+    const tripSeed = optionalContent(academyContent(), 'fieldTrips');
+    const DEFAULT_FIELD_TRIPS = Array.isArray(tripSeed.DEFAULT_FIELD_TRIPS) ? tripSeed.DEFAULT_FIELD_TRIPS : [];
+    const LIBRARY_TRIP_RENAMES =
+      tripSeed.LIBRARY_TRIP_RENAMES && typeof tripSeed.LIBRARY_TRIP_RENAMES === 'object'
+        ? tripSeed.LIBRARY_TRIP_RENAMES
+        : {};
+
     let fieldTripsList = [...fieldTripRows];
     if ((meta?.defaultFieldTripsSeedVersion || 0) < FIELD_TRIP_SEED_VERSION) {
       const ftCreatedAt = new Date().toISOString();
@@ -4849,7 +4865,7 @@ export const useAppStore = create((set, get) => ({
         // The stable merge key. Without it the import fell back to
         // destination|date, and both of those get rewritten by the seeder
         // itself — which is how the same trip ended up listed twice.
-        syncId: fieldTripSyncId(d.destination)
+        syncId: fieldTripSyncId(d.destination, LIBRARY_TRIP_RENAMES)
       }));
       const ftIds = await Promise.all(prepared.map((r) => addFieldTripRecord(r)));
       const added = prepared.map((r, i) => ({ id: ftIds[i], ...r }));
@@ -4928,7 +4944,7 @@ export const useAppStore = create((set, get) => ({
      * rebuild the pile. Her instruction, kept: duplicates are not added.
      */
     if (!meta?.deletedFieldTripsRecovered) {
-      const { restoreIds } = planDeletedTripRecovery(fieldTripsList);
+      const { restoreIds } = planDeletedTripRecovery(fieldTripsList, LIBRARY_TRIP_RENAMES);
       if (restoreIds.length > 0) {
         const recoveredAt = new Date().toISOString();
         const recovered = new Set(restoreIds);
@@ -4945,7 +4961,7 @@ export const useAppStore = create((set, get) => ({
     }
 
     if (!meta?.undatedFieldTripsRestored) {
-      const { restoreIds } = planUndatedTripRestore(fieldTripsList);
+      const { restoreIds } = planUndatedTripRestore(fieldTripsList, LIBRARY_TRIP_RENAMES);
       if (restoreIds.length > 0) {
         const restoredAt = new Date().toISOString();
         const restoreSet = new Set(restoreIds);
@@ -4992,7 +5008,7 @@ export const useAppStore = create((set, get) => ({
      * place on a different date.
      */
     {
-      const plan = planFieldTripDedupe(fieldTripsList);
+      const plan = planFieldTripDedupe(fieldTripsList, LIBRARY_TRIP_RENAMES);
       if (plan.idWrites.length > 0) {
         const byId = new Map(fieldTripsList.map((t) => [t.id, t]));
         await Promise.all(plan.idWrites.map((w) => updateFieldTripRecord(w.id, { syncId: w.syncId })));
@@ -8012,10 +8028,16 @@ export const useAppStore = create((set, get) => ({
     // reconciling them. That is the "multiple repeat field trips" the parent
     // reported on Aug 28. `fieldTripSyncId` resolves the rename map and
     // ignores the date, so the key survives both rewrites.
+    // The rename map comes from the school, since Sept 20 — and it MUST be
+    // passed here. Without it the three renamed library trips canonicalise to
+    // their old names, get a different key on one machine than the other, and
+    // this merge adds a second copy: precisely the bug above, returning by a
+    // different door.
+    const tripRenames = optionalContent(academyContent(), 'fieldTrips').LIBRARY_TRIP_RENAMES || {};
     const fieldTripMerge = mergeBySyncId(
       state.fieldTrips,
       importedData.fieldTrips,
-      (t) => fieldTripSyncId(t?.destination)
+      (t) => fieldTripSyncId(t?.destination, tripRenames)
     );
 
     // --- assignments (Planner): she writes them, he needs to see them.
