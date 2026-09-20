@@ -259,13 +259,6 @@
    "guide",
    "service"
   ],
-  "src/engine/problemTemplates.js": [
-   "learner",
-   "school-name",
-   "subject",
-   "pathway",
-   "place"
-  ],
   "src/lib/academicOrder.js": [
    "pathway",
    "electives"
@@ -296,8 +289,7 @@
    "pathway"
   ],
   "src/lib/fieldTrips.js": [
-   "subject",
-   "place"
+   "subject"
   ],
   "src/lib/gradeScale.js": [
    "school-name"
@@ -410,7 +402,7 @@
    "service"
   ]
  },
- "_shrunk": "131 -> 85 on 2026-09-01, when the school moved onto the content interface; 85 -> 84 on 2026-09-09, when the nav became a declared slot; 84 -> 82 on 2026-09-15, when the projects slot landed: WritingJournal.jsx stopped naming the five pools, and ErrorBoundary.jsx stopped naming the school; 82 -> 123 on 2026-09-18, when the guard went from four categories to nine (audit finding 6) \u2014 41 files it had been calling clean, absorbed at that day's count | 2026-09-19: step 7 began. WeekInReviewCard.jsx left the list - it named the guide only by importing his voice module, and now imports src/lib/schoolWords.js instead. novaVoice.js lost 'learner': the STUDENT_NAME constant the audit named by file and number is gone. 123 -> 122. | 2026-09-19: step 7's first sweep. 16 files left the list - 122 -> 106. Six were comments only. The rest were live screen text: 'Send my work to Mom', 'Last sent to Mom', 'Georgia's 180 days', the four Academic guide tabs. Nova's Academic guide had the same import-time trap novaVoice.js had - its JSX bodies are now functions called at render, because an element built at module load freezes whatever word was set then. | 2026-09-19, second sweep: 0 more files left the list. The parent gate, the two Nova tab guides, the games screen, the lesson engine's 'saved for your mom to read' lines, the Drive folder blurbs and the feedback card. Three module-level data tables now carry tokens filled at their render site, and verify-school-words section 8 asserts every read of those fields goes through fillWords - checked field by field, because checking that a file merely MENTIONS fillWords missed both mutations written against it. | 2026-09-19, third sweep: step-7 category entries 53 -> 4 across the list. Every remaining learner/place/family-role hit outside three files is gone. The three left are NOT wording: fieldTrips.js, problemTemplates.js and 14 comment lines in useAppStore.js state facts about one state's academic standards or name seeded local content - content in the platform zone, GENERIC_CARRYOVER fault 1 and 2, fixed by a MOVE and not by rewording. The file count stays at 106 because every swept file still carries service, school-name, pathway or electives, which step 7 does not touch.",
+ "_shrunk": "131 -> 85 on 2026-09-01, when the school moved onto the content interface; 85 -> 84 on 2026-09-09, when the nav became a declared slot; 84 -> 82 on 2026-09-15, when the projects slot landed: WritingJournal.jsx stopped naming the five pools, and ErrorBoundary.jsx stopped naming the school; 82 -> 123 on 2026-09-18, when the guard went from four categories to nine (audit finding 6) \u2014 41 files it had been calling clean, absorbed at that day's count | 2026-09-19: step 7 began. WeekInReviewCard.jsx left the list - it named the guide only by importing his voice module, and now imports src/lib/schoolWords.js instead. novaVoice.js lost 'learner': the STUDENT_NAME constant the audit named by file and number is gone. 123 -> 122. | 2026-09-19: step 7's first sweep. 16 files left the list - 122 -> 106. Six were comments only. The rest were live screen text: 'Send my work to Mom', 'Last sent to Mom', 'Georgia's 180 days', the four Academic guide tabs. Nova's Academic guide had the same import-time trap novaVoice.js had - its JSX bodies are now functions called at render, because an element built at module load freezes whatever word was set then. | 2026-09-19, second sweep: 0 more files left the list. The parent gate, the two Nova tab guides, the games screen, the lesson engine's 'saved for your mom to read' lines, the Drive folder blurbs and the feedback card. Three module-level data tables now carry tokens filled at their render site, and verify-school-words section 8 asserts every read of those fields goes through fillWords - checked field by field, because checking that a file merely MENTIONS fillWords missed both mutations written against it. | 2026-09-19, third sweep: step-7 category entries 53 -> 4 across the list. Every remaining learner/place/family-role hit outside three files is gone. The three left are NOT wording: fieldTrips.js, problemTemplates.js and 14 comment lines in useAppStore.js state facts about one state's academic standards or name seeded local content - content in the platform zone, GENERIC_CARRYOVER fault 1 and 2, fixed by a MOVE and not by rewording. The file count stays at 106 because every swept file still carries service, school-name, pathway or electives, which step 7 does not touch. | 2026-09-20: the three content moves. fieldTrips.js, the store's migrations and problemTemplates.js gave their content back to the Academy that owns it. problemTemplates.js left the list; the platform zone now holds no school's field trips, no school's slot ids and no school's questions.",
  "platform": {
   "src/db/db.js": [
    "pathway",

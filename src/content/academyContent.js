@@ -157,7 +157,11 @@ export const CONTENT_SLOTS = Object.freeze([
   // table, its retired slots, its book swaps. Optional. The MECHANISM that
   // applies them is the platform's — only the entries are a family's.
   // GENERIC_CARRYOVER fault 2.
-  'migrations'
+  'migrations',
+  // The generated practice questions this school drills from (Sept 20, 2026).
+  // Optional. The ENGINE that builds and randomises a question is the
+  // platform's; the questions are a curriculum. GENERIC_CARRYOVER fault 1.
+  'practice'
 ]);
 
 /**

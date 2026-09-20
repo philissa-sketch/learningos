@@ -41,6 +41,7 @@ import { CATEGORY_LABELS, exerciseLibrary } from './data/pe/exerciseLibrary.js';
 import { nutritionChallenges, nutritionTopics, recipeLibrary, shoppingListCategories } from './data/pe/nutritionContent.js';
 import { HIDDEN_VIDEO, demoLinkFor } from './data/pe/peVideoSource.js';
 import { getTodaysWorkout } from './data/pe/weeklyWorkoutPlan.js';
+import { templates } from './data/practice/problemTemplates.js';
 import { aerospaceProjects } from './data/aerospace/aerospaceProjects.js';
 import { roboticsProjects } from './data/robotics/roboticsProjects.js';
 import { scienceExperiments } from './data/science/scienceExperiments.js';
@@ -82,6 +83,8 @@ export const migrations = { ASSIGNMENT_CORRECTIONS, ASSIGNMENT_RETITLES, BOOK_SW
 export const nav = { navGroups, navParentTab, navSchoolName, navSchoolTagline };
 
 export const pe = { CATEGORY_LABELS, HIDDEN_VIDEO, curatedDemoFor, demoLinkFor, exerciseLibrary, getTodaysWorkout, nutritionChallenges, nutritionTopics, recipeLibrary, shoppingListCategories };
+
+export const practice = { templates };
 
 export const projects = { aerospaceProjects, roboticsProjects, scienceExperiments, technologyProjects };
 

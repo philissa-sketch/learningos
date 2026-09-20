@@ -4,6 +4,12 @@
 // ---------------------------------------------------------------------------
 import fs from 'node:fs';
 import { allLessons } from '../src/academies/lamar/data/lessons/index.js';
+// The engine's accessors read the mounted school, so the school has to be
+// mounted first — importing academy-under-test does that. The 256 questions
+// moved into that school's folder on Sept 20, 2026 (GENERIC_CARRYOVER fault 1);
+// the four accessors are still the platform's and are still what this file
+// tests through.
+import './lib/academy-under-test.mjs';
 import { getAllTemplates, getTemplateById } from '../src/engine/problemTemplates.js';
 import { ACTIVE_SUBJECTS } from '../src/academies/lamar/subjects.js';
 import { CALIBRATED_LESSON_COUNT, RANKS } from '../src/lib/ranks.js';

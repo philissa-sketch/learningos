@@ -148,7 +148,12 @@ console.log('\n--- 4. the rename map still resolves, and is needed to ---');
 console.log('\n--- 5. no caller forgets the map ---');
 // ---------------------------------------------------------------------------
 {
-  const store = src('src/store/useAppStore.js');
+  // Comments stripped first. A prose mention of `fieldTripSyncId()` — in a note
+  // explaining that the map is now an argument, say — is not a call site, and
+  // this check flagged exactly that the day the note was written. A check that
+  // cannot tell a comment from code teaches everyone to stop believing it.
+  const codeOnly = (t) => t.replace(/\/\*[\s\S]*?\*\//g, '').replace(/^\s*\/\/.*$/gm, '');
+  const store = codeOnly(src('src/store/useAppStore.js'));
   const KEYED = ['fieldTripSyncId', 'planFieldTripDedupe', 'planUndatedTripRestore', 'planDeletedTripRecovery'];
   const bare = [];
   for (const fn of KEYED) {
@@ -159,7 +164,7 @@ console.log('\n--- 5. no caller forgets the map ---');
   ok('every merge-key call in the store passes a rename map', bare.length === 0,
     `${bare.join(', ')} — silently stops resolving renames`);
 
-  const planner = src('src/lib/fieldTrips.js');
+  const planner = codeOnly(src('src/lib/fieldTrips.js'));
   const bareInternal = [...planner.matchAll(/fieldTripSyncId\(([^)]*)\)/g)]
     .map((m) => m[1]).filter((a) => a && !/,/.test(a) && !/^destination/.test(a));
   ok('...and so does every call inside the planner', bareInternal.length === 0,

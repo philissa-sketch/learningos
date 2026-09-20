@@ -4635,10 +4635,12 @@ export const useAppStore = create((set, get) => ({
       await saveMeta({ rewardsLadderVersion: LADDER_MIGRATION_VERSION, rewardsLadderMigratedAt: now });
     }
 
-    // Default Georgia field trips (Part 5) — from real research (Aug 6, 2026,
-    // parent's request): SNAP EBT / Museums for All, free library Experience
-    // Passes, homeschool rates, and free venues, travel times from her home in
-    // Ellenwood, GA. VERSIONED seed: bumping FIELD_TRIP_SEED_VERSION applies new
+    // Seed this school's own field trips (Part 5). The LIST is the school's and
+    // lives in its own folder behind the `fieldTrips` slot, read just below —
+    // it moved out of src/lib/fieldTrips.js on Sept 20, 2026
+    // (GENERIC_CARRYOVER fault 1). This pass is the platform's.
+    //
+    // VERSIONED seed: bumping FIELD_TRIP_SEED_VERSION applies new
     // content to installs that already seeded an earlier version. Each pass, in
     // order: (0) RENAME/RETARGET the old generic library trips to the real,
     // dated library programs (v3); (a) add any default trips still missing by
@@ -4647,12 +4649,19 @@ export const useAppStore = create((set, get) => ({
     // completed trips are never touched, and deleting a default trip still
     // sticks within the same version.
     const FIELD_TRIP_SEED_VERSION = 4;
-    // v3: the three original generic library trips are retargeted to real
-    // Clayton County Library programs (from the library's own brochure). Maps
-    // old destination → new default destination; the rest of the new content is
-    // pulled from DEFAULT_FIELD_TRIPS so there is a single source of truth.
-    // LIBRARY_TRIP_RENAMES now lives in lib/fieldTrips.js beside the sync-id
-    // builder that has to resolve it. It was declared here and used only here
+    // v3: the three original generic library trips are retargeted to the real,
+    // dated programmes a school names for itself. Maps old destination → new
+    // default destination; the rest of the new content is pulled from the same
+    // slot, so there is a single source of truth.
+    //
+    // THIS COMMENT SAID lib/fieldTrips.js UNTIL SEPT 20, 2026, and by then that
+    // was false — the map had moved to the school's folder with the trips. A
+    // comment asserting something the code does not do is a habit this repo has
+    // recorded three times; this was the fourth. The map is passed to
+    // fieldTripSyncId() as an argument now, because the merge key has to resolve
+    // it and the engine cannot assume which school is open.
+    //
+    // It was declared here and used only here
     // until Aug 28, when the merge key started needing the same map — and a
     // rename map that exists in two places is how the two copies disagree.
     // This school's own trips, read HERE and not at module scope — the rule
