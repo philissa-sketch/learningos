@@ -50,7 +50,12 @@ const moduleUrl = (rel) => pathToFileURL(path.join(REPO, rel)).href;
 const { dailyDrills } = await import(moduleUrl('src/academies/lamar/data/writing/dailyDrills.js'));
 const dw = await import(moduleUrl('src/lib/dailyWriting.js'));
 const { QUARTER_SPANS } = await import(moduleUrl('src/lib/yearPlan.js'));
-const { getSchoolWeekNumber } = await import(moduleUrl('src/academies/lamar/data/writing/weeklySchedule.js'));
+// These moved to src/content/slots/writing.js on Sept 21, 2026. Asked of the
+// school's writing slot as content.js exports it, the way the app asks.
+const __slotWriting = await import(moduleUrl('src/content/slots/writing.js'));
+const { writing: __schoolWriting } = await import(moduleUrl('src/academies/lamar/content.js'));
+const __W = { writing: __schoolWriting };
+const getSchoolWeekNumber = (d) => __slotWriting.getSchoolWeekNumber(__W, d);
 const { parseDateStr } = await import(moduleUrl('src/lib/scheduler.js'));
 
 let passed = 0;
@@ -279,7 +284,10 @@ console.log('\n--- he has to look at it before it is saved ---');
    * count.**
    */
   const wc = await import(moduleUrl('src/lib/writingCheck.js'));
-  const dr = await import(moduleUrl('src/academies/lamar/data/writing/drillRequirements.js'));
+  const dr = {
+    ...(await import(moduleUrl('src/academies/lamar/data/writing/drillRequirements.js'))),
+    requirementsFor: (id) => __slotWriting.requirementsFor(__W, id)
+  };
 
   // ---- the measure that separates his real work ----
   const goodSentence = 'The rocket did not reach orbit because it was too heavy.';

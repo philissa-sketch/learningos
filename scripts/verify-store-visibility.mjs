@@ -34,7 +34,11 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 import { AVATARS, ROCKETS, rocketColorFor, avatarIconFor } from '../src/lib/rewards.js';
-import { MISSION_EQUIPMENT, AVATAR_GEAR, HQ_ITEMS, COSMETIC_REPRICE, costForCosmetic } from '../src/academies/lamar/data/rewardCatalog.js';
+import { MISSION_EQUIPMENT, AVATAR_GEAR, HQ_ITEMS, COSMETIC_REPRICE } from '../src/academies/lamar/data/rewardCatalog.js';
+import { costForCosmetic as slotCostForCosmetic } from '../src/content/slots/rewards.js';
+import { rewards as SCHOOL_REWARDS } from '../src/academies/lamar/content.js';
+// Moved to the platform slot on Sept 21, 2026; asked of the school's exported slot.
+const costForCosmetic = (id, cost) => slotCostForCosmetic({ rewards: SCHOOL_REWARDS }, id, cost);
 import { THEMES, DEFAULT_THEME_ID, themeById, themeSwatch, applyTheme } from '../src/lib/themes.js';
 
 const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');

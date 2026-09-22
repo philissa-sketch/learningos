@@ -18,8 +18,11 @@ import { learnerWord } from '../../lib/schoolWords.js';
 import { playAchievement, playPurchase, unlockAudio } from '../../lib/sfx.js';
 import { RocketSwatch } from './RocketSwatch.jsx';
 import { academyContent } from '../../content/academyContent.js';
+import { costForCosmetic as slotCostForCosmetic } from '../../content/slots/rewards.js';
 
-const { costForCosmetic = () => null } = academyContent().rewards;
+// Read at call time from the school that is open now — see
+// src/content/slots/rewards.js (Sept 21, 2026).
+const costForCosmetic = (...args) => slotCostForCosmetic(academyContent(), ...args);
 
 // Gamification hub (Part 5, Aug 6, 2026): the student's Badges, Rewards Store,
 // and printable Certificates, plus a live coin balance. Coins are earned from

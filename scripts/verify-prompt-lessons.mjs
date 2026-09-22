@@ -44,7 +44,13 @@ const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
  */
 const moduleUrl = (rel) => pathToFileURL(path.join(REPO, rel)).href;
 
-const { PROMPT_LESSONS, lessonForPrompt } = await import(moduleUrl('src/academies/lamar/data/writing/promptLessons.js'));
+const { PROMPT_LESSONS } = await import(moduleUrl('src/academies/lamar/data/writing/promptLessons.js'));
+// These moved to src/content/slots/writing.js on Sept 21, 2026. Asked of the
+// school's writing slot as content.js exports it, the way the app asks.
+const __slotWriting = await import(moduleUrl('src/content/slots/writing.js'));
+const { writing: __schoolWriting } = await import(moduleUrl('src/academies/lamar/content.js'));
+const __W = { writing: __schoolWriting };
+const lessonForPrompt = (id) => __slotWriting.lessonForPrompt(__W, id);
 const { writingPrompts } = await import(moduleUrl('src/academies/lamar/data/writing/writingPrompts.js'));
 
 let passed = 0;

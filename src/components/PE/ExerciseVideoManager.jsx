@@ -1,8 +1,9 @@
 import { useMemo, useState } from 'react';
 import { useAppStore } from '../../store/useAppStore.js';
 import { academyContent } from '../../content/academyContent.js';
+import { HIDDEN_VIDEO, curatedDemoFor } from '../../content/slots/pe.js';
 
-const { CATEGORY_LABELS = {}, HIDDEN_VIDEO, curatedDemoFor = () => null, exerciseLibrary = {} } = academyContent().pe;
+const { CATEGORY_LABELS = {}, exerciseLibrary = {} } = academyContent().pe;
 
 // ---------------------------------------------------------------------------
 // EXERCISE DEMO VIDEOS — one link per exercise, hers overriding a checked default.
@@ -42,7 +43,7 @@ const { CATEGORY_LABELS = {}, HIDDEN_VIDEO, curatedDemoFor = () => null, exercis
 function ExerciseRow({ exercise, saved, onSave }) {
   const [value, setValue] = useState(saved && saved !== HIDDEN_VIDEO ? saved : '');
   const [msg, setMsg] = useState(null);
-  const curated = curatedDemoFor(exercise.id);
+  const curated = curatedDemoFor(academyContent(), exercise.id);
   const hidden = saved === HIDDEN_VIDEO;
   const mine = Boolean(saved) && !hidden;
   const dirty = value.trim() !== (mine ? saved : '');
@@ -159,7 +160,7 @@ export function ExerciseVideoManager() {
   const showing = all.filter((e) => {
     const s = exerciseVideos[e.id];
     if (s === HIDDEN_VIDEO) return false;
-    return Boolean(s) || Boolean(curatedDemoFor(e.id));
+    return Boolean(s) || Boolean(curatedDemoFor(academyContent(), e.id));
   }).length;
 
   return (
@@ -188,7 +189,7 @@ export function ExerciseVideoManager() {
           const done = (exerciseLibrary[c] || []).filter((e) => {
             const s = exerciseVideos[e.id];
             if (s === HIDDEN_VIDEO) return false;
-            return Boolean(s) || Boolean(curatedDemoFor(e.id));
+            return Boolean(s) || Boolean(curatedDemoFor(academyContent(), e.id));
           }).length;
           return (
             <button

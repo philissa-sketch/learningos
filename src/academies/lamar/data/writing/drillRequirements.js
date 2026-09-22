@@ -97,6 +97,4 @@ export const REVIEWED_NO_REQUIREMENT = {
 };
 
 /** Requirements for a prompt id, or [] — every non-drill prompt has none. */
-export function requirementsFor(promptId) {
-  return DRILL_REQUIREMENTS[promptId] || [];
-}
+// `requirementsFor` moved to src/content/slots/writing.js on Sept 21, 2026.

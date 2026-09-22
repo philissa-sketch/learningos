@@ -244,9 +244,7 @@ export const PROMPT_LESSONS = {
   }
 };
 
-export function lessonForPrompt(promptId) {
-  return PROMPT_LESSONS[promptId] || null;
-}
+// `lessonForPrompt` moved to src/content/slots/writing.js on Sept 21, 2026.
 
 /** Every prompt that introduces a form should teach it. Used by the guard. */
 export function promptsWithoutLessons(prompts = []) {

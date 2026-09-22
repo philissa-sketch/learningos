@@ -28,7 +28,7 @@
 // blank is visible and plausible is not.
 // ---------------------------------------------------------------------------
 
-import { SUBJECTS, SUBJECT_ORDER, strandsForSubject, strandLabel, strandCardLabel } from './config/strands.js';
+import { SUBJECTS, SUBJECT_ORDER, STRANDS } from './config/strands.js';
 import { APP_COURSES } from './config/curriculumPlan.js';
 import { DEFAULT_SCHEDULE } from './config/schedule.js';
 import { SCHOOL_YEAR, periodFor } from './config/calendar.js';
@@ -128,30 +128,25 @@ const KHAN_TAUGHT_SUBJECTS = [...SUBJECT_ORDER];
  */
 const PARTICIPATION_SUBJECTS = [];
 
-const isKhanTaughtSubject = (subject) => KHAN_TAUGHT_SUBJECTS.includes(canonicalSubject(subject));
-
 /**
  * One spelling for a subject.
  *
  * The schedule calls the reading block `reading` and the diagnostic calls the
  * subject `ela`; both mean the same subject and a record that files them apart
- * counts her work twice. Unknown ids pass through unchanged rather than being
- * coerced to a default — a subject nobody recognises should look wrong on the
- * screen, not be silently relabelled as something it is not.
+ * counts her work twice. Every id this school uses is lower case, so it asks
+ * the platform to fold spellings before looking them up.
+ *
+ * These were three functions until Sept 21, 2026. The lookups now live in
+ * src/content/slots/subjects.js; what stays here is this school's own table.
  */
-function canonicalSubject(subject) {
-  if (!subject) return null;
-  const id = String(subject).toLowerCase();
-  if (id === 'reading' || id === 'writing' || id === 'english') return 'ela';
-  if (id === 'mathematics' || id === 'maths') return 'math';
-  return id;
-}
-
-/** What SHE reads on her own screen, as opposed to what the report prints. */
-function subjectCardLabel(subject) {
-  const id = canonicalSubject(subject);
-  return SUBJECT_LABELS[id] || strandCardLabel(id) || id;
-}
+const SUBJECT_ALIASES = {
+  reading: 'ela',
+  writing: 'ela',
+  english: 'ela',
+  mathematics: 'math',
+  maths: 'math'
+};
+const SUBJECT_ID_CASE = 'lower';
 
 export const subjects = {
   ACTIVE_SUBJECTS,
@@ -159,14 +154,9 @@ export const subjects = {
   LESSON_TRACK_SUBJECTS,
   PARTICIPATION_SUBJECTS,
   SUBJECT_LABELS,
-  canonicalSubject,
-  isKhanTaughtSubject,
-  strandsForSubject,
-  subjectCardLabel,
-  // Not asked for by the school today, carried because they are this Academy's
-  // own vocabulary and the screens that will want them are hers.
-  strandLabel,
-  strandCardLabel
+  SUBJECT_ALIASES,
+  SUBJECT_ID_CASE,
+  STRANDS
 };
 
 /* ==========================================================================

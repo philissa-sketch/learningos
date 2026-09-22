@@ -44,7 +44,17 @@ const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
  */
 const moduleUrl = (rel) => pathToFileURL(path.join(REPO, rel)).href;
 
-const pr = await import(moduleUrl('src/academies/lamar/data/printouts.js'));
+const prData = await import(moduleUrl('src/academies/lamar/data/printouts.js'));
+// `printoutFor` and `journalFor` moved to the platform slot on Sept 21, 2026.
+// Asked of the school's rewards slot as content.js exports it, the way the app
+// asks — so a table dropped from the export fails here too.
+const slotRewards = await import(moduleUrl('src/content/slots/rewards.js'));
+const { rewards: schoolRewards } = await import(moduleUrl('src/academies/lamar/content.js'));
+const pr = {
+  ...prData,
+  printoutFor: (id) => slotRewards.printoutFor({ rewards: schoolRewards }, id),
+  journalFor: (s) => slotRewards.journalFor({ rewards: schoolRewards }, s)
+};
 const { allLessons } = await import(moduleUrl('src/academies/lamar/data/lessons/index.js'));
 
 let passed = 0;

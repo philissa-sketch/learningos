@@ -2,9 +2,13 @@ import { useState } from 'react';
 import { useAppStore } from '../../store/useAppStore.js';
 import { getCurrentQuarter, isQuarterlyBatchLabel, isSummerBatchLabel, hasSchoolStarted, SCHOOL_YEAR_START_DATE } from '../../lib/schoolQuarter.js';
 import { academyContent } from '../../content/academyContent.js';
+import { subjectCardLabel as subjectCardLabelFor } from '../../content/slots/subjects.js';
 
 const { khanGrammarUnitForUrl = () => null, scienceCourseForUrl = () => null } = academyContent().khanSequences;
-const { subjectCardLabel = () => null } = academyContent().subjects;
+// Read at call time, not at import: these look the answer up in the school
+// that is open now. They were functions handed over by the school until
+// Sept 21, 2026 — see src/content/slots/subjects.js.
+const subjectCardLabel = (...args) => subjectCardLabelFor(academyContent(), ...args);
 
 // Deliberately short labels for this card only — the full names
 // ("English Language Arts") do not fit the mission tiles. `writing`

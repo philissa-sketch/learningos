@@ -893,7 +893,10 @@ console.log("\n--- this week's build is in the day, not beside it ---");
 
   // The behaviour: on Aug 26 2026 the scheduled build is the parachute drop,
   // it resolves to Aerospace, and Aerospace has a block.
-  const { getThisWeeksScheduledIds } = await import(moduleUrl('src/academies/lamar/data/writing/weeklySchedule.js'));
+  // Moved to the platform slot on Sept 21, 2026; asked of the school's exported slot.
+  const __slotWriting = await import(moduleUrl('src/content/slots/writing.js'));
+  const { writing: __schoolWriting } = await import(moduleUrl('src/academies/lamar/content.js'));
+  const getThisWeeksScheduledIds = (d) => __slotWriting.getThisWeeksScheduledIds({ writing: __schoolWriting }, d);
   const { aerospaceProjects } = await import(moduleUrl('src/academies/lamar/data/aerospace/aerospaceProjects.js'));
   const { BLOCK_FOR_SUBJECT } = await import(moduleUrl('src/lib/scheduledMinutes.js'));
   const ids = getThisWeeksScheduledIds(new Date('2026-08-26T12:00:00'));

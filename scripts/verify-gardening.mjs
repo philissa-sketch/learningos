@@ -18,7 +18,12 @@ import { gardenProjects } from '../src/academies/lamar/data/gardening/gardenProj
 import { gardenBriefs, getGardenBriefById } from '../src/academies/lamar/data/gardening/gardenBriefs.js';
 import { gardenCalendar, GARDEN_Q1_START, GARDEN_Q1_END, GARDEN_Q2_START, GARDEN_Q2_END, GARDEN_Q3_START, GARDEN_Q3_END, GARDEN_Q4_START, GARDEN_Q4_END, GARDEN_SUMMER_START, GARDEN_SUMMER_END, getGardenDayForDate, getGardenDayForWeekOf, getNextGardenDay } from '../src/academies/lamar/data/gardening/gardenCalendar.js';
 import { gardenBuildTrack, gardenCapstone, buildsUnlockedBy } from '../src/academies/lamar/data/gardening/gardenBuildTrack.js';
-import { ACTIVE_SUBJECTS, PARTICIPATION_SUBJECTS, SUBJECT_LABELS, subjectCardLabel } from '../src/academies/lamar/subjects.js';
+import * as LAMAR_SUBJECTS from '../src/academies/lamar/subjects.js';
+import { subjectCardLabel as subjectCardLabelFor } from '../src/content/slots/subjects.js';
+const { ACTIVE_SUBJECTS, PARTICIPATION_SUBJECTS, SUBJECT_LABELS } = LAMAR_SUBJECTS;
+// The card-label lookup moved to the platform on Sept 21, 2026; asked of this
+// school's own exported tables, exactly as the app asks it.
+const subjectCardLabel = (s) => subjectCardLabelFor({ subjects: LAMAR_SUBJECTS }, s);
 import { participationFieldsFor } from '../src/lib/participationRecord.js';
 import { WEEK_PATTERN, daysForSubject, FRIDAY_BUFFER_PLAN } from '../src/academies/lamar/data/schedule/weekPattern.js';
 import { defaultSchedule } from '../src/academies/lamar/data/schedule/defaultSchedule.js';

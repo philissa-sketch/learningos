@@ -149,18 +149,9 @@ export const EXERCISE_DEMO_VIDEOS = {
 /** The date the ids above were confirmed to resolve. Re-check periodically. */
 export const CURATED_VERIFIED_ON = '2026-08-10';
 
-/**
- * A curated pick for one exercise, or null.
- * Always a watch URL for one specific video — never a search, never a channel.
- */
-export function curatedDemoFor(exerciseId) {
-  const v = EXERCISE_DEMO_VIDEOS[exerciseId];
-  if (!v || !v.videoId) return null;
-  return {
-    url: `https://www.youtube.com/watch?v=${v.videoId}`,
-    videoId: v.videoId,
-    title: v.title,
-    channel: v.channel,
-    length: v.length
-  };
-}
+// `curatedDemoFor` used to live here. It moved to `src/content/slots/pe.js` on
+// Sept 20, 2026: turning a video id into a watch URL is mechanism, identical
+// for every school, and a stored Academy cannot hold a function. This file
+// keeps what is actually this school's — the ids, and the date they were
+// checked. The slot builds the URL, which is also what stops any school
+// pointing a child at a search page by filling the table carelessly.

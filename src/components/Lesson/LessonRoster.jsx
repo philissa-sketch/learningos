@@ -5,10 +5,19 @@ import { parseDateStr } from '../../lib/scheduler.js';
 import { QuietQuarterNote } from './QuietQuarterNote.jsx';
 import { StudyCycleTracker } from './StudyCycleTracker.jsx';
 import { academyContent } from '../../content/academyContent.js';
+import { journalFor as slotJournalFor, printoutFor as slotPrintoutFor } from '../../content/slots/rewards.js';
+import { subjectCardLabel as subjectCardLabelFor } from '../../content/slots/subjects.js';
 
 const { allLessons = [] } = academyContent().lessons;
-const { journalFor = () => null, printoutFor = () => null } = academyContent().rewards;
-const { SUBJECT_LABELS = {}, subjectCardLabel = () => null } = academyContent().subjects;
+// Read at call time from the school that is open now — see
+// src/content/slots/rewards.js (Sept 21, 2026).
+const journalFor = (...args) => slotJournalFor(academyContent(), ...args);
+const printoutFor = (...args) => slotPrintoutFor(academyContent(), ...args);
+const { SUBJECT_LABELS = {} } = academyContent().subjects;
+// Read at call time, not at import: these look the answer up in the school
+// that is open now. They were functions handed over by the school until
+// Sept 21, 2026 — see src/content/slots/subjects.js.
+const subjectCardLabel = (...args) => subjectCardLabelFor(academyContent(), ...args);
 
 // Nation Command and Launch Director both moved to their own dedicated
 // Games tab (Aug 2026, parent feedback — the Lesson Roster and Mission

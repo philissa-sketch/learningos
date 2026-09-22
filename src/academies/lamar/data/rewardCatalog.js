@@ -89,12 +89,8 @@ export const COSMETIC_REPRICE = {
   'rocket-violet': 275
 };
 
-/** Effective Coin cost for a cosmetic, re-priced if we have a new value. */
-export function costForCosmetic(id, originalCost) {
-  return Object.prototype.hasOwnProperty.call(COSMETIC_REPRICE, id)
-    ? COSMETIC_REPRICE[id]
-    : originalCost;
-}
+// `costForCosmetic` moved to src/content/slots/rewards.js on Sept 21, 2026.
+// The prices above are this school's; applying a reprice is every school's.
 
 /* -------------------------------------------------------------------------
  * MISSION EQUIPMENT — Coins
@@ -391,6 +387,15 @@ export const SEEDED_REWARD_LADDER_MAP = {
  * her nothing and still clear instantly on purpose: the reward should feel
  * connected to the work that earned it, not arrive by post.
  */
+/**
+ * What the dream half of the catalog is called on a row, and the icon a dream
+ * reward shows when it names none. They were typed inside `catalogRewardRows`
+ * until Sept 21, 2026; the tier name also decides parent approval, so it is
+ * the school's to set and it must match the entry in the list below.
+ */
+export const DREAM_TIER = 'Dream Reward';
+export const DREAM_ICON = '⭐';
+
 export const TIERS_REQUIRING_PARENT = new Set([
   'Treat or outing',
   'Book or small kit',
@@ -408,42 +413,8 @@ export function catalogItemById(id) {
   );
 }
 
-/**
- * The full Credit catalog, shaped as `rewards` table rows.
- *
- * One shape for both halves of the store, so the Real-World Rewards list and
- * the Dream Goal read the same table and can never disagree about what
- * something costs. `kind` is what separates them on screen.
- */
-export function catalogRewardRows() {
-  const rows = [];
-  for (const item of REAL_WORLD_REWARDS) {
-    rows.push({
-      catalogId: item.id,
-      name: item.name,
-      cost: item.credits,
-      note: item.note || '',
-      tier: item.tier,
-      kind: 'reward',
-      requiresParent: TIERS_REQUIRING_PARENT.has(item.tier),
-      parentNamed: Boolean(item.parentNamed)
-    });
-  }
-  for (const item of DREAM_REWARDS) {
-    rows.push({
-      catalogId: item.id,
-      name: item.name,
-      cost: item.credits,
-      note: item.desc || '',
-      tier: 'Dream Reward',
-      kind: 'dream',
-      icon: item.icon || '⭐',
-      requiresParent: true,
-      parentNamed: Boolean(item.parentNamed)
-    });
-  }
-  return rows;
-}
+// `catalogRewardRows` moved to src/content/slots/rewards.js on Sept 21, 2026.
+// Shaping two lists into one table is the platform's; what is in them is ours.
 
 /* -------------------------------------------------------------------------
  * Helpers

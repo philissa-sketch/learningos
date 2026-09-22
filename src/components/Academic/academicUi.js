@@ -1,8 +1,13 @@
 import { parseDateStr, todayDateStr } from '../../lib/scheduler.js';
 import { academyContent } from '../../content/academyContent.js';
+import { isKhanTaughtSubject as isKhanTaughtSubjectFor } from '../../content/slots/subjects.js';
 
 const { ACADEMIC_SUBJECT_ORDER = [], ACADEMIC_SUCCESS_CENTER_QUARTER_ORDER } = academyContent().academicCenter;
-const { SUBJECT_LABELS = {}, isKhanTaughtSubject = () => null } = academyContent().subjects;
+const { SUBJECT_LABELS = {} } = academyContent().subjects;
+// Read at call time, not at import: these look the answer up in the school
+// that is open now. They were functions handed over by the school until
+// Sept 21, 2026 — see src/content/slots/subjects.js.
+const isKhanTaughtSubject = (...args) => isKhanTaughtSubjectFor(academyContent(), ...args);
 
 /**
  * Small shared display helpers for the Academic Success Center views.

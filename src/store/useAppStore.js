@@ -195,6 +195,8 @@ import {
   cryptoAvailable
 } from '../lib/parentAuth.js';
 import { academyContent } from '../content/academyContent.js';
+import { catalogRewardRows as slotCatalogRewardRows } from '../content/slots/rewards.js';
+import { canonicalSubject as canonicalSubjectFor, strandsForSubject as strandsForSubjectFor } from '../content/slots/subjects.js';
 import { optionalContent } from '../content/slots/optional.js';
 
 /**
@@ -307,8 +309,16 @@ const { findProposal = () => null, missionScoreTotals = () => null } = academyCo
 const { QUIZ_PLATFORM_IDS = [] } = academyContent().games;
 const { GRAMMAR_COURSES = {}, KHAN_GRAMMAR_UNITS = [], LEGACY_GRAMMAR_TITLES = {}, SCIENCE_CANONICAL_KEYS = new Set(), SCIENCE_CANONICAL_TITLES = new Set(), generalGrammarUnitByUrl = () => null, grammarRowTitle, grammarUnitUrl, khanGrammarUnitByUrl = () => null, scienceCanonicalRow = () => null, scienceCourseChallengeRows = () => [], scienceRowsFor = () => [] } = academyContent().khanSequences;
 const { allLessons = [] } = academyContent().lessons;
-const { SEEDED_REWARD_LADDER_MAP = {}, catalogRewardRows = () => [] } = academyContent().rewards;
-const { ACTIVE_SUBJECTS = [], KHAN_TAUGHT_SUBJECTS = [], LESSON_TRACK_SUBJECTS = [], PARTICIPATION_SUBJECTS = [], canonicalSubject = () => null, strandsForSubject = () => [] } = academyContent().subjects;
+const { SEEDED_REWARD_LADDER_MAP = {} } = academyContent().rewards;
+// Read at call time from the school that is open now — see
+// src/content/slots/rewards.js (Sept 21, 2026).
+const catalogRewardRows = (...args) => slotCatalogRewardRows(academyContent(), ...args);
+const { ACTIVE_SUBJECTS = [], KHAN_TAUGHT_SUBJECTS = [], LESSON_TRACK_SUBJECTS = [], PARTICIPATION_SUBJECTS = [] } = academyContent().subjects;
+// Read at call time, not at import: these look the answer up in the school
+// that is open now. They were functions handed over by the school until
+// Sept 21, 2026 — see src/content/slots/subjects.js.
+const canonicalSubject = (...args) => canonicalSubjectFor(academyContent(), ...args);
+const strandsForSubject = (...args) => strandsForSubjectFor(academyContent(), ...args);
 const { defaultSchedule = [] } = academyContent().timetable;
 const { spellingWordPool = [], vocabularyWordPool = [], writingPrompts = [] } = academyContent().writing;
 
@@ -5984,7 +5994,7 @@ const seedRows = khanFirstSeedRows().map((r) => ({ ...r, completed: false, grade
 
   /**
    * PE & Nutrition — marks today's rotating workout (see
-   * `data/pe/weeklyWorkoutPlan.js::getTodaysWorkout`) complete, logging
+   * `content/slots/pe.js::workoutForDate`) complete, logging
    * which real exercises were done. Flat completion XP, same
    * "genuine completion, not a graded score" reasoning as
    * SIGNATURE_GAME_COMPLETION_XP — a workout doesn't have a "correct

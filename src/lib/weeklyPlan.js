@@ -37,9 +37,13 @@
  * to live. Nothing else about them changed.
  */
 import { academyContent } from '../content/academyContent.js';
+import { getThisWeeksScheduledIds as slotGetThisWeeksScheduledIds } from '../content/slots/writing.js';
 import { projectPools, findProjectById } from '../content/slots/projects.js';
 
-const { getThisWeeksScheduledIds = () => [], writingPrompts = [] } = academyContent().writing;
+const { writingPrompts = [] } = academyContent().writing;
+// Read at call time from the school that is open now — see
+// src/content/slots/writing.js (Sept 21, 2026).
+const getThisWeeksScheduledIds = (...args) => slotGetThisWeeksScheduledIds(academyContent(), ...args);
 
 /**
  * Resolve a scheduled id against everything it could belong to.

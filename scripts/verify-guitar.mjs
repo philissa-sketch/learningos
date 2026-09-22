@@ -58,7 +58,12 @@ import {
   getGuitarTool,
   GUITAR_LINKS_VERIFIED_ON
 } from '../src/academies/lamar/data/guitar/guitarTools.js';
-import { ACTIVE_SUBJECTS, PARTICIPATION_SUBJECTS, SUBJECT_LABELS, subjectCardLabel } from '../src/academies/lamar/subjects.js';
+import * as LAMAR_SUBJECTS from '../src/academies/lamar/subjects.js';
+import { subjectCardLabel as subjectCardLabelFor } from '../src/content/slots/subjects.js';
+const { ACTIVE_SUBJECTS, PARTICIPATION_SUBJECTS, SUBJECT_LABELS } = LAMAR_SUBJECTS;
+// The card-label lookup moved to the platform on Sept 21, 2026; asked of this
+// school's own exported tables, exactly as the app asks it.
+const subjectCardLabel = (s) => subjectCardLabelFor({ subjects: LAMAR_SUBJECTS }, s);
 // The app's own local-date formatter. Imported rather than reimplemented — see
 // the note on `day()` below for what reimplementing it cost.
 // Loaded with await, not as a static import: the harness above installs an

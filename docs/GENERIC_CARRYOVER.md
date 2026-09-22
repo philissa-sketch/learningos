@@ -244,6 +244,101 @@ defence.
 
 ---
 
+### 7. The generator only ever met the all-or-nothing slot — **FIXED Sept 20, 2026**
+
+Found while converting `pe`, the first of the five small slots chosen to prove
+step 4's question pattern holds before touching `academicCenter`.
+
+After the fix in §6 the generator emitted two kinds of name: the inventory's
+(destructured reads), and — for a slot the inventory names **nothing** from —
+every export the folder has. A name read through a slot helper
+(`slot(content).WEEKLY_PLAN`) is neither. It never showed, because `guide`,
+`projects` and `theme` each happened to reach **zero** inventory names when
+they were converted, so the wholesale rule caught them by luck.
+
+`pe` is the first **mixed** slot: six names the platform still destructures,
+three the slot helper asks for. Six names made it a "named" slot, so
+`WEEKLY_PLAN`, `WORKOUT_NOTES` and `EXERCISE_DEMO_VIDEOS` would have been
+dropped from every manifest the generator wrote — with a success message. The
+§6 fault again, one layer down.
+
+**Fix.** The generator now reads each slot interface's exported `*_QUESTIONS`
+and emits any the folder answers, optional by design.
+`scripts/verify-slot-questions.mjs` fails if a question a folder can answer
+does not reach `content.js`, if a converted slot hands over a function, or if a
+slot interface grows an import.
+
+**What the pe conversion itself did.**
+
+- `getTodaysWorkout`, `curatedDemoFor`, `demoLinkFor` and `HIDDEN_VIDEO` left
+  the Academy for `src/content/slots/pe.js`. Contract: **132 → 128** names; the
+  second Academy's shortfall **117 → 113**.
+- Two sentences of warm-up / cool-down English were **inside** the rotation
+  function. They are `WORKOUT_NOTES` in the school's folder now, verbatim;
+  400 dates compared old against new, zero differences.
+- `peVideoSource.js` had no code left. Its incident record is
+  `data/pe/VIDEO-SOURCE-HISTORY.md`, every word kept.
+- A YouTube address is now built in exactly **one** file in the app, a platform
+  file. No school's data can point a child at a search by filling its table.
+- `PEHome` would have crashed for a school whose plan skips a day (it read
+  `.dayName` off a possible null). It now says no session is planned. Unreachable
+  for the first Academy — its plan covers all seven days — so his screen is
+  unchanged.
+
+**The hinge question — did the pattern hold?** For the functions, yes, cleanly.
+The part that did not generalise was the tooling around it, and it failed
+silently. Expect the same at `timetable`, which is the first slot whose
+functions are real date logic rather than lookups.
+
+**Found on the way, not yet cleared:**
+
+- `guide` was converted but all three folders still hand over `getDailyLine`, a
+  function. Deliberate legacy path (the slot reads it on purpose), now recorded
+  in `verify-slot-questions.mjs` as `KNOWN_LEGACY` — a list that fails when it
+  goes stale and may only shrink.
+- `src/academies/lamar/content-1.js`, `-2.js`, `-3.js` are Sept 14 copies that
+  nothing imports and that are now provably broken (missing files, moved names).
+  Named in `verify-import-graph.mjs` as skipped; safe to delete.
+
+### 8. Subjects, rewards and writing converted — Sept 21, 2026
+
+Twelve more functions out of three slots. Contract **128 → 116** names. Each
+measured old against new before anything was wired:
+
+| Slot | Functions | Compared | Differences |
+|---|---|---|---|
+| `subjects` | `canonicalSubject`, `isKhanTaughtSubject`, `subjectCardLabel`, `strandsForSubject` | 65 inputs × 4 × 2 schools | 2nd school: 0. 1st: the parent's decision below, plus empty → null |
+| `rewards` | `printoutFor`, `journalFor`, `costForCosmetic`, `catalogRewardRows` | 75 | 0 — all 34 reward rows identical |
+| `writing` | `getSchoolWeekNumber`, `getThisWeeksScheduledIds`, `lessonForPrompt`, `requirementsFor` | 461 | 0, with the start as a Date and as a string |
+
+**Subjects is where the pattern bent.** The two schools had written
+*different* functions, not the same function over different tables: one folds
+case and one must not (camelCase ids), one aliases five spellings and one a
+retired subject, one tidies the spelling before the Khan check and one did not.
+Every difference turned out to be a fact about a school's own ids, so each is
+asked for as data (`SUBJECT_ALIASES`, `SUBJECT_ID_CASE`, `STRANDS`). The one
+place that touched his screen was asked first: **old records under the retired
+`writing` id now read as Language Arts and count as Khan-taught** (parent,
+Sept 21). The report card already treated them so.
+
+**Two values were hiding inside `catalogRewardRows`** — the dream tier's name
+and a fallback icon. The tier name also decides parent approval, so both are
+now the school's (`DREAM_TIER`, `DREAM_ICON`).
+
+**Found, not fixed — the timetable conversion's problem.** The first school's
+`SCHOOL_YEAR_START` is not its own: it re-exports
+`SCHOOL_YEAR_START_DATE = new Date(2026, 7, 3)` from `src/lib/schoolQuarter.js`.
+One family's first day of school is in the platform's quarter logic.
+
+**The checks caught me three more times** — see the subset habit below. All
+three were an assertion that could only pass: an `every()` over an empty
+filter, a date one day early that rounds to zero with or without the guard,
+and a time-zone bug invisible on a machine set to UTC. `verify-slot-writing`
+now re-runs itself in America/Chicago.
+
+New: `verify-slot-subjects` (29), `verify-slot-rewards` (24),
+`verify-slot-writing` (19). Mutations: 31, all caught after the three fixes.
+
 ---
 
 ## The four habits underneath. These are what actually propagate.
@@ -312,7 +407,7 @@ A comment stating a *fact* — a date relationship, a count, an ordering, an
 - The seed and the corrections table — already known, and the reason
   `placeholders.js` carries a warning in its header.
 
-### A check scoped to a subset, with the fault in the unmeasured part — 2×
+### A check scoped to a subset, with the fault in the unmeasured part — 6×
 
 - `verify-planner-feeds` measured `[...roboticsProjects, ...technologyProjects]`
   — 10 of 26 planner-scheduled projects. Sixteen unmeasured, and five of those
@@ -320,6 +415,17 @@ A comment stating a *fact* — a date relationship, a count, an ordering, an
 - `verify-field-trip-records`, 47 checks, was entirely about a *completed* trip
   reaching the compliance packet. Nothing asserted what the cleanup was allowed
   to **remove**, so a deletion bug ran under a green suite.
+
+- `verify-slot-pe`, **written Sept 20 to guard the pe move**, asserted that
+  picked exercises came from the right pool — for one category. Pointing the
+  rotation at the library's first pool passed, because for that one category
+  the first pool *is* the right pool. Now checked across all seven days.
+
+- Three more on Sept 21, all in checks written that day: an `every()` over the
+  iconless dream rewards when the school has none (passes on anything); "the
+  day before school is week 0", which rounds to 0 with or without the guard;
+  and a date-string start read as UTC, invisible on a machine set to UTC. An
+  empty or lucky subset proves nothing — construct the case that can fail.
 
 **When a check enumerates, the enumeration is the assertion.** Prefer deriving
 the list from the data over writing it out.
@@ -338,6 +444,8 @@ promoted as-is:
 | `verify-assignment-dates` (3 new) | no date-writer without a from-guard; every correction names what it replaces |
 | `verify-lesson-before-assignment` | no assignment is due in an earlier quarter than the lesson it needs |
 | `verify-planner-feeds` (new section) | no project precedes its lesson; nothing lands inside a school break |
+| `verify-import-graph` (Sept 20) | every relative import resolves and every imported name is exported — the build's job, runnable where the build cannot |
+| `verify-slot-questions` (Sept 20) | every converted slot is data, not code; every answered question reaches the manifest |
 
 The last one currently reports **2 deliberate failures**, both decisions the
 parent made rather than defects: two builds she chose to leave in the past, and

@@ -30,16 +30,25 @@ import {
 } from '../../lib/rotatingBlock.js';
 import { useToday } from '../../lib/useToday.js';
 import { academyContent } from '../../content/academyContent.js';
+import { getThisWeeksScheduledIds as slotGetThisWeeksScheduledIds } from '../../content/slots/writing.js';
+import { subjectCardLabel as subjectCardLabelFor } from '../../content/slots/subjects.js';
 import { optionalContent } from '../../content/slots/optional.js';
 import { projectPools } from '../../content/slots/projects.js';
+import { workoutForDate } from '../../content/slots/pe.js';
+import { getWeekNumber } from '../../lib/scheduler.js';
 
 const { GUITAR_DAILY_MINUTES = 0, getCurrentGuitarSkill = () => null } = optionalContent(academyContent(), 'electives');
 const { leadStatus = () => null } = academyContent().academicCenter;
 const { allLessons = [] } = academyContent().lessons;
-const { getTodaysWorkout = () => null } = academyContent().pe;
-const { subjectCardLabel = () => null } = academyContent().subjects;
+// Read at call time, not at import: these look the answer up in the school
+// that is open now. They were functions handed over by the school until
+// Sept 21, 2026 — see src/content/slots/subjects.js.
+const subjectCardLabel = (...args) => subjectCardLabelFor(academyContent(), ...args);
 const { dayPattern = () => null, subjectsForDay = () => null } = academyContent().timetable;
-const { getThisWeeksScheduledIds = () => [], writingPrompts = [] } = academyContent().writing;
+const { writingPrompts = [] } = academyContent().writing;
+// Read at call time from the school that is open now — see
+// src/content/slots/writing.js (Sept 21, 2026).
+const getThisWeeksScheduledIds = (...args) => slotGetThisWeeksScheduledIds(academyContent(), ...args);
 
 /**
  * MISSION CONTROL — rebuilt Aug 7, 2026.
@@ -831,8 +840,8 @@ export function MissionControlDashboard({
    * been unmounted since the Aug 7 rebuild, and two things it did were nowhere
    * else in the app:
    *
-   *   1. The row read **"Today's workout"** — generic — while `getTodaysWorkout`
-   *      has always known the day name, the title and how many exercises it
+   *   1. The row read **"Today's workout"** — generic — while the workout the
+   *      slot builds has always known the day name, the title and how many exercises it
    *      holds. The app knew and the screen never said, on a block he opens
    *      every single day.
    *
@@ -844,7 +853,8 @@ export function MissionControlDashboard({
    * complete log to count as started is how a tracker begins to feel like
    * homework.
    */
-  const todaysWorkout = getTodaysWorkout();
+  const workoutDate = new Date();
+  const todaysWorkout = workoutForDate(academyContent(), workoutDate, getWeekNumber(workoutDate));
   const peLogToday = peDailyLog?.[today];
   const peTrackersStarted = Boolean(
     peLogToday &&

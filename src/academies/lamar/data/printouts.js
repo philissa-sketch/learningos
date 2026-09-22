@@ -292,16 +292,9 @@ export const SUBJECT_JOURNALS = {
   }
 };
 
-/** The sheet for one lesson, or null — which is the answer for most lessons. */
-export function printoutFor(lessonId) {
-  const spec = LESSON_PRINTOUTS[lessonId];
-  if (!spec) return null;
-  return { ...spec, ...PRINTOUT_KINDS[spec.kind], kind: spec.kind };
-}
-
-export function journalFor(subject) {
-  return SUBJECT_JOURNALS[subject] || null;
-}
+// `printoutFor` and `journalFor` moved to src/content/slots/rewards.js on
+// Sept 21, 2026. Merging a lesson's sheet with its kind, and finding a
+// subject's journal, is the same for every school; the sheets are this one's.
 
 /** How many of a subject's lessons carry a sheet — for the cadence guard. */
 export function printoutCountFor(lessons = []) {

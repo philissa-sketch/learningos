@@ -145,6 +145,14 @@ export const PARTICIPATION_SUBJECTS = ['pe', 'gardening', 'guitar'];
 export const RETIRED_SUBJECT_MERGES = { writing: 'reading' };
 
 /**
+ * The same table under the name the platform asks for (`slots/subjects.js`).
+ * Every spelling this school files one subject under. Its ids are written in
+ * camelCase, so it does NOT set SUBJECT_ID_CASE: folding `socialStudies` to
+ * lower case would file it under a subject nobody has.
+ */
+export const SUBJECT_ALIASES = RETIRED_SUBJECT_MERGES;
+
+/**
  * The formal name — report card, transcript, course descriptions,
  * compliance packet. "English Language Arts" is what an admissions
  * office expects to read, and it covers both of the things Georgia's
@@ -195,10 +203,9 @@ export const SUBJECT_CARD_LABELS = {
   guitar: 'Guitar'
 };
 
-/** The student-facing name, falling back to the formal one. */
-export function subjectCardLabel(subject) {
-  return SUBJECT_CARD_LABELS[subject] || SUBJECT_LABELS[subject] || subject;
-}
+// `subjectCardLabel` moved to src/content/slots/subjects.js on Sept 21, 2026.
+// The order it looks things up in — card name, then formal name — is the same
+// for every school, and a stored Academy cannot hold a function.
 
 /**
  * Strands — a subject that carries two genuinely different skills inside
@@ -239,25 +246,17 @@ export function subjectCardLabel(subject) {
  * lesson in the curriculum carries `strand: 'reading'` or
  * `strand: 'language-arts'` and renaming those would silently unfile them.
  */
-export const SUBJECT_STRANDS = {
-  reading: [
-    { id: 'reading', label: 'Reading & Literature' },
-    { id: 'language-arts', label: 'Grammar & Writing' }
-  ]
-};
+//
+// One flat list, each strand naming its subject — the shape the platform asks
+// for, and the shape the second school already wrote. It was a map keyed by
+// subject until Sept 21, 2026; the order within a subject is unchanged.
+export const STRANDS = [
+  { id: 'reading', subject: 'reading', label: 'Reading & Literature' },
+  { id: 'language-arts', subject: 'reading', label: 'Grammar & Writing' }
+];
 
-export function strandsForSubject(subject) {
-  return SUBJECT_STRANDS[subject] || [];
-}
-
-export function strandLabel(subject, strandId) {
-  return strandsForSubject(subject).find((s) => s.id === strandId)?.label || strandId;
-}
-
-/** Map a retired subject id onto the one that absorbed it. */
-export function canonicalSubject(subject) {
-  return RETIRED_SUBJECT_MERGES[subject] || subject;
-}
+// `strandsForSubject`, `strandLabel` and `canonicalSubject` moved to
+// src/content/slots/subjects.js on Sept 21, 2026 — see the note there.
 
 // Registered as one combined full-year subject ("PE & Nutrition", id `pe`),
 // not two separate subjects — a confirmed scope decision with the parent.
@@ -267,9 +266,10 @@ export function canonicalSubject(subject) {
 // docs/PROJECT_LOG.md's PE & Nutrition build entry and PROJECT_PLAN.md
 // Part 4's Physical Education/Nutrition sections.
 
-export function isKhanTaughtSubject(subject) {
-  return KHAN_TAUGHT_SUBJECTS.includes(subject);
-}
+// `isKhanTaughtSubject` moved to src/content/slots/subjects.js on Sept 21,
+// 2026. It now tidies the spelling first, so a record still filed under the
+// retired `writing` id counts as the Khan-taught subject it merged into — the
+// parent's choice, and what the report card already did.
 
 /**
  * A Khan-taught subject that ALSO has a live Mission Control lesson track.

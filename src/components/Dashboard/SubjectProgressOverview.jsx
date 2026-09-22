@@ -93,5 +93,10 @@ export function SubjectProgressOverview({ subjectProgress, khanBySubject = {} })
   );
 }
 import { academyContent } from '../../content/academyContent.js';
+import { isKhanTaughtSubject as isKhanTaughtSubjectFor, subjectCardLabel as subjectCardLabelFor } from '../../content/slots/subjects.js';
 
-const { isKhanTaughtSubject = () => null, subjectCardLabel = () => null } = academyContent().subjects;
+// Read at call time, not at import: these look the answer up in the school
+// that is open now. They were functions handed over by the school until
+// Sept 21, 2026 — see src/content/slots/subjects.js.
+const isKhanTaughtSubject = (...args) => isKhanTaughtSubjectFor(academyContent(), ...args);
+const subjectCardLabel = (...args) => subjectCardLabelFor(academyContent(), ...args);

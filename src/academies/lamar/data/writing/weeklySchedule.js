@@ -62,12 +62,8 @@ export const SCHOOL_YEAR_START = SCHOOL_YEAR_START_DATE; // kept as an alias so 
 /** Returns the school week number (1-based) for a given date, relative to
  * the confirmed real school year start date. Returns 0 if the date is
  * before the school year has started. */
-export function getSchoolWeekNumber(date = new Date()) {
-  const msPerWeek = 7 * 24 * 60 * 60 * 1000;
-  const diff = date.getTime() - SCHOOL_YEAR_START.getTime();
-  if (diff < 0) return 0;
-  return Math.floor(diff / msPerWeek) + 1;
-}
+// `getSchoolWeekNumber` moved to src/content/slots/writing.js on Sept 21, 2026.
+// Counting weeks from a first day is the same for every school.
 
 // Week number -> array of prompt/project ids due that week. IDs match
 // writingPrompts.js (w7-*) and aerospaceProjects.js (ae7-*) exactly.
@@ -184,7 +180,6 @@ export const weeklyWritingSchedule = {
 /** Returns the array of prompt/project ids scheduled for the CURRENT
  * school week, or an empty array if this week isn't scheduled yet (e.g.
  * before the school year starts, or past week 9 until Q2+ get scheduled). */
-export function getThisWeeksScheduledIds(date = new Date()) {
-  const week = getSchoolWeekNumber(date);
-  return weeklyWritingSchedule[week] || [];
-}
+// `getThisWeeksScheduledIds` moved to src/content/slots/writing.js on
+// Sept 21, 2026. The schedule above is this school's; finding this week in it
+// is the platform's.

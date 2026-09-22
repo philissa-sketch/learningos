@@ -131,6 +131,67 @@ for (const name of NEEDS.names) {
   mods.get(module).push(name);
 }
 
+// ---- WHAT A SLOT HELPER ASKS FOR (Sept 20, 2026 — the mixed slot) ----
+//
+// A third way a name gets read, and until today it worked only by luck.
+//
+// The inventory above records DESTRUCTURED reads and nothing else. A slot
+// interface in src/content/slots/ reads its names through a helper instead —
+// `slot(content).WEEKLY_PLAN` — so the scan never sees them. Each of those
+// files already writes down what it asks for, in an exported `*_QUESTIONS`
+// array, precisely so a check does not have to retype the words.
+//
+// The wholesale rule below covered this, but only for a slot the inventory
+// names NOTHING from. `guide`, `projects` and `theme` each happened to reach
+// zero names when they were converted, so the gap never showed.
+//
+// `pe` is the first slot to land in between: six names the platform still
+// destructures, three more the slot helper asks for. Under the wholesale rule
+// alone, six names make it a "named" slot and its three questions are silently
+// dropped — WEEKLY_PLAN, WORKOUT_NOTES and EXERCISE_DEMO_VIDEOS would have
+// gone missing from every generated manifest, and PE would have gone quiet the
+// same way `guide` and `projects` did on Sept 19.
+//
+// So the questions are read from the slot files themselves and emitted
+// alongside the inventory. A question is OPTIONAL by design — it is asked of
+// every school and owed by none — so an Academy that does not export one is
+// not reported as missing. Two modules in one slot exporting the same one is
+// still ambiguous, for the same reason it always was.
+const SLOTS_DIR = path.join(REPO, 'src/content/slots');
+const questionsBySlot = new Map();
+for (const file of fs.readdirSync(SLOTS_DIR).filter((f) => f.endsWith('.js'))) {
+  const slot = file.replace(/\.js$/, '');
+  const src = fs.readFileSync(path.join(SLOTS_DIR, file), 'utf8');
+  const names = [];
+  for (const m of src.matchAll(/[A-Z_]+_QUESTIONS\s*=\s*Object\.freeze\(\[([\s\S]*?)\]\)/g)) {
+    for (const q of m[1].matchAll(/'([A-Za-z_$][\w$]*)'/g)) names.push(q[1]);
+  }
+  if (names.length) questionsBySlot.set(slot, [...new Set(names)]);
+}
+
+let questionNames = 0;
+for (const [slot, names] of questionsBySlot) {
+  for (const name of names) {
+    const candidates = (exporters.get(name) || []).filter((c) => c.slot === slot);
+    if (candidates.length === 0) continue; // optional: this school does not answer it
+    if (candidates.length > 1) {
+      ambiguous.push(`${name} exported by ${candidates.map((c) => c.module).join(' AND ')}`);
+      continue;
+    }
+    const { module } = candidates[0];
+    if (!bySlot.has(slot)) bySlot.set(slot, new Map());
+    const mods = bySlot.get(slot);
+    if (!mods.has(module)) mods.set(module, []);
+    if (!mods.get(module).includes(name)) {
+      mods.get(module).push(name);
+      questionNames += 1;
+    }
+  }
+}
+if (questionNames) {
+  console.log(`  slot questions answered by this folder: ${questionNames}`);
+}
+
 // ---- SHAPE SLOTS ----
 //
 // The loop above walks the INVENTORY: the names every Academy must provide.

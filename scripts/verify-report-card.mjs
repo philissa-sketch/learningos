@@ -231,7 +231,10 @@ console.log('\n--- 7. Math, ELA and Science are not labelled archived ---');
 
   const subjects = read('src/academies/lamar/subjects.js');
   ok('it is named for what it is', /export const KHAN_TAUGHT_SUBJECTS = \['math', 'reading', 'science'\]/.test(subjects));
-  ok('and so is the helper', /export function isKhanTaughtSubject\(subject\)/.test(subjects));
+  // The helper moved to the platform slot on Sept 21, 2026. The property is
+  // that the platform still answers the question BY THAT NAME, not where the
+  // line happens to sit.
+  ok('and so is the helper', /export function isKhanTaughtSubject\(content, subject\)/.test(read('src/content/slots/subjects.js')));
   ok('the rename is explained where someone would undo it',
     /three of the five subjects Georgia\s+\*?\s*names/.test(subjects));
 

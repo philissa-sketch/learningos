@@ -5,9 +5,13 @@ import { orderScheduledCards, scheduleSortDate } from '../../lib/academicOrder.j
 import { todayDateStr, toDateStr, addDays, parseDateStr } from '../../lib/scheduler.js';
 import { pairedBuildFor, BUILD_DOCUMENTATION_PROMPTS } from '../../lib/weeklyPlan.js';
 import { academyContent } from '../../content/academyContent.js';
+import { subjectCardLabel as subjectCardLabelFor } from '../../content/slots/subjects.js';
 import { projectPools } from '../../content/slots/projects.js';
 
-const { subjectCardLabel = () => null } = academyContent().subjects;
+// Read at call time, not at import: these look the answer up in the school
+// that is open now. They were functions handed over by the school until
+// Sept 21, 2026 — see src/content/slots/subjects.js.
+const subjectCardLabel = (...args) => subjectCardLabelFor(academyContent(), ...args);
 const { writingPrompts = [] } = academyContent().writing;
 
 /** Short, readable, and never through new Date('YYYY-MM-DD') - that is UTC. */

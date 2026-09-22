@@ -46,14 +46,25 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-import { demoLinkFor, HIDDEN_VIDEO } from '../src/academies/lamar/data/pe/peVideoSource.js';
-import {
-  EXERCISE_DEMO_VIDEOS,
-  CURATED_VERIFIED_ON,
-  curatedDemoFor
-} from '../src/academies/lamar/data/pe/exerciseDemoVideos.js';
+import { demoLinkFor, HIDDEN_VIDEO, curatedDemoFor } from '../src/content/slots/pe.js';
+import { EXERCISE_DEMO_VIDEOS, CURATED_VERIFIED_ON } from '../src/academies/lamar/data/pe/exerciseDemoVideos.js';
 import { exerciseLibrary } from '../src/academies/lamar/data/pe/exerciseLibrary.js';
+import { pe } from '../src/academies/lamar/content.js';
 import { parseTimedTarget, parseMinutesRange } from '../src/lib/exerciseTiming.js';
+
+// ---- WHAT THE SLOT IS HANDED (Sept 20, 2026) ----
+//
+// `demoLinkFor` and `curatedDemoFor` moved out of the Academy folder and into
+// `src/content/slots/pe.js` — ranking a parent's saved video above a curated
+// one is mechanism, and a stored Academy cannot hold a function. They take the
+// content pack as their first argument now.
+//
+// This is deliberately the SLOT AS THE SCHOOL ACTUALLY EXPORTS IT, read
+// straight off `content.js`, not a table rebuilt here out of the data files. A
+// hand-built pack would keep every check below passing on the day someone
+// dropped EXERCISE_DEMO_VIDEOS out of the export and every video in the app
+// went dark.
+const CONTENT = { pe };
 
 const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 let passed = 0;
@@ -77,19 +88,26 @@ console.log(`\nexercises: ${ALL.length}   curated: ${Object.keys(EXERCISE_DEMO_V
 
 console.log('\n--- 1. no url is ever assembled at render time ---');
 {
-  const src = strip(read('src/academies/lamar/data/pe/peVideoSource.js'));
-  ok('peVideoSource builds no youtube url at all', !/youtube\.com/i.test(src),
-    'a channel search built here is what produced 34 empty pages');
-  ok('...and no search url of any kind', !/search\?query|search_query|\/results/i.test(src));
+  // The address is now assembled in ONE file in the whole app, and it is a
+  // platform file. That is stricter than what this check guarded before: a
+  // school supplies ids, and no school can point a child anywhere by filling
+  // its own table carelessly, because no school's file builds an address.
+  const slot = strip(read('src/content/slots/pe.js'));
+  const urls = [...slot.matchAll(/youtube\.com\/([a-z?=$\{\}\w.]+)/gi)].map((m) => m[1]);
+  ok('the slot builds a url, and exactly one kind', urls.length === 1,
+    `found ${urls.length}: ${urls.join(', ')}`);
+  ok('...and it is watch?v=', urls.every((u) => u.startsWith('watch?v=')), urls.join(', '));
+  ok('...and no search url of any kind', !/search\?query|search_query|\/results/i.test(slot));
   ok('the creator-channel default is gone for good',
-    !/channelSearchUrl|VIDEO_SOURCES|DEFAULT_SOURCE_ID/.test(src));
+    !/channelSearchUrl|VIDEO_SOURCES|DEFAULT_SOURCE_ID/.test(slot));
+
+  ok('peVideoSource.js is gone, not quietly still imported',
+    !fs.existsSync(path.join(REPO, 'src/academies/lamar/data/pe/peVideoSource.js')),
+    'its record is kept as data/pe/VIDEO-SOURCE-HISTORY.md');
 
   const data = strip(read('src/academies/lamar/data/pe/exerciseDemoVideos.js'));
-  ok('the curated table builds only watch urls', !/search_query|\/results|\/@|youtube\.com\/c\//i.test(data),
-    'a channel or search url in the data file is the same fault one layer down');
-  const urls = [...data.matchAll(/youtube\.com\/([a-z?=$\{\}\w.]+)/gi)].map((m) => m[1]);
-  ok('...and every one of them is watch?v=', urls.length > 0 && urls.every((u) => u.startsWith('watch?v=')),
-    urls.filter((u) => !u.startsWith('watch?v=')).join(', '));
+  ok('the school data file builds no url at all', !/youtube\.com/i.test(data),
+    'the school answers with ids; assembling an address is the platform\u2019s job');
 
   const workout = strip(read('src/components/PE/WorkoutView.jsx'));
   ok('the student workout screen builds no url either', !/youtube\.com/i.test(workout));
@@ -129,11 +147,11 @@ console.log('\n--- 2. the curated table is well-formed ---');
 
 console.log('\n--- 3. every exercise is either covered or covered by a decision ---');
 {
-  const uncovered = ALL.filter((e) => !curatedDemoFor(e.id) && !NO_VIDEO_ON_PURPOSE[e.id]);
+  const uncovered = ALL.filter((e) => !curatedDemoFor(CONTENT, e.id) && !NO_VIDEO_ON_PURPOSE[e.id]);
   ok('no exercise silently lacks a video', uncovered.length === 0,
     uncovered.map((e) => `${e.id} (${e.name})`).join(', '));
 
-  const staleExceptions = Object.keys(NO_VIDEO_ON_PURPOSE).filter((id) => curatedDemoFor(id));
+  const staleExceptions = Object.keys(NO_VIDEO_ON_PURPOSE).filter((id) => curatedDemoFor(CONTENT, id));
   ok('the deliberate-exception list has no stale entries', staleExceptions.length === 0,
     staleExceptions.join(', '));
 
@@ -146,29 +164,32 @@ console.log('\n--- 4. precedence: hers, then the default, then nothing ---');
   const a = ALL[0];
   const b = ALL[1];
 
-  const link = demoLinkFor(a, { savedVideos: { [a.id]: 'https://youtu.be/abc123' } });
+  const link = demoLinkFor(CONTENT, a, { savedVideos: { [a.id]: 'https://youtu.be/abc123' } });
   ok('her saved video is what he opens', link && link.url === 'https://youtu.be/abc123');
   ok('...and it is marked as hers', link && link.kind === 'parent');
-  ok('...even though a curated default exists for it', Boolean(curatedDemoFor(a.id)));
+  ok('...even though a curated default exists for it', Boolean(curatedDemoFor(CONTENT, a.id)));
 
-  const def = demoLinkFor(b, { savedVideos: {} });
+  const def = demoLinkFor(CONTENT, b, { savedVideos: {} });
   ok('with nothing saved, the curated default is shown',
-    def && def.url === curatedDemoFor(b.id).url);
+    def && def.url === curatedDemoFor(CONTENT, b.id).url);
   ok('...and it is marked as a default, not as hers', def && def.kind === 'curated');
   ok('...and it carries the title and channel for the parent screen',
     def && Boolean(def.title) && Boolean(def.channel));
 
   ok('HIDDEN means nothing, not the default',
-    demoLinkFor(a, { savedVideos: { [a.id]: HIDDEN_VIDEO } }) === null,
+    demoLinkFor(CONTENT, a, { savedVideos: { [a.id]: HIDDEN_VIDEO } }) === null,
     'without this she cannot remove a default she does not like');
   ok('the master switch still silences everything',
-    demoLinkFor(a, { savedVideos: {}, enabled: false }) === null &&
-    demoLinkFor(a, { savedVideos: { [a.id]: 'https://youtu.be/x' }, enabled: false }) === null);
-  ok('a missing exercise does not throw', demoLinkFor(undefined, { savedVideos: {} }) === null);
+    demoLinkFor(CONTENT, a, { savedVideos: {}, enabled: false }) === null &&
+    demoLinkFor(CONTENT, a, { savedVideos: { [a.id]: 'https://youtu.be/x' }, enabled: false }) === null);
+  ok('a missing exercise does not throw', demoLinkFor(CONTENT, undefined, { savedVideos: {} }) === null);
   ok('an exercise with no curated video and nothing saved gets nothing',
-    demoLinkFor({ id: 'rm-easy-walk' }, { savedVideos: {} }) === null);
+    demoLinkFor(CONTENT, { id: 'rm-easy-walk' }, { savedVideos: {} }) === null);
   ok('a video saved for ANOTHER exercise never leaks across',
-    demoLinkFor({ id: 'not-a-real-exercise' }, { savedVideos: { [a.id]: 'https://youtu.be/abc123' } }) === null);
+    demoLinkFor(CONTENT, { id: 'not-a-real-exercise' }, { savedVideos: { [a.id]: 'https://youtu.be/abc123' } }) === null);
+  ok('a school with no video table gets nothing, and does not throw',
+    demoLinkFor({}, a, { savedVideos: {} }) === null && curatedDemoFor({}, a.id) === null,
+    'a school that has not filled this slot is a real school, not a crash');
 
   const store = read('src/store/useAppStore.js');
   ok('the store accepts the HIDDEN sentinel',
@@ -192,7 +213,7 @@ console.log('\n--- 5. the parent screen describes what the code actually does --
   ok('...and that hers replaces them', /replaces it|replace the default/i.test(mgr));
   ok('she can remove a default she does not want', /HIDDEN_VIDEO/.test(mgr) && /Hide/.test(mgr));
   ok('each row shows what he would actually open',
-    /curatedDemoFor\(exercise\.id\)/.test(mgr) && /curated\.title/.test(mgr) && /curated\.channel/.test(mgr),
+    /curatedDemoFor\(academyContent\(\), exercise\.id\)/.test(mgr) && /curated\.title/.test(mgr) && /curated\.channel/.test(mgr),
     'reviewing 69 videos has to be reading a line, not hunting for one');
   ok('she still gets a search, on her own gated screen', /search_query=/.test(mgr));
   ok('she can see the coverage count', /of \{total\} exercises have a video/.test(mgr));

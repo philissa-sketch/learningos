@@ -155,6 +155,10 @@ export function SubjectJournal({ subject, onExit }) {
   );
 }
 import { academyContent } from '../../content/academyContent.js';
+import { journalFor as slotJournalFor, printoutFor as slotPrintoutFor } from '../../content/slots/rewards.js';
 
-const { journalFor = () => null, printoutFor = () => null } = academyContent().rewards;
+// Read at call time from the school that is open now — see
+// src/content/slots/rewards.js (Sept 21, 2026).
+const journalFor = (...args) => slotJournalFor(academyContent(), ...args);
+const printoutFor = (...args) => slotPrintoutFor(academyContent(), ...args);
 const { SUBJECT_LABELS = {} } = academyContent().subjects;

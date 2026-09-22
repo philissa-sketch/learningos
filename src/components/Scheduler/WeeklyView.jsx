@@ -9,9 +9,13 @@ import {
 } from '../../lib/scheduler.js';
 import { buildPlannerItemsByDate } from '../../lib/plannerCalendar.js';
 import { academyContent } from '../../content/academyContent.js';
+import { getThisWeeksScheduledIds as slotGetThisWeeksScheduledIds } from '../../content/slots/writing.js';
 import { findProjectById } from '../../content/slots/projects.js';
 
-const { getThisWeeksScheduledIds = () => [], writingPrompts = [] } = academyContent().writing;
+const { writingPrompts = [] } = academyContent().writing;
+// Read at call time from the school that is open now — see
+// src/content/slots/writing.js (Sept 21, 2026).
+const getThisWeeksScheduledIds = (...args) => slotGetThisWeeksScheduledIds(academyContent(), ...args);
 
 /**
  * The scheduled item with this id — a writing prompt, or a project from any

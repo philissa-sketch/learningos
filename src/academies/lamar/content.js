@@ -37,30 +37,29 @@ import { SCIENCE_CANONICAL_KEYS, SCIENCE_CANONICAL_TITLES, SCIENCE_COURSES, SCIE
 import { allLessons } from './data/lessons/index.js';
 import { ASSIGNMENT_CORRECTIONS, ASSIGNMENT_RETITLES, BOOK_SWAPS, RETIRED_ASSIGNMENT_SLOTS } from './data/migrations/assignmentMigrations.js';
 import { navGroups, navParentTab, navSchoolName, navSchoolTagline } from './data/nav/nav.js';
-import { curatedDemoFor } from './data/pe/exerciseDemoVideos.js';
+import { EXERCISE_DEMO_VIDEOS } from './data/pe/exerciseDemoVideos.js';
 import { CATEGORY_LABELS, exerciseLibrary } from './data/pe/exerciseLibrary.js';
 import { nutritionChallenges, nutritionTopics, recipeLibrary, shoppingListCategories } from './data/pe/nutritionContent.js';
-import { HIDDEN_VIDEO, demoLinkFor } from './data/pe/peVideoSource.js';
-import { getTodaysWorkout } from './data/pe/weeklyWorkoutPlan.js';
+import { WEEKLY_PLAN, WORKOUT_NOTES } from './data/pe/weeklyWorkoutPlan.js';
 import { templates } from './data/practice/problemTemplates.js';
 import { aerospaceProjects } from './data/aerospace/aerospaceProjects.js';
 import { roboticsProjects } from './data/robotics/roboticsProjects.js';
 import { scienceExperiments } from './data/science/scienceExperiments.js';
 import { technologyProjects } from './data/technology/technologyProjects.js';
 import { HQ_CREW } from './data/hqCrew.js';
-import { journalFor, printoutFor } from './data/printouts.js';
-import { AVATAR_GEAR, COIN_CATALOG, HQ_ITEMS, MISSION_EQUIPMENT, SEEDED_REWARD_LADDER_MAP, catalogRewardRows, costForCosmetic } from './data/rewardCatalog.js';
-import { ACTIVE_SUBJECTS, KHAN_TAUGHT_SUBJECTS, LESSON_TRACK_SUBJECTS, PARTICIPATION_SUBJECTS, SUBJECT_LABELS, canonicalSubject, isKhanTaughtSubject, strandsForSubject, subjectCardLabel } from './subjects.js';
+import { LESSON_PRINTOUTS, PRINTOUT_KINDS, SUBJECT_JOURNALS } from './data/printouts.js';
+import { AVATAR_GEAR, COIN_CATALOG, COSMETIC_REPRICE, DREAM_ICON, DREAM_REWARDS, DREAM_TIER, HQ_ITEMS, MISSION_EQUIPMENT, REAL_WORLD_REWARDS, SEEDED_REWARD_LADDER_MAP, TIERS_REQUIRING_PARENT } from './data/rewardCatalog.js';
+import { ACTIVE_SUBJECTS, KHAN_TAUGHT_SUBJECTS, LESSON_TRACK_SUBJECTS, PARTICIPATION_SUBJECTS, STRANDS, SUBJECT_ALIASES, SUBJECT_CARD_LABELS, SUBJECT_LABELS } from './subjects.js';
 import { defaultSchedule } from './data/schedule/defaultSchedule.js';
 import { holidaysInSpan, isHoliday, isSchoolDay } from './data/schedule/schoolHolidays.js';
 import { WEEK_PATTERN, dayPattern, subjectsForDay } from './data/schedule/weekPattern.js';
 import { dailyDrills } from './data/writing/dailyDrills.js';
-import { requirementsFor } from './data/writing/drillRequirements.js';
-import { lessonForPrompt } from './data/writing/promptLessons.js';
+import { DRILL_REQUIREMENTS } from './data/writing/drillRequirements.js';
+import { PROMPT_LESSONS } from './data/writing/promptLessons.js';
 import { spellingWordPool } from './data/writing/spellingWordPool.js';
 import { EDCLUB_PORTAL_URL, ERGONOMICS_CHECKLIST, typingLessons } from './data/writing/typingLessons.js';
 import { vocabularyWordPool } from './data/writing/vocabularyWordPool.js';
-import { SCHOOL_YEAR_START, getSchoolWeekNumber, getThisWeeksScheduledIds, weeklyWritingSchedule } from './data/writing/weeklySchedule.js';
+import { SCHOOL_YEAR_START, weeklyWritingSchedule } from './data/writing/weeklySchedule.js';
 import { writingPrompts } from './data/writing/writingPrompts.js';
 
 export const academicCenter = { ACADEMIC_ASSIGNMENT_TYPES, ACADEMIC_BOOK_TYPES, ACADEMIC_SUBJECT_ORDER, ACADEMIC_SUCCESS_CENTER_QUARTER_ORDER, BLACK_EXCELLENCE_KNOWN_GAPS, BOOK_RANGE_LABELS, EXCLUDED_RANGES, RUBRIC_LEVELS, activeMilestone, assignmentCandidatesForSlot, availableDueDates, blackAmericanAuthorsForSubject, blackExcellenceBooksForSubject, bookRationale, bookRecommendations, candidatesForBook, criteriaForFormat, findFormat, formatsForType, hasMilestones, leadStatus, milestoneProgress, milestonesFor, nextAssignmentRecommendation, nextRecommendationForBook, quarterlyAcademicPlaceholders, rationaleFor, reflectionPromptFor, resolveSuggestedDueDate, sizeFor, startByFor, subjectBookPlaceholders, suggestedGradeFromRubric };
@@ -85,19 +84,19 @@ export const migrations = { ASSIGNMENT_CORRECTIONS, ASSIGNMENT_RETITLES, BOOK_SW
 
 export const nav = { navGroups, navParentTab, navSchoolName, navSchoolTagline };
 
-export const pe = { CATEGORY_LABELS, HIDDEN_VIDEO, curatedDemoFor, demoLinkFor, exerciseLibrary, getTodaysWorkout, nutritionChallenges, nutritionTopics, recipeLibrary, shoppingListCategories };
+export const pe = { CATEGORY_LABELS, EXERCISE_DEMO_VIDEOS, WEEKLY_PLAN, WORKOUT_NOTES, exerciseLibrary, nutritionChallenges, nutritionTopics, recipeLibrary, shoppingListCategories };
 
 export const practice = { templates };
 
 export const projects = { aerospaceProjects, roboticsProjects, scienceExperiments, technologyProjects };
 
-export const rewards = { AVATAR_GEAR, COIN_CATALOG, HQ_CREW, HQ_ITEMS, MISSION_EQUIPMENT, SEEDED_REWARD_LADDER_MAP, catalogRewardRows, costForCosmetic, journalFor, printoutFor };
+export const rewards = { AVATAR_GEAR, COIN_CATALOG, COSMETIC_REPRICE, DREAM_ICON, DREAM_REWARDS, DREAM_TIER, HQ_CREW, HQ_ITEMS, LESSON_PRINTOUTS, MISSION_EQUIPMENT, PRINTOUT_KINDS, REAL_WORLD_REWARDS, SEEDED_REWARD_LADDER_MAP, SUBJECT_JOURNALS, TIERS_REQUIRING_PARENT };
 
-export const subjects = { ACTIVE_SUBJECTS, KHAN_TAUGHT_SUBJECTS, LESSON_TRACK_SUBJECTS, PARTICIPATION_SUBJECTS, SUBJECT_LABELS, canonicalSubject, isKhanTaughtSubject, strandsForSubject, subjectCardLabel };
+export const subjects = { ACTIVE_SUBJECTS, KHAN_TAUGHT_SUBJECTS, LESSON_TRACK_SUBJECTS, PARTICIPATION_SUBJECTS, STRANDS, SUBJECT_ALIASES, SUBJECT_CARD_LABELS, SUBJECT_LABELS };
 
 export const timetable = { WEEK_PATTERN, dayPattern, defaultSchedule, holidaysInSpan, isHoliday, isSchoolDay, subjectsForDay };
 
-export const writing = { EDCLUB_PORTAL_URL, ERGONOMICS_CHECKLIST, SCHOOL_YEAR_START, dailyDrills, getSchoolWeekNumber, getThisWeeksScheduledIds, lessonForPrompt, requirementsFor, spellingWordPool, typingLessons, vocabularyWordPool, weeklyWritingSchedule, writingPrompts };
+export const writing = { DRILL_REQUIREMENTS, EDCLUB_PORTAL_URL, ERGONOMICS_CHECKLIST, PROMPT_LESSONS, SCHOOL_YEAR_START, dailyDrills, spellingWordPool, typingLessons, vocabularyWordPool, weeklyWritingSchedule, writingPrompts };
 
 /**
  * This Academy's palette and print rules.

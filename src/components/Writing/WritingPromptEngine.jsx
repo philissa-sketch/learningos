@@ -5,8 +5,12 @@ import { WritingCheckerLink } from './WritingCheckerLink.jsx';
 import { checkWriting } from '../../lib/writingCheck.js';
 import { pairedBuildFor } from '../../lib/weeklyPlan.js';
 import { academyContent } from '../../content/academyContent.js';
+import { lessonForPrompt as slotLessonForPrompt, requirementsFor as slotRequirementsFor } from '../../content/slots/writing.js';
 
-const { lessonForPrompt = () => null, requirementsFor = () => null } = academyContent().writing;
+// Read at call time from the school that is open now — see
+// src/content/slots/writing.js (Sept 21, 2026).
+const lessonForPrompt = (...args) => slotLessonForPrompt(academyContent(), ...args);
+const requirementsFor = (...args) => slotRequirementsFor(academyContent(), ...args);
 
 export function WritingPromptEngine({ prompt, onExit }) {
   const submitWritingEntry = useAppStore((s) => s.submitWritingEntry);

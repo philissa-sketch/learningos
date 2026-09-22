@@ -4,8 +4,7 @@ import { ExerciseTimer } from './ExerciseTimer.jsx';
 import { parseMinutesRange } from '../../lib/exerciseTiming.js';
 import { useToday } from '../../lib/useToday.js';
 import { academyContent } from '../../content/academyContent.js';
-
-const { demoLinkFor = () => null } = academyContent().pe;
+import { demoLinkFor } from '../../content/slots/pe.js';
 
 export function WorkoutView({ workout }) {
   const peWorkoutLog = useAppStore((s) => s.peWorkoutLog);
@@ -29,7 +28,8 @@ export function WorkoutView({ workout }) {
   // WAS being handed to him wherever she had saved nothing, and 34 of the 70
   // exercises opened an empty page: "This channel has no content that matched
   // 'Bear Crawl form.'" An exercise with no video shows none, and the form cues
-  // below are detailed enough to stand on their own. See data/pe/peVideoSource.js.
+  // below are detailed enough to stand on their own. See content/slots/pe.js and
+  // data/pe/VIDEO-SOURCE-HISTORY.md.
   const exerciseVideos = useAppStore((s) => s.exerciseVideos) || {};
   const videosEnabled = useAppStore((s) => s.exerciseVideosEnabled) !== false;
 
@@ -104,7 +104,7 @@ export function WorkoutView({ workout }) {
             <p className="mt-1 text-xs text-ink-500">{ex.focus}</p>
 
             {(() => {
-              const link = demoLinkFor(ex, {
+              const link = demoLinkFor(academyContent(), ex, {
                 savedVideos: exerciseVideos,
                 enabled: videosEnabled
               });

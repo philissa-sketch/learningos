@@ -293,5 +293,9 @@ export function QuietTile({ title, detail, badge, onOpen }) {
   );
 }
 import { academyContent } from '../../content/academyContent.js';
+import { subjectCardLabel as subjectCardLabelFor } from '../../content/slots/subjects.js';
 
-const { subjectCardLabel = () => null } = academyContent().subjects;
+// Read at call time, not at import: these look the answer up in the school
+// that is open now. They were functions handed over by the school until
+// Sept 21, 2026 — see src/content/slots/subjects.js.
+const subjectCardLabel = (...args) => subjectCardLabelFor(academyContent(), ...args);

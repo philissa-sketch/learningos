@@ -7,8 +7,8 @@ import { MealsView } from './MealsView.jsx';
 import { WeeklyGoalCard } from './WeeklyGoalCard.jsx';
 import { NovaPEGuide } from './NovaPEGuide.jsx';
 import { academyContent } from '../../content/academyContent.js';
-
-const { getTodaysWorkout = () => null } = academyContent().pe;
+import { workoutForDate } from '../../content/slots/pe.js';
+import { getWeekNumber } from '../../lib/scheduler.js';
 
 const TABS = [
   { id: 'workout', label: "Today's Workout" },
@@ -28,7 +28,10 @@ const TABS = [
  */
 export function PEHome({ onExit }) {
   const [tab, setTab] = useState('workout');
-  const todaysWorkout = getTodaysWorkout();
+  // Read at render, not at import: a module-scope read freezes the answer at
+  // the moment the bundle loads, and this one is keyed off today's date.
+  const now = new Date();
+  const todaysWorkout = workoutForDate(academyContent(), now, getWeekNumber(now));
   const currentRank = useAppStore((s) => s.currentRank);
 
   return (
@@ -37,7 +40,7 @@ export function PEHome({ onExit }) {
         <div>
           <p className="text-xs font-display uppercase tracking-widest text-ink-500">PE &amp; Nutrition</p>
           <h2 className="mt-1 font-display text-2xl font-700 text-ink-100">
-            {todaysWorkout.dayName}: {todaysWorkout.title}
+            {todaysWorkout ? `${todaysWorkout.dayName}: ${todaysWorkout.title}` : 'No session planned today'}
           </h2>
           <p className="mt-1 text-sm text-ink-300">
             Strength, energy, and real habits — never about how you look. Every session and every
@@ -73,7 +76,12 @@ export function PEHome({ onExit }) {
 
       <NovaPEGuide tab={tab} />
 
-      {tab === 'workout' && <WorkoutView workout={todaysWorkout} />}
+      {/* A school whose weekly plan does not cover today gets a sentence rather
+          than an empty workout card. Never reached by a plan covering all seven
+          days; reachable by one that does not, which is a real school. */}
+      {tab === 'workout' && (todaysWorkout
+        ? <WorkoutView workout={todaysWorkout} />
+        : <p className="text-sm text-ink-300">No workout is planned for today. The other tabs still work.</p>)}
       {tab === 'nutrition' && <NutritionView />}
       {tab === 'meals' && <MealsView />}
       {tab === 'trackers' && <TrackersView />}
