@@ -65,26 +65,15 @@ export function holidayName(date) {
   return HOLIDAY_BY_DATE.get(typeof date === 'string' ? date : toLocalDateStr(date)) || null;
 }
 
-export function isHoliday(date) {
-  return holidayName(date) !== null;
-}
+// `isHoliday`, `isSchoolDay` and `holidaysInSpan` moved to
+// src/content/slots/timetable.js on Sept 22, 2026. The list above is this
+// school's; reading a date against it is every school's.
 
 /**
  * True only for a real instructional day: Monday-Friday and not a holiday.
  * The single place the rest of the app should ask.
  */
-export function isSchoolDay(date) {
-  const d = date instanceof Date ? date : new Date(date + 'T00:00:00');
-  const dow = d.getDay();
-  if (dow === 0 || dow === 6) return false;
-  return !isHoliday(d);
-}
+
 
 /** Holidays falling on a weekday inside a span — the ones that actually cost a day. */
-export function holidaysInSpan(startDateStr, endDateStr) {
-  return SCHOOL_HOLIDAYS.filter((h) => {
-    if (h.date < startDateStr || h.date > endDateStr) return false;
-    const d = new Date(h.date + 'T00:00:00');
-    return d.getDay() >= 1 && d.getDay() <= 5;
-  });
-}
+

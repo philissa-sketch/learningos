@@ -55,7 +55,12 @@ const gc = await import(moduleUrl('src/academies/lamar/data/admin/georgiaComplia
 // 2026 (§3c Step 1). The thresholds it is checked against are still the
 // school's, which is why only this one name moved.
 const { instructionMinutes } = await import(moduleUrl('src/lib/instructionTime.js'));
-const { isSchoolDay } = await import(moduleUrl('src/academies/lamar/data/schedule/schoolHolidays.js'));
+// These moved to src/content/slots/timetable.js on Sept 22, 2026. Asked of the
+// school's timetable slot as content.js exports it, the way the app asks.
+const __slotTT = await import(moduleUrl('src/content/slots/timetable.js'));
+const { timetable: __schoolTT } = await import(moduleUrl('src/academies/lamar/content.js'));
+const __TT = { timetable: __schoolTT };
+const isSchoolDay = (...a) => __slotTT.isSchoolDay(__TT, ...a);
 const sm = await import(moduleUrl('src/lib/scheduledMinutes.js'));
 const { defaultSchedule } = await import(moduleUrl('src/academies/lamar/data/schedule/defaultSchedule.js'));
 

@@ -261,7 +261,12 @@ console.log('--- friday draws on the record, never on its own empty subject list
     'an empty preference list means "this day takes what is behind", never "this day has nothing"');
   ok('...and Friday is still the flex day in the pattern',
     WEEK_PATTERN[5].flex === true && WEEK_PATTERN[5].subjects.length === 0);
-  const { subjectsForDay } = await import(moduleUrl('src/academies/lamar/data/schedule/weekPattern.js'));
+// These moved to src/content/slots/timetable.js on Sept 22, 2026. Asked of the
+// school's timetable slot as content.js exports it, the way the app asks.
+  const __slotTT = await import(moduleUrl('src/content/slots/timetable.js'));
+  const { timetable: __schoolTT } = await import(moduleUrl('src/academies/lamar/content.js'));
+  const __TT = { timetable: __schoolTT };
+  const subjectsForDay = (...a) => __slotTT.subjectsForDay(__TT, ...a);
   ok('...so subjectsForDay(Friday) is empty and the dashboard must not filter on it',
     subjectsForDay(D(2026, 8, 14)).length === 0);
 }
@@ -287,7 +292,11 @@ console.log('--- friday draws on the record, never on its own empty subject list
 // and made the KHAN rows agree. The lesson loop kept its own answer.
 // ---------------------------------------------------------------------------
 {
-  const { subjectsForDay, dayPattern } = await import(moduleUrl('src/academies/lamar/data/schedule/weekPattern.js'));
+  const __slotTT = await import(moduleUrl('src/content/slots/timetable.js'));
+  const { timetable: __schoolTT } = await import(moduleUrl('src/academies/lamar/content.js'));
+  const __TT = { timetable: __schoolTT };
+  const subjectsForDay = (...a) => __slotTT.subjectsForDay(__TT, ...a);
+  const dayPattern = (...a) => __slotTT.dayPattern(__TT, ...a);
   // patternSubjects moved to the platform on Sept 1, 2026 (§3c Step 1). The
   // week pattern it reads is still this school's.
   const { patternSubjects } = await import(moduleUrl('src/lib/timetable.js'));

@@ -6,6 +6,7 @@ import { parseDateStr } from './scheduler.js';
 import { EVIDENCE_FOLDERS } from './driveLinks.js';
 import { READINESS_SKILLS } from './readiness.js';
 import { academyContent } from '../content/academyContent.js';
+import { isSchoolDay as slotIsSchoolDay } from '../content/slots/timetable.js';
 
 // `stateName` is the generic key every Academy's compliance slot answers; the
 // GEORGIA_* names beside it are still one state's and are the contract's next
@@ -14,7 +15,9 @@ import { academyContent } from '../content/academyContent.js';
 // one that says "your state".
 const { stateName = 'your state', GEORGIA_LAW_CITATION, GEORGIA_REQUIREMENTS = [], MISSION_RUBRIC_CRITERIA = [], findProposal = () => null, instructionProgress = () => null, missionScoreTotals = () => null } = academyContent().compliance;
 const { SUBJECT_LABELS = {} } = academyContent().subjects;
-const { isSchoolDay = () => false } = academyContent().timetable;
+// Read at call time from the school that is open now — see
+// src/content/slots/timetable.js (Sept 22, 2026).
+const isSchoolDay = (...args) => slotIsSchoolDay(academyContent(), ...args);
 
 /**
  * The combined compliance packet — Part 8's "generate one combined,

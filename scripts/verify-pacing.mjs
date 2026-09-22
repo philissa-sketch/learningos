@@ -52,7 +52,12 @@ const moduleUrl = (rel) => pathToFileURL(path.join(REPO, rel)).href;
 const P = await import(moduleUrl('src/lib/pacing.js'));
 const { liveMorningSubject } = await import(moduleUrl('src/lib/rotatingBlock.js'));
 const { QUARTER_SPANS } = await import(moduleUrl('src/lib/yearPlan.js'));
-const { isSchoolDay } = await import(moduleUrl('src/academies/lamar/data/schedule/schoolHolidays.js'));
+// These moved to src/content/slots/timetable.js on Sept 22, 2026. Asked of the
+// school's timetable slot as content.js exports it, the way the app asks.
+const __slotTT = await import(moduleUrl('src/content/slots/timetable.js'));
+const { timetable: __schoolTT } = await import(moduleUrl('src/academies/lamar/content.js'));
+const __TT = { timetable: __schoolTT };
+const isSchoolDay = (...a) => __slotTT.isSchoolDay(__TT, ...a);
 const { BLOCK_FOR_SUBJECT } = await import(moduleUrl('src/lib/scheduledMinutes.js'));
 const { ROTATING_BLOCK_ID } = await import(moduleUrl('src/lib/rotatingBlock.js'));
 

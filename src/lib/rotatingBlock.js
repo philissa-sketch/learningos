@@ -1,10 +1,14 @@
 import { getCurrentQuarter } from './schoolQuarter.js';
 import { patternSubjects } from './timetable.js';
 import { academyContent } from '../content/academyContent.js';
+import { dayPattern as slotDayPattern } from '../content/slots/timetable.js';
 
 const { allLessons = [] } = academyContent().lessons;
 const { SUBJECT_LABELS = {} } = academyContent().subjects;
-const { WEEK_PATTERN = {}, dayPattern = () => null } = academyContent().timetable;
+const { WEEK_PATTERN = {} } = academyContent().timetable;
+// Read at call time from the school that is open now — see
+// src/content/slots/timetable.js (Sept 22, 2026).
+const dayPattern = (...args) => slotDayPattern(academyContent(), ...args);
 
 /**
  * WHAT IS ACTUALLY IN THE 2:15 BLOCK TODAY.

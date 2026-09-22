@@ -44,7 +44,12 @@ import { quarterlyAcademicPlaceholders } from '../src/academies/lamar/data/acade
 import { formatsForType, findFormat, criteriaForFormat } from '../src/academies/lamar/data/academicSuccessCenter/reportFormats.js';
 import { hasMilestones, milestonesFor } from '../src/academies/lamar/data/academicSuccessCenter/assignmentMilestones.js';
 import { getCurrentQuarter } from '../src/lib/schoolQuarter.js';
-import { dayPattern } from '../src/academies/lamar/data/schedule/weekPattern.js';
+// These moved to src/content/slots/timetable.js on Sept 22, 2026. Asked of the
+// school's timetable slot as content.js exports it, the way the app asks.
+import * as __slotTT from '../src/content/slots/timetable.js';
+import { timetable as __schoolTT } from '../src/academies/lamar/content.js';
+const __TT = { timetable: __schoolTT };
+const dayPattern = (...a) => __slotTT.dayPattern(__TT, ...a);
 
 const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const read = (rel) => fs.readFileSync(path.join(REPO, rel), 'utf8');

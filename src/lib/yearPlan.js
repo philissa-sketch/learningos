@@ -1,9 +1,13 @@
 import { toDateStr, parseDateStr } from './scheduler.js';
 import { instructionMinutes } from './instructionTime.js';
 import { academyContent } from '../content/academyContent.js';
+import { holidaysInSpan as slotHolidaysInSpan, isSchoolDay as slotIsSchoolDay } from '../content/slots/timetable.js';
 
 const { GEORGIA_DAYS_REQUIRED, findProposal = () => null, missionScoreTotals = () => null } = academyContent().compliance;
-const { holidaysInSpan = () => [], isSchoolDay = () => false } = academyContent().timetable;
+// Read at call time from the school that is open now — see
+// src/content/slots/timetable.js (Sept 22, 2026).
+const holidaysInSpan = (...args) => slotHolidaysInSpan(academyContent(), ...args);
+const isSchoolDay = (...args) => slotIsSchoolDay(academyContent(), ...args);
 
 /**
  * Annual and semester planning — PROJECT_PLAN.md Part 8.

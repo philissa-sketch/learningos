@@ -51,8 +51,8 @@ import { LESSON_PRINTOUTS, PRINTOUT_KINDS, SUBJECT_JOURNALS } from './data/print
 import { AVATAR_GEAR, COIN_CATALOG, COSMETIC_REPRICE, DREAM_ICON, DREAM_REWARDS, DREAM_TIER, HQ_ITEMS, MISSION_EQUIPMENT, REAL_WORLD_REWARDS, SEEDED_REWARD_LADDER_MAP, TIERS_REQUIRING_PARENT } from './data/rewardCatalog.js';
 import { ACTIVE_SUBJECTS, KHAN_TAUGHT_SUBJECTS, LESSON_TRACK_SUBJECTS, PARTICIPATION_SUBJECTS, STRANDS, SUBJECT_ALIASES, SUBJECT_CARD_LABELS, SUBJECT_LABELS } from './subjects.js';
 import { defaultSchedule } from './data/schedule/defaultSchedule.js';
-import { holidaysInSpan, isHoliday, isSchoolDay } from './data/schedule/schoolHolidays.js';
-import { WEEK_PATTERN, dayPattern, subjectsForDay } from './data/schedule/weekPattern.js';
+import { SCHOOL_HOLIDAYS } from './data/schedule/schoolHolidays.js';
+import { HOLIDAY_NOTE, WEEK_PATTERN } from './data/schedule/weekPattern.js';
 import { dailyDrills } from './data/writing/dailyDrills.js';
 import { DRILL_REQUIREMENTS } from './data/writing/drillRequirements.js';
 import { PROMPT_LESSONS } from './data/writing/promptLessons.js';
@@ -94,7 +94,7 @@ export const rewards = { AVATAR_GEAR, COIN_CATALOG, COSMETIC_REPRICE, DREAM_ICON
 
 export const subjects = { ACTIVE_SUBJECTS, KHAN_TAUGHT_SUBJECTS, LESSON_TRACK_SUBJECTS, PARTICIPATION_SUBJECTS, STRANDS, SUBJECT_ALIASES, SUBJECT_CARD_LABELS, SUBJECT_LABELS };
 
-export const timetable = { WEEK_PATTERN, dayPattern, defaultSchedule, holidaysInSpan, isHoliday, isSchoolDay, subjectsForDay };
+export const timetable = { HOLIDAY_NOTE, SCHOOL_HOLIDAYS, WEEK_PATTERN, defaultSchedule };
 
 export const writing = { DRILL_REQUIREMENTS, EDCLUB_PORTAL_URL, ERGONOMICS_CHECKLIST, PROMPT_LESSONS, SCHOOL_YEAR_START, dailyDrills, spellingWordPool, typingLessons, vocabularyWordPool, weeklyWritingSchedule, writingPrompts };
 

@@ -10,9 +10,12 @@ import {
 } from '../../lib/scheduler.js';
 import { buildPlannerItemsByDate, splitPlannerItems } from '../../lib/plannerCalendar.js';
 import { academyContent } from '../../content/academyContent.js';
+import { dayPattern as slotDayPattern } from '../../content/slots/timetable.js';
 
 const { SUBJECT_LABELS = {} } = academyContent().subjects;
-const { dayPattern = () => null } = academyContent().timetable;
+// Read at call time from the school that is open now — see
+// src/content/slots/timetable.js (Sept 22, 2026).
+const dayPattern = (...args) => slotDayPattern(academyContent(), ...args);
 
 const COLOR_STYLES = {
   neutral: 'border-space-600 bg-space-800',

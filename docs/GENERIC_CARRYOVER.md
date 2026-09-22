@@ -339,6 +339,48 @@ now re-runs itself in America/Chicago.
 New: `verify-slot-subjects` (29), `verify-slot-rewards` (24),
 `verify-slot-writing` (19). Mutations: 31, all caught after the three fixes.
 
+### 9. The timetable converted — the slot made of date logic — Sept 22, 2026
+
+Five more functions out of the contract: `dayPattern`, `subjectsForDay`,
+`isSchoolDay`, `isHoliday`, `holidaysInSpan`. **116 → 111** required names.
+
+**This was the real test, and the answer is that the slot has to ask a wider
+question than either school would have suggested.** The two schools do not fill
+the same table differently — they answer "what kind of day is this?" from two
+different KINDS of calendar:
+
+| | how it marks a day off | summer |
+|---|---|---|
+| first school | a list of NAMED HOLIDAYS against a fixed weekday pattern | a weekday like any other |
+| second school | DATED TERMS; a weekday outside every term is a day off, and it keeps no named holidays at all | a term teaching three days a week |
+
+Neither is a special case of the other, so the slot asks for both shapes —
+`SCHOOL_HOLIDAYS` and `TERMS` — and each school fills the one it keeps. The
+second school's empty holiday list stays a stated decision rather than a stub:
+it is now the absence of a key, which is the same statement in data.
+
+Measured before anything was wired: **463 dates × 9 questions × both schools,
+zero differences.**
+
+**A sentence was inside the mechanism again** — the line a child reads on a day
+off, built inside `dayPattern`. It is `HOLIDAY_NOTE` in the school's folder now,
+a template with `{holiday}` filled in. `verify-slot-timetable` fails if any
+day-off wording reappears in the platform, and the wording is quoted nowhere in
+that file on purpose.
+
+**Two more values that were not the school's to decide** came out in passing:
+the second school's `periodFor` (a function in a slot that has to be storable;
+nothing outside its own folder called it, and `termFor` now answers it), and the
+weekday `note` leaking onto a day off when a school supplies no day-off wording.
+
+**Still not moved, and now measured.** `src/lib/schoolQuarter.js` — 270 lines,
+12 exports, imported by 40 files — holds one family's first day of school
+(`new Date(2026, 7, 3)`) and one family's quarter names ("Becoming an
+Engineer", "Building & Creating"). It is the largest remaining piece of one
+school inside the platform and it needs a slot of its own.
+
+New: `verify-slot-timetable` (47). Mutations: 13, all caught after two fixes.
+
 ---
 
 ## The four habits underneath. These are what actually propagate.
@@ -348,7 +390,7 @@ and carries no lessons, projects, schedule or placeholders. **The construction
 habits travel, because they are how the next Academy will be built.** Each
 occurred more than once in a single day:
 
-### A guard pinned to a NAME, not the property it protects — 8×
+### A guard pinned to a NAME, not the property it protects — 10×
 
 - `readingStaggerMap` guarded on `status`, never on the value it replaced.
 - `.gitignore` guarded `*-progress-*.json`; the exports were named `*-backup-*`
@@ -369,6 +411,15 @@ one household's word for the grown-up with a looked-up one:
   whether a file *mentions* `fillWords`. Deleting the call left the import
   behind, so both mutations written against it passed. A check that an import
   exists is not a check that anything is filled.
+
+**Two more on Sept 22**, both red on a change that was entirely correct:
+`verify-optional-content` asserted that one specific name — `isSchoolDay` —
+was still in the required inventory, and that name had just stopped being
+required because the slot answers it now. `verify-parent-time-and-attendance`
+looked for the literal words `academyContent().timetable` in the attendance
+calendar, which now imports the slot instead. Both were repointed at the
+property: that the inventory still covers the required slots, and that the
+calendar asks THIS SCHOOL which days count rather than deciding for itself.
 
 Already in this log as *assert the property, not the address* — recorded there
 as a guard failing on a correct change. It also runs the other way: **a guard
@@ -421,6 +472,11 @@ A comment stating a *fact* — a date relationship, a count, an ordering, an
   rotation at the library's first pool passed, because for that one category
   the first pool *is* the right pool. Now checked across all seven days.
 
+- Two more on Sept 22, again in checks written that day: "a weekend is not a
+  day off" asked about a weekend INSIDE the school year, where the term lookup
+  already answers false, so deleting the weekend guard passed; and a date-key
+  check that could not tell local from UTC on a machine set to UTC.
+  `verify-slot-timetable` now re-runs itself in America/Chicago too.
 - Three more on Sept 21, all in checks written that day: an `every()` over the
   iconless dream rewards when the school has none (passes on anything); "the
   day before school is week 0", which rounds to 0 with or without the guard;

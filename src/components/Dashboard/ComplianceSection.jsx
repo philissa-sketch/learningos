@@ -8,10 +8,13 @@ import { SCHOOL_YEAR_START_DATE } from '../../lib/schoolQuarter.js';
 import { scheduledMinutesByDate, fullInstructionalDayMinutes } from '../../lib/scheduledMinutes.js';
 import { EvidenceFoldersSection } from './EvidenceLink.jsx';
 import { academyContent } from '../../content/academyContent.js';
+import { isSchoolDay as slotIsSchoolDay } from '../../content/slots/timetable.js';
 
 const { GEORGIA_LAW_CITATION, GEORGIA_MINUTES_PER_DAY, GEORGIA_REQUIRED_SUBJECTS = [], GEORGIA_REQUIREMENTS = [], declarationCoversToday = () => false, instructionProgress = () => null, nextDeclarationDeadline = () => null } = academyContent().compliance;
 const { SUBJECT_LABELS = {} } = academyContent().subjects;
-const { isSchoolDay = () => false } = academyContent().timetable;
+// Read at call time from the school that is open now — see
+// src/content/slots/timetable.js (Sept 22, 2026).
+const isSchoolDay = (...args) => slotIsSchoolDay(academyContent(), ...args);
 
 /**
  * State compliance — PROJECT_PLAN.md Part 8's "State compliance

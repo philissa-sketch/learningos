@@ -57,7 +57,15 @@ function ok(label, cond, detail = '') {
 const ms = await import(moduleUrl('src/lib/missionSchedule.js'));
 const me = await import(moduleUrl('src/academies/lamar/data/admin/missionEvaluations.js'));
 const sched = await import(moduleUrl('src/lib/scheduler.js'));
-const hol = await import(moduleUrl('src/academies/lamar/data/schedule/schoolHolidays.js'));
+// `isSchoolDay` moved to src/content/slots/timetable.js on Sept 22, 2026. The
+// holiday list it reads is still this school's; asked of the timetable slot as
+// content.js exports it, the way the app asks.
+const __slotTT = await import(moduleUrl('src/content/slots/timetable.js'));
+const { timetable: __schoolTT } = await import(moduleUrl('src/academies/lamar/content.js'));
+const hol = {
+  ...(await import(moduleUrl('src/academies/lamar/data/schedule/schoolHolidays.js'))),
+  isSchoolDay: (d) => __slotTT.isSchoolDay({ timetable: __schoolTT }, d)
+};
 
 const POOLS = [
   ...(await import(moduleUrl('src/academies/lamar/data/aerospace/aerospaceProjects.js'))).aerospaceProjects,

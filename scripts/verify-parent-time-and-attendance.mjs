@@ -227,8 +227,16 @@ console.log('\n--- 4. The new files hold no school ---');
       !/^const \{[^}]*\} = academyContent\(\)/m.test(code));
   }
   const cal = codeOnly(read('src/components/Dashboard/AttendanceCalendar.jsx'));
+  // Looked for the words `academyContent().timetable` until Sept 22, 2026, when
+  // the timetable's rules moved to a platform slot the calendar now imports.
+  // The property is that the calendar asks THIS SCHOOL which days count rather
+  // than deciding itself, so it is asked that way: the slot, the school's pack
+  // handed to it, and the school's own compliance rule.
   ok('the calendar asks the school for its rule and its calendar',
-    /academyContent\(\)\.compliance/.test(cal) && /instructionProgress/.test(cal) && /academyContent\(\)\.timetable/.test(cal));
+    /academyContent\(\)\.compliance/.test(cal) && /instructionProgress/.test(cal)
+    && /content\/slots\/timetable\.js/.test(cal)
+    && /[Ii]sSchoolDay\(academyContent\(\)/.test(cal),
+    'a calendar that works out school days for itself has stopped asking the school');
   ok('...and writes the rule on the page', /What counts as a school day/.test(cal));
   ok('offline minutes go through the existing store action', /setOfflineInstructionMinutes\(date/.test(cal));
 }

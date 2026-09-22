@@ -23,14 +23,24 @@ const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const moduleUrl = (rel) => pathToFileURL(path.join(ROOT, rel)).href;
 
 
-const H = await import(moduleUrl('src/academies/lamar/data/schedule/schoolHolidays.js'));
+const H = {
+  ...(await import(moduleUrl('src/academies/lamar/data/schedule/schoolHolidays.js'))),
+  // `isHoliday` moved to the platform slot on Sept 22, 2026; the list it reads
+  // is still this school's, and __TT below is that slot as content.js exports it.
+  isHoliday: (d) => __slotTT.isHoliday(__TT, d)
+};
 const { QUARTER_SPANS, schoolDaysBetween, holidaysBetween } = await import(moduleUrl('src/lib/yearPlan.js'));
-const { dayPattern } = await import(moduleUrl('src/academies/lamar/data/schedule/weekPattern.js'));
+// These moved to src/content/slots/timetable.js on Sept 22, 2026. Asked of the
+// school's timetable slot as content.js exports it, the way the app asks.
+const __slotTT = await import(moduleUrl('src/content/slots/timetable.js'));
+const { timetable: __schoolTT } = await import(moduleUrl('src/academies/lamar/content.js'));
+const __TT = { timetable: __schoolTT };
+const dayPattern = (...a) => __slotTT.dayPattern(__TT, ...a);
 // isSchoolDay used to exist in weekPattern.js too, with a second implementation
 // and nothing importing it. It was deleted Aug 31 2026 after both were run over
 // 400 days and agreed on every one. This is the survivor, and the one every
 // Georgia hour is already filed through.
-const { isSchoolDay } = await import(moduleUrl('src/academies/lamar/data/schedule/schoolHolidays.js'));
+const isSchoolDay = (...a) => __slotTT.isSchoolDay(__TT, ...a);
 const { GEORGIA_DAYS_REQUIRED } = await import(moduleUrl('src/academies/lamar/data/admin/georgiaCompliance.js'));
 const { gardenCalendar } = await import(moduleUrl('src/academies/lamar/data/gardening/gardenCalendar.js'));
 

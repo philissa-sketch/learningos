@@ -1,9 +1,12 @@
 import { QUARTER_SPANS } from './yearPlan.js';
 import { liveRotatingSubjects, liveMorningSubject, ROTATING_BLOCK_ID } from './rotatingBlock.js';
 import { academyContent } from '../content/academyContent.js';
+import { isSchoolDay as slotIsSchoolDay } from '../content/slots/timetable.js';
 
 const { allLessons = [] } = academyContent().lessons;
-const { isSchoolDay = () => false } = academyContent().timetable;
+// Read at call time from the school that is open now — see
+// src/content/slots/timetable.js (Sept 22, 2026).
+const isSchoolDay = (...args) => slotIsSchoolDay(academyContent(), ...args);
 
 /**
  * =============================================================================

@@ -47,13 +47,17 @@
 // ---------------------------------------------------------------------------
 import { toDateStr, addDays, todayDateStr, parseDateStr } from './scheduler.js';
 import { academyContent } from '../content/academyContent.js';
+import { isHoliday as slotIsHoliday, isSchoolDay as slotIsSchoolDay } from '../content/slots/timetable.js';
 import { getSchoolWeekNumber as slotGetSchoolWeekNumber } from '../content/slots/writing.js';
 import { optionalContent } from '../content/slots/optional.js';
 import { QUARTER_SPANS } from './yearPlan.js';
 import { findProjectById } from '../content/slots/projects.js';
 
 const { gardenBriefs = [], gardenBuildTrack = [], gardenCalendar = [] } = optionalContent(academyContent(), 'electives');
-const { isHoliday = () => false, isSchoolDay = () => false } = academyContent().timetable;
+// Read at call time from the school that is open now — see
+// src/content/slots/timetable.js (Sept 22, 2026).
+const isHoliday = (...args) => slotIsHoliday(academyContent(), ...args);
+const isSchoolDay = (...args) => slotIsSchoolDay(academyContent(), ...args);
 const { SCHOOL_YEAR_START, weeklyWritingSchedule = {}, writingPrompts = [] } = academyContent().writing;
 // Read at call time from the school that is open now — see
 // src/content/slots/writing.js (Sept 21, 2026).

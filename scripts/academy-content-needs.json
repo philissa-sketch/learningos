@@ -25,8 +25,8 @@
   "practice",
   "khanSeed"
  ],
- "files": 66,
- "reads": 107,
+ "files": 63,
+ "reads": 96,
  "legacyImports": [],
  "names": [
   "ACADEMIC_ASSIGNMENT_TYPES",
@@ -94,7 +94,6 @@
   "candidatesForBook",
   "criteriaForFormat",
   "dailyDrills",
-  "dayPattern",
   "declarationCoversToday",
   "defaultSchedule",
   "draftMissionFeedback",
@@ -106,10 +105,7 @@
   "grammarRowTitle",
   "grammarUnitUrl",
   "hasMilestones",
-  "holidaysInSpan",
   "instructionProgress",
-  "isHoliday",
-  "isSchoolDay",
   "khanGrammarUnitByUrl",
   "khanGrammarUnitForUrl",
   "leadStatus",
@@ -139,7 +135,6 @@
   "startByFor",
   "stateName",
   "subjectBookPlaceholders",
-  "subjectsForDay",
   "suggestedGradeFromRubric",
   "typingLessons",
   "vocabularyWordPool",
@@ -176,9 +171,7 @@
   "candidatesForBook": "academicCenter",
   "ACADEMIC_SUBJECT_ORDER": "academicCenter",
   "activeMilestone": "academicCenter",
-  "isSchoolDay": "timetable",
   "instructionProgress": "compliance",
-  "dayPattern": "timetable",
   "GEORGIA_LAW_CITATION": "compliance",
   "GEORGIA_MINUTES_PER_DAY": "compliance",
   "GEORGIA_REQUIRED_SUBJECTS": "compliance",
@@ -188,7 +181,6 @@
   "khanGrammarUnitForUrl": "khanSequences",
   "scienceCourseForUrl": "khanSequences",
   "allLessons": "lessons",
-  "subjectsForDay": "timetable",
   "MISSION_QUARTERS": "compliance",
   "MISSION_RUBRIC_CRITERIA": "compliance",
   "MISSION_STATUS_LABELS": "compliance",
@@ -234,7 +226,6 @@
   "stateName": "compliance",
   "dailyDrills": "writing",
   "HQ_CREW": "rewards",
-  "isHoliday": "timetable",
   "SCHOOL_YEAR_START": "writing",
   "weeklyWritingSchedule": "writing",
   "EXCLUDED_RANGES": "academicCenter",
@@ -242,7 +233,6 @@
   "khanGrammarUnitByUrl": "khanSequences",
   "COIN_CATALOG": "rewards",
   "GEORGIA_DAYS_REQUIRED": "compliance",
-  "holidaysInSpan": "timetable",
   "availableDueDates": "academicCenter",
   "bookRationale": "academicCenter",
   "quarterlyAcademicPlaceholders": "academicCenter",
@@ -408,23 +398,9 @@
   ],
   "components/Dashboard/AttendanceCalendar.jsx": [
    {
-    "slot": "timetable",
-    "names": [
-     "isSchoolDay"
-    ]
-   },
-   {
     "slot": "compliance",
     "names": [
      "instructionProgress"
-    ]
-   }
-  ],
-  "components/Dashboard/ClassBellCard.jsx": [
-   {
-    "slot": "timetable",
-    "names": [
-     "dayPattern"
     ]
    }
   ],
@@ -445,12 +421,6 @@
     "slot": "subjects",
     "names": [
      "SUBJECT_LABELS"
-    ]
-   },
-   {
-    "slot": "timetable",
-    "names": [
-     "isSchoolDay"
     ]
    }
   ],
@@ -516,13 +486,6 @@
     "slot": "lessons",
     "names": [
      "allLessons"
-    ]
-   },
-   {
-    "slot": "timetable",
-    "names": [
-     "dayPattern",
-     "subjectsForDay"
     ]
    },
    {
@@ -611,14 +574,6 @@
      "SCIENCE_COURSES",
      "SCIENCE_COURSE_CHALLENGES",
      "scienceCoverageByCourse"
-    ]
-   }
-  ],
-  "components/Dashboard/TodaysRoutineRail.jsx": [
-   {
-    "slot": "timetable",
-    "names": [
-     "dayPattern"
     ]
    }
   ],
@@ -792,12 +747,6 @@
     "names": [
      "SUBJECT_LABELS"
     ]
-   },
-   {
-    "slot": "timetable",
-    "names": [
-     "dayPattern"
-    ]
    }
   ],
   "components/Scheduler/WeeklyView.jsx": [
@@ -859,12 +808,6 @@
     "names": [
      "SUBJECT_LABELS"
     ]
-   },
-   {
-    "slot": "timetable",
-    "names": [
-     "isSchoolDay"
-    ]
    }
   ],
   "lib/dailyWriting.js": [
@@ -916,25 +859,11 @@
     ]
    }
   ],
-  "lib/missionSchedule.js": [
-   {
-    "slot": "timetable",
-    "names": [
-     "isSchoolDay"
-    ]
-   }
-  ],
   "lib/pacing.js": [
    {
     "slot": "lessons",
     "names": [
      "allLessons"
-    ]
-   },
-   {
-    "slot": "timetable",
-    "names": [
-     "isSchoolDay"
     ]
    }
   ],
@@ -947,13 +876,6 @@
    }
   ],
   "lib/plannerFeeds.js": [
-   {
-    "slot": "timetable",
-    "names": [
-     "isHoliday",
-     "isSchoolDay"
-    ]
-   },
    {
     "slot": "writing",
     "names": [
@@ -987,8 +909,7 @@
    {
     "slot": "timetable",
     "names": [
-     "WEEK_PATTERN",
-     "dayPattern"
+     "WEEK_PATTERN"
     ]
    }
   ],
@@ -1059,13 +980,6 @@
      "GEORGIA_DAYS_REQUIRED",
      "findProposal",
      "missionScoreTotals"
-    ]
-   },
-   {
-    "slot": "timetable",
-    "names": [
-     "holidaysInSpan",
-     "isSchoolDay"
     ]
    }
   ],

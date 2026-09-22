@@ -30,6 +30,7 @@ import {
 } from '../../lib/rotatingBlock.js';
 import { useToday } from '../../lib/useToday.js';
 import { academyContent } from '../../content/academyContent.js';
+import { dayPattern as slotDayPattern, subjectsForDay as slotSubjectsForDay } from '../../content/slots/timetable.js';
 import { getThisWeeksScheduledIds as slotGetThisWeeksScheduledIds } from '../../content/slots/writing.js';
 import { subjectCardLabel as subjectCardLabelFor } from '../../content/slots/subjects.js';
 import { optionalContent } from '../../content/slots/optional.js';
@@ -44,7 +45,10 @@ const { allLessons = [] } = academyContent().lessons;
 // that is open now. They were functions handed over by the school until
 // Sept 21, 2026 — see src/content/slots/subjects.js.
 const subjectCardLabel = (...args) => subjectCardLabelFor(academyContent(), ...args);
-const { dayPattern = () => null, subjectsForDay = () => null } = academyContent().timetable;
+// Read at call time from the school that is open now — see
+// src/content/slots/timetable.js (Sept 22, 2026).
+const dayPattern = (...args) => slotDayPattern(academyContent(), ...args);
+const subjectsForDay = (...args) => slotSubjectsForDay(academyContent(), ...args);
 const { writingPrompts = [] } = academyContent().writing;
 // Read at call time from the school that is open now — see
 // src/content/slots/writing.js (Sept 21, 2026).

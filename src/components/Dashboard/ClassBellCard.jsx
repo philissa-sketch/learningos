@@ -18,8 +18,13 @@ import {
   onAudioUnlockChange
 } from '../../lib/sfx.js';
 import { academyContent } from '../../content/academyContent.js';
+import { dayPattern as slotDayPattern } from '../../content/slots/timetable.js';
 
-const { dayPattern = () => null } = academyContent().timetable;
+// Read at call time from the school that is open now — see
+
+// src/content/slots/timetable.js (Sept 22, 2026).
+
+const dayPattern = (...args) => slotDayPattern(academyContent(), ...args);
 
 /**
  * THE CLASS BELL — a countdown and an alarm for switching subjects.

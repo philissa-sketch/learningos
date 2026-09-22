@@ -38,8 +38,15 @@
  * and block-11 in defaultSchedule.js.
  */
 
-import { holidayName } from './schoolHolidays.js';
-import { patternSubjects } from '../../../../lib/timetable.js';
+import { SCHOOL_HOLIDAYS } from './schoolHolidays.js';
+import { patternSubjects, dayPattern as patternForDate } from '../../../../content/slots/timetable.js';
+
+// This school's own timetable, in the shape the platform slot reads. The two
+// helpers below are this folder's, not the platform's, and they ask the same
+// question the app asks rather than keeping a second copy of the rules.
+// Built when asked, not at import: WEEK_PATTERN is declared below this line.
+const own = () => ({ timetable: { WEEK_PATTERN, SCHOOL_HOLIDAYS, HOLIDAY_NOTE } });
+const dayPattern = (date) => patternForDate(own(), date);
 
 /** 0=Sunday .. 6=Saturday, matching Date#getDay(). */
 export const WEEK_PATTERN = {
@@ -262,31 +269,25 @@ export function dayKind(date = new Date()) {
  * shape of the week; `subjectsByQuarter` overrides it where a quarter is
  * genuinely different, keyed by quarter id ('Q1').
  */
-export function subjectsForDay(date = new Date(), quarterId = null) {
-  const pattern = dayPattern(date);
-  return patternSubjects(pattern, quarterId);
-}
+
 
 // patternSubjects moved to src/lib/timetable.js on Sept 1, 2026. WEEK_PATTERN
 // stays here — the shape of a week is this school's. Pulling the right list out
 // of one is every school's. §3c Step 1.
 
-export function dayPattern(date = new Date()) {
-  const base = WEEK_PATTERN[date.getDay()];
-  const holiday = holidayName(date);
-  if (!holiday) return base;
-  // A holiday landing on a Saturday stays a weekend — it costs no school day
-  // and calling it a holiday would put "Juneteenth — no school" on a screen
-  // that already says the weekend is the weekend.
-  if (base.kind === 'weekend') return base;
-  return {
-    ...base,
-    kind: 'holiday',
-    holiday,
-    subjects: [],
-    note: `${holiday} — day off for rest. No school today.`
-  };
-}
+/**
+ * The sentence a child reads on a named day off.
+ *
+ * It was built inside `dayPattern` until Sept 22, 2026, which meant no parent
+ * could change a word of it and it would have been carried into the platform
+ * as every school's wording. `{holiday}` is filled in with the day's name.
+ */
+export const HOLIDAY_NOTE = '{holiday} — day off for rest. No school today.';
+
+// `dayPattern` and `subjectsForDay` moved to src/content/slots/timetable.js on
+// the same day. A holiday landing on a Saturday still stays a weekend there —
+// it costs no school day, and calling it a holiday would put "no school today"
+// on a screen that already says the weekend is the weekend.
 
 /**
  * ---- isSchoolDay LIVED HERE TOO, AND WAS REMOVED (Aug 31, 2026) ----

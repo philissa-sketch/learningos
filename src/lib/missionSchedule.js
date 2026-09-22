@@ -34,6 +34,7 @@
  */
 
 import { academyContent } from '../content/academyContent.js';
+import { isSchoolDay as slotIsSchoolDay } from '../content/slots/timetable.js';
 
 
 const PERIOD_MONTHS = {
@@ -120,7 +121,9 @@ export function fridayOnOrBefore(dateStr) {
   // Academy's own content through scheduler.js, so at module-evaluation time
   // the content it would ask for is still being loaded. See the note at the
   // top of lib/scheduler.js for the rule and the longer-term fix.
-  const { isSchoolDay } = academyContent().timetable;
+  // Read at call time from the school that is open now — see
+  // src/content/slots/timetable.js (Sept 22, 2026).
+  const isSchoolDay = (...args) => slotIsSchoolDay(academyContent(), ...args);
 
   if (!dateStr) return null;
   const [y, m, d] = String(dateStr).split('-').map(Number);

@@ -127,9 +127,18 @@ console.log('\n--- 4. the names have left the mandatory inventory ---');
     .map(([name]) => name);
   ok(`no ${OPTIONAL_SLOT} name is required of every Academy`, stillRequired.length === 0,
     `${stillRequired.length} still required: ${stillRequired.slice(0, 8).join(', ')}`);
+  // Named a single required name until Sept 22, 2026 — `isSchoolDay`, which
+  // has since stopped being a required name because the timetable slot answers
+  // it now. The check went red on a change that was entirely correct, which is
+  // the tell for an assertion pinned to an address. The property is that the
+  // inventory is populated and still covers the required slots, so it is asked
+  // that way and cannot go stale when one more name moves.
+  const slotsNamed = new Set(Object.values(needs.nameToSlot || {}));
+  const stillCovered = ['subjects', 'lessons', 'timetable'].filter((s) => slotsNamed.has(s));
   ok('...and the inventory still holds the names that ARE required',
-    needs.names.length > 50 && needs.nameToSlot?.isSchoolDay === 'timetable',
-    'an empty or broken inventory would pass the line above for the wrong reason');
+    needs.names.length > 50 && stillCovered.length === 3,
+    `an empty or broken inventory would pass the line above for the wrong reason `
+    + `(names: ${needs.names.length}, required slots covered: ${stillCovered.join(', ') || 'none'})`);
 }
 
 console.log('\n--- 5. nothing reads the optional slot the mandatory way again ---');

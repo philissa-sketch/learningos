@@ -4,8 +4,13 @@ import { resolveBlockLabel, ROTATING_BLOCK_ID } from '../../lib/rotatingBlock.js
 import { scheduleStatus, formatClock, minutesSinceMidnight } from '../../lib/classBell.js';
 import { todayDateStr } from '../../lib/scheduler.js';
 import { academyContent } from '../../content/academyContent.js';
+import { dayPattern as slotDayPattern } from '../../content/slots/timetable.js';
 
-const { dayPattern = () => null } = academyContent().timetable;
+// Read at call time from the school that is open now — see
+
+// src/content/slots/timetable.js (Sept 22, 2026).
+
+const dayPattern = (...args) => slotDayPattern(academyContent(), ...args);
 
 /**
  * TODAY'S ROUTINE, ON MISSION CONTROL. (Aug 9, 2026.)

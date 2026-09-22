@@ -704,7 +704,10 @@ console.log('\n--- 8. Friday offers what is behind, not everything ---');
   const { liveRotatingSubjects, liveMorningSubject } = await import(moduleUrl('src/lib/rotatingBlock.js'));
   const { toDateStr, addDays } = await import(moduleUrl('src/lib/scheduler.js'));
   const content = academyContent();
-  const { dayPattern } = content.timetable;
+  // `dayPattern` moved to src/content/slots/timetable.js on Sept 22, 2026;
+  // asked of the school's pack, exactly as the screens ask it.
+  const { dayPattern: slotDayPattern } = await import(moduleUrl('src/content/slots/timetable.js'));
+  const dayPattern = (d) => slotDayPattern(content, d);
   const { allLessons } = content.lessons;
   /**
    * HIS ASSIGNMENT ROWS ARE NOT CURRICULUM, so they are not in the content pack

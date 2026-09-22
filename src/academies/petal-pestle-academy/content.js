@@ -197,38 +197,54 @@ export const lessons = { allLessons: toEngineShapeAll(ALL_LESSONS) };
 
 const WEEKEND = { kind: 'weekend' };
 
+/* ==========================================================================
+ * THIS SCHOOL NAMES ITS TERMS; IT DOES NOT NAME ITS DAYS OFF. (Sept 22, 2026.)
+ *
+ * `dayPattern`, `subjectsForDay`, `isSchoolDay`, `isHoliday`, `holidaysInSpan`
+ * and this folder's own `patternSubjects` were six functions here until the
+ * timetable slot took them. A stored Academy cannot hold a function, and every
+ * one of them was this school's CALENDAR expressed as code.
+ *
+ * What it answers with instead:
+ *
+ *   TERMS               the dated blocks it teaches in — a weekday outside
+ *                       every one of them is a day off. `daysPerWeek: 3` on
+ *                       the summer term is what the platform reads as `flex`.
+ *   OUTSIDE_TERM_LABEL  what a day outside the terms is called on a screen.
+ *   SUBJECTS_BY_TERM    which courses run in which term, worked out from the
+ *                       plan rather than typed, so renaming a course cannot
+ *                       leave a stale list behind.
+ *   SCHOOL_HOLIDAYS     ABSENT, AND THAT IS A STATEMENT. This school files its
+ *                       breaks as the gaps between terms rather than as named
+ *                       days. A screen that wants to print a holiday name will
+ *                       find nothing, and the right fix is a decision about
+ *                       this school's calendar, not a list typed in here.
+ * ======================================================================== */
+
+const TERMS = SCHOOL_YEAR.periods;
+const OUTSIDE_TERM_LABEL = 'Outside the school year';
+
 /**
- * What kind of day this is.
+ * The subjects each term teaches.
  *
- * `core` on a weekday inside a period, `weekend` on Saturday and Sunday,
- * `holiday` for a weekday outside every period — which here means outside the
- * school year or in the gap between two periods, not a named festival.
- *
- * `flex` marks the summer term, where the plan is three days a week rather than
- * five. The school reads `flex` to mean "today is a school day but the subject
- * list is not fixed", which is exactly what a three-day week inside a five-day
- * span is.
+ * Filtered by the quarter each course actually runs in — The Science Lab is
+ * quarters 1 and 3, Social Studies is 1 to 3, Herbalism is all four. The two
+ * placed subjects run throughout, so they are on every term.
  */
-function dayPattern(date) {
-  const day = weekdayOf(date);
-  if (day === 0 || day === 6) return WEEKEND;
-
-  const key = dayKey(date);
-  const period = key ? periodFor(key) : null;
-  if (!period) return { kind: 'holiday', holiday: 'Outside the school year' };
-
-  return {
-    kind: 'core',
-    flex: Boolean(period.daysPerWeek && period.daysPerWeek < 5),
-    period: period.id,
-    label: period.label
-  };
-}
+const SUBJECTS_BY_TERM = Object.fromEntries(
+  TERMS.map((term) => {
+    const quarter = Number(String(term.id).replace(/[^0-9]/g, ''));
+    const courses = Number.isFinite(quarter) && quarter > 0
+      ? APP_COURSES.filter((c) => c.quarters.includes(quarter))
+      : APP_COURSES;
+    return [term.id, [...courses.map((c) => c.id), ...SUBJECT_ORDER]];
+  })
+);
 
 /**
  * The week, Sunday first, indexed the way `Date.getDay()` counts.
  *
- * Every weekday is the same shape here because this school's timetable does not
+ * Every weekday is the same shape because this school's timetable does not
  * rotate — config/schedule.js is one ordered list of blocks that runs each day,
  * and the variation is inside a block rather than between days. A school that
  * rotates subjects by weekday fills these five entries differently; this one
@@ -245,53 +261,20 @@ const WEEK_PATTERN = [
   WEEKEND
 ];
 
-/**
- * The subjects a given pattern teaches, for a given quarter.
- *
- * Filtered by the quarter each course actually runs in — The Science Lab is
- * quarters 1 and 3, Social Studies is 1 to 3, Herbalism is all four. Passing no
- * quarter returns every taught subject, which is what the screens that ask
- * "what does this school teach" want.
- */
-function patternSubjects(pattern, quarterId) {
-  if (!pattern || pattern.kind !== 'core') return [];
-
-  const quarter = Number(String(quarterId ?? '').replace(/[^0-9]/g, ''));
-  const courses = Number.isFinite(quarter) && quarter > 0
-    ? APP_COURSES.filter((c) => c.quarters.includes(quarter))
-    : APP_COURSES;
-
-  return [...courses.map((c) => c.id), ...SUBJECT_ORDER];
-}
-
-const subjectsForDay = (date) => patternSubjects(dayPattern(date), periodFor(dayKey(date))?.id);
-
-const isSchoolDay = (date) => dayPattern(date).kind === 'core';
-const isHoliday = (date) => dayPattern(date).kind === 'holiday';
-
-/**
- * Named holidays inside a span.
- *
- * ALWAYS EMPTY, and it is not a stub. This school files its breaks as the gaps
- * between periods rather than as a list of named days — see the header above,
- * and config/calendar.js for the reasoning that produced it. A screen that
- * wants to print "Thanksgiving" will find nothing here, and the right fix is a
- * decision about this school's calendar, not a list typed into this file.
- */
-const holidaysInSpan = () => [];
-
 export const timetable = {
   WEEK_PATTERN,
-  dayPattern,
+  TERMS,
+  OUTSIDE_TERM_LABEL,
+  SUBJECTS_BY_TERM,
   defaultSchedule: DEFAULT_SCHEDULE,
-  holidaysInSpan,
-  isHoliday,
-  isSchoolDay,
-  patternSubjects,
-  subjectsForDay,
   // This Academy's own, carried for the screens that are hers.
-  SCHOOL_YEAR,
-  periodFor
+  //
+  // `periodFor` left on Sept 22, 2026. It was a function in a slot a stored
+  // school has to be able to fill, nothing outside this file called it, and
+  // the platform now answers the same question from TERMS — `termFor` in
+  // src/content/slots/timetable.js. config/calendar.js still exports it for
+  // this folder's own use.
+  SCHOOL_YEAR
 };
 
 /* ==========================================================================

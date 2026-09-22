@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react';
 import { useAppStore } from '../../store/useAppStore.js';
 import { academyContent } from '../../content/academyContent.js';
+import { isSchoolDay as slotIsSchoolDay } from '../../content/slots/timetable.js';
 import { instructionMinutes } from '../../lib/instructionTime.js';
 import { scheduledMinutesByDate } from '../../lib/scheduledMinutes.js';
 import { SCHOOL_YEAR_START_DATE } from '../../lib/schoolQuarter.js';
@@ -186,7 +187,9 @@ export function AttendanceCalendar({ minutesPerDay, daysRequired, ruleSource = n
   const [jump, setJump] = useState('');
 
   // Read inside the component, never at module scope.
-  const { isSchoolDay = () => true } = academyContent().timetable;
+  // Read at call time from the school that is open now — see
+  // src/content/slots/timetable.js (Sept 22, 2026).
+  const isSchoolDay = (...args) => slotIsSchoolDay(academyContent(), ...args);
   const { instructionProgress = null } = academyContent().compliance;
   const schoolYearStart = toDateStr(SCHOOL_YEAR_START_DATE);
   const marks = useMemo(() => latestMarks(adminRecords), [adminRecords]);

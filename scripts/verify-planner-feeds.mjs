@@ -55,7 +55,12 @@ const pc = await import(moduleUrl('src/lib/plannerCalendar.js'));
 const ms = await import(moduleUrl('src/academies/lamar/data/academicSuccessCenter/assignmentMilestones.js'));
 const { weeklyWritingSchedule } = await import(moduleUrl('src/academies/lamar/data/writing/weeklySchedule.js'));
 const { gardenCalendar } = await import(moduleUrl('src/academies/lamar/data/gardening/gardenCalendar.js'));
-const { isHoliday } = await import(moduleUrl('src/academies/lamar/data/schedule/schoolHolidays.js'));
+// These moved to src/content/slots/timetable.js on Sept 22, 2026. Asked of the
+// school's timetable slot as content.js exports it, the way the app asks.
+const __slotTT = await import(moduleUrl('src/content/slots/timetable.js'));
+const { timetable: __schoolTT } = await import(moduleUrl('src/academies/lamar/content.js'));
+const __TT = { timetable: __schoolTT };
+const isHoliday = (...a) => __slotTT.isHoliday(__TT, ...a);
 const { roboticsProjects } = await import(moduleUrl('src/academies/lamar/data/robotics/roboticsProjects.js'));
 const { technologyProjects } = await import(moduleUrl('src/academies/lamar/data/technology/technologyProjects.js'));
 const { roboticsLessons7 } = await import(moduleUrl('src/academies/lamar/data/lessons/robotics7.js'));
