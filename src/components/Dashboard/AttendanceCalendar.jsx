@@ -4,7 +4,7 @@ import { academyContent } from '../../content/academyContent.js';
 import { isSchoolDay as slotIsSchoolDay } from '../../content/slots/timetable.js';
 import { instructionMinutes } from '../../lib/instructionTime.js';
 import { scheduledMinutesByDate } from '../../lib/scheduledMinutes.js';
-import { SCHOOL_YEAR_START_DATE } from '../../lib/schoolQuarter.js';
+import { schoolYearStartKey } from '../../lib/schoolQuarter.js';
 import { toDateStr, todayDateStr, getMonthGrid, formatMonthLabel, parseDateStr } from '../../lib/scheduler.js';
 import {
   ATTENDANCE_MARKS,
@@ -191,7 +191,7 @@ export function AttendanceCalendar({ minutesPerDay, daysRequired, ruleSource = n
   // src/content/slots/timetable.js (Sept 22, 2026).
   const isSchoolDay = (...args) => slotIsSchoolDay(academyContent(), ...args);
   const { instructionProgress = null } = academyContent().compliance;
-  const schoolYearStart = toDateStr(SCHOOL_YEAR_START_DATE);
+  const schoolYearStart = schoolYearStartKey();
   const marks = useMemo(() => latestMarks(adminRecords), [adminRecords]);
 
   const statusOf = (date) =>

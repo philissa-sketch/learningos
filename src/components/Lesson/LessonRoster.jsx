@@ -1,5 +1,5 @@
 import { useAppStore } from '../../store/useAppStore.js';
-import { hasSchoolStarted, SCHOOL_YEAR_START_DATE, getCurrentQuarter, quarterOpensOn } from '../../lib/schoolQuarter.js';
+import { hasSchoolStarted, schoolYearStartDate, getCurrentQuarter, quarterOpensOn } from '../../lib/schoolQuarter.js';
 import { isLessonOpen, subjectQuarterStatus } from '../../lib/quarterAvailability.js';
 import { parseDateStr } from '../../lib/scheduler.js';
 import { QuietQuarterNote } from './QuietQuarterNote.jsx';
@@ -50,7 +50,7 @@ export function LessonRoster({
         <div className="rounded-xl border border-signal-amber/40 bg-signal-amber/5 p-6 text-center shadow-panel">
           <p className="text-xs font-display uppercase tracking-widest text-signal-amber">Not Yet — School Hasn't Started</p>
           <p className="mt-2 font-display text-lg font-700 text-ink-100">
-            School starts {SCHOOL_YEAR_START_DATE.toLocaleDateString(undefined, { weekday: 'long', month: 'long', day: 'numeric' })}
+            School starts {schoolYearStartDate()?.toLocaleDateString(undefined, { weekday: 'long', month: 'long', day: 'numeric' })}
           </p>
           <p className="mt-2 text-sm text-ink-300">
             Lessons unlock on the real first day, not before — come back then!

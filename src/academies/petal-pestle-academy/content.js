@@ -278,6 +278,50 @@ export const timetable = {
 };
 
 /* ==========================================================================
+ * SCHOOL YEAR (Sept 22, 2026)
+ *
+ * Until today this school had no answer here and inherited another school's:
+ * its first day and its quarter names, typed into the platform's quarter
+ * logic. The platform now asks — src/content/slots/schoolYear.js — and this
+ * school answers from config/calendar.js, the same dated periods TERMS uses.
+ *
+ * FIRST_DAY is the calendar's own start. Each period's months are read off its
+ * start and end dates, never typed, so moving a date in the calendar moves the
+ * period with it.
+ *
+ * ---- WHY THE IDS ARE 'Q1'..'Q4' AND 'Summer', NOT THE CALENDAR'S 'q1' ----
+ *
+ * A period id is written into saved rows as the start of their label
+ * ('Q1 2026-2027', 'Summer 2027'). Every row the platform has written for this
+ * school so far used the inherited ids, so the answer keeps them: a lower-case
+ * id would leave every existing row unrecognised. The labels are this
+ * school's own.
+ * ======================================================================== */
+
+const ROW_IDS = { q1: 'Q1', q2: 'Q2', q3: 'Q3', q4: 'Q4', summer: 'Summer' };
+
+/** Every month a dated period touches, in order. */
+function monthsOf(term) {
+  const [sy, sm] = term.start.split('-').map(Number);
+  const [ey, em] = term.end.split('-').map(Number);
+  const out = [];
+  for (let y = sy, m = sm; y < ey || (y === ey && m <= em); m === 12 ? (y += 1, m = 1) : (m += 1)) out.push(m);
+  return out;
+}
+
+const FIRST_DAY = SCHOOL_YEAR.start;
+
+/** The summer term's rows are labelled by calendar year ('Summer 2027'). */
+const PERIODS = SCHOOL_YEAR.periods.map((term) => ({
+  id: ROW_IDS[term.id] || term.id,
+  label: term.label,
+  months: monthsOf(term),
+  labelYear: term.id === 'summer' ? 'calendar' : 'span'
+}));
+
+export const schoolYear = { FIRST_DAY, PERIODS };
+
+/* ==========================================================================
  * GUIDE
  *
  * The one name that matched without translation. `getDailyLine(dateStr)` is
@@ -348,3 +392,41 @@ export const exams = {
  * ======================================================================== */
 
 export const theme = { appearance: () => import('./academy.css') };
+
+/* ==========================================================================
+ * NAV (Sept 22, 2026)
+ *
+ * Until today this school had no nav and inherited the template's: every
+ * shared tab, and the shared Parent Dashboard. The parent's decision: her
+ * school shows her own screens, and her own grown-up area — "I don't want the
+ * Parent Dashboard to be shared."
+ *
+ * So the tabs below are only screens that are this school's. None exist yet;
+ * each screen that comes across from the standalone app (the reading check
+ * first) adds its tab here in the same change. The landing page is the
+ * shell's own and is not a tab.
+ *
+ * The parent button opens `grownups`, this school's own screen (views.js),
+ * behind the platform's passcode lock. The shared Parent Dashboard is never
+ * reachable from this school.
+ *
+ * Groups are declared above the export, never inside it: the slot export
+ * stays flat (see _template/content.js).
+ * ======================================================================== */
+
+const NAV_GROUPS = [];
+
+const NAV_PARENT_TAB = { id: 'grownups', label: 'Grown-Up Corner' };
+
+export const nav = {
+  navGroups: NAV_GROUPS,
+  navParentTab: NAV_PARENT_TAB,
+  navSchoolName: 'Petal & Pestle',
+  navSchoolTagline: 'Academy'
+};
+
+/* ==========================================================================
+ * VIEWS — this school's own screens, declared by hand in views.js.
+ * ======================================================================== */
+
+export { views } from './views.js';

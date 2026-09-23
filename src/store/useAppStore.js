@@ -160,7 +160,7 @@ import { applyTheme } from '../lib/themes.js';
 import { generateLearningPack, fieldTripSyncId, planFieldTripDedupe, planUndatedTripRestore, planDeletedTripRecovery } from '../lib/fieldTrips.js';
 import { planBookSwap } from '../lib/bookSwap.js';
 import { READINESS_SKILLS } from '../lib/readiness.js';
-import { getCurrentQuarter, isQuarterlyBatchLabel, isSummerBatchLabel, groupByQuarter, isQuarterAvailable, getQuarterDateRange, quarterRank, SCHOOL_YEAR_START_DATE } from '../lib/schoolQuarter.js';
+import { getCurrentQuarter, isQuarterlyBatchLabel, isCalendarYearBatchLabel, groupByQuarter, isQuarterAvailable, getQuarterDateRange, quarterRank, hasSchoolStarted } from '../lib/schoolQuarter.js';
 import { BUILD_STAMP } from '../lib/buildStamp.js';
 // CONSUMER 7 OF 7 for hands-on project arrays. See
 // scripts/verify-gardening.mjs — a project array wired into fewer than all
@@ -12995,7 +12995,7 @@ const seedRows = khanFirstSeedRows().map((r) => ({ ...r, completed: false, grade
     const { khanAcademyAssignments } = get();
     const { batchLabel: currentQuarterLabel } = getCurrentQuarter();
     return khanAcademyAssignments.filter((a) => {
-      const isRecognizedPeriod = isQuarterlyBatchLabel(a.batchLabel) || isSummerBatchLabel(a.batchLabel);
+      const isRecognizedPeriod = isQuarterlyBatchLabel(a.batchLabel) || isCalendarYearBatchLabel(a.batchLabel);
       return a.batchLabel === currentQuarterLabel || !isRecognizedPeriod;
     });
   },
@@ -13038,7 +13038,9 @@ function inSchoolYear(dateish) {
   if (!dateish) return true;
   const d = new Date(dateish);
   if (Number.isNaN(d.getTime())) return true;
-  return d.getTime() >= SCHOOL_YEAR_START_DATE.getTime();
+  // The open school's first day (Sept 22, 2026: no longer a platform constant).
+  // A school that has not said when it starts has not excluded anything.
+  return hasSchoolStarted(d);
 }
 
 /** The quarter label a date falls in — injected into quizAveragesByQuarter. */

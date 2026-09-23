@@ -393,9 +393,23 @@ console.log('\n--- 6. it does not gate the day, and it is reachable ---');
 
   const { tabs } = await effectiveNav(REPO);
   const ids = tabs.map((t) => t.id);
-  ok('it is in the nav this Academy receives', ids.includes('morning'));
-  ok('...FIRST, ahead of the home screen',
-    ids.indexOf('morning') !== -1 && ids.indexOf('morning') < ids.indexOf('dashboard'),
+  // Whether an Academy's nav MUST carry the Morning Meeting is recorded, not
+  // assumed (Sept 22, 2026). A school that declares its own nav may leave the
+  // shared screens out — one parent decided exactly that for her
+  // granddaughter's school. academy-reach-baseline.json is where that decision
+  // is written down; a school it still lists 'morning' for is held to it as
+  // strictly as before, so dropping the tab by accident still fails here.
+  const reach = JSON.parse(read('scripts/academy-reach-baseline.json')).academies || {};
+  const academyId = process.env.ACADEMY || '';
+  const required = !academyId || !reach[academyId] || (reach[academyId].tabs || []).includes('morning');
+  if (required) {
+    ok('it is in the nav this Academy receives', ids.includes('morning'));
+  } else {
+    ok(`${academyId} leaves it out by a recorded decision (academy-reach-baseline.json)`, true);
+  }
+  ok('...FIRST, ahead of the home screen, wherever it is in the nav',
+    ids.indexOf('morning') === -1 ? !required
+      : (ids.indexOf('dashboard') === -1 || ids.indexOf('morning') < ids.indexOf('dashboard')),
     'a morning routine three items down is a morning routine that gets skipped');
 
   const dash = codeOnly(read('src/components/Dashboard/MissionControlDashboard.jsx'));

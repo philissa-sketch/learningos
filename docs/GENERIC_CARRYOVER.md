@@ -373,13 +373,71 @@ the second school's `periodFor` (a function in a slot that has to be storable;
 nothing outside its own folder called it, and `termFor` now answers it), and the
 weekday `note` leaking onto a day off when a school supplies no day-off wording.
 
-**Still not moved, and now measured.** `src/lib/schoolQuarter.js` — 270 lines,
+**Moved the same day — see section 10.** `src/lib/schoolQuarter.js` — 270 lines,
 12 exports, imported by 40 files — holds one family's first day of school
 (`new Date(2026, 7, 3)`) and one family's quarter names ("Becoming an
 Engineer", "Building & Creating"). It is the largest remaining piece of one
 school inside the platform and it needs a slot of its own.
 
 New: `verify-slot-timetable` (47). Mutations: 13, all caught after two fixes.
+
+---
+
+### 10. The school year converted — one family's calendar out of the platform — Sept 22, 2026
+
+`src/lib/schoolQuarter.js` held `new Date(2026, 7, 3)` and four themed quarter
+names, and every school inherited both. Twelve exports, 24 files reading them.
+
+**What moved where.**
+
+- The RULES → `src/content/slots/schoolYear.js`. Date → period, the row label
+  (`'Q1 2026-2027'`, `'Summer 2027'`), ranking across years, date ranges,
+  opening days, "is this open yet". Every function takes the school first.
+- The FIRST SCHOOL'S CALENDAR → `src/academies/lamar/data/schoolYear/schoolYear.js`
+  (`FIRST_DAY`, `PERIODS`), with the original notes about lesson targets.
+  Its writing schedule's first day now reads that file, not the platform.
+- The SECOND SCHOOL answers from its own `config/calendar.js` — first day from
+  the calendar, months read off each term's dates, never typed.
+- `schoolQuarter.js` is now a binding: the same names, reading whichever school
+  is open on every call. Two names changed because they carried a calendar —
+  the `SCHOOL_YEAR_START_DATE` constant (now `schoolYearStartDate()` /
+  `schoolYearStartKey()`) and `isSummerBatchLabel` (now
+  `isCalendarYearBatchLabel`). It left the debt list: 105 → 104.
+
+**The slot asks two questions, both optional.** A school that answers neither
+gates nothing — every day has started, no period is current, nothing is locked.
+
+**Two shapes again, but a smaller gap than the timetable.** The second school
+keeps dated terms, not month buckets. Read by month, its terms land on exactly
+the same months the first school uses, so nothing it sees moved.
+
+**Proved before wiring.** Old file vs new slot: 5,025 date-times × 263 labels,
+both schools, in UTC, Chicago and Auckland — 410,980 comparisons, zero
+differences. The only intended difference: the second school's period LABELS
+are its own now ("Quarter 1", not "Becoming an Engineer"). **No screen renders
+a period label** — the one card that printed it, `KhanAcademyMissionsCard`, is
+rendered nowhere — so neither child's screen changed.
+
+**Found, not changed — a decision, not a move.** A legacy label with no year
+("Q2") is ranked in the CURRENT year using the real clock, even when a caller
+asks about another date. Changing that would move gates on saved work.
+
+**Found, not changed — the next job's.** The first school's
+`academicSuccessCenter/assignmentRecommendations.js` keeps its own copy of the
+"which school year is this label" rule. That belongs to `academicCenter`.
+
+New: `verify-slot-schoolYear` (89 assertions, re-runs in Chicago). It builds
+calendars no school uses — semesters, a year turning over in February with a
+term across New Year, twelve periods where `P10` must not read as `P1`, a gap
+with no summer. Two older checks were pinned to the old address and were
+rewritten to the property: `verify-georgia-hours` (the screen and the packet
+count from the same first day) and `verify-report-card`.
+
+Mutations: 22. 20 caught. Two survived, and neither is a missed fault: the
+"Earlier last" sort rule is redundant under the engine's sort in all 24 row
+orders (the check now tries all 24 anyway — its first version tried one lucky
+order), and dropping a term's last month is covered by the gap rule, so every
+day still reads as the right term.
 
 ---
 

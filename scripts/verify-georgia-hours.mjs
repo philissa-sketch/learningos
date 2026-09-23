@@ -243,8 +243,17 @@ console.log('\n--- 5. the screen and the packet agree ---');
 {
   const section = read('src/components/Dashboard/ComplianceSection.jsx');
   const packet = read('src/lib/compliancePacket.js');
+  // The PROPERTY is that both count from the same first day, read from the
+  // same place — not the spelling of that place. Until Sept 22, 2026 this
+  // matched `toDateStr(SCHOOL_YEAR_START_DATE)` literally, and would have gone
+  // red the moment the date moved out of the platform into the school.
+  const scopeOf = (src) => (src.match(/schoolYearStart:\s*([^,\n]+)/) || [])[1]?.trim() || null;
+  ok('the screen and the packet scope from the same first day',
+    scopeOf(section) !== null && scopeOf(section) === scopeOf(packet),
+    `screen: ${scopeOf(section)}  packet: ${scopeOf(packet)}`);
   for (const [name, src] of [['the Compliance screen', section], ['the records packet', packet]]) {
-    ok(`${name} scopes to the school year`, /schoolYearStart: toDateStr\(SCHOOL_YEAR_START_DATE\)/.test(src));
+    ok(`${name} scopes to the school year`, scopeOf(src) !== null && !/['"`]\d{4}-\d{2}-\d{2}/.test(scopeOf(src)),
+      'a first day typed in here is one family\'s calendar in the platform');
     ok(`${name} scopes to school days`, /isSchoolDay\b/.test(src));
     ok(`${name} books the timetable minutes`, /scheduledMinutesByDate/.test(src));
   }

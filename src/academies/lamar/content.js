@@ -49,6 +49,7 @@ import { technologyProjects } from './data/technology/technologyProjects.js';
 import { HQ_CREW } from './data/hqCrew.js';
 import { LESSON_PRINTOUTS, PRINTOUT_KINDS, SUBJECT_JOURNALS } from './data/printouts.js';
 import { AVATAR_GEAR, COIN_CATALOG, COSMETIC_REPRICE, DREAM_ICON, DREAM_REWARDS, DREAM_TIER, HQ_ITEMS, MISSION_EQUIPMENT, REAL_WORLD_REWARDS, SEEDED_REWARD_LADDER_MAP, TIERS_REQUIRING_PARENT } from './data/rewardCatalog.js';
+import { FIRST_DAY, PERIODS } from './data/schoolYear/schoolYear.js';
 import { ACTIVE_SUBJECTS, KHAN_TAUGHT_SUBJECTS, LESSON_TRACK_SUBJECTS, PARTICIPATION_SUBJECTS, STRANDS, SUBJECT_ALIASES, SUBJECT_CARD_LABELS, SUBJECT_LABELS } from './subjects.js';
 import { defaultSchedule } from './data/schedule/defaultSchedule.js';
 import { SCHOOL_HOLIDAYS } from './data/schedule/schoolHolidays.js';
@@ -91,6 +92,8 @@ export const practice = { templates };
 export const projects = { aerospaceProjects, roboticsProjects, scienceExperiments, technologyProjects };
 
 export const rewards = { AVATAR_GEAR, COIN_CATALOG, COSMETIC_REPRICE, DREAM_ICON, DREAM_REWARDS, DREAM_TIER, HQ_CREW, HQ_ITEMS, LESSON_PRINTOUTS, MISSION_EQUIPMENT, PRINTOUT_KINDS, REAL_WORLD_REWARDS, SEEDED_REWARD_LADDER_MAP, SUBJECT_JOURNALS, TIERS_REQUIRING_PARENT };
+
+export const schoolYear = { FIRST_DAY, PERIODS };
 
 export const subjects = { ACTIVE_SUBJECTS, KHAN_TAUGHT_SUBJECTS, LESSON_TRACK_SUBJECTS, PARTICIPATION_SUBJECTS, STRANDS, SUBJECT_ALIASES, SUBJECT_CARD_LABELS, SUBJECT_LABELS };
 

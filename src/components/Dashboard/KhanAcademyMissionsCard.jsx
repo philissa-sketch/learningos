@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useAppStore } from '../../store/useAppStore.js';
-import { getCurrentQuarter, isQuarterlyBatchLabel, isSummerBatchLabel, hasSchoolStarted, SCHOOL_YEAR_START_DATE } from '../../lib/schoolQuarter.js';
+import { getCurrentQuarter, isQuarterlyBatchLabel, isCalendarYearBatchLabel, hasSchoolStarted, schoolYearStartDate } from '../../lib/schoolQuarter.js';
 import { academyContent } from '../../content/academyContent.js';
 import { subjectCardLabel as subjectCardLabelFor } from '../../content/slots/subjects.js';
 
@@ -247,7 +247,7 @@ export function useCurrentQuarterKhanAssignments() {
   const allKhanAcademyAssignments = useAppStore((s) => s.khanAcademyAssignments);
   const { batchLabel: currentQuarterLabel } = getCurrentQuarter();
   return allKhanAcademyAssignments.filter((a) => {
-    const isRecognizedPeriod = isQuarterlyBatchLabel(a.batchLabel) || isSummerBatchLabel(a.batchLabel);
+    const isRecognizedPeriod = isQuarterlyBatchLabel(a.batchLabel) || isCalendarYearBatchLabel(a.batchLabel);
     return a.batchLabel === currentQuarterLabel || !isRecognizedPeriod;
   });
 }
@@ -274,7 +274,7 @@ export function KhanAcademyMissionsCard({ excludeSubjects = [] }) {
   const allKhanAcademyAssignments = useAppStore((s) => s.khanAcademyAssignments);
   const { id: quarterId, label: quarterLabel, schoolYearLabel, batchLabel: currentQuarterLabel } = getCurrentQuarter();
   const khanAcademyAssignments = allKhanAcademyAssignments.filter((a) => {
-    const isRecognizedPeriod = isQuarterlyBatchLabel(a.batchLabel) || isSummerBatchLabel(a.batchLabel);
+    const isRecognizedPeriod = isQuarterlyBatchLabel(a.batchLabel) || isCalendarYearBatchLabel(a.batchLabel);
     // Show it if it's THIS period specifically, or if it predates the
     // period system entirely (legacy content, always shown alongside
     // whatever the current period is) — but NOT if it's a different
@@ -298,7 +298,7 @@ export function KhanAcademyMissionsCard({ excludeSubjects = [] }) {
       <div className="rounded-xl border border-signal-amber/40 bg-signal-amber/5 p-6 text-center shadow-panel">
         <p className="text-xs font-display uppercase tracking-widest text-signal-amber">Not Yet — School Hasn't Started</p>
         <p className="mt-2 font-display text-lg font-700 text-ink-100">
-          School starts {SCHOOL_YEAR_START_DATE.toLocaleDateString(undefined, { weekday: 'long', month: 'long', day: 'numeric' })}
+          School starts {schoolYearStartDate()?.toLocaleDateString(undefined, { weekday: 'long', month: 'long', day: 'numeric' })}
         </p>
         <p className="mt-2 text-sm text-ink-300">
           Khan Academy assignments unlock on the real first day, not before.

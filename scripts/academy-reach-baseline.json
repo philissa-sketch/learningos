@@ -22,19 +22,9 @@
   },
   "petal-pestle-academy": {
    "tabs": [
-    "morning",
-    "dashboard",
-    "lessons",
-    "pe",
-    "journal",
-    "typing",
-    "games",
-    "rewards",
-    "progress",
-    "schedule",
-    "academic",
-    "parent"
-   ]
+    "grownups"
+   ],
+   "_changed": "2026-09-22, the parent's decision: her school shows only her own screens and her own grown-up area, never the shared tabs or the shared Parent Dashboard. The twelve inherited tabs were removed deliberately; each of her screens adds its tab here as it arrives."
   }
  }
 }

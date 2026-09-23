@@ -28,6 +28,9 @@
 // exactly this, with a comment naming the harm — "would tell a 12-year-old he
 // was done with Social Studies for the year" — and never once called.
 // ---------------------------------------------------------------------------
+// The quarter rules read the open school's calendar now (Sept 22, 2026), so a
+// school has to be open before they are called.
+import './lib/academy-under-test.mjs';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';

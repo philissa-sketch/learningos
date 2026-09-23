@@ -4,7 +4,7 @@ import { useAppStore } from '../../store/useAppStore.js';
 import { buildCompliancePacket } from '../../lib/compliancePacket.js';
 import { parseDateStr, todayDateStr, toDateStr, daysUntil } from '../../lib/scheduler.js';
 import { instructionMinutes } from '../../lib/instructionTime.js';
-import { SCHOOL_YEAR_START_DATE } from '../../lib/schoolQuarter.js';
+import { schoolYearStartKey } from '../../lib/schoolQuarter.js';
 import { scheduledMinutesByDate, fullInstructionalDayMinutes } from '../../lib/scheduledMinutes.js';
 import { EvidenceFoldersSection } from './EvidenceLink.jsx';
 import { academyContent } from '../../content/academyContent.js';
@@ -136,7 +136,7 @@ export function ComplianceSection() {
     khanAcademyAssignments
   });
   const progress = instructionProgress(allAttendance, {
-    schoolYearStart: toDateStr(SCHOOL_YEAR_START_DATE),
+    schoolYearStart: schoolYearStartKey(),
     isSchoolDay,
     scheduledMinutesByDate: scheduledByDate
   });

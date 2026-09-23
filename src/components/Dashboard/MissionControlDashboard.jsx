@@ -3,7 +3,7 @@ import { guardianWord } from '../../lib/schoolWords.js';
 import { RocketProgressMeter } from './RocketProgressMeter.jsx';
 import { generateDailyPracticeSet } from '../../engine/dailyPractice.js';
 import { getTemplatesUpToTier } from '../../engine/problemTemplates.js';
-import { hasSchoolStarted, SCHOOL_YEAR_START_DATE, getCurrentQuarter } from '../../lib/schoolQuarter.js';
+import { hasSchoolStarted, schoolYearStartDate, getCurrentQuarter } from '../../lib/schoolQuarter.js';
 import { useCurrentQuarterKhanAssignments } from './KhanAcademyMissionsCard.jsx';
 import { TodayRow, StartHereCard, QuietTile } from './TodayRow.jsx';
 import { StudentHandoffCard } from './StudentHandoffCard.jsx';
@@ -636,7 +636,7 @@ export function MissionControlDashboard({
         <div className="rounded-xl border border-signal-amber/40 bg-signal-amber/5 p-8 text-center shadow-panel">
           <p className="text-xs font-display uppercase tracking-widest text-signal-amber">Mission Control — Standing By</p>
           <p className="mt-3 font-display text-2xl font-700 text-ink-100">
-            School starts {SCHOOL_YEAR_START_DATE.toLocaleDateString(undefined, { weekday: 'long', month: 'long', day: 'numeric' })}
+            School starts {schoolYearStartDate()?.toLocaleDateString(undefined, { weekday: 'long', month: 'long', day: 'numeric' })}
           </p>
           <p className="mt-3 text-sm text-ink-300">
             Everything unlocks on the real first day — lessons, Khan Academy assignments, the Writing Journal,

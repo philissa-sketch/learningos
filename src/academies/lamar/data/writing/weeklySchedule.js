@@ -55,9 +55,13 @@
 // school year's 5-day/week pace.
 // ---------------------------------------------------------------------------
 
-import { SCHOOL_YEAR_START_DATE } from '../../../../lib/schoolQuarter.js';
+import { FIRST_DAY } from '../schoolYear/schoolYear.js';
 
-export const SCHOOL_YEAR_START = SCHOOL_YEAR_START_DATE; // kept as an alias so existing imports of this name still work
+// His own first day, from his own calendar (Sept 22, 2026). It used to be
+// re-exported from src/lib/schoolQuarter.js, where the platform held it.
+// Kept a local-midnight Date, exactly as before.
+const [FIRST_Y, FIRST_M, FIRST_D] = FIRST_DAY.split('-').map(Number);
+export const SCHOOL_YEAR_START = new Date(FIRST_Y, FIRST_M - 1, FIRST_D);
 
 /** Returns the school week number (1-based) for a given date, relative to
  * the confirmed real school year start date. Returns 0 if the date is

@@ -1,6 +1,5 @@
 import { participationSummary } from './participationRecord.js';
-import { toDateStr } from './scheduler.js';
-import { SCHOOL_YEAR_START_DATE } from './schoolQuarter.js';
+import { schoolYearStartKey } from './schoolQuarter.js';
 import { scheduledMinutesByDate } from './scheduledMinutes.js';
 import { parseDateStr } from './scheduler.js';
 import { EVIDENCE_FOLDERS } from './driveLinks.js';
@@ -126,7 +125,7 @@ export function buildCompliancePacket({
   // Same scoping as the on-screen counter — the packet and the screen must
   // never disagree about how many school days there were.
   const progress = instructionProgress(allAttendance, {
-    schoolYearStart: toDateStr(SCHOOL_YEAR_START_DATE),
+    schoolYearStart: schoolYearStartKey(),
     isSchoolDay,
     scheduledMinutesByDate: scheduledMinutesByDate({
       khanDailyLog, peWorkoutLog, guitarLog, typingLog, gardenLog, scheduleBlocks, writingEntries, weeklyWordState,

@@ -47,6 +47,7 @@ export const SLOT_RULES = [
   [/^data\/socialStudies\//, 'lessons'],
   [/^data\/diagnostic\//, 'placement'],
   [/^data\/schedule\//, 'timetable'],
+  [/^data\/schoolYear\//, 'schoolYear'],
   [/^data\/mentor\//, 'guide'],
   [/^data\/exams\//, 'exams'],
   [/^data\/writing\//, 'writing'],

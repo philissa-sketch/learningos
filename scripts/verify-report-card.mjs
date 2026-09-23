@@ -26,7 +26,9 @@ import { fileURLToPath, pathToFileURL } from 'node:url';
 import { letterToPercent, GRADE_SCALE } from '../src/lib/gradeScale.js';
 import { appendQuizResult, quizAveragesByQuarter, computeWeeklyWordState } from '../src/lib/weeklyWords.js';
 import { spellingWordPool } from '../src/academies/lamar/data/writing/spellingWordPool.js';
-import { SCHOOL_YEAR_START_DATE } from '../src/lib/schoolQuarter.js';
+// The first day is the open school's answer now (Sept 22, 2026), not a
+// platform constant — src/content/slots/schoolYear.js.
+import { schoolYearStartDate } from '../src/lib/schoolQuarter.js';
 
 const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 /**
@@ -481,9 +483,9 @@ console.log('\n--- 9. the reading track is served, and book reports count ---');
 console.log('\n--- 10. school-year scoping and the word-study weight ---');
 {
   const store = read('src/store/useAppStore.js');
+  const firstDay = schoolYearStartDate();
   ok('the school year is 3 August 2026',
-    SCHOOL_YEAR_START_DATE.getFullYear() === 2026 && SCHOOL_YEAR_START_DATE.getMonth() === 7 &&
-      SCHOOL_YEAR_START_DATE.getDate() === 3);
+    !!firstDay && firstDay.getFullYear() === 2026 && firstDay.getMonth() === 7 && firstDay.getDate() === 3);
   ok('there is one in-year test, not a rule per source', /function inSchoolYear\(dateish\)/.test(store));
   ok('a missing date is KEPT, not dropped', /if \(!dateish\) return true;/.test(store),
     'dropping his work because a field is blank is the worse mistake');

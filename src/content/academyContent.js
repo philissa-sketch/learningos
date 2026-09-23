@@ -166,7 +166,13 @@ export const CONTENT_SLOTS = Object.freeze([
   // 2026). Its own slot rather than part of `khanSequences`, because that slot
   // carries required names and a required name is one every Academy owes. A
   // family that assigns no Khan work fills nothing. GENERIC_CARRYOVER fault 2.
-  'khanSeed'
+  'khanSeed',
+  // When the school's year starts and how it is divided (Sept 22, 2026). Its
+  // two questions are optional: a school that answers neither gates nothing.
+  // The rules that read it are the platform's — src/content/slots/schoolYear.js
+  // — and until today one family's calendar sat inside them, in
+  // src/lib/schoolQuarter.js, inherited by every school that booted.
+  'schoolYear'
 ]);
 
 /**

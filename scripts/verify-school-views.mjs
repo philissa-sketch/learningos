@@ -202,7 +202,18 @@ console.log('\n--- 5. every tab this school declares can open something ---');
   const orphans = tabs.filter((id) => !routed.has(id) && !liveIds.includes(id));
   ok('no tab opens nothing', orphans.length === 0,
     `${orphans.join(', ')} — declare a screen for it in the views slot, or drop the tab`);
-  const unused = liveIds.filter((id) => !tabs.includes(id));
+
+  // The parent button is part of the nav too (Sept 22, 2026). A school may
+  // point it at a grown-up screen of its own instead of the shared one, so the
+  // property is "every button opens something, and every screen has a button"
+  // — not "every screen is in a group". Asserting the groups alone failed a
+  // correct school whose only screen so far sits behind its parent button.
+  const parentId = mod.nav?.navParentTab?.id || null;
+  ok('the parent button opens something',
+    !parentId || routed.has(parentId) || liveIds.includes(parentId),
+    `${parentId} — not a shell screen and not one this school declares`);
+  const reachable = new Set([...tabs, ...(parentId ? [parentId] : [])]);
+  const unused = liveIds.filter((id) => !reachable.has(id));
   ok('...and no screen is declared with no tab to reach it', unused.length === 0, unused.join(', '));
 }
 
