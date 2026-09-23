@@ -414,11 +414,17 @@ export const theme = { appearance: () => import('./academy.css') };
  * stays flat (see _template/content.js).
  * ======================================================================== */
 
+// 'school' is her whole child side — her app's own screens and menu
+// (screens/HerSchool), including her reading check.
+//
+// Sept 23, 2026, the parent: "Pick the next unit from the Khan grades." So the
+// separate reading-check tab (which held unit 2 until unit 1 was read unaided)
+// was removed; her app's own reading check, inside My School, is the one.
 const NAV_GROUPS = [
   {
     id: 'learning',
     label: 'My Learning',
-    tabs: [{ id: 'reading', label: 'Reading check' }]
+    tabs: [{ id: 'school', label: 'My School' }]
   }
 ];
 

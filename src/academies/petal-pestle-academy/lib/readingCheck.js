@@ -1,49 +1,91 @@
 // ---------------------------------------------------------------------------
-// THE READING CHECK — grading and the unit order. (Sept 23, 2026)
+// THE READING CHECK — building it, grading it, and the one number it exists for.
 //
-// Brought across from the standalone Petal & Pestle app (src/lib/readingCheck.js)
-// with the grading unchanged, question for question, so a result here means
-// exactly what a result there means.
+// ---- WHY THIS FILE EXISTS ----
 //
-// ---- WHAT CHANGED, AND WHY ----
+// Gigi, Aug 25 2026: "There are no unit tests. How can we test her. In Lamar's
+// app we have passages that he has to read and is tested on it."
 //
-// The standalone app chose her unit from her reading strand level and her Khan
-// grades. Neither exists in this school yet, so that choice cannot be made here
-// honestly. Instead the units are offered in their course order with one rule,
-// the parent's: **no next unit until the one before it has been sat with every
-// question read by her alone** (project notes, Sept 12). Unit 1 is always open.
+// Khan built no assessments for elementary ELA — counted on the rendered page,
+// 77 links, zero of them a test — so `ela2` carries `graded: 'parent'` and the
+// grade was always meant to come from Gigi by hand. This is what replaces the
+// hand.
 //
-// ---- ⚠️ THE LETTER SCALE IS HER APP'S, COPIED EXACTLY ----
+// ---- ⚠️ THE NUMBER THIS EXISTS TO PRODUCE IS NOT THE PERCENTAGE ----
 //
-// The same thirteen bands as the standalone app's KHAN_LETTER_BANDS. A second
-// scale would give the same paper two letters.
+// It is `readAloud`, per answer.
+//
+// 54 of her 86 recorded answers were read aloud to her — 63% — and 5 of her 6
+// Reading Comprehension answers. Her diagnostic file has said since Aug 13:
+// "Reading 3.46 and Vocabulary 2.91 are listening scores, not reading scores.
+// Her independent reading level is likely lower than both."
+//
+// HER INDEPENDENT READING HAS NEVER BEEN MEASURED, by this app or anything else
+// it knows about. A reading check that does not record whether she was read to
+// produces one more listening score wearing a reading score's name, which is
+// worse than no score at all — it would look like it filled the blank.
+//
+// So `unaidedPercent` is computed and reported SEPARATELY and is null when she
+// used read-aloud on everything. Null, never zero: a measurement not taken and
+// a measurement of zero are opposite facts (§3.13.1, and the Number(null) bug
+// three times in two days at v3.75).
+//
+// ---- WHAT IT MAY NEVER DO ----
+//
+// It may never write a Khan grade. v3.76 keeps a unit test and a Course
+// Challenge apart in both directions; this is a THIRD kind — a test this app
+// wrote, about a Khan unit, sat here. Filing it in khanGrades would put a number
+// Khan never produced onto what becomes a transcript, and `nextUnitFor` would
+// then advance her Khan unit on the strength of a paper Khan has never seen.
 // ---------------------------------------------------------------------------
 
-import { READING_UNITS, readingUnitById } from '../data/reading/ela2Unit1.js';
+import { readingUnitFor, readingUnitById } from '../data/reading/ela2Unit1.js';
+import { letterForPercent } from './khanGrade.js';
+import { khanFor } from '../data/khan/khanMap.js';
+import { nextUnitFor } from '../data/khan/khanUnits.js';
 
-export const LETTER_BANDS = [
-  { min: 97, grade: 'A+' }, { min: 93, grade: 'A' }, { min: 90, grade: 'A-' },
-  { min: 87, grade: 'B+' }, { min: 83, grade: 'B' }, { min: 80, grade: 'B-' },
-  { min: 77, grade: 'C+' }, { min: 73, grade: 'C' }, { min: 70, grade: 'C-' },
-  { min: 67, grade: 'D+' }, { min: 63, grade: 'D' }, { min: 60, grade: 'D-' },
-  { min: 0, grade: 'F' }
-];
+/** Which strands feed the reading subject. Same list blockLinks uses. */
+const READING_STRANDS = ['reading-comprehension', 'vocabulary'];
 
-const isNum = (v) => v !== null && v !== undefined && v !== '' && Number.isFinite(Number(v));
+/**
+ * The reading check for the Khan unit she is actually sitting in, or null.
+ *
+ * ⚠️ IT ASKS THE SAME QUESTION THE BLOCK ASKS, and gets there the same way:
+ * lowest measured strand chooses the course, the course chooses the unit in
+ * order, skipping only units she has a grade for. Two implementations of "which
+ * unit is she on" would drift, and the day they disagree the Planner offers her
+ * a check on a unit she is not reading.
+ *
+ * PURE: strands and grades in, a unit out. No store, no date.
+ *
+ * Returns null when there is no check written for her unit yet — ONE of the
+ * three ela2 units has one. A button that appears for units with nothing behind
+ * it is the dead end this app has built five times.
+ */
+export function currentReadingCheck(strands = {}, grades = []) {
+  const measured = READING_STRANDS.map((id) => ({ id, state: strands[id] }))
+    .filter((s) => s.state && s.state.asked > 0)
+    .sort((a, b) => a.state.level - b.state.level);
+  if (!measured.length) return null;
 
-/** A percentage to a letter. Null for no number — an absent mark is not an F. */
-export function letterForPercent(percent) {
-  if (!isNum(percent)) return null;
-  const p = Number(percent);
-  return LETTER_BANDS.find((b) => p >= b.min).grade;
+  const khan = khanFor(measured[0].id, measured[0].state.level);
+  if (!khan || !khan.unitCourse) return null;
+
+  const unit = nextUnitFor(khan.unitCourse, grades);
+  if (!unit) return null;
+
+  return readingUnitFor(khan.unitCourse, unit.n);
 }
 
-/** Every unit, in the order her course walks them. */
-export function readingUnits() {
-  return READING_UNITS;
-}
-
-/** The paper for one unit, or null. */
+/**
+ * Lay the check out for the screen.
+ *
+ * The questions are NOT shuffled and the choices are NOT dealt in a fresh
+ * order, unlike the weekly tests. Deliberate: the questions walk the passage in
+ * the order the passage tells it, and for a child being measured on reading for
+ * the first time, "find the part that answers this" is the skill. Shuffling
+ * would turn a reading task into a searching task.
+ */
 export function buildReadingCheck(unitId, { attempt = 1 } = {}) {
   const unit = readingUnitById(unitId);
   if (!unit) return null;
@@ -60,12 +102,36 @@ export function buildReadingCheck(unitId, { attempt = 1 } = {}) {
   };
 }
 
+/** The passage a question is asked about, or null. */
+export function passageFor(form, questionId) {
+  const q = (form?.questions || []).find((x) => x.id === questionId);
+  if (!q) return null;
+  return (form.passages || []).find((p) => p.id === q.passage) || null;
+}
+
+const isNum = (v) => v !== null && v !== undefined && v !== '' && Number.isFinite(Number(v));
+
 /**
- * Grade one sitting. Unchanged from the standalone app.
+ * Mark it.
  *
- * `unaidedPercent` counts only questions she answered with nothing read to
- * her. It is null — not zero — when every question was read aloud, because
- * null means "not measured" and zero means "measured and got none".
+ * `responses` is { [questionId]: { chosen, readAloud } }. A question she never
+ * reached has no entry at all — not an entry with chosen null, because a
+ * question she did not reach and a question she got wrong are different facts.
+ *
+ * ---- THE TWO PERCENTAGES ----
+ *
+ * `percent` is all eight questions: how much of the passage she understood, by
+ * whatever route. That is the honest headline and it is what a report should
+ * print.
+ *
+ * `unaidedPercent` is ONLY the questions she answered without pressing "read it
+ * to me". ⚠️ It is null when she used read-aloud on every question — there is
+ * no independent reading to report, and reporting 0% would say she read nothing
+ * correctly rather than that she read nothing.
+ *
+ * It also carries `unaidedCount`, because a percentage over two questions is
+ * not a measurement and a screen that prints "100%" over 2 of 8 is lying with
+ * true arithmetic. The panel prints the count beside it, always.
  */
 export function gradeReadingCheck(form, responses = {}) {
   const questions = form?.questions || [];
@@ -89,7 +155,11 @@ export function gradeReadingCheck(form, responses = {}) {
 
   const unaided = rows.filter((r) => !r.readAloud && !r.skipped);
   const unaidedRight = unaided.filter((r) => r.correct).length;
-  const unaidedPercent = unaided.length ? Math.round((unaidedRight / unaided.length) * 100) : null;
+  const unaidedPercent = unaided.length
+    ? Math.round((unaidedRight / unaided.length) * 100)
+    : null;
+
+  const aloudCount = rows.filter((r) => r.readAloud).length;
 
   return {
     testId: form?.testId ?? null,
@@ -97,79 +167,30 @@ export function gradeReadingCheck(form, responses = {}) {
     total,
     percent,
     letter: isNum(percent) ? letterForPercent(percent) : null,
+    // ⚠️ ONE LADDER. letterForPercent is imported, never restated — v3.78's
+    // rule. Two implementations of one metric drift, and the day they disagree
+    // neither number can be trusted.
     unaidedRight,
     unaidedCount: unaided.length,
     unaidedPercent,
     unaidedLetter: isNum(unaidedPercent) ? letterForPercent(unaidedPercent) : null,
-    aloudCount: rows.filter((r) => r.readAloud).length,
+    aloudCount,
     skipped: rows.filter((r) => r.skipped).length,
     rows
   };
 }
 
-/** Every question answered, and none of it read to her. */
+/**
+ * Is this the first independent reading measurement in her record?
+ *
+ * TRUE only when she answered every question without being read to. Anything
+ * less is a mixed sitting: useful, and not the clean number.
+ *
+ * It is asked rather than assumed because it is the thing worth telling a
+ * grown-up about, and because §5.4 says the app does not get to overstate what
+ * it knows. "She read four of eight herself" is a fact. "Her reading level is
+ * X" is not, from one paper.
+ */
 export function isFullyUnaided(grade) {
   return Boolean(grade) && grade.total > 0 && grade.aloudCount === 0 && grade.skipped === 0;
-}
-
-/** Was this saved attempt sat entirely unaided? Reads the stored row. */
-export function attemptWasUnaided(attempt) {
-  return Boolean(attempt) && attempt.total > 0 && attempt.aloudCount === 0
-    && (attempt.rows || []).every((r) => !r.skipped && !r.readAloud);
-}
-
-/**
- * Each unit with whether it is open and what she has done on it.
- *
- * Unit 1 is always open. Every later unit opens only when the unit before it
- * has at least one attempt sat entirely unaided. A read-aloud sitting counts as
- * sat, not as passed-for-gating — the rule is about measuring her own reading.
- */
-export function unitStatuses(attempts = []) {
-  const units = readingUnits();
-  return units.map((unit, i) => {
-    const mine = attempts.filter((a) => a && a.testId === unit.id);
-    const prev = i === 0 ? null : units[i - 1];
-    const open = i === 0 || attempts.some((a) => a && a.testId === prev.id && attemptWasUnaided(a));
-    return {
-      unit,
-      open,
-      sittings: mine.length,
-      sittingsUnaided: mine.filter(attemptWasUnaided).length,
-      waitingOn: open ? null : prev.unitName
-    };
-  });
-}
-
-/** The row saved for one sitting. Same shape as the standalone app's, field for field. */
-export function attemptRow(form, grade, { id, dayKey, at }) {
-  return {
-    attemptId: id,
-    testId: form.testId,
-    kind: 'reading-check',
-    title: form.title,
-    attempt: form.attempt ?? 1,
-    dayKey,
-    at,
-    right: grade.right,
-    total: grade.total,
-    percent: grade.percent,
-    letter: grade.letter,
-    unaidedRight: grade.unaidedRight,
-    unaidedCount: grade.unaidedCount,
-    unaidedPercent: grade.unaidedPercent,
-    unaidedLetter: grade.unaidedLetter,
-    aloudCount: grade.aloudCount,
-    khanCourse: form.khanCourse,
-    khanUnit: form.khanUnit,
-    rows: grade.rows.map((r) => ({
-      questionId: r.questionId,
-      passage: r.passage,
-      chosen: r.chosen,
-      answer: r.answer,
-      correct: r.correct,
-      skipped: r.skipped,
-      readAloud: r.readAloud
-    }))
-  };
 }

@@ -213,7 +213,18 @@ const MAY_IMPORT_DB = [
   'src/store/useAppStore.js',
   'src/components/Writing/TypingPractice.jsx'
 ];
-const importers = files.filter((f) => f !== 'src/db/db.js' && /from '[^']*db\/db\.js'/.test(codeOnly(f)));
+// An import COUNTS when it resolves to the platform's src/db/db.js. A school
+// that keeps its own records (see section 1) has its own db/db.js in its own
+// folder; importing that one reaches none of the platform's tables, so it is
+// not what this list guards. Resolving the path asserts the property — who can
+// reach the platform's database — rather than the spelling of a file name
+// (Sept 23, 2026).
+const PLATFORM_DB = 'src/db/db.js';
+function importsPlatformDb(f) {
+  return [...codeOnly(f).matchAll(/from '([^']*db\/db\.js)'/g)]
+    .some((m) => path.posix.normalize(path.posix.join(path.posix.dirname(f), m[1])) === PLATFORM_DB);
+}
+const importers = files.filter((f) => f !== PLATFORM_DB && importsPlatformDb(f));
 ok('exactly four files import db.js',
   importers.length === 4 && importers.every((f) => MAY_IMPORT_DB.includes(f)),
   importers.join(', '));
@@ -243,8 +254,11 @@ ok('the boot gate imports only the connection lifecycle',
 // Those go through the same live binding, so they follow the Academy correctly;
 // the exception is named here so it stays one file wide.
 const TRANSACTION_EXCEPTION = 'src/store/useAppStore.js';
+// A school's own db file reads its own tables — that is its job, and section 1
+// holds it to its own rules. Every other file is checked here, whatever it imports.
 const strayTableReads = files
   .filter((f) => !['src/db/db.js', 'src/db/householdDb.js', TRANSACTION_EXCEPTION].includes(f))
+  .filter((f) => !schoolConstructors.includes(f))
   .filter((f) => /\bdb\.[a-zA-Z]\w*\.(get|put|add|delete|toArray|bulkPut|bulkAdd|where|update|clear)\b/.test(codeOnly(f)));
 ok('no file but the store reads a table directly', strayTableReads.length === 0,
   strayTableReads.join(', ') + ' — add a named helper in db.js instead');

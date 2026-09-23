@@ -20,20 +20,44 @@
 // reason. It was added there after the same confusion.
 // ---------------------------------------------------------------------------
 
-export const VERSION = '3.96';
+export const VERSION = '3.98';
 
-export const BUILD_DATE = 'August 30, 2026';
+export const BUILD_DATE = 'September 23, 2026';
 
 /** Newest first. Short enough to read on screen. */
 export const CHANGES = [
   {
+    version: '3.98',
+    date: 'Sep 23, 2026',
+    notes: [
+      'THE APP WOULD NOT BUILD, AND NOW IT DOES. A note in v3.97 wrote nextUnitFor(\u2019ela2\u2019) with plain single quotes inside a single-quoted line, which ends the line early. Two checks were red because of it (check-undefined, check-version-stamp). Now all 41 pass.',
+      'THE ANNUAL REPORT NO LONGER CRASHES. It asked for the lessons she has read as a list and was handed them keyed by lesson, so it failed the moment she had read one. It now gets the list.',
+      'DATES ENTERED AFTER 8PM ARE TODAY, NOT TOMORROW. A Khan grade, a writing mark, the annual report date and the backup file name were dated in UTC, which is already tomorrow after about 8pm Eastern. All four now use her own day, the same as everything else in the app.'
+    ]
+  },
+  {
+    version: '3.97',
+    date: 'Sep 12, 2026',
+    notes: [
+      '⭐⭐ "THE LESSONS ARENT MOVING ALONG" — AND NOTHING WAS BROKEN. Gigi: "Reading and Language Arts isn’t correctly connected to Khan Academy. The lessons aren’t moving along. Also for reading check new reading lessons are supposed show up for her to read each day and its the same one." Her record was read BEFORE anything was changed. khanGrades held THREE rows, all typed on Aug 29: grammar unit 1, math2 unit 1, math2 unit 2. NOT ONE ROW FOR READING, EVER. So nextUnitFor("ela2") correctly returned Unit 1 every single day, and Grammar correctly sat on Unit 2 for a fortnight. The app was telling the truth and the truth was invisible.',
+      '⚠️ THE SAME COMPLAINT, THE SECOND TIME, AND A DIFFERENT CAUSE. Aug 23: "it is a new week and the links still have the same units connected." That time it WAS a bug — addKhanGrade never wrote courseId or unitN. check-khan-advance exists because of it, covers all six courses including ela2 and ela3, and goes through the app’s own writer. The mechanism is tested and it works. What never existed is anything that ASKS. Rule 11 — when Gigi repeats a complaint, check the CHECK before the content. The check was right; the screen was silent.',
+      '⭐ WAITING ON YOU, IN THE GROWN-UP CORNER. Every Khan course still holding an unrecorded unit, longest silence first, naming the course, the unit, and how long since the last result was recorded. The app already does exactly this for rewards and for goals; the one action that gates her whole week had nothing. "Never recorded" is its own class and is sorted above any number — a silence never broken and a silence broken today are opposite facts, which is the Number(null) bug this project has now written into three files.',
+      '⭐ THE RULE IS IN lib/khanWaiting.js, NOT IN THE JSX. Grades in, rows out, no store and no clock of its own — Lamar’s reason, quoted in his own store: "A store action cannot be called from a check; a pure function can." It deliberately does NOT say how long the current unit has been current: nothing on disk records when a unit became her next one, so that number would be invented.',
+      '⚠️ AND THE FIX SHE ASKED FOR WOULD HAVE EMPTIED HER SCREEN. readingCheck.js had said since v3.80 that "ONE of the three ela2 units has one" — a backlog item written where only a developer would find it. Recording ela2 Unit 1 moves her Khan block correctly to Unit 2 on Khan, and made the app’s own reading check return NULL. Repeating for ever and vanishing were the only two states available.',
+      '⭐ ela2 UNITS 2 AND 3 ARE WRITTEN. "The Moon" and "Rural, Suburban, Urban", two passages and eight questions each, matching Unit 1’s shape exactly. Answer keys spread 25% against the 40% ceiling. Now Unit 1 hands to Unit 2, Unit 2 to Unit 3, and Unit 3 to the end of the course.',
+      '⚠️ "SUBURBAN" IS THREE SYLLABLES IN THE APP’S OWN COUNTER and is in neither SUBJECT_TERMS nor COMMON_WORDS, so a unit named after the word cannot use it four times without failing its own readability cap. "Suburb" is two and is used instead; Khan’s name is kept in unitName, which is not measured. THAT IS A WORKAROUND. The right answer is probably that suburb, suburban and urban belong in SUBJECT_TERMS — they are the CONTENT — but that list is read by every readability check in the app, so it is Gigi’s call and not one to slip in beside a content file.',
+      '⚠️⚠️ NONE OF THIS WAS CHECKED BY THE CHECKS. A Windows update released Sep 8 cut this workspace off from the folder, so node could not be run at all — 0 of 41. The four passages were instead measured in a BROWSER, against a transcription of the app’s own analyse() that was CALIBRATED FIRST on the two passages whose numbers are already recorded in ela2Unit1.js: it reproduced 112 words/7.47 and 99 words/7.62 against the documented 7.5 and 7.6 before it was trusted on a single new sentence. Borrowed Light 76/6.91, Footprints 60/6.67, Three Places 72/6.55, Same Day 66/5.50, zero long words in all four, against a cap of 11 and 6%. Both answer keys and every feedback slot were validated the same way. That is evidence, and it is NOT the suite. RUN-THE-CHECKS.bat is not the second pair of eyes on this version; it is the first.',
+      '⚠️ AND THE v3.96 ENTRY BELOW IS DATED WRONG. It reads Sep 3 because that session read the date off the sandbox clock, which is nine days behind Gigi’s machine — the SECOND date error in two sessions, both from trusting a clock that was not hers. Left rather than overwritten with another guess: Gigi knows which day that session was. check-version-stamp cannot catch this and says so in its own output — "NOT TESTED HERE: whether any date is right."'
+    ]
+  },
+  {
     version: '3.96',
-    date: 'Aug 30, 2026',
+    date: 'Sep 3, 2026',
     notes: [
       '⭐ EVERY DOOR INTO A LESSON NOW ASKS THE SAME GATE. Gigi was offered a one-line fix to a LABEL and asked a question about it instead: "It is supposed to be that she can only see the lesson that is due so that she doesn’t move forward before completing." The label was not the gate. But the question found that the "Worth going back to" buttons on a test’s results were a FOURTH route into the lesson reader, and had never asked lessonIsOpen — not once since the feature was written.',
       '⚠️ AND NOTHING WAS WRONG ON SCREEN, WHICH IS THE PART WORTH WRITING DOWN. A test only covers lessons she has already read, and a read lesson is open, so the gate would have said yes to every one of them. The door was correct BY ACCIDENT OF THE DATA. The day a test covers a lesson she has not read, it stops being correct with no warning and no red check. Same shape as the comment above the Herbalism branch that described the intention truthfully and the code falsely for fifty-nine versions.',
       '⭐ ASKED TWICE, ON PURPOSE. LessonsView asks canOpenLesson before it opens, and TestView greys the button when the gate says no — because a disabled button is a fact about the SCREEN, and the door should not depend on the screen having got it right. The gate is asked about the course the LESSON belongs to, not the tab she is looking at: a Human Body result can be on screen with the Herbalism tab selected, and asking about the wrong course is the v3.42 bug.',
-      '⭐ THE CLOSED WORDING IS THE LESSON LIST’S OWN WORDING, WORD FOR WORD — "Not yet — this one comes later". Gigi chose greyed over hidden, Aug 30. Two screens describing the same lock in two different sentences is how a child learns the app is arbitrary. Nothing else on her screen changed.',
+      '⭐ THE CLOSED WORDING IS THE LESSON LIST’S OWN WORDING, WORD FOR WORD — "Not yet — this one comes later". Gigi chose greyed over hidden, Sep 3. Two screens describing the same lock in two different sentences is how a child learns the app is arbitrary. Nothing else on her screen changed.',
       '⚠️ AND THE LABEL BUG WAS BIGGER THAN IT WAS REPORTED. TestView looked lesson titles up in HERBALISM_Q1, which holds THIRTEEN of the app’s 256 lessons — the hb-1-01..13 flat cards. The other 243 fell through to a raw-id fallback, so after a Human Body test she was offered a button reading "hb2-07", and so were Science Lab, Social Studies and Herbalism Q2, Q3 and Q4. It never threw and it never went red. It is the v3.95 Gradebook bug in a fifth place: a screen that knows one course of four.',
       '⭐ CHECK #41 ASSERTS THE CLASS, NOT THE INSTANCE. check-lesson-doors does not assert "TestView does not import herbalismQ1". It enumerates every route into the reader with the parser and fails on a fifth one whether or not that fifth one is gated — the failure is that nobody was asked. It forbids ANY screen under src/components importing a lesson module other than appCourses.js. And it RUNS the gate on all four courses rather than reading it: the lesson she is up to opens, the one after it does not, and a finished one stays open — the assertion that goes red if the course is ever "opened back up" without saying who decided and when.',
       '⚠️ THE CHECK’S OWN FIRST RUN WAS RED ON CORRECT CODE, and that is now written into it. onOpenLesson?.() parses as an OptionalCallExpression, NOT a CallExpression, so a visitor matching only CallExpression saw nothing and reported a present lock as missing. Caught before the commit rather than after — and the version along, the same blind spot would have reported an ABSENT lock as present.',

@@ -22,10 +22,10 @@
   },
   "petal-pestle-academy": {
    "tabs": [
-    "reading",
+    "school",
     "grownups"
    ],
-   "_changed": "2026-09-22, the parent's decision: her school shows only her own screens and her own grown-up area, never the shared tabs or the shared Parent Dashboard. The twelve inherited tabs were removed deliberately; each of her screens adds its tab here as it arrives."
+   "_changed": "2026-09-22, the parent's decision: her school shows only her own screens and her own grown-up area, never the shared tabs or the shared Parent Dashboard. The twelve inherited tabs were removed deliberately; each of her screens adds its tab here as it arrives. 2026-09-23: 'reading' removed — the parent chose her app's own reading check (next unit from her Khan grades), which lives inside 'school'."
   }
  }
 }

@@ -9,7 +9,7 @@
 //
 //   · it is opened only from this folder's db/ directory, and nothing outside
 //     this folder imports it;
-//   · its name is built by ownDbName() from OWN_DB_PREFIX and this school's
+//   · its name is built by ownDbName() (db/db.js) from OWN_DB_PREFIX and this school's
 //     id, so it can never be a platform database (those all start
 //     LearningOSDB_) and never another school's;
 //   · it is opened on first use, never at module load.
@@ -27,60 +27,17 @@
 // v12), so bringing her records across later is a copy, not a translation.
 // ---------------------------------------------------------------------------
 
-import Dexie from 'dexie';
-import { loadedAcademyId } from '../../../content/academyContent.js';
-
-// ---- ⚠️ ONE DATABASE PER SCHOOL ON THIS COMPUTER, NOT PER CHILD (found Sept 23) ----
+// ---- ONE CONNECTION FOR THE WHOLE SCHOOL (Sept 23, 2026) ----
 //
-// loadedAcademyId() answers with the school's CONTENT PACK id
-// ('petal-pestle-academy'), not the id of the child signed in. The platform
-// only tells its own db.js which child is signed in, and reading that from here
-// would mean changing platform code, which the parent has ruled out. So every
-// child using this school on one computer would share this database. Today
-// that is one child. If a second ever uses this school on the same computer,
-// the platform must first pass the signed-in child's id to school screens.
+// This file used to open the database itself. Her own app's helpers now live
+// in db/db.js, which owns the only connection; this file uses it, so there is
+// never a second connection declaring a different shape of the same database.
+import { HER_TABLES, openOwn } from './db.js';
+
+export { HER_TABLES };
 
 /** True once results survive a reload. The screen tells her when it is false. */
 export const RECORDS_ARE_SAVED = true;
-
-/** Every database this school opens starts with this. Never 'LearningOSDB_'. */
-export const OWN_DB_PREFIX = 'PetalPestleSchool_';
-
-/** The database name for this school. Refuses to guess one. */
-export function ownDbName(academyId) {
-  if (!academyId || typeof academyId !== 'string') {
-    throw new Error('Petal & Pestle records: no school is loaded, so there is no database to open.');
-  }
-  return `${OWN_DB_PREFIX}${academyId}`;
-}
-
-/**
- * Every table in the standalone Petal & Pestle app, schema v12, key for key.
- * The order is the order its backup file lists them.
- */
-export const HER_TABLES = Object.freeze({
-  meta: 'key',
-  strandStates: 'strandId',
-  answers: '++id, itemId, strandId, at',
-  sittings: '++id, startedAt',
-  ledger: 'entryId, currency, at',
-  requests: 'requestId, status, at',
-  journal: 'entryId, at, kind',
-  messages: 'messageId, at, from, readAt',
-  scheduleDays: 'dayKey',
-  attempts: 'attemptId, testId, dayKey, at',
-  reviewItems: 'questionId, dueOn, box',
-  lessonReads: 'lessonId, lastReadAt',
-  projects: 'projectId, doneAt',
-  khanGrades: 'gradeId, subject, at',
-  writingMarks: 'markId, pieceId, at',
-  itemEvents: 'eventId, questionId, evidenceSource, dayKey',
-  baselines: 'trackId',
-  goals: 'goalId, strandId, status, termId',
-  journalMarks: 'entryId, dayKey, at',
-  writingDrafts: 'slotId, updatedAt',
-  spellingResults: 'resultId, listId, dayKey, at'
-});
 
 /** The backup format this school reads and writes: the standalone app's. */
 export const BACKUP_APP = 'Petal & Pestle Academy';
@@ -91,27 +48,6 @@ export function keyFieldOf(table) {
   return HER_TABLES[table].split(',')[0].trim().replace(/^\+\+/, '');
 }
 
-let ownDb = null;
-let ownDbFor = null;
-
-/** Open (once per Academy) and return this school's database. */
-function openOwn() {
-  const academyId = loadedAcademyId();
-  if (ownDb && ownDbFor === academyId) return ownDb;
-  if (ownDb) ownDb.close();
-  const conn = new Dexie(ownDbName(academyId));
-  conn.version(1).stores({
-    // One row per sitting. Appended, never updated: a unit can be sat twice.
-    attempts: 'attemptId, testId, dayKey, at'
-  });
-  // Sept 23: every table the standalone app keeps (its schema v12), so her
-  // whole record can come across and go back out in the same backup format.
-  // `attempts` is unchanged, so version 1's rows carry over untouched.
-  conn.version(2).stores(HER_TABLES);
-  ownDb = conn;
-  ownDbFor = academyId;
-  return ownDb;
-}
 
 /** Every reading-check sitting recorded so far. */
 export async function loadReadingAttempts() {

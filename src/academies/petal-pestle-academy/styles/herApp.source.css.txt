@@ -1,0 +1,11 @@
+@tailwind components;
+@tailwind utilities;
+@layer components {
+  .panel { @apply rounded-petal border border-cream-300 bg-cream-100 shadow-petal; }
+  .panel-white { @apply rounded-petal border border-cream-300 bg-white shadow-petal; }
+  .label-caps { @apply font-body text-[0.68rem] font-700 uppercase tracking-[0.18em] text-ink-500; }
+}
+@layer utilities {
+  .font-700 { font-weight: 700; }
+  .tnum { font-variant-numeric: tabular-nums; }
+}
