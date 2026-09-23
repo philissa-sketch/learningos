@@ -17,8 +17,10 @@ import {
   exportHerRecords,
   importBackup,
   previewBackup,
+  replaceWithBackup,
   dayKeyOf
 } from '../../db/herRecords.js';
+import { useAppStore } from '../../store/useAppStore.js';
 
 const card = 'rounded-xl border border-space-700 bg-space-800 px-4 py-4';
 const primary = 'rounded-full bg-signal-cyan px-4 py-2 text-xs font-display font-700 text-space-900 hover:opacity-90';
@@ -69,6 +71,11 @@ export function BackupPanel() {
   const [result, setResult] = useState(null);
   const [error, setError] = useState(null);
   const [busy, setBusy] = useState(false);
+  const [confirmFresh, setConfirmFresh] = useState(false);
+  const [freshResult, setFreshResult] = useState(null);
+  // Her screens read the store, not the database, so after any load the store
+  // is re-read — otherwise the counts on every other tab are the old ones.
+  const rehydrate = useAppStore((st) => st.hydrate);
 
   const refresh = () => countHerRecords().then(setCounts).catch((e) => setError(e.message));
   useEffect(() => {
@@ -97,6 +104,7 @@ export function BackupPanel() {
     try {
       const data = JSON.parse(await file.text());
       const p = await previewBackup(data);
+      await refresh(); // so "replace all N records" counts what is here now
       setFileData(data);
       setFileName(file.name);
       setPreview(p);
@@ -115,6 +123,32 @@ export function BackupPanel() {
       setPreview(null);
       setFileData(null);
       await refresh();
+      await rehydrate();
+    } catch (e) {
+      setError(e.message);
+    }
+    setBusy(false);
+  }
+
+  /**
+   * The one-time move (Sept 23, 2026). A copy of everything here is saved to a
+   * file first; only then is it replaced. If the copy cannot be made, nothing
+   * is replaced.
+   */
+  async function startFresh() {
+    if (!fileData || busy) return;
+    setBusy(true);
+    setError(null);
+    try {
+      const safety = await exportHerRecords();
+      downloadJson(safety, `petal-pestle-learningos-BEFORE-fresh-start-${dayKeyOf()}.json`);
+      setFreshResult(await replaceWithBackup(fileData));
+      setConfirmFresh(false);
+      setPreview(null);
+      setFileData(null);
+      setResult(null);
+      await refresh();
+      await rehydrate();
     } catch (e) {
       setError(e.message);
     }
@@ -163,8 +197,50 @@ export function BackupPanel() {
               <button type="button" onClick={load} disabled={busy || preview.totalToAdd === 0} className={preview.totalToAdd ? primary : `${quiet} cursor-not-allowed opacity-60`}>
                 {busy ? 'Loading…' : preview.totalToAdd ? `Add ${preview.totalToAdd} records` : 'Nothing new to add'}
               </button>
-              <button type="button" onClick={() => { setPreview(null); setFileData(null); }} className={quiet}>Cancel</button>
+              <button type="button" onClick={() => { setPreview(null); setFileData(null); setConfirmFresh(false); }} className={quiet}>Cancel</button>
             </div>
+
+            {total > 0 ? (
+              <div className="mt-4 rounded-xl border border-signal-amber/50 px-4 py-3">
+                <p className="text-xs font-700 text-ink-100">Moving her over for good? Start fresh from this backup instead.</p>
+                <p className="mt-1 text-xs text-ink-300">
+                  Adding keeps what is already here, so her levels, streak and today&rsquo;s work stay at an older
+                  backup&rsquo;s values. Starting fresh makes this school exactly match this file. A copy of everything
+                  here now is saved to your Downloads first.
+                </p>
+                {confirmFresh ? (
+                  <div className="mt-3 flex flex-wrap items-center gap-3">
+                    <span className="text-xs text-ink-100">Replace all {total} records here with this file?</span>
+                    <button type="button" onClick={startFresh} disabled={busy} className={primary}>
+                      {busy ? 'Working…' : 'Yes — save a copy, then start fresh'}
+                    </button>
+                    <button type="button" onClick={() => setConfirmFresh(false)} className={quiet}>No</button>
+                  </div>
+                ) : (
+                  <button type="button" onClick={() => setConfirmFresh(true)} className={`${quiet} mt-3`}>
+                    Start fresh from this backup…
+                  </button>
+                )}
+              </div>
+            ) : null}
+          </div>
+        ) : null}
+
+        {freshResult ? (
+          <div className="mt-4">
+            <p className="text-xs font-700 text-ink-100">
+              Done — this school now matches the file ({freshResult.totalNow} records). A copy of what was here before
+              is in your Downloads. Every count below was checked after saving.
+            </p>
+            <CountTable
+              rows={freshResult.rows.filter((r) => r.inFile > 0 || r.before > 0)}
+              columns={[
+                ['Before', (r) => r.before],
+                ['In the file', (r) => r.inFile],
+                ['Now', (r) => r.after]
+              ]}
+              flag={(r) => r.set}
+            />
           </div>
         ) : null}
 
@@ -219,7 +295,9 @@ function CountTable({ rows, columns, flag }) {
       </table>
       {flagged.length ? (
         <p className="mt-2 text-xs text-ink-300">
-          Not loaded, and why: {flagged.map((r) => `${LABELS[r.table] || r.table} — ${r.duplicatesInFile ? `${r.duplicatesInFile} repeated in the file` : ''}${r.duplicatesInFile && r.unreadable ? ', ' : ''}${r.unreadable ? `${r.unreadable} with no id` : ''}`).join('; ')}.
+          Not loaded, and why: {flagged.map((r) => (r.set !== undefined
+            ? `${LABELS[r.table] || r.table} — ${r.set} repeated in the file or with no id`
+            : `${LABELS[r.table] || r.table} — ${r.duplicatesInFile ? `${r.duplicatesInFile} repeated in the file` : ''}${r.duplicatesInFile && r.unreadable ? ', ' : ''}${r.unreadable ? `${r.unreadable} with no id` : ''}`)).join('; ')}.
         </p>
       ) : null}
     </>

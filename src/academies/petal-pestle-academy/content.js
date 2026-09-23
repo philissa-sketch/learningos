@@ -420,13 +420,12 @@ export const theme = { appearance: () => import('./academy.css') };
 // Sept 23, 2026, the parent: "Pick the next unit from the Khan grades." So the
 // separate reading-check tab (which held unit 2 until unit 1 was read unaided)
 // was removed; her app's own reading check, inside My School, is the one.
-const NAV_GROUPS = [
-  {
-    id: 'learning',
-    label: 'My Learning',
-    tabs: [{ id: 'school', label: 'My School' }]
-  }
-];
+//
+// And no platform tab for it at all (Sept 23, 2026, the parent: "It doesn't make
+// sense to have Lamar's school and my school"). My School is where she starts
+// (navStartTab below) and where every Back leads (src/App.jsx), and it carries
+// her own menu — so a second menu above it pointing at the same place is noise.
+const NAV_GROUPS = [];
 
 const NAV_PARENT_TAB = { id: 'grownups', label: 'Grown-Up Corner' };
 
@@ -438,6 +437,10 @@ export const nav = {
   navGroups: NAV_GROUPS,
   navParentTab: NAV_PARENT_TAB,
   navStartTab: 'school',
+  // Her screens carry their own bar (name, petals, Grown-Up Corner, build date,
+  // Sign out), so the platform's bar is off — one bar, not two (the parent,
+  // Sept 23, 2026). src/components/Navigation/NavBar.jsx reads this.
+  navShellBar: false,
   navSchoolName: 'Petal & Pestle',
   navSchoolTagline: 'Academy'
 };

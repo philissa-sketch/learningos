@@ -1,4 +1,8 @@
+import { useState } from 'react';
 import { useAppStore } from '../../store/useAppStore.js';
+// LearningOS (Sept 23, 2026): the platform's build stamp — the date and time
+// this copy was built — which the platform's own bar used to show above hers.
+import { BUILD_STAMP } from '../../../../lib/buildStamp.js';
 import { SHORT_STAMP } from '../../config/buildStamp.js';
 import { NAV, tabForView, sectionsFor, defaultViewFor } from '../../config/navigation.js';
 
@@ -25,8 +29,8 @@ function SubNav({ view, onNavigate }) {
               aria-current={active ? 'true' : undefined}
               className={`rounded-full px-3 py-1 text-[0.8rem] font-700 ${
                 active
-                  ? 'bg-sage-600 text-white'
-                  : 'border border-cream-300 bg-white text-ink-700 hover:border-sage-400'
+                  ? 'bg-sage-700 text-white'
+                  : 'border border-cream-300 bg-white text-ink-700 hover:border-sage-500'
               }`}
             >
               {sec.label}
@@ -38,7 +42,14 @@ function SubNav({ view, onNavigate }) {
   );
 }
 
-export function NavBar({ view, onNavigate }) {
+/**
+ * LearningOS (Sept 23, 2026): the platform's own bar is turned off in this
+ * school (nav.navShellBar), so this bar carries what that one did — the build
+ * date and Sign out, the parent's request. `onSignOut` comes from the platform
+ * shell; in her standalone app it is absent and nothing extra is drawn.
+ */
+export function NavBar({ view, onNavigate, onSignOut }) {
+  const [confirmSignOut, setConfirmSignOut] = useState(false);
   const rank = useAppStore((s) => s.rank());
   const name = useAppStore((s) => s.learnerName);
   const petals = useAppStore((s) => s.petalBalance());
@@ -59,11 +70,17 @@ export function NavBar({ view, onNavigate }) {
             </span>
             <span className="block text-[0.65rem] uppercase tracking-[0.16em] text-ink-500">
               Academy · {SHORT_STAMP}
+              {onSignOut && BUILD_STAMP !== 'dev' ? (
+                <span title="When this copy of the app was built. If it looks old, reload the page."> · {BUILD_STAMP}</span>
+              ) : null}
             </span>
           </span>
         </button>
 
-        <nav className="order-3 flex w-full flex-wrap gap-1.5 sm:order-2 sm:w-auto sm:flex-1">
+        {/* LearningOS (Sept 23, 2026): with Sign out and the build date added,
+            the tabs no longer fit beside the name and the petals, and squeezed
+            into a column. Here they always get their own full-width row. */}
+        <nav className={`order-3 flex w-full flex-wrap gap-1.5 ${onSignOut ? '' : 'sm:order-2 sm:w-auto sm:flex-1'}`}>
           {NAV.map((tab) => {
             // Highlighted by the SECTION she is in, not by an id match — the
             // Market is inside My Greenhouse, so opening the Market must light
@@ -90,7 +107,7 @@ export function NavBar({ view, onNavigate }) {
           })}
         </nav>
 
-        <div className="order-2 ml-auto flex items-center gap-3 sm:order-3">
+        <div className={`order-2 ml-auto flex items-center gap-3 ${onSignOut ? '' : 'sm:order-3'}`}>
           {/* Balances live in the nav so they are visible from every screen
               EXCEPT the one place it would matter — the Check-In replaces the
               whole layout, nav included, so she never watches a counter tick up
@@ -118,6 +135,28 @@ export function NavBar({ view, onNavigate }) {
           >
             🔒 Grown-Up Corner
           </button>
+          {onSignOut ? (
+            confirmSignOut ? (
+              <span className="flex items-center gap-1.5 text-xs">
+                <span className="text-ink-700">Sign out?</span>
+                <button type="button" onClick={onSignOut} className="rounded-full bg-blush-500 px-3 py-1.5 font-700 text-white hover:bg-blush-700">
+                  Yes
+                </button>
+                <button type="button" onClick={() => setConfirmSignOut(false)} className="rounded-full border border-cream-300 bg-white px-3 py-1.5 font-700 text-ink-700">
+                  No
+                </button>
+              </span>
+            ) : (
+              <button
+                type="button"
+                onClick={() => setConfirmSignOut(true)}
+                title="Sign out — hand the computer to someone else. Nothing is lost."
+                className="rounded-full border border-cream-300 bg-white px-3 py-1.5 text-xs font-700 text-ink-700 hover:border-blush-500"
+              >
+                ⏻ Sign out
+              </button>
+            )
+          ) : null}
         </div>
       </div>
       <SubNav view={view} onNavigate={onNavigate} />

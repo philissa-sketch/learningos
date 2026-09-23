@@ -1409,7 +1409,7 @@ function HoursPanel() {
             </p>
             <div className="mt-2 h-2 rounded-full bg-cream-200">
               <div
-                className="h-2 rounded-full bg-sage-600"
+                className="h-2 rounded-full bg-sage-700"
                 style={{ width: pct(summary.daysMeetingRequirement, GEORGIA.daysPerYear) + '%' }}
               />
             </div>
@@ -2045,8 +2045,8 @@ export function ParentDashboard({ onExit }) {
               aria-current={tab === sec.id ? 'true' : undefined}
               className={`rounded-full px-3 py-1 text-[0.8rem] font-700 ${
                 tab === sec.id
-                  ? 'bg-sage-600 text-white'
-                  : 'border border-cream-300 bg-white text-ink-700 hover:border-sage-400'
+                  ? 'bg-sage-700 text-white'
+                  : 'border border-cream-300 bg-white text-ink-700 hover:border-sage-500'
               }`}
             >
               {sec.label}

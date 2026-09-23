@@ -1,9 +1,10 @@
-import { lazy, Suspense, useEffect, useMemo, useState } from 'react';
+import { lazy, Suspense, useCallback, useEffect, useMemo, useState } from 'react';
 import { useAppStore } from './store/useAppStore.js';
 import { applyTheme } from './lib/themes.js';
 import { NavBar } from './components/Navigation/NavBar.jsx';
 import { academyContent } from './content/academyContent.js';
 import { schoolViewLoader } from './content/slots/views.js';
+import { firstScreen } from './content/firstScreen.js';
 import { MissionControlDashboard } from './components/Dashboard/MissionControlDashboard.jsx';
 // ParentGate is deliberately NOT lazy-loaded like the dashboard it wraps.
 // It is small, and it has to render the lock screen without pulling the
@@ -133,7 +134,23 @@ export default function App({ initialView = 'dashboard', onSignOut }) {
   // 'dashboard' | 'progress' | 'lessons' | 'games' | 'journal' | 'typing' |
   // 'schedule' | 'academic' | 'pe' | 'messages' | 'morning' | 'parent', plus
   // any tab id this school brings a screen of its own for.
-  const [view, setView] = useState(initialView);
+  /**
+   * THE SCHOOL'S OWN HOME (Sept 23, 2026).
+   *
+   * A school that names its own first screen (nav.navStartTab — see
+   * src/content/firstScreen.js) has no use for the shell's dashboard: the
+   * parent's words, "It should open to her Today like Lamar, not have Lamar's
+   * screen and then she has to select her school." So for such a school every
+   * way back to 'dashboard' — a screen's Back button, the nav — lands on its
+   * own start screen instead. A school that names nothing gets 'dashboard'
+   * exactly as before, because firstScreen() returns 'dashboard' for it.
+   */
+  const homeView = useMemo(() => firstScreen(academyContent(), 'child'), []);
+  const [view, setViewRaw] = useState(initialView === 'dashboard' ? homeView : initialView);
+  const setView = useCallback(
+    (next) => setViewRaw(next === 'dashboard' ? homeView : next),
+    [homeView]
+  );
   /**
    * The school's own screen for this tab, if the shell does not own the id.
    * Read per render rather than at module scope: a content-pack read that runs
@@ -522,7 +539,7 @@ export default function App({ initialView = 'dashboard', onSignOut }) {
             project opened from a school's screen and one opened from the
             Journal land in the same engine and produce the same graded entry. */}
         {SchoolScreen && (
-          <SchoolScreen onExit={() => setView('dashboard')} onStartPrompt={setActivePrompt} />
+          <SchoolScreen onExit={() => setView('dashboard')} onStartPrompt={setActivePrompt} onSignOut={onSignOut} />
         )}
         {view === 'messages' && <MissionCommsHome onExit={() => setView('dashboard')} />}
         {/* block-1, 08:30-09:00. See components/Morning/MorningMeeting.jsx for

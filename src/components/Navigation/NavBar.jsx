@@ -49,7 +49,8 @@ export function NavBar({ view, onNavigate, onSignOut }) {
     navGroups: groups = [],
     navParentTab: parentTab = null,
     navSchoolName: schoolName = '',
-    navSchoolTagline: schoolTagline = ''
+    navSchoolTagline: schoolTagline = '',
+    navShellBar: showShellBar = true
   } = academyContent().nav || {};
 
   const [openGroup, setOpenGroup] = useState(null); // desktop dropdown
@@ -81,6 +82,14 @@ export function NavBar({ view, onNavigate, onSignOut }) {
     setOpenGroup(null);
     setMenuOpen(false);
   };
+
+  // ---- A SCHOOL THAT CARRIES ITS OWN BAR (Sept 23, 2026) ----
+  //
+  // A school whose screens bring their own menu, name, build stamp and sign-out
+  // may turn this bar off with `navShellBar: false` in its nav slot, so the
+  // child sees one bar, not two. Its own screens receive onSignOut instead
+  // (src/App.jsx). Every school that says nothing keeps this bar as before.
+  if (showShellBar === false) return null;
 
   return (
     <header className="print-hide sticky top-0 z-10 border-b border-space-700 bg-space-900/95 backdrop-blur">

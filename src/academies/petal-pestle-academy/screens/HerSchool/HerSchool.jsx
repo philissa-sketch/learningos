@@ -19,7 +19,10 @@
 //   · No port banner. Her app warns when it is not open at localhost:5180;
 //     LearningOS runs at its own address, so the warning would always show.
 //   · Her "Grown-Up Corner" button opens THIS school's Grown-Up Corner
-//     (behind the platform's passcode lock), not her app's own lock.
+//     (behind the platform's passcode lock), not her app's own lock, and
+//     leaving it comes back to Today.
+//   · Her bar carries the build date and Sign out, because the platform's own
+//     bar is turned off in this school (nav.navShellBar, Sept 23, 2026).
 //   · It opens on Today, not Home (the parent's choice, Sept 23, 2026).
 //   · Wrapped in `.pp-app`, the scope her app's styles are compiled to
 //     (styles/herApp.css), so they cannot restyle a platform screen.
@@ -59,7 +62,7 @@ function ScreenLoading() {
   );
 }
 
-export function HerSchool() {
+export function HerSchool({ onSignOut }) {
   const hydrate = useAppStore((s) => s.hydrate);
   const hydrated = useAppStore((s) => s.hydrated);
   const hydrationError = useAppStore((s) => s.hydrationError);
@@ -97,7 +100,7 @@ export function HerSchool() {
     };
   }, []);
 
-  if (view === 'parent') return <GrownUpCorner onExit={() => navigate('home')} />;
+  if (view === 'parent') return <GrownUpCorner onExit={() => navigate('today')} />;
 
   if (!hydrated) {
     const problem = hydrationError || dbNotice;
@@ -145,7 +148,7 @@ export function HerSchool() {
           </button>
         </div>
       )}
-      <NavBar view={view} onNavigate={navigate} />
+      <NavBar view={view} onNavigate={navigate} onSignOut={onSignOut} />
       <ErrorBoundary>
         <Suspense fallback={<ScreenLoading />}>
           {view === 'home' && <HomeDashboard onNavigate={navigate} />}

@@ -212,3 +212,72 @@ export async function importBackup(data) {
     totalAdded: preview.totalToAdd
   };
 }
+
+// ---------------------------------------------------------------------------
+// START FRESH FROM A BACKUP — the one-time move. (Sept 23, 2026)
+//
+// Adding never overwrites, which is right for topping up. It is wrong for the
+// move itself when an OLDER backup was loaded first: rows her app changes in
+// place every day (levels, streak, today's ticks, review boxes, lessons read)
+// would keep their older values. The parent had loaded one before moving day.
+//
+// So this replaces everything here with the file, on three conditions:
+//
+//   · the screen saves a copy of everything here to a file FIRST (see
+//     BackupPanel) — nothing is dropped without a copy the parent holds;
+//   · it is one transaction: every table is cleared and refilled, then every
+//     table's count is checked against the file. Any mismatch throws, the
+//     transaction is thrown away, and what was here is untouched;
+//   · the file must pass the same checks as an ordinary load (previewBackup).
+// ---------------------------------------------------------------------------
+
+/** What the file holds, per table, with repeats and id-less rows set aside. */
+function usableRows(data) {
+  const out = {};
+  for (const table of Object.keys(HER_TABLES)) {
+    const incoming = Array.isArray(data[table]) ? data[table] : [];
+    const key = keyFieldOf(table);
+    const seen = new Set();
+    const rows = [];
+    for (const r of incoming) {
+      if (!r || r[key] === undefined || r[key] === null) continue;
+      if (table === 'meta' && r.key === 'parentPasscode') continue;
+      if (seen.has(r[key])) continue;
+      seen.add(r[key]);
+      rows.push(r);
+    }
+    out[table] = { inFile: incoming.length, rows };
+  }
+  return out;
+}
+
+/** Replace every record here with the file's. Returns before/after per table. */
+export async function replaceWithBackup(data) {
+  await previewBackup(data); // same refusals as an ordinary load
+  const db = openOwn();
+  const before = await countHerRecords();
+  const plan = usableRows(data);
+  await db.transaction('rw', Object.keys(HER_TABLES).map((t) => db.table(t)), async () => {
+    for (const table of Object.keys(HER_TABLES)) {
+      await db.table(table).clear();
+      if (plan[table].rows.length) await db.table(table).bulkAdd(plan[table].rows);
+    }
+    for (const table of Object.keys(HER_TABLES)) {
+      const now = await db.table(table).count();
+      if (now !== plan[table].rows.length) {
+        throw new Error(`${table}: expected ${plan[table].rows.length} rows from the file, found ${now}. Nothing was changed.`);
+      }
+    }
+  });
+  const after = await countHerRecords();
+  return {
+    rows: Object.keys(HER_TABLES).map((table) => ({
+      table,
+      inFile: plan[table].inFile,
+      before: before[table],
+      after: after[table],
+      set: plan[table].inFile - plan[table].rows.length
+    })),
+    totalNow: Object.values(after).reduce((a, b) => a + b, 0)
+  };
+}

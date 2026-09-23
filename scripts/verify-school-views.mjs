@@ -212,7 +212,13 @@ console.log('\n--- 5. every tab this school declares can open something ---');
   ok('the parent button opens something',
     !parentId || routed.has(parentId) || liveIds.includes(parentId),
     `${parentId} — not a shell screen and not one this school declares`);
-  const reachable = new Set([...tabs, ...(parentId ? [parentId] : [])]);
+  // ...and so is the school's start screen: where the child lands and where
+  // every Back leads (src/content/firstScreen.js, Sept 23, 2026).
+  const startId = typeof mod.nav?.navStartTab === 'string' ? mod.nav.navStartTab : null;
+  ok('the start screen opens something',
+    !startId || routed.has(startId) || liveIds.includes(startId),
+    `${startId} — not a shell screen and not one this school declares`);
+  const reachable = new Set([...tabs, ...(parentId ? [parentId] : []), ...(startId ? [startId] : [])]);
   const unused = liveIds.filter((id) => !reachable.has(id));
   ok('...and no screen is declared with no tab to reach it', unused.length === 0, unused.join(', '));
 }

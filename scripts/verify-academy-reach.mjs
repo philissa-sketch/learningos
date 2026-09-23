@@ -76,7 +76,10 @@ for (const id of folders) {
   const groups = nav.navGroups || [];
   const reach = new Set([
     ...groups.flatMap((g) => (g.tabs || []).map((t) => t.id)),
-    ...(nav.navParentTab?.id ? [nav.navParentTab.id] : [])
+    ...(nav.navParentTab?.id ? [nav.navParentTab.id] : []),
+    // A school's start screen is reached too — it is where the child lands and
+    // where every Back leads (src/content/firstScreen.js, Sept 23, 2026).
+    ...(typeof nav.navStartTab === 'string' && nav.navStartTab ? [nav.navStartTab] : [])
   ]);
 
   const recorded = BASE.academies?.[id]?.tabs;

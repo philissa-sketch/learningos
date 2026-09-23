@@ -38,6 +38,9 @@
  *
  *     onExit         go back to the dashboard
  *     onStartPrompt  open a prompt in the writing engine, graded like any other
+ *     onSignOut      hand the computer back to the front door (Sept 23, 2026) —
+ *                    for a school that turns the shell's bar off (navShellBar)
+ *                    and so must offer sign-out on its own bar
  *
  * Nothing else, and nothing named after any subject. A screen needing more than
  * that is asking the platform for a feature, which is a decision, not a prop.

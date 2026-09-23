@@ -148,8 +148,8 @@ function LookPicker() {
             aria-pressed={on}
             className={`rounded-full border px-3 py-1 text-xs font-700 transition ${
               on
-                ? 'border-sage-600 bg-sage-100 text-sage-900'
-                : 'border-cream-300 bg-white text-ink-500 hover:border-sage-400'
+                ? 'border-sage-700 bg-sage-300/30 text-sage-700'
+                : 'border-cream-300 bg-white text-ink-500 hover:border-sage-500'
             }`}
           >
             {o.icon} {o.name}

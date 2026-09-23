@@ -138,6 +138,28 @@ const slotBody = (tplSrc.match(/export const nav = \{([^}]*)\}/) || [])[1] || ''
 ok('the slot export is flat', slotBody.trim().length > 0 && !/\[|\{/.test(slotBody),
   'declare the groups above the export, not inside it');
 
+console.log('\n--- 7. a school may turn the shell bar off, and only on purpose (Sept 23, 2026) ---');
+// The shell's bar is where sign-out lives. A school that turns it off must
+// still reach a screen of its own that is handed onSignOut — otherwise a child
+// has no way to hand the computer over.
+ok('the bar is hidden only by navShellBar === false',
+  /navShellBar: showShellBar = true/.test(navbarCode) && /if \(showShellBar === false\) return null;/.test(navbarCode),
+  'a missing or truthy value must keep the bar');
+ok('a school screen is handed onSignOut',
+  /<SchoolScreen\b[^\n]*onSignOut=\{onSignOut\}/.test(app));
+const { firstScreen } = await import(pathToFileURL(path.join(REPO, 'src/content/firstScreen.js')).href);
+for (const id of fs.readdirSync(path.join(REPO, 'src/academies')).filter((d) => !d.startsWith('_') && fs.existsSync(path.join(REPO, 'src/academies', d, 'content.js')))) {
+  const own = await import(pathToFileURL(path.join(REPO, 'src/academies', id, 'content.js')).href);
+  if (own.nav?.navShellBar !== false) {
+    ok(`${id}: keeps the shell bar`, true);
+    continue;
+  }
+  const merged = { ...own, nav: { ...(nav || {}), ...(own.nav || {}) } };
+  const start = firstScreen(merged, 'child');
+  ok(`${id}: turns the bar off, so it must start on a screen of its own`,
+    start !== 'dashboard' && Object.keys(own.views || {}).includes(start), `starts on ${start}`);
+}
+
 console.log(`\n${passed} passed, ${failures.length} failed`);
 if (failures.length) {
   console.log(`\n${failures.length} CHECK(S) FAILED`);
