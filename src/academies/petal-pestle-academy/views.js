@@ -14,5 +14,6 @@
  * screen with no way to reach it, and a tab with nothing behind it.
  */
 export const views = {
+  reading: { load: () => import('./screens/ReadingCheck/ReadingCheckScreen.jsx').then((m) => ({ default: m.ReadingCheckScreen })) },
   grownups: { load: () => import('./screens/GrownUpCorner/GrownUpCorner.jsx').then((m) => ({ default: m.GrownUpCorner })) }
 };

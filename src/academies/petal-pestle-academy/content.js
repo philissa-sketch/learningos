@@ -414,7 +414,13 @@ export const theme = { appearance: () => import('./academy.css') };
  * stays flat (see _template/content.js).
  * ======================================================================== */
 
-const NAV_GROUPS = [];
+const NAV_GROUPS = [
+  {
+    id: 'learning',
+    label: 'My Learning',
+    tabs: [{ id: 'reading', label: 'Reading check' }]
+  }
+];
 
 const NAV_PARENT_TAB = { id: 'grownups', label: 'Grown-Up Corner' };
 

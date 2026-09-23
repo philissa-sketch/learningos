@@ -69,9 +69,81 @@ console.log('--- 1. connections are built in one place, and built late ---');
 // A fourth would mean records living somewhere none of those three cover.
 const MAY_CONSTRUCT = ['src/db/db.js', 'src/db/householdDb.js', 'src/db/importRunner.js'];
 const constructors = files.filter((f) => /new Dexie\(/.test(codeOnly(f)));
-ok('only db.js, householdDb.js and importRunner.js construct a Dexie',
-  constructors.length === 3 && constructors.every((f) => MAY_CONSTRUCT.includes(f)),
-  constructors.join(', '));
+
+// ---- A SCHOOL'S OWN DATABASE (Sept 23, 2026) ----
+//
+// A parent decided one school keeps its records in a database of its own
+// rather than in the platform's tables, so that two schools share nothing.
+// That is a fourth kind of connection, and it is allowed ONLY on these terms,
+// each checked below rather than trusted:
+//
+//   1. it lives in src/academies/<id>/db/ — never the template, never shared;
+//   2. its name comes from the school's own ownDbName(), built from its own
+//      OWN_DB_PREFIX and the signed-in Academy's id — so it is never a
+//      platform database, and two Academies never share one;
+//   3. it names none of the platform's databases or naming rules;
+//   4. it is opened on first use, never at module load;
+//   5. nothing outside that school's folder imports it.
+//
+// The platform's own three are held exactly as before.
+const SCHOOL_DB_FILE = /^src\/academies\/([^_/][^/]*)\/db\/[^/]+\.js$/;
+const platformConstructors = constructors.filter((f) => !SCHOOL_DB_FILE.test(f));
+const schoolConstructors = constructors.filter((f) => SCHOOL_DB_FILE.test(f));
+ok('the platform\'s connections are still only db.js, householdDb.js and importRunner.js',
+  platformConstructors.length === 3 && platformConstructors.every((f) => MAY_CONSTRUCT.includes(f)),
+  platformConstructors.join(', '));
+
+for (const f of schoolConstructors) {
+  const school = f.match(SCHOOL_DB_FILE)[1];
+  const code = codeOnly(f);
+  const opens = [...code.matchAll(/new Dexie\(([^)]*)\)/g)].map((m) => m[1].trim());
+  ok(`${school}: its database name always comes from ownDbName()`,
+    opens.length > 0 && opens.every((arg) => /^ownDbName\(/.test(arg)), opens.join(' | '));
+  ok(`${school}: ...and it names no platform database or naming rule`,
+    !/LearningOSDB_|\bDB_PREFIX\b|dbNameFor|HOUSEHOLD_DB_NAME|from '[^']*src\/db\/|from '(\.\.\/)+db\/(db|householdDb|importRunner)\.js'/.test(code));
+  ok(`${school}: ...and is never opened at module load`,
+    // Top-level lines only: a connection built inside a function is opened
+    // when that function is called, which is exactly what this asks for.
+    !/^(export\s+)?(const|let|var)\s+\w+\s*=\s*new Dexie\(/m.test(code));
+
+  const mod = await import('file:///' + path.join(REPO, f).replace(/\\/g, '/'));
+  let prefixOk = false;
+  let refusesNoAcademy = false;
+  try {
+    const a = mod.ownDbName('academy-a');
+    const b = mod.ownDbName('academy-b');
+    prefixOk = typeof mod.OWN_DB_PREFIX === 'string' && mod.OWN_DB_PREFIX.length > 0
+      && !mod.OWN_DB_PREFIX.startsWith('LearningOSDB_')
+      && a.startsWith(mod.OWN_DB_PREFIX) && b.startsWith(mod.OWN_DB_PREFIX)
+      && a !== b && a.includes('academy-a') && b.includes('academy-b');
+  } catch {
+    prefixOk = false;
+  }
+  try {
+    mod.ownDbName(null);
+  } catch {
+    refusesNoAcademy = true;
+  }
+  ok(`${school}: ...one database per Academy, never a platform one`, prefixOk,
+    'ownDbName(id) must start with its own OWN_DB_PREFIX, differ per id, and never start LearningOSDB_');
+  ok(`${school}: ...and it refuses to open one with no Academy signed in`, refusesNoAcademy);
+
+  const own = `src/academies/${school}/`;
+  const base = path.basename(f).replace(/\.js$/, '');
+  const outsiders = files.filter((g) => !g.startsWith(own)
+    && new RegExp(`from '[^']*academies/${school}/db/${base}(\\.js)?'`).test(codeOnly(g)));
+  ok(`${school}: ...and nothing outside its folder imports it`, outsiders.length === 0, outsiders.join(', '));
+}
+
+const prefixes = [];
+for (const f of schoolConstructors) {
+  const mod = await import('file:///' + path.join(REPO, f).replace(/\\/g, '/'));
+  prefixes.push(mod.OWN_DB_PREFIX);
+}
+ok('no two schools share a database prefix', new Set(prefixes).size === prefixes.length, prefixes.join(', '));
+
+const stray = constructors.filter((f) => !MAY_CONSTRUCT.includes(f) && !SCHOOL_DB_FILE.test(f));
+ok('nothing else anywhere constructs a Dexie', stray.length === 0, stray.join(', '));
 
 // The exception earns itself only if it stays read-only.
 const runner = codeOnly('src/db/importRunner.js');

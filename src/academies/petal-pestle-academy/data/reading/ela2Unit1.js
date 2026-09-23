@@ -81,6 +81,11 @@
 // 60 in one slot.
 // ---------------------------------------------------------------------------
 
+// v3.97 — Units 2 and 3. The register at the foot of this file is what every
+// other file reads; see the note beside it for why it did not move.
+import { ELA2_UNIT2 } from './ela2Unit2.js';
+import { ELA2_UNIT3 } from './ela2Unit3.js';
+
 /**
  * A passage she reads, and the questions that may be asked about it.
  *
@@ -282,8 +287,28 @@ Jack put one hand on it. The stalk was warm. He began to climb.`
   ]
 };
 
-/** Every reading check in the app, by id. One so far. */
-export const READING_UNITS = [ELA2_UNIT1];
+/**
+ * Every reading check in the app, in the order her course walks them.
+ *
+ * ---- ⚠️ WHY THE REGISTER STAYS IN THE UNIT 1 FILE — v3.97 ----
+ *
+ * It reads like the wrong home, and it is. The obvious tidy is a
+ * `readingUnits.js` that imports all three and leaves each unit file holding
+ * only its own unit.
+ *
+ * It is not done because `check-reading-check.mjs` line 48 loads READING_UNITS
+ * and readingUnitFor from THIS PATH BY NAME, and TodayView, the App router and
+ * lib/readingCheck.js all import from here too. Moving the register moves five
+ * import paths and the check that would tell me I got it wrong — and on the day
+ * this was written the checks could not be run at all (a Windows update on
+ * Sep 8 2026 cut this workspace off from the folder).
+ *
+ * Adding two names to an array changes no path and breaks no import. Moving the
+ * register is a cleaning job, it is worth doing, and it is worth doing on a day
+ * when `node` runs. Recorded in the build log rather than left as a good
+ * intention in a comment — §57's lesson, twice over.
+ */
+export const READING_UNITS = [ELA2_UNIT1, ELA2_UNIT2, ELA2_UNIT3];
 
 export function readingUnitFor(khanCourse, khanUnit) {
   return (
