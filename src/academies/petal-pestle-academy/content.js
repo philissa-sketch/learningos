@@ -430,9 +430,14 @@ const NAV_GROUPS = [
 
 const NAV_PARENT_TAB = { id: 'grownups', label: 'Grown-Up Corner' };
 
+// Sept 23, 2026, the parent: "I want her Start page to be her Today page" —
+// the way his school starts on a page whose first item is the Morning Meeting,
+// hers starts on My School, which opens on her Today, whose first block is
+// Morning Circle. The rule that reads this is src/content/firstScreen.js.
 export const nav = {
   navGroups: NAV_GROUPS,
   navParentTab: NAV_PARENT_TAB,
+  navStartTab: 'school',
   navSchoolName: 'Petal & Pestle',
   navSchoolTagline: 'Academy'
 };

@@ -1,5 +1,7 @@
 import { useEffect } from 'react';
 import App from './App.jsx';
+import { academyContent } from './content/academyContent.js';
+import { firstScreen } from './content/firstScreen.js';
 import { useAppStore } from './store/useAppStore.js';
 
 /**
@@ -40,5 +42,8 @@ export default function SchoolBoot({ enteredAs, onSignOut }) {
     }
   }, [enteredAs, hydrated]);
 
-  return <App initialView={enteredAs === 'parent' ? 'parent' : 'dashboard'} onSignOut={onSignOut} />;
+  // Which screen to open on is the school's to say (Sept 23, 2026) — see
+  // src/content/firstScreen.js. A school that names nothing opens exactly as
+  // before: the dashboard, or the parent dashboard for a grown-up sign-in.
+  return <App initialView={firstScreen(academyContent(), enteredAs)} onSignOut={onSignOut} />;
 }

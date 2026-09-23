@@ -20,6 +20,7 @@
 //     LearningOS runs at its own address, so the warning would always show.
 //   · Her "Grown-Up Corner" button opens THIS school's Grown-Up Corner
 //     (behind the platform's passcode lock), not her app's own lock.
+//   · It opens on Today, not Home (the parent's choice, Sept 23, 2026).
 //   · Wrapped in `.pp-app`, the scope her app's styles are compiled to
 //     (styles/herApp.css), so they cannot restyle a platform screen.
 // ---------------------------------------------------------------------------
@@ -63,7 +64,9 @@ export function HerSchool() {
   const hydrated = useAppStore((s) => s.hydrated);
   const hydrationError = useAppStore((s) => s.hydrationError);
   const retryHydrate = useAppStore((s) => s.retryHydrate);
-  const [view, setView] = useState('home');
+  // Her app opens on Home. In LearningOS she starts her day on Today (the
+  // parent, Sept 23, 2026); Today's first block, Morning Circle, leads Home.
+  const [view, setView] = useState('today');
   const [dbNotice, setDbNotice] = useState(null);
 
   const strands = useAppStore((s) => s.strands);
