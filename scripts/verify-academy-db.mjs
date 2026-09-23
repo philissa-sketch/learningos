@@ -79,8 +79,11 @@ const constructors = files.filter((f) => /new Dexie\(/.test(codeOnly(f)));
 //
 //   1. it lives in src/academies/<id>/db/ — never the template, never shared;
 //   2. its name comes from the school's own ownDbName(), built from its own
-//      OWN_DB_PREFIX and the signed-in Academy's id — so it is never a
-//      platform database, and two Academies never share one;
+//      OWN_DB_PREFIX and an id — so it is never a platform database and never
+//      another school's. NOTE: what a school passes as that id is its own
+//      business; the one school doing this passes its content-pack id, so its
+//      database is one per school per computer, not one per child (see its
+//      db file). This check proves the naming rule, not which id is passed;
 //   3. it names none of the platform's databases or naming rules;
 //   4. it is opened on first use, never at module load;
 //   5. nothing outside that school's folder imports it.
@@ -124,9 +127,9 @@ for (const f of schoolConstructors) {
   } catch {
     refusesNoAcademy = true;
   }
-  ok(`${school}: ...one database per Academy, never a platform one`, prefixOk,
+  ok(`${school}: ...its names differ by id and are never a platform one`, prefixOk,
     'ownDbName(id) must start with its own OWN_DB_PREFIX, differ per id, and never start LearningOSDB_');
-  ok(`${school}: ...and it refuses to open one with no Academy signed in`, refusesNoAcademy);
+  ok(`${school}: ...and it refuses to name one with no id`, refusesNoAcademy);
 
   const own = `src/academies/${school}/`;
   const base = path.basename(f).replace(/\.js$/, '');

@@ -1,4 +1,5 @@
 import { ParentGate } from '../../../../components/Dashboard/ParentGate.jsx';
+import { BackupPanel } from './BackupPanel.jsx';
 
 /**
  * ---- HER GROWN-UP CORNER (Sept 22, 2026) ----
@@ -28,7 +29,7 @@ const COMING = [
   { group: 'Report', items: 'One-page report · Strand detail · Re-measure · Goals · Hours (Georgia) · Annual report' },
   { group: 'Gradebook', items: 'Tests · Answer history · Khan grades · Writing pieces' },
   { group: 'Her work', items: 'Her journal · Rewards to approve' },
-  { group: 'Everything else', items: 'Write to her · Her day · Bring her work here · Backup & settings' }
+  { group: 'Everything else', items: 'Write to her · Her day · Settings' }
 ];
 
 /**
@@ -49,12 +50,16 @@ export function GrownUpCorner({ onExit }) {
           </button>
         ) : null}
         <p className="font-display text-xs uppercase tracking-widest text-ink-500">Grown-Up Corner</p>
-        <h1 className="mt-1 font-display text-2xl font-700 text-ink-100">Her parent screens are on their way</h1>
+        <h1 className="mt-1 font-display text-2xl font-700 text-ink-100">Her records</h1>
         <p className="mt-2 text-sm text-ink-300">
-          Her records still live in the Petal &amp; Pestle app. Keep using that one for grading and reports until
-          this corner is complete — nothing here reads or changes them yet.
+          She is still using the Petal &amp; Pestle app. Keep using that one for grading and reports until this
+          corner is complete.
         </p>
-        <ul className="mt-5 space-y-3">
+        <div className="mt-5">
+          <BackupPanel />
+        </div>
+        <p className="mt-8 font-display text-xs uppercase tracking-widest text-ink-500">Still to come</p>
+        <ul className="mt-3 space-y-3">
           {COMING.map((row) => (
             <li key={row.group} className="rounded-xl border border-space-700 bg-space-800 px-4 py-3">
               <p className="font-display text-sm font-700 text-ink-100">{row.group}</p>

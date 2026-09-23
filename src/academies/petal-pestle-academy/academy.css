@@ -46,21 +46,54 @@
  * PALEST here, because it is the deepest background, and the deepest
  * background in this school is nearly white.
  */
+/*
+ * ---- ⚠️ WHY EVERY LINE BELOW SAYS !important (Sept 23, 2026) ----
+ *
+ * The platform paints a store colour theme onto the page as inline styles on
+ * <html> (src/lib/themes.js, applied by App.jsx) — and when a child has bought
+ * none, it paints the default, a deep navy. An inline style beats any ordinary
+ * stylesheet rule, so this school's cream was being painted over on every
+ * screen. That is why it looked dark.
+ *
+ * `!important` in a stylesheet beats an inline style that is not important,
+ * which fixes it from inside this folder without changing the platform. This
+ * school has no store themes of its own, so nothing here is lost by it.
+ */
 :root {
-  --space-950: 255 252 248; /* the page — warm cream, never pure white */
-  --space-900: 253 249 244; /* panels sitting on the page */
-  --space-800: 250 245 238; /* raised surface */
-  --space-700: 232 223 211; /* panel border */
-  --space-600: 214 204 238; /* hairline / divider — a lavender tint */
+  --space-950: 255 252 248 !important; /* the page — warm cream, never pure white */
+  --space-900: 253 249 244 !important; /* panels sitting on the page */
+  --space-800: 250 245 238 !important; /* raised surface */
+  --space-700: 232 223 211 !important; /* panel border */
+  --space-600: 214 204 238 !important; /* hairline / divider — a lavender tint */
 
-  --accent: 138 116 186;    /* lavender, the primary accent */
-  --accent-glow: rgba(138, 116, 186, 0.08);
+  --accent: 138 116 186 !important;    /* lavender, the primary accent */
+  --accent-glow: rgba(138, 116, 186, 0.08) !important;
 
   /* Ink dark enough to read for a school day, warm rather than pure black. */
-  --ink-100: 42 38 51;      /* primary text */
-  --ink-300: 88 80 102;     /* secondary text */
-  --ink-500: 132 124 146;   /* muted / captions */
+  --ink-100: 42 38 51 !important;      /* primary text */
+  --ink-300: 88 80 102 !important;     /* secondary text */
+  --ink-500: 132 124 146 !important;   /* muted / captions */
 }
+
+/*
+ * ---- ⚠️ THE PLATFORM'S TEXT COLOURS ARE FIXED, SO THEY ARE RE-POINTED HERE (Sept 23, 2026) ----
+ *
+ * The platform's `ink` text colours are three fixed pale values in
+ * tailwind.config.js (#E8ECF4 and friends), chosen for a dark page — they do
+ * not read the --ink variables above. On cream they are nearly invisible:
+ * headings and titles vanished. Changing tailwind.config.js is a platform
+ * change, which the parent has ruled out, so this school points every ink
+ * utility it uses at its own dark ink instead. This file loads only in this
+ * school, so no other school's text changes.
+ */
+.text-ink-100, .hover\:text-ink-100:hover { color: rgb(var(--ink-100)) !important; }
+.text-ink-300, .hover\:text-ink-300:hover { color: rgb(var(--ink-300)) !important; }
+.text-ink-500, .disabled\:text-ink-500:disabled { color: rgb(var(--ink-500)) !important; }
+.placeholder\:text-ink-500::placeholder { color: rgb(var(--ink-500)) !important; }
+.hover\:border-ink-500:hover { border-color: rgb(var(--ink-500)) !important; }
+.border-ink-300\/50 { border-color: rgb(var(--ink-300) / 0.5) !important; }
+.border-ink-500\/30 { border-color: rgb(var(--ink-500) / 0.3) !important; }
+.bg-ink-300\/10 { background-color: rgb(var(--ink-300) / 0.1) !important; }
 
 /*
  * The wash. Two soft ellipses over cream — lavender top left, petal top right.
