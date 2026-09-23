@@ -178,7 +178,11 @@ export const DEFAULT_SCHEDULE = [
     // Alternating by quarter rather than by day keeps the three-lessons-then-a-
     // review-day week intact for both. Alternating by day would give each course
     // two lessons a week and no week at all.
-    note: 'The Science Lab (Q1, Q3). Open for the garden and her projects in Q2 and Q4 — The Human Body moved to the 2:45 rotating block at v3.22.'
+    // Sept 23, 2026: this line is read to her by Dr. Marigold ("Right now it is
+    // …"). It used to end "— The Human Body moved to the 2:45 rotating block at
+    // v3.22", a note for grown-ups that she heard aloud. That history lives in
+    // the comment above.
+    note: 'The Science Lab this quarter. In Q2 and Q4 this time is for the garden and your projects.'
   },
   {
     // ---- THIS BLOCK CHANGES SUBJECT BY DAY (v3.22) ----

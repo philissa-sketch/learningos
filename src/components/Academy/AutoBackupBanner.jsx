@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
+import { academyContent, loadedAcademyId } from '../../content/academyContent.js';
 import {
   chooseBackupFolder,
   getAutoBackupState,
@@ -13,7 +14,35 @@ import {
  * permission confirmed again). When backups are working it shows nothing.
  * See lib/autoBackup.js.
  */
+/**
+ * ---- A SCHOOL THAT KEEPS ITS OWN RECORDS (Sept 23, 2026) ----
+ *
+ * This banner backs up the platform's database. A school that turns the
+ * shell's bar off (nav.navShellBar === false) carries its own screens, its own
+ * records and its own backup, so this banner would promise protection it does
+ * not give — the parent asked for it to go. Backups still run underneath; only
+ * the banner is not shown.
+ *
+ * The banner sits outside the school and can render before the school's
+ * content has loaded, so until that is known it shows nothing and looks again
+ * shortly. Every other school sees it exactly as before once it has loaded.
+ */
+function hiddenForThisSchool() {
+  try {
+    if (!loadedAcademyId()) return 'unknown';
+    return academyContent().nav?.navShellBar === false;
+  } catch {
+    return 'unknown';
+  }
+}
+
 export default function AutoBackupBanner() {
+  // Re-render a moment after mount, so the check above sees the loaded school.
+  const [, setLook] = useState(0);
+  useEffect(() => {
+    const timers = [setTimeout(() => setLook(1), 800), setTimeout(() => setLook(2), 3000)];
+    return () => timers.forEach(clearTimeout);
+  }, []);
   const [state, setState] = useState(null);
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState(null);
@@ -59,6 +88,8 @@ export default function AutoBackupBanner() {
     setBusy(false);
   }
 
+  const schoolHides = hiddenForThisSchool();
+  if (schoolHides !== false) return null;
   if (hidden || !state || state === 'on' || state === 'unsupported') {
     return message ? <Corner><p style={{ margin: 0 }}>{message}</p></Corner> : null;
   }

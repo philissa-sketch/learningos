@@ -107,7 +107,7 @@ function PasscodeSetup() {
         <h2 className="mt-1 font-display text-xl font-700 text-ink-100">Set a Passcode</h2>
         <p className="mt-2 text-sm text-ink-300">
           This dashboard holds grades, attendance, notes and your compliance records — and {learnerWord() || 'your learner'} uses this app
-          every school day. A passcode keeps him out of the screens that aren’t his.
+          every school day. A passcode keeps them out of the screens that aren’t theirs.
         </p>
         <p className="mt-2 text-xs text-ink-500">
           <strong className="text-ink-300">Worth knowing:</strong> this is a lock, not security. Everything in

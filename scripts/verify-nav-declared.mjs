@@ -145,6 +145,10 @@ console.log('\n--- 7. a school may turn the shell bar off, and only on purpose (
 ok('the bar is hidden only by navShellBar === false',
   /navShellBar: showShellBar = true/.test(navbarCode) && /if \(showShellBar === false\) return null;/.test(navbarCode),
   'a missing or truthy value must keep the bar');
+const bannerCode = read('src/components/Academy/AutoBackupBanner.jsx').replace(/\/\*[\s\S]*?\*\//g, '').replace(/^\s*\/\/.*$/gm, '');
+ok('the backup banner steps aside only for a school with navShellBar === false',
+  /academyContent\(\)\.nav\?\.navShellBar === false/.test(bannerCode) && /if \(schoolHides !== false\) return null;/.test(bannerCode),
+  'the platform banner backs up the platform database; a school with its own records must not be told it is protected by it');
 ok('a school screen is handed onSignOut',
   /<SchoolScreen\b[^\n]*onSignOut=\{onSignOut\}/.test(app));
 const { firstScreen } = await import(pathToFileURL(path.join(REPO, 'src/content/firstScreen.js')).href);
