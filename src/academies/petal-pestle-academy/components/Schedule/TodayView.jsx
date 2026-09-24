@@ -25,6 +25,8 @@ import {
   shouldSay
 } from '../../lib/morningCircle.js';
 import { sayOncePerDay, saidOnRecord } from '../../lib/marigoldVoice.js';
+import { readingToday, khanWatchFor, READING_MINUTES } from '../../lib/readingProgress.js';
+import { unitUrl } from '../../data/khan/khanUnits.js';
 
 // ---------------------------------------------------------------------------
 // TODAY — her school day, with a bell.
@@ -94,6 +96,11 @@ export function TodayView({ onNavigate }) {
 
   const day = todayKey();
   const done = useAppStore((s) => s.scheduleDays[day]?.done || {});
+  // Sept 24 2026: her Reading block follows HER READING COURSE, by her
+  // progress (lib/readingProgress.js). It used to follow Khan's 2nd Grade
+  // Reading units, which only moved on when a grown-up typed a grade, so it sat
+  // on Fairy Tales Retold however much she did.
+  const allAttempts = useAppStore((s) => s.attempts);
 
   // ---- MORNING CIRCLE COMES FIRST (Gigi, Sept 23 2026) ----
   //
@@ -366,6 +373,9 @@ export function TodayView({ onNavigate }) {
           // deciding what it opened was the string 'social'.
           // check-links asserts this call carries both.
           const target = resolveBlockTarget(b, strands, khanGrades, lessonsRead, new Date());
+          const reading = b.subject === 'reading' ? readingToday(allAttempts, new Date()) : null;
+          const khanWatch = reading ? khanWatchFor(reading.next) : null;
+          const khanWatchUrl = khanWatch ? unitUrl(khanWatch.course, khanWatch.unit) : null;
           // v3.80 — is there a reading check for the Khan unit this block opens?
           // Asked only of a reading block, and it asks the SAME function the
           // block asked, so the two can never point at different units.
@@ -456,7 +466,44 @@ export function TodayView({ onNavigate }) {
                     {b.note ? ` · ${b.note}` : ''}
                   </p>
 
-                  {target && (
+                  {reading && (
+                    <div className="mt-2 flex flex-wrap items-center gap-2">
+                      {reading.canStart ? (
+                        <button
+                          type="button"
+                          onClick={() => throughCircle(b.id, () => onNavigate?.('readingLesson'))}
+                          className="rounded-full bg-sage-700 px-4 py-1.5 text-xs font-700 text-white hover:bg-sage-500"
+                        >
+                          {reading.next.type === 'lesson'
+                            ? `Today’s reading: ${reading.next.title}`
+                            : reading.next.type === 'test'
+                              ? `Thursday test: ${reading.next.title}`
+                              : reading.next.title}
+                        </button>
+                      ) : (
+                        <span className="rounded-full border-2 border-sage-500 bg-sage-300/20 px-4 py-1.5 text-xs font-700 text-sage-700">
+                          {reading.next ? `✓ Reading done today · next time: ${reading.next.title}` : '✓ Every reading lesson so far is done'}
+                        </span>
+                      )}
+                      {reading.canStart && khanWatchUrl && (
+                        <a
+                          href={khanWatchUrl}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="rounded-full border border-lavender-500 bg-white px-4 py-1.5 text-xs font-700 text-lavender-700 hover:bg-lavender-300/20"
+                        >
+                          Optional: Khan’s unit on this ↗
+                        </a>
+                      )}
+                      <span className="text-[0.7rem] text-ink-500">
+                        {reading.canStart
+                          ? `About ${READING_MINUTES.lesson} min, then your book${reading.isCatchUp ? ' · Friday catch-up: you may do more than one' : ''}`
+                          : 'Now it is book time'}
+                      </span>
+                    </div>
+                  )}
+
+                  {target && !reading && (
                     <div className="mt-2 flex flex-wrap items-center gap-2">
                       {target.kind === 'khan' ? (
                         <>

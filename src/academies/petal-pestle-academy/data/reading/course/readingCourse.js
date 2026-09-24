@@ -14,9 +14,11 @@
 // check prints "N of 16 written" on every run and fails if a module says
 // 'written' and is not, or is imported and still says 'planned'.
 //
-// ---- NOT WIRED TO A SCREEN YET ----
-// Sept 23 2026: written as data only, so moving day (Sept 24) is not
-// disturbed. Wiring onto Today and the Gradebook comes after she has settled.
+// ---- ON HER SCREENS SINCE SEPT 24 2026 ----
+// Sept 23: written as data only, so moving day was not disturbed. Sept 24,
+// after Gigi found her Reading block stuck on Fairy Tales Retold: wired onto
+// Today's Reading block, the reading screen and the Gradebook. Which piece is
+// next: lib/readingProgress.js. Check: checks/check-reading-wiring.mjs.
 //
 // ---- THREE RULES THAT MUST SURVIVE THE WIRING ----
 // 1. Thursday tests and quarter tests have NO read-aloud (Gigi, Sept 23).

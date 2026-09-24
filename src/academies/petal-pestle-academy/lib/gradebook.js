@@ -435,10 +435,10 @@ export function getSubjectGrades({
        * Her two attempts at `read-ela2-u1` — 25% then 75%, Aug 25 and 26 — are
        * visible in "Every attempt, question by question" and reach no subject.
        */
-      notCounted:
-        subject.id === 'language-arts'
-          ? { readingChecks: (attempts || []).filter((a) => a.kind === 'reading-check').length }
-          : null
+      // Sept 24 2026: the Reading card exists now (GradebookPanel ReadingCard,
+      // lib/readingProgress.js) and her reading checks count there as Lessons.
+      // So nothing is "not counted" any more.
+      notCounted: null
     };
   });
 }

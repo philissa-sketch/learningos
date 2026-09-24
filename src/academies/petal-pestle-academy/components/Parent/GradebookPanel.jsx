@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useAppStore } from '../../store/useAppStore.js';
+import { readingScores, readingToday } from '../../lib/readingProgress.js';
 import { allWeeks, BANDS } from '../../config/assessment.js';
 import { officialAttempt } from '../../lib/assessmentEngine.js';
 import { reviewSummary, troubleSpots, dayKeyOf, daysBetween } from '../../lib/reviewQueue.js';
@@ -192,6 +193,7 @@ export function GradebookPanel() {
         {subjects.map((s) => (
           <SubjectCard key={s.id} subject={s} attemptsByTest={attemptsByTest} />
         ))}
+        <ReadingCard attempts={attempts} />
       </section>
 
       {/* ---- the practice gate ---- */}
@@ -300,6 +302,49 @@ export function GradebookPanel() {
  * ONE SUBJECT. Letter, percentage, what the number is made of, and a row per
  * quarter that opens into the weeks and then into the questions.
  */
+/**
+ * READING — her own course (Sept 24 2026). Two scores, never blended:
+ *   Lessons     — read-aloud allowed. Her Fairy Tales reading checks count here.
+ *   On her own  — Thursday tests and quarter tests, no read-aloud. BLANK until
+ *                 she has sat one: a test not taken is not a zero.
+ * Worked out in lib/readingProgress.js, not here: the panel renders.
+ */
+function ReadingCard({ attempts }) {
+  const { lessons, own } = readingScores(attempts);
+  const today = readingToday(attempts, new Date());
+  return (
+    <div className="panel px-5 py-5">
+      <h3 className="font-display text-base text-ink-900">📖 Reading</h3>
+      <p className="mt-1 text-xs text-ink-700">
+        Her own Reading course. {today.next ? `She is on: ${today.next.title} (piece ${today.position} of ${today.of}).` : 'Every written piece is done.'}{' '}
+        {today.written}.
+      </p>
+      <div className="mt-3 grid grid-cols-2 gap-3">
+        <div className="rounded-petal border border-cream-300 bg-white px-4 py-3">
+          <p className="label-caps text-ink-500">Lessons</p>
+          <p className="tnum mt-1 text-sm font-700 text-ink-900">
+            {lessons ? `${lessons.letter} · ${lessons.percent}%` : '—'}
+          </p>
+          <p className="text-[0.7rem] text-ink-500">
+            {lessons ? `${lessons.right} of ${lessons.total} questions · read-aloud allowed` : 'No lessons yet'}
+          </p>
+        </div>
+        <div className="rounded-petal border border-cream-300 bg-white px-4 py-3">
+          <p className="label-caps text-ink-500">On her own</p>
+          <p className="tnum mt-1 text-sm font-700 text-ink-900">
+            {own ? `${own.letter} · ${own.percent}%` : 'Blank'}
+          </p>
+          <p className="text-[0.7rem] text-ink-500">
+            {own
+              ? `${own.right} of ${own.total} questions · ${own.tests} test${own.tests === 1 ? '' : 's'} · no read-aloud`
+              : 'Blank until her first Thursday test. Not a zero.'}
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function SubjectCard({ subject, attemptsByTest }) {
   const [openQuarter, setOpenQuarter] = useState(null);
   const weeks = allWeeks();

@@ -1660,6 +1660,72 @@ export const useAppStore = create((set, get) => ({
     return attempt;
   },
 
+  /**
+   * A piece of her READING COURSE is finished: a lesson, a Thursday test or a
+   * quarter test (Sept 24 2026; lib/readingProgress.js).
+   *
+   * Filed in the attempts table beside everything else she sits, so backups and
+   * imports carry it with no new table. Saving it IS what moves her Reading
+   * block on: readingToday() reads these rows. It never writes a Khan grade.
+   * Read-aloud is saved per answer; on a test it is always false because the
+   * test screen has no button.
+   */
+  async recordReadingWork(form, grade) {
+    const isLesson = form.type === 'lesson';
+    const attempt = {
+      attemptId: newEntryId(),
+      testId: form.testId,
+      kind: form.kind,
+      title: form.title,
+      attempt: 1,
+      module: form.module,
+      dayKey: dayKeyOf(),
+      at: new Date().toISOString(),
+      right: grade.right,
+      total: grade.total,
+      percent: grade.percent,
+      letter: grade.letter,
+      unaidedRight: grade.unaidedRight,
+      unaidedCount: grade.unaidedCount,
+      unaidedPercent: grade.unaidedPercent,
+      aloudCount: isLesson ? grade.aloudCount : 0,
+      rows: grade.rows.map((r) => ({
+        questionId: r.questionId,
+        passage: r.passage,
+        chosen: r.chosen,
+        answer: r.answer,
+        correct: r.correct,
+        skipped: r.skipped,
+        readAloud: isLesson ? r.readAloud : false
+      }))
+    };
+    await putAttempt(attempt);
+    set({ attempts: [...get().attempts, attempt] });
+
+    await get().recordItemEvents(
+      attempt.rows.map((r) => ({
+        questionId: r.questionId,
+        evidenceSource: isLesson ? 'instruction' : 'test',
+        attemptState: r.skipped ? 'abandoned' : 'complete',
+        correct: r.correct,
+        chosen: r.chosen,
+        readAloud: r.readAloud
+      }))
+    );
+
+    // Petals for doing it, never for the score (the reading check's rule).
+    await get().addLedgerEntry(
+      makeEntry({
+        currency: 'petal',
+        amount: isLesson ? PETALS.lessonRead : form.type === 'quarter' ? PETALS.quarterTest : PETALS.unitTest,
+        kind: 'grant',
+        source: isLesson ? 'lesson-read' : 'test-taken',
+        note: `Reading: ${form.title}`
+      })
+    );
+    return attempt;
+  },
+
   async recordAttempt(form, responses, grade) {
     const attempt = {
       attemptId: newEntryId(),
