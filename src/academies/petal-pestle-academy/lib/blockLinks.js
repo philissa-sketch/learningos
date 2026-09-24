@@ -243,6 +243,20 @@ export function resolveBlockTarget(block, strands = {}, grades = [], lessonsRead
     };
   }
 
+  // ---- MORNING CIRCLE — MATCHED BY ID, LIKE SINGING & MOVEMENT (Sept 23 2026) ----
+  //
+  // It used to open Home through its 'notes' subject. It opens its own screen
+  // now, where it is finished rather than ticked (lib/morningCircle.js). By id,
+  // so a grown-up who attaches 'notes' to some other block still gets Home.
+  if (block?.id === 'blk-open') {
+    return {
+      kind: 'view',
+      label: 'Start Morning Circle',
+      view: 'circle',
+      detail: 'Notes, your day, warm-up, water'
+    };
+  }
+
   const subject = block?.subject;
   if (!subject) return null;
 

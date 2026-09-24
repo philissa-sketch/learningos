@@ -7,7 +7,6 @@ import { ALL_PETAL_ITEMS } from '../../data/rewards/petalCatalog.js';
 import { MarigoldMessage } from '../Mentor/MarigoldMessage.jsx';
 import { GoalLine } from './GoalLine.jsx';
 import { NotesPanel } from '../Messages/NotesPanel.jsx';
-import { WarmUpCard } from '../Assess/WarmUpCard.jsx';
 import { orderedBlocks, toClock } from '../../config/schedule.js';
 import { greetingFor, dailyLine } from '../../lib/marigold.js';
 
@@ -232,17 +231,10 @@ export function HomeDashboard({ onNavigate }) {
         <NotesPanel />
       </div>
 
-      {/* The morning warm-up. Three questions, about two minutes, drawn from
-          whatever her spaced-review boxes say is due today.
-
-          It sits high on the screen because the whole value of spaced review is
-          that it actually happens. Buried three scrolls down it becomes an
-          optional extra, and an optional extra is one she does on Monday and
-          then never again. The card renders nothing at all once it is done for
-          the day, or before she has read her first lesson. */}
-      <div className="mt-5">
-        <WarmUpCard />
-      </div>
+      {/* The morning warm-up USED to sit here. Sept 23 2026 it moved into
+          Morning Circle (MorningCircleView.jsx): she starts her day on Today,
+          never came to Home, and answered zero warm-up questions from Sept 12
+          to 23. One place for it, and it is the place she goes first. */}
 
       {/* Dr. Marigold, once, at the top. She says ONE thing and it is always
           about what to do next — never about how clever anybody is. */}

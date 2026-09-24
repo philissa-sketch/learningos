@@ -67,6 +67,7 @@ import {
   setPreferredVoiceName,
   speakChunks
 } from '../../lib/speech.js';
+import { marigoldSpeaksAloud, setMarigoldSpeaksAloud } from '../../lib/marigoldVoice.js';
 
 /**
  * Human words for each table previewImport reports on.
@@ -307,6 +308,9 @@ function VersionPanel() {
 function VoicePanel() {
   const [voices, setVoices] = useState([]);
   const [chosen, setChosen] = useState(getPreferredVoiceName());
+  // Sept 23 2026: Dr. Marigold says her good-morning and Morning Circle
+  // reminders out loud without the button. This turns that off. On by default.
+  const [aloud, setAloud] = useState(marigoldSpeaksAloud());
 
   useEffect(() => {
     if (!speechSupported()) return;
@@ -365,9 +369,27 @@ function VoicePanel() {
           🔊 Try it
         </button>
       </div>
+      <label className="mt-3 flex items-start gap-2.5 text-sm text-ink-900">
+        <input
+          type="checkbox"
+          checked={aloud}
+          onChange={(e) => {
+            setAloud(e.target.checked);
+            setMarigoldSpeaksAloud(e.target.checked);
+          }}
+          className="mt-1"
+        />
+        <span>
+          <span className="font-700">Dr. Marigold speaks out loud</span>
+          <span className="block text-xs text-ink-700">
+            Her good-morning and her Morning Circle reminders, once a day each, without pressing the
+            speaker. Everything else still waits for the 🔊 button.
+          </span>
+        </span>
+      </label>
       <p className="mt-2 text-xs text-ink-500">
-        This choice is saved on <em>this</em> computer only. If she uses the app on her own laptop,
-        set it there too.
+        These choices are saved on <em>this</em> computer only. If she uses the app on her own laptop,
+        set them there too.
       </p>
       {voices.length === 0 && (
         <p className="mt-2 text-xs text-ink-500">

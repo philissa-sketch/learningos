@@ -19,6 +19,9 @@ import {
   officialAttempt
 } from '../../lib/assessmentEngine.js';
 import { dayKeyOf } from '../../lib/reviewQueue.js';
+// Sept 23 2026: one test a day, and a re-take opens after the missed lessons
+// are gone over. testGate wraps retakeStatus; see lib/testGate.js.
+import { testGate } from '../../lib/testGate.js';
 
 // ---------------------------------------------------------------------------
 // HER COURSE, END TO END.
@@ -208,7 +211,15 @@ export function LessonsView({
   const quarterRef = `${course.id}-q${shownQuarter}`;
   const qReady = quarterTestReady(quarterRef, attemptsByTest);
   const qAttempts = attemptsByTest[`${quarterRef}-final`] || [];
-  const qRetake = retakeStatus(qAttempts, today);
+  const gateFor = (list) =>
+    testGate({
+      attemptsForTest: list,
+      allAttempts: attempts,
+      lessonReads,
+      todayKey: today,
+      titleOf: (id) => lessonById(id)?.title || id
+    });
+  const qRetake = gateFor(qAttempts);
   const qOfficial = officialAttempt(qAttempts);
   const weeksOfQuarter = (WEEKS[course.id] || []).filter((w) => w.quarter === shownQuarter);
 
@@ -352,7 +363,7 @@ export function LessonsView({
                 const ready = weekTestReady(week, lessonsRead);
                 const wAttempts = attemptsByTest[week.id] || [];
                 const wOfficial = officialAttempt(wAttempts);
-                const wRetake = retakeStatus(wAttempts, today);
+                const wRetake = gateFor(wAttempts);
 
                 return (
                   <div key={week.id} className="mt-4">

@@ -16,6 +16,15 @@ import { blockLabelOnDay, blockIconOnDay, isRotatingBlock } from '../../lib/rota
 import { currentReadingCheck } from '../../lib/readingCheck.js';
 import { wordListFor } from '../../lib/wordStudy.js';
 import { bookReportNow } from '../../lib/bookReportSchedule.js';
+import {
+  CIRCLE_BLOCK_ID,
+  circleLine,
+  circleTickAction,
+  needsCircleReminder,
+  shouldGreet,
+  shouldSay
+} from '../../lib/morningCircle.js';
+import { sayOncePerDay, saidOnRecord } from '../../lib/marigoldVoice.js';
 
 // ---------------------------------------------------------------------------
 // TODAY — her school day, with a bell.
@@ -85,6 +94,44 @@ export function TodayView({ onNavigate }) {
 
   const day = todayKey();
   const done = useAppStore((s) => s.scheduleDays[day]?.done || {});
+
+  // ---- MORNING CIRCLE COMES FIRST (Gigi, Sept 23 2026) ----
+  //
+  // Morning Circle had been ticked on 28 of 28 school days, once seven seconds
+  // before Mathematics, while her warm-up went untouched for eleven days. Now:
+  //   · its tick OPENS the Circle screen; finishing there is what ticks it;
+  //   · Dr. Marigold says good morning out loud, once a day;
+  //   · the first time she opens or ticks a class before Circle is finished, Dr.
+  //     Marigold reminds her, out loud, and offers both doors. A REMINDER, not a
+  //     lock (Gigi's choice): a lock could shut her out of her whole day.
+  // Rules: lib/morningCircle.js. Check: checks/check-morning-circle.mjs.
+  const circleDone = !!done[CIRCLE_BLOCK_ID];
+  const greeting = circleLine('greeting', { name, hour: new Date().getHours() });
+  const reminderLine = circleLine('reminder', { name });
+  const [pendingGo, setPendingGo] = useState(null);
+  const [remindedThisVisit, setRemindedThisVisit] = useState(false);
+
+  useEffect(() => {
+    if (shouldGreet({ circleDone, saidOn: saidOnRecord(), todayKey: day })) {
+      sayOncePerDay('greeting', greeting.text, day);
+    }
+    // Once, when Today opens.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // Every door on this page goes through here. `go` is what the tap would have
+  // done; the reminder either runs it or holds it behind "Continue".
+  function throughCircle(blockId, go) {
+    const remindedToday = remindedThisVisit || !shouldSay('reminder', saidOnRecord(), day);
+    if (!remindedToday && needsCircleReminder({ blockId, circleDone })) {
+      setRemindedThisVisit(true);
+      setPendingGo(() => go);
+      sayOncePerDay('reminder', reminderLine.text, day);
+      if (typeof window !== 'undefined') window.scrollTo(0, 0);
+      return;
+    }
+    go();
+  }
 
   const [now, setNow] = useState(() => nowMinutes());
   const [bellBlocked, setBellBlocked] = useState(false);
@@ -199,6 +246,35 @@ export function TodayView({ onNavigate }) {
           {doneCount} of {ordered.length} done
         </p>
       </header>
+
+      {/* Morning Circle first. Gone once Circle is finished. */}
+      {!circleDone && (
+        <section className="mt-5 space-y-2">
+          <MarigoldMessage text={pendingGo ? reminderLine.text : greeting.text} tone="start" />
+          <div className="flex flex-wrap gap-2">
+            <button
+              type="button"
+              onClick={() => onNavigate?.('circle')}
+              className="rounded-full bg-blush-500 px-5 py-2 text-sm font-700 text-white hover:bg-blush-700"
+            >
+              🌅 Start Morning Circle
+            </button>
+            {pendingGo && (
+              <button
+                type="button"
+                onClick={() => {
+                  const go = pendingGo;
+                  setPendingGo(null);
+                  go();
+                }}
+                className="rounded-full border border-cream-300 bg-white px-5 py-2 text-sm font-700 text-ink-700 hover:border-sage-500"
+              >
+                Continue anyway
+              </button>
+            )}
+          </div>
+        </section>
+      )}
 
       {/* The bell */}
       <section className="mt-5 rounded-petal border-2 border-gold-500 bg-gold-300/20 px-4 py-4">
@@ -335,7 +411,15 @@ export function TodayView({ onNavigate }) {
                     done — pressing anywhere could never open the lesson. */}
                 <button
                   type="button"
-                  onClick={() => toggleBlock(day, b.id)}
+                  onClick={() => {
+                    if (b.id === CIRCLE_BLOCK_ID) {
+                      // Circle is finished on its own screen, not ticked here.
+                      if (circleTickAction(isDone) === 'open') onNavigate?.('circle');
+                      else toggleBlock(day, b.id);
+                      return;
+                    }
+                    throughCircle(b.id, () => toggleBlock(day, b.id));
+                  }}
                   aria-label={
                     isDone
                       ? `Un-tick ${blockLabelOnDay(b, new Date(), undefined, lessonsRead)}`
@@ -380,6 +464,16 @@ export function TodayView({ onNavigate }) {
                             href={target.url}
                             target="_blank"
                             rel="noreferrer"
+                            onClick={(e) => {
+                              const url = target.url;
+                              const remindedToday =
+                                circleDone ||
+                                remindedThisVisit ||
+                                !shouldSay('reminder', saidOnRecord(), day);
+                              if (remindedToday) return;
+                              e.preventDefault();
+                              throughCircle(b.id, () => window.open(url, '_blank', 'noreferrer'));
+                            }}
                             className="rounded-full bg-lavender-500 px-4 py-1.5 text-xs font-700 text-white hover:bg-lavender-700"
                           >
                             Open {target.label} ↗
@@ -441,7 +535,13 @@ export function TodayView({ onNavigate }) {
                            a real two-argument call the first time it ran. */
                         <button
                           type="button"
-                          onClick={() => onNavigate?.(target.view, target.course, target.lessonId)}
+                          onClick={() =>
+                            b.id === CIRCLE_BLOCK_ID
+                              ? onNavigate?.(target.view, target.course, target.lessonId)
+                              : throughCircle(b.id, () =>
+                                  onNavigate?.(target.view, target.course, target.lessonId)
+                                )
+                          }
                           className="rounded-full bg-sage-700 px-4 py-1.5 text-xs font-700 text-white hover:bg-sage-500"
                         >
                           {target.label}

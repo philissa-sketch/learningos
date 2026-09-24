@@ -164,6 +164,11 @@ export function TestView({ form, onExit, onOpenLesson, canOpenLesson }) {
   const [phase, setPhase] = useState('taking'); // taking | resting | done
   const [grade, setGrade] = useState(null);
   const [speaking, setSpeaking] = useState(false);
+  // Sept 23 2026: she used "Read it to me" on 15 of 16 diagnostic questions
+  // and on 0 of her last 50 test questions. These tests measure what she knows
+  // about plants and the body, not her reading, so she is reminded the button
+  // is there. A reminder on the first question only; never forced.
+  const [usedReadAloud, setUsedReadAloud] = useState(false);
   const [saving, setSaving] = useState(false);
   const [exitDone, setExitDone] = useState(false);
 
@@ -196,7 +201,10 @@ export function TestView({ form, onExit, onOpenLesson, canOpenLesson }) {
       setSpeaking(false);
       return;
     }
-    if (speakChunks(chunksForItem(current), { onEnd: () => setSpeaking(false) })) setSpeaking(true);
+    if (speakChunks(chunksForItem(current), { onEnd: () => setSpeaking(false) })) {
+      setSpeaking(true);
+      setUsedReadAloud(true);
+    }
   }
 
   function choose(i) {
@@ -447,6 +455,15 @@ export function TestView({ form, onExit, onOpenLesson, canOpenLesson }) {
           >
             {speaking ? '⏹ Stop reading' : '🔊 Read it to me'}
           </button>
+        )}
+        {speechSupported() &&
+          index === 0 &&
+          !usedReadAloud &&
+          (form?.kind === 'weekly' || form?.kind === 'quarter') && (
+          <p className="-mt-2 mb-4 rounded-xl bg-lavender-300/20 px-3.5 py-2 text-xs text-ink-900">
+            Dr. Marigold can read every question and answer to you. Tap 🔊 on any question.
+            It is allowed on this test.
+          </p>
         )}
 
         <p className="font-display text-lg leading-snug text-ink-900">{current.prompt}</p>

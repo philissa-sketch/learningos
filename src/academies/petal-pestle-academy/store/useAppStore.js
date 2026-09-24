@@ -72,6 +72,7 @@ import {
   dueItems
 } from '../lib/reviewQueue.js';
 import { WARM_UP, LESSON_RETRIEVE, PETALS, SEEDS } from '../config/assessment.js';
+import { warmUpSize } from '../lib/morningCircle.js';
 import { isEvidenceSource, isAttemptState } from '../config/evidence.js';
 import { proposeGrowthGoals, goalProgress, MIN_ASKED_FOR_A_GOAL } from '../lib/goals.js';
 import { SCHOOL_YEAR, END_OF_SUMMER } from '../config/calendar.js';
@@ -1937,10 +1938,17 @@ export const useAppStore = create((set, get) => ({
     );
   },
 
-  /** This morning's three. Empty when she has already done it today. */
+  /**
+   * This morning's warm-up. Empty when she has already done it today.
+   *
+   * Sept 23 2026, Gigi: five a morning while more than 30 cards are overdue,
+   * then three. The rule is warmUpSize() in lib/morningCircle.js, where
+   * check-morning-circle can call it. WARM_UP.questions (3) stays the normal size.
+   */
   warmUpToday() {
     if (get().lastWarmUpDay === dayKeyOf()) return [];
-    return pickWarmUp(get().reviewItems, dayKeyOf(), get().eligibleQuestionIds(), WARM_UP.questions);
+    const size = warmUpSize(get().reviewDueCount());
+    return pickWarmUp(get().reviewItems, dayKeyOf(), get().eligibleQuestionIds(), size);
   },
 
   /**

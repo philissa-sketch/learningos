@@ -131,7 +131,7 @@ function withoutToday(pool, answeredToday, need) {
  * ten questions quietly becoming eight changes what every percentage in the
  * record means, and nothing on screen would say so.
  */
-function takePreferringUnseen(pool, n, alreadyAsked, rand) {
+function takePreferringUnseen(pool, n, alreadyAsked, rand, usedPrompts = new Set()) {
   const firstAskedAt = new Map();
   (alreadyAsked || []).forEach((id, i) => {
     if (!firstAskedAt.has(id)) firstAskedAt.set(id, i);
@@ -140,7 +140,47 @@ function takePreferringUnseen(pool, n, alreadyAsked, rand) {
   const repeats = pool
     .filter((q) => firstAskedAt.has(q.id))
     .sort((a, b) => firstAskedAt.get(a.id) - firstAskedAt.get(b.id));
-  return [...fresh, ...repeats].slice(0, n);
+  return distinctPrompts([...fresh, ...repeats], n, usedPrompts);
+}
+
+/**
+ * The same question may not be asked twice on one paper (Sept 23 2026).
+ *
+ * Her Sept 3 Herbalism test asked "Which part of a plant makes its food?" TWICE:
+ * t-hb104e and t-hb104f are two bank items, two ids, one question. She answered
+ * "the root" to one and "the seed" to the other. Every check on ids passed,
+ * because the ids were different. Eleven such pairs exist across her banks.
+ *
+ * So the paper compares the QUESTION, not the id. `usedPrompts` is shared by
+ * every draw on one paper. The rule gives way only if keeping it would make
+ * the paper short, for the same reason withoutToday does.
+ */
+export function samePrompt(text) {
+  return String(text || '')
+    .toLowerCase()
+    .replace(/[^a-z0-9 ]/g, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function distinctPrompts(ordered, n, usedPrompts) {
+  const out = [];
+  const skipped = [];
+  for (const q of ordered) {
+    if (out.length >= n) break;
+    const key = samePrompt(q.prompt);
+    if (usedPrompts.has(key)) {
+      skipped.push(q);
+      continue;
+    }
+    usedPrompts.add(key);
+    out.push(q);
+  }
+  for (const q of skipped) {
+    if (out.length >= n) break;
+    out.push(q);
+  }
+  return out;
 }
 
 // ---------------------------------------------------------------------------
@@ -243,8 +283,9 @@ export function buildWeeklyTest(weekId, { attempt = 1, alreadyAsked = [], answer
   const currentPool = withoutToday(itemsForLessons(week.lessons), answeredToday, wantCurrent);
   const earlierPool = withoutToday(itemsForLessons(earlierLessons), answeredToday, wantEarlier);
 
-  const current = takePreferringUnseen(currentPool, wantCurrent, alreadyAsked, rand);
-  const earlier = takePreferringUnseen(earlierPool, wantEarlier, alreadyAsked, rand);
+  const usedPrompts = new Set();
+  const current = takePreferringUnseen(currentPool, wantCurrent, alreadyAsked, rand, usedPrompts);
+  const earlier = takePreferringUnseen(earlierPool, wantEarlier, alreadyAsked, rand, usedPrompts);
 
   // Mixed, not "six new then two old". A block of old questions at the end reads
   // as a bonus round and gets answered carelessly.
@@ -308,8 +349,9 @@ export function buildQuarterTest(
   const thisPool = withoutToday(itemsForLessons(thisQuarterLessons), answeredToday, wantThis);
   const earlierPool = withoutToday(itemsForLessons(earlierLessons), answeredToday, wantEarlier);
 
-  const thisQ = takePreferringUnseen(thisPool, wantThis, alreadyAsked, rand);
-  const earlier = takePreferringUnseen(earlierPool, wantEarlier, alreadyAsked, rand);
+  const usedPrompts = new Set();
+  const thisQ = takePreferringUnseen(thisPool, wantThis, alreadyAsked, rand, usedPrompts);
+  const earlier = takePreferringUnseen(earlierPool, wantEarlier, alreadyAsked, rand, usedPrompts);
   const questions = shuffled([...thisQ, ...earlier], rand);
 
   return {

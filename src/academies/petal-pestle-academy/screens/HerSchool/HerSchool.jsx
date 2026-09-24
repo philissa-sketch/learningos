@@ -48,6 +48,7 @@ const MarketView = lazy(() => import('../../components/Rewards/MarketView.jsx').
 const GreenhouseView = lazy(() => import('../../components/Rewards/GreenhouseView.jsx').then(pick('GreenhouseView')));
 const YearPlanView = lazy(() => import('../../components/Plan/YearPlanView.jsx').then(pick('YearPlanView')));
 const TodayView = lazy(() => import('../../components/Schedule/TodayView.jsx').then(pick('TodayView')));
+const MorningCircleView = lazy(() => import('../../components/Schedule/MorningCircleView.jsx').then(pick('MorningCircleView')));
 const CatchUpView = lazy(() => import('../../components/Schedule/CatchUpView.jsx').then(pick('CatchUpView')));
 const LessonsView = lazy(() => import('../../components/Lessons/LessonsView.jsx').then(pick('LessonsView')));
 const JournalView = lazy(() => import('../../components/Journal/JournalView.jsx').then(pick('JournalView')));
@@ -153,6 +154,7 @@ export function HerSchool({ onSignOut }) {
         <Suspense fallback={<ScreenLoading />}>
           {view === 'home' && <HomeDashboard onNavigate={navigate} />}
           {view === 'today' && <TodayView onNavigate={navigate} />}
+          {view === 'circle' && <MorningCircleView onNavigate={navigate} />}
           {view === 'lessons' && <LessonsView onNavigate={navigate} courseId={viewCourse} lessonId={viewLesson} />}
           {view === 'reading' && <ReadingCheckView unitId={readingUnitId} onExit={() => navigate('today')} />}
           {view === 'words' && <WordStudyView onExit={() => navigate('today')} />}

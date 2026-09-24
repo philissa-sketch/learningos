@@ -9,6 +9,11 @@ import { dayKeyOf } from '../../lib/reviewQueue.js';
 // ---------------------------------------------------------------------------
 // THE MORNING WARM-UP — three questions, about two minutes.
 //
+// Sept 23 2026: it now lives in MORNING CIRCLE (MorningCircleView.jsx), not on
+// Home. She starts her day on Today and never went to Home, and from Sept 12 to
+// 23 she answered zero warm-up questions. While more than 30 cards are overdue
+// it is five questions, not three (warmUpSize in lib/morningCircle.js).
+//
 // This small card is the single most valuable thing in the whole assessment
 // build, and it does not look like it. It is worth writing down why, because it
 // looks trivially cuttable.
@@ -64,7 +69,7 @@ export function WarmUpCard() {
       <div className="rounded-petal border-2 border-sage-500/40 bg-sage-300/15 px-5 py-4">
         <p className="font-display text-base text-ink-900">🌱 Warm-up done for today</p>
         <p className="mt-1 text-xs text-ink-700">
-          Same three plants tomorrow, or three different ones. Little and often is the whole trick.
+          More tomorrow. Little and often is the whole trick.
         </p>
       </div>
     );
