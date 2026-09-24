@@ -80,7 +80,15 @@ console.log('\n--- 2. the school supplies them, optionally ---');
 // ---------------------------------------------------------------------------
 {
   ok('the Academy fills a migrations slot', Object.keys(repairs).length > 0);
-  ok('the corrections came across', Object.keys(repairs.ASSIGNMENT_CORRECTIONS || {}).length === 28,
+  /**
+   * 28 at the Sept 20 move; 34 since Sept 24 2026, when the six projects with
+   * no brief at all — and the fifteen whose note was written for the parent
+   * rather than the student — got one. This number counts ENTRIES, and an
+   * entry is added whenever a shipped row needs correcting on machines that
+   * already hold it. It may grow; it must never SHRINK without the entries
+   * being retired deliberately.
+   */
+  ok('the corrections came across', Object.keys(repairs.ASSIGNMENT_CORRECTIONS || {}).length === 34,
     `${Object.keys(repairs.ASSIGNMENT_CORRECTIONS || {}).length} — the move must not drop one`);
   ok('the retired slots came across', (repairs.RETIRED_ASSIGNMENT_SLOTS || []).length === 3);
   ok('the book swaps came across', Object.keys(repairs.BOOK_SWAPS || {}).length === 8);

@@ -73,9 +73,13 @@ console.log('\n--- 5. the library tutoring links ---');
 {
   const help = await import(moduleUrl('src/lib/homeworkHelp.js'));
   const store = read('src/store/useAppStore.js');
-  const seeded = /const SEEDED_HELP_NOW = \{[\s\S]*?url: '(https:\/\/[^']+)'/.exec(store);
-  ok('the household link is SEEDED, so it works on first open', Boolean(seeded), 'no seed found');
-  ok('the seeded address is http(s)', Boolean(seeded) && help.normalizeHelpUrl(seeded[1]).ok);
+  const parent = read('src/components/Dashboard/ParentDashboard.jsx');
+  const suggested = /const SUGGESTED_HELP_URL = '(https:\/\/[^']+)'/.exec(parent);
+  ok('the address is offered pre-filled, one press from live', Boolean(suggested), 'no suggestion found');
+  ok('the suggested address is http(s)', Boolean(suggested) && help.normalizeHelpUrl(suggested[1]).ok);
+  ok('no household link is seeded into every school',
+    /helpNow: meta\?\.helpNow \?\? null,/.test(store),
+    'one family’s library card must not be handed to another family');
   ok('the link is a setting she can change', /async setHelpNow\(\{ library, url \}\)/.test(store));
   ok('it travels to his computer in the export', /helpNow: state\.helpNow \?\? null,/.test(store));
   ok('a javascript: tutoring link is refused', help.normalizeHelpUrl('javascript:alert(1)').ok === false);

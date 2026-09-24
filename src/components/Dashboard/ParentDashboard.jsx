@@ -139,7 +139,7 @@ const SECTION_GROUPS = [
       // Aug 20, 2026 — the parent: "add blooket, kahoot, and gimkit to [his]
       // game section". She hosts the games, so the link she pastes here is
       // the only thing that gets him in. See data/games/quizPlatforms.js.
-      { id: 'quiz-games', label: 'Blooket / Kahoot / Gimkit · Library tutoring' },
+      { id: 'quiz-games', label: 'Blooket / Kahoot / Gimkit' },
       { id: 'rewards-manager', label: 'Rewards & Coins' },
       { id: 'currency', label: 'Currency Controls' }
     ]
@@ -3927,6 +3927,8 @@ function QuizGameLinksSection() {
  * library account that renews — and clearing it takes the card off his
  * dashboard rather than leaving him a dead link.
  */
+const SUGGESTED_HELP_URL = 'https://www.brainfuse.com/highed/helpNow.asp?a_id=5101DFFD&ss=&r=';
+
 function HelpNowLinkSection() {
   const helpNow = useAppStore((s) => s.helpNow);
   const setHelpNow = useAppStore((s) => s.setHelpNow);
@@ -3934,7 +3936,13 @@ function HelpNowLinkSection() {
   const [library, setLibrary] = useState(undefined);
   const [msg, setMsg] = useState(null);
 
-  const urlValue = url !== undefined ? url : helpNow?.url || '';
+  /**
+   * Pre-filled with the address she gave on Sept 24 2026, read live before it
+   * was written down. One press turns it on; it is not switched on for her,
+   * because the link carries a library account id and the press is what says
+   * this household holds that card.
+   */
+  const urlValue = url !== undefined ? url : helpNow?.url || SUGGESTED_HELP_URL;
   const libValue = library !== undefined ? library : helpNow?.library || '';
 
   const save = async () => {
@@ -3984,7 +3992,7 @@ function HelpNowLinkSection() {
             onClick={save}
             className="rounded-lg bg-signal-cyan px-4 py-2 font-display text-sm font-700 text-space-950 transition hover:brightness-110"
           >
-            Save
+            {helpNow?.url ? 'Save' : 'Turn it on'}
           </button>
         </div>
       </div>

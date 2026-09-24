@@ -186,16 +186,6 @@ import { nextReviewScheduleEntry } from '../engine/dailyPractice.js';
 import { studyCycleKey, nextTermBlitzSlot } from '../lib/studyCycle.js';
 import { EVIDENCE_FOLDER_KEYS, SEEDED_FOLDER_URLS, normalizeEvidenceUrl, REFERENCE_LINK_TYPES } from '../lib/driveLinks.js';
 import { normalizeHelpUrl } from '../lib/homeworkHelp.js';
-
-/**
- * The tutoring this family already pays for through its library card, given
- * by the parent on Sept 24 2026 and opened and read before it was seeded.
- * A seed, not a constant — see `helpNow` in initialState.
- */
-const SEEDED_HELP_NOW = {
-  library: 'Clayton County Library System',
-  url: 'https://www.brainfuse.com/highed/helpNow.asp?a_id=5101DFFD&ss=&r='
-};
 import { missionScoresForSubject, missionEvidencePhrase } from '../lib/missionGrades.js';
 import {
   buildPasscodeRecord,
@@ -4848,11 +4838,13 @@ const seedRows = khanFirstSeedRows().map((r) => ({ ...r, completed: false, grade
       hqCrewPosts: meta?.hqCrewPosts ?? {},
       quizLinks: meta?.quizLinks ?? {},
       /**
-       * Seeded, not hardcoded — the same static-seed-plus-persisted-override
-       * pattern the Drive folders use. Her edit always wins, and clearing it
-       * to an empty object removes the card rather than restoring the seed.
+       * NOT SEEDED, and that is deliberate. A library card belongs to one
+       * household; seeding one family's tutoring link into every school this
+       * platform opens would hand a second family a link to a library it has
+       * no card for. The Parent Dashboard offers it as a one-press suggestion
+       * instead — see HelpNowLinkSection.
        */
-      helpNow: meta?.helpNow ?? SEEDED_HELP_NOW,
+      helpNow: meta?.helpNow ?? null,
       exerciseVideos: meta?.exerciseVideos ?? {},
       exerciseVideoSourceId: meta?.exerciseVideoSourceId ?? null,
       exerciseVideosEnabled: meta?.exerciseVideosEnabled !== false,

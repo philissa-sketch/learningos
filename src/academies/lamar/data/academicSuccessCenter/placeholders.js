@@ -136,11 +136,11 @@ const READING_QUARTERS = ['Q1 2026-2027', 'Q2 2026-2027', 'Q3 2026-2027', 'Q4 20
 
 export const quarterlyAcademicPlaceholders = {
   math: {
-    'Q1 2026-2027': [{ slotId: 'asg::math::Q1::1', type: 'Portfolio Entry', format: 'applied-math', dueDate: '2026-10-02', title: 'Decimal place value in the real world — cost out a build', note: 'Applied-math project' }],
-    'Q2 2026-2027': [{ slotId: 'asg::math::Q2::1', type: 'Portfolio Entry', format: 'applied-math', dueDate: '2026-11-06', title: 'Ratios and proportion — build a scale model to spec', note: 'Applied-math project' }],
-    'Q3 2026-2027': [{ slotId: 'asg::math::Q3::1', type: 'Portfolio Entry', format: 'applied-math', dueDate: '2027-02-05', title: 'Negative numbers — chart altitude against temperature', note: 'Applied-math project' }],
-    'Q4 2026-2027': [{ slotId: 'asg::math::Q4::1', type: 'Portfolio Entry', format: 'applied-math', dueDate: '2027-04-30', title: 'Geometry — surface area of a payload fairing', note: 'Applied-math project' }],
-    'Summer 2027': [{ slotId: 'asg::math::Summer::1', type: 'Portfolio Entry', format: 'applied-math', dueDate: '2027-07-09', title: 'Transformations — design a tiled heat-shield pattern', note: 'Applied-math project' }]
+    'Q1 2026-2027': [{ slotId: 'asg::math::Q1::1', type: 'Portfolio Entry', format: 'applied-math', dueDate: '2026-10-02', title: 'Decimal place value in the real world — cost out a build', note: 'Pick something you actually want to build — a model rocket, a shelf, a PC. Price at least 8 real parts from a real store, to the cent, and total them. Then show that total rounded to the nearest dollar and to the nearest ten dollars, and say which one you would use to tell someone what it costs, and why.' }],
+    'Q2 2026-2027': [{ slotId: 'asg::math::Q2::1', type: 'Portfolio Entry', format: 'applied-math', dueDate: '2026-11-06', title: 'Ratios and proportion — build a scale model to spec', note: 'Choose a real object with published dimensions — a rocket, a plane, a car. Pick a scale (1:50, 1:100), then build or draw it to that scale. Show the arithmetic for at least 5 measurements: full size, the ratio, the model size. Measure the finished model and give the percent error for each one.' }],
+    'Q3 2026-2027': [{ slotId: 'asg::math::Q3::1', type: 'Portfolio Entry', format: 'applied-math', dueDate: '2027-02-05', title: 'Negative numbers — chart altitude against temperature', note: 'Find real temperature-by-altitude numbers — a weather balloon sounding or a standard atmosphere table — for at least 8 altitudes, going high enough that the temperatures turn negative. Plot altitude against temperature, label both axes with units, and work out the drop in °C per 1,000 m between two points you pick. Say what the negative sign means for a plane cruising at 11,000 m.' }],
+    'Q4 2026-2027': [{ slotId: 'asg::math::Q4::1', type: 'Portfolio Entry', format: 'applied-math', dueDate: '2027-04-30', title: 'Geometry — surface area of a payload fairing', note: 'A payload fairing is a cone sitting on a cylinder. Pick real dimensions — 2 numbers for the cone, 2 for the cylinder, a real rocket\'s or your own — draw it labelled, and compute the surface area of the cone, the cylinder and the total, formulas written out and units squared. Then use it: at a price per square metre you choose, what does the skin cost?' }],
+    'Summer 2027': [{ slotId: 'asg::math::Summer::1', type: 'Portfolio Entry', format: 'applied-math', dueDate: '2027-07-09', title: 'Transformations — design a tiled heat-shield pattern', note: 'Design one tile that covers a surface with no gaps, then cover at least a 6 by 6 area with it using only sliding, turning and flipping. Mark on the drawing where you used each move and name it. Finish by saying why a gap in a real heat shield matters.' }]
   },
   reading: {
     'Q1 2026-2027': [
@@ -212,26 +212,26 @@ export const quarterlyAcademicPlaceholders = {
        * pattern every other report in this file uses.
        */
       { slotId: 'asg::reading::Q1::2', type: 'Book Report', dueDate: '2026-10-30', format: 'creative-project', title: 'Hatchet — book jacket redesign', note: 'Redesign the cover and write a 150-word back-cover blurb. Deliberately a visual project: his writing is two strands behind his reading, and Q1 is grammar catch-up. Dated to open after the A Long Walk to Water report is turned in — see the note above.' },
-      { slotId: 'asg::writing::Q1::1', type: 'Writing Portfolio Entry', format: 'writing-sample', dueDate: '2026-10-23', title: 'Q1 writing portfolio — his strongest Journal entry', note: 'Best skill-prompt entry this quarter — selected later' }
+      { slotId: 'asg::writing::Q1::1', type: 'Writing Portfolio Entry', format: 'writing-sample', dueDate: '2026-10-23', title: 'Q1 writing portfolio — his strongest Journal entry', note: 'Pick your strongest Writing Journal entry from this quarter. Write two sentences saying why it is the best one. Then revise it once more: fix every spelling and grammar error, and rewrite the one paragraph you know is weakest. Turn in the revised version, not the original.' }
     ],
     'Q2 2026-2027': [
       { slotId: 'asg::reading::Q2::1', type: 'Reading Assignment', dueDate: '2026-11-20', title: 'Hidden Figures: Young Readers\' Edition — Margot Lee Shetterly', note: 'Weekly chapter pacing. Pairs with the genealogy quarter in Social Studies and with his aerospace goal.' },
       { slotId: 'asg::reading::Q2::2', type: 'Book Report', dueDate: '2026-12-11', format: 'biography', title: 'Hidden Figures — figure profile and letter to the author', note: 'Profile one of the mathematicians, then write a letter to Margot Lee Shetterly. First real structured writing of the year, still scaffolded.' },
-      { slotId: 'asg::writing::Q2::1', type: 'Research Paper', format: 'person-study', dueDate: '2026-12-18', title: 'Research paper — a Black American aviator or engineer, three sources', note: 'First research paper of the year — shorter, cross-curricular, finished before winter break. Topic TBD' }
+      { slotId: 'asg::writing::Q2::1', type: 'Research Paper', format: 'person-study', dueDate: '2026-12-18', title: 'Research paper — a Black American aviator or engineer, three sources', note: 'Pick one Black American aviator or engineer — Bessie Coleman, the Tuskegee Airmen, Katherine Johnson, Robert Lawrence, Mary Jackson. Use three independent sources and name each one. Answer one question about them rather than telling their whole life: what did they have to get past, and what did they change for the people after them?' }
     ],
     'Q3 2026-2027': [
       { slotId: 'asg::reading::Q3::1', type: 'Reading Assignment', dueDate: '2027-01-29', title: 'The Martian: Classroom Edition — Andy Weir', note: 'Weekly chapter pacing. Engineering problem-solving in the field he wants to work in.' },
-      { slotId: 'asg::reading::Q3::2', type: 'Presentation', dueDate: '2027-03-19', format: 'speech', title: 'The Martian — 3-minute pitch', note: 'Spoken, not written: high thinking load, low writing load, which suits a reader whose comprehension outruns his writing.' },
-      { slotId: 'asg::writing::Q3::1', type: 'Writing Portfolio Entry', format: 'writing-sample', dueDate: '2027-03-05', title: 'Q3 writing portfolio — his strongest Journal entry', note: 'Best skill-prompt entry this quarter — selected later' }
+      { slotId: 'asg::reading::Q3::2', type: 'Presentation', dueDate: '2027-03-19', format: 'speech', title: 'The Martian — 3-minute pitch', note: 'Pitch the book in 3 minutes, out loud, with nothing read off a page: the problem Watney is in, the 2 smartest things he does about it, and why someone should read it. Practise it twice, timed, before you give it.' },
+      { slotId: 'asg::writing::Q3::1', type: 'Writing Portfolio Entry', format: 'writing-sample', dueDate: '2027-03-05', title: 'Q3 writing portfolio — his strongest Journal entry', note: 'Pick your strongest Writing Journal entry from this quarter. Write two sentences saying why it is the best one. Then revise it once more: fix every spelling and grammar error, and rewrite the one paragraph you know is weakest. Turn in the revised version, not the original.' }
     ],
     'Q4 2026-2027': [
       { slotId: 'asg::reading::Q4::1', type: 'Reading Assignment', dueDate: '2027-04-23', title: 'March: Book One — John Lewis, Andrew Aydin, and Nate Powell', note: 'Weekly chapter pacing. Graphic memoir, 128 pages — serious content in an accessible format.' },
-      { slotId: 'asg::reading::Q4::2', type: 'Book Report', dueDate: '2027-05-14', format: 'character-study', title: 'March: Book One — literary analysis', note: 'Theme and character growth. The one full formal essay of the year, placed last on purpose: by April his grammar is a year stronger than it was in August.' },
-      { slotId: 'asg::writing::Q4::1', type: 'Research Paper', format: 'failure-analysis', dueDate: '2027-05-21', title: 'Capstone research paper — an engineering failure and what it changed', note: 'Year-end capstone research paper — the longest piece of the year, built over about a month. Topic TBD' }
+      { slotId: 'asg::reading::Q4::2', type: 'Book Report', dueDate: '2027-05-14', format: 'character-study', title: 'March: Book One — literary analysis', note: 'Pick one person in the book and track how they change from the first pages to the last. Give 3 moments, with page numbers, that show the change, and say what caused each one. Finish with a paragraph on what the book is arguing about courage. This is the one full formal essay of the year — build it one step a week.' },
+      { slotId: 'asg::writing::Q4::1', type: 'Research Paper', format: 'failure-analysis', dueDate: '2027-05-21', title: 'Capstone research paper — an engineering failure and what it changed', note: 'Pick an engineering failure — Challenger, Apollo 1, the Tacoma Narrows bridge, the Hyatt Regency walkway. Three independent sources, each named. Explain what physically failed, the decision that let it happen, and the rule or standard that changed afterwards. This is the longest piece of the year: build it one step a week.' }
     ],
     'Summer 2027': [
       { slotId: 'asg::reading::Summer::1', type: 'Reading Assignment', dueDate: '2027-06-25', title: 'Free choice — Skyward, Space Case, or Ungifted', note: 'Independent summer reading, his pick. Book-club style discussion with a parent instead of a write-up — the point of summer is protecting the habit.' },
-      { slotId: 'asg::writing::Summer::1', type: 'Writing Portfolio Entry', format: 'writing-sample', dueDate: '2027-06-30', title: 'Summer writing portfolio — his strongest Journal entry', note: 'Khan Academy has zero real Summer Language Arts content left — Writing Journal carries this quarter instead' }
+      { slotId: 'asg::writing::Summer::1', type: 'Writing Portfolio Entry', format: 'writing-sample', dueDate: '2027-06-30', title: 'Summer writing portfolio — his strongest Journal entry', note: 'Pick your strongest Writing Journal entry from the summer. Write two sentences saying why it is the best one. Then revise it once more: fix every spelling and grammar error, and rewrite the one paragraph you know is weakest. Turn in the revised version, not the original.' }
     ]
   },
   socialStudies: {
@@ -283,7 +283,7 @@ export const quarterlyAcademicPlaceholders = {
        * The DUE DATE does not move. Sept 18 is the day the Hatchet chain is
        * built to start behind — see the reading note above.
        */
-      { slotId: 'asg::socialStudies::Q1::3', type: 'Portfolio Entry', dueDate: '2026-09-18', format: 'build', title: 'A Long Walk to Water — build or draw Salva\'s well', note: 'Model or labelled cross-section of the borehole well from the end of the book. Photograph it, label the parts that matter, and write down the real measurements you used. The engineering in the last chapters is the point.' }
+      { slotId: 'asg::socialStudies::Q1::3', type: 'Portfolio Entry', dueDate: '2026-09-18', format: 'build', title: 'A Long Walk to Water — build or draw Salva\'s well', note: 'Build or draw a cross-section of the borehole well from the end of the book. Label at least 6 parts, write down the real measurements you used, and photograph the finished thing. Finish with 2 sentences on why that well changes life in the village.' }
     ],
     // Q2 is the Genealogy quarter, on its own.
     'Q2 2026-2027': [
@@ -314,12 +314,12 @@ export const quarterlyAcademicPlaceholders = {
        * the Red-Tail Angels reading, and its note no longer promises a report.
        */
       { slotId: 'asg::socialStudies::Q2::1', type: 'Reading Assignment', dueDate: '2026-11-13', title: 'National Geographic Kids Guide to Genealogy — read alongside the genealogy unit', note: 'Paced alongside the Genealogy & Historical Evidence unit — see the Black American Excellence shelf for genealogy and primary-source reads' },
-      { slotId: 'asg::socialStudies::Q2::2', type: 'Research Paper', format: 'historical-investigation', dueDate: '2026-12-04', title: 'Family history research paper — one ancestor, three independent sources', note: 'Apply this quarter\'s evidence-evaluation methods (corroboration, bias, cross-referencing) to a real family or local-history investigation' }
+      { slotId: 'asg::socialStudies::Q2::2', type: 'Research Paper', format: 'historical-investigation', dueDate: '2026-12-04', title: 'Family history research paper — one ancestor, three independent sources', note: 'Pick one ancestor. Find three independent sources about them — a census record, a certificate, a newspaper page, or an interview you record with a relative. Say what each source claims, where two of them agree, and what you could not confirm. Include a short family tree showing where this person sits.' }
     ],
     // Q3 now holds Geography, Government & Political Systems, and Economics.
     'Q3 2026-2027': [
       { slotId: 'asg::socialStudies::Q3::1', type: 'Reading Assignment', dueDate: '2027-02-12', title: 'The Royal Kingdoms of Ghana, Mali, and Songhay — weekly chapter pacing', note: 'Paced alongside the Geography & Economics unit and Khan Academy\'s World History' },
-      { slotId: 'asg::socialStudies::Q3::2', type: 'Portfolio Entry', format: 'build', dueDate: '2027-02-19', title: 'Map portfolio — physical features of Africa, Southwest Asia, and Southern & Eastern Asia', note: 'Apply the personal money management lesson (SS7E10) to build a real personal budget' }
+      { slotId: 'asg::socialStudies::Q3::2', type: 'Portfolio Entry', format: 'build', dueDate: '2027-02-19', title: 'Map portfolio — physical features of Africa, Southwest Asia, and Southern & Eastern Asia', note: 'Hand-draw three maps: Africa, Southwest Asia, and Southern & Eastern Asia. On each one label at least 8 physical features — rivers, deserts, mountains, seas — plus a scale and a compass. Then write a paragraph per map naming one feature that decides where people live there, and how.' }
     ],
     // Q4 now holds Environment & Culture (SS7G2/SS7G4, plus the rest of the
     // geography strand as those lessons are completed).
@@ -465,7 +465,7 @@ export const quarterlyAcademicPlaceholders = {
        */
       { slotId: 'asg::aerospace::Q4::3', type: 'Portfolio Entry', dueDate: '2027-04-23', format: 'investigation', title: 'Flight test — glide ratio across three wing shapes', note: 'Three wing shapes on the same fuselage, five launches each, distance and height recorded every time. Keep the runs that went badly. The data goes into the Engineering Showcase in May.' },
       { slotId: 'asg::aerospace::Q4::1', type: 'Reading Assignment', dueDate: '2027-05-21', title: 'The Wright Brothers: How They Invented the Airplane — weekly chapter pacing', note: 'Paced alongside the Q4 Aerospace lessons' },
-      { slotId: 'asg::aerospace::Q4::2', type: 'Presentation', dueDate: '2027-05-19', format: 'engineering-showcase', title: 'Engineering showcase — a year of aerospace builds', note: 'Present a real completed Aerospace project or design — format TBD' }
+      { slotId: 'asg::aerospace::Q4::2', type: 'Presentation', dueDate: '2027-05-19', format: 'engineering-showcase', title: 'Engineering showcase — a year of aerospace builds', note: 'Choose 3 of your builds from this year — bottle rocket, parachute drop, wing test, glider. For each one: what you set out to do, the numbers you measured, and what you changed after the first attempt. Finish with the build you would redo and how. 10 minutes, the objects or their photos on the table, practised out loud twice.' }
     ],
     'Summer 2027': [
       { slotId: 'asg::aerospace::Summer::1', type: 'Reading Assignment', dueDate: '2027-07-30', title: 'The Space Race: How the Cold War Put Humans on the Moon — weekly pacing', note: 'Independent summer aerospace reading' },
@@ -474,8 +474,8 @@ export const quarterlyAcademicPlaceholders = {
       // timetable: `ae7-wind-tunnels-flight-testing` says
       // `quarter: 'Summer 2027'`. Estimating a fact the data states outright
       // is how it landed in Q3; this is the stated value.
-      { slotId: 'asg::aerospace::Summer::3', type: 'Portfolio Entry', format: 'investigation', dueDate: '2027-07-23', needsLesson: 'ae7-wind-tunnels-flight-testing', title: 'Wind tunnel test — design, results, and what the airflow showed', note: 'Engineering-journal write-up of the Wind Tunnel Test, built after the Wind Tunnels & Flight Testing lesson — the fullest hands-on Aerospace project of the year.' },
-      { slotId: 'asg::aerospace::Summer::2', type: 'Portfolio Entry', format: 'build', dueDate: '2027-06-30', title: 'Summer build — glider or wind tunnel, documented end to end', note: 'Summer engineering project write-up — project TBD' }
+      { slotId: 'asg::aerospace::Summer::3', type: 'Portfolio Entry', format: 'investigation', dueDate: '2027-07-23', needsLesson: 'ae7-wind-tunnels-flight-testing', title: 'Wind tunnel test — design, results, and what the airflow showed', note: 'Run the wind tunnel you built. Test at least 3 shapes, 3 runs each, at the same fan speed. Record what the airflow does — smoke, thread, tufts — and every number you can measure. Photograph each shape in the tunnel. Finish with which shape moved air most smoothly and how you would rebuild the tunnel to make the test fairer.' },
+      { slotId: 'asg::aerospace::Summer::2', type: 'Portfolio Entry', format: 'build', dueDate: '2027-06-30', title: 'Summer build — glider or wind tunnel, documented end to end', note: 'Pick one: a glider you can launch the same way ten times, or a small wind tunnel. Build it, then test it — ten launches with the distance measured, or at least 3 shapes compared in the tunnel. Write down every number, including the runs that went wrong. Photograph the build. Finish with what you changed after the first tests and what that did to the numbers.' }
     ]
   },
   // Science runs all five periods because Khan Academy MS Biology is
@@ -484,10 +484,10 @@ export const quarterlyAcademicPlaceholders = {
   // Control's own Science lessons are archived.
   science: {
     'Q1 2026-2027': [
-      { slotId: 'asg::science::Q1::1', type: 'Portfolio Entry', format: 'build', dueDate: '2026-09-25', title: 'Cell model — build it, label it, explain what each part does', note: 'Lab-report write-up of a hands-on Science experiment actually run this quarter — experiment selected from the Writing Journal' }
+      { slotId: 'asg::science::Q1::1', type: 'Portfolio Entry', format: 'build', dueDate: '2026-09-25', title: 'Cell model — build it, label it, explain what each part does', note: 'Build a 3D model of an animal or a plant cell — clay, recycled parts, whatever you have. Label at least 8 organelles and write one sentence for each saying what it does for the cell. Say which material you used for which part and why that material fits the real thing\'s job. Photograph the finished model and put the link on this card.' }
     ],
     'Q2 2026-2027': [
-      { slotId: 'asg::science::Q2::1', type: 'Portfolio Entry', format: 'investigation', dueDate: '2026-12-02', title: 'Body systems — trace one path from breath to working muscle', note: 'Lab-report write-up of a hands-on Science experiment actually run this quarter — experiment selected from the Writing Journal' }
+      { slotId: 'asg::science::Q2::1', type: 'Portfolio Entry', format: 'investigation', dueDate: '2026-12-02', title: 'Body systems — trace one path from breath to working muscle', note: 'Follow one oxygen molecule from the air you breathe to a muscle cell doing work. Name every structure it passes through, in order — at least 8 — and what happens at each one. Draw the path as a labelled diagram. Finish with what changes when you run, and why your body does that.' }
     ],
     'Q3 2026-2027': [
       { slotId: 'asg::science::Q3::1', type: 'Reading Assignment', dueDate: '2027-02-26', title: 'Genetics: Breaking the Code of Your DNA — weekly chapter pacing', note: 'Weekly chapter pacing. Read it for itself — what used to be a scientific review of it is now the genetics investigation below, three weeks after you finish.' },
@@ -518,10 +518,10 @@ export const quarterlyAcademicPlaceholders = {
       { slotId: 'asg::science::Q3::2', type: 'Portfolio Entry', dueDate: '2027-03-26', format: 'investigation', title: 'Genetics investigation — trace one inherited trait through three generations', note: 'Pick one simple trait — attached earlobes, tongue rolling, widow\'s peak — and chart who has it across three generations of the family. Then predict the next generation with a Punnett square and say what could skew the result. The genetics book is the reading behind it; this is the lab.' }
     ],
     'Q4 2026-2027': [
-      { slotId: 'asg::science::Q4::1', type: 'Portfolio Entry', format: 'investigation', dueDate: '2027-04-28', title: 'Ecosystem study — one Georgia habitat, observed across four weeks', note: 'Lab-report write-up of a hands-on Science experiment actually run this quarter — experiment selected from the Writing Journal' }
+      { slotId: 'asg::science::Q4::1', type: 'Portfolio Entry', format: 'investigation', dueDate: '2027-04-28', title: 'Ecosystem study — one Georgia habitat, observed across four weeks', note: 'Pick one spot outside — the garden, a creek, a patch of woods. Visit it once a week for four weeks, same day and time. Each visit write the date, the weather, the temperature, and what is living there with counts, and photograph the same view. At the end, write what changed across the four weeks and give one reason you think it changed.' }
     ],
     'Summer 2027': [
-      { slotId: 'asg::science::Summer::1', type: 'Presentation', dueDate: '2027-07-23', format: 'science-fair-display', title: 'Science fair display — the summer experiment', note: 'Present a real completed experiment or science-fair-style investigation — format TBD' }
+      { slotId: 'asg::science::Summer::1', type: 'Presentation', dueDate: '2027-07-23', format: 'science-fair-display', title: 'Science fair display — the summer experiment', note: 'Turn one summer experiment into a science-fair board: the question, what you expected, what you did step by step so someone else could repeat it, your data in a table and a chart, and what you found. At least 3 trials. Photograph the setup. Then present it out loud in 5 minutes without reading the board.' }
     ]
   },
   // Technology is deliberately Q1-Q2 ONLY. It is semester-paced — 32
@@ -537,13 +537,13 @@ export const quarterlyAcademicPlaceholders = {
       // runs two sessions a week, so that lesson is not reachable until
       // 2026-10-08. It was due in week 6, which would have needed four
       // lessons a week against two scheduled sessions.
-      { slotId: 'asg::technology::Q1::1', type: 'Portfolio Entry', format: 'build', dueDate: '2026-10-16', needsLesson: 'tech7-cad', title: 'Tinkercad Mission Nameplate — designed, dimensioned, documented', note: 'The nameplate built in Tinkercad after the CAD Software Fundamentals lesson: exact dimensions typed rather than dragged, one shape used as a hole, and what changed when the base length moved.' }
+      { slotId: 'asg::technology::Q1::1', type: 'Portfolio Entry', format: 'build', dueDate: '2026-10-16', needsLesson: 'tech7-cad', title: 'Tinkercad Mission Nameplate — designed, dimensioned, documented', note: 'Build the nameplate in Tinkercad: type exact dimensions instead of dragging them, and use one shape as a hole. Screenshot it. Then change the base length by 10 mm, screenshot again, and write down what else moved when it did.' }
     ],
     'Q2 2026-2027': [
       // Needs lesson `tech7-cad-2`, number 30 of 40, reachable 2026-11-12.
       // Dec 2 already clears it — checked, not assumed.
-      { slotId: 'asg::technology::Q2::1', type: 'Portfolio Entry', format: 'investigation', dueDate: '2026-12-02', needsLesson: 'tech7-cad-2', title: 'The Change-One-Number Test — parametric design write-up', note: 'Real built artifact from the Q2 automation/robotics-programming lessons — project TBD' },
-      { slotId: 'asg::technology::Q2::2', type: 'Presentation', dueDate: '2026-12-11', format: 'demonstration', title: 'Demo your CAD build — walk through one design decision', note: 'Demo a real working program he wrote — format TBD' }
+      { slotId: 'asg::technology::Q2::1', type: 'Portfolio Entry', format: 'investigation', dueDate: '2026-12-02', needsLesson: 'tech7-cad-2', title: 'The Change-One-Number Test — parametric design write-up', note: 'Take one of your CAD designs and pick a single number in it — a length, a hole size, a wall thickness. Change it 3 times, screenshot the result each time, and write down what else moved when it did. Finish by naming the one number you would make the master measurement if you rebuilt the design, and why.' },
+      { slotId: 'asg::technology::Q2::2', type: 'Presentation', dueDate: '2026-12-11', format: 'demonstration', title: 'Demo your CAD build — walk through one design decision', note: 'Demo one program or CAD build you made this quarter, live, in 5 minutes. Show it working, then walk through one decision you made and why you chose it over the other option. Finish with the bug or problem that cost you the most time and how you found it. Practise out loud twice first.' }
     ]
   }
 };
