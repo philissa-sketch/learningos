@@ -1572,6 +1572,9 @@ export const useAppStore = create((set, get) => ({
       percent: grade.percent,
       letter: grade.letter,
       carriedCount: meta.carriedCount ?? 0,
+      // Sept 24 2026: the word week this test closes (lib/wordWeek.js). Friday's
+      // spelling test is what marks that week's Friday done.
+      weekOf: meta.weekOf ?? null,
       rows: grade.rows.map((r) => ({
         word: r.word,
         from: r.from,
@@ -1594,6 +1597,60 @@ export const useAppStore = create((set, get) => ({
         source: 'test-taken',
         note: 'Sat a spelling test'
       })
+    );
+    return row;
+  },
+
+  /**
+   * One day's Spelling or Vocabulary activity is done (Mon–Thu), Sept 24 2026.
+   * Filed in spellingResults with kind 'word-activity' and no `percent`, so it
+   * marks the day done and never reaches a grade. lib/wordWeek.js reads it.
+   */
+  async recordWordActivity({ skill, weekOf, task, right, total }) {
+    const row = {
+      resultId: newEntryId(),
+      kind: 'word-activity',
+      skill,
+      weekOf,
+      task,
+      dayKey: dayKeyOf(),
+      at: new Date().toISOString(),
+      right: right ?? null,
+      total: total ?? null
+    };
+    await putSpellingResult(row);
+    set({ spellingResults: [...get().spellingResults, row] });
+    await get().addLedgerEntry(
+      makeEntry({ currency: 'petal', amount: PETALS.warmUp, kind: 'grant', source: 'word-practice', note: `Word practice: ${skill} ${task}` })
+    );
+    return row;
+  },
+
+  /**
+   * Friday's VOCABULARY TEST (Sept 24 2026). Same table and same shape as the
+   * spelling test, kind 'vocab-test'. A word right here is done; the rest carry.
+   */
+  async recordVocabTest(listId, grade, meta = {}) {
+    const row = {
+      resultId: newEntryId(),
+      listId,
+      kind: 'vocab-test',
+      dayKey: dayKeyOf(),
+      at: new Date().toISOString(),
+      week: meta.week ?? null,
+      quarter: meta.quarter ?? null,
+      weekInQuarter: meta.weekInQuarter ?? null,
+      weekOf: meta.weekOf ?? null,
+      right: grade.right,
+      total: grade.total,
+      percent: grade.percent,
+      letter: grade.letter,
+      rows: grade.rows.map((r) => ({ word: r.word, type: r.type, chosen: r.chosen, correct: r.correct }))
+    };
+    await putSpellingResult(row);
+    set({ spellingResults: [...get().spellingResults, row] });
+    await get().addLedgerEntry(
+      makeEntry({ currency: 'petal', amount: PETALS.unitTest, kind: 'grant', source: 'test-taken', note: 'Sat a vocabulary test' })
     );
     return row;
   },

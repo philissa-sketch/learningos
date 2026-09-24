@@ -106,6 +106,9 @@ export function wordListFor(lessonsRead = [], results = [], weeks = WEEKS) {
   const testedLists = new Set();
   for (const r of results || []) {
     if (!r) continue;
+    // Sept 24 2026: the table also holds vocabulary tests and daily word
+    // activities (lib/wordWeek.js). Only a spelling test counts here.
+    if (r.kind && r.kind !== 'spelling') continue;
     testedLists.add(r.listId);
     for (const row of r.rows || []) {
       if (row && row.correct) correct.add(String(row.word).toLowerCase());

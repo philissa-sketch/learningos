@@ -8,6 +8,7 @@ import { useCurrentQuarterKhanAssignments } from './KhanAcademyMissionsCard.jsx'
 import { TodayRow, StartHereCard, QuietTile } from './TodayRow.jsx';
 import { StudentHandoffCard } from './StudentHandoffCard.jsx';
 import { AcademicCenterCard } from './AcademicCenterCard.jsx';
+import { HelpNowCard } from './HelpNowCard.jsx';
 import { ClassBellCard } from './ClassBellCard.jsx';
 import { TodaysRoutineRail } from './TodaysRoutineRail.jsx';
 import { WeekInReviewCard } from './WeekInReviewCard.jsx';
@@ -1624,6 +1625,11 @@ export function MissionControlDashboard({
         * mounting it costs an empty day nothing.
         */}
       <AcademicCenterCard onOpenAcademicCenter={onOpenAcademicCenter} />
+
+      {/* Free tutoring from the library — below the work, not above it. It is
+          what to do when the work is hard, and the order printed on the card
+          keeps it from becoming the first move. See lib/homeworkHelp.js. */}
+      <HelpNowCard />
 
       <div>
         <p className="mb-2 font-display text-[11px] uppercase tracking-widest text-ink-500">

@@ -257,6 +257,16 @@ export function resolveBlockTarget(block, strands = {}, grades = [], lessonsRead
     };
   }
 
+  // ---- SPELLING & VOCABULARY — by id (Sept 24 2026; lib/wordWeek.js) ----
+  if (block?.id === 'blk-words') {
+    return {
+      kind: 'view',
+      label: 'Open Spelling & Vocabulary',
+      view: 'wordWeek',
+      detail: 'Today’s spelling and vocabulary'
+    };
+  }
+
   const subject = block?.subject;
   if (!subject) return null;
 

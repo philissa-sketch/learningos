@@ -185,6 +185,17 @@ import {
 import { nextReviewScheduleEntry } from '../engine/dailyPractice.js';
 import { studyCycleKey, nextTermBlitzSlot } from '../lib/studyCycle.js';
 import { EVIDENCE_FOLDER_KEYS, SEEDED_FOLDER_URLS, normalizeEvidenceUrl, REFERENCE_LINK_TYPES } from '../lib/driveLinks.js';
+import { normalizeHelpUrl } from '../lib/homeworkHelp.js';
+
+/**
+ * The tutoring this family already pays for through its library card, given
+ * by the parent on Sept 24 2026 and opened and read before it was seeded.
+ * A seed, not a constant — see `helpNow` in initialState.
+ */
+const SEEDED_HELP_NOW = {
+  library: 'Clayton County Library System',
+  url: 'https://www.brainfuse.com/highed/helpNow.asp?a_id=5101DFFD&ss=&r='
+};
 import { missionScoresForSubject, missionEvidencePhrase } from '../lib/missionGrades.js';
 import {
   buildPasscodeRecord,
@@ -1149,6 +1160,16 @@ const initialState = {
    * fill. See data/games/quizPlatforms.js.
    */
   quizLinks: {},
+  /**
+   * THE HOUSEHOLD'S LIVE-TUTORING LINK. (Sept 24, 2026.)
+   *
+   * { library, url } — a public library's tutoring service, free with the
+   * card. Seeded below with the address the parent gave (Brainfuse HelpNow
+   * through her county library, read live before it was written down), and
+   * editable, because the access id in it belongs to a library account that
+   * renews. See lib/homeworkHelp.js for the shape and the try-first order.
+   */
+  helpNow: null,
   exerciseVideos: {},
   /** Which creator's channel demo searches are scoped to, and whether they show at all. */
   exerciseVideoSourceId: null,
@@ -4826,6 +4847,12 @@ const seedRows = khanFirstSeedRows().map((r) => ({ ...r, completed: false, grade
       hqLayout: meta?.hqLayout ?? {},
       hqCrewPosts: meta?.hqCrewPosts ?? {},
       quizLinks: meta?.quizLinks ?? {},
+      /**
+       * Seeded, not hardcoded — the same static-seed-plus-persisted-override
+       * pattern the Drive folders use. Her edit always wins, and clearing it
+       * to an empty object removes the card rather than restoring the seed.
+       */
+      helpNow: meta?.helpNow ?? SEEDED_HELP_NOW,
       exerciseVideos: meta?.exerciseVideos ?? {},
       exerciseVideoSourceId: meta?.exerciseVideoSourceId ?? null,
       exerciseVideosEnabled: meta?.exerciseVideosEnabled !== false,
@@ -6418,6 +6445,7 @@ const seedRows = khanFirstSeedRows().map((r) => ({ ...r, completed: false, grade
       hqCrewPosts: state.hqCrewPosts || {},
       // Parent-set, but it MUST travel: he is the one who clicks it.
       quizLinks: state.quizLinks || {},
+      helpNow: state.helpNow ?? null,
       exerciseVideos: state.exerciseVideos || {},
       exerciseVideoSourceId: state.exerciseVideoSourceId,
       exerciseVideosEnabled: state.exerciseVideosEnabled,
@@ -6763,6 +6791,12 @@ const seedRows = khanFirstSeedRows().map((r) => ({ ...r, completed: false, grade
      * intact — which is the whole point of the field.
      */
     const quizLinks = { ...(importedData.quizLinks || {}), ...(state.quizLinks || {}) };
+    /**
+     * The tutoring link merges parent-wins, exactly as the quiz links do: it
+     * is hers to set and his to tap, so a machine that already has one keeps
+     * it, and a machine that has none takes the arriving one.
+     */
+    const helpNow = state.helpNow ?? importedData.helpNow ?? null;
 
     /**
      * ==================================================================
@@ -7256,6 +7290,19 @@ const seedRows = khanFirstSeedRows().map((r) => ({ ...r, completed: false, grade
       return changed ? merged : null;
     }
 
+    /**
+     * The photo link travels like the reflection does — and it has to, because
+     * on a build assignment the photograph IS the submission. It is a string,
+     * never a file; see saveAssignmentPhoto.
+     */
+    function photoChanges(local, incoming) {
+      if (!hasText(incoming?.photoUrl)) return null;
+      if (incoming.photoUrl === local?.photoUrl) return null;
+      const newer = (incoming.photoUpdatedAt || '') > (local?.photoUpdatedAt || '');
+      if (hasText(local?.photoUrl) && !newer) return null;
+      return { photoUrl: incoming.photoUrl, photoUpdatedAt: incoming.photoUpdatedAt ?? null };
+    }
+
     /** Reflection travels like the writing does: never blanked, newer wins. */
     function reflectionChanges(local, incoming) {
       if (!hasText(incoming?.reflection)) return null;
@@ -7331,6 +7378,8 @@ const seedRows = khanFirstSeedRows().map((r) => ({ ...r, completed: false, grade
         Object.assign(changes, writingChanges(local, incoming));
         const reflected = reflectionChanges(local, incoming);
         if (reflected) Object.assign(changes, reflected);
+        const photo = photoChanges(local, incoming);
+        if (photo) Object.assign(changes, photo);
         // A grade travels on its own terms, exactly as it does everywhere else
         // in this import — a grade beats no grade, later gradedAt wins.
         if (incomingGradeWins(local, incoming)) {
@@ -7908,6 +7957,7 @@ const seedRows = khanFirstSeedRows().map((r) => ({ ...r, completed: false, grade
       hqLayout,
       hqCrewPosts,
       quizLinks,
+      helpNow,
       exerciseVideos,
       classBellEnabled,
       classBellWarningMinutes,
@@ -8014,7 +8064,7 @@ const seedRows = khanFirstSeedRows().map((r) => ({ ...r, completed: false, grade
       ...Object.entries(allAttendance)
         .filter(([date, record]) => entryChanged(state.allAttendance[date], record))
         .map(([date, record]) => saveAttendanceRecord(date, record)),
-      saveMeta({ xp, streak, longestStreak, lastActiveDate, reviewGameCompletions, highestRankTier: highWaterRankTier, rankTierDates, masteryMilestoneDates, unlockedCosmetics, equippedAvatar, equippedRocket, equippedTheme, boardDensity, equippedGear, hqLayout, hqCrewPosts, quizLinks, exerciseVideos, classBellEnabled, classBellWarningMinutes, exerciseVideosEnabled, exerciseVideoSourceId, supplyCrateEnabled }),
+      saveMeta({ xp, streak, longestStreak, lastActiveDate, reviewGameCompletions, highestRankTier: highWaterRankTier, rankTierDates, masteryMilestoneDates, unlockedCosmetics, equippedAvatar, equippedRocket, equippedTheme, boardDensity, equippedGear, hqLayout, hqCrewPosts, quizLinks, helpNow, exerciseVideos, classBellEnabled, classBellWarningMinutes, exerciseVideosEnabled, exerciseVideoSourceId, supplyCrateEnabled }),
       addLedgerEntries(newLedgerRows),
       ...bookMerge.writes,
       ...assignmentMerge.writes,
@@ -10624,6 +10674,38 @@ const seedRows = khanFirstSeedRows().map((r) => ({ ...r, completed: false, grade
     return { ok: true, wordCount };
   },
 
+  /**
+   * THE LINK TO THE PHOTO OF A BUILD. (Sept 24, 2026.)
+   *
+   * Not the photo — the link to it. This app stores no files, and the daily
+   * hand-carried export is the reason: a photograph inside it would make the
+   * file too large to move between the two computers. The picture lives in
+   * the Portfolio Projects folder in Drive; what travels is its address, so
+   * she can open it from her own machine while she grades.
+   *
+   * An empty string clears it, which is how a wrong link gets fixed.
+   */
+  async saveAssignmentPhoto(assignmentId, url) {
+    const state = get();
+    const existing = (state.academicAssignments || []).find((a) => a.id === assignmentId);
+    if (!existing) return { ok: false, error: 'That assignment is not in the record.' };
+
+    const checked = normalizeEvidenceUrl(url);
+    if (!checked.ok) return { ok: false, error: checked.error };
+
+    const changes = {
+      photoUrl: checked.url,
+      photoUpdatedAt: checked.url ? new Date().toISOString() : null
+    };
+    set({
+      academicAssignments: state.academicAssignments.map((a) =>
+        a.id === assignmentId ? { ...a, ...changes } : a
+      )
+    });
+    await updateAcademicAssignmentRecord(assignmentId, changes);
+    return { ok: true, url: checked.url };
+  },
+
   async saveAssignmentReflection(assignmentId, text) {
     const state = get();
     const existing = state.academicAssignments.find((a) => a.id === assignmentId);
@@ -12307,6 +12389,20 @@ const seedRows = khanFirstSeedRows().map((r) => ({ ...r, completed: false, grade
     else delete next[platformId];
     set({ quizLinks: next });
     await saveMeta({ quizLinks: next });
+    return { ok: true };
+  },
+
+  /**
+   * The library tutoring link — same http(s)-only check as setQuizLink, and
+   * for the same reason: it is handed straight to a child to tap. An empty
+   * url takes the card off his dashboard.
+   */
+  async setHelpNow({ library, url }) {
+    const checked = normalizeHelpUrl(url);
+    if (!checked.ok) return { ok: false, reason: 'bad-url' };
+    const next = checked.url ? { library: String(library || '').trim() || null, url: checked.url } : null;
+    set({ helpNow: next });
+    await saveMeta({ helpNow: next });
     return { ok: true };
   },
 

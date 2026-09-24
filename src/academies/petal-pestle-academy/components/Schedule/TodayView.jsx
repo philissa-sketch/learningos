@@ -14,7 +14,7 @@ import {
 import { resolveBlockTarget } from '../../lib/blockLinks.js';
 import { blockLabelOnDay, blockIconOnDay, isRotatingBlock } from '../../lib/rotatingBlock.js';
 import { currentReadingCheck } from '../../lib/readingCheck.js';
-import { wordListFor } from '../../lib/wordStudy.js';
+import { todaysTask } from '../../lib/wordWeek.js';
 import { bookReportNow } from '../../lib/bookReportSchedule.js';
 import {
   CIRCLE_BLOCK_ID,
@@ -390,8 +390,21 @@ export function TodayView({ onNavigate }) {
           //
           // Asked with the SAME function the screen asks, so the button and
           // the list it opens can never disagree about which week she is in.
-          const wordStudy =
-            b.subject === 'writing' ? wordListFor(lessonsRead, spellingResults) : null;
+          // Sept 24 2026: her words left the Language Arts block for their own
+          // class, Spelling & Vocabulary (blk-words, lib/wordWeek.js), so this
+          // block no longer offers them.
+          const wordStudy = null;
+          const wordTasks =
+            b.id === 'blk-words'
+              ? [todaysTask('spelling', new Date(), spellingResults), todaysTask('vocabulary', new Date(), spellingResults)]
+              : null;
+          const wordLine = wordTasks
+            ? wordTasks.every((t) => t.type === 'done')
+              ? '✓ Both done today'
+              : wordTasks[0].type === 'weekend'
+                ? 'No word work on weekends'
+                : `Spelling: ${wordTasks[0].label || '✓ done'} · Vocabulary: ${wordTasks[1].label || '✓ done'}`
+            : null;
           // v3.82 — THIS WEEK'S BOOK REPORT STEP, on the writing block.
           //
           // Lamar's log, on why this sits here rather than only in the Journal:
@@ -594,7 +607,8 @@ export function TodayView({ onNavigate }) {
                           {target.label}
                         </button>
                       )}
-                      {target.detail && (
+                      {wordLine && <span className="text-[0.7rem] font-700 text-sage-700">{wordLine}</span>}
+                      {!wordLine && target.detail && (
                         <span className="text-[0.7rem] text-ink-500">{target.detail}</span>
                       )}
                     </div>

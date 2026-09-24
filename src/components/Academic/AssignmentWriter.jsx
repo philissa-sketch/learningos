@@ -61,7 +61,13 @@ export function AssignmentWriter({ assignment, format, steps, onSave }) {
 
   // Which week he is on, so the right box is emphasised rather than both
   // shouting at once.
-  const stepDone = (id) => steps.some((s) => s.id === id && s.completedAt);
+  /**
+   * `steps` is optional. Portfolio Entries have no milestone template, and
+   * requiring them is what kept this whole box off those cards until Sept 24
+   * 2026. With no steps nothing is highlighted as "this week", which is the
+   * correct answer for an assignment written in one sitting.
+   */
+  const stepDone = (id) => (steps || []).some((s) => s.id === id && s.completedAt);
   const onNotesWeek = stepDone('read') && !stepDone('notes');
   const onDraftWeek = stepDone('notes') && !stepDone('draft');
   const onPolishWeek = stepDone('draft') && !stepDone('polish');
@@ -109,7 +115,9 @@ export function AssignmentWriter({ assignment, format, steps, onSave }) {
               <span className="text-[11px] text-ink-600">{words(notes)} words</span>
             </div>
             <p className="mt-0.5 text-[11px] text-ink-500">
-              The moments you marked while reading, and the three or four points the report will make.
+              {(steps || []).length > 0
+                ? 'The moments you marked while reading, and the three or four points the report will make.'
+                : 'Your plan — the measurements, the labels, and what you want to say about each part.'}
             </p>
             <textarea
               value={notes}

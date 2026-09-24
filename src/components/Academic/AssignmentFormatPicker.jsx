@@ -103,12 +103,32 @@ export function AssignmentFormatPicker({ assignment }) {
  * does not, so it no longer waits for one.
  */
 function SubmittedWork({ assignment, format = null }) {
+  /**
+   * A BUILD IS SUBMITTED AS A PHOTOGRAPH. (Sept 24, 2026.)
+   *
+   * Shown above the text, and shown even when there is no text at all: on a
+   * Build or Model entry the photo is the work, and a grading screen that
+   * rendered nothing because he had typed nothing would be telling her he
+   * had done nothing.
+   */
+  const photo = assignment.photoUrl || null;
   const shown = assignment.finalText
     ? { text: assignment.finalText, label: 'His finished copy' }
     : assignment.draftText
       ? { text: assignment.draftText, label: 'His rough draft — he has not saved a finished copy yet' }
       : null;
-  if (!shown) return null;
+  if (!shown && !photo) return null;
+
+  if (!shown) {
+    return (
+      <div className="mb-3 rounded-lg border border-space-700 bg-space-950 p-3">
+        <p className="text-[10px] font-display uppercase tracking-widest text-signal-cyan">His photo of the build</p>
+        <a href={photo} target="_blank" rel="noreferrer" className="mt-1 block text-sm text-signal-cyan underline">
+          Open the photo ↗
+        </a>
+      </div>
+    );
+  }
 
   const size = format ? sizeFor(format) : null;
   const shownWords = shown.text.trim() ? shown.text.trim().split(/\s+/).filter(Boolean).length : 0;
@@ -116,6 +136,11 @@ function SubmittedWork({ assignment, format = null }) {
 
   return (
     <div className="mb-3 rounded-lg border border-space-700 bg-space-950 p-3">
+      {photo && (
+        <a href={photo} target="_blank" rel="noreferrer" className="mb-2 block text-xs text-signal-cyan underline">
+          His photo of the build ↗
+        </a>
+      )}
       <div className="flex flex-wrap items-center justify-between gap-2">
         <p className="text-[10px] font-display uppercase tracking-widest text-signal-cyan">{shown.label}</p>
         <span className="text-[11px] text-ink-500">

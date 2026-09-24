@@ -321,7 +321,12 @@ export function getSubjectGrades({
        * record. This is the grade; that is the record.
        */
       const spellingByQuarter = new Map();
+      // Sept 24 2026: the table also holds the daily word activities
+      // ('word-activity', never graded) and Friday vocabulary tests
+      // ('vocab-test', graded below). Only a spelling test is a spelling grade;
+      // rows from before that day have no kind and are spelling tests.
       for (const r of spellingResults) {
+        if (r?.kind && r.kind !== 'spelling') continue;
         if (!Number.isFinite(r?.percent)) continue;
         const q = Number(r.quarter) || quarterForDate(r.at || r.dayKey);
         if (!q) continue;
@@ -343,6 +348,31 @@ export function getSubjectGrades({
           weight: 1
         });
       }
+      // ---- VOCABULARY, the same way (Sept 24 2026) ----
+      // Friday's vocabulary test joins spelling here, one averaged grade per
+      // quarter, weighted like the spelling grade for the reason given above.
+      const vocabByQuarter = new Map();
+      for (const r of spellingResults) {
+        if (r?.kind !== 'vocab-test' || !Number.isFinite(r?.percent)) continue;
+        const q = Number(r.quarter) || quarterForDate(r.at || r.dayKey);
+        if (!q) continue;
+        const b = vocabByQuarter.get(q) || { q, total: 0, n: 0 };
+        b.total += r.percent;
+        b.n += 1;
+        vocabByQuarter.set(q, b);
+      }
+      for (const b of vocabByQuarter.values()) {
+        assessments.push({
+          source: 'vocabulary-quarter',
+          id: `vocabulary-q${b.q}`,
+          label: `Vocabulary · Quarter ${b.q} (${b.n} test${b.n === 1 ? '' : 's'})`,
+          quarter: b.q,
+          percent: Math.round(b.total / b.n),
+          percentBest: Math.round(b.total / b.n),
+          attempts: b.n,
+          weight: 1
+        });
+      }
     }
 
     const countOf = (s) => assessments.filter((a) => a.source === s).length;
@@ -350,7 +380,8 @@ export function getSubjectGrades({
       weeklyTests: countOf('weekly-test'),
       quarterExams: countOf('quarter-exam'),
       writingPieces: countOf('writing-piece'),
-      spellingQuarters: countOf('spelling-quarter')
+      spellingQuarters: countOf('spelling-quarter'),
+      vocabularyQuarters: countOf('vocabulary-quarter')
     };
 
     /**
@@ -525,6 +556,7 @@ export function sourceSentence(sources) {
   add(sources.quarterExams, 'quarter exam', 'quarter exams');
   add(sources.writingPieces, 'writing piece marked', 'writing pieces marked');
   add(sources.spellingQuarters, 'quarter of spelling', 'quarters of spelling');
+  add(sources.vocabularyQuarters, 'quarter of vocabulary', 'quarters of vocabulary');
   return parts.join(' · ');
 }
 

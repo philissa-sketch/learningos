@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { guardianWord } from '../../lib/schoolWords.js';
 import { AssignmentWriter } from './AssignmentWriter.jsx';
+import { BuildPhotoLink } from './BuildPhotoLink.jsx';
 import { useAppStore } from '../../store/useAppStore.js';
 import { getCurrentQuarter } from '../../lib/schoolQuarter.js';
 import { todayDateStr } from '../../lib/scheduler.js';
@@ -41,6 +42,7 @@ export function AcademicAssignmentsView({ focusAssignmentId = null }) {
   const toggleAssignmentMilestone = useAppStore((s) => s.toggleAssignmentMilestone);
   const saveAssignmentReflection = useAppStore((s) => s.saveAssignmentReflection);
   const saveAssignmentWriting = useAppStore((s) => s.saveAssignmentWriting);
+  const saveAssignmentPhoto = useAppStore((s) => s.saveAssignmentPhoto);
 
   const currentQuarter = getCurrentQuarter().batchLabel;
   const quarters = orderedQuarters(academicAssignments);
@@ -120,6 +122,7 @@ export function AcademicAssignmentsView({ focusAssignmentId = null }) {
                   onToggleMilestone={toggleAssignmentMilestone}
                   onSaveReflection={saveAssignmentReflection}
                   onSaveWriting={saveAssignmentWriting}
+                  onSavePhoto={saveAssignmentPhoto}
                 />
               ))}
             </div>
@@ -153,7 +156,7 @@ const START_CLASSES = {
   behind: 'text-signal-amber'
 };
 
-function AssignmentRow({ assignment, focused = false, onSetStatus, onToggleMilestone, onSaveReflection, onSaveWriting }) {
+function AssignmentRow({ assignment, focused = false, onSetStatus, onToggleMilestone, onSaveReflection, onSaveWriting, onSavePhoto }) {
   /**
    * Scroll the assignment he was sent here for into view, and ring it.
    *
@@ -373,15 +376,38 @@ function AssignmentRow({ assignment, focused = false, onSetStatus, onToggleMiles
         </div>
       )}
 
-      {/* WHERE HE WRITES IT. Only on real assignments — an empty placeholder
-          slot has no format, no milestones and nothing to write yet. */}
-      {isReal && steps.length > 0 && (
+      {/*
+        WHERE HE WRITES IT.
+
+        ---- IT USED TO NEED MILESTONES, AND THAT HID IT. (Sept 24, 2026.) ----
+
+        The condition was `steps.length > 0`. Milestones exist for Research
+        Papers, Book Reports and Presentations only — so a **Portfolio Entry**,
+        which is thirteen of the forty-five assignments on the calendar, had no
+        steps and therefore no writing box at all.
+
+        The parent, on the cell-model card: *"There isn't a link for the
+        writing."* Its own card printed a four-part outline and a word target
+        of 200-300 words, and offered nowhere to type them. The writer never
+        needed the milestones — it only uses them to highlight which week he is
+        on, which is a nicety on a card that has them and irrelevant on one
+        that does not.
+
+        The format is what it actually needs: that is where the outline, the
+        checklist and the size come from.
+      */}
+      {isReal && format && (
         <AssignmentWriter
           assignment={assignment}
           format={format}
           steps={steps}
           onSave={onSaveWriting}
         />
+      )}
+
+      {/* A build is submitted as a photograph — see BuildPhotoLink. */}
+      {isReal && format?.rubricKind === 'visual' && onSavePhoto && (
+        <BuildPhotoLink assignment={assignment} onSave={onSavePhoto} />
       )}
 
       {isReal && assignment.status === 'completed' && (

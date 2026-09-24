@@ -139,7 +139,7 @@ const SECTION_GROUPS = [
       // Aug 20, 2026 — the parent: "add blooket, kahoot, and gimkit to [his]
       // game section". She hosts the games, so the link she pastes here is
       // the only thing that gets him in. See data/games/quizPlatforms.js.
-      { id: 'quiz-games', label: 'Blooket / Kahoot / Gimkit' },
+      { id: 'quiz-games', label: 'Blooket / Kahoot / Gimkit · Library tutoring' },
       { id: 'rewards-manager', label: 'Rewards & Coins' },
       { id: 'currency', label: 'Currency Controls' }
     ]
@@ -1018,6 +1018,7 @@ export function ParentDashboard({ onSignOut, onOpenAcademicCenter = null }) {
       {section === 'portfolio' && <PortfolioSection />}
       {section === 'notes' && <NotesSection />}
       {section === 'quiz-games' && <QuizGameLinksSection />}
+      {section === 'quiz-games' && <HelpNowLinkSection />}
       {section === 'learner-profile' && <LearnerProfileSection />}
       {section === 'guardian-word' && <GuardianWordSection />}
       {section === 'voice' && <VoiceSettingsPanel />}
@@ -3914,6 +3915,80 @@ function QuizGameLinksSection() {
           );
         })}
       </div>
+    </div>
+  );
+}
+
+/**
+ * ---- THE LIBRARY'S LIVE TUTORING. (Sept 24, 2026.) ----
+ *
+ * Seeded with the address she gave, so it works the day it ships rather than
+ * presenting an empty box. Editable because the access id in it belongs to a
+ * library account that renews — and clearing it takes the card off his
+ * dashboard rather than leaving him a dead link.
+ */
+function HelpNowLinkSection() {
+  const helpNow = useAppStore((s) => s.helpNow);
+  const setHelpNow = useAppStore((s) => s.setHelpNow);
+  const [url, setUrl] = useState(undefined);
+  const [library, setLibrary] = useState(undefined);
+  const [msg, setMsg] = useState(null);
+
+  const urlValue = url !== undefined ? url : helpNow?.url || '';
+  const libValue = library !== undefined ? library : helpNow?.library || '';
+
+  const save = async () => {
+    const res = await setHelpNow({ library: libValue, url: urlValue });
+    setMsg(res?.ok
+      ? (urlValue.trim() ? 'Saved — the card is on his dashboard.' : 'Cleared — the card is off his dashboard.')
+      : 'That link has to start with http:// or https://.');
+    setUrl(undefined);
+    setLibrary(undefined);
+    setTimeout(() => setMsg(null), 2500);
+  };
+
+  return (
+    <div className="rounded-xl border border-space-700 bg-space-800 p-4 shadow-panel">
+      <p className="text-xs font-display uppercase tracking-widest text-ink-500">
+        📚 Live tutoring from the library
+      </p>
+      <p className="mt-1 text-sm text-ink-300">
+        Free with your library card — a live tutor, a writing lab that reads his drafts, and a
+        question box. His card shows the order to try things in: himself first, then the app&apos;s
+        tutor, then a person.
+      </p>
+      <p className="mt-1 text-xs text-ink-500">
+        The link carries your library account id, so it changes if the card or the service does.
+        It travels to his computer on the next export.
+      </p>
+
+      <div className="mt-3 space-y-2">
+        <input
+          type="text"
+          value={libValue}
+          onChange={(e) => setLibrary(e.target.value)}
+          placeholder="Which library"
+          className="w-full rounded-lg border border-space-600 bg-space-900 px-3 py-2 text-sm text-ink-100 placeholder:text-ink-600"
+        />
+        <div className="flex flex-wrap gap-2">
+          <input
+            type="url"
+            inputMode="url"
+            value={urlValue}
+            onChange={(e) => setUrl(e.target.value)}
+            placeholder="https://…"
+            className="min-w-0 flex-1 rounded-lg border border-space-600 bg-space-900 px-3 py-2 text-sm text-ink-100 placeholder:text-ink-600"
+          />
+          <button
+            type="button"
+            onClick={save}
+            className="rounded-lg bg-signal-cyan px-4 py-2 font-display text-sm font-700 text-space-950 transition hover:brightness-110"
+          >
+            Save
+          </button>
+        </div>
+      </div>
+      {msg && <p className="mt-1.5 text-xs text-ink-300">{msg}</p>}
     </div>
   );
 }

@@ -97,8 +97,10 @@ export const DEFAULT_SCHEDULE = [
     icon: '📖',
     start: '10:35',
     minutes: 60,
-    kind: 'core',
-    note: 'Khan Academy, then read anything she likes.'
+    // Sept 24 2026: her own Reading course now (lib/readingProgress.js), not
+    // Khan, so it is her course. Dr. Marigold reads this note out loud.
+    kind: 'signature',
+    note: 'Today’s reading lesson, then your book.'
   },
   {
     id: 'blk-break1',
@@ -115,9 +117,22 @@ export const DEFAULT_SCHEDULE = [
     label: 'Language Arts & Writing',
     icon: '✏️',
     start: '12:10',
-    minutes: 60,
+    // Sept 24 2026, Gigi: Language Arts gets its own section, then Spelling &
+    // Vocabulary, like Lamar's. The 15 minutes come out of this block, so her
+    // day is the same length.
+    minutes: 45,
     kind: 'core',
-    note: 'Khan Academy for grammar and mechanics.'
+    note: 'Khan Academy for grammar and mechanics, and your book report step.'
+  },
+  {
+    id: 'blk-words',
+    subject: 'words',
+    label: 'Spelling & Vocabulary',
+    icon: '🔤',
+    start: '12:55',
+    minutes: 15,
+    kind: 'signature',
+    note: 'Today’s spelling and vocabulary activities.'
   },
   {
     id: 'blk-herbalism',
