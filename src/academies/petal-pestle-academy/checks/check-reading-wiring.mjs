@@ -60,7 +60,8 @@ const SRC = {
   today: 'components/Schedule/TodayView.jsx',
   school: 'screens/HerSchool/HerSchool.jsx',
   store: 'store/useAppStore.js',
-  gradebook: 'components/Parent/GradebookPanel.jsx'
+  gradebook: 'components/Parent/GradebookPanel.jsx',
+  card: 'lib/reportCard.js'
 };
 const read = (rel) => readFileSync(join(ROOT, rel), 'utf8');
 
@@ -199,7 +200,8 @@ function run(ctx) {
   }
   if (!/\{target && !reading && \(/.test(ctx.src.today)) fail('the old Khan unit link still shows on the Reading block');
   if (!/view === 'readingLesson' && <ReadingLessonView/.test(ctx.src.school)) fail('her school has no route to the reading screen');
-  if (!/<ReadingCard attempts=\{attempts\} \/>/.test(ctx.src.gradebook)) fail('the Gradebook has no Reading card');
+  // Sept 24 2026: Reading is two rows of the Gradebook's report card (with read-aloud, on her own).
+  if (!/reportCard\(\{ attempts, khanGrades, writingMarks, spellingResults \}\)/.test(ctx.src.gradebook) || !/\.\.\.readingRows\(attempts\)/.test(ctx.src.card)) fail('the Gradebook has no Reading rows');
   for (const p of line) {
     const w = r.khanWatchFor(p);
     if (w && p.module > 3) fail(`${p.id} offers a Khan watch outside Modules 1–3`);
@@ -247,7 +249,7 @@ const BUGS = [
   ['block skips the reminder', 'today', "throughCircle(b.id, () => onNavigate?.('readingLesson'))", "onNavigate?.('readingLesson')"],
   ['old Khan link shown too', 'today', '{target && !reading && (', '{target && ('],
   ['no route', 'school', "{view === 'readingLesson' && <ReadingLessonView onExit={() => navigate('today')} />}", ''],
-  ['no Gradebook card', 'gradebook', '<ReadingCard attempts={attempts} />', '']
+  ['no Gradebook rows', 'card', '...readingRows(attempts)', '']
 ];
 
 const real = run(await context());

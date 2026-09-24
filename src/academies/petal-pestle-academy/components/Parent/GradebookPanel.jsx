@@ -1,61 +1,44 @@
 import { useState } from 'react';
 import { useAppStore } from '../../store/useAppStore.js';
-import { readingScores, readingToday } from '../../lib/readingProgress.js';
 import { allWeeks, BANDS } from '../../config/assessment.js';
 import { officialAttempt } from '../../lib/assessmentEngine.js';
 import { reviewSummary, troubleSpots, dayKeyOf, daysBetween } from '../../lib/reviewQueue.js';
 import { bankItemById, itemsForLessons } from '../../data/assessments/appBank.js'; // v3.25 — every course
 import { APP_COURSES, lessonById } from '../../data/lessons/appCourses.js'; // v3.95 — every course, at last
-import {
-  getSubjectGrades,
-  sourceSentence,
-  testLoadByDay,
-  retakeState
-} from '../../lib/gradebook.js';
+import { testLoadByDay, retakeState } from '../../lib/gradebook.js';
+import { reportCard, cellText, CELL } from '../../lib/reportCard.js';
 
 // ---------------------------------------------------------------------------
 // THE GRADEBOOK.
 //
-// This is the half of the assessment system she never sees. She gets a band —
-// Got it, Nearly there, Let's go back. A grown-up gets the number, every
-// question, what she picked, and which lesson each miss traces back to.
+// The half of the assessment system she never sees. She gets a band (Got it,
+// Nearly there, Let's go back). A grown-up gets the number, every question,
+// what she picked, and which lesson each miss traces back to. Nothing is
+// softened: re-takes and failed attempts are all here.
 //
-// ---- WHY BOTH, RATHER THAN PICKING ONE ----
+// ---- SEPT 24 2026: ONE REPORT CARD, ONE SHAPE ----
 //
-// A nine-year-old who is a year behind in reading does not need a percentage to
-// carry around; it becomes an identity faster than anyone intends. But a school
-// record built on "she seemed to be doing fine" is not a record, and this year
-// is formally 4th grade — there has to be something a transcript can be built
-// from that somebody else could check.
+// Gigi: "The grade book is confusing. Can we clean it up so that it is more
+// uniform and makes sense?" She took the plan as recommended:
 //
-// So nothing is softened here. What is on this screen is exactly what happened,
-// including the re-takes, including the attempts she failed. The kindness is in
-// where the number is shown, not in whether it is true.
+//   1. GRADES FIRST. The screen opens on one report card: every subject a row,
+//      the same columns for every row (Quarter 1–4 and the Year). Built by
+//      lib/reportCard.js; this file renders and does not calculate.
+//   2. EVERY SUBJECT CARD IS THE SAME SHAPE. Grade, one line saying what
+//      counts, a row per quarter that opens into the work. Before, courses,
+//      Language Arts and Reading were three different layouts, and "nothing
+//      yet" was written three different ways.
+//   3. ONE NUMBER PER CELL. The grade of record is her latest attempt. Her best
+//      is shown inside the quarter, beside the attempt it came from.
+//   4. MATH AND GRAMMAR ARE ON THE REPORT CARD, in their own Khan group, read
+//      from the Khan tab (where they are still entered). No Khan result is
+//      blended into any of this app's grades.
+//   5. THE TOOLS MOVED TO TABS, UNCHANGED: What is sticking, Every test (with
+//      how much was asked of her each day), Lesson checks. "What is sticking"
+//      used to be first on this screen by an earlier decision; Gigi moved it
+//      to its own tab so the grades come first.
 //
-// ---- THE MOST USEFUL THING ON THIS SCREEN IS NOT THE SCORES ----
-//
-// It is "Slipping" — the questions she has met three or more times and misses
-// more than half of. A test score says how one morning went. That list says
-// what is not sticking, which is the thing a grown-up can actually do something
-// about.
-//
-// ---- v3.95: ONE CARD PER SUBJECT, AND THIS SCREEN KNOWS ALL FOUR COURSES ----
-//
-// Gigi: "The long list of randomness in the Test tab under Gradebook is
-// confusing. I want to open one place and see how she is doing in each
-// subject."
-//
-// It listed 104 weeks — every week of every course — under a heading that said
-// "Herbalism · Quarter 1", with no column saying which course a row was. She
-// had sat 11 tests. THE ARITHMETIC LIVES IN src/lib/gradebook.js NOW: this file
-// renders and does not calculate, so `check-gradebook` can assert the numbers
-// by calling the function instead of reading the JSX. Three bugs in this
-// project have come from a check that read text rather than asking the code.
-//
-// ⚠️ "What is sticking" IS UNCHANGED AND MUST STAY THAT WAY — same position,
-// same four stats, same list, same words. It is the most useful thing on the
-// screen and it was not what she asked to have fixed. `check-gradebook`
-// asserts it rather than trusting this comment.
+// check-gradebook-uniform.mjs holds all of this.
 // ---------------------------------------------------------------------------
 
 const BAND_STYLE = {
@@ -64,12 +47,13 @@ const BAND_STYLE = {
   'go-back': 'border-clay-500 bg-clay-500/10'
 };
 
-/**
- * v3.95: was `HERBALISM_Q1.find(...)`, so every Science Lab, Social Studies and
- * Human Body question on this screen printed a raw id like `sl-m2-04`.
- * `lessonById` has spanned all four courses since v3.25 and five other files
- * already used it. This one did not.
- */
+export const GRADEBOOK_TABS = [
+  { id: 'grades', label: 'Grades' },
+  { id: 'sticking', label: 'What is sticking' },
+  { id: 'tests', label: 'Every test' },
+  { id: 'lessons', label: 'Lesson checks' }
+];
+
 function lessonLabel(lessonId) {
   const l = lessonById(lessonId);
   return l ? `Lesson ${l.n} · ${l.title}` : lessonId;
@@ -79,10 +63,14 @@ function bandLabel(id) {
   return BANDS.find((b) => b.id === id)?.label || id;
 }
 
+const CELL_STYLE = {
+  [CELL.graded]: 'font-700 text-ink-900',
+  [CELL.notReached]: 'text-ink-500',
+  [CELL.noClass]: 'text-[0.7rem] italic text-ink-500/70'
+};
+
 export function GradebookPanel() {
-  // Raw state subscriptions, then derive — see the note in LessonsView. A
-  // selector that returns a fresh object every call re-renders this panel on
-  // every unrelated store change.
+  // Raw state subscriptions, then derive — see the note in LessonsView.
   const attempts = useAppStore((s) => s.attempts);
   const reviewItems = useAppStore((s) => s.reviewItems);
   const lessonReads = useAppStore((s) => s.lessonReads);
@@ -90,180 +78,254 @@ export function GradebookPanel() {
   const writingMarks = useAppStore((s) => s.writingMarks);
   const spellingResults = useAppStore((s) => s.spellingResults);
   const attemptsByTest = useAppStore.getState().attemptsByTest();
-  const [openAttempt, setOpenAttempt] = useState(null);
+  const [tab, setTab] = useState('grades');
 
   const lessonsRead = Object.keys(lessonReads || {});
-  const readQuestionIds = itemsForLessons(lessonsRead).map((q) => q.id);
-  const summary = reviewSummary(reviewItems, readQuestionIds);
-  const trouble = troubleSpots(reviewItems, 8);
-  const today = dayKeyOf();
+  const card = reportCard({ attempts, khanGrades, writingMarks, spellingResults });
 
-  const subjects = getSubjectGrades({ attempts, khanGrades, writingMarks, spellingResults });
-  const load = testLoadByDay(attempts);
-
-  if (!attempts.length && !lessonsRead.length) {
+  if (!attempts.length && !lessonsRead.length && !(khanGrades || []).length) {
     return (
       <div className="panel px-5 py-6">
         <h2 className="font-display text-lg text-ink-900">Nothing recorded yet</h2>
         <p className="mt-2 text-sm text-ink-700">
-          This page fills in as she reads lessons and sits weekly tests. It holds every test she
-          takes, question by question — what she picked, what was right, and which lesson each miss
-          came from.
-        </p>
-        <p className="mt-2 text-xs text-ink-500">
-          She never sees a percentage. She sees Got it, Nearly there, or Let&apos;s go back. The
-          numbers live here, because a school record has to be checkable and a nine-year-old does
-          not need a number to carry around.
+          This page fills in as she reads lessons and sits tests. She never sees a percentage; she
+          sees Got it, Nearly there, or Let&apos;s go back. The numbers live here.
         </p>
       </div>
     );
   }
 
   return (
-    <div className="space-y-5">
-      {/* ---- what is actually sticking ---- */}
-      <section className="panel px-5 py-5">
-        <h2 className="font-display text-lg text-ink-900">What is sticking</h2>
-        <p className="mt-1 text-xs text-ink-700">
-          Across the {summary.total} questions from the {lessonsRead.length} lessons she has read.
-          This comes from her daily warm-ups as well as her tests, so it is a truer read than any
-          single morning.
-        </p>
-        <div className="mt-3 grid gap-2 sm:grid-cols-4">
-          <Stat n={summary.solid} label="Solid" hint="Answered right at long gaps" tone="sage" />
-          <Stat n={summary.settling} label="Settling" hint="Still on short gaps" tone="gold" />
-          <Stat n={summary.slipping} label="Slipping" hint="Missed more often than not" tone="clay" />
-          <Stat n={summary.unseen} label="Not yet met" hint="Waiting in the bank" tone="plain" />
-        </div>
-
-        {trouble.length > 0 && (
-          <div className="mt-4">
-            <p className="label-caps">Worth sitting down with her about</p>
-            <div className="mt-2 space-y-1.5">
-              {trouble.map((it) => {
-                const q = bankItemById(it.questionId);
-                if (!q) return null;
-                const overdue = daysBetween(it.dueOn, today);
-                return (
-                  <div
-                    key={it.questionId}
-                    className="rounded-petal border border-cream-300 bg-white px-3.5 py-2.5"
-                  >
-                    <p className="text-sm text-ink-900">{q.prompt}</p>
-                    <p className="mt-0.5 text-[0.7rem] text-ink-500">
-                      {lessonLabel(q.lesson)} · seen {it.seen}, missed {it.missed} ·{' '}
-                      {overdue >= 0 ? 'due now' : `back in ${-overdue} day${overdue === -1 ? '' : 's'}`}
-                    </p>
-                    <p className="mt-1 text-[0.7rem] text-ink-700">
-                      Right answer: <span className="font-700">{q.choices[q.answer]}</span> — {q.why}
-                    </p>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        )}
-      </section>
-
-      {/* ---- how much was asked of her ---- */}
-      {load.length > 0 && <TestLoad load={load} />}
-
-      {/* ---- how she is doing, one card per subject ---- */}
-      <section className="space-y-3">
-        <div className="panel px-5 py-4">
-          <h2 className="font-display text-lg text-ink-900">How she is doing, by subject</h2>
-          <p className="mt-1 text-xs text-ink-700">
-            One card per subject. Open a quarter to see the weeks inside it, and a week to see the
-            questions. A quarter she has not reached says so — it is never a blank and never a
-            zero, because a quarter she has not sat is not a quarter she failed.
-          </p>
-          <p className="mt-1.5 text-[0.7rem] text-ink-500">
-            A quarter exam counts for as much as the quarter it tests — the weekly tests she sat in
-            it. At equal weight an exam was one score in thirty-six, and she could have failed all
-            four and still finished with an A.
-          </p>
-          <p className="mt-1.5 text-[0.7rem] text-ink-500">
-            <span className="font-700">This screen grades the work this app made</span> — her
-            weekly tests, her quarter exams, her writing pieces and her spelling. Khan Academy is
-            somebody else&apos;s curriculum and it is graded on its own tab, Math and Grammar
-            alike. Nothing is missing from her record: it is on the screen that owns it.
-          </p>
-        </div>
-
-        {subjects.map((s) => (
-          <SubjectCard key={s.id} subject={s} attemptsByTest={attemptsByTest} />
+    <div className="space-y-4">
+      <nav className="flex flex-wrap gap-2" aria-label="Gradebook sections">
+        {GRADEBOOK_TABS.map((t) => (
+          <button
+            key={t.id}
+            type="button"
+            onClick={() => setTab(t.id)}
+            aria-current={tab === t.id ? 'true' : undefined}
+            className={`rounded-full border-2 px-4 py-1.5 text-sm font-700 ${
+              tab === t.id ? 'border-sage-500 bg-sage-300/30 text-ink-900' : 'border-cream-300 bg-white text-ink-700'
+            }`}
+          >
+            {t.label}
+          </button>
         ))}
-        <ReadingCard attempts={attempts} />
+      </nav>
+
+      {tab === 'grades' && <GradesTab card={card} attemptsByTest={attemptsByTest} />}
+      {tab === 'sticking' && <StickingTab reviewItems={reviewItems} lessonsRead={lessonsRead} />}
+      {tab === 'tests' && <TestsTab attempts={attempts} />}
+      {tab === 'lessons' && <LessonChecksTab lessonReads={lessonReads} />}
+    </div>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// GRADES
+// ---------------------------------------------------------------------------
+
+function GradesTab({ card, attemptsByTest }) {
+  return (
+    <div className="space-y-4">
+      <section className="panel px-5 py-5">
+        <h2 className="font-display text-lg text-ink-900">Report card</h2>
+        <div className="mt-3 overflow-x-auto">
+          <table className="w-full min-w-[34rem] text-left text-sm">
+            <thead>
+              <tr className="border-b border-cream-300 text-[0.7rem] uppercase tracking-wide text-ink-500">
+                <th className="py-2 pr-3">Subject</th>
+                {card.quarters.map((q) => (
+                  <th key={q} className="py-2 pr-3">
+                    Q{q}
+                  </th>
+                ))}
+                <th className="py-2">Year</th>
+              </tr>
+            </thead>
+            {card.groups.map((g) => (
+              <tbody key={g.id}>
+                <tr>
+                  <td colSpan={card.quarters.length + 2} className="pb-1 pt-3 label-caps text-ink-500">
+                    {g.label}
+                  </td>
+                </tr>
+                {g.rows.map((r) => (
+                  <tr key={r.id} className="border-b border-cream-200">
+                    <td className="py-2 pr-3">
+                      <a href={`#gb-${r.id}`} className="font-700 text-ink-900 underline decoration-dotted">
+                        {r.emoji} {r.label}
+                      </a>
+                    </td>
+                    {r.cells.map((c) => (
+                      <td key={c.quarter} className={`tnum py-2 pr-3 ${CELL_STYLE[c.state]}`}>
+                        {cellText(c)}
+                      </td>
+                    ))}
+                    <td className="tnum py-2 font-700 text-ink-900">{r.year ? cellText(r.year) : '—'}</td>
+                  </tr>
+                ))}
+              </tbody>
+            ))}
+          </table>
+        </div>
+        <p className="mt-3 text-[0.7rem] text-ink-500">
+          <span className="font-700">—</span> not reached yet (never a zero) ·{' '}
+          <span className="italic">no class</span> that course has no class that quarter · each grade is
+          her latest attempt; her best is inside the quarter below.
+        </p>
       </section>
 
-      {/* ---- the practice gate ---- */}
-      {lessonsRead.length > 0 && (
-        <section className="panel px-5 py-5">
-          <h2 className="font-display text-lg text-ink-900">Lessons and the practice gate</h2>
-          <p className="mt-1 text-xs text-ink-700">
-            Each lesson ends in a quick check. Miss more than one and she is served extra practice
-            from that lesson&apos;s own question bank before she finishes. It never blocks her —
-            what it does is make sure a lesson she did not understand shows up here instead of
-            passing silently.
-          </p>
-
-          {/* v3.95: was HERBALISM_Q1 only, so 23 lessons read could show the Herbalism ones. */}
-          {APP_COURSES.map((course) => {
-            const read = course.lessons.filter((l) => lessonReads[l.id]);
-            if (!read.length) return null;
-            return (
-              <div key={course.id} className="mt-4">
-                <p className="label-caps">
-                  {course.emoji} {course.label}
-                </p>
-                <div className="mt-2 overflow-x-auto">
-                  <table className="w-full text-left text-sm">
-                    <thead>
-                      <tr className="border-b border-cream-300 text-[0.7rem] uppercase tracking-wide text-ink-500">
-                        <th className="py-2 pr-3">Lesson</th>
-                        <th className="py-2 pr-3">Check</th>
-                        <th className="py-2 pr-3">Extra practice</th>
-                        <th className="py-2">Reads</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {read.map((l) => {
-                        const row = lessonReads[l.id];
-                        const p = row.practice;
-                        return (
-                          <tr
-                            key={l.id}
-                            className={`border-b border-cream-200 ${p && p.passed === false ? 'bg-gold-300/20' : ''}`}
-                          >
-                            <td className="py-2.5 pr-3 font-700 text-ink-900">
-                              {l.n}. {l.title}
-                            </td>
-                            <td className="tnum py-2.5 pr-3">
-                              {p ? `${p.correct}/${p.asked}${p.passed === false ? ' · shaky' : ''}` : '—'}
-                            </td>
-                            <td className="tnum py-2.5 pr-3">
-                              {p?.extraServed ? `${p.extraCorrect}/${p.extraServed}` : '—'}
-                            </td>
-                            <td className="tnum py-2.5">{row.reads}</td>
-                          </tr>
-                        );
-                      })}
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            );
-          })}
-
-          <p className="mt-3 text-xs text-ink-500">
-            A dash under Check means she finished that lesson before the gate existed, or without
-            doing the check. The row shows her LATEST attempt, not her best — a lesson she has since
-            fumbled should say so.
-          </p>
+      {card.groups.map((g) => (
+        <section key={g.id} className="space-y-3">
+          <p className="label-caps px-1 text-ink-500">{g.label}</p>
+          {g.rows.map((r) => (
+            <SubjectCard key={r.id} row={r} attemptsByTest={attemptsByTest} />
+          ))}
         </section>
-      )}
+      ))}
+    </div>
+  );
+}
 
-      {/* ---- every attempt, question by question ---- */}
+/**
+ * ONE SUBJECT, THE SAME SHAPE FOR EVERY SUBJECT: its Year grade, one line of
+ * what counts, and a row per quarter that opens into the work behind it.
+ */
+function SubjectCard({ row, attemptsByTest }) {
+  const [openQuarter, setOpenQuarter] = useState(null);
+  const weeks = allWeeks();
+  return (
+    <div id={`gb-${row.id}`} className="panel scroll-mt-4 px-5 py-5">
+      <div className="flex flex-wrap items-baseline justify-between gap-2">
+        <h3 className="font-display text-base text-ink-900">
+          {row.emoji} {row.label}
+        </h3>
+        <span className="tnum text-sm font-700 text-ink-900">{row.year ? cellText(row.year) : '—'}</span>
+      </div>
+      <p className="mt-1 text-xs text-ink-700">{row.counts}</p>
+
+      <div className="mt-3 space-y-1.5">
+        {row.cells.map((c) => {
+          const open = openQuarter === c.quarter;
+          const reached = c.state === CELL.graded;
+          return (
+            <div key={c.quarter} className="rounded-petal border border-cream-300 bg-white">
+              <button
+                type="button"
+                disabled={!reached}
+                onClick={() => setOpenQuarter(open ? null : c.quarter)}
+                className={`flex w-full items-center justify-between gap-3 px-3.5 py-2.5 text-left ${
+                  reached ? '' : 'cursor-default opacity-60'
+                }`}
+              >
+                <span className="text-sm font-700 text-ink-900">Quarter {c.quarter}</span>
+                <span className={`tnum text-sm ${CELL_STYLE[c.state]}`}>{cellText(c)}</span>
+              </button>
+              {open &&
+                (row.detail === 'course' ? (
+                  <QuarterWeeks subject={row.subject} quarter={c.quarter} weeks={weeks} attemptsByTest={attemptsByTest} />
+                ) : (
+                  <QuarterList items={row.itemsByQuarter[c.quarter] || []} />
+                ))}
+            </div>
+          );
+        })}
+      </div>
+
+      {row.outside > 0 && (
+        <p className="mt-2 text-[0.7rem] text-ink-500">
+          {row.outside} result{row.outside === 1 ? '' : 's'} from outside the four quarters (summer)
+          count in the Year only.
+        </p>
+      )}
+    </div>
+  );
+}
+
+/** Everything graded in one quarter of a subject that has no weekly tests. */
+function QuarterList({ items }) {
+  return (
+    <div className="border-t border-cream-200 px-3.5 py-3">
+      <ul className="space-y-1.5 text-xs">
+        {items.map((it) => (
+          <li key={it.id} className="flex items-baseline justify-between gap-3">
+            <span className="text-ink-900">
+              {it.label}
+              {it.day && <span className="ml-2 text-ink-500">{it.day}</span>}
+            </span>
+            <span className="tnum flex-none font-700 text-ink-900">
+              {it.score}
+              {Number.isFinite(it.best) && <span className="ml-1 font-400 text-ink-500">(best {it.best}%)</span>}
+            </span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// WHAT IS STICKING — moved here unchanged from the top of the old screen.
+// ---------------------------------------------------------------------------
+
+function StickingTab({ reviewItems, lessonsRead }) {
+  const readQuestionIds = itemsForLessons(lessonsRead).map((q) => q.id);
+  const summary = reviewSummary(reviewItems, readQuestionIds);
+  const trouble = troubleSpots(reviewItems, 8);
+  const today = dayKeyOf();
+  return (
+    <section className="panel px-5 py-5">
+      <h2 className="font-display text-lg text-ink-900">What is sticking</h2>
+      <p className="mt-1 text-xs text-ink-700">
+        Across the {summary.total} questions from the {lessonsRead.length} lessons she has read,
+        from her daily warm-ups as well as her tests.
+      </p>
+      <div className="mt-3 grid gap-2 sm:grid-cols-4">
+        <Stat n={summary.solid} label="Solid" hint="Answered right at long gaps" tone="sage" />
+        <Stat n={summary.settling} label="Settling" hint="Still on short gaps" tone="gold" />
+        <Stat n={summary.slipping} label="Slipping" hint="Missed more often than not" tone="clay" />
+        <Stat n={summary.unseen} label="Not yet met" hint="Waiting in the bank" tone="plain" />
+      </div>
+
+      {trouble.length > 0 && (
+        <div className="mt-4">
+          <p className="label-caps">Worth sitting down with her about</p>
+          <div className="mt-2 space-y-1.5">
+            {trouble.map((it) => {
+              const q = bankItemById(it.questionId);
+              if (!q) return null;
+              const overdue = daysBetween(it.dueOn, today);
+              return (
+                <div key={it.questionId} className="rounded-petal border border-cream-300 bg-white px-3.5 py-2.5">
+                  <p className="text-sm text-ink-900">{q.prompt}</p>
+                  <p className="mt-0.5 text-[0.7rem] text-ink-500">
+                    {lessonLabel(q.lesson)} · seen {it.seen}, missed {it.missed} ·{' '}
+                    {overdue >= 0 ? 'due now' : `back in ${-overdue} day${overdue === -1 ? '' : 's'}`}
+                  </p>
+                  <p className="mt-1 text-[0.7rem] text-ink-700">
+                    Right answer: <span className="font-700">{q.choices[q.answer]}</span> — {q.why}
+                  </p>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
+    </section>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// EVERY TEST — how much she sat each day, then every attempt, newest first.
+// ---------------------------------------------------------------------------
+
+function TestsTab({ attempts }) {
+  const [openAttempt, setOpenAttempt] = useState(null);
+  const load = testLoadByDay(attempts);
+  return (
+    <div className="space-y-4">
+      {load.length > 0 && <TestLoad load={load} />}
       <section className="panel px-5 py-5">
         <h2 className="font-display text-lg text-ink-900">Every attempt, question by question</h2>
         {attempts.length === 0 ? (
@@ -271,7 +333,7 @@ export function GradebookPanel() {
         ) : (
           <div className="mt-3 space-y-2">
             {[...attempts].reverse().map((a) => (
-              <div key={a.attemptId} className={`rounded-petal border-2 ${BAND_STYLE[a.bandId]}`}>
+              <div key={a.attemptId} className={`rounded-petal border-2 ${BAND_STYLE[a.bandId] || 'border-cream-300 bg-white'}`}>
                 <button
                   type="button"
                   onClick={() => setOpenAttempt(openAttempt === a.attemptId ? null : a.attemptId)}
@@ -287,7 +349,6 @@ export function GradebookPanel() {
                     {a.right}/{a.total} · {a.percent}%
                   </span>
                 </button>
-
                 {openAttempt === a.attemptId && <AttemptDetail attempt={a} />}
               </div>
             ))}
@@ -298,156 +359,67 @@ export function GradebookPanel() {
   );
 }
 
-/**
- * ONE SUBJECT. Letter, percentage, what the number is made of, and a row per
- * quarter that opens into the weeks and then into the questions.
- */
-/**
- * READING — her own course (Sept 24 2026). Two scores, never blended:
- *   Lessons     — read-aloud allowed. Her Fairy Tales reading checks count here.
- *   On her own  — Thursday tests and quarter tests, no read-aloud. BLANK until
- *                 she has sat one: a test not taken is not a zero.
- * Worked out in lib/readingProgress.js, not here: the panel renders.
- */
-function ReadingCard({ attempts }) {
-  const { lessons, own } = readingScores(attempts);
-  const today = readingToday(attempts, new Date());
+// ---------------------------------------------------------------------------
+// LESSON CHECKS — the quick check at the end of each lesson.
+// ---------------------------------------------------------------------------
+
+function LessonChecksTab({ lessonReads }) {
+  const any = Object.keys(lessonReads || {}).length > 0;
   return (
-    <div className="panel px-5 py-5">
-      <h3 className="font-display text-base text-ink-900">📖 Reading</h3>
+    <section className="panel px-5 py-5">
+      <h2 className="font-display text-lg text-ink-900">Lesson checks</h2>
       <p className="mt-1 text-xs text-ink-700">
-        Her own Reading course. {today.next ? `She is on: ${today.next.title} (piece ${today.position} of ${today.of}).` : 'Every written piece is done.'}{' '}
-        {today.written}.
+        Each lesson ends in a quick check. Miss more than one and she gets extra practice from that
+        lesson before she finishes. It never blocks her. Each row shows her latest try.
       </p>
-      <div className="mt-3 grid grid-cols-2 gap-3">
-        <div className="rounded-petal border border-cream-300 bg-white px-4 py-3">
-          <p className="label-caps text-ink-500">Lessons</p>
-          <p className="tnum mt-1 text-sm font-700 text-ink-900">
-            {lessons ? `${lessons.letter} · ${lessons.percent}%` : '—'}
-          </p>
-          <p className="text-[0.7rem] text-ink-500">
-            {lessons ? `${lessons.right} of ${lessons.total} questions · read-aloud allowed` : 'No lessons yet'}
-          </p>
-        </div>
-        <div className="rounded-petal border border-cream-300 bg-white px-4 py-3">
-          <p className="label-caps text-ink-500">On her own</p>
-          <p className="tnum mt-1 text-sm font-700 text-ink-900">
-            {own ? `${own.letter} · ${own.percent}%` : 'Blank'}
-          </p>
-          <p className="text-[0.7rem] text-ink-500">
-            {own
-              ? `${own.right} of ${own.total} questions · ${own.tests} test${own.tests === 1 ? '' : 's'} · no read-aloud`
-              : 'Blank until her first Thursday test. Not a zero.'}
-          </p>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function SubjectCard({ subject, attemptsByTest }) {
-  const [openQuarter, setOpenQuarter] = useState(null);
-  const weeks = allWeeks();
-
-  return (
-    <div className="panel px-5 py-5">
-      <div className="flex flex-wrap items-baseline justify-between gap-2">
-        <h3 className="font-display text-base text-ink-900">
-          {subject.emoji} {subject.label}
-        </h3>
-        {subject.percent === null ? (
-          <span className="text-sm text-ink-500">Not yet graded</span>
-        ) : (
-          <span className="text-right">
-            <span className="tnum block text-sm font-700 text-ink-900">
-              {subject.letter} · {subject.percent}%
-            </span>
-            {subject.percentBest !== null && subject.percentBest !== subject.percent && (
-              <span className="tnum block text-[0.7rem] text-ink-500">
-                her best · {subject.letterBest} {subject.percentBest}%
-              </span>
-            )}
-          </span>
-        )}
-      </div>
-
-      <p className="mt-1 text-xs text-ink-700">
-        {subject.assessedCount > 0
-          ? sourceSentence(subject.sources)
-          : 'Nothing graded in this subject yet.'}
-      </p>
-
-      {subject.notCounted?.readingChecks > 0 && (
-        <p className="mt-1.5 text-[0.7rem] text-ink-500">
-          {subject.notCounted.readingChecks} reading check
-          {subject.notCounted.readingChecks === 1 ? ' is' : 's are'} recorded and reach no subject
-          grade yet. That is this app&apos;s own work, so it does belong on this screen — it is
-          waiting for Reading to become its own card, because folding it into a writing grade would
-          bury the read-aloud number the reading check exists to produce.
-        </p>
-      )}
-
-      <div className="mt-3 space-y-1.5">
-        {subject.quarters.map((q) => {
-          const open = openQuarter === q.quarter;
-          const reached = q.state === 'graded';
-          return (
-            <div key={q.quarter} className="rounded-petal border border-cream-300 bg-white">
-              <button
-                type="button"
-                disabled={!reached}
-                onClick={() => setOpenQuarter(open ? null : q.quarter)}
-                className={`flex w-full items-center justify-between gap-3 px-3.5 py-2.5 text-left ${
-                  reached ? '' : 'cursor-default opacity-60'
-                }`}
-              >
-                <span className="text-sm font-700 text-ink-900">{q.label}</span>
-                <span className="flex items-baseline gap-3">
-                  <span className="text-[0.7rem] text-ink-500">
-                    {q.of === null
-                      ? `${q.count} graded`
-                      : reached
-                        ? `${q.sat} of ${q.of} sat`
-                        : `not reached yet · ${q.of} weeks`}
-                  </span>
-                  {reached ? (
-                    <span className="text-right">
-                      <span className="tnum block text-sm font-700 text-ink-900">
-                        {q.letter} · {q.percent}%
-                      </span>
-                      {q.percentBest !== null && q.percentBest !== q.percent && (
-                        <span className="tnum block text-[0.7rem] text-ink-500">
-                          best {q.percentBest}%
-                        </span>
-                      )}
-                    </span>
-                  ) : (
-                    <span className="text-sm text-ink-500">—</span>
-                  )}
-                </span>
-              </button>
-
-              {open && (
-                <QuarterWeeks
-                  subject={subject}
-                  quarter={q.quarter}
-                  weeks={weeks}
-                  attemptsByTest={attemptsByTest}
-                />
-              )}
+      {!any && <p className="mt-3 text-sm text-ink-700">No lessons read yet.</p>}
+      {APP_COURSES.map((course) => {
+        const read = course.lessons.filter((l) => lessonReads[l.id]);
+        if (!read.length) return null;
+        return (
+          <div key={course.id} className="mt-4">
+            <p className="label-caps">
+              {course.emoji} {course.label}
+            </p>
+            <div className="mt-2 overflow-x-auto">
+              <table className="w-full text-left text-sm">
+                <thead>
+                  <tr className="border-b border-cream-300 text-[0.7rem] uppercase tracking-wide text-ink-500">
+                    <th className="py-2 pr-3">Lesson</th>
+                    <th className="py-2 pr-3">Check</th>
+                    <th className="py-2 pr-3">Extra practice</th>
+                    <th className="py-2">Reads</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {read.map((l) => {
+                    const row = lessonReads[l.id];
+                    const p = row.practice;
+                    return (
+                      <tr key={l.id} className={`border-b border-cream-200 ${p && p.passed === false ? 'bg-gold-300/20' : ''}`}>
+                        <td className="py-2.5 pr-3 font-700 text-ink-900">
+                          {l.n}. {l.title}
+                        </td>
+                        <td className="tnum py-2.5 pr-3">
+                          {p ? `${p.correct}/${p.asked}${p.passed === false ? ' · shaky' : ''}` : '—'}
+                        </td>
+                        <td className="tnum py-2.5 pr-3">{p?.extraServed ? `${p.extraCorrect}/${p.extraServed}` : '—'}</td>
+                        <td className="tnum py-2.5">{row.reads}</td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
             </div>
-          );
-        })}
-      </div>
-
-      {subject.outside.length > 0 && (
-        <p className="mt-2 text-[0.7rem] text-ink-500">
-          {subject.outside.length} result{subject.outside.length === 1 ? '' : 's'} recorded outside
-          the four quarters — summer term, or before the year began. Counted in the subject, shown
-          on no quarter, because it did not happen in one.
+          </div>
+        );
+      })}
+      {any && (
+        <p className="mt-3 text-[0.7rem] text-ink-500">
+          A dash under Check means the lesson was finished without the check.
         </p>
       )}
-    </div>
+    </section>
   );
 }
 
@@ -517,8 +489,7 @@ function QuarterWeeks({ subject, quarter, weeks, attemptsByTest }) {
         </tbody>
       </table>
       <p className="mt-2 text-[0.65rem] text-ink-500">
-        The score shown is the LATEST attempt, not the best one, and the attempts column says how
-        many there were. A re-take that is hidden is a record nobody can trust.
+        The score is her latest attempt. Every re-take is counted in Attempts.
       </p>
     </div>
   );
@@ -639,9 +610,7 @@ function TestLoad({ load }) {
     <section className="panel px-5 py-5">
       <h2 className="font-display text-lg text-ink-900">How much was asked of her</h2>
       <p className="mt-1 text-xs text-ink-700">
-        Everything she sat, by day — tests, re-takes, reading checks and spelling alike, because
-        they all cost her the same attention. A test score says how one morning went. This says how
-        much was asked of her that morning, which is the part you can change.
+        Everything she sat, by day. A low score on a heavy day says as much about the day as about her.
       </p>
 
       {heavy.length > 0 && (
@@ -649,8 +618,7 @@ function TestLoad({ load }) {
           <span className="font-700">
             {heavy.length} day{heavy.length === 1 ? '' : 's'} with three or more.
           </span>{' '}
-          Worth knowing before the scores are read as a verdict — a low mark at the end of a
-          four-test day is telling you about the day as much as about her.
+          Worth knowing before reading the scores.
         </p>
       )}
 
@@ -680,10 +648,6 @@ function TestLoad({ load }) {
         ))}
       </div>
 
-      <p className="mt-3 text-[0.7rem] text-ink-500">
-        Three in a day is flagged, not forbidden — this is a number to look at, not a rule the app
-        enforces. Nothing here changes a grade.
-      </p>
     </section>
   );
 }
