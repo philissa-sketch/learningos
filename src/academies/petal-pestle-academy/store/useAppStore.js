@@ -73,6 +73,7 @@ import {
 } from '../lib/reviewQueue.js';
 import { WARM_UP, LESSON_RETRIEVE, PETALS, SEEDS } from '../config/assessment.js';
 import { warmUpSize } from '../lib/morningCircle.js';
+import { SETUP_SLOT, researchSlot, canTickResearch, bookReportSlot } from '../lib/academicCenter.js';
 import { isEvidenceSource, isAttemptState } from '../config/evidence.js';
 import { proposeGrowthGoals, goalProgress, MIN_ASKED_FOR_A_GOAL } from '../lib/goals.js';
 import { SCHOOL_YEAR, END_OF_SUMMER } from '../config/calendar.js';
@@ -1543,6 +1544,45 @@ export const useAppStore = create((set, get) => ({
     else have.add(n);
     await get().saveWritingDraft(slotId, { steps: [...have] });
     return { ok: true };
+  },
+
+  /**
+   * RESEARCH PAPER steps (Academic Center, Sept 24 2026).
+   *
+   * Ticking: only her current step, and only with writing in its box
+   * (canTickResearch in lib/academicCenter.js), for the same reason as the
+   * book report's last step: a ticked step with nothing written is a record of
+   * work that is not there. Un-ticking is always allowed, so a mis-tap is
+   * fixable, and it takes every later step with it, so the steps stay in order.
+   */
+  async toggleResearchStep(quarter, n) {
+    const slotId = researchSlot(quarter);
+    const row = get().writingDrafts[slotId] || { slotId, steps: [] };
+    const have = new Set(row.steps || []);
+    if (have.has(n)) {
+      for (const s of [...have]) if (s >= n) have.delete(s);
+    } else {
+      if (!canTickResearch(quarter, n, row)) return { ok: false, reason: 'empty-or-out-of-order' };
+      have.add(n);
+    }
+    await get().saveWritingDraft(slotId, { steps: [...have] });
+    return { ok: true };
+  },
+
+  /**
+   * GROWN-UP SETUP for the Academic Center (Sept 24 2026). One row in
+   * writingDrafts, 'academic-setup', so backups carry it. A book a grown-up
+   * chooses for a quarter is also written into that quarter's book report, so
+   * her book report shows it.
+   */
+  async saveAcademicSetup(patch) {
+    const row = await get().saveWritingDraft(SETUP_SLOT, patch || {});
+    if (patch && patch.bookFor) {
+      for (const [q, b] of Object.entries(patch.bookFor)) {
+        if (b && b.title) await get().saveWritingDraft(bookReportSlot(Number(q)), { bookTitle: b.title });
+      }
+    }
+    return row;
   },
 
   /**

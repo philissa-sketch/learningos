@@ -199,7 +199,7 @@ export function WordStudyView({ onExit }) {
     <main className="mx-auto max-w-2xl px-4 py-8">
       <h1 className="font-display text-2xl text-ink-900">Word Study</h1>
       <p className="mt-2 text-sm text-ink-700">
-        Ten words to spell and ten to know. They all come from what you are reading this week.
+        Ten words to spell and ten to know. The spelling words are this week’s school spelling pattern; the words to know come from what you are reading.
       </p>
 
       <h2 className="mt-6 font-display text-lg text-ink-900">Your spelling words</h2>

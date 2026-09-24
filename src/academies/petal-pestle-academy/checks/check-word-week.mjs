@@ -54,7 +54,8 @@ const SRC = {
   today: 'components/Schedule/TodayView.jsx',
   school: 'screens/HerSchool/HerSchool.jsx',
   store: 'store/useAppStore.js',
-  view: 'components/Assess/WordWeekView.jsx'
+  view: 'components/Assess/WordWeekView.jsx',
+  study: 'data/words/wordStudy.js'
 };
 const read = (rel) => readFileSync(join(ROOT, rel), 'utf8');
 
@@ -81,6 +82,9 @@ const CORPUS = new Set();
   else if (x && typeof x === 'object') Object.values(x).forEach(walk);
 })(ALL_LESSONS);
 
+// British spellings with an American form she should see instead.
+const BRITISH = /\b(\w*vapour\w*|mould\w*|defence\w*|\w*tumour\w*|standardis\w*|recognis\w*|organis\w*|\w*colour\w*|favourite|behaviour|neighbour\w*|flavour\w*|harbour\w*|odour\w*|labour\w*|centimetre\w*|millimetre\w*|metres?|litres?|centre\w*|fibre\w*|towards|grey\w*|travell\w*|practise\w*|analys\w*|aluminium)\b/i;
+
 const at = (y, m, d) => new Date(y, m - 1, d, 12, 0);
 const MON = at(2026, 9, 21);
 const TUE = at(2026, 9, 22);
@@ -96,8 +100,32 @@ function run(ctx) {
   const W = ctx.week;
   const P = ctx.practice;
 
+  // 0. A SCHOOL SPELLING LIST, IN AMERICAN SPELLING (Sept 24 2026)
+  // Gigi: "the correct spelling words that she would learn in school", 3rd
+  // grade, and vocabulary kept but spelled the American way.
+  const YEAR = ctx.study.WORD_STUDY_WEEKS;
+  const vocabWords = new Set(YEAR.flatMap((w) => w.vocabulary.map((v) => v.word.toLowerCase())));
+  const seen = new Set();
+  for (const wk of YEAR) {
+    if (!String(wk.pattern || '').trim()) fail(`spelling week Q${wk.quarter} W${wk.n} has no spelling pattern`);
+    for (const s of wk.spelling) {
+      const w = s.word.toLowerCase();
+      if (!/^[a-z]+$/.test(w)) fail(`spelling "${s.word}" is not letters only (the test says it with no sentence, and the word search drops anything else)`);
+      if (vocabWords.has(w)) fail(`"${s.word}" is on both the spelling and the vocabulary list`);
+      if (seen.has(w)) fail(`spelling "${s.word}" comes twice in the year`);
+      seen.add(w);
+    }
+    for (const v of wk.vocabulary) {
+      const card = ctx.practice.VOCABULARY_CARDS[v.word] || {};
+      const gloss = (lessonById(v.from)?.glossary || []).find((x) => x.word.toLowerCase() === v.word.toLowerCase());
+      const shown = [v.word, card.meaning || gloss?.plain || '', card.sentence || ''].join(' ');
+      const brit = shown.match(BRITISH);
+      if (brit) fail(`vocabulary "${v.word}" shows the British spelling "${brit[0]}"`);
+    }
+  }
+
   // 1. EVERY WORD IS READY
-  for (const wk of WORD_STUDY_WEEKS) {
+  for (const wk of YEAR) {
     for (const s of wk.spelling) {
       const m = P.MISSPELLINGS[s.word] || [];
       if (m.length !== 3 || new Set(m).size !== 3) fail(`spelling "${s.word}" does not have 3 different misspellings`);
@@ -264,6 +292,7 @@ async function context(broken = {}) {
     src,
     week: await loadModule(SRC.week, broken.week),
     practice: await loadModule(SRC.practice, broken.practice),
+    study: await loadModule(SRC.study, broken.study),
     schedule: await loadModule(SRC.schedule, broken.schedule),
     links: await loadModule(SRC.links, broken.links),
     gradebook: await loadModule(SRC.gradebook, broken.gradebook),
@@ -272,8 +301,15 @@ async function context(broken = {}) {
 }
 
 const BUGS = [
-  ['a misspelling that is a real word', 'practice', "tray: ['trai', 'traye', 'trae'],", "tray: ['trai', 'traye', 'the'],"],
-  ['a word with two misspellings', 'practice', "bean: ['beene', 'bein', 'beane'],", "bean: ['beene', 'bein'],"],
+  ['a misspelling that is a real word', 'practice', "black: ['blak', 'blaack', 'blakc'],", "black: ['blak', 'blaack', 'the'],"],
+  ['a word with two misspellings', 'practice', "crab: ['krab', 'crabb', 'crabe'],", "crab: ['krab', 'crabb'],"],
+  ['a week with no pattern', 'study', "pattern: 'Short a and short i',", "pattern: '',"],
+  ['a contraction on the spelling list', 'study', "{ word: 'black' }", "{ word: 'can\\'t' }"],
+  ['a vocabulary word on the spelling list', 'study', "{ word: 'pond' }", "{ word: 'fruit' }"],
+  ['a spelling word twice', 'study', "{ word: 'crab' }", "{ word: 'black' }"],
+  ['a British vocabulary word', 'study', "{ word: 'tumor', from: 'hb-m15-04' }", "{ word: 'tumour', from: 'hb-m15-04' }"],
+  ['a British meaning', 'practice', "stratus: { meaning: 'A low flat gray sheet", "stratus: { meaning: 'A low flat grey sheet"],
+  ['a British sentence', 'practice', "sentence: 'The kettle puts water vapor into the air.'", "sentence: 'The kettle puts water vapor into the air, and mould loves it.'"],
   ['a sentence without its word', 'practice', "embryo: { meaning: 'The tiny baby plant curled up inside a seed.', sentence: 'Split the bean and you can see the embryo inside.' },", "embryo: { meaning: 'The tiny baby plant curled up inside a seed.', sentence: 'Split the bean and look inside.' },"],
   ['a word with no meaning', 'practice', "root: { meaning: 'The part of a plant under the ground. It holds the plant in place and drinks water.',", "root: { meaning: null,"],
   ['list changes mid-week', 'week', '.filter((r) => r && r.firstReadAt && localKey(new Date(r.firstReadAt)) < weekOf)', '.filter((r) => r && r.firstReadAt)'],

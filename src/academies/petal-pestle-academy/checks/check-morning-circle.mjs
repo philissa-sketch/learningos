@@ -63,6 +63,8 @@ const SRC = {
   voiceLib: 'lib/marigoldVoice.js',
   speech: 'lib/speech.js',
   message: 'components/Mentor/MarigoldMessage.jsx',
+  nameLib: 'lib/marigoldName.js',
+  home: 'components/Home/HomeDashboard.jsx',
   gateLib: 'lib/testGate.js',
   engine: 'lib/assessmentEngine.js',
   links: 'lib/blockLinks.js',
@@ -217,6 +219,11 @@ function checkWiring(ctx, fail) {
   if (!/useEffect\(\(\) => \{\s*sayMessage\(\[text, quoteText\]\);\s*\}, \[text, quoteText\]\);/.test(s.message)) {
     fail('Dr. Marigold’s message box does not say its message out loud when it appears or changes');
   }
+  // Gigi, Sept 24 2026: "Have Dr. Marigold call her Azianna." Not the saved nickname.
+  if (!/export const HER_NAME = 'Azianna';/.test(s.nameLib)) fail('Dr. Marigold does not call her Azianna');
+  if (!/circleLine\('greeting', \{ name: marigoldCallsHer\(\)/.test(s.today)) fail('the Today greeting uses the saved nickname, not Azianna');
+  if (!/circleLine\('greeting', \{ name: marigoldCallsHer\(\)/.test(s.circleView)) fail('the Morning Circle greeting uses the saved nickname, not Azianna');
+  if (!/greetingFor\(\{ progress, answered, streak, name: marigoldCallsHer\(\) \}\)/.test(s.home)) fail('the Home greeting uses the saved nickname, not Azianna');
   if (!/setMarigoldSpeaksAloud\(/.test(s.parent)) fail('the Grown-Up Corner has no switch for Dr. Marigold speaking');
   // tests
   if (/retakeStatus\(\s*[wq]Attempts/.test(s.lessons)) fail('LessonsView still gates a test with retakeStatus alone');
@@ -436,6 +443,9 @@ const BUGS = [
   ['voice on pointerdown', 'voiceLib', "window.addEventListener('pointerup', onFirstTap, true);", "window.addEventListener('pointerdown', onFirstTap, true);"],
   ['switch ignored', 'voiceLib', 'if (!marigoldSpeaksAloud() || !speechSupported()) return false;', 'if (!speechSupported()) return false;'],
   ['marked said while still waiting', 'voiceLib', 'if (pending.length < MAX_WAITING) pending.push(item);', 'if (pending.length < MAX_WAITING) pending.push(item); if (item.kind) markSaid(item.kind, item.dayKey);'],
+  ['nickname on Today', 'today', "circleLine('greeting', { name: marigoldCallsHer(), hour", "circleLine('greeting', { name, hour"],
+  ['nickname on Home', 'home', 'name: marigoldCallsHer() });', 'name });'],
+  ['wrong name', 'nameLib', "export const HER_NAME = 'Azianna';", "export const HER_NAME = 'PrettyGlow';"],
   ['messages not spoken', 'message', 'sayMessage([text, quoteText]);', ''],
   ['repeats herself', 'voiceLib', 'const repeat = lastSpoken && lastSpoken.key === key && now - lastSpoken.at < REPEAT_WINDOW_MS;', 'const repeat = false;'],
   ['cuts herself off', 'voiceLib', 'const queue = now - lastStartedAt < SAME_SCREEN_MS;', 'const queue = false;'],

@@ -9,6 +9,7 @@ import { GoalLine } from './GoalLine.jsx';
 import { NotesPanel } from '../Messages/NotesPanel.jsx';
 import { orderedBlocks, toClock } from '../../config/schedule.js';
 import { greetingFor, dailyLine } from '../../lib/marigold.js';
+import { marigoldCallsHer } from '../../lib/marigoldName.js';
 
 function Meter({ value, label }) {
   return (
@@ -201,7 +202,8 @@ export function HomeDashboard({ onNavigate }) {
   const toNext = progressToNext(answered, progress.settledCount, rank);
   const plan = buildActionPlan(strands, khanGrades);
   const started = answered > 0;
-  const greeting = greetingFor({ progress, answered, streak, name });
+  // Dr. Marigold calls her Azianna (Gigi, Sept 24 2026); the nickname stays on her bar.
+  const greeting = greetingFor({ progress, answered, streak, name: marigoldCallsHer() });
   const daily = dailyLine();
 
   return (

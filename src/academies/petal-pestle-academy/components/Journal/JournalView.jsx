@@ -367,7 +367,9 @@ function EntryCard({ entry, onDelete }) {
  * Two boxes, never one. Week 2 marks two places in the book; week 3 writes the
  * draft. One box means week 3 eats week 2 and the milestone protects nothing.
  */
-function ThisWeeksStep() {
+// Exported Sept 24 2026: it is also the whole of the Book Report screen
+// (BookReportView.jsx), which Today's book report button opens directly.
+export function ThisWeeksStep() {
   const lessonReads = useAppStore((s) => s.lessonReads);
   const drafts = useAppStore((s) => s.writingDrafts);
   const saveWritingDraft = useAppStore((s) => s.saveWritingDraft);

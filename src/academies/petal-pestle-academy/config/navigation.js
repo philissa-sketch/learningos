@@ -113,11 +113,18 @@ export const NAV = [
     icon: '🎲',
     sections: [{ id: 'games', label: 'Play' }]
   },
+  // Sept 24 2026, Gigi: "I'd like there to be an Academic Center like Lamar's
+  // where it will have book reports, projects, etc." The bar is full at
+  // MAX_TABS, so the Journal tab became the Academic Center, with the Journal
+  // as its second section. Every onNavigate('journal') still opens the Journal.
   {
     id: 'journal',
-    label: 'Journal',
-    icon: '📓',
-    sections: [{ id: 'journal', label: 'Journal' }]
+    label: 'Academic Center',
+    icon: '🎓',
+    sections: [
+      { id: 'academic', label: 'Academic Center' },
+      { id: 'journal', label: 'Journal' }
+    ]
   }
 ];
 

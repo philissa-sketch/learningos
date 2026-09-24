@@ -25,6 +25,7 @@ import {
   shouldSay
 } from '../../lib/morningCircle.js';
 import { sayOncePerDay, saidOnRecord } from '../../lib/marigoldVoice.js';
+import { marigoldCallsHer } from '../../lib/marigoldName.js';
 import { readingToday, khanWatchFor, READING_MINUTES } from '../../lib/readingProgress.js';
 import { unitUrl } from '../../data/khan/khanUnits.js';
 
@@ -113,8 +114,9 @@ export function TodayView({ onNavigate }) {
   //     lock (Gigi's choice): a lock could shut her out of her whole day.
   // Rules: lib/morningCircle.js. Check: checks/check-morning-circle.mjs.
   const circleDone = !!done[CIRCLE_BLOCK_ID];
-  const greeting = circleLine('greeting', { name, hour: new Date().getHours() });
-  const reminderLine = circleLine('reminder', { name });
+  // Dr. Marigold calls her Azianna (Gigi, Sept 24 2026), not the saved nickname.
+  const greeting = circleLine('greeting', { name: marigoldCallsHer(), hour: new Date().getHours() });
+  const reminderLine = circleLine('reminder', { name: marigoldCallsHer() });
   const [pendingGo, setPendingGo] = useState(null);
   const [remindedThisVisit, setRemindedThisVisit] = useState(false);
 
@@ -622,7 +624,11 @@ export function TodayView({ onNavigate }) {
                   {bookStep && bookStep.state === 'open' && !bookStep.allDone && (
                     <button
                       type="button"
-                      onClick={() => onNavigate?.('journal')}
+                      // Sept 24 2026, Gigi: "The link went to the herbalist journal,
+                      // not a book report." It opened the top of the Journal, with
+                      // the book report at the very bottom. It opens her book
+                      // report now, through the Morning Circle reminder.
+                      onClick={() => throughCircle(b.id, () => onNavigate?.('bookReport'))}
                       className="mt-2 block w-full rounded-petal border border-gold-300 bg-gold-300/15 px-3.5 py-2.5 text-left hover:bg-gold-300/30"
                     >
                       <span className="label-caps text-ink-500">

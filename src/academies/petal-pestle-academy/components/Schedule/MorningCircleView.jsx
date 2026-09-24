@@ -14,6 +14,7 @@ import {
   shouldGreet
 } from '../../lib/morningCircle.js';
 import { sayOncePerDay, saidOnRecord } from '../../lib/marigoldVoice.js';
+import { marigoldCallsHer } from '../../lib/marigoldName.js';
 
 // ---------------------------------------------------------------------------
 // MORNING CIRCLE — the first fifteen minutes of her day, as something to DO.
@@ -62,8 +63,9 @@ export function MorningCircleView({ onNavigate }) {
     : null;
   const nextLabel = nextBlock ? blockLabelOnDay(nextBlock, now, undefined, lessonsRead) : '';
 
-  const greeting = circleLine('greeting', { name, hour: now.getHours() });
-  const finished = circleLine('finished', { name, nextLabel });
+  // Dr. Marigold calls her Azianna (Gigi, Sept 24 2026).
+  const greeting = circleLine('greeting', { name: marigoldCallsHer(), hour: now.getHours() });
+  const finished = circleLine('finished', { name: marigoldCallsHer(), nextLabel });
 
   useEffect(() => {
     if (shouldGreet({ circleDone, saidOn: saidOnRecord(), todayKey: day })) {
@@ -105,7 +107,7 @@ export function MorningCircleView({ onNavigate }) {
       <header>
         <p className="label-caps">🌅 Morning Circle · about 15 minutes</p>
         <h1 className="mt-1 font-display text-3xl text-ink-900">
-          {name ? `Good morning, ${name}` : 'Good morning'}
+          {`Good morning, ${marigoldCallsHer()}`}
         </h1>
       </header>
 

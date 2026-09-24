@@ -165,7 +165,13 @@ export function bookReportNow(lessonsRead = [], stepsDoneBySlot = {}, weeks = WE
   let n = 1;
   while (n <= total && done.has(n)) n += 1;
 
-  const stepNumber = Math.min(total, Math.max(n, Math.min(byWeek, total)));
+  // ⚠️ Sept 24 2026: this was Math.max(n, byWeek), so once the week moved on
+  // she was put on the WEEK's step even with earlier steps undone: "Rough
+  // draft" before she had read the book. Her rule: a step may only ask for
+  // what the one before it gave her. So she is always on her first step not
+  // done. Working ahead still counts (n is past every ticked step); falling
+  // behind shows up for a grown-up through `running`, never as a skipped step.
+  const stepNumber = Math.min(total, n);
   const step = BOOK_REPORT.steps.find((s) => s.n === stepNumber) || null;
 
   return {

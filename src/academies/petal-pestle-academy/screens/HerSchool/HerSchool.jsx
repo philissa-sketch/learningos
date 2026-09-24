@@ -50,6 +50,7 @@ const YearPlanView = lazy(() => import('../../components/Plan/YearPlanView.jsx')
 const TodayView = lazy(() => import('../../components/Schedule/TodayView.jsx').then(pick('TodayView')));
 const ReadingLessonView = lazy(() => import('../../components/Assess/ReadingLessonView.jsx').then(pick('ReadingLessonView')));
 const WordWeekView = lazy(() => import('../../components/Assess/WordWeekView.jsx').then(pick('WordWeekView')));
+const AcademicCenterView = lazy(() => import('../../components/Academic/AcademicCenterView.jsx').then(pick('AcademicCenterView')));
 const MorningCircleView = lazy(() => import('../../components/Schedule/MorningCircleView.jsx').then(pick('MorningCircleView')));
 const CatchUpView = lazy(() => import('../../components/Schedule/CatchUpView.jsx').then(pick('CatchUpView')));
 const LessonsView = lazy(() => import('../../components/Lessons/LessonsView.jsx').then(pick('LessonsView')));
@@ -157,6 +158,10 @@ export function HerSchool({ onSignOut }) {
           {view === 'home' && <HomeDashboard onNavigate={navigate} />}
           {view === 'today' && <TodayView onNavigate={navigate} />}
           {view === 'circle' && <MorningCircleView onNavigate={navigate} />}
+          {/* Sept 24 2026: Today's book report button opens the Academic Center
+              on its Book Reports tab: her book report, not a list to search. */}
+          {view === 'bookReport' && <AcademicCenterView startTab="reports" onNavigate={navigate} />}
+          {view === 'academic' && <AcademicCenterView onNavigate={navigate} />}
           {view === 'wordWeek' && <WordWeekView onExit={() => navigate('today')} />}
           {view === 'readingLesson' && <ReadingLessonView onExit={() => navigate('today')} />}
           {view === 'lessons' && <LessonsView onNavigate={navigate} courseId={viewCourse} lessonId={viewLesson} />}
