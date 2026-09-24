@@ -284,19 +284,19 @@ export const HERBALISM_M12_BANK = [
     lesson: 'hb-m12-02',
     prompt: 'Why is soil from the yard a bad choice for a seed tray?',
     choices: [
-      'It has no colour, so labels are hard to read',
+      'It has no color, so labels are hard to read',
       'It is too light and blows away indoors',
       'It packs down hard, and tiny roots cannot push through it',
       'It is too expensive to use in trays'
     ],
     answer: 2,
     feedback: [
-      'Colour has nothing to do with whether a root can grow.',
+      'Color has nothing to do with whether a root can grow.',
       'Packed yard soil is heavy, not light.',
       null,
       'Yard soil is the free option. Cost is not the problem.'
     ],
-    why: 'Seed mix is light and open, and it does not carry the moulds that kill young seedlings.'
+    why: 'Seed mix is light and open, and it does not carry the molds that kill young seedlings.'
   },
   {
     id: 't-hbm1202e',
@@ -363,7 +363,7 @@ export const HERBALISM_M12_BANK = [
     answer: 2,
     feedback: [
       'A calendar cannot see what the tray is doing.',
-      'A cover left on grows mould instead of plants.',
+      'A cover left on grows mold instead of plants.',
       null,
       'Waiting for the last one keeps the first ones damp and crowded for too long.'
     ],
@@ -526,7 +526,7 @@ export const HERBALISM_M12_BANK = [
     prompt: 'What is scorch on a leaf?',
     choices: [
       'Small holes chewed by an insect',
-      'The yellow colour of a leaf that is simply old',
+      'The yellow color of a leaf that is simply old',
       'Frost damage from a cold night',
       'Burnt pale patches, from sun that was far too strong too soon'
     ],
@@ -655,7 +655,7 @@ export const HERBALISM_M12_BANK = [
       'It came up beautifully. That is what made the problem.',
       'Crowding is real, but the trouble here is the timing.'
     ],
-    why: 'A lettuce is only good for about a fortnight, so forty ready at once is thirty wasted.'
+    why: 'A lettuce is only good for about two weeks, so forty ready at once is thirty wasted.'
   },
   {
     id: 't-hbm1204d',
@@ -722,7 +722,7 @@ export const HERBALISM_M12_BANK = [
       'Nobody knows where it came from',
       'Indigenous peoples of North America',
       'A seed company in the 1990s',
-      'A gardening programme on television'
+      'A gardening program on television'
     ],
     answer: 1,
     feedback: [
@@ -882,7 +882,7 @@ export const HERBALISM_M12_BANK = [
       'Cool tells you where it was kept, not how dry it is.',
       'A damp bean can look shiny too.'
     ],
-    why: 'A seed that still bends is holding water, and water in an envelope turns into mould.'
+    why: 'A seed that still bends is holding water, and water in an envelope turns into mold.'
   },
   {
     id: 't-hbm1205f',
@@ -929,7 +929,7 @@ export const HERBALISM_M12_BANK = [
     choices: [
       'Name, plant part, date, and where it came from',
       'Name and price only',
-      'Colour, smell, size and shape',
+      'Color, smell, size and shape',
       'Just the date is enough'
     ],
     answer: 0,
@@ -1043,7 +1043,7 @@ export const HERBALISM_M12_BANK = [
   {
     id: 't-hbm1206d',
     lesson: 'hb-m12-06',
-    prompt: 'What happens to spotted or mouldy leaves at clearing time?',
+    prompt: 'What happens to spotted or moldy leaves at clearing time?',
     choices: [
       'They get chopped smaller than the rest',
       'They go in with extra water',

@@ -166,7 +166,7 @@ export const HERBALISM_MODULES = [
     quarter: 3,
     weeks: [5, 6],
     title: 'The Apothecary',
-    blurb: 'Weighing, drying, extracting and labelling — the craft, done properly and written down.',
+    blurb: 'Weighing, drying, extracting and labeling — the craft, done properly and written down.',
     lessons: ['hb-m11-01', 'hb-m11-02', 'hb-m11-03', 'hb-m11-04', 'hb-m11-05', 'hb-m11-06']
   },
   {

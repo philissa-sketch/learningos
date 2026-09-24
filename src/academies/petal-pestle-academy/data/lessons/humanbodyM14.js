@@ -152,7 +152,7 @@ const L2_BEATS = [
     label: 'Growing is slow, and that is why you cannot feel it',
     hook: 'You have never once noticed yourself getting taller.',
     teachingText:
-      'A child grows a few centimetres in a whole year. Spread across three hundred and sixty-five days, that is far too little to notice from one morning to the next.',
+      'A child grows a few centimeters in a whole year. Spread across three hundred and sixty-five days, that is far too little to notice from one morning to the next.',
     example:
       'It is why a doorframe with pencil marks on it is convincing and a mirror is not. The marks hold last year still.',
     applyIt: {
@@ -176,7 +176,7 @@ const L2_ACTIVITY = {
   steps: [
     'Stand with your back flat to the wall, heels down, and look straight ahead.',
     'Have your grown-up lay the book flat on your head and mark the wall underneath it.',
-    'Measure from the floor to the mark and write the number down in centimetres.',
+    'Measure from the floor to the mark and write the number down in centimeters.',
     'Write today’s date beside it, and leave room underneath for next time.',
     'Write down what date you plan to measure again, and put it in your notebook.'
   ],
@@ -186,7 +186,7 @@ const L2_ACTIVITY = {
 };
 
 const L2_LEDGER = {
-  prompt: 'Write down your height in centimetres with today’s date beside it.',
+  prompt: 'Write down your height in centimeters with today’s date beside it.',
   ifSheIsStuck:
     'The date matters more than the number. A measurement without a date cannot be compared with anything, which is the whole point of writing it down.'
 };
@@ -294,9 +294,9 @@ const L4_BEATS = [
   {
     n: 2,
     label: 'Slow growth becomes visible the moment you measure it',
-    hook: 'A nail grows about a tenth of a millimetre a day, which is nothing — until you wait.',
+    hook: 'A nail grows about a tenth of a millimeter a day, which is nothing — until you wait.',
     teachingText:
-      'A tenth of a millimetre cannot be seen in a day. Over fourteen days it adds up to something a ruler can find. Waiting and measuring is how a scientist sees a change too slow to watch.',
+      'A tenth of a millimeter cannot be seen in a day. Over fourteen days it adds up to something a ruler can find. Waiting and measuring is how a scientist sees a change too slow to watch.',
     example:
       'The same trick works on the doorframe. Slow change plus a written record equals something you can actually see.',
     applyIt: {
@@ -315,13 +315,13 @@ const L4_BEATS = [
 
 const L4_ACTIVITY = {
   title: 'Fourteen days of a fingernail',
-  prep: 'A fine washable felt pen, a ruler with millimetres, and squared paper.',
-  needs: ['a washable pen', 'a ruler with millimetres', 'squared paper', 'her notebook'],
+  prep: 'A fine washable felt pen, a ruler with millimeters, and squared paper.',
+  needs: ['a washable pen', 'a ruler with millimeters', 'squared paper', 'her notebook'],
   steps: [
     'Draw a small line across one fingernail, right at the base where it meets the skin.',
     'Write today’s date, and write 0 mm beside it.',
-    'Every third day, measure from the skin to your line in millimetres and write it down with the date.',
-    'After fourteen days, plot your dates along the bottom of the squared paper and your millimetres up the side.',
+    'Every third day, measure from the skin to your line in millimeters and write it down with the date.',
+    'After fourteen days, plot your dates along the bottom of the squared paper and your millimeters up the side.',
     'Join your points with a line, and write one sentence about what the line does.'
   ],
   safety:
@@ -414,7 +414,7 @@ export const HUMANBODY_M14 = [
     spec: '§10 · beats',
     concept: 'A long bone lengthens at soft bands near each end, and it happens too slowly to notice without a dated written record.',
     standards: [],
-    offGrade: 'Height in centimetres, recorded once with a date. Measurement scored 2.00, at the test floor.',
+    offGrade: 'Height in centimeters, recorded once with a date. Measurement scored 2.00, at the test floor.',
     words: ['growth band', 'X-ray', 'record'],
     glossary: [
       { word: 'growth band', plain: 'A softer strip near the end of a bone, where new bone is added.' },
@@ -440,7 +440,7 @@ export const HUMANBODY_M14 = [
     doing: L2_ACTIVITY.steps.join(' '),
     practice: [
       { ask: 'Where does a long bone get longer?', answer: 'At bands near each end.', why: 'The middle stays where it is.' },
-      { ask: 'Why can you not feel yourself growing?', answer: 'It happens very slowly.', why: 'A few centimetres across a whole year.' }
+      { ask: 'Why can you not feel yourself growing?', answer: 'It happens very slowly.', why: 'A few centimeters across a whole year.' }
     ],
     check: [
       {
@@ -538,10 +538,10 @@ export const HUMANBODY_M14 = [
     spec: '§10 · beats',
     concept: 'Nails and hair are pushed out by cells that never stop dividing, and measuring something slow over two weeks is how a scientist sees a change too small to watch.',
     standards: [],
-    offGrade: 'Millimetres measured over fourteen days, then plotted as a line graph. Units scored 0 of 3 and measurement 2.00, both at the test floor.',
-    words: ['millimetre', 'graph', 'steady'],
+    offGrade: 'Millimeters measured over fourteen days, then plotted as a line graph. Units scored 0 of 3 and measurement 2.00, both at the test floor.',
+    words: ['millimeter', 'graph', 'steady'],
     glossary: [
-      { word: 'millimetre', plain: 'A tiny length. Ten of them make one centimetre.' },
+      { word: 'millimeter', plain: 'A tiny length. Ten of them make one centimeter.' },
       { word: 'graph', plain: 'A drawing that shows how numbers change, so you can see the pattern.' },
       { word: 'steady', plain: 'Going on at the same rate, without speeding up or slowing down.' }
     ],
@@ -594,7 +594,7 @@ export const HUMANBODY_M14_META = {
   module: 14,
   title: 'Growing',
   blurb:
-    'One bean becoming two and two becoming four, a single dated pencil mark on a doorframe, and fourteen days of a fingernail measured in millimetres and turned into her first line graph.'
+    'One bean becoming two and two becoming four, a single dated pencil mark on a doorframe, and fourteen days of a fingernail measured in millimeters and turned into her first line graph.'
 };
 
 export function humanbodyM14LessonById(id) {

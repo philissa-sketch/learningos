@@ -553,7 +553,7 @@ export const HERBALISM_M1_NEW_BANK = [
     choices: [
       'Food the roots drink',
       'Something to hold the plant up so it does not fall over',
-      'The light it grows towards',
+      'The light it grows toward',
       'The water in the soil'
     ],
     answer: 1,

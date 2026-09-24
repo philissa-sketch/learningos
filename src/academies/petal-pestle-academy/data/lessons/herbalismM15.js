@@ -336,14 +336,14 @@ const M15L1_BEATS = [
     applyIt: {
       prompt: 'Crumpler could visit only so many homes in a day, and she dedicated her book to nurses and mothers rather than to doctors. Hold both facts at once. Why write a book at all?',
       choices: [
-        'Because she had stopped practising medicine and wanted a new job',
+        'Because she had stopped practicing medicine and wanted a new job',
         'Because books were the only way anybody learned anything in 1883',
         'Because writing let her care reach homes her own two hands never could',
         'Because she wanted other doctors to finally agree with her opinions'
       ],
       answer: 2,
       feedback: [
-        'She kept practising, and she published nearly twenty years after Richmond.',
+        'She kept practicing, and she published nearly twenty years after Richmond.',
         'Most people still learned by watching and by word of mouth, which is exactly the problem.',
         null,
         'If that were the point she would have dedicated it to doctors, and she did not.'
@@ -355,19 +355,19 @@ const M15L1_BEATS = [
 
 const M15L1_ACTIVITY = {
   title: 'Build her whole life to scale',
-  prep: 'Tape two sheets of paper together along their short edges so you have one long strip. Find a ruler that reads in centimetres, and put your Plant Detective Log beside you for the writing at the end.',
+  prep: 'Tape two sheets of paper together along their short edges so you have one long strip. Find a ruler that reads in centimeters, and put your Plant Detective Log beside you for the writing at the end.',
   needs: [
     'two sheets of paper taped into one long strip, or a strip of card about 45 cm long',
-    'a ruler marked in centimetres',
+    'a ruler marked in centimeters',
     'a pencil and a rubber',
-    'coloured pens, at least three colours',
+    'colored pens, at least three colors',
     'masking tape',
     'her Plant Detective Log'
   ],
   steps: [
     'Rule one straight line the whole length of the strip and mark the far left end 1831.',
-    'Write your scale at the top: one centimetre stands for five years.',
-    'She was born in 1831, so that birth mark sits at 0 centimetres. Label it.',
+    'Write your scale at the top: one centimeter stands for five years.',
+    'She was born in 1831, so that birth mark sits at 0 centimeters. Label it.',
     'She moved to Charlestown and started nursing in 1852, which is 21 years on, so mark 4.2 cm.',
     'The college admitted her in 1860, which is 29 years on, so mark 5.8 cm.',
     'She was given the degree on 1 March 1864, which is 33 years on, so mark 6.6 cm.',
@@ -383,7 +383,7 @@ const M15L1_ACTIVITY = {
     'Nothing in this lesson is a treatment and nothing is tasted, because this lesson is history rather than anything to do. Illness belongs to doctors, who study it and treat it, and reading about a doctor never makes anybody one. Scissors and tape are fine on your own, but ask before you cut anything that is not paper.',
   grownUpAsks: [
     'Before you rule the line. How long do you think one person can be forgotten for?',
-    'Your scale is one centimetre for five years. Why not one centimetre for one year?',
+    'Your scale is one centimeter for five years. Why not one centimeter for one year?',
     'Look at 1852 and 1860. What was she doing in that gap, and why did it matter?',
     'The college called it a doctress of medicine. Why do you think they used a different word?',
     'She was the only Black student there. What would that be like on a Monday morning?',
@@ -399,7 +399,7 @@ const M15L1_ACTIVITY = {
 const M15L1_LEDGER = {
   sheet: 'M15L1-the-first-PRINTABLE.pdf',
   tasks: [
-    'Copy your timeline onto the sheet with all eight marks labelled and the scale written on.',
+    'Copy your timeline onto the sheet with all eight marks labeled and the scale written on.',
     'Write the length of the gap between her death and her headstone, in years.',
     'Write one sentence in your own words explaining what prevention means.',
     'Write half a page the way she did, addressed to a nurse or a mother, about keeping a child well. Ideas only, never amounts, because you are not prescribing anything.'
@@ -467,7 +467,7 @@ const M15L2_BEATS = [
       prompt: 'A town has one excellent doctor but no hospital, no dispensary and no clinic. Steward would say something is still missing. What is it, and why does it matter more than one more doctor would?',
       choices: [
         'Better medicines, because a doctor without medicine cannot do anything at all',
-        'More patients, because a doctor needs people to practise on',
+        'More patients, because a doctor needs people to practice on',
         'A place people can actually reach and afford, because skill nobody can get to helps nobody',
         'A larger town, because small towns never need doctors very much'
       ],
@@ -683,7 +683,7 @@ const M15L3_LEDGER = {
 
 const M15L4_CHECK_IN = {
   title: 'Test it on the cells before you test it on the person',
-  text: 'In Module 14 you learned that a claim is worth nothing until somebody tests it properly. Jane Cooke Wright took that idea into a hospital in Harlem and did something new with it. Most doctors gave a patient a drug and hoped. She took a tiny piece of that patient\'s own tumour instead, grew those cells in a dish, and tried the drugs on the dish first.',
+  text: 'In Module 14 you learned that a claim is worth nothing until somebody tests it properly. Jane Cooke Wright took that idea into a hospital in Harlem and did something new with it. Most doctors gave a patient a drug and hoped. She took a tiny piece of that patient\'s own tumor instead, grew those cells in a dish, and tried the drugs on the dish first.',
   question: 'What can you find out from a dish of cells that you cannot find out any other way?'
 };
 
@@ -693,11 +693,11 @@ const M15L4_BEATS = [
     label: 'The dish comes first',
     hook: 'Before Wright, drugs were usually tried out on laboratory mice, and a mouse is not the patient sitting in front of you.',
     teachingText:
-      'Wright joined her father at the Harlem Hospital Cancer Research Foundation in 1949, and she took over as director in 1952 after he died. Her method was to grow cells from one patient\'s own tumour and test drugs against those exact cells. So the first test happened outside the person, where a wrong answer costs nobody anything.',
+      'Wright joined her father at the Harlem Hospital Cancer Research Foundation in 1949, and she took over as director in 1952 after he died. Her method was to grow cells from one patient\'s own tumor and test drugs against those exact cells. So the first test happened outside the person, where a wrong answer costs nobody anything.',
     example:
       'That is Module 14 all over again with the stakes turned up. She still needed a control, because a dish of cells that dies on its own tells you nothing about the drug. She still needed to change one thing at a time. The only new part is that the sample came from the very patient the answer was for.',
     applyIt: {
-      prompt: 'A drug kills the tumour cells in Wright\'s dish. Somebody says that settles it and the patient should get it. Why is that too fast, even though the dish result is real?',
+      prompt: 'A drug kills the tumor cells in Wright\'s dish. Somebody says that settles it and the patient should get it. Why is that too fast, even though the dish result is real?',
       choices: [
         'Because dish results are usually faked and cannot be trusted',
         'Because a dish of cells is not a whole person, so it still has to be tested in people',
@@ -717,16 +717,16 @@ const M15L4_BEATS = [
   {
     n: 2,
     label: 'Getting it to the right place',
-    hook: 'Some tumours sit deep inside an organ like the liver, where a drug swallowed as a tablet arrives thinned out and late.',
+    hook: 'Some tumors sit deep inside an organ like the liver, where a drug swallowed as a tablet arrives thinned out and late.',
     teachingText:
-      'In the early nineteen fifties Wright\'s team tested a chemical called methotrexate and showed it could shrink tumours in people with breast cancer and skin cancer. She also worked out how to feed drugs through a thin tube called a catheter, so they arrived where the tumour actually was. Doctors decide all of that, measure all of it, and nobody does any of it at home.',
+      'In the early nineteen fifties Wright\'s team tested a chemical called methotrexate and showed it could shrink tumors in people with breast cancer and skin cancer. She also worked out how to feed drugs through a thin tube called a catheter, so they arrived where the tumor actually was. Doctors decide all of that, measure all of it, and nobody does any of it at home.',
     example:
-      'In 1964 she was one of seven people who founded the American Society of Clinical Oncology, which is the club where cancer doctors argue things out. In 1967 she became an associate dean and a professor of surgery at New York Medical College. The National Library of Medicine records that this made her the highest ranked African American woman at a nationally recognised medical institution.',
+      'In 1964 she was one of seven people who founded the American Society of Clinical Oncology, which is the club where cancer doctors argue things out. In 1967 she became an associate dean and a professor of surgery at New York Medical College. The National Library of Medicine records that this made her the highest ranked African American woman at a nationally recognized medical institution.',
     applyIt: {
-      prompt: 'A drug works beautifully against tumour cells in a dish but barely touches a tumour deep in the liver. Nothing is wrong with the drug itself. What is the most likely problem?',
+      prompt: 'A drug works beautifully against tumor cells in a dish but barely touches a tumor deep in the liver. Nothing is wrong with the drug itself. What is the most likely problem?',
       choices: [
-        'The drug is not reaching that tumour in the amount the doctors intended',
-        'Liver tumours are made of something completely different from every other cell',
+        'The drug is not reaching that tumor in the amount the doctors intended',
+        'Liver tumors are made of something completely different from every other cell',
         'The dish result must have been wrong, so the whole thing starts again',
         'The patient is not trying hard enough for the drug to work'
       ],
@@ -781,7 +781,7 @@ const M15L4_ACTIVITY = {
     'What did you predict, and what would make you change your mind?',
     'Wright grew cells from the patient. Why not just give the patient the drug?',
     'What can a dish of cells never tell you about a person?',
-    'She put drugs through a tube to reach a deep tumour. What problem was she solving?',
+    'She put drugs through a tube to reach a deep tumor. What problem was she solving?',
     'Who decides what a patient takes, and who measures it?',
     'Last one. Say back to me why we test on a piece first.'
   ]
@@ -797,7 +797,7 @@ const M15L4_LEDGER = {
   ],
   game: {
     title: 'Word Boss',
-    cards: ['CHEMOTHERAPY', 'TUMOUR', 'TISSUE CULTURE', 'ONCOLOGY', 'CONTROL'],
+    cards: ['CHEMOTHERAPY', 'TUMOR', 'TISSUE CULTURE', 'ONCOLOGY', 'CONTROL'],
     rounds: [
       'Say what each word means in your own words. No fancy talk.',
       'A grown-up says the meaning. You say the word. Beat the clock.',
@@ -823,7 +823,7 @@ const M15L5_BEATS = [
   {
     n: 1,
     label: 'Every message runs on a wire',
-    hook: 'A signal can travel along some of your nerves faster than a car on a motorway. That is why you can catch something before you have thought about catching it.',
+    hook: 'A signal can travel along some of your nerves faster than a car on a highway. That is why you can catch something before you have thought about catching it.',
     teachingText:
       'The nervous system is the brain, the spinal cord and the nerves that branch out to everything else. Nerves carry signals as tiny bursts of electricity, and the spinal cord is the main cable they all run through. Different parts of the brain do different jobs, so damage in one small place changes one particular thing.',
     example:
@@ -851,9 +851,9 @@ const M15L5_BEATS = [
     label: 'The one who had to believe it first',
     hook: 'Alexa Canady nearly left university altogether during what she calls a crisis of confidence, before she ever went near a brain.',
     teachingText:
-      'She heard about a programme for minority students going into medicine, changed direction, and finished her medical degree in 1975 with honours. Then she trained in neurosurgery at the University of Minnesota and finished in 1981. That made her the first Black woman in the United States to qualify as a neurosurgeon. From 1987 she was chief of neurosurgery at a children\'s hospital in Michigan, and she was thirty six.',
+      'She heard about a program for minority students going into medicine, changed direction, and finished her medical degree in 1975 with honors. Then she trained in neurosurgery at the University of Minnesota and finished in 1981. That made her the first Black woman in the United States to qualify as a neurosurgeon. From 1987 she was chief of neurosurgery at a children\'s hospital in Michigan, and she was thirty six.',
     example:
-      'Her patients were children with hydrocephalus, brain tumours, head injuries and spine problems. In hydrocephalus the clear fluid around the brain builds up instead of draining away. So a surgeon puts in a shunt, which is a thin tube that carries the extra fluid somewhere else. Canady shares a United States patent, granted in 2000, for a shunt that does not let gravity drain that fluid too fast when a child stands up.',
+      'Her patients were children with hydrocephalus, brain tumors, head injuries and spine problems. In hydrocephalus the clear fluid around the brain builds up instead of draining away. So a surgeon puts in a shunt, which is a thin tube that carries the extra fluid somewhere else. Canady shares a United States patent, granted in 2000, for a shunt that does not let gravity drain that fluid too fast when a child stands up.',
     applyIt: {
       prompt: 'A child has a shunt draining extra fluid from around her brain. She lies down all night and then stands up quickly in the morning. Why does gravity make that moment the difficult one?',
       choices: [
@@ -888,7 +888,7 @@ const M15L5_ACTIVITY = {
   steps: [
     'Rest your elbow on the table with your hand over the edge, thumb and finger open about 3 cm.',
     'Gigi holds the ruler so the 0 end sits between your fingers, then drops it with no warning.',
-    'Catch it as fast as you can and read the centimetre mark where your fingers closed.',
+    'Catch it as fast as you can and read the centimeter mark where your fingers closed.',
     'Do that ten times and write down all ten numbers. Do not throw out the bad ones.',
     'Circle your best number, your worst number and the one in the middle of the ten.',
     'Now do five more while you watch Gigi\'s face instead of the ruler, and compare.',
@@ -944,8 +944,8 @@ const M15L5_LEDGER = {
 
 const M15L6_CHECK_IN = {
   title: 'Your body can learn a shape',
-  text: 'A virus is not really alive, because it is a package of instructions with a shape on the outside. Your immune system learns shapes, and once it has learned one it recognises that shape fast for years afterwards. A vaccine is a way of showing your body a shape without the virus attached to it, so the learning happens before the meeting does.',
-  question: 'How could you learn to recognise something you have never once seen?'
+  text: 'A virus is not really alive, because it is a package of instructions with a shape on the outside. Your immune system learns shapes, and once it has learned one it recognizes that shape fast for years afterwards. A vaccine is a way of showing your body a shape without the virus attached to it, so the learning happens before the meeting does.',
+  question: 'How could you learn to recognize something you have never once seen?'
 };
 
 const M15L6_BEATS = [
@@ -954,11 +954,11 @@ const M15L6_BEATS = [
     label: 'Holding the shape still',
     hook: 'The first human trial of the covid vaccine began 66 days after the virus\'s genetic sequence was published. No vaccine had ever moved that fast before.',
     teachingText:
-      'Kizzmekia Corbett grew up in Hillsborough in North Carolina, finished her doctorate in 2014, and spent seven years at a government vaccine research centre. She was the scientific lead for the coronavirus vaccine team there. The part her team solved was the shape of the spike, which is the knob that sticks out of the virus.',
+      'Kizzmekia Corbett grew up in Hillsborough in North Carolina, finished her doctorate in 2014, and spent seven years at a government vaccine research center. She was the scientific lead for the coronavirus vaccine team there. The part her team solved was the shape of the spike, which is the knob that sticks out of the virus.',
     example:
       'That spike does not hold still. It folds itself into a different shape once it has done its job, and the wrong shape teaches the immune system the wrong thing. Corbett\'s team worked out how to lock the spike in the shape a body needs to learn. That locked shape is what the vaccine shows it.',
     applyIt: {
-      prompt: 'You are teaching a friend to recognise your dog in a crowded park, but every photograph you own is blurred. Why does a sharp photograph work so much better, and what does that tell you about the spike?',
+      prompt: 'You are teaching a friend to recognize your dog in a crowded park, but every photograph you own is blurred. Why does a sharp photograph work so much better, and what does that tell you about the spike?',
       choices: [
         'A blurred photo is smaller, so the shape needs to be printed larger instead',
         'A sharp photo shows one clear shape to learn, so the spike had to be held still',
@@ -978,11 +978,11 @@ const M15L6_BEATS = [
   {
     n: 2,
     label: 'And back to the plants',
-    hook: 'A plant has no eyes, and yet it can measure the colour of the light falling on it. Then it changes what it does because of the answer.',
+    hook: 'A plant has no eyes, and yet it can measure the color of the light falling on it. Then it changes what it does because of the answer.',
     teachingText:
       'Beronda Montgomery finished a doctorate in plant biology in 2001. She has spent her career on how plants and tiny green cyanobacteria sense light. She was a professor at Michigan State for eighteen years and later a dean at Grinnell College. She also wrote Lessons from Plants in 2021, and a book about trees and Black American history in 2026.',
     example:
-      'Your corn leans towards the window because it is measuring where the light is strongest. Montgomery studies the machinery that does that measuring, at the level of the compounds inside the cell. It is the same job Daly did on histones and Corbett did on a spike, done on a plant instead.',
+      'Your corn leans toward the window because it is measuring where the light is strongest. Montgomery studies the machinery that does that measuring, at the level of the compounds inside the cell. It is the same job Daly did on histones and Corbett did on a spike, done on a plant instead.',
     applyIt: {
       prompt: 'You move your corn container so the window is now on its other side. Within a few days the stems have leaned the other way. What must the plant be doing that a stone could never do?',
       choices: [
@@ -996,7 +996,7 @@ const M15L6_BEATS = [
         'It responds to the light that is there now, not to the light that used to be.',
         'Faster growth in every direction would give you a bigger plant pointing nowhere.',
         null,
-        'Move it away from any draught and it still leans, so the air is not doing it.'
+        'Move it away from any draft and it still leans, so the air is not doing it.'
       ],
       why: 'Sensing means measuring something outside yourself and then changing what you do, and every one of these women studied a version of that.'
     }
@@ -1011,7 +1011,7 @@ const M15L6_ACTIVITY = {
     'six or seven familiar objects, chosen by a grown-up',
     'one object she has never handled before',
     'six index cards, or card cut to the same size',
-    'coloured pens and a pencil',
+    'colored pens and a pencil',
     'sticky tack or tape for the wall',
     'her Plant Detective Log'
   ],
@@ -1128,7 +1128,7 @@ export const HERBALISM_M15 = [
     hook: M15L1_CHECK_IN,
     core: M15L1_BEATS.map((b) => ({ heading: b.label, text: b.teachingText })),
     doing:
-      'Build Rebecca Lee Crumpler\'s whole life on one long strip of paper at a scale of one centimetre for every five years: born 1831, nursing from 1852, admitted 1860, the degree on 1 March 1864, Richmond in 1865, the book in 1883, her death in 1895, and a headstone finally placed in 2020. Then measure the empty stretch between the last two marks with a ruler and write down what a hundred and twenty five years of blank paper means.',
+      'Build Rebecca Lee Crumpler\'s whole life on one long strip of paper at a scale of one centimeter for every five years: born 1831, nursing from 1852, admitted 1860, the degree on 1 March 1864, Richmond in 1865, the book in 1883, her death in 1895, and a headstone finally placed in 2020. Then measure the empty stretch between the last two marks with a ruler and write down what a hundred and twenty five years of blank paper means.',
 
     practice: [
       {
@@ -1229,7 +1229,7 @@ export const HERBALISM_M15 = [
         'that this is local, checkable history rather than a legend'
       ],
       sourceGap:
-        'OPEN for the presenter, and this is the THINNEST video in the module — a short local news item, verified real, and it does not carry the lesson on its own. Say so to Gigi. No good video for Rebecca Cole was found at all. Searched: "youtube Rebecca Cole physician 1867 Woman\'s Medical College video Drexel Legacy Center OR sanitary visitor Black history", "youtube Rebecca Cole OR Susan Smith McKinney Steward Black woman doctor history video for kids Brooklyn hospital", "youtube video Susan Smith McKinney Steward Green-Wood OR Brooklyn lecture doctor 1870 first Black woman physician New York", and "youtube video for kids how crowded housing clean water caused disease public health history germ theory Black community 1890s". Nothing usable came back for Cole. VERIFIED ALTERNATE, unused: wMh5B9bp_RA "Black Scientists, Doctors & STEM Trailblazers | Black History for Kids" (Fresberg Cartoon), which is general rather than about these two. VERIFIED AND DELIBERATELY REFUSED: Y1kO-0Yo1R0 "A Medical Mythbuster\'s Mission to Improve Health Care | Joel Bervell | TED" (TED) — a Black American medical educator whose whole talk is the living continuation of Cole\'s argument, left out because it covers non-consensual surgery on enslaved women and forced sterilisation, which is not for a ten-year-old on a Tuesday. Gigi should watch it herself and decide when.'
+        'OPEN for the presenter, and this is the THINNEST video in the module — a short local news item, verified real, and it does not carry the lesson on its own. Say so to Gigi. No good video for Rebecca Cole was found at all. Searched: "youtube Rebecca Cole physician 1867 Woman\'s Medical College video Drexel Legacy Center OR sanitary visitor Black history", "youtube Rebecca Cole OR Susan Smith McKinney Steward Black woman doctor history video for kids Brooklyn hospital", "youtube video Susan Smith McKinney Steward Green-Wood OR Brooklyn lecture doctor 1870 first Black woman physician New York", and "youtube video for kids how crowded housing clean water caused disease public health history germ theory Black community 1890s". Nothing usable came back for Cole. VERIFIED ALTERNATE, unused: wMh5B9bp_RA "Black Scientists, Doctors & STEM Trailblazers | Black History for Kids" (Fresberg Cartoon), which is general rather than about these two. VERIFIED AND DELIBERATELY REFUSED: Y1kO-0Yo1R0 "A Medical Mythbuster\'s Mission to Improve Health Care | Joel Bervell | TED" (TED) — a Black American medical educator whose whole talk is the living continuation of Cole\'s argument, left out because it covers non-consensual surgery on enslaved women and forced sterilization, which is not for a ten-year-old on a Tuesday. Gigi should watch it herself and decide when.'
     },
 
     checkIn: M15L2_CHECK_IN,
@@ -1277,7 +1277,7 @@ export const HERBALISM_M15 = [
         choices: ['Massachusetts', 'Pennsylvania', 'New York', 'Ohio'],
         answer: 2,
         feedback: [
-          'Massachusetts is where Crumpler trained and practised.',
+          'Massachusetts is where Crumpler trained and practiced.',
           'Pennsylvania is where Rebecca Cole was born and took her degree.',
           null,
           'She worked in Ohio much later, at Wilberforce University.'
@@ -1353,7 +1353,7 @@ export const HERBALISM_M15 = [
     hook: M15L3_CHECK_IN,
     core: M15L3_BEATS.map((b) => ({ heading: b.label, text: b.teachingText })),
     doing:
-      'Weigh out twenty grams each of cornflour, salt and sand, tip all three into one jar and prove that a mixture hides its parts. Add warm water and watch three different behaviours: the sand sinks, the cornflour clouds, the salt vanishes without leaving. Filter the lot, catch the salt water on a saucer, leave it overnight, and weigh what is sitting there in the morning. Nothing is tasted, because today the salt is a sample and not food.',
+      'Weigh out twenty grams each of cornflour, salt and sand, tip all three into one jar and prove that a mixture hides its parts. Add warm water and watch three different behaviors: the sand sinks, the cornflour clouds, the salt vanishes without leaving. Filter the lot, catch the salt water on a saucer, leave it overnight, and weigh what is sitting there in the morning. Nothing is tasted, because today the salt is a sample and not food.',
 
     practice: [
       {
@@ -1423,15 +1423,15 @@ export const HERBALISM_M15 = [
     spec: '§10 · beats',
 
     concept:
-      'Before a treatment is given to a person somebody has to find out whether it works, and Jane Cooke Wright grew cells from each patient\'s own tumour and tested the drugs on those first, so the answer arrived before the risk did.',
+      'Before a treatment is given to a person somebody has to find out whether it works, and Jane Cooke Wright grew cells from each patient\'s own tumor and tested the drugs on those first, so the answer arrived before the risk did.',
 
     standards: [],
 
-    words: ['chemotherapy', 'tumour', 'tissue culture', 'oncology', 'control'],
+    words: ['chemotherapy', 'tumor', 'tissue culture', 'oncology', 'control'],
 
     glossary: [
       { word: 'chemotherapy', plain: 'Treating an illness with a measured chemical, which doctors choose and give.' },
-      { word: 'tumour', plain: 'A lump of cells that have started copying themselves when they should not.' },
+      { word: 'tumor', plain: 'A lump of cells that have started copying themselves when they should not.' },
       { word: 'tissue culture', plain: 'Living cells kept alive and growing in a dish in a laboratory.' },
       { word: 'oncology', plain: 'The part of medicine that studies and treats cancer.' },
       { word: 'control', plain: 'The part of a test you change nothing about, so you have something to compare against.' },
@@ -1465,7 +1465,7 @@ export const HERBALISM_M15 = [
     hook: M15L4_CHECK_IN,
     core: M15L4_BEATS.map((b) => ({ heading: b.label, text: b.teachingText })),
     doing:
-      'Run Wright\'s logic on twenty spare seeds instead of on a plant she cares about. Ten seeds in a dish with plain water, ten in an identical dish with salt water, everything else kept the same, both labelled and stood side by side. She names the control out loud before she starts, writes her prediction and her reason, then counts sprouts at the same hour every day for five days. None of the salt water goes near her real containers, because you never experiment on the thing you are growing.',
+      'Run Wright\'s logic on twenty spare seeds instead of on a plant she cares about. Ten seeds in a dish with plain water, ten in an identical dish with salt water, everything else kept the same, both labeled and stood side by side. She names the control out loud before she starts, writes her prediction and her reason, then counts sprouts at the same hour every day for five days. None of the salt water goes near her real containers, because you never experiment on the thing you are growing.',
 
     practice: [
       {
@@ -1474,7 +1474,7 @@ export const HERBALISM_M15 = [
         why: 'The closer the sample is to the person, the more the result is worth.'
       },
       {
-        ask: 'A drug kills tumour cells in a dish. Why is that not the end of the question?',
+        ask: 'A drug kills tumor cells in a dish. Why is that not the end of the question?',
         answer: 'Because a dish has no blood, no liver and no rest of a body, so it still has to be tested in people.',
         why: 'A dish narrows the choices, and only a proper trial in people can settle it.'
       }
@@ -1514,10 +1514,10 @@ export const HERBALISM_M15 = [
         ]
       },
       {
-        prompt: 'Why did Wright use a thin tube to deliver drugs to some tumours?',
+        prompt: 'Why did Wright use a thin tube to deliver drugs to some tumors?',
         choices: [
           'To make the treatment cheaper for the hospital',
-          'Because tumours deep inside an organ are hard for a drug to reach',
+          'Because tumors deep inside an organ are hard for a drug to reach',
           'Because patients preferred tubes to tablets',
           'To let the patient decide the amount themselves'
         ],
@@ -1554,7 +1554,7 @@ export const HERBALISM_M15 = [
     glossary: [
       { word: 'nervous system', plain: 'The brain, the spinal cord and all the nerves that branch out from them.' },
       { word: 'spinal cord', plain: 'The thick cable of nerves running down inside your backbone.' },
-      { word: 'nerve', plain: 'A bundle of fibres that carries signals as tiny bursts of electricity.' },
+      { word: 'nerve', plain: 'A bundle of fibers that carries signals as tiny bursts of electricity.' },
       { word: 'hydrocephalus', plain: 'When the clear fluid around the brain builds up instead of draining away.' },
       { word: 'shunt', plain: 'A thin tube a surgeon puts in to carry extra fluid somewhere else.' },
       { word: 'neurosurgeon', plain: 'A doctor trained to operate on the brain, the spine and the nerves.' },
@@ -1587,7 +1587,7 @@ export const HERBALISM_M15 = [
     hook: M15L5_CHECK_IN,
     core: M15L5_BEATS.map((b) => ({ heading: b.label, text: b.teachingText })),
     doing:
-      'Measure her own nervous system twice. First the dropped ruler: Gigi drops a 30 cm ruler through her open fingers without warning, ten times, and every catch gets read off in centimetres and written down, good and bad. Then the two-point test: two blunted points taped 3 cm apart, eyes closed, Gigi touching fingertip, palm, forearm and the back of the neck while Azianna says ONE or TWO. Bring the points closer until each place can no longer tell, and the fingertip wins by a long way.',
+      'Measure her own nervous system twice. First the dropped ruler: Gigi drops a 30 cm ruler through her open fingers without warning, ten times, and every catch gets read off in centimeters and written down, good and bad. Then the two-point test: two blunted points taped 3 cm apart, eyes closed, Gigi touching fingertip, palm, forearm and the back of the neck while Azianna says ONE or TWO. Bring the points closer until each place can no longer tell, and the fingertip wins by a long way.',
 
     practice: [
       {
@@ -1657,7 +1657,7 @@ export const HERBALISM_M15 = [
     spec: '§10 · beats',
 
     concept:
-      'A vaccine works by showing the body one shape from a virus so that the body learns to recognise it before it ever meets the real thing, and the women doing that work, and the plant work beside it, are alive and working right now.',
+      'A vaccine works by showing the body one shape from a virus so that the body learns to recognize it before it ever meets the real thing, and the women doing that work, and the plant work beside it, are alive and working right now.',
 
     standards: [],
 
@@ -1666,9 +1666,9 @@ export const HERBALISM_M15 = [
     glossary: [
       { word: 'virus', plain: 'A package of instructions with a shape on the outside, which is not really alive.' },
       { word: 'vaccine', plain: 'Something a doctor gives that shows the body a shape to learn, without the illness.' },
-      { word: 'immune system', plain: 'The part of you that learns shapes and recognises them again later.' },
+      { word: 'immune system', plain: 'The part of you that learns shapes and recognizes them again later.' },
       { word: 'spike protein', plain: 'The knob that sticks out of a coronavirus, which the immune system can learn.' },
-      { word: 'immunologist', plain: 'A scientist who studies how a body learns to recognise things.' },
+      { word: 'immunologist', plain: 'A scientist who studies how a body learns to recognize things.' },
       { word: 'antibody', plain: 'Something your body builds that fits one shape and grabs onto it.' },
       { word: 'cyanobacteria', plain: 'Tiny green living things that use light, like plants but far simpler.' },
       { word: 'plant biologist', plain: 'A scientist who studies how plants work from the inside.' }
@@ -1719,7 +1719,7 @@ export const HERBALISM_M15 = [
         prompt: 'What is the immune system actually learning when it meets a virus?',
         choices: [
           'The name of the virus',
-          'A shape it can recognise again later',
+          'A shape it can recognize again later',
           'How many viruses arrived that day',
           'Which country the virus came from'
         ],
@@ -1772,7 +1772,7 @@ export const HERBALISM_M15_META = {
   module: 15,
   title: 'Black Women in Medicine and Botany',
   blurb:
-    'Six women, six pieces of real science. Rebecca Lee Crumpler earning the first American medical degree ever given to a Black woman and then writing prevention down so it travelled; Rebecca Cole proving the cause of illness was in the room and Susan McKinney Steward building the place care could happen in; Marie Maynard Daly separating one compound out of a mixture, starting with corn starch; Jane Cooke Wright testing the drug on the cells before the person; Alexa Canady learning every path in a nervous system before she was allowed to touch one; and Kizzmekia Corbett holding a virus\'s shape still long enough for a body to learn it, with Beronda Montgomery on the other side of the same question, in the plants.'
+    'Six women, six pieces of real science. Rebecca Lee Crumpler earning the first American medical degree ever given to a Black woman and then writing prevention down so it traveled; Rebecca Cole proving the cause of illness was in the room and Susan McKinney Steward building the place care could happen in; Marie Maynard Daly separating one compound out of a mixture, starting with corn starch; Jane Cooke Wright testing the drug on the cells before the person; Alexa Canady learning every path in a nervous system before she was allowed to touch one; and Kizzmekia Corbett holding a virus\'s shape still long enough for a body to learn it, with Beronda Montgomery on the other side of the same question, in the plants.'
 };
 
 export function m15LessonById(id) {

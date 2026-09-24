@@ -197,14 +197,14 @@ const M16L1_BEATS = [
     applyIt: {
       prompt: 'You read an October entry that says the corn grew four. There is no unit and no date beside it. What is that measurement worth to you now?',
       choices: [
-        'Four centimetres, because that is the obvious meaning',
+        'Four centimeters, because that is the obvious meaning',
         'Nothing usable, because a number without its unit and date cannot be compared',
         'Everything, because you were there and you remember it',
         'Half a measurement, so it can still be averaged with the others'
       ],
       answer: 1,
       feedback: [
-        'It might be centimetres. It might be leaves, or inches, or days. Guessing is not reading.',
+        'It might be centimeters. It might be leaves, or inches, or days. Guessing is not reading.',
         null,
         'Remembering October in April is exactly the thing a log exists to replace.',
         'A measurement is either usable or it is not. There is no half.'
@@ -247,7 +247,7 @@ const M16L1_ACTIVITY = {
     'the whole Plant Detective Log, in date order',
     'any loose printables, growth charts and weather sheets from Modules 9 and 12',
     'one large sheet of paper, ruled into eight columns',
-    'a pencil, and two coloured pens',
+    'a pencil, and two colored pens',
     'sticky notes or small paper flags',
     'her ruler, for measuring nothing but for tidiness',
     'the garlic, turmeric, ginger and corn containers, for a last look'
@@ -256,7 +256,7 @@ const M16L1_ACTIVITY = {
     'Read the log straight through from September, out loud, without stopping to fix anything.',
     'Now go back to the start with the sticky notes in your hand.',
     'Flag every entry where you measured something and wrote the unit down.',
-    'Flag in the second colour every entry where you clearly forgot the unit or the date.',
+    'Flag in the second color every entry where you clearly forgot the unit or the date.',
     'Count both piles and write the two totals at the top of your big sheet.',
     'Find the longest stretch with nothing written in it, and mark it on the columns.',
     'Write, in each month column, the one thing you were mainly watching that month.',
@@ -321,7 +321,7 @@ const M16L2_BEATS = [
     label: 'Drawing is a slow way of looking',
     hook: 'Naturalists draw rather than photograph. A drawing forces you to look at every part, including the parts you would rather skip.',
     teachingText:
-      'A camera records a plant in a fraction of a second. A drawing takes ten minutes and makes you count things. People who draw plants notice how many leaves there are and which way they twist. They see where the colour changes, because the pencil will not move until they have looked.',
+      'A camera records a plant in a fraction of a second. A drawing takes ten minutes and makes you count things. People who draw plants notice how many leaves there are and which way they twist. They see where the color changes, because the pencil will not move until they have looked.',
     example:
       'Draw one garlic plant properly and you will find yourself counting leaves. It will be the first time all year, even though you have walked past that container since September.',
     applyIt: {
@@ -339,7 +339,7 @@ const M16L2_BEATS = [
         null,
         'Better is not a thing a field guide says. It records, and it does not rank.'
       ],
-      why: 'Noticing is a skill you can practise, and drawing is the cheapest way to practise it.'
+      why: 'Noticing is a skill you can practice, and drawing is the cheapest way to practice it.'
     }
   },
   {
@@ -349,7 +349,7 @@ const M16L2_BEATS = [
     teachingText:
       'A page is finished when somebody who has never met you could use it. That means the date, the place and one measurement with its unit. It also means a scale bar, drawn beside the plant so the size travels with the picture. A name on its own is decoration.',
     example:
-      'Your ginger page needs: 14 March, back step, Georgia, longest leaf 21 centimetres, and a 5 centimetre bar inked along the bottom edge.',
+      'Your ginger page needs: 14 March, back step, Georgia, longest leaf 21 centimeters, and a 5 centimeter bar inked along the bottom edge.',
     applyIt: {
       prompt: 'Your corn page has a beautiful drawing, the word CORN, and nothing else on it. Somebody finds it in twenty years. What can they honestly get from it?',
       choices: [
@@ -362,7 +362,7 @@ const M16L2_BEATS = [
       feedback: [
         'A drawing can be any scale at all unless somebody drew a bar on it.',
         null,
-        'Paper ageing is not a date, and no field guide has ever relied on it.',
+        'Paper aging is not a date, and no field guide has ever relied on it.',
         'The drawing is real information. It is just information with no place and no time.'
       ],
       why: 'A record is worth exactly what a stranger can take from it without asking you a question.'
@@ -372,12 +372,12 @@ const M16L2_BEATS = [
 
 const M16L2_ACTIVITY = {
   title: 'Build the field guide to your own garden',
-  prep: 'Gigi cuts eight sheets of stiff paper to a matching size and punches them for a binder or a treasury tag, so that the guide is a real object rather than loose paper. She also pulls the three most useful dates for each plant out of the Plant Detective Log and writes them on a slip, because hunting for them mid-drawing will break the lesson. A ruler with clear centimetre marks matters more than the pencils do.',
+  prep: 'Gigi cuts eight sheets of stiff paper to a matching size and punches them for a binder or a treasury tag, so that the guide is a real object rather than loose paper. She also pulls the three most useful dates for each plant out of the Plant Detective Log and writes them on a slip, because hunting for them mid-drawing will break the lesson. A ruler with clear centimeter marks matters more than the pencils do.',
   needs: [
     'eight matching sheets of stiff paper, punched, plus a binder or treasury tag',
     'a sharp pencil, an eraser, and a fine black pen for the scale bar',
-    'coloured pencils, if she wants them',
-    'a ruler marked in centimetres',
+    'colored pencils, if she wants them',
+    'a ruler marked in centimeters',
     'the Plant Detective Log, and Gigi\'s slip of three dates per plant',
     'her four containers: garlic, turmeric, ginger and corn',
     'a cushion or a low stool, because this is done sitting beside the plants'
@@ -388,7 +388,7 @@ const M16L2_ACTIVITY = {
     'Draw the whole plant first, lightly, getting the proportions before any detail.',
     'Count the leaves as you draw them, and write the count in the corner.',
     'Measure the longest leaf with your ruler and write the number with its unit.',
-    'Draw a 5 centimetre scale bar in black pen along the bottom of the page.',
+    'Draw a 5 centimeter scale bar in black pen along the bottom of the page.',
     'Write the place: container, where it stands, Georgia.',
     'Copy the three dates from Gigi\'s slip and write what the plant was doing on each.',
     'Add one sentence about something this plant did that surprised you this year.',
@@ -405,7 +405,7 @@ const M16L2_ACTIVITY = {
     'Why does the scale bar go on in pen rather than pencil?',
     'Hand me your ginger page. Could I find that plant from it? Talk me through it.',
     'Which of the four was hardest to draw, and what made it hard?',
-    'You wrote a still not sure line on every page. Read me your favourite one.',
+    'You wrote a still not sure line on every page. Read me your favorite one.',
     'A field guide records and does not rank. Why does that rule matter?',
     'What is on these pages that your photographs on the phone will never have?',
     'If you only had time to write three things on a page, which three?',
@@ -480,11 +480,11 @@ const M16L3_BEATS = [
     teachingText:
       'A vague question cannot be tested because two honest people would settle it differently. Sharpening means naming four things. The one thing you would change, the one thing you would measure, the unit, and how long you would watch.',
     example:
-      'Does the ginger like the shade is unsharpened. Does ginger in shade grow fewer centimetres in six weeks than ginger in sun? That is a question a ruler can settle.',
+      'Does the ginger like the shade is unsharpened. Does ginger in shade grow fewer centimeters in six weeks than ginger in sun? That is a question a ruler can settle.',
     applyIt: {
       prompt: 'Your question is: is my corn happy? Which rewrite turns it into something you could actually settle in your own containers?',
       choices: [
-        'Is my corn happier than my neighbour\'s corn?',
+        'Is my corn happier than my neighbor\'s corn?',
         'Do corn plants watered every day grow taller in four weeks than corn watered twice a week?',
         'Does corn enjoy Georgia weather?',
         'Why does corn grow at all?'
@@ -610,7 +610,7 @@ const M16L4_BEATS = [
     teachingText:
       'Before you look at a single number, write the result that would make you drop your own idea. Doing it first stops you explaining away every awkward number afterwards. You have already agreed, in your own handwriting, what losing looks like.',
     example:
-      'If the night-watered garlic is not at least two centimetres taller on average after five weeks, I drop the idea that the watering hour matters here.',
+      'If the night-watered garlic is not at least two centimeters taller on average after five weeks, I drop the idea that the watering hour matters here.',
     applyIt: {
       prompt: 'After five weeks the two groups are almost identical. You decide the test was too short and quietly plan to run three more weeks. What have you just done?',
       choices: [
@@ -633,13 +633,13 @@ const M16L4_BEATS = [
 
 const M16L4_ACTIVITY = {
   title: 'Write the design, then let somebody attack it',
-  prep: 'Gigi rules a design sheet with six labelled boxes before the lesson: QUESTION, VARIABLE, CONTROL GROUP, PREDICTION, SAMPLE SIZE AND TIME, and WHAT WOULD MAKE ME DROP IT. She should also decide in advance to be genuinely difficult in the last ten minutes, because a design nobody attacked is a design nobody has checked. If the containers cannot spare enough plants, the design is still written in full and marked as a plan for next season, which is an honest outcome and not a failure.',
+  prep: 'Gigi rules a design sheet with six labeled boxes before the lesson: QUESTION, VARIABLE, CONTROL GROUP, PREDICTION, SAMPLE SIZE AND TIME, and WHAT WOULD MAKE ME DROP IT. She should also decide in advance to be genuinely difficult in the last ten minutes, because a design nobody attacked is a design nobody has checked. If the containers cannot spare enough plants, the design is still written in full and marked as a plan for next season, which is an honest outcome and not a failure.',
   needs: [
-    'the design sheet, ruled into six labelled boxes',
+    'the design sheet, ruled into six labeled boxes',
     'the sharpened question card she circled yesterday',
     'a pen that does not rub out, and a pencil for the rough version',
     'her ruler, and the containers of garlic, turmeric, ginger and corn',
-    'paper tags or masking tape for labelling plants',
+    'paper tags or masking tape for labeling plants',
     'a calendar, to count the weeks out properly',
     'the Plant Detective Log'
   ],
@@ -715,7 +715,7 @@ const M16L5_BEATS = [
     teachingText:
       'An honest report has four parts. What I found, how I know, what I am unsure about, and what I would do next. The second part is the one that lets somebody check you. It is where the method, the numbers and the sample size live.',
     example:
-      'I found the sunny garlic averaged four centimetres longer. I know because I measured ten leaves in each group weekly for five weeks, and here are the numbers.',
+      'I found the sunny garlic averaged four centimeters longer. I know because I measured ten leaves in each group weekly for five weeks, and here are the numbers.',
     applyIt: {
       prompt: 'Your friend presents a result and says only that her plan definitely worked. What is the first thing you should ask her for?',
       choices: [
@@ -778,12 +778,12 @@ const M16L5_ACTIVITY = {
     'Lay the four heading cards on the table and put your material under each one.',
     'Under HOW I KNOW, put the actual numbers, not a summary of them.',
     'Write yourself one short line per card. Not a script, just a reminder.',
-    'Practise once, out loud, on your own, with the timer running.',
+    'Practice once, out loud, on your own, with the timer running.',
     'Notice where you ran out of things to say, and add a line there.',
     'Now present to your audience for five minutes, card by card, in order.',
     'Say what you found before you say how clever it was, and then do not say that.',
     'Show the numbers while you talk about them, so people can look for themselves.',
-    'Read the unsure card out loud in a normal voice, without apologising for it.',
+    'Read the unsure card out loud in a normal voice, without apologizing for it.',
     'Finish with what you would do next, and say why that and not something else.',
     'Now take questions, and write down any question you could not answer.',
     'Say I do not know out loud at least once, and mean it.'
@@ -990,7 +990,7 @@ export const HERBALISM_M16 = [
       { word: 'gap', plain: 'A stretch of time where nothing was written down.' },
       { word: 'hindsight', plain: 'Seeing clearly now what you could not see at the time.' },
       { word: 'phenology', plain: 'The study of when things happen to plants each year.' },
-      { word: 'unit', plain: 'What a number is counted in, like centimetres or days.' },
+      { word: 'unit', plain: 'What a number is counted in, like centimeters or days.' },
       { word: 'trend', plain: 'A direction the numbers keep going in over a long stretch.' }
     ],
 
@@ -1045,7 +1045,7 @@ export const HERBALISM_M16 = [
         ],
         answer: 1,
         feedback: [
-          'Four what? Four centimetres, four leaves and four days are all different answers.',
+          'Four what? Four centimeters, four leaves and four days are all different answers.',
           null,
           'Writing it yourself is what makes it a record. Units and dates are what make it usable.',
           'A gap is where nothing was written. Something was written here.'
@@ -1108,7 +1108,7 @@ export const HERBALISM_M16 = [
     glossary: [
       { word: 'field guide', plain: 'A book of pages that help somebody identify what they are looking at.' },
       { word: 'specimen', plain: 'The one particular plant or animal you actually looked at.' },
-      { word: 'scale bar', plain: 'A short line on a drawing showing how long a real centimetre is.' },
+      { word: 'scale bar', plain: 'A short line on a drawing showing how long a real centimeter is.' },
       { word: 'habit', plain: 'The overall shape a plant grows in, like upright, climbing or spreading.' },
       { word: 'key feature', plain: 'The detail that tells this plant apart from ones that look similar.' },
       { word: 'proportion', plain: 'How big each part of a drawing is compared to the other parts.' },
@@ -1140,7 +1140,7 @@ export const HERBALISM_M16 = [
     hook: M16L2_CHECK_IN,
     core: M16L2_BEATS.map((b) => ({ heading: b.label, text: b.teachingText })),
     doing:
-      'Build a real, bound field guide to her own four plants, sitting beside them rather than working from photographs. One stiff sheet each for garlic, turmeric, ginger and corn. On every page: a drawing of the whole plant done lightly for proportion first, a leaf count made while drawing, the longest leaf measured in centimetres, a five centimetre scale bar inked in black, the place, the date, three dates lifted from the Plant Detective Log with what the plant was doing on each, one thing that surprised her this year, and one line beginning I am still not sure whether. A front sheet with her name and the year, and then the whole thing bound. This is the artefact of the course.',
+      'Build a real, bound field guide to her own four plants, sitting beside them rather than working from photographs. One stiff sheet each for garlic, turmeric, ginger and corn. On every page: a drawing of the whole plant done lightly for proportion first, a leaf count made while drawing, the longest leaf measured in centimeters, a five centimeter scale bar inked in black, the place, the date, three dates lifted from the Plant Detective Log with what the plant was doing on each, one thing that surprised her this year, and one line beginning I am still not sure whether. A front sheet with her name and the year, and then the whole thing bound. This is the artefact of the course.',
 
     practice: [
       {
@@ -1179,7 +1179,7 @@ export const HERBALISM_M16 = [
         feedback: [
           'A drawing has no size of its own. That is what the bar is for.',
           null,
-          'Paper ageing is not a date and no guide has ever used it as one.',
+          'Paper aging is not a date and no guide has ever used it as one.',
           'The drawing is real information. It just has no time and no place attached.'
         ]
       },
@@ -1225,7 +1225,7 @@ export const HERBALISM_M16 = [
       { word: 'testable question', plain: 'A question that measuring something would actually settle.' },
       { word: 'open question', plain: 'A question nobody has answered yet, anywhere.' },
       { word: 'vague', plain: 'Worded so loosely that two people would answer it differently.' },
-      { word: 'unit', plain: 'What a number is counted in, like centimetres, days or grams.' },
+      { word: 'unit', plain: 'What a number is counted in, like centimeters, days or grams.' },
       { word: 'sharpen', plain: 'Rewrite a question until it names exactly what you would measure.' },
       { word: 'source', plain: 'Where an answer came from, written down so somebody can check it.' },
       { word: 'reference book', plain: 'A book people go to for answers somebody has already worked out.' }
@@ -1493,7 +1493,7 @@ export const HERBALISM_M16 = [
     hook: M16L5_CHECK_IN,
     core: M16L5_BEATS.map((b) => ({ heading: b.label, text: b.teachingText })),
     doing:
-      'Lay four heading cards in order — WHAT I FOUND, HOW I KNOW, WHAT I AM UNSURE ABOUT, WHAT I WOULD DO NEXT — and put her own material under each, with the actual numbers under the second rather than a summary of them. One short reminder line per card, not a script. Practise once alone against a five-minute timer, notice where she ran dry, and add a line there. Then present for five minutes to a real audience, ideally including one person who is not Gigi, showing the numbers while she talks about them and reading the unsure card out in a normal voice without apologising. Take questions afterwards, write down every question she could not answer, and say I do not know out loud at least once and mean it.',
+      'Lay four heading cards in order — WHAT I FOUND, HOW I KNOW, WHAT I AM UNSURE ABOUT, WHAT I WOULD DO NEXT — and put her own material under each, with the actual numbers under the second rather than a summary of them. One short reminder line per card, not a script. Practice once alone against a five-minute timer, notice where she ran dry, and add a line there. Then present for five minutes to a real audience, ideally including one person who is not Gigi, showing the numbers while she talks about them and reading the unsure card out in a normal voice without apologizing. Take questions afterwards, write down every question she could not answer, and say I do not know out loud at least once and mean it.',
 
     practice: [
       {
@@ -1600,10 +1600,10 @@ export const HERBALISM_M16 = [
         'who Dr. Patricia Bath was and what she was up against',
         'that she noticed a difference in her patients and then went and counted it',
         'that she invented a tool for cataract surgery and held the patent for it',
-        'a Black American doctor as the person at the centre of the story, not a footnote'
+        'a Black American doctor as the person at the center of the story, not a footnote'
       ],
       sourceGap:
-        'PARTLY CLOSED, and this is the lesson where it matters most, because it is the last one of the year. This is an episode of an explicitly named Black Voices in STEAM series and its subject is a Black American ophthalmologist. Verified at https://www.youtube.com/oembed: id, title and channel exactly as recorded. The series is verified across five sibling episodes found in search (Neil deGrasse Tyson, Mae C. Jemison, Katherine Johnson, Percy L. Julian and this one). What is NOT closed, and should not be claimed: the presenter could not be identified, because YouTube video pages are not fetchable here, and The Lawrence Hall of Science is UC Berkeley\'s public science centre rather than a Black-led channel. So the subject is Black American and the series is purpose-built, while the channel is institutional. Module 13 used the Percy Julian episode of this same series and recorded the same caveat. Searches run to get here: "Black woman doctor talks to kids what doctors do observation listening careers in medicine" restricted to youtube.com, which found the BlackWomenInMedicine channel and yeTBo-KUXYY "Black Women in Medicine: A Conversation with Dr. Scantlebury", both adult interviews rather than children\'s material; "Black Voices in STEAM The Story of Storytime channel scientist", which found this episode; and "Black Voices in STEAM Storytime George Washington Carver botanist episode" restricted to youtube.com, which found no Carver episode in this series and returned SciShow Kids, Twinkl and Biography instead. Also searched and REJECTED, recorded so nobody re-finds them and assumes they were missed: "Black herbalist ethnobotanist African American plant medicine educator interview" restricted to youtube.com returned real Black American expertise on exactly this subject — drPqcOOPhtM "Black Herbalists Collective with Donette Lowe" (HERBAL RADIO), -PPANw74zf4 "African American Herbalism with Lucretia VanDyke", and a Foundational Black American ROOTED series on slave medicine — every one of them adult herbal-practice content that discusses what plants are used for, which is the one thing this course will not put in front of a ten-year-old. Rejected on the no-dosing rule, not on quality, and worth revisiting when she is much older.'
+        'PARTLY CLOSED, and this is the lesson where it matters most, because it is the last one of the year. This is an episode of an explicitly named Black Voices in STEAM series and its subject is a Black American ophthalmologist. Verified at https://www.youtube.com/oembed: id, title and channel exactly as recorded. The series is verified across five sibling episodes found in search (Neil deGrasse Tyson, Mae C. Jemison, Katherine Johnson, Percy L. Julian and this one). What is NOT closed, and should not be claimed: the presenter could not be identified, because YouTube video pages are not fetchable here, and The Lawrence Hall of Science is UC Berkeley\'s public science center rather than a Black-led channel. So the subject is Black American and the series is purpose-built, while the channel is institutional. Module 13 used the Percy Julian episode of this same series and recorded the same caveat. Searches run to get here: "Black woman doctor talks to kids what doctors do observation listening careers in medicine" restricted to youtube.com, which found the BlackWomenInMedicine channel and yeTBo-KUXYY "Black Women in Medicine: A Conversation with Dr. Scantlebury", both adult interviews rather than children\'s material; "Black Voices in STEAM The Story of Storytime channel scientist", which found this episode; and "Black Voices in STEAM Storytime George Washington Carver botanist episode" restricted to youtube.com, which found no Carver episode in this series and returned SciShow Kids, Twinkl and Biography instead. Also searched and REJECTED, recorded so nobody re-finds them and assumes they were missed: "Black herbalist ethnobotanist African American plant medicine educator interview" restricted to youtube.com returned real Black American expertise on exactly this subject — drPqcOOPhtM "Black Herbalists Collective with Donette Lowe" (HERBAL RADIO), -PPANw74zf4 "African American Herbalism with Lucretia VanDyke", and a Foundational Black American ROOTED series on slave medicine — every one of them adult herbal-practice content that discusses what plants are used for, which is the one thing this course will not put in front of a ten-year-old. Rejected on the no-dosing rule, not on quality, and worth revisiting when she is much older.'
     },
 
     checkIn: M16L6_CHECK_IN,

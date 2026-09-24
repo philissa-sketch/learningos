@@ -100,14 +100,14 @@ const L1_BEATS = [
 
 const L1_ACTIVITY = {
   title: 'Start the timeline',
-  prep: 'A long strip of paper, a ruler with centimetres, and a pencil.',
+  prep: 'A long strip of paper, a ruler with centimeters, and a pencil.',
   needs: ['a long strip of paper', 'a ruler', 'a pencil', 'her notebook'],
   steps: [
     'Rule a straight line the whole length of your strip and mark the left end 1860.',
-    'Decide your scale: one centimetre stands for one year, so ten centimetres is ten years.',
-    'Measure four centimetres along and mark 1864, then write Dr. Rebecca Lee Crumpler.',
+    'Decide your scale: one centimeter stands for one year, so ten centimeters is ten years.',
+    'Measure four centimeters along and mark 1864, then write Dr. Rebecca Lee Crumpler.',
     'Mark every tenth year along the line — 1870, 1880, 1890 — measuring each one.',
-    'Write down how many centimetres long your strip needs to be to reach 1990.'
+    'Write down how many centimeters long your strip needs to be to reach 1990.'
   ],
   safety:
     'Paper, a ruler and a pencil. Keep the strip somewhere safe, because the next three lessons all add to this same one.',
@@ -115,9 +115,9 @@ const L1_ACTIVITY = {
 };
 
 const L1_LEDGER = {
-  prompt: 'Write down your scale, and how many centimetres stand for one hundred years.',
+  prompt: 'Write down your scale, and how many centimeters stand for one hundred years.',
   ifSheIsStuck:
-    'One centimetre for one year makes a hundred years a hundred centimetres, which is one metre — the same metre she measured in Module 10.'
+    'One centimeter for one year makes a hundred years a hundred centimeters, which is one meter — the same meter she measured in Module 10.'
 };
 
 // =========================================================== LESSON 2
@@ -153,7 +153,7 @@ const L2_BEATS = [
     label: 'She was the first Black woman doctor in America to patent a medical invention',
     hook: 'A patent is a piece of paper saying: this was mine, and I thought of it.',
     teachingText:
-      'Dr. Bath received her patent in 1988. She also founded an organisation built on one idea — that eyesight is a basic human right, and that people go blind for lack of care rather than lack of medicine.',
+      'Dr. Bath received her patent in 1988. She also founded an organization built on one idea — that eyesight is a basic human right, and that people go blind for lack of care rather than lack of medicine.',
     example:
       'She had noticed something nobody had measured: her patients in Harlem were going blind at twice the rate of her patients elsewhere.',
     applyIt: {
@@ -178,7 +178,7 @@ const L2_ACTIVITY = {
     'Look at some writing through a glass of clear water and write down what you can read.',
     'Stir in one drop of milk, look again, and write down what changed.',
     'On your timeline, measure along and mark 1986, then write Dr. Patricia Bath.',
-    'Measure the distance between your 1864 mark and your 1986 mark in centimetres.',
+    'Measure the distance between your 1864 mark and your 1986 mark in centimeters.',
     'Work out how many years that is, and check it against your ruler measurement.'
   ],
   safety:
@@ -251,7 +251,7 @@ const L3_ACTIVITY = {
     'Time it, write the number down, then do it again and write the second time down.',
     'Work out the difference between your two attempts.',
     'On your timeline, measure along and mark 1981, then write Dr. Alexa Canady.',
-    'Measure from 1864 to 1981 in centimetres, and check it against the subtraction.'
+    'Measure from 1864 to 1981 in centimeters, and check it against the subtraction.'
   ],
   safety:
     'Rice and beans are counters. Nothing is eaten and nothing goes near a mouth, a nose or an ear, and they are put away afterwards where nobody smaller can reach them.',
@@ -322,7 +322,7 @@ const L4_ACTIVITY = {
     'Measure along your timeline and mark 1992, then write Dr. Mae Jemison.',
     'Write down the gap in years between each pair of women, working left to right.',
     'Now go back through your notebook and find every measurement you took this year.',
-    'List them with their units — beats, breaths, centimetres, millilitres, millimetres, seconds.',
+    'List them with their units — beats, breaths, centimeters, milliliters, millimeters, seconds.',
     'Write down which measurement you are proudest of, and one question you still have.'
   ],
   safety:
@@ -352,7 +352,7 @@ export const HUMANBODY_M16 = [
     spec: '§10 · beats',
     concept: 'Rebecca Lee Crumpler was the first Black woman to qualify as a doctor in America, and she went on to care for people no other doctor would treat and to write it all down.',
     standards: [],
-    offGrade: 'Scale and measurement: one centimetre to one year, marked and measured along a strip. Measurement scored 2.00, at the test floor.',
+    offGrade: 'Scale and measurement: one centimeter to one year, marked and measured along a strip. Measurement scored 2.00, at the test floor.',
     words: ['qualify', 'scale', 'timeline'],
     glossary: [
       { word: 'qualify', plain: 'To finish the training and be allowed to do a job.' },
@@ -395,7 +395,7 @@ export const HUMANBODY_M16 = [
         feedback: [null, 'Wider than that.', 'For the carers.', 'It had an audience.']
       },
       {
-        prompt: 'At one centimetre to a year, a hundred years is:',
+        prompt: 'At one centimeter to a year, a hundred years is:',
         choices: ['10 cm', '100 cm', '1000 cm', '1 cm'],
         answer: 1,
         feedback: ['That is ten years.', null, 'That is a thousand years.', 'That is one year.']
@@ -598,7 +598,7 @@ export const HUMANBODY_M16_META = {
   module: 16,
   title: 'Black Women in Medicine',
   blurb:
-    'Four Black American women who did the job Azianna says she wants — and a timeline she measures herself, one centimetre to the year, from Dr. Crumpler in 1864 to Dr. Jemison leaving the planet in 1992.'
+    'Four Black American women who did the job Azianna says she wants — and a timeline she measures herself, one centimeter to the year, from Dr. Crumpler in 1864 to Dr. Jemison leaving the planet in 1992.'
 };
 
 export function humanbodyM16LessonById(id) {

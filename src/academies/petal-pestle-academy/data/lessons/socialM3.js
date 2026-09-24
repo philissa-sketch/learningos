@@ -536,11 +536,11 @@ export const SOCIAL_M3 = [
       verified: '2026-08-17',
       teaches: ['leaders', 'elections', 'voting', 'representative', 'government'],
       sourceGap:
-        'Two PragerU videos on this exact topic were among the top results and are NOT used — an advocacy organisation with a stated political position is not a neutral educational publisher, and that exclusion is written down rather than quietly applied. An alternate is verified and held: SdNxeGUvQkg, History Illustrated, 3:13. No Black American educator identified. Open.'
+        'Two PragerU videos on this exact topic were among the top results and are NOT used — an advocacy organization with a stated political position is not a neutral educational publisher, and that exclusion is written down rather than quietly applied. An alternate is verified and held: SdNxeGUvQkg, History Illustrated, 3:13. No Black American educator identified. Open.'
     },
     checkIn: {
       title: 'A vote on every single thing',
-      text: 'Imagine your whole town had to vote on every choice. What time bins go out. What colour a bench is.',
+      text: 'Imagine your whole town had to vote on every choice. What time bins go out. What color a bench is.',
       question: 'How long would a week take?'
     },
     beats: [
@@ -610,7 +610,7 @@ export const SOCIAL_M3 = [
     },
     hook: {
       title: 'A vote on every single thing',
-      text: 'Imagine your whole town had to vote on every choice. What time bins go out. What colour a bench is.',
+      text: 'Imagine your whole town had to vote on every choice. What time bins go out. What color a bench is.',
       question: 'How long would a week take?'
     },
     core: [

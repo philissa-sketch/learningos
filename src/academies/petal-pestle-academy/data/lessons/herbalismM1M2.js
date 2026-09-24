@@ -547,7 +547,7 @@ const M1L5_ACTIVITY = {
     'Change ONE thing. One stays on the window. One goes in a closet.',
     'Write your guess down now, before anything happens.',
     'Measure both every three days. Write both numbers.',
-    'Also write the colour. Pale is a number too, in its own way.',
+    'Also write the color. Pale is a number too, in its own way.',
     'After two weeks, bring the closet one out and put it back in the light.'
   ],
   safety:
@@ -1206,7 +1206,7 @@ export const HERBALISM_M1_NEW = [
     hook: M1L5_CHECK_IN,
     core: M1L5_BEATS.map((b) => ({ heading: b.label, text: b.teachingText })),
     doing:
-      'Start an onion root or a celery heart in a jar of water on the windowsill. No soil at all. Measure it as it grows. Then run a second test with two matching seedlings: same pot, same water, same day, and change exactly ONE thing. One stays on the window and one goes in a closet. Write your guess down before anything happens. Measure both every three days and write the colour down too, because pale is a result.',
+      'Start an onion root or a celery heart in a jar of water on the windowsill. No soil at all. Measure it as it grows. Then run a second test with two matching seedlings: same pot, same water, same day, and change exactly ONE thing. One stays on the window and one goes in a closet. Write your guess down before anything happens. Measure both every three days and write the color down too, because pale is a result.',
 
     practice: [
       {

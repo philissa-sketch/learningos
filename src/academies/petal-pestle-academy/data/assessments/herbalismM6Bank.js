@@ -205,9 +205,9 @@ export const HERBALISM_M6_NEW_BANK = [
     answer: 0,
     feedback: [
       null,
-      'A bird wants bright colour and a deep tube.'
+      'A bird wants bright color and a deep tube.'
     ,
-      'A bee is drawn in by colour and scent.',
+      'A bee is drawn in by color and scent.',
       'A butterfly wants a bright flat petal to stand on.'],
     why: 'Wind cannot see or smell. Paying for petals and scent would be a waste.'
   },
@@ -312,7 +312,7 @@ export const HERBALISM_M6_NEW_BANK = [
     lesson: 'hb-m6-03',
     prompt: 'Why are wind-pollinated flowers small and dull?',
     choices: [
-      'Wind cannot see colour',
+      'Wind cannot see color',
       'They are not finished growing',
       'They are sick',
       'Wind prefers small flowers'
@@ -324,7 +324,7 @@ export const HERBALISM_M6_NEW_BANK = [
       'There is nothing wrong with them.',
       'Wind has no preferences at all.'
     ],
-    why: 'Colour and scent cost the plant something. Wind will not pay for either.'
+    why: 'Color and scent cost the plant something. Wind will not pay for either.'
   },
   {
     id: 't-hbm603g',
@@ -724,7 +724,7 @@ export const HERBALISM_M6_NEW_BANK = [
       'Yes, if it smells sweet'],
     answer: 1,
     feedback: [
-      'Red is not a safety colour. It is just a colour.',
+      'Red is not a safety color. It is just a color.',
       null
     ,
       'Plenty of garden fruit is not for eating.',

@@ -240,7 +240,7 @@ export const HERBALISM_Q1 = [
       channel: 'Periwinkle',
       minutes: 3,
       verified: '2026-08-14',
-      sourceGap: 'Searched Black educators doing the celery-and-food-colouring stem demo and Black-run elementary science channels. Only Periwinkle, MooMooMath and TutWay have stem-specific videos; none is Black-led.'
+      sourceGap: 'Searched Black educators doing the celery-and-food-coloring stem demo and Black-run elementary science channels. Only Periwinkle, MooMooMath and TutWay have stem-specific videos; none is Black-led.'
     },
     n: 3,
     title: 'What the stem does',
@@ -377,7 +377,7 @@ export const HERBALISM_Q1 = [
     check: [
       {
         prompt: 'Which words describe a leaf best in a journal?',
-        choices: ['Long and pointed', 'Very nice', 'My favourite', 'Quite good'],
+        choices: ['Long and pointed', 'Very nice', 'My favorite', 'Quite good'],
         answer: 0,
         feedback: [null, 'That says nothing about the leaf.', 'That is about you, not the plant.', 'Someone else could not find it.']
       },
@@ -389,9 +389,9 @@ export const HERBALISM_Q1 = [
       },
       {
         prompt: 'Why does leaf shape matter to a herbalist?',
-        choices: ['It helps name the plant', 'It changes the colour', 'It makes it grow', 'It keeps it warm'],
+        choices: ['It helps name the plant', 'It changes the color', 'It makes it grow', 'It keeps it warm'],
         answer: 0,
-        feedback: [null, 'Shape and colour are separate.', 'Shape does not make a plant grow.', 'Shape is not about warmth.']
+        feedback: [null, 'Shape and color are separate.', 'Shape does not make a plant grow.', 'Shape is not about warmth.']
       }
     ]
   },
@@ -423,7 +423,7 @@ export const HERBALISM_Q1 = [
     },
     core: [
       { heading: 'Three kinds of edge', text: 'A smooth edge has no bumps. A toothed edge has small points, like a saw. A lobed edge has big soft curves.' },
-      { heading: 'The edge is a strong clue', text: 'Two leaves can be the same shape and colour. If one is toothed and one is smooth, they are not the same plant.' },
+      { heading: 'The edge is a strong clue', text: 'Two leaves can be the same shape and color. If one is toothed and one is smooth, they are not the same plant.' },
       { heading: 'Check more than one leaf', text: 'Leaves at the top of a plant can look different. Always check two or three.' }
     ],
     doing: 'Find one smooth leaf and one toothed leaf. Tape both into your journal.',
@@ -538,11 +538,11 @@ export const HERBALISM_Q1 = [
     core: [
       { heading: 'Flowers make seeds', text: 'A flower is how a plant makes new seeds. Without it there are no new plants.' },
       { heading: 'Pollen has to move', text: 'A yellow dust called pollen must move from flower to flower. Bees carry it on their legs.' },
-      { heading: 'Colour is an advert', text: 'Bright petals tell bees where to land. The colour is a sign, not decoration.' }
+      { heading: 'Color is an advert', text: 'Bright petals tell bees where to land. The color is a sign, not decoration.' }
     ],
     doing: 'Watch one flower for two minutes. Write down every visitor you see.',
     practice: [
-      { ask: 'Why do flowers have bright petals?', answer: 'To bring bees and other insects in.', why: 'Bright colour is easy for a bee to spot.' },
+      { ask: 'Why do flowers have bright petals?', answer: 'To bring bees and other insects in.', why: 'Bright color is easy for a bee to spot.' },
       { ask: 'What happens if no bee visits a flower?', answer: 'It may make no seeds.', why: 'Pollen has to travel for seeds to form.' }
     ],
     check: [
@@ -562,7 +562,7 @@ export const HERBALISM_Q1 = [
         prompt: 'Bright petals are best described as —',
         choices: ['A sign for insects', 'A way to stay warm', 'A kind of leaf edge', 'A root'],
         answer: 0,
-        feedback: [null, 'Colour does not add warmth.', 'Edges belong to leaves.', 'Roots are under the soil.']
+        feedback: [null, 'Color does not add warmth.', 'Edges belong to leaves.', 'Roots are under the soil.']
       }
     ]
   },
@@ -582,7 +582,7 @@ export const HERBALISM_Q1 = [
       channel: 'SciShow Kids',
       minutes: 6,
       verified: '2026-08-14',
-      sourceGap: 'Searched Black gardeners and farmers, Black-led seed organisations (Soul Fire Farm, Ujamaa, Ron Finley) and Black-created kids\' channels. Gracie\'s Corner, TAB TIME, JOOLS TV and MiSTER B are preschool music and literacy, not botany.'
+      sourceGap: 'Searched Black gardeners and farmers, Black-led seed organizations (Soul Fire Farm, Ujamaa, Ron Finley) and Black-created kids\' channels. Gracie\'s Corner, TAB TIME, JOOLS TV and MiSTER B are preschool music and literacy, not botany.'
     },
     n: 9,
     title: 'Seeds',
@@ -662,9 +662,9 @@ export const HERBALISM_Q1 = [
     check: [
       {
         prompt: 'What do plants in a family share?',
-        choices: ['The same kind of build', 'The same colour', 'The same height', 'The same name'],
+        choices: ['The same kind of build', 'The same color', 'The same height', 'The same name'],
         answer: 0,
-        feedback: [null, 'Family members come in many colours.', 'Height varies a lot.', 'They each have their own name.']
+        feedback: [null, 'Family members come in many colors.', 'Height varies a lot.', 'They each have their own name.']
       },
       {
         prompt: 'Which is NOT a sign of the mint family?',
@@ -753,7 +753,7 @@ export const HERBALISM_Q1 = [
       channel: 'NewsDepth',
       minutes: 4,
       verified: '2026-08-14',
-      sourceGap: 'Alexis Nikole Nelson was checked seriously and REJECTED ON PURPOSE. She is a genuine Black American forager and belongs in this app, but her catalogue is built around finding and eating wild food. This is the safety lesson. A \'here is a snack I found\' video behind a lesson whose whole point is never taste anything without an adult would undercut the lesson. She belongs in Black Women in Medicine & Botany, or a later foraging lesson taught with an adult present.'
+      sourceGap: 'Alexis Nikole Nelson was checked seriously and REJECTED ON PURPOSE. She is a genuine Black American forager and belongs in this app, but her catalog is built around finding and eating wild food. This is the safety lesson. A \'here is a snack I found\' video behind a lesson whose whole point is never taste anything without an adult would undercut the lesson. She belongs in Black Women in Medicine & Botany, or a later foraging lesson taught with an adult present.'
     },
     n: 12,
     title: 'Look-alikes, and the first rule',

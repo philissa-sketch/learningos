@@ -128,10 +128,10 @@ export const HERBALISM_M11_BANK = [
     id: 't-hbm1101e',
     lesson: 'hb-m11-01',
     prompt: 'Crushing a dried leaf gives you more of what?',
-    choices: ['Colour', 'Mass', 'Water', 'Surface area'],
+    choices: ['Color', 'Mass', 'Water', 'Surface area'],
     answer: 3,
     feedback: [
-      'The colour was in there already, waiting to get out.',
+      'The color was in there already, waiting to get out.',
       'The mass is the same before and after. It only changed shape.',
       'Crushing adds no water to anything.',
       null
@@ -292,21 +292,21 @@ export const HERBALISM_M11_BANK = [
       'It saves the last number for you',
       'It turns the scale off',
       'It sets the display to zero so the jar is not counted',
-      'It changes grams into millilitres'
+      'It changes grams into milliliters'
     ],
     answer: 2,
     feedback: [
       'Nothing is saved. That is what your log is for.',
       'The scale stays on. It just forgets what is already there.',
       null,
-      'Grams and millilitres measure two different things.'
+      'Grams and milliliters measure two different things.'
     ],
     why: 'Tare it with the empty jar on, and the next number you read is the plant alone.'
   },
   {
     id: 't-hbm1102e',
     lesson: 'hb-m11-02',
-    prompt: 'You measure 100 millilitres of water. About what does it weigh?',
+    prompt: 'You measure 100 milliliters of water. About what does it weigh?',
     choices: ['10 grams', '100 grams', '500 grams', '1 gram'],
     answer: 1,
     feedback: [
@@ -315,7 +315,7 @@ export const HERBALISM_M11_BANK = [
       'Half a kilogram of water would fill a much bigger jug.',
       'One gram of water is barely a drip.'
     ],
-    why: 'Water is the tidy one: 100 millilitres comes out at very nearly 100 grams.'
+    why: 'Water is the tidy one: 100 milliliters comes out at very nearly 100 grams.'
   },
   {
     id: 't-hbm1102f',
@@ -353,7 +353,7 @@ export const HERBALISM_M11_BANK = [
       'The size of the number is not the problem here.',
       null
     ],
-    why: 'Grams, millilitres or minutes? Without the unit the number cannot be used again.'
+    why: 'Grams, milliliters or minutes? Without the unit the number cannot be used again.'
   },
   {
     id: 't-hbm1102h',
@@ -378,7 +378,7 @@ export const HERBALISM_M11_BANK = [
     id: 't-hbm1102i',
     lesson: 'hb-m11-02',
     prompt: 'Which tool measures the volume of a liquid?',
-    choices: ['A mortar', 'A scale', 'A jug marked in millilitres', 'A sieve'],
+    choices: ['A mortar', 'A scale', 'A jug marked in milliliters', 'A sieve'],
     answer: 2,
     feedback: [
       'A mortar is for crushing and holds no marks.',
@@ -415,15 +415,15 @@ export const HERBALISM_M11_BANK = [
     id: 't-hbm1103a',
     lesson: 'hb-m11-03',
     prompt: '50 grams of fresh mint dries down to 10 grams. What left it?',
-    choices: ['Colour', 'Water, as vapour', 'Smell', 'Nothing at all'],
+    choices: ['Color', 'Water, as vapor', 'Smell', 'Nothing at all'],
     answer: 1,
     feedback: [
-      'The colour fades a little, but colour weighs almost nothing.',
+      'The color fades a little, but color weighs almost nothing.',
       null,
       'A little smell goes as well. Not forty grams of it.',
       'Forty grams went somewhere, and the scale proves it.'
     ],
-    why: 'Mass that goes missing while something dries left as water vapour into the air.'
+    why: 'Mass that goes missing while something dries left as water vapor into the air.'
   },
   {
     id: 't-hbm1103b',
@@ -447,14 +447,14 @@ export const HERBALISM_M11_BANK = [
       'The mass stops changing from one day to the next',
       'A week has gone by',
       'It looks about right',
-      'The colour has gone'
+      'The color has gone'
     ],
     answer: 0,
     feedback: [
       null,
       'A week is a guess. Some batches take four days and some take ten.',
       'Looking is where people go wrong. Weighing is not.',
-      'Losing colour means it sat in the light, not that it is dry.'
+      'Losing color means it sat in the light, not that it is dry.'
     ],
     why: 'A number that has stopped moving means there is no water left to leave.'
   },
@@ -475,7 +475,7 @@ export const HERBALISM_M11_BANK = [
       null,
       'Heat is not what is trapped in there. Water is.'
     ],
-    why: 'Water must reach the surface before it can leave, so thin dries and thick goes mouldy.'
+    why: 'Water must reach the surface before it can leave, so thin dries and thick goes moldy.'
   },
   {
     id: 't-hbm1103e',
@@ -490,7 +490,7 @@ export const HERBALISM_M11_BANK = [
     answer: 0,
     feedback: [
       null,
-      'Sealed air fills with vapour and the drying stops dead.',
+      'Sealed air fills with vapor and the drying stops dead.',
       'Cold and damp is the slowest place in the house.',
       'Still air sits there getting damper and takes up no more.'
     ],
@@ -500,7 +500,7 @@ export const HERBALISM_M11_BANK = [
     id: 't-hbm1103f',
     lesson: 'hb-m11-03',
     prompt: 'You seal mint in a bag while it is still a little damp. What grows?',
-    choices: ['Nothing', 'New leaves', 'Mould', 'New roots'],
+    choices: ['Nothing', 'New leaves', 'Mold', 'New roots'],
     answer: 2,
     feedback: [
       'Damp and sealed is the worst mix there is.',
@@ -508,7 +508,7 @@ export const HERBALISM_M11_BANK = [
       null,
       'A cut stem shut in a bag will not root.'
     ],
-    why: 'Mould needs only a trace of water, and a sealed bag keeps every bit of it in there.'
+    why: 'Mold needs only a trace of water, and a sealed bag keeps every bit of it in there.'
   },
   {
     id: 't-hbm1103g',
@@ -530,18 +530,18 @@ export const HERBALISM_M11_BANK = [
     prompt: 'Why spread the leaves out in a single layer?',
     choices: [
       'So they weigh less',
-      'So they keep their colour',
+      'So they keep their color',
       'So the tray looks full',
       'So air can reach every leaf'
     ],
     answer: 3,
     feedback: [
       'Spreading them out changes nothing about the mass.',
-      'Colour is about light, and this is about air.',
+      'Color is about light, and this is about air.',
       'A full-looking tray is a slow tray.',
       null
     ],
-    why: 'A leaf buried under other leaves sits in still damp air and goes mouldy instead.'
+    why: 'A leaf buried under other leaves sits in still damp air and goes moldy instead.'
   },
   {
     id: 't-hbm1103i',
@@ -550,14 +550,14 @@ export const HERBALISM_M11_BANK = [
     choices: [
       'Sun will not dry them at all',
       'Sun makes them damp',
-      'Sun attracts mould',
-      'Sun takes the colour and the smell with it'
+      'Sun attracts mold',
+      'Sun takes the color and the smell with it'
     ],
     answer: 3,
     feedback: [
       'Sun dries them very fast. That is not the problem.',
       'Sun does the opposite of making things damp.',
-      'Mould wants damp and dark, not a sunny sill.',
+      'Mold wants damp and dark, not a sunny sill.',
       null
     ],
     why: 'You want the water gone and the smell left behind, and strong sun takes both.'
@@ -568,18 +568,18 @@ export const HERBALISM_M11_BANK = [
     prompt: 'One of your drying trays smells sour and looks furry. What do you do?',
     choices: [
       'Wash it and dry it again',
-      'Give it to Gigi, and it goes in the bin',
+      'Give it to Gigi, and it goes in the trash',
       'Jar it anyway',
       'Pick out the good bits'
     ],
     answer: 1,
     feedback: [
-      'Once mould is in, washing does not undo it.',
+      'Once mold is in, washing does not undo it.',
       null,
       'Nothing furry goes in a jar, ever.',
-      'Mould spreads further than you can see it.'
+      'Mold spreads further than you can see it.'
     ],
-    why: 'Mouldy plant material is never saved and never tasted. It goes, and you wash your hands.'
+    why: 'Moldy plant material is never saved and never tasted. It goes, and you wash your hands.'
   },
 
   // =========================================================================
@@ -674,7 +674,7 @@ export const HERBALISM_M11_BANK = [
     choices: [
       'To keep the dust out',
       'To make it look finished',
-      'To keep the vapour in, so it drips back',
+      'To keep the vapor in, so it drips back',
       'To keep the water hotter for longer'
     ],
     answer: 2,
@@ -703,16 +703,16 @@ export const HERBALISM_M11_BANK = [
   {
     id: 't-hbm1104h',
     lesson: 'hb-m11-04',
-    prompt: 'Why does hot water pull colour out faster than cold water?',
+    prompt: 'Why does hot water pull color out faster than cold water?',
     choices: [
-      'Cold water has no colour in it',
+      'Cold water has no color in it',
       'Hot water is wetter',
       'Its molecules move faster',
       'Hot water is heavier'
     ],
     answer: 2,
     feedback: [
-      'Neither one starts with colour. Both get it from the plant.',
+      'Neither one starts with color. Both get it from the plant.',
       'Wet is wet. That is not a difference.',
       null,
       'Hot water is very slightly lighter, and that is not why.'
@@ -763,14 +763,14 @@ export const HERBALISM_M11_BANK = [
     choices: [
       'Glass, paper, tape and ink',
       'Salt, sugar, oil and dust',
-      'Time, weight, colour and smell',
+      'Time, weight, color and smell',
       'Water, air, light and heat'
     ],
     answer: 3,
     feedback: [
       'Those are what the jar and the label are made of.',
       'None of those four is going into your jar.',
-      'Colour and smell are what you LOSE, not what does the damage.',
+      'Color and smell are what you LOSE, not what does the damage.',
       null
     ],
     why: 'Water is the fast one, and air, light and heat all work slowly across months.'
@@ -784,10 +784,10 @@ export const HERBALISM_M11_BANK = [
     feedback: [
       'Air dulls it slowly, and a good lid handles that.',
       null,
-      'Heat speeds everything else up, but water is what mould needs.',
+      'Heat speeds everything else up, but water is what mold needs.',
       'Light fades a jar over months, not days.'
     ],
-    why: 'Mould needs only a trace of water, and once it starts the whole jar is finished.'
+    why: 'Mold needs only a trace of water, and once it starts the whole jar is finished.'
   },
   {
     id: 't-hbm1105c',
@@ -854,13 +854,13 @@ export const HERBALISM_M11_BANK = [
       'Somebody opened it',
       'It was dried differently',
       'Pale mint was put in it',
-      'Light and heat took its colour'
+      'Light and heat took its color'
     ],
     answer: 3,
     feedback: [
       'Nobody opened either one. That was the whole point of the test.',
       'Both jars were filled from the same batch on the same day.',
-      'Same batch, so it went in the same colour as the other one.',
+      'Same batch, so it went in the same color as the other one.',
       null
     ],
     why: 'One thing was different between those jars, and that one thing was where they stood.'
@@ -901,7 +901,7 @@ export const HERBALISM_M11_BANK = [
       null,
       'Nothing on either jar says how it was dried.'
     ],
-    why: 'Without a date you have a colour and a story, and a story is not evidence.'
+    why: 'Without a date you have a color and a story, and a story is not evidence.'
   },
   {
     id: 't-hbm1105i',
@@ -917,10 +917,10 @@ export const HERBALISM_M11_BANK = [
     feedback: [
       null,
       'Putting it back leaves the problem for somebody else.',
-      'Do not sniff mould. Waft, or better, do not open it at all.',
-      'Mould spreads further than the part you can see.'
+      'Do not sniff mold. Waft, or better, do not open it at all.',
+      'Mold spreads further than the part you can see.'
     ],
-    why: 'Anything furry, spotted or sour goes to a grown-up, and then it goes in the bin.'
+    why: 'Anything furry, spotted or sour goes to a grown-up, and then it goes in the trash.'
   },
   {
     id: 't-hbm1105j',
@@ -951,7 +951,7 @@ export const HERBALISM_M11_BANK = [
     lesson: 'hb-m11-06',
     prompt: 'What five things does a full label have to say?',
     choices: [
-      'Colour, size, smell, weight and shape',
+      'Color, size, smell, weight and shape',
       'Plant, part, picked, prepared and dated',
       'Plant, price, place, person and pot',
       'Name and date only'
@@ -1072,7 +1072,7 @@ export const HERBALISM_M11_BANK = [
       'Length is not the problem. Numbers are.',
       'Mint is fine. How much mint is the question.'
     ],
-    why: 'A method needs real numbers with units: grams, millilitres, minutes, lid on or off.'
+    why: 'A method needs real numbers with units: grams, milliliters, minutes, lid on or off.'
   },
   {
     id: 't-hbm1106h',
@@ -1091,9 +1091,9 @@ export const HERBALISM_M11_BANK = [
   {
     id: 't-hbm1106i',
     lesson: 'hb-m11-06',
-    prompt: 'One jar is labelled and one is not. The labelled one smells stronger. So?',
+    prompt: 'One jar is labeled and one is not. The labeled one smells stronger. So?',
     choices: [
-      'You learned something real about the labelled jar',
+      'You learned something real about the labeled jar',
       'You learned nothing from either jar',
       'The bare jar must be older',
       'Labels make herbs smell stronger'
@@ -1101,7 +1101,7 @@ export const HERBALISM_M11_BANK = [
     answer: 0,
     feedback: [
       null,
-      'The labelled jar still tells its own story properly.',
+      'The labeled jar still tells its own story properly.',
       'There is nothing on that jar to tell you its age.',
       'A label is paper. It changes the record, not the plant.'
     ],

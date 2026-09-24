@@ -165,8 +165,8 @@ const L2_BEATS = [
 
 const L2_ACTIVITY = {
   title: 'Draw the walls, in order',
-  prep: 'Paper and coloured pencils.',
-  needs: ['paper', 'coloured pencils', 'her notebook'],
+  prep: 'Paper and colored pencils.',
+  needs: ['paper', 'colored pencils', 'her notebook'],
   steps: [
     'Draw a simple outline of a person, big enough to write inside.',
     'Around the outside, label every barrier you can name: skin, tears, nose, stomach juice.',
@@ -588,7 +588,7 @@ export const HUMANBODY_M15_META = {
   module: 15,
   title: 'Staying Well',
   blurb:
-    'A real controlled experiment run on her own two hands with oil, pepper and a timer, the discovery that every defence she has was taught in an earlier module, and a fever explained as something the body does on purpose.'
+    'A real controlled experiment run on her own two hands with oil, pepper and a timer, the discovery that every defense she has was taught in an earlier module, and a fever explained as something the body does on purpose.'
 };
 
 export function humanbodyM15LessonById(id) {

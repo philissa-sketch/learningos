@@ -160,8 +160,8 @@ const L38_BEATS = [
 
 const L38_ACTIVITY = {
   title: 'Sort the eight into two families',
-  prep: 'The eight cards from Lesson 37. Add a second colour of marker.',
-  needs: ['the eight planet cards', 'two coloured markers', 'her notebook'],
+  prep: 'The eight cards from Lesson 37. Add a second color of marker.',
+  needs: ['the eight planet cards', 'two colored markers', 'her notebook'],
   steps: [
     'Take the eight cards and sort them into two piles: ROCKY and GAS GIANT.',
     'Check your answer. Were the two families split neatly, or mixed up?',
@@ -194,7 +194,7 @@ const L39_BEATS = [
     teachingText:
       'To build a model of size, she picks a scale — say, the sun is as wide as a dinner plate — and then every planet must be shrunk by that same amount. Shrink one thing more than another and the model starts telling lies.',
     example:
-      'If the sun is a 25 centimetre plate, the Earth is about 2 millimetres across. That is a grain of coarse salt.',
+      'If the sun is a 25 centimeter plate, the Earth is about 2 millimeters across. That is a grain of coarse salt.',
     applyIt: {
       prompt: 'For a size model to be honest, every object must be shrunk:',
       choices: ['By whatever looks best', 'By the same amount', 'Until it fits the page', 'Only if it is a planet'],
@@ -215,7 +215,7 @@ const L39_BEATS = [
     teachingText:
       'The sun holds far more material than all eight planets combined. Jupiter is the biggest planet by a long way, and the sun still dwarfs it. A model that shows the planets clearly usually has to cheat about the sun.',
     example:
-      'With the sun as a 25 centimetre plate, Jupiter is about the size of a large pea and Mercury is a speck of dust.',
+      'With the sun as a 25 centimeter plate, Jupiter is about the size of a large pea and Mercury is a speck of dust.',
     applyIt: {
       prompt: 'In an honest size model with the sun as a dinner plate, Earth would be about:',
       choices: ['A tennis ball', 'A marble', 'A grain of salt', 'A dinner plate too'],
@@ -226,7 +226,7 @@ const L39_BEATS = [
         null,
         'The sun is about a hundred times wider than Earth.'
       ],
-      why: 'Two millimetres against twenty-five centimetres. That is the real ratio.'
+      why: 'Two millimeters against twenty-five centimeters. That is the real ratio.'
     }
   }
 ];
@@ -340,7 +340,7 @@ const L41_BEATS = [
     label: 'The two models disagree, and neither is lying',
     hook: 'She has built two honest models of the same thing, and they cannot be put together.',
     teachingText:
-      'On her bench, Earth is a grain of salt beside a dinner plate. On her paper strip, Earth is one sheet out of forty. Put both rules together and the model stops fitting in the house: with a dinner-plate sun, Earth would be a grain of salt about thirty metres away, and Neptune would be nearly a kilometre off.',
+      'On her bench, Earth is a grain of salt beside a dinner plate. On her paper strip, Earth is one sheet out of forty. Put both rules together and the model stops fitting in the house: with a dinner-plate sun, Earth would be a grain of salt about thirty meters away, and Neptune would be nearly a kilometer off.',
     example:
       'Every solar system picture in every book has quietly given up on one of the two. Usually the distances.',
     applyIt: {
@@ -353,7 +353,7 @@ const L41_BEATS = [
         null,
         'That is where the cheating starts.'
       ],
-      why: 'Thirty metres to Earth and nearly a kilometre to Neptune, from one dinner plate.'
+      why: 'Thirty meters to Earth and nearly a kilometer to Neptune, from one dinner plate.'
     }
   },
   {
@@ -436,7 +436,7 @@ const L42_BEATS = [
     label: 'Every new tool has made the sky bigger',
     hook: 'The naked eye. Then Galileo. Then Hubble. Then Webb. Each one found things nobody knew were there.',
     teachingText:
-      'Her eyes show a few thousand stars. Galileo’s telescope found moons and craters. Telescopes above the air show galaxies so far off that their light has been travelling since long before the Earth existed. Every time the tool improves, the answer changes.',
+      'Her eyes show a few thousand stars. Galileo’s telescope found moons and craters. Telescopes above the air show galaxies so far off that their light has been traveling since long before the Earth existed. Every time the tool improves, the answer changes.',
     example:
       'Webb can see a kind of light her eyes cannot detect at all, which lets it look straight through clouds of dust that used to hide things completely.',
     applyIt: {
@@ -571,7 +571,7 @@ export const SCIENCELAB_M7 = [
     doing: L39_ACTIVITY.steps.join(' '),
     practice: [
       { ask: 'What makes a size model honest?', answer: 'Everything shrinks by the same amount.', why: 'Shrink one thing more and it starts telling lies.' },
-      { ask: 'With the sun as a dinner plate, how big is Earth?', answer: 'About a grain of coarse salt.', why: 'Two millimetres against twenty-five centimetres.' }
+      { ask: 'With the sun as a dinner plate, how big is Earth?', answer: 'About a grain of coarse salt.', why: 'Two millimeters against twenty-five centimeters.' }
     ],
     check: [
       { prompt: 'For a size model to be honest, every object must be shrunk:', choices: ['By whatever looks best', 'By the same amount', 'Until it fits the page', 'Only if it is a planet'], answer: 1, feedback: ['Then it is a drawing.', null, 'Fitting the page is what breaks most models.', 'The sun must shrink too.'] },
@@ -653,7 +653,7 @@ export const SCIENCELAB_M7 = [
     core: L41_BEATS.map((b) => ({ heading: b.label, text: b.teachingText })),
     doing: L41_ACTIVITY.steps.join(' '),
     practice: [
-      { ask: 'Why can one model not show size and distance at once?', answer: 'With the sun as a plate, Neptune would be nearly a kilometre away.', why: 'It stops fitting anywhere.' },
+      { ask: 'Why can one model not show size and distance at once?', answer: 'With the sun as a plate, Neptune would be nearly a kilometer away.', why: 'It stops fitting anywhere.' },
       { ask: 'What is the most useful thing to know about a model?', answer: 'What it leaves out.', why: 'That sentence is the whole of S4E1d.' }
     ],
     check: [

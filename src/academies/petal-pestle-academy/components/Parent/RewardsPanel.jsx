@@ -232,7 +232,7 @@ function Adjust() {
         </table>
         <p className="mt-2 text-[0.7rem] text-ink-500">
           A complete diagnostic works out to about 🌸 {projectedEarnings().petal} and 🌟{' '}
-          {projectedEarnings().seed}. The catalogues are priced against those numbers, so if you
+          {projectedEarnings().seed}. The catalogs are priced against those numbers, so if you
           change a rate in <span className="font-mono">src/lib/economy.js</span>, re-check both.
         </p>
       </div>

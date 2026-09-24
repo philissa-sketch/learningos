@@ -91,7 +91,7 @@ export const COURSE_SCOPE = {
     { q: 4, focus: 'Using what the text says to answer a question' }
   ],
   ela4: [
-    { q: 1, focus: 'Summarising a passage in her own words' },
+    { q: 1, focus: 'Summarizing a passage in her own words' },
     { q: 2, focus: 'Point of view — who is telling this, and how do you know' },
     { q: 3, focus: 'Text structure: cause and effect, compare and contrast' },
     { q: 4, focus: 'Using evidence from the text to back up an answer' }

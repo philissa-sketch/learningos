@@ -202,7 +202,7 @@ export const HERBALISM_M9_BANK = [
   {
     id: 't-hbm901h',
     lesson: 'hb-m9-01',
-    prompt: 'You held a ribbon up and it streamed towards the fence. What does that show?',
+    prompt: 'You held a ribbon up and it streamed toward the fence. What does that show?',
     choices: [
       'The wind is coming from the fence',
       'The wind is coming from behind you',
@@ -211,7 +211,7 @@ export const HERBALISM_M9_BANK = [
     ],
     answer: 1,
     feedback: [
-      'The ribbon is being pushed away from the wind, not towards it.',
+      'The ribbon is being pushed away from the wind, not toward it.',
       null,
       'A stopped wind leaves a ribbon hanging straight down.',
       'A fence can block wind, but it cannot make any.'
@@ -636,7 +636,7 @@ export const HERBALISM_M9_BANK = [
     answer: 2,
     feedback: [
       'Cumulus sits lower and is lumpy, and no blue shows through a puff.',
-      'Stratus is a low grey sheet with nothing showing through it.',
+      'Stratus is a low gray sheet with nothing showing through it.',
       null,
       'That is a cumulus tower gone dark, which is nothing like thin or wispy.'
     ],
@@ -645,7 +645,7 @@ export const HERBALISM_M9_BANK = [
   {
     id: 't-hbm904b',
     lesson: 'hb-m9-04',
-    prompt: 'The whole sky is one flat grey lid with no edges. Which cloud?',
+    prompt: 'The whole sky is one flat gray lid with no edges. Which cloud?',
     choices: ['Stratus', 'Cirrus', 'Cumulus', 'Cumulonimbus'],
     answer: 0,
     feedback: [
@@ -654,7 +654,7 @@ export const HERBALISM_M9_BANK = [
       'Cumulus comes in separate puffs with gaps between them.',
       'A cumulonimbus is a tall tower, and you can see where it ends.'
     ],
-    why: 'Stratus is the low flat sheet that covers everything and takes the colour out of the day.'
+    why: 'Stratus is the low flat sheet that covers everything and takes the color out of the day.'
   },
   {
     id: 't-hbm904c',
@@ -828,7 +828,7 @@ export const HERBALISM_M9_BANK = [
     choices: [
       'Clear weather for the rest of the week',
       'A storm, quite possibly this afternoon',
-      'A slow grey drizzle lasting all day',
+      'A slow gray drizzle lasting all day',
       'Nothing, since cumulus means fair weather'
     ],
     answer: 1,
@@ -847,12 +847,12 @@ export const HERBALISM_M9_BANK = [
     choices: [
       'A sudden violent thunderstorm',
       'A clear cold night',
-      'Steady grey drizzle that lasts',
+      'Steady gray drizzle that lasts',
       'Strong wind and nothing else'
     ],
     answer: 2,
     feedback: [
-      'Violent storms come out of towering cumulus, not out of a flat grey sheet.',
+      'Violent storms come out of towering cumulus, not out of a flat gray sheet.',
       'A lid of cloud is what stops a night going clear.',
       null,
       'Wind can come with it, but the drizzle is the part stratus is known for.'
@@ -1018,7 +1018,7 @@ export const HERBALISM_M9_BANK = [
   {
     id: 't-hbm906b',
     lesson: 'hb-m9-06',
-    prompt: 'Why must both lines on a graph be labelled?',
+    prompt: 'Why must both lines on a graph be labeled?',
     choices: [
       'To make the sheet look finished',
       'Because a ruler was used to draw them',
@@ -1027,7 +1027,7 @@ export const HERBALISM_M9_BANK = [
     ],
     answer: 2,
     feedback: [
-      'Tidy is nice, but an unlabelled graph is a picture and not a measurement.',
+      'Tidy is nice, but an unlabeled graph is a picture and not a measurement.',
       'How it was drawn has nothing to do with what it means.',
       null,
       'Labels hold nothing in place. They say what the dots are counting.'
@@ -1042,7 +1042,7 @@ export const HERBALISM_M9_BANK = [
       'The highest point on the line',
       'The gap between two readings',
       'Another word for a pattern',
-      'One of the two labelled lines a graph is built on'
+      'One of the two labeled lines a graph is built on'
     ],
     answer: 3,
     feedback: [
@@ -1099,14 +1099,14 @@ export const HERBALISM_M9_BANK = [
       'To use up the spare paper',
       'To see whether the rainy days and the cold days line up',
       'Because rain is always measured in bars',
-      'So the graph has two colours'
+      'So the graph has two colors'
     ],
     answer: 1,
     feedback: [
       'Space is not a reason to add anything to a graph.',
       null,
       'Bars are a choice here, not a rule about rainfall.',
-      'Colour helps you read it, but it is not why the rain is there.'
+      'Color helps you read it, but it is not why the rain is there.'
     ],
     why: 'Two measurements on one picture is how you find out whether they move together.'
   },
@@ -1146,7 +1146,7 @@ export const HERBALISM_M9_BANK = [
       null,
       'A total of fourteen temperatures is not a number that means anything.'
     ],
-    why: 'The range says how far the fortnight swung, which is something no single reading could tell you.'
+    why: 'The range says how far the two weeks swung, which is something no single reading could tell you.'
   },
   {
     id: 't-hbm906i',
@@ -1165,7 +1165,7 @@ export const HERBALISM_M9_BANK = [
       'Plenty of graphs do start at zero. It depends what you are showing.',
       'Saving paper is not a reason to choose a scale.'
     ],
-    why: 'Forty empty degrees at the bottom would squash a fortnight of real change into a flat line.'
+    why: 'Forty empty degrees at the bottom would squash two weeks of real change into a flat line.'
   },
   {
     id: 't-hbm906j',

@@ -154,7 +154,7 @@ const L2_ACTIVITY = {
   steps: [
     'Look at the inside of your wrist and the back of your hand.',
     'Draw your hand and mark the lines you can actually see.',
-    'Those are veins. Colour them blue on your drawing.',
+    'Those are veins. Color them blue on your drawing.',
     'Feel for your pulse. That is an artery — mark it in red.',
     'Write down which one you could SEE and which one you could FEEL.'
   ],
@@ -224,10 +224,10 @@ const L3_ACTIVITY = {
   prep: 'A ball of string, a ruler, and a large space or a long corridor.',
   needs: ['string', 'a ruler', 'her notebook', 'a pencil'],
   steps: [
-    'Cut a piece of string one metre long. Measure it properly.',
-    'Now work out how many of those make one kilometre. Write it down.',
-    'Then how many metres are in 80,000 kilometres. Show your working.',
-    'Lay your one metre on the floor and look at it again.',
+    'Cut a piece of string one meter long. Measure it properly.',
+    'Now work out how many of those make one kilometer. Write it down.',
+    'Then how many meters are in 80,000 kilometers. Show your working.',
+    'Lay your one meter on the floor and look at it again.',
     'Write one sentence about the two numbers side by side.'
   ],
   safety: 'String and a ruler. Nothing goes round anybody’s neck or fingers.',
@@ -364,7 +364,7 @@ export const HUMANBODY_M6 = [
     core: L1_BEATS.map((b) => ({ heading: b.label, text: b.teachingText })),
     doing: L1_ACTIVITY.steps.join(' '),
     practice: [
-      { ask: 'What colour is plasma?', answer: 'Pale yellow.', why: 'The floating parts make blood red.' },
+      { ask: 'What color is plasma?', answer: 'Pale yellow.', why: 'The floating parts make blood red.' },
       { ask: 'Which part plugs a leak?', answer: 'Platelets.', why: 'She met them as a scab in Module 2.' }
     ],
     check: [
@@ -464,9 +464,9 @@ export const HUMANBODY_M6 = [
     concept: 'The blood vessels in one body would stretch about 80,000 km, and a drop completes the circuit in under a minute.',
     standards: [],
     offGrade: null,
-    words: ['kilometre', 'stretch', 'circuit'],
+    words: ['kilometer', 'stretch', 'circuit'],
     glossary: [
-      { word: 'kilometre', plain: 'A thousand metres.' },
+      { word: 'kilometer', plain: 'A thousand meters.' },
       { word: 'stretch', plain: 'To reach from one place to another.' },
       { word: 'circuit', plain: 'A trip that comes back to where it started.' }
     ],
@@ -488,15 +488,15 @@ export const HUMANBODY_M6 = [
     core: L3_BEATS.map((b) => ({ heading: b.label, text: b.teachingText })),
     doing: L3_ACTIVITY.steps.join(' '),
     practice: [
-      { ask: 'How many metres in a kilometre?', answer: '1,000.', why: 'Same jump as centimetres to metres.' },
+      { ask: 'How many meters in a kilometer?', answer: '1,000.', why: 'Same jump as centimeters to meters.' },
       { ask: 'How long is one full circuit?', answer: 'Under a minute.', why: 'Sitting still.' }
     ],
     check: [
       {
-        prompt: 'How many metres are in one kilometre?',
+        prompt: 'How many meters are in one kilometer?',
         choices: ['100', '1,000', '10,000', '10'],
         answer: 1,
-        feedback: ['That is 100 metres.', null, 'That is ten kilometres.', 'Far too few.']
+        feedback: ['That is 100 meters.', null, 'That is ten kilometers.', 'Far too few.']
       },
       {
         prompt: 'Most of the length of your blood vessels is:',

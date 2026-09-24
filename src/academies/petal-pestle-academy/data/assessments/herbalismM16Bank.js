@@ -88,7 +88,7 @@ export const HERBALISM_M16_BANK = [
       'Writing it yourself makes it a record. The unit and the date make it usable.',
       'A gap is where nothing was written at all. Something was written here.'
     ,
-      'Four centimetres, four leaves and four days are three different answers.',
+      'Four centimeters, four leaves and four days are three different answers.',
       null],
     why: 'A number you cannot place in time and in units is not yet data.'
   },
@@ -154,7 +154,7 @@ export const HERBALISM_M16_BANK = [
     lesson: 'hb-m16-01',
     prompt: 'Which entry could a stranger actually use twenty years from now?',
     choices: [
-      '3 March, back step, longest garlic leaf 24 centimetres',
+      '3 March, back step, longest garlic leaf 24 centimeters',
       'Turmeric definitely doing better than last time'
     ,
       'Garlic looking good today',
@@ -255,7 +255,7 @@ export const HERBALISM_M16_BANK = [
     choices: [
       'It shows how many plants were in the container'
     ,
-      'It shows how long a real centimetre is on the drawing',
+      'It shows how long a real centimeter is on the drawing',
       'It shows how heavy the plant was when you drew it',
       'It shows which end of the page is the top'],
     answer: 1,
@@ -275,14 +275,14 @@ export const HERBALISM_M16_BANK = [
       'Because a photograph is not allowed in a field guide',
       'Because drawings are more accurate than photographs are'
     ,
-      'Because a camera cannot show the colours properly',
+      'Because a camera cannot show the colors properly',
       'Because drawing takes long enough to make you look at every part'],
     answer: 3,
     feedback: [
       'Photographs appear in plenty of guides. The drawing is for the person drawing.',
       'A photograph is usually more exact. It just does not make you count anything.'
     ,
-      'Cameras handle colour very well. That is not the reason.',
+      'Cameras handle color very well. That is not the reason.',
       null],
     why: 'The drawing changes the person holding the pencil, which is the whole point of doing it.'
   },
@@ -315,7 +315,7 @@ export const HERBALISM_M16_BANK = [
       'A drawing is a record of a specimen, and it is not the specimen.',
       null,
       'A pressed plant can be a specimen, and so can a living one you sat beside.',
-      'Best-looking is a judgement, and a guide records rather than ranks.'
+      'Best-looking is a judgment, and a guide records rather than ranks.'
     ],
     why: 'Naming the exact plant you looked at is what stops the page from being about plants in general.'
   },
@@ -335,7 +335,7 @@ export const HERBALISM_M16_BANK = [
     ,
       'A drawing has no size of its own, which is exactly what a scale bar is for.',
       null,
-      'Paper ageing is not a date, and no guide has ever relied on it.'],
+      'Paper aging is not a date, and no guide has ever relied on it.'],
     why: 'A record is worth what a stranger can take from it without asking you a question.'
   },
   {
@@ -412,21 +412,21 @@ export const HERBALISM_M16_BANK = [
       'The eye sees it perfectly well once it has been made to stay still.'
     ,
       'The plant did nothing new. You did.'],
-    why: 'Noticing is a skill you can practise, and drawing is the cheapest way to practise it.'
+    why: 'Noticing is a skill you can practice, and drawing is the cheapest way to practice it.'
   },
   {
     id: 't-hbm1602j',
     lesson: 'hb-m16-02',
     prompt: 'You are sitting beside the containers for half an hour, drawing. What are the rules?',
     choices: [
-      'Taste one leaf so you can describe the flavour on the page',
+      'Taste one leaf so you can describe the flavor on the page',
       'Move the containers indoors so nothing gets on your hands'
     ,
       'Wash your hands after, and taste nothing without a grown-up',
       'Wear gloves, because drawing near soil is dangerous'],
     answer: 2,
     feedback: [
-      'Flavour is not on a field guide page, and nothing is tasted without a grown-up.',
+      'Flavor is not on a field guide page, and nothing is tasted without a grown-up.',
       'Moving them changes their place, and the place is part of the record.'
     ,
       null,
@@ -601,7 +601,7 @@ export const HERBALISM_M16_BANK = [
       'Days are countable, so a calendar settles that one.',
       'Soil can be weighed or poured into a jug, so that is measurable.',
       null],
-    why: 'Nicest is a judgement, and no ruler in the world has ever measured one.'
+    why: 'Nicest is a judgment, and no ruler in the world has ever measured one.'
   },
   {
     id: 't-hbm1603j',
@@ -1083,7 +1083,7 @@ export const HERBALISM_M16_BANK = [
       'That is looking something up, which is useful and is a different thing.'
     ,
       'Refusing leaves the person stuck, while a referral tells them where to go.'],
-    why: 'Knowing who a question belongs to is itself a skill, and careful people practise it.'
+    why: 'Knowing who a question belongs to is itself a skill, and careful people practice it.'
   },
   {
     id: 't-hbm1606e',
@@ -1151,7 +1151,7 @@ export const HERBALISM_M16_BANK = [
     ,
       'Gigi remembers the garlic doing well in the blue bucket',
       'Ten leaves measured weekly for five weeks, written down as you went',
-      'A neighbour saying her tomatoes grew huge last year'],
+      'A neighbor saying her tomatoes grew huge last year'],
     answer: 2,
     feedback: [
       'A picture of the winner tells you nothing about how it was chosen.'

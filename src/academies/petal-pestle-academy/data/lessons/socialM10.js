@@ -57,7 +57,7 @@ export const SOCIAL_M10 = [
       verified: '2026-08-17',
       teaches: ['causes of the Civil War', 'slavery', 'states rights', 'North', 'South'],
       sourceGap:
-        'A PragerU video titled "Was the Civil War About Slavery?" was in the top five of this search and is NOT used — an advocacy organisation with a stated position on a contested framing is exactly the wrong source here. A TED-Ed lesson on the Lost Cause myth (XP0_wnaW-a0) was found and is held unverified; a CrashCourse Black American History episode was found and is pitched at high school. No Black American educator identified at elementary level. Open.'
+        'A PragerU video titled "Was the Civil War About Slavery?" was in the top five of this search and is NOT used — an advocacy organization with a stated position on a contested framing is exactly the wrong source here. A TED-Ed lesson on the Lost Cause myth (XP0_wnaW-a0) was found and is held unverified; a CrashCourse Black American History episode was found and is pitched at high school. No Black American educator identified at elementary level. Open.'
     },
     checkIn: {
       title: 'Whose decision is it?',
@@ -70,7 +70,7 @@ export const SOCIAL_M10 = [
         label: 'Two economies, one country',
         hook: 'The north made things and the south grew them, and they wanted different laws.',
         teachingText:
-          'Northern states had mills and cities and had ended slavery. Southern states grew cotton using enslaved labour, and their wealth depended on it.',
+          'Northern states had mills and cities and had ended slavery. Southern states grew cotton using enslaved labor, and their wealth depended on it.',
         example:
           'Every time a new state joined, both sides fought over whether slavery would be allowed there.',
         applyIt: {
@@ -125,7 +125,7 @@ export const SOCIAL_M10 = [
       question: 'What is the second argument hiding underneath it?'
     },
     core: [
-      { heading: 'Two economies, one country', text: 'Northern states had mills and cities and had ended slavery. Southern states grew cotton using enslaved labour, and their wealth depended on it.' },
+      { heading: 'Two economies, one country', text: 'Northern states had mills and cities and had ended slavery. Southern states grew cotton using enslaved labor, and their wealth depended on it.' },
       { heading: 'And they wrote down why', text: 'States that seceded wrote declarations giving their reasons. Several named the protection of slavery directly, in their own words.' }
     ],
     doing:
@@ -182,10 +182,10 @@ export const SOCIAL_M10 = [
     beats: [
       {
         n: 1,
-        label: 'It started at a fort in a harbour',
-        hook: 'The war began with a fort that would not surrender and a harbour full of guns.',
+        label: 'It started at a fort in a harbor',
+        hook: 'The war began with a fort that would not surrender and a harbor full of guns.',
         teachingText:
-          'Fort Sumter sat in Charleston harbour in South Carolina. In April 1861 Confederate guns fired on it. That was the first shot of the war.',
+          'Fort Sumter sat in Charleston harbor in South Carolina. In April 1861 Confederate guns fired on it. That was the first shot of the war.',
         example:
           'Nobody was killed in the bombardment itself. Four years and enormous casualties followed it.',
         applyIt: {
@@ -193,7 +193,7 @@ export const SOCIAL_M10 = [
           choices: ['McHenry', 'Sumter', 'Ticonderoga', 'Pulaski'],
           answer: 1,
           feedback: ['That was 1814.', null, 'That was earlier.', 'Not the first.'],
-          why: 'April 1861, in Charleston harbour.'
+          why: 'April 1861, in Charleston harbor.'
         }
       },
       {
@@ -216,9 +216,9 @@ export const SOCIAL_M10 = [
     activity: {
       title: 'Mark the two moments',
       prep: 'Nothing to buy. Her map from Quarter 2.',
-      needs: ['her map from lesson 26', 'coloured pencils', 'her notebook'],
+      needs: ['her map from lesson 26', 'colored pencils', 'her notebook'],
       steps: [
-        'Take out the map you labelled in Quarter 2.',
+        'Take out the map you labeled in Quarter 2.',
         'Find Charleston in South Carolina and mark it 1861.',
         'Find Gettysburg in Pennsylvania and mark it 1863.',
         'Draw a line between them and write the number of years on it.',
@@ -240,13 +240,13 @@ export const SOCIAL_M10 = [
       question: 'Can you tell at the time, or only afterwards?'
     },
     core: [
-      { heading: 'It started at a fort in a harbour', text: 'Fort Sumter sat in Charleston harbour in South Carolina. In April 1861 Confederate guns fired on it. That was the first shot of the war.' },
+      { heading: 'It started at a fort in a harbor', text: 'Fort Sumter sat in Charleston harbor in South Carolina. In April 1861 Confederate guns fired on it. That was the first shot of the war.' },
       { heading: 'And it turned in a small town', text: 'At Gettysburg in July 1863 Lee’s army attacked and was beaten. The casualties on both sides were enormous. It is called the turning point.' }
     ],
     doing:
       'Take out your map. Mark Charleston 1861 and Gettysburg 1863, draw a line between them and write the number of years on it. Note which is further north.',
     practice: [
-      { ask: 'Where did the Civil War begin?', answer: 'Fort Sumter, in Charleston harbour.', why: 'April 1861.' },
+      { ask: 'Where did the Civil War begin?', answer: 'Fort Sumter, in Charleston harbor.', why: 'April 1861.' },
       { ask: 'Why is Gettysburg called the turning point?', answer: 'The Confederacy never invaded the north again.', why: 'Lee attacked there and was beaten.' }
     ],
     check: [
@@ -305,7 +305,7 @@ export const SOCIAL_M10 = [
           'Cut the railway and you cut the food, the weapons and the reinforcements at the same time.',
         applyIt: {
           prompt: 'Atlanta mattered in 1864 mainly because of its:',
-          choices: ['Rivers', 'Railways', 'Mountains', 'Harbour'],
+          choices: ['Rivers', 'Railways', 'Mountains', 'Harbor'],
           answer: 1,
           feedback: ['Not why.', null, 'Not why.', 'It has none.'],
           why: 'Southern supply lines met there.'
@@ -365,7 +365,7 @@ export const SOCIAL_M10 = [
       { ask: 'Where did the March to the Sea end?', answer: 'Savannah, on the coast.', why: 'It crossed the whole state.' }
     ],
     check: [
-      { prompt: 'Atlanta mattered in 1864 mainly because of its:', choices: ['Rivers', 'Railways', 'Mountains', 'Harbour'], answer: 1, feedback: ['Not why.', null, 'Not why.', 'It has none.'] },
+      { prompt: 'Atlanta mattered in 1864 mainly because of its:', choices: ['Rivers', 'Railways', 'Mountains', 'Harbor'], answer: 1, feedback: ['Not why.', null, 'Not why.', 'It has none.'] },
       { prompt: 'Sherman’s March to the Sea ended at the city of:', choices: ['Atlanta', 'Savannah', 'Charleston', 'Richmond'], answer: 1, feedback: ['It started there.', null, 'Different state.', 'Different state.'] },
       { prompt: 'A supply line is the route food and weapons travel to an:', choices: ['Island', 'Army', 'Office', 'Orchard'], answer: 1, feedback: ['Not it.', null, 'Not it.', 'Not it.'] }
     ]

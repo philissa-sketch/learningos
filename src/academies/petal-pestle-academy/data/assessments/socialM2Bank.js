@@ -95,7 +95,7 @@ export const SOCIAL_M2_BANK = [
     id: 'ss-m2-01-q10',
     lesson: 'ss-m2-01',
     prompt: 'A right you are born with cannot be taken by a:',
-    choices: ['Neighbour', 'Teacher', 'Friend', 'King'],
+    choices: ['Neighbor', 'Teacher', 'Friend', 'King'],
     answer: 3,
     feedback: ['Not the point being made.', 'Not the point being made.', 'Not the point being made.', null],
     why: 'That is the whole argument the paper makes.'
@@ -251,7 +251,7 @@ export const SOCIAL_M2_BANK = [
   {
     id: 'ss-m2-03-q7',
     lesson: 'ss-m2-03',
-    prompt: 'A harbour is a safe place beside land for:',
+    prompt: 'A harbor is a safe place beside land for:',
     choices: ['Horses', 'Sheep', 'Ships', 'Carts'],
     answer: 2,
     feedback: ['Not for horses.', 'Not for sheep.', null, 'Not for carts.'],

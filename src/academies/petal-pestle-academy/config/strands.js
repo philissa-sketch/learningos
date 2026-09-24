@@ -74,7 +74,7 @@ export const STRANDS = [
     label: 'Fractions & Decimals',
     cardLabel: 'Parts of a Whole',
     plant: '🌼',
-    blurb: 'Halves, thirds, quarters, decimals — the maths of a recipe.'
+    blurb: 'Halves, thirds, quarters, decimals — the math of a recipe.'
   },
   {
     id: 'measurement-data',
@@ -131,7 +131,7 @@ export const STRANDS = [
     label: 'Writing Strategies',
     cardLabel: 'Putting Ideas Together',
     plant: '🏵️',
-    blurb: 'Organising ideas, topic sentences, ordering, and evidence.'
+    blurb: 'Organizing ideas, topic sentences, ordering, and evidence.'
   }
 ];
 

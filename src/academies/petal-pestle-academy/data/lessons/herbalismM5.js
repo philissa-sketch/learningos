@@ -124,7 +124,7 @@ const M5L1_BEATS = [
     label: 'The sun lifts water up',
     hook: 'The water in your glass may have fallen as rain on a dinosaur.',
     teachingText:
-      'Heat from the sun turns water into a gas. That gas is water vapour. You cannot see it, but it rises. The change has a name: evaporation.',
+      'Heat from the sun turns water into a gas. That gas is water vapor. You cannot see it, but it rises. The change has a name: evaporation.',
     example:
       'Look at the saucer under your ginger pot. On Monday it held water. By Wednesday it is dry. Nothing drank it. The sun lifted it.',
     applyIt: {
@@ -145,7 +145,7 @@ const M5L1_BEATS = [
     label: 'The sky gives it back',
     hook: 'A cloud is not smoke. It is millions of tiny water drops, all floating together.',
     teachingText:
-      'High up, the air is cold. Cold turns vapour back into tiny drops. That change is condensation. When the drops grow heavy they fall, and falling water is precipitation.',
+      'High up, the air is cold. Cold turns vapor back into tiny drops. That change is condensation. When the drops grow heavy they fall, and falling water is precipitation.',
     example:
       'Pour a cold drink on a hot day. The outside of the glass goes wet. That water did not leak out of the glass. It came out of the warm air.',
     applyIt: {
@@ -158,7 +158,7 @@ const M5L1_BEATS = [
         'Her hands are dry, and the bottom is wet too.',
         'The sky is clear.'
       ],
-      why: 'Warm air carries vapour. The cold jar cools that air and the vapour turns back into drops. Condensation.'
+      why: 'Warm air carries vapor. The cold jar cools that air and the vapor turns back into drops. Condensation.'
     }
   }
 ];
@@ -214,7 +214,7 @@ const M5L1_LEDGER = {
   ],
   game: {
     title: 'Word Boss',
-    cards: ['EVAPORATION', 'WATER VAPOUR', 'CONDENSATION', 'PRECIPITATION', 'WATER CYCLE'],
+    cards: ['EVAPORATION', 'WATER VAPOR', 'CONDENSATION', 'PRECIPITATION', 'WATER CYCLE'],
     rounds: [
       'Say what each word means in your own words. No fancy talk.',
       'A grown-up says the meaning. You say the word. Beat the clock.',
@@ -242,7 +242,7 @@ const M5L2_BEATS = [
     label: 'One water, three ways',
     hook: 'An ice cube and a puff of steam are made of exactly the same stuff.',
     teachingText:
-      'Ice is water as a solid. It holds its own shape. Water in a cup is a liquid, so it takes the shape of the cup. Water vapour is a gas, and it spreads out to fill the room.',
+      'Ice is water as a solid. It holds its own shape. Water in a cup is a liquid, so it takes the shape of the cup. Water vapor is a gas, and it spreads out to fill the room.',
     example:
       'Take one ice cube. Drop it in a cup. It melts into liquid. Leave the cup a week and the liquid is gone. It left as gas. Same water the whole time.',
     applyIt: {
@@ -265,7 +265,7 @@ const M5L2_BEATS = [
     teachingText:
       'Add heat and water climbs: ice, then liquid, then gas. Take heat away and it comes back down: gas, then liquid, then ice. The sun is the heat that runs the whole water cycle.',
     example:
-      'Your freezer pulls heat out, so water turns to ice. The sunny sill pushes heat in, so water turns to vapour. Same water. Two directions.',
+      'Your freezer pulls heat out, so water turns to ice. The sunny sill pushes heat in, so water turns to vapor. Same water. Two directions.',
     applyIt: {
       prompt: 'You put the same jar in a cool dark cupboard instead of the sunny sill. Fewer drops form on the lid. Why?',
       choices: ['There is less water', 'There is less heat', 'The lid is broken', 'Cupboards dry things out'],
@@ -276,7 +276,7 @@ const M5L2_BEATS = [
         'It is the same lid as before.',
         'A cupboard is not a dryer.'
       ],
-      why: 'Heat drives the change. Less heat means less vapour, so fewer drops on the lid.'
+      why: 'Heat drives the change. Less heat means less vapor, so fewer drops on the lid.'
     }
   }
 ];
@@ -323,7 +323,7 @@ const M5L2_ACTIVITY = {
 };
 
 const M5L2_LEDGER = {
-  sheet: 'M5L2-ice-water-vapour-PRINTABLE.pdf',
+  sheet: 'M5L2-ice-water-vapor-PRINTABLE.pdf',
   tasks: [
     'Draw your jar. Label the solid, the liquid and the gas.',
     'Draw an arrow where heat goes IN. Draw an arrow where heat goes OUT.',
@@ -381,7 +381,7 @@ const M5L3_BEATS = [
     label: 'A plant is part of the water cycle',
     hook: 'One big oak tree is a water pump. In a day it lifts more than a bathtub holds.',
     teachingText:
-      'Water goes up the plant and out through the leaves. It leaves as vapour. That vapour rises, cools, makes clouds and comes back as rain. So plants help make rain.',
+      'Water goes up the plant and out through the leaves. It leaves as vapor. That vapor rises, cools, makes clouds and comes back as rain. So plants help make rain.',
     example:
       'Your corn, your garlic, your ginger and your turmeric are all doing it right now. Every leaf out there is quietly letting water go.',
     applyIt: {
@@ -450,7 +450,7 @@ const M5L3_LEDGER = {
   ],
   game: {
     title: 'Word Boss',
-    cards: ['TRANSPIRATION', 'STOMATA', 'PORE', 'WATER VAPOUR', 'CONTROL'],
+    cards: ['TRANSPIRATION', 'STOMATA', 'PORE', 'WATER VAPOR', 'CONTROL'],
     rounds: [
       'Say what each word means in your own words. No fancy talk.',
       'A grown-up says the meaning. You say the word. Beat the clock.',
@@ -523,7 +523,7 @@ const M5L4_ACTIVITY = {
   needs: [
     '2 stalks of celery with leaves on top',
     '1 white flower with a stem (a carnation is best)',
-    'red or blue food colouring',
+    'red or blue food coloring',
     '3 jars',
     'water',
     'a knife for the grown-up',
@@ -532,13 +532,13 @@ const M5L4_ACTIVITY = {
   steps: [
     'A grown-up cuts a slice off the bottom of each stalk. Fresh cuts drink better.',
     'A grown-up cuts every leaf off the second stalk. Keep the first stalk leafy.',
-    'Fill three jars with water. Add plenty of colouring to each.',
+    'Fill three jars with water. Add plenty of coloring to each.',
     'Stand the leafy stalk in jar 1. The bare stalk in jar 2. The white flower in jar 3.',
     'Put all three in the same spot with the same light.',
     'Guess which one will climb fastest. Write it down first.',
-    'Check after two hours. Mark how high the colour has got.',
+    'Check after two hours. Mark how high the color has got.',
     'Leave them overnight.',
-    'In the morning, measure the colour height on each stalk with the ruler.',
+    'In the morning, measure the color height on each stalk with the ruler.',
     'A grown-up cuts the leafy stalk across the middle. Find the ring of dots.',
     'Look at the white flower. Look at the very edge of each petal.'
   ],
@@ -549,10 +549,10 @@ const M5L4_ACTIVITY = {
     'There is no pump in here. So what is doing the lifting?',
     'Which stalk do you think will win? Say it out loud first.',
     'Look at the cut end. Count the dots. What are they?',
-    'The colour is in the dots and nowhere else. Why?',
+    'The color is in the dots and nowhere else. Why?',
     'The bare stalk barely moved. What is it missing?',
     'What did we learn yesterday that explains that?',
-    'The flower turned colour at the petal edge first. Why the edge?',
+    'The flower turned color at the petal edge first. Why the edge?',
     'Where does the water go once it reaches the leaf?',
     'Name the whole trip for me. Start at the soil.',
     'If the roots dried out, what would happen up here?'
@@ -564,7 +564,7 @@ const M5L4_LEDGER = {
   tasks: [
     'Draw the plant. Draw the water path with one long arrow, soil to leaf.',
     'Label it: root hairs, xylem, stem, leaf.',
-    'Write the colour height for the leafy stalk and the bare stalk.',
+    'Write the color height for the leafy stalk and the bare stalk.',
     'Write one sentence: what pulls the water up.'
   ],
   game: {
@@ -843,12 +843,12 @@ export const HERBALISM_M5 = [
 
     standards: ['S4E3a'],
 
-    words: ['evaporation', 'water vapour', 'condensation', 'precipitation', 'water cycle'],
+    words: ['evaporation', 'water vapor', 'condensation', 'precipitation', 'water cycle'],
 
     glossary: [
       { word: 'evaporation', plain: 'When heat turns water into a gas and it floats up.' },
-      { word: 'water vapour', plain: 'Water as a gas. It is really there. You just cannot see it.' },
-      { word: 'condensation', plain: 'When vapour cools and turns back into tiny drops.' },
+      { word: 'water vapor', plain: 'Water as a gas. It is really there. You just cannot see it.' },
+      { word: 'condensation', plain: 'When vapor cools and turns back into tiny drops.' },
       { word: 'precipitation', plain: 'Water falling out of the sky. Rain, snow, sleet or hail.' },
       { word: 'water cycle', plain: 'The same water going round and round, over and over.' },
       { word: 'cloud', plain: 'Millions of tiny water drops floating together.' },
@@ -864,7 +864,7 @@ export const HERBALISM_M5 = [
       verified: '2026-08-15 · re-checked at youtube.com/oembed',
       teaches: [
         'evaporation',
-        'water vapour',
+        'water vapor',
         'condensation into clouds',
         'precipitation',
         'collection',
@@ -887,12 +887,12 @@ export const HERBALISM_M5 = [
     practice: [
       {
         ask: 'A puddle dries up in the sun. Where does the water go?',
-        answer: 'Up into the air as water vapour.',
+        answer: 'Up into the air as water vapor.',
         why: 'Heat turns liquid water into a gas. That is evaporation. Nothing is lost.'
       },
       {
         ask: 'Why does a cold glass go wet on a hot day?',
-        answer: 'Vapour in the warm air cools and turns back into drops on the glass.',
+        answer: 'Vapor in the warm air cools and turns back into drops on the glass.',
         why: 'That is condensation, and it is the same thing that makes a cloud.'
       }
     ],
@@ -942,11 +942,11 @@ export const HERBALISM_M5 = [
     week: 1,
     day: 2,
     n: 26,
-    title: 'Ice, water, vapour in a jar',
+    title: 'Ice, water, vapor in a jar',
     minutes: 45,
     spec: '§10 · beats',
 
-    concept: 'Ice, water and vapour are all one thing. Heat moves water one way and cold moves it back.',
+    concept: 'Ice, water and vapor are all one thing. Heat moves water one way and cold moves it back.',
 
     standards: ['S4E3a'],
 
@@ -955,11 +955,11 @@ export const HERBALISM_M5 = [
     glossary: [
       { word: 'solid', plain: 'It holds its own shape. Ice is water as a solid.' },
       { word: 'liquid', plain: 'It takes the shape of whatever holds it. Water in a cup.' },
-      { word: 'gas', plain: 'It spreads out and fills the room. Water vapour is a gas.' },
+      { word: 'gas', plain: 'It spreads out and fills the room. Water vapor is a gas.' },
       { word: 'melting', plain: 'Solid turning into liquid. Heat going in.' },
       { word: 'freezing', plain: 'Liquid turning into solid. Heat coming out.' },
       { word: 'heat', plain: 'The energy that moves water from ice to water to gas.' },
-      { word: 'water vapour', plain: 'Water as a gas. You cannot see it.' }
+      { word: 'water vapor', plain: 'Water as a gas. You cannot see it.' }
     ],
 
     video: {
@@ -999,7 +999,7 @@ export const HERBALISM_M5 = [
       },
       {
         ask: 'Why do drops form on the cold lid, not the warm glass?',
-        answer: 'Because vapour turns back into drops when it touches something cold.',
+        answer: 'Because vapor turns back into drops when it touches something cold.',
         why: 'Condensation needs heat to leave. The ice on the lid is where the heat leaves.'
       }
     ],
@@ -1007,7 +1007,7 @@ export const HERBALISM_M5 = [
     check: [
       {
         prompt: 'Which one is water as a gas?',
-        choices: ['An ice cube', 'A puddle', 'Water vapour', 'Snow'],
+        choices: ['An ice cube', 'A puddle', 'Water vapor', 'Snow'],
         answer: 2,
         feedback: [
           'Ice is the solid.',
@@ -1057,13 +1057,13 @@ export const HERBALISM_M5 = [
 
     standards: ['S4E3b'],
 
-    words: ['transpiration', 'stomata', 'pore', 'water vapour', 'control'],
+    words: ['transpiration', 'stomata', 'pore', 'water vapor', 'control'],
 
     glossary: [
       { word: 'transpiration', plain: 'Water going out of a plant into the air.' },
       { word: 'stomata', plain: 'The tiny holes on a leaf. Mostly on the underside.' },
       { word: 'pore', plain: 'One little hole. Your skin has them too.' },
-      { word: 'water vapour', plain: 'Water as a gas. That is how it leaves the leaf.' },
+      { word: 'water vapor', plain: 'Water as a gas. That is how it leaves the leaf.' },
       { word: 'control', plain: 'The part of a test you compare against. Here, the bare stick.' },
       { word: 'water cycle', plain: 'The same water going round and round. A leaf is one of its paths.' }
     ],
@@ -1078,7 +1078,7 @@ export const HERBALISM_M5 = [
       teaches: [
         'what transpiration is',
         'tying a bag over a leaf to trap the water',
-        'water leaves a leaf as vapour and turns back into drops in the bag',
+        'water leaves a leaf as vapor and turns back into drops in the bag',
         'plants move water into the air'
       ],
       sourceGap:
@@ -1099,7 +1099,7 @@ export const HERBALISM_M5 = [
       {
         ask: 'A bag tied on a leaf gets wet inside. Where did that water come from?',
         answer: 'Out of the leaf.',
-        why: 'Leaves let water go as vapour through their stomata. The bag traps it and it turns back into drops.'
+        why: 'Leaves let water go as vapor through their stomata. The bag traps it and it turns back into drops.'
       },
       {
         ask: 'Why did you bag a bare stick as well?',
@@ -1116,7 +1116,7 @@ export const HERBALISM_M5 = [
         feedback: [
           null,
           'That is water leaving a puddle or a pond.',
-          'That is vapour turning back into drops.',
+          'That is vapor turning back into drops.',
           'That is a seed waking up.'
         ]
       },
@@ -1197,7 +1197,7 @@ export const HERBALISM_M5 = [
     hook: M5L4_CHECK_IN,
     core: M5L4_BEATS.map((b) => ({ heading: b.label, text: b.teachingText })),
     doing:
-      'Stand three things in coloured water: a celery stalk with its leaves on, a second stalk with every leaf cut off, and a white flower. Guess which climbs fastest and write it down first. Measure the colour height after two hours and again the next morning, then have a grown-up cut the leafy stalk across to find the ring of red dots — the cut ends of the xylem.',
+      'Stand three things in colored water: a celery stalk with its leaves on, a second stalk with every leaf cut off, and a white flower. Guess which climbs fastest and write it down first. Measure the color height after two hours and again the next morning, then have a grown-up cut the leafy stalk across to find the ring of red dots — the cut ends of the xylem.',
 
     practice: [
       {

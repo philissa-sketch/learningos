@@ -171,7 +171,7 @@ const M13L1_BEATS = [
     teachingText:
       'Plants build compounds that make them bitter, burning, sticky or poisonous, because an animal that gets a mouthful of that goes and eats something else. Those compounds cost the plant energy to make, so they only stay in a species because they work. Nothing a plant builds is free.',
     example:
-      'Whole garlic hardly smells at all. It stores a quiet compound called alliin and keeps an enzyme called alliinase locked away from it, and crushing the clove smashes them together to make allicin in seconds. That sharp smell is a defence going off in your hand.',
+      'Whole garlic hardly smells at all. It stores a quiet compound called alliin and keeps an enzyme called alliinase locked away from it, and crushing the clove smashes them together to make allicin in seconds. That sharp smell is a defense going off in your hand.',
     applyIt: {
       prompt: 'Two wild plants grow side by side in the same soil. One is bitter and untouched, and one is sweet and chewed down to the stem. Which one is more likely to pass its traits on?',
       choices: [
@@ -187,13 +187,13 @@ const M13L1_BEATS = [
         'A plant chewed to the stem often never gets to make seed at all.',
         'Same soil, but very different odds of surviving long enough to seed.'
       ],
-      why: 'A defence spreads through a species because the defended plants are the ones left alive to make seed.'
+      why: 'A defense spreads through a species because the defended plants are the ones left alive to make seed.'
     }
   },
   {
     n: 2,
     label: 'It was never made for us',
-    hook: 'Caffeine is a defence chemical. In a coffee plant it works on insects that chew the leaves, and the fact that people like it is an accident.',
+    hook: 'Caffeine is a defense chemical. In a coffee plant it works on insects that chew the leaves, and the fact that people like it is an accident.',
     teachingText:
       'Every plant compound we later turned into a medicine was built by the plant, for the plant, long before anybody found it. People came along much later, pulled it out, measured it and put it to a different use. That is why a plant is not built to be safe for a child, and why bitter or burning is a warning rather than an invitation.',
     example:
@@ -208,18 +208,18 @@ const M13L1_BEATS = [
       ],
       answer: 2,
       feedback: [
-        'Plants do not send ripeness messages to people, and no plant is labelled.',
+        'Plants do not send ripeness messages to people, and no plant is labeled.',
         'A thirsty plant wilts. Bitterness is built on purpose over many generations.',
         null,
         'Random traits fade out. Traits that keep a plant alive are the ones that spread.'
       ],
-      why: 'Bitter is a defence doing its job, and spitting it out is that defence working exactly as built.'
+      why: 'Bitter is a defense doing its job, and spitting it out is that defense working exactly as built.'
     }
   }
 ];
 
 const M13L1_ACTIVITY = {
-  title: 'The defence survey',
+  title: 'The defense survey',
   prep: 'Ask Gigi to come outside with you, because one step of this needs her hands rather than yours. Take your log and a pen, and take a magnifier if there is one in the house.',
   needs: [
     'her garlic, ginger, turmeric and corn containers',
@@ -261,23 +261,23 @@ const M13L1_ACTIVITY = {
 };
 
 const M13L1_LEDGER = {
-  sheet: 'M13L1-the-defence-survey-PRINTABLE.pdf',
+  sheet: 'M13L1-the-defense-survey-PRINTABLE.pdf',
   tasks: [
     'Fill the table with your four plants and how many damaged leaves each one had.',
     'Write your ranking, most eaten first, and one sentence saying why you think so.',
     'Draw the garlic clove before cutting and after cutting, and label where the smell came from.',
-    'Write one sentence: who is a plant defence chemical actually built for?'
+    'Write one sentence: who is a plant defense chemical actually built for?'
   ],
   game: {
     title: 'Word Boss',
-    cards: ['COMPOUND', 'DEFENCE CHEMICAL', 'HERBIVORE', 'BITTER', 'ALLICIN'],
+    cards: ['COMPOUND', 'DEFENSE CHEMICAL', 'HERBIVORE', 'BITTER', 'ALLICIN'],
     rounds: [
       'Say what each word means in your own words. No fancy talk.',
       'A grown-up says the meaning. You say the word. Beat the clock.',
       'Name a real plant for each card, and say what that plant is defending against.'
     ],
     ifSheIsStuck:
-      'Go back to the board with the cut garlic on it. COMPOUND and DEFENCE CHEMICAL stop being words the second she smells the difference between a whole clove and a cut one.'
+      'Go back to the board with the cut garlic on it. COMPOUND and DEFENSE CHEMICAL stop being words the second she smells the difference between a whole clove and a cut one.'
   },
   note: 'Nothing here is graded. Nothing is corrected. Petals are for doing it.'
 };
@@ -349,23 +349,23 @@ const M13L2_BEATS = [
 
 const M13L2_ACTIVITY = {
   title: 'Build the aspirin timeline to scale',
-  prep: 'Turn a sheet of paper sideways so you have the long edge to work on, and find a ruler that reads in centimetres. Ask Gigi to fetch one medicine box from wherever she keeps them, and to keep hold of it herself the whole time.',
+  prep: 'Turn a sheet of paper sideways so you have the long edge to work on, and find a ruler that reads in centimeters. Ask Gigi to fetch one medicine box from wherever she keeps them, and to keep hold of it herself the whole time.',
   needs: [
     'a sheet of paper turned sideways, or a strip of card',
-    'a ruler marked in centimetres',
+    'a ruler marked in centimeters',
     'a pencil and a rubber',
-    'coloured pens',
+    'colored pens',
     'one medicine box, held by Gigi only',
     'her Plant Detective Log'
   ],
   steps: [
     'Rule a straight line along the paper and mark the very left end as the year 1763.',
-    'Work at a scale of one centimetre for every five years, and write that scale at the top.',
-    'Buchner named salicin in 1828, which is 65 years on, so mark 13 centimetres.',
-    'Piria made salicylic acid in 1838, which is 75 years on, so mark 15 centimetres.',
-    'Gerhardt made acetylsalicylic acid in 1853, which is 90 years on, so mark 18 centimetres.',
-    'Bayer made it pure and stable in 1897, which is 134 years on, so mark 26.8 centimetres.',
-    'The name Aspirin went worldwide in 1899, which is 136 years on, so mark 27.2 centimetres.',
+    'Work at a scale of one centimeter for every five years, and write that scale at the top.',
+    'Buchner named salicin in 1828, which is 65 years on, so mark 13 centimeters.',
+    'Piria made salicylic acid in 1838, which is 75 years on, so mark 15 centimeters.',
+    'Gerhardt made acetylsalicylic acid in 1853, which is 90 years on, so mark 18 centimeters.',
+    'Bayer made it pure and stable in 1897, which is 134 years on, so mark 26.8 centimeters.',
+    'The name Aspirin went worldwide in 1899, which is 136 years on, so mark 27.2 centimeters.',
     'Label every mark with the year, the person and what they actually did.',
     'Look at your line and find the longest empty gap, then write down how many years it is.',
     'Now Gigi holds up her medicine box and reads out the name of the active ingredient.',
@@ -376,7 +376,7 @@ const M13L2_ACTIVITY = {
     'A child never opens, touches or takes medicine, and that stays true whatever is printed on the box. Gigi holds it, Gigi reads it, and Gigi puts it away. Nothing in this lesson is tasted and no willow bark is picked, chewed or brought indoors.',
   grownUpAsks: [
     'Before we rule the line. How long do you think this whole story took?',
-    'Your scale is one centimetre for five years. Why not one centimetre for one year?',
+    'Your scale is one centimeter for five years. Why not one centimeter for one year?',
     'Where is the longest empty gap on your line, and what might have filled it?',
     'Buchner got the compound out. Why was that not the end of the job?',
     'Gerhardt made it in 1853 and nothing happened. Why not?',
@@ -392,21 +392,21 @@ const M13L2_ACTIVITY = {
 const M13L2_LEDGER = {
   sheet: 'M13L2-the-aspirin-timeline-PRINTABLE.pdf',
   tasks: [
-    'Copy your timeline onto the sheet with all five dates marked and labelled.',
+    'Copy your timeline onto the sheet with all five dates marked and labeled.',
     'Write the scale you used, and the length of the longest gap in years.',
     'Write the name of the active ingredient Gigi read out, spelled correctly.',
     'Write one sentence: why is a tablet easier to trust than a piece of bark?'
   ],
   game: {
     title: 'Word Boss',
-    cards: ['SALICIN', 'ISOLATE', 'ACTIVE INGREDIENT', 'BATCH', 'STANDARDISED'],
+    cards: ['SALICIN', 'ISOLATE', 'ACTIVE INGREDIENT', 'BATCH', 'STANDARDIZED'],
     rounds: [
       'Say what each word means in your own words. No fancy talk.',
       'A grown-up says the meaning. You say the word. Beat the clock.',
       'Put the five cards in the order the story happened, and defend your order.'
     ],
     ifSheIsStuck:
-      'Point at the two marks on her own timeline that are 44 years apart. ISOLATE and STANDARDISED are the difference between those two marks, and she drew that gap herself.'
+      'Point at the two marks on her own timeline that are 44 years apart. ISOLATE and STANDARDIZED are the difference between those two marks, and she drew that gap herself.'
   },
   note: 'Nothing here is graded. A crooked line with the right years on it beats a neat one with the wrong ones.'
 };
@@ -455,7 +455,7 @@ const M13L3_BEATS = [
     teachingText:
       'Finding a compound in a plant is only half the work, because plants run out and forests do not grow back quickly. Once chemists know how a compound is built, they can build it themselves from cheaper starting material. In 1935, working at DePauw with Josef Pikl, Julian built physostigmine in the laboratory from scratch.',
     example:
-      'Julian went on to make hormone medicines out of soybeans, which are grown in fields by the tonne rather than gathered from a forest. In 1973 he became the first African American chemist elected to the National Academy of Sciences.',
+      'Julian went on to make hormone medicines out of soybeans, which are grown in fields by the ton rather than gathered from a forest. In 1973 he became the first African American chemist elected to the National Academy of Sciences.',
     applyIt: {
       prompt: 'A useful compound is found in a rare tree that grows in only one valley. Why do chemists work so hard to build that compound in a laboratory instead?',
       choices: [
@@ -478,7 +478,7 @@ const M13L3_BEATS = [
 
 const M13L3_ACTIVITY = {
   title: 'Chromatography — pull one mixture apart',
-  prep: 'Cut coffee filter paper or thick kitchen paper into strips about three centimetres wide and fifteen long. Test your black pen on a scrap first, because a permanent marker will not move in water and a washable one will.',
+  prep: 'Cut coffee filter paper or thick kitchen paper into strips about three centimeters wide and fifteen long. Test your black pen on a scrap first, because a permanent marker will not move in water and a washable one will.',
   needs: [
     'coffee filter paper or thick white kitchen paper',
     'washable felt tip pens, black and brown and green',
@@ -491,30 +491,30 @@ const M13L3_ACTIVITY = {
     'her Plant Detective Log'
   ],
   steps: [
-    'Rule a pencil line across each strip, two centimetres up from the bottom edge.',
+    'Rule a pencil line across each strip, two centimeters up from the bottom edge.',
     'Put one fat dot of washable black pen in the middle of the line on strip one.',
     'Do the same with brown on strip two and green on strip three, then let them dry.',
-    'Pour water into each glass, no more than one centimetre deep.',
+    'Pour water into each glass, no more than one centimeter deep.',
     'Tape the top of each strip to a pencil and hang it so the paper touches the water.',
     'The pencil line must stay above the water, or your dot washes off instead of climbing.',
-    'Watch for ten minutes as the water climbs and the dot separates into bands of colour.',
+    'Watch for ten minutes as the water climbs and the dot separates into bands of color.',
     'Lift each strip out, mark where the water stopped, and let them dry flat.',
-    'Count the bands on each strip and write down how many colours were hiding in each pen.',
+    'Count the bands on each strip and write down how many colors were hiding in each pen.',
     'For the leaf run, Gigi crushes leaves with rubbing alcohol and does that part herself.',
-    'Compare all your strips: one dot went in and several separate colours came out.',
+    'Compare all your strips: one dot went in and several separate colors came out.',
     'Write the sentence that matters: one thing that looked single was a mixture all along.'
   ],
   safety:
     'Rubbing alcohol is a grown-up job from start to finish, and it stays well away from any flame or hot pan. Do the leaf run near an open window. Nothing is tasted and nothing is drunk, and that includes the water in the glasses once a pen has bled into it. Wash your hands at the end.',
   grownUpAsks: [
-    'Before we start. How many colours do you think are inside a black pen?',
+    'Before we start. How many colors do you think are inside a black pen?',
     'Why did we rule that line in pencil rather than in pen?',
     'What would go wrong if the dot started underneath the water?',
     'The water is climbing the paper on its own. What is pulling it up?',
-    'Which colour travelled furthest, and can you think of a reason why?',
+    'Which color traveled furthest, and can you think of a reason why?',
     'Your one dot became several bands. Where were those bands before?',
     'A chemist calls each band a fraction. What would she do with them next?',
-    'Green leaves gave us more than one colour. Does that surprise you?',
+    'Green leaves gave us more than one color. Does that surprise you?',
     'How is this paper strip doing the same job as splitting a plant extract?',
     'If a band did something useful, how would you find out which band it was?',
     'Say it back to me. Why can you not trust a mixture to be one thing?'
@@ -587,21 +587,21 @@ const M13L4_BEATS = [
     teachingText:
       'Tablets are made in batches of many thousands, and samples are pulled out of every batch and tested before any of it leaves the factory. If a batch fails, the number lets the company find every box from it and call them all back. Without that number, one bad batch could never be told apart from a good one.',
     example:
-      'That is the difference between a factory and a guess. A factory can say which day, which machine and which test. Somebody handing you a jar of unlabelled powder can say none of those things, which is why nobody should ever accept one.',
+      'That is the difference between a factory and a guess. A factory can say which day, which machine and which test. Somebody handing you a jar of unlabeled powder can say none of those things, which is why nobody should ever accept one.',
     applyIt: {
       prompt: 'A test finds a problem in one batch made on a Tuesday. Why does the batch number matter so much on that Wednesday morning?',
       choices: [
         'It tells shops exactly which boxes to pull off the shelf and send back',
         'It tells you how many tablets are inside each box',
         'It proves the factory is bigger than the shop',
-        'It tells the customer what colour the tablet is'
+        'It tells the customer what color the tablet is'
       ],
       answer: 0,
       feedback: [
         null,
         'The count is printed too, but that is a different number doing a different job.',
         'Size of company has nothing to do with tracing a fault.',
-        'Colour is on the box as well, and it traces nothing.'
+        'Color is on the box as well, and it traces nothing.'
       ],
       why: 'A batch number turns thousands of identical boxes back into a list somebody can follow.'
     }
@@ -610,10 +610,10 @@ const M13L4_BEATS = [
 
 const M13L4_ACTIVITY = {
   title: 'Press a batch that is not medicine',
-  prep: 'Clear the counter and set the kitchen scale on a flat part of it. Write NOT MEDICINE on a card and stand it beside your work before you start, because a thing that looks like a tablet should always be labelled as what it is.',
+  prep: 'Clear the counter and set the kitchen scale on a flat part of it. Write NOT MEDICINE on a card and stand it beside your work before you start, because a thing that looks like a tablet should always be labeled as what it is.',
   needs: [
     'cornflour, about a cupful',
-    'a pinch of turmeric from her own container, as a colour marker',
+    'a pinch of turmeric from her own container, as a color marker',
     'a small bowl and a teaspoon',
     'water in a cup, and a teaspoon to add it with',
     'a kitchen scale that reads in grams',
@@ -635,7 +635,7 @@ const M13L4_ACTIVITY = {
     'Write a batch number on the tape, using todays date, and stick it on the jar.',
     'Drop one pellet into the glass of water and time how long it takes to fall apart.',
     'That is the disintegrant job, being done badly by water and cornflour alone.',
-    'Put the rest in the labelled jar, and nothing goes in a mouth at any point.'
+    'Put the rest in the labeled jar, and nothing goes in a mouth at any point.'
   ],
   safety:
     'These pellets are a model of a tablet and they are not medicine, not food and not a snack, and they are never put in a mouth. Label them and keep them away from anybody small who might not know that. Wash your hands before you start and again at the end, and wipe the counter down properly.',
@@ -746,8 +746,8 @@ const M13L5_ACTIVITY = {
   prep: 'This one needs Gigi to set up part of it while you are out of the room, so agree on that before you begin. Get four identical clear glasses for the first part and three more for the second, and put a jug of water and a measuring jug on the counter.',
   needs: [
     'seven identical clear glasses or jars',
-    'a measuring jug marked in millilitres',
-    'food colouring, one colour',
+    'a measuring jug marked in milliliters',
+    'food coloring, one color',
     'a dropper or the dropper in the bottle lid',
     'table salt and a teaspoon',
     'a kitchen scale that reads in grams',
@@ -757,12 +757,12 @@ const M13L5_ACTIVITY = {
   ],
   steps: [
     'Line up four glasses and label them A, B, C and D with tape.',
-    'Measure 10 millilitres of water into A, 50 into B, 250 into C and 1000 into D.',
-    'Put exactly one drop of food colouring into each of the four glasses.',
+    'Measure 10 milliliters of water into A, 50 into B, 250 into C and 1000 into D.',
+    'Put exactly one drop of food coloring into each of the four glasses.',
     'Stir each one and then line them up in front of a window and look along the row.',
-    'Write down what you see: same one drop every time, four completely different colours.',
+    'Write down what you see: same one drop every time, four completely different colors.',
     'Now leave the room while Gigi makes up the second set.',
-    'Gigi fills three glasses with 200 millilitres of water each and labels them 1, 2 and 3.',
+    'Gigi fills three glasses with 200 milliliters of water each and labels them 1, 2 and 3.',
     'Into one she stirs nothing, into one a level teaspoon of salt, into one four teaspoons.',
     'Come back and try to tell which is which by looking, without tasting anything.',
     'Write down your guess, then tare the scale, weigh each glass, and write the three masses.',
@@ -770,11 +770,11 @@ const M13L5_ACTIVITY = {
     'Write the conclusion in your own words, and read it out loud to Gigi before you finish.'
   ],
   safety:
-    'Nothing in this activity is tasted or drunk, not one sip, and the salty water goes down the sink at the end. Food colouring stains, so wear an apron and wipe spills straight away. Wash your hands before you start and again at the end.',
+    'Nothing in this activity is tasted or drunk, not one sip, and the salty water goes down the sink at the end. Food coloring stains, so wear an apron and wipe spills straight away. Wash your hands before you start and again at the end.',
   grownUpAsks: [
     'One drop went into all four glasses. Why does D look so much paler than A?',
-    'Is there less colouring in D, or is there more water around it?',
-    'What word would you use for how crowded the colouring is in a glass?',
+    'Is there less coloring in D, or is there more water around it?',
+    'What word would you use for how crowded the coloring is in a glass?',
     'Now the salt. Before you weighed them, could you tell them apart at all?',
     'You guessed. Were you right, and how sure were you before the scale answered?',
     'Which was the only tool in this kitchen that could tell you the truth?',
@@ -790,7 +790,7 @@ const M13L5_ACTIVITY = {
 const M13L5_LEDGER = {
   sheet: 'M13L5-you-cannot-see-a-dose-PRINTABLE.pdf',
   tasks: [
-    'Fill the table with your four volumes and describe the colour of each glass.',
+    'Fill the table with your four volumes and describe the color of each glass.',
     'Write your guess for glasses 1, 2 and 3, then write the three masses you weighed.',
     'Write whether your eyes got it right, honestly, and one line about why.',
     'Copy the sentence out and sign it: strong enough to help is strong enough to hurt, which is why a doctor and a pharmacist measure and I do not.'
@@ -825,7 +825,7 @@ const M13L6_BEATS = [
     label: 'Three plants, three living medicines',
     hook: 'The Madagascar periwinkle is a small pink flower that people grow in pots, and two cancer medicines came out of it in the 1950s and 1960s.',
     teachingText:
-      'Vinblastine was isolated from that periwinkle in 1958 by Robert Noble and Charles Beer in Canada, and vincristine followed in 1961. Vincristine is on the list of essential medicines kept by the World Health Organization, and it is one of the drugs given to children with a leukaemia that used to kill almost everybody who got it. Most children who get that leukaemia now survive it.',
+      'Vinblastine was isolated from that periwinkle in 1958 by Robert Noble and Charles Beer in Canada, and vincristine followed in 1961. Vincristine is on the list of essential medicines kept by the World Health Organization, and it is one of the drugs given to children with a leukemia that used to kill almost everybody who got it. Most children who get that leukemia now survive it.',
     example:
       'The Pacific yew tells a similar story. Bark was collected in 1962, the compound was pulled out of it in 1966, it was named taxol in 1967, and its structure was published in 1971 by Monroe Wall and Mansukh Wani. That is nine years from a bag of bark to a printed structure.',
     applyIt: {
@@ -876,10 +876,10 @@ const M13L6_BEATS = [
 
 const M13L6_ACTIVITY = {
   title: 'The medicine map',
-  prep: 'Print or draw a world map big enough to write on, and lay it flat with your coloured pens beside it. Have your timeline from Lesson 74 nearby, because two of these entries belong on it.',
+  prep: 'Print or draw a world map big enough to write on, and lay it flat with your colored pens beside it. Have your timeline from Lesson 74 nearby, because two of these entries belong on it.',
   needs: [
     'a printed world map, as large as you can get',
-    'coloured pens and a pencil',
+    'colored pens and a pencil',
     'sticky notes or small paper flags',
     'sticky tack or tape',
     'a ruler',
@@ -961,11 +961,11 @@ export const HERBALISM_M13 = [
 
     standards: [],
 
-    words: ['compound', 'defence chemical', 'herbivore', 'bitter', 'allicin'],
+    words: ['compound', 'defense chemical', 'herbivore', 'bitter', 'allicin'],
 
     glossary: [
       { word: 'compound', plain: 'One kind of chemical, made of the same parts joined the same way every time.' },
-      { word: 'defence chemical', plain: 'Something a plant builds to make eating it a bad idea.' },
+      { word: 'defense chemical', plain: 'Something a plant builds to make eating it a bad idea.' },
       { word: 'herbivore', plain: 'An animal that eats plants.' },
       { word: 'bitter', plain: 'A sharp unpleasant taste that usually means stop.' },
       { word: 'allicin', plain: 'The sharp-smelling compound garlic makes the moment a clove is crushed.' },
@@ -983,12 +983,12 @@ export const HERBALISM_M13 = [
       verified: '2026-08-15 · re-checked at youtube.com/oembed',
       teaches: [
         'that a plant is rooted in place and cannot escape anything that wants to eat it',
-        'that plants make chemicals as a defence, which is the whole premise of this lesson',
+        'that plants make chemicals as a defense, which is the whole premise of this lesson',
         'that some defences are physical and some are chemical',
-        'that a defence costs the plant something, so it has to be worth building'
+        'that a defense costs the plant something, so it has to be worth building'
       ],
       sourceGap:
-        'OPEN. No Black American educator found for plant chemical defence at this level. Searched: "site:youtube.com TED-Ed why plants make poisons chemicals defense", "SciShow youtube why plants chemicals defense secondary metabolites video", "site:youtube.com Black American botanist plant scientist educator explains plant chemistry defense compounds", and "Black American herbalist OR botanist youtube educator plant medicine history science channel kids". The last two returned no verifiable individual video by a Black American educator on plant chemistry — results were blog posts, paid herbalism courses and a channel index. One near-miss WAS verified at noembed and left unused: _Oh3WXAycB8 "Black Botanists Who Changed The World | Black History In Botany" (Jake Inzerra), which is botany history rather than plant chemistry and comes from a single creator Gigi should preview first. Alexis Nikole Nelson is already the educator in Module 7 Lesson 37 and her material is foraging, not chemistry.'
+        'OPEN. No Black American educator found for plant chemical defense at this level. Searched: "site:youtube.com TED-Ed why plants make poisons chemicals defense", "SciShow youtube why plants chemicals defense secondary metabolites video", "site:youtube.com Black American botanist plant scientist educator explains plant chemistry defense compounds", and "Black American herbalist OR botanist youtube educator plant medicine history science channel kids". The last two returned no verifiable individual video by a Black American educator on plant chemistry — results were blog posts, paid herbalism courses and a channel index. One near-miss WAS verified at noembed and left unused: _Oh3WXAycB8 "Black Botanists Who Changed The World | Black History In Botany" (Jake Inzerra), which is botany history rather than plant chemistry and comes from a single creator Gigi should preview first. Alexis Nikole Nelson is already the educator in Module 7 Lesson 37 and her material is foraging, not chemistry.'
     },
 
     checkIn: M13L1_CHECK_IN,
@@ -999,24 +999,24 @@ export const HERBALISM_M13 = [
     hook: M13L1_CHECK_IN,
     core: M13L1_BEATS.map((b) => ({ heading: b.label, text: b.teachingText })),
     doing:
-      'Survey her own four containers for chew damage, count the damaged leaves on each plant, and rank them from most eaten to least. Then predict which would be hardest for an insect to chew, and test the prediction with her nose: Gigi cuts one clove of garlic while Azianna stands back, and ten seconds later the board smells completely different from the whole clove that was sitting there before. Two labelled jars go on the shelf until tomorrow. Nothing is tasted at any point, because today the garlic is a sample and not food.',
+      'Survey her own four containers for chew damage, count the damaged leaves on each plant, and rank them from most eaten to least. Then predict which would be hardest for an insect to chew, and test the prediction with her nose: Gigi cuts one clove of garlic while Azianna stands back, and ten seconds later the board smells completely different from the whole clove that was sitting there before. Two labeled jars go on the shelf until tomorrow. Nothing is tasted at any point, because today the garlic is a sample and not food.',
 
     practice: [
       {
         ask: 'Why does a plant bother spending energy on a chemical that makes it taste bad?',
         answer: 'Because an animal that gets a mouthful goes away, so the plant survives long enough to make seed.',
-        why: 'A defence only stays in a species if it keeps the defended plants alive to reproduce.'
+        why: 'A defense only stays in a species if it keeps the defended plants alive to reproduce.'
       },
       {
         ask: 'Whole garlic barely smells. Why does cut garlic smell so strongly?',
         answer: 'Cutting mixes alliin with an enzyme the plant had kept apart from it, and allicin is made in seconds.',
-        why: 'The defence is stored unloaded and only goes off when the plant is damaged.'
+        why: 'The defense is stored unloaded and only goes off when the plant is damaged.'
       }
     ],
 
     check: [
       {
-        prompt: 'Why do plants make defence chemicals rather than running away?',
+        prompt: 'Why do plants make defense chemicals rather than running away?',
         choices: [
           'Because chemicals taste nice to plants',
           'Because a rooted plant cannot go anywhere',
@@ -1074,18 +1074,18 @@ export const HERBALISM_M13 = [
     spec: '§10 · beats',
 
     concept:
-      'Turning willow bark into aspirin took one hundred and thirty six years and five chemists, and every step of it was a step towards being able to measure exactly what was in the packet.',
+      'Turning willow bark into aspirin took one hundred and thirty six years and five chemists, and every step of it was a step toward being able to measure exactly what was in the packet.',
 
     standards: [],
 
-    words: ['salicin', 'isolate', 'active ingredient', 'batch', 'standardised'],
+    words: ['salicin', 'isolate', 'active ingredient', 'batch', 'standardized'],
 
     glossary: [
       { word: 'salicin', plain: 'The compound Johann Buchner pulled out of willow bark in 1828.' },
       { word: 'isolate', plain: 'To separate one pure compound out of a mixture and hold it on its own.' },
       { word: 'active ingredient', plain: 'The one compound in a medicine that is doing the work.' },
       { word: 'batch', plain: 'One run of production, made together at the same time from the same materials.' },
-      { word: 'standardised', plain: 'Made the same every time, on purpose, and checked to prove it.' },
+      { word: 'standardized', plain: 'Made the same every time, on purpose, and checked to prove it.' },
       { word: 'acetylsalicylic acid', plain: 'The chemical name for aspirin.' },
       { word: 'Royal Society', plain: 'A very old science club in London where findings were reported.' }
     ],
@@ -1115,7 +1115,7 @@ export const HERBALISM_M13 = [
     hook: M13L2_CHECK_IN,
     core: M13L2_BEATS.map((b) => ({ heading: b.label, text: b.teachingText })),
     doing:
-      'Draw the aspirin story as a timeline to scale, at one centimetre for every five years, from the report of Edward Stone in 1763 to the worldwide name Aspirin in 1899. That puts Buchner at 13 centimetres, Piria at 15, Gerhardt at 18, Bayer at 26.8 and the name at 27.2, and the arithmetic is hers to do. Then find the longest empty gap and say what might have filled it. Gigi holds up one real medicine box and reads out the name of the active ingredient while Azianna writes it down and counts the other ingredients listed. The box never leaves the hands of Gigi.',
+      'Draw the aspirin story as a timeline to scale, at one centimeter for every five years, from the report of Edward Stone in 1763 to the worldwide name Aspirin in 1899. That puts Buchner at 13 centimeters, Piria at 15, Gerhardt at 18, Bayer at 26.8 and the name at 27.2, and the arithmetic is hers to do. Then find the longest empty gap and say what might have filled it. Gigi holds up one real medicine box and reads out the name of the active ingredient while Azianna writes it down and counts the other ingredients listed. The box never leaves the hands of Gigi.',
 
     practice: [
       {
@@ -1154,7 +1154,7 @@ export const HERBALISM_M13 = [
         ]
       },
       {
-        prompt: 'What does standardised mean?',
+        prompt: 'What does standardized mean?',
         choices: [
           'Made the same every time and checked to prove it',
           'Made from a plant rather than in a factory',
@@ -1199,7 +1199,7 @@ export const HERBALISM_M13 = [
       { word: 'synthesis', plain: 'Building a compound yourself instead of taking it out of a plant.' },
       { word: 'quinine', plain: 'The compound isolated from cinchona bark in 1820.' },
       { word: 'physostigmine', plain: 'The compound Percy Julian built in a laboratory in 1935.' },
-      { word: 'pigment', plain: 'A compound that gives something its colour.' }
+      { word: 'pigment', plain: 'A compound that gives something its color.' }
     ],
 
     video: {
@@ -1213,10 +1213,10 @@ export const HERBALISM_M13 = [
         'who Percy Lavon Julian was and what he was up against',
         'that he built plant compounds in a laboratory rather than only extracting them',
         'that a chemist can be the reason a medicine exists at all',
-        'a Black American scientist as the person at the centre of the story, not a footnote to it'
+        'a Black American scientist as the person at the center of the story, not a footnote to it'
       ],
       sourceGap:
-        'PARTLY CLOSED, and this is the one lesson in the module where it is. This video is an episode of an explicitly named Black Voices in STEAM series from The Lawrence Hall of Science, the public science centre at UC Berkeley, and its subject is a Black American chemist whose work is exactly this lesson. Verified at noembed: id, title and channel are as recorded. The series is verified across four sibling episodes found in search (Neil deGrasse Tyson, Katherine Johnson, Patricia Bath and this one). What could NOT be verified is who presents it, because YouTube video pages are not fetchable from this environment, so it is honest to say the source is a Black Voices in STEAM series about a Black American scientist rather than to claim the presenter. Gigi should watch it first. Searched to get here: "Black American chemist youtube educator pharmacology drug discovery science communicator channel" (nothing usable), "site:youtube.com Percy Julian chemist calabar bean physostigmine soybean forgotten genius video" (found this, plus Q0-ZyL0T8ic "NOVA | Forgotten Genius" from NOVA PBS Official, verified real and a strong alternate for an older child), and "Black Voices in STEAM Lawrence Hall of Science storytime series host" (confirmed the series, did not name the presenter).'
+        'PARTLY CLOSED, and this is the one lesson in the module where it is. This video is an episode of an explicitly named Black Voices in STEAM series from The Lawrence Hall of Science, the public science center at UC Berkeley, and its subject is a Black American chemist whose work is exactly this lesson. Verified at noembed: id, title and channel are as recorded. The series is verified across four sibling episodes found in search (Neil deGrasse Tyson, Katherine Johnson, Patricia Bath and this one). What could NOT be verified is who presents it, because YouTube video pages are not fetchable from this environment, so it is honest to say the source is a Black Voices in STEAM series about a Black American scientist rather than to claim the presenter. Gigi should watch it first. Searched to get here: "Black American chemist youtube educator pharmacology drug discovery science communicator channel" (nothing usable), "site:youtube.com Percy Julian chemist calabar bean physostigmine soybean forgotten genius video" (found this, plus Q0-ZyL0T8ic "NOVA | Forgotten Genius" from NOVA PBS Official, verified real and a strong alternate for an older child), and "Black Voices in STEAM Lawrence Hall of Science storytime series host" (confirmed the series, did not name the presenter).'
     },
 
     checkIn: M13L3_CHECK_IN,
@@ -1227,7 +1227,7 @@ export const HERBALISM_M13 = [
     hook: M13L3_CHECK_IN,
     core: M13L3_BEATS.map((b) => ({ heading: b.label, text: b.teachingText })),
     doing:
-      'Run paper chromatography on three washable felt tip pens. One fat dot of ink on a pencil line two centimetres up the strip, one centimetre of water in the glass, and ten minutes of watching the water climb and pull the dot apart into separate bands. Count the bands on each strip and mark where the water stopped. Gigi does an optional leaf run with rubbing alcohol herself, at a window, away from any flame. The conclusion is the point: one thing that looked single was a mixture the whole time, which is precisely what a plant extract is.',
+      'Run paper chromatography on three washable felt tip pens. One fat dot of ink on a pencil line two centimeters up the strip, one centimeter of water in the glass, and ten minutes of watching the water climb and pull the dot apart into separate bands. Count the bands on each strip and mark where the water stopped. Gigi does an optional leaf run with rubbing alcohol herself, at a window, away from any flame. The conclusion is the point: one thing that looked single was a mixture the whole time, which is precisely what a plant extract is.',
 
     practice: [
       {
@@ -1248,7 +1248,7 @@ export const HERBALISM_M13 = [
         choices: [
           'One part of a mixture after it has been split up',
           'A compound that has never been separated',
-          'The colour a plant gives to water',
+          'The color a plant gives to water',
           'A number written above another number'
         ],
         answer: 0,
@@ -1256,7 +1256,7 @@ export const HERBALISM_M13 = [
           null,
           'A fraction is what you get after splitting, not before.',
           'That is a pigment, and it is a different word.',
-          'That is a fraction in maths. In chemistry it means a separated part.'
+          'That is a fraction in math. In chemistry it means a separated part.'
         ]
       },
       {
@@ -1460,7 +1460,7 @@ export const HERBALISM_M13 = [
     hook: M13L5_CHECK_IN,
     core: M13L5_BEATS.map((b) => ({ heading: b.label, text: b.teachingText })),
     doing:
-      'Two halves, and the second half is the argument. First a dilution series: one drop of food colouring into 10, 50, 250 and 1000 millilitres of water, lined up against a window, where she can plainly see the same one drop giving four different colours. Then Gigi makes up three identical glasses of 200 millilitres out of sight, one plain, one with a level teaspoon of salt and one with four, and Azianna has to say which is which by looking. She cannot. Nothing is tasted. The scale settles it, because the heaviest glass holds the most salt, and the point lands on its own: colour let her see the amount and salt did not, and almost everything is like the salt.',
+      'Two halves, and the second half is the argument. First a dilution series: one drop of food coloring into 10, 50, 250 and 1000 milliliters of water, lined up against a window, where she can plainly see the same one drop giving four different colors. Then Gigi makes up three identical glasses of 200 milliliters out of sight, one plain, one with a level teaspoon of salt and one with four, and Azianna has to say which is which by looking. She cannot. Nothing is tasted. The scale settles it, because the heaviest glass holds the most salt, and the point lands on its own: color let her see the amount and salt did not, and almost everything is like the salt.',
 
     practice: [
       {
@@ -1493,11 +1493,11 @@ export const HERBALISM_M13 = [
         ]
       },
       {
-        prompt: 'One drop of colouring goes into a small glass and one into a large jug. What is different?',
+        prompt: 'One drop of coloring goes into a small glass and one into a large jug. What is different?',
         choices: [
           'The concentration, because the same drop is spread through more water',
           'The number of drops, because bigger containers need more',
-          'The colour of the drop itself, which changes in a jug',
+          'The color of the drop itself, which changes in a jug',
           'Nothing at all, because it is one drop either way'
         ],
         answer: 0,
@@ -1554,7 +1554,7 @@ export const HERBALISM_M13 = [
       { word: 'essential medicine', plain: 'A medicine on the World Health Organization list of the ones every country needs.' },
       { word: 'lead', plain: 'A clue worth following, which is not the same thing as an answer.' },
       { word: 'malaria', plain: 'A disease carried by mosquitoes that still makes millions of people ill each year.' },
-      { word: 'leukaemia', plain: 'A cancer that starts in the blood.' }
+      { word: 'leukemia', plain: 'A cancer that starts in the blood.' }
     ],
 
     video: {
@@ -1620,7 +1620,7 @@ export const HERBALISM_M13 = [
         answer: 0,
         feedback: [
           null,
-          'You cannot patent a wild plant, and that is not what she was recognised for.',
+          'You cannot patent a wild plant, and that is not what she was recognized for.',
           'Nobel Prizes had been awarded since 1901.',
           'That list is for medicines, not for people.'
         ]

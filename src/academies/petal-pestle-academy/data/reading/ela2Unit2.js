@@ -85,7 +85,7 @@ Some nights we see a thin curve. Some nights we see a round white disc. It is th
       // Compare and contrast, with the comparison stated rather than implied:
       // Earth has wind and rain, the moon has neither, so the marks stay.
       skill: 'what is different, and what follows from it',
-      text: `Men walked on the moon in nineteen sixty nine. They left footprints in the grey dust.
+      text: `Men walked on the moon in nineteen sixty nine. They left footprints in the gray dust.
 
 Those footprints are still there now. Nothing has swept them away.
 
@@ -165,7 +165,7 @@ So the marks stay. A footprint on the moon may last for a very long time.`
     {
       id: 'read-ela2-u2-q5',
       passage: 'read-ela2-u2-p2',
-      prompt: 'What did the men leave in the grey dust?',
+      prompt: 'What did the men leave in the gray dust?',
       choices: ['Their boots', 'A rock', 'Footprints', 'A light'],
       answer: 2,
       feedback: [
@@ -174,7 +174,7 @@ So the marks stay. A footprint on the moon may last for a very long time.`
         null,
         'The passage does not say they left a light.'
       ],
-      why: 'They left footprints in the grey dust.'
+      why: 'They left footprints in the gray dust.'
     },
     {
       id: 'read-ela2-u2-q6',

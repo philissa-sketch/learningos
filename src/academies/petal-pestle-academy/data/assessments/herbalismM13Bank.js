@@ -76,7 +76,7 @@ export const HERBALISM_M13_BANK = [
       'A plant has no preferences. It has no brain to have them with.',
       'Insects find still plants perfectly well, which is exactly the problem.'
     ],
-    why: 'Roots hold a plant in one spot for life, so its defence has to be built rather than run.'
+    why: 'Roots hold a plant in one spot for life, so its defense has to be built rather than run.'
   },
   {
     id: 't-hbm1301b',
@@ -124,7 +124,7 @@ export const HERBALISM_M13_BANK = [
     answer: 3,
     feedback: [
       'Garlic makes allicin, and it is not yellow.',
-      'Ginger makes gingerol, which brings heat rather than colour.',
+      'Ginger makes gingerol, which brings heat rather than color.',
       'Corn is a grass and is not the source of curcumin.',
       null
     ],
@@ -139,7 +139,7 @@ export const HERBALISM_M13_BANK = [
     feedback: [
       'Sweetness in plants usually attracts animals rather than driving them off.',
       null,
-      'Salt is a mineral, and a plant does not build it as a defence.',
+      'Salt is a mineral, and a plant does not build it as a defense.',
       'Sour is usually an acid, and gingerol is not what makes it.'
     ],
     why: 'Heat is a warning, and the plant builds it so that something underground stops chewing the rhizome.'
@@ -161,7 +161,7 @@ export const HERBALISM_M13_BANK = [
       null,
       'Shared soil does not mean shared odds of surviving to seed.'
     ],
-    why: 'A defence spreads because the defended plants are the ones still standing at seed time.'
+    why: 'A defense spreads because the defended plants are the ones still standing at seed time.'
   },
   {
     id: 't-hbm1301g',
@@ -180,12 +180,12 @@ export const HERBALISM_M13_BANK = [
       'People came along long afterwards. That part is an accident.',
       'Sunlight is caught by chlorophyll, which is a different compound entirely.'
     ],
-    why: 'Caffeine is a defence chemical, and the fact that people enjoy it was never the point.'
+    why: 'Caffeine is a defense chemical, and the fact that people enjoy it was never the point.'
   },
   {
     id: 't-hbm1301h',
     lesson: 'hb-m13-01',
-    prompt: 'Building a defence chemical costs the plant something. What?',
+    prompt: 'Building a defense chemical costs the plant something. What?',
     choices: ['Water', 'Energy', 'Seeds', 'Roots'],
     answer: 1,
     feedback: [
@@ -194,7 +194,7 @@ export const HERBALISM_M13_BANK = [
       'Seeds are what the plant is protecting, not what it spends.',
       'Roots feed the plant and are not traded away for chemistry.'
     ],
-    why: 'Because it costs energy, a defence only stays in a species if it earns that energy back.'
+    why: 'Because it costs energy, a defense only stays in a species if it earns that energy back.'
   },
   {
     id: 't-hbm1301i',
@@ -208,14 +208,14 @@ export const HERBALISM_M13_BANK = [
       null,
       'An antifeedant is the chemical that stops the herbivore eating.'
     ],
-    why: 'Herbivore names the eater, and every plant defence in this lesson exists because of one.'
+    why: 'Herbivore names the eater, and every plant defense in this lesson exists because of one.'
   },
   {
     id: 't-hbm1301j',
     lesson: 'hb-m13-01',
-    prompt: 'During the defence survey, who cuts the garlic and what happens to it afterwards?',
+    prompt: 'During the defense survey, who cuts the garlic and what happens to it afterwards?',
     choices: [
-      'Gigi cuts it, and it goes in a labelled jar and never in a mouth',
+      'Gigi cuts it, and it goes in a labeled jar and never in a mouth',
       'You cut it, as long as you are careful with the knife',
       'You cut it and taste a tiny piece to compare',
       'Nobody cuts it, because garlic is dangerous to touch'
@@ -325,7 +325,7 @@ export const HERBALISM_M13_BANK = [
       'That was Buchner in 1828.',
       'Willows have grown across Europe for far longer than that.'
     ],
-    why: '1899 is the last mark on her timeline, at 27.2 centimetres, and the whole story fits before it.'
+    why: '1899 is the last mark on her timeline, at 27.2 centimeters, and the whole story fits before it.'
   },
   {
     id: 't-hbm1302g',
@@ -354,14 +354,14 @@ export const HERBALISM_M13_BANK = [
       'The one compound that is doing the work',
       'Everything in the box except the compound',
       'The number printed on the outside',
-      'The colour that has been added to the coating'
+      'The color that has been added to the coating'
     ],
     answer: 0,
     feedback: [
       null,
       'Everything else has its own name, and that name is excipients.',
       'That is the batch number.',
-      'Colour helps people tell tablets apart, and it does nothing else.'
+      'Color helps people tell tablets apart, and it does nothing else.'
     ],
     why: 'Naming the active ingredient on the box is what tells anybody what is really in there.'
   },
@@ -434,14 +434,14 @@ export const HERBALISM_M13_BANK = [
       'One part of a mixture after it has been split up',
       'A compound nobody has ever separated',
       'A number written above another number',
-      'The colour a leaf gives to water'
+      'The color a leaf gives to water'
     ],
     answer: 0,
     feedback: [
       null,
       'A fraction only exists after splitting, never before it.',
-      'That is a fraction in maths, and this is a different meaning.',
-      'That is a pigment, which is a compound with a colour.'
+      'That is a fraction in math, and this is a different meaning.',
+      'That is a pigment, which is a compound with a color.'
     ],
     why: 'Each round of splitting makes fractions, and testing them is how the crowd gets smaller.'
   },
@@ -555,14 +555,14 @@ export const HERBALISM_M13_BANK = [
     prompt: 'On the strip, what does the climbing water actually do to the dot of ink?',
     choices: [
       'It washes the dot away completely',
-      'It turns one colour into several new colours',
+      'It turns one color into several new colors',
       'It carries the parts of the ink different distances up the paper',
       'It dries the ink so that it stops moving'
     ],
     answer: 2,
     feedback: [
       'If it washed away you would see nothing, and you can see bands.',
-      'No new colour is made. Those colours were in the pen all along.',
+      'No new color is made. Those colors were in the pen all along.',
       null,
       'Drying is what happens at the end, after the separating.'
     ],
@@ -637,16 +637,16 @@ export const HERBALISM_M13_BANK = [
       'Holds the powder together so the tablet does not crumble',
       'Adds bulk to make the tablet bigger',
       'Swells in water to break the tablet open',
-      'Gives the tablet its colour'
+      'Gives the tablet its color'
     ],
     answer: 0,
     feedback: [
       null,
       'That is the filler.',
       'That is the disintegrant, and it is the opposite job.',
-      'Colouring is added so people can tell tablets apart.'
+      'Coloring is added so people can tell tablets apart.'
     ],
-    why: 'A tablet has to survive a box, a lorry and a pocket without falling to powder.'
+    why: 'A tablet has to survive a box, a truck and a pocket without falling to powder.'
   },
   {
     id: 't-hbm1304d',
@@ -733,7 +733,7 @@ export const HERBALISM_M13_BANK = [
     feedback: [
       'That is the testing that happens first, and it is what triggers a recall.',
       null,
-      'That is labelling, and it happens on every box either way.',
+      'That is labeling, and it happens on every box either way.',
       'That is tableting, which is the manufacturing step.'
     ],
     why: 'The batch number is the thing that makes a recall possible at all.'
@@ -765,14 +765,14 @@ export const HERBALISM_M13_BANK = [
       'Because a thing that looks like a tablet must never be mistaken for one',
       'Because the cornflour might go off overnight',
       'Because the scale will not work without a label nearby',
-      'Because it is a rule about labelling every jar in the kitchen'
+      'Because it is a rule about labeling every jar in the kitchen'
     ],
     answer: 0,
     feedback: [
       null,
       'Dry cornflour keeps for a long time, and that is not the risk here.',
       'The scale does not care what is written on your card.',
-      'Labelling jars is a good habit, but this card is doing a bigger job.'
+      'Labeling jars is a good habit, but this card is doing a bigger job.'
     ],
     why: 'Somebody smaller than you might find the jar, and the label is the only thing standing there.'
   },
@@ -878,10 +878,10 @@ export const HERBALISM_M13_BANK = [
   {
     id: 't-hbm1305f',
     lesson: 'hb-m13-05',
-    prompt: 'One drop of colouring goes into a small glass and one into a large jug. What changed?',
+    prompt: 'One drop of coloring goes into a small glass and one into a large jug. What changed?',
     choices: [
       'The number of drops, because a jug needs more',
-      'The colour of the drop, which changes with volume',
+      'The color of the drop, which changes with volume',
       'The concentration, because the same drop is spread through more water',
       'Nothing changed, because one drop is one drop'
     ],
@@ -1028,7 +1028,7 @@ export const HERBALISM_M13_BANK = [
       null,
       'That is the year of the Nobel Prize, forty three years afterwards.'
     ],
-    why: 'The work came in 1972, and the world took a very long time to recognise it.'
+    why: 'The work came in 1972, and the world took a very long time to recognize it.'
   },
   {
     id: 't-hbm1306e',
@@ -1042,7 +1042,7 @@ export const HERBALISM_M13_BANK = [
     ],
     answer: 1,
     feedback: [
-      'Nobody can patent a wild plant, and that is not what she was recognised for.',
+      'Nobody can patent a wild plant, and that is not what she was recognized for.',
       null,
       'Nobel Prizes have been awarded since 1901.',
       'That body keeps the essential medicines list, and it is not a prize.'

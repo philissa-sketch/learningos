@@ -185,7 +185,7 @@ export function GradebookPanel() {
           <p className="mt-1.5 text-[0.7rem] text-ink-500">
             <span className="font-700">This screen grades the work this app made</span> — her
             weekly tests, her quarter exams, her writing pieces and her spelling. Khan Academy is
-            somebody else&apos;s curriculum and it is graded on its own tab, Maths and Grammar
+            somebody else&apos;s curriculum and it is graded on its own tab, Math and Grammar
             alike. Nothing is missing from her record: it is on the screen that owns it.
           </p>
         </div>

@@ -315,7 +315,7 @@ const M12L2_BEATS = [
     teachingText:
       'Warmth is what wakes a seed up. A warm spot matters most in the first few days. Light is what a seedling needs afterwards, and it must be close. A seedling that stretches tall and pale is not thriving. It is reaching for a light that is too far away.',
     example:
-      'The tray on the windowsill leans towards the glass and goes leggy. The tray under a lamp two inches above the leaves stays short and thick.',
+      'The tray on the windowsill leans toward the glass and goes leggy. The tray under a lamp two inches above the leaves stays short and thick.',
     applyIt: {
       prompt: 'Her seedlings are pale, floppy and much taller than they should be. What do they need most?',
       choices: [
@@ -337,7 +337,7 @@ const M12L2_BEATS = [
   {
     n: 2,
     label: 'Four habits that decide whether a tray lives',
-    hook: 'Garden soil in a seed tray is a trap. It packs down hard, and it carries the moulds that kill seedlings.',
+    hook: 'Garden soil in a seed tray is a trap. It packs down hard, and it carries the molds that kill seedlings.',
     teachingText:
       'Use a light seed mix rather than dirt from the yard. Tiny roots cannot push through packed soil. Bury a seed about twice as deep as it is wide. A very small seed sits almost on the surface. Keep the mix damp but never soaked. Write the label as you sow, while you still know what is in there.',
     example:
@@ -345,14 +345,14 @@ const M12L2_BEATS = [
     applyIt: {
       prompt: 'She sows tiny basil seed half an inch deep in packed yard soil. She keeps it soaking wet, and almost nothing comes up. Which mistake matters most?',
       choices: [
-      'The tray was the wrong colour',
+      'The tray was the wrong color',
       'The seed was buried far too deep for its size',
       'Basil simply cannot be started indoors',
       'She should have used warmer water'
     ],
       answer: 1,
       feedback: [
-      'Colour changes nothing at all underground.',
+      'Color changes nothing at all underground.',
       null,
       'Basil starts indoors perfectly well. Something about this sowing went wrong.',
       'Water temperature is not what decides whether a seed can reach the surface.'
@@ -373,7 +373,7 @@ const M12L2_ACTIVITY = {
     'a spray bottle of water',
     'lolly sticks and a pencil for labels',
     'a clear lid or a plastic bag for each tray',
-    'a small ruler marked in millimetres',
+    'a small ruler marked in millimeters',
     'a piece of ginger and a piece of turmeric with buds on them'
   ],
   steps: [
@@ -400,7 +400,7 @@ const M12L2_ACTIVITY = {
     'Why write the label now, while we are sowing, rather than tonight?',
     'This seed is tiny. How deep does the rule say it goes?',
     'Why do the covers come off the moment the seedlings show?',
-    'Tray B is leaning. Which way, and what is it leaning towards?',
+    'Tray B is leaning. Which way, and what is it leaning toward?',
     'Your measurements are pulling apart. Which tray is winning, and what does winning mean here?',
     'Feel both stems. Describe the difference to me without using the word big.',
     'Why does the ginger go in now, in February, and not in April?',
@@ -608,7 +608,7 @@ const M12L4_BEATS = [
   {
     n: 1,
     label: 'Sow in batches, so the harvest comes in waves',
-    hook: 'A lettuce is only worth eating for about a fortnight. Then it shoots upward and turns bitter.',
+    hook: 'A lettuce is only worth eating for about two weeks. Then it shoots upward and turns bitter.',
     teachingText:
       'Succession planting means sowing a few seeds at a time instead of a whole packet at once. Leave about two weeks between sowings. The harvest then arrives in waves you can keep up with. It costs nothing extra, because the seed and the space were always there.',
     example:
@@ -714,7 +714,7 @@ const M12L4_LEDGER = {
     'Write one sentence: what companion planting means, in your own words.'
   ],
   game: {
-    title: 'Good Neighbours',
+    title: 'Good Neighbors',
     cards: [
       'CORN AND CLIMBING BEANS',
       'SQUASH SPREADING UNDER CORN',
@@ -817,7 +817,7 @@ const M12L5_BEATS = [
 
 const M12L5_ACTIVITY = {
   title: 'Harvest, dry, label, store — a real seed envelope',
-  prep: 'Do the picking on a dry afternoon, because damp seed goes mouldy in storage. Have the label rules from Lesson 66 on the table. A grown-up handles any snipping.',
+  prep: 'Do the picking on a dry afternoon, because damp seed goes moldy in storage. Have the label rules from Lesson 66 on the table. A grown-up handles any snipping.',
   needs: [
     'ripe pods, or dry seed heads from marigold, basil or dill',
     'a paper plate or a shallow tray for each kind',
@@ -920,7 +920,7 @@ const M12L6_BEATS = [
     label: 'The spent plants go back into the bin they came from',
     hook: 'A whole corn stalk thrown into a compost bin can still be a corn stalk two years later.',
     teachingText:
-      'Once a plant has finished, cut it up. Feed it to the compost bin you built in Module 3. Chop everything small. Decomposers work on surfaces, and a chopped stalk has far more surface than a whole one. Anything spotted or mouldy stays out. The bin may not get hot enough to deal with it.',
+      'Once a plant has finished, cut it up. Feed it to the compost bin you built in Module 3. Chop everything small. Decomposers work on surfaces, and a chopped stalk has far more surface than a whole one. Anything spotted or moldy stays out. The bin may not get hot enough to deal with it.',
     example:
       'Her corn stalks come out in November and get chopped shorter than her hand. They go into the bin in layers with dry brown leaves.',
     applyIt: {
@@ -987,7 +987,7 @@ const M12L6_ACTIVITY = {
     'Walk all four containers first and write down how each one actually did this year.',
     'Start with the corn. A grown-up cuts the stalks down, and you carry them to the bin.',
     'Chop everything into pieces shorter than your hand before any of it goes in.',
-    'Put anything spotted, mouldy or sickly into a separate pile. That pile does not go in the bin.',
+    'Put anything spotted, moldy or sickly into a separate pile. That pile does not go in the bin.',
     'Layer the chopped green stuff with dry brown leaves, then water the bin and put the lid back.',
     'Now the turmeric. Loosen the soil all round the edge and lift the whole clump out gently.',
     'Brush the soil off the rhizomes with your fingers, without washing them.',
@@ -1031,7 +1031,7 @@ const M12L6_LEDGER = {
       'CORN STALKS IN NOVEMBER',
       'GINGER RHIZOME BEFORE THE FREEZE',
       'GARLIC CLOVES IN OCTOBER',
-      'SPOTTED MOULDY LEAVES',
+      'SPOTTED MOLDY LEAVES',
       'A BAG OF DRY AUTUMN LEAVES',
       'THE FATTEST TURMERIC PIECE'
     ],
@@ -1216,7 +1216,7 @@ export const HERBALISM_M12 = [
     hook: M12L2_CHECK_IN,
     core: M12L2_BEATS.map((b) => ({ heading: b.label, text: b.teachingText })),
     doing:
-      'Sow two identical trays on the same afternoon, one under a lamp held two inches above the mix and one on the windowsill, and measure the stem below the first leaves every day for a fortnight. While the trays are running, start the ginger and the turmeric indoors in February, buds facing up, because Module 10 showed that eight to ten months will not fit inside a Georgia season. On day fourteen, hold one seedling from each tray side by side.',
+      'Sow two identical trays on the same afternoon, one under a lamp held two inches above the mix and one on the windowsill, and measure the stem below the first leaves every day for two weeks. While the trays are running, start the ginger and the turmeric indoors in February, buds facing up, because Module 10 showed that eight to ten months will not fit inside a Georgia season. On day fourteen, hold one seedling from each tray side by side.',
 
     practice: [
       {
@@ -1227,7 +1227,7 @@ export const HERBALISM_M12 = [
       {
         ask: 'Why not fill a seed tray with soil from the yard?',
         answer: 'Because it packs down hard and tiny roots cannot push through it.',
-        why: 'Seed mix is light and open, and it does not carry the moulds that kill seedlings.'
+        why: 'Seed mix is light and open, and it does not carry the molds that kill seedlings.'
       }
     ],
 
@@ -1435,7 +1435,7 @@ export const HERBALISM_M12 = [
       {
         ask: 'Why sow a packet of lettuce in three small batches?',
         answer: 'So the harvest arrives in waves instead of all in one week.',
-        why: 'A lettuce is only good for about a fortnight, and forty at once is thirty wasted.'
+        why: 'A lettuce is only good for about two weeks, and forty at once is thirty wasted.'
       },
       {
         ask: 'What job does each of the Three Sisters do?',
@@ -1536,7 +1536,7 @@ export const HERBALISM_M12 = [
     hook: M12L5_CHECK_IN,
     core: M12L5_BEATS.map((b) => ({ heading: b.label, text: b.teachingText })),
     doing:
-      'Go and find the plant she tied a ribbon on months ago, and save only from that one. Dry the pods and heads on labelled plates for a week, rub them out over newspaper, winnow the chaff off, and test one seed: a properly dry bean snaps rather than bends. Then label in pencil using the four Lesson 66 rules — name, plant part, date, where it came from — fold the label in with the seed, and stand the envelopes in a jar somewhere cool and dark. Label one garlic clove and one piece of rhizome too, and work out why those labels cannot say the word seed.',
+      'Go and find the plant she tied a ribbon on months ago, and save only from that one. Dry the pods and heads on labeled plates for a week, rub them out over newspaper, winnow the chaff off, and test one seed: a properly dry bean snaps rather than bends. Then label in pencil using the four Lesson 66 rules — name, plant part, date, where it came from — fold the label in with the seed, and stand the envelopes in a jar somewhere cool and dark. Label one garlic clove and one piece of rhizome too, and work out why those labels cannot say the word seed.',
 
     practice: [
       {
@@ -1643,7 +1643,7 @@ export const HERBALISM_M12 = [
     hook: M12L6_CHECK_IN,
     core: M12L6_BEATS.map((b) => ({ heading: b.label, text: b.teachingText })),
     doing:
-      'Bed all four containers down in one afternoon, about a week before the 13th of November. Corn stalks come down, get chopped shorter than her hand and go into the Module 3 compost bin in layers with brown leaves, while anything spotted stays out. Ginger and turmeric are lifted before the freeze, brushed off, dried a few days, and the fattest piece of each is labelled NEXT YEAR. Garlic goes IN, pointy end up, two knuckles deep. Everything bare gets mulched. Then she sits down and writes the end-of-year notes while the whole year is still in front of her.',
+      'Bed all four containers down in one afternoon, about a week before the 13th of November. Corn stalks come down, get chopped shorter than her hand and go into the Module 3 compost bin in layers with brown leaves, while anything spotted stays out. Ginger and turmeric are lifted before the freeze, brushed off, dried a few days, and the fattest piece of each is labeled NEXT YEAR. Garlic goes IN, pointy end up, two knuckles deep. Everything bare gets mulched. Then she sits down and writes the end-of-year notes while the whole year is still in front of her.',
 
     practice: [
       {

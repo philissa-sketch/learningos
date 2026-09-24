@@ -119,14 +119,14 @@ const M7L1_BEATS = [
         'Read the label on it',
         'Ask an older person who knows it',
         'Taste a little and wait',
-        'Guess from the colour'
+        'Guess from the color'
       ],
       answer: 1,
       feedback: [
         'Plants do not come with labels.',
         null,
         'Tasting to find out is how people got hurt.',
-        'Colour tells you nothing about safety.'
+        'Color tells you nothing about safety.'
       ],
       why: 'The knowledge lived in people. You got it by asking and by watching.'
     }
@@ -165,7 +165,7 @@ const M7L1_ACTIVITY = {
   needs: [
     'a notebook',
     'a pencil',
-    'coloured pencils',
+    'colored pencils',
     'your rough yard map',
     'gloves',
     'a phone camera if you have one'
@@ -194,7 +194,7 @@ const M7L1_ACTIVITY = {
     'If the store closed for a year, which of these would you want?',
     'Who taught me the name of this plant, do you think?',
     'What would you have to know to live off this yard?',
-    'Pick your favourite unknown. How will you find out what it is?',
+    'Pick your favorite unknown. How will you find out what it is?',
     'Say the rule back to me. What do we never do with a plant we cannot name?'
   ]
 };
@@ -357,14 +357,14 @@ const M7L3_BEATS = [
   {
     n: 1,
     label: 'Rot needs water',
-    hook: 'Mould is alive. It is a fungus, and like you it needs a drink.',
+    hook: 'Mold is alive. It is a fungus, and like you it needs a drink.',
     teachingText:
-      'A fresh leaf is mostly water. Mould and bacteria need that water to grow. Take the water out and they cannot get started.',
+      'A fresh leaf is mostly water. Mold and bacteria need that water to grow. Take the water out and they cannot get started.',
     example:
       'A grape is about four fifths water. A raisin is that same grape with the water gone. There is nothing left in it to drink.',
     applyIt: {
       prompt: 'You seal fresh mint in a bag while it is still damp. What happens?',
-      choices: ['It dries faster', 'It goes mouldy', 'It keeps for a year', 'It turns into a raisin'],
+      choices: ['It dries faster', 'It goes moldy', 'It keeps for a year', 'It turns into a raisin'],
       answer: 1,
       feedback: [
         'Sealed air stops it drying at all.',
@@ -372,7 +372,7 @@ const M7L3_BEATS = [
         'Damp and sealed is the worst mix there is.',
         'A raisin is dry. This is wet and shut in.'
       ],
-      why: 'Water plus still air is what mould wants. Dry it first, seal it after.'
+      why: 'Water plus still air is what mold wants. Dry it first, seal it after.'
     }
   },
   {
@@ -380,7 +380,7 @@ const M7L3_BEATS = [
     label: 'Dry it dim, dry it fast',
     hook: 'Sunlight fades a drying leaf. It takes the smell away too.',
     teachingText:
-      'Hang small bundles upside down. Pick a dim, airy place. Moving air dries it fast, before mould can win.',
+      'Hang small bundles upside down. Pick a dim, airy place. Moving air dries it fast, before mold can win.',
     example:
       'Then store the leaves whole in a jar with a lid. Crush them later, in your hand. Crushing is what lets the smell out.',
     applyIt: {
@@ -388,7 +388,7 @@ const M7L3_BEATS = [
       choices: ['The sunny one', 'The cupboard one', 'Both the same', 'Neither smells at all'],
       answer: 1,
       feedback: [
-        'Sun takes the colour and the smell with it.',
+        'Sun takes the color and the smell with it.',
         null,
         'Light makes a real difference over months.',
         'Dried leaves hold their smell for months.'
@@ -417,26 +417,26 @@ const M7L3_ACTIVITY = {
     'Bundle C: put it in the zip bag while it is still damp. Seal it.',
     'Write your guess for all three BEFORE day one. Which will keep?',
     'Look at all three every day for seven days. Write what you see.',
-    'Day 7: compare the colour of A and B. Say which is greener.',
+    'Day 7: compare the color of A and B. Say which is greener.',
     'Rub a dry leaf from A between your fingers. Smell your fingers.',
     'Do the same with B. Which one still smells of the plant?',
     'Put A in a jar. Label it with the plant name AND today date.',
     'Look at C from a distance. Do not open it. That is the lesson.'
   ],
   safety:
-    'Bundle C will go mouldy. That is the point of it. Do not open the bag and do not sniff it. Gigi takes it straight to the bin. Nothing in this lesson is tasted. Wash your hands at the end.',
+    'Bundle C will go moldy. That is the point of it. Do not open the bag and do not sniff it. Gigi takes it straight to the bin. Nothing in this lesson is tasted. Wash your hands at the end.',
   grownUpAsks: [
     'Before we start. Which bundle do you think will win, and why?',
     'Feel a fresh leaf. Now feel a dried one. What left?',
     'Why did we hang bundle A upside down instead of laying it flat?',
     'The dim spot has no sun at all. Will it still dry?',
-    'Look at B in the sun. Something is happening to the colour. What?',
+    'Look at B in the sun. Something is happening to the color. What?',
     'Smell your fingers after A, then after B. Say the difference out loud.',
     'C is sealed and it is damp. What is growing in there, and why?',
     'Would C have been fine if we had dried it first?',
     'Why does the label need a date and not just a name?',
     'Where in this house should the jar live? Say why.',
-    'Say the rule. Do we ever eat something that has gone mouldy?'
+    'Say the rule. Do we ever eat something that has gone moldy?'
   ]
 };
 
@@ -450,7 +450,7 @@ const M7L3_LEDGER = {
   ],
   game: {
     title: 'Word Boss',
-    cards: ['PRESERVE', 'MOISTURE', 'MOULD', 'AIRTIGHT'],
+    cards: ['PRESERVE', 'MOISTURE', 'MOLD', 'AIRTIGHT'],
     rounds: [
       'Say what each word means in your own words. No fancy talk.',
       'A grown-up says the meaning. You say the word. Beat the clock.',
@@ -508,7 +508,7 @@ const M7L4_BEATS = [
     teachingText:
       'Some people knew their county plants better than anyone alive. In the South they were called root doctors or herb women. Almost none of what they knew was written down.',
     example:
-      'It was against the law to teach enslaved people to read. So the knowledge travelled by talking and by watching. That is called oral tradition.',
+      'It was against the law to teach enslaved people to read. So the knowledge traveled by talking and by watching. That is called oral tradition.',
     applyIt: {
       prompt: 'One person knows something nobody ever wrote down. She dies. What happens to it?',
       choices: [
@@ -626,7 +626,7 @@ const M7L5_BEATS = [
         'Okra was common in the South by then.',
         'Okra reached Europe from Africa too.'
       ],
-      why: 'The plant was here because people were brought here. They travelled together.'
+      why: 'The plant was here because people were brought here. They traveled together.'
     }
   },
   {
@@ -668,7 +668,7 @@ const M7L5_ACTIVITY = {
     'popcorn or corn kernels',
     'sorghum or plain birdseed',
     'glue',
-    'coloured pencils',
+    'colored pencils',
     'a small pot with soil'
   ],
   steps: [
@@ -676,8 +676,8 @@ const M7L5_ACTIVITY = {
     'Glue three black-eyed peas onto West Africa.',
     'Glue a few rice grains onto Mali, on the Niger River.',
     'Glue watermelon seeds onto Africa as well.',
-    'Glue corn kernels onto Mexico. Corn travelled the other way.',
-    'Draw a line from each seed to Georgia. A different colour each time.',
+    'Glue corn kernels onto Mexico. Corn traveled the other way.',
+    'Draw a line from each seed to Georgia. A different color each time.',
     'Write the plant name at the Georgia end of every line.',
     'Write THE PEOPLE CAME TOO across the ocean. Say it out loud.',
     'Push three dried black-eyed peas into the pot, about an inch down.',
@@ -752,7 +752,7 @@ const M7L6_BEATS = [
         'These rooms are not cold rooms.',
         'Glue holds it down. It does not dry it.'
       ],
-      why: 'Same rule as the drying lesson. No water means no mould.'
+      why: 'Same rule as the drying lesson. No water means no mold.'
     }
   },
   {
@@ -1079,16 +1079,16 @@ export const HERBALISM_M7 = [
     minutes: 45,
     spec: '§10 · beats',
 
-    concept: 'Mould needs water, so taking the water out of a plant is what makes it keep.',
+    concept: 'Mold needs water, so taking the water out of a plant is what makes it keep.',
 
     standards: [],
 
-    words: ['preserve', 'moisture', 'mould', 'airtight'],
+    words: ['preserve', 'moisture', 'mold', 'airtight'],
 
     glossary: [
       { word: 'preserve', plain: 'To keep something from going bad.' },
       { word: 'moisture', plain: 'Water held inside something. A fresh leaf is full of it.' },
-      { word: 'mould', plain: 'A fungus that grows on damp food. It is alive and it needs water.' },
+      { word: 'mold', plain: 'A fungus that grows on damp food. It is alive and it needs water.' },
       { word: 'airtight', plain: 'Shut so well that no air gets in or out.' },
       { word: 'bundle', plain: 'A small bunch of stems tied together at the ends.' },
       { word: 'bacteria', plain: 'Living things far too small to see. Some of them spoil food.' }
@@ -1119,17 +1119,17 @@ export const HERBALISM_M7 = [
     hook: M7L3_CHECK_IN,
     core: M7L3_BEATS.map((b) => ({ heading: b.label, text: b.teachingText })),
     doing:
-      'Make three matching bunches of one herb. Hang bundle A upside down somewhere dim and airy, spread bundle B on a plate in full sun, and seal bundle C damp in a zip bag. Write your guess before day one, then check all three every day for a week. Compare the colour of A and B, rub a leaf from each and smell your fingers, and jar the winner with the plant name and the date on the label. Bundle C stays shut and goes in the bin.',
+      'Make three matching bunches of one herb. Hang bundle A upside down somewhere dim and airy, spread bundle B on a plate in full sun, and seal bundle C damp in a zip bag. Write your guess before day one, then check all three every day for a week. Compare the color of A and B, rub a leaf from each and smell your fingers, and jar the winner with the plant name and the date on the label. Bundle C stays shut and goes in the trash.',
 
     practice: [
       {
         ask: 'Why does a dried leaf keep and a fresh one does not?',
-        answer: 'Mould and bacteria need water. A dried leaf has none for them.',
+        answer: 'Mold and bacteria need water. A dried leaf has none for them.',
         why: 'Take the water away and nothing can get started on it.'
       },
       {
         ask: 'Why hang herbs somewhere dim instead of in the sun?',
-        answer: 'Sun fades the colour and drives the smell out.',
+        answer: 'Sun fades the color and drives the smell out.',
         why: 'You want the water gone and the smell left behind.'
       }
     ],
@@ -1137,18 +1137,18 @@ export const HERBALISM_M7 = [
     check: [
       {
         prompt: 'A raisin keeps for a year. What is missing from it?',
-        choices: ['Sugar', 'Moisture', 'Mould', 'Skin'],
+        choices: ['Sugar', 'Moisture', 'Mold', 'Skin'],
         answer: 1,
         feedback: [
           'A raisin is very sweet. The sugar stayed.',
           null,
-          'Mould was never in it. That is the point.',
+          'Mold was never in it. That is the point.',
           'It still has its skin on.'
         ]
       },
       {
         prompt: 'You shut damp mint in a sealed bag. What grows?',
-        choices: ['Nothing', 'Mould', 'New roots', 'More leaves'],
+        choices: ['Nothing', 'Mold', 'New roots', 'More leaves'],
         answer: 1,
         feedback: [
           'Damp and sealed is the worst mix there is.',
@@ -1169,8 +1169,8 @@ export const HERBALISM_M7 = [
         feedback: [
           null,
           'Open air lets the smell out and dust in.',
-          'Damp brings the mould straight back.',
-          'Sun keeps taking the colour and the smell.'
+          'Damp brings the mold straight back.',
+          'Sun keeps taking the color and the smell.'
         ]
       }
     ]
@@ -1364,7 +1364,7 @@ export const HERBALISM_M7 = [
     hook: M7L5_CHECK_IN,
     core: M7L5_BEATS.map((b) => ({ heading: b.label, text: b.teachingText })),
     doing:
-      'Build a crossing map. Glue black-eyed peas onto West Africa, rice grains onto Mali on the Niger River, and watermelon seeds onto Africa, then glue corn onto Mexico because corn travelled the other way. Draw a coloured line from each seed to Georgia and write the plant name at the Georgia end. Write THE PEOPLE CAME TOO across the ocean and say it out loud. Then push three dried black-eyed peas into a pot beside your garlic, water them, and write the date on the pot.',
+      'Build a crossing map. Glue black-eyed peas onto West Africa, rice grains onto Mali on the Niger River, and watermelon seeds onto Africa, then glue corn onto Mexico because corn traveled the other way. Draw a colored line from each seed to Georgia and write the plant name at the Georgia end. Write THE PEOPLE CAME TOO across the ocean and say it out loud. Then push three dried black-eyed peas into a pot beside your garlic, water them, and write the date on the pot.',
 
     practice: [
       {
@@ -1481,7 +1481,7 @@ export const HERBALISM_M7 = [
     practice: [
       {
         ask: 'Why does pressing make a plant last?',
-        answer: 'It squeezes the water out, so mould has nothing to grow on.',
+        answer: 'It squeezes the water out, so mold has nothing to grow on.',
         why: 'Same rule as drying herbs. No water, no rot.'
       },
       {

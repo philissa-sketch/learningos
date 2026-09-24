@@ -526,7 +526,7 @@ export function TestView({ form, onExit, onOpenLesson, canOpenLesson }) {
       {!allAnswered && index === questions.length - 1 && (
         <p className="mt-3 text-center text-xs text-clay-500">
           {questions.length - answeredCount} question
-          {questions.length - answeredCount === 1 ? ' is' : 's are'} still blank. Tap a grey dot
+          {questions.length - answeredCount === 1 ? ' is' : 's are'} still blank. Tap a gray dot
           above to go back to them.
         </p>
       )}

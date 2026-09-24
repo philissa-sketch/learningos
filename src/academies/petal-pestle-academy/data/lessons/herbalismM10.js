@@ -201,7 +201,7 @@
 /** STEP 1 · THE CHECK-IN · 5 minutes. */
 const M10L1_CHECK_IN = {
   title: 'Four things at once',
-  text: 'A weather map looks crowded because it is showing four different things on one picture. Colour is temperature. Green and blue patches are rain. H and L are pressure. The lines with teeth on them are fronts.',
+  text: 'A weather map looks crowded because it is showing four different things on one picture. Color is temperature. Green and blue patches are rain. H and L are pressure. The lines with teeth on them are fronts.',
   question: 'Find Georgia on a weather map. How many of those four can you see sitting over it right now?'
 };
 
@@ -220,7 +220,7 @@ const M10L1_BEATS = [
     label: 'A map is data, not a photograph',
     hook: 'Nobody took a picture of the sky to make a weather map. Every mark on it came off an instrument somewhere.',
     teachingText:
-      'A weather map stacks four kinds of measurement on one picture. Colour gives you temperature and green gives you rain. H and L give you pressure, and the toothed lines give you fronts.',
+      'A weather map stacks four kinds of measurement on one picture. Color gives you temperature and green gives you rain. H and L give you pressure, and the toothed lines give you fronts.',
     example:
       'Over Atlanta the map might show orange for a warm day. A green smear of rain sits out west, and a big blue H is parked over the sea.',
     applyIt: {
@@ -234,7 +234,7 @@ const M10L1_BEATS = [
       answer: 0,
       feedback: [
         null,
-        'Warm air is shown by colour on the temperature layer, not by green blobs.',
+        'Warm air is shown by color on the temperature layer, not by green blobs.',
         'A weather map shows the air, so nothing on it is drawing trees.',
         'Fronts are lines with teeth on them, and these are patches.'
       ],
@@ -283,7 +283,7 @@ const M10L1_ACTIVITY = {
   ],
   steps: [
     'Stick the star on Atlanta first, because every reading starts from her own spot.',
-    'Write down the colour sitting over Georgia, and the temperature that colour stands for.',
+    'Write down the color sitting over Georgia, and the temperature that color stands for.',
     'Ring every green or blue patch in green. All of that is precipitation.',
     'Find every H and every L, and write down which one is closest to the star.',
     'Trace every line with teeth on it. Blue for triangles, red for half circles.',
@@ -297,7 +297,7 @@ const M10L1_ACTIVITY = {
     'Check the sky from the back step, not from a wet step or a wobbly chair. If you can hear thunder at all, come inside and read the map from indoors.',
   grownUpAsks: [
     'Before we start. What do you think a weather map is a picture of?',
-    'Point at the star. What is the temperature colour doing over your own house?',
+    'Point at the star. What is the temperature color doing over your own house?',
     'Which is nearer your star, the H or the L? What does that tell you?',
     'Show me a front. Which way are the teeth pointing, and why does that matter?',
     'Where is the rain right now, and where do you think it will be by bedtime?',
@@ -363,7 +363,7 @@ const M10L2_BEATS = [
     applyIt: {
       prompt: 'A front over Georgia has triangles AND half circles on it, and it has not moved for two days. What should Gigi expect?',
       choices: [
-        'Grey skies and rain that hang about',
+        'Gray skies and rain that hang about',
         'One quick storm and then clear sky',
         'A sudden ten degree drop tonight',
         'Calm, dry, sunny weather all week'
@@ -426,7 +426,7 @@ const M10L2_ACTIVITY = {
     'Write down one thing that changes when you swap those symbols over.',
     'Draw a third front with both symbols on it, alternating. That is stationary.',
     'Now open the real map and find a real front on it.',
-    'Copy that front onto the second outline map, in the right colour, teeth and all.',
+    'Copy that front onto the second outline map, in the right color, teeth and all.',
     'Work out how far it is from the front to Atlanta, and which way it is going.',
     'Write one dated prediction: when it reaches us, we will get ___, because ___.',
     'Check it tomorrow and write what really happened underneath.'
@@ -461,7 +461,7 @@ const M10L2_LEDGER = {
     cards: [
       'HARD RAIN, THEN COLD AND CLEAR',
       'SLOW STEADY RAIN, THEN WARMER',
-      'GREY AND WET FOR THREE DAYS',
+      'GRAY AND WET FOR THREE DAYS',
       'CLEAR SKY, NO WIND, COLD NIGHT',
       'CLOUD BUILDING AND WIND PICKING UP'
     ],
@@ -847,7 +847,7 @@ const M10L5_ACTIVITY = {
   needs: [
     'one long paper strip, ruled into twelve months',
     'a green pencil, a red pencil and a blue pencil',
-    'four strips of coloured card, one per crop',
+    'four strips of colored card, one per crop',
     'the frost dates, written out where she can see them',
     'sticky tape',
     'her Plant Detective Log'
@@ -888,7 +888,7 @@ const M10L5_LEDGER = {
   tasks: [
     'Copy your twelve-month strip onto the sheet, with the green stretch shaded.',
     'Write the two dates and the number of days between them.',
-    'Draw all four crop bars, and mark every indoors part in a different colour.',
+    'Draw all four crop bars, and mark every indoors part in a different color.',
     'Write one sentence: the climate here means I must ___ before I can grow ginger.'
   ],
   game: {
@@ -996,7 +996,7 @@ const M10L6_ACTIVITY = {
     'the season strip from Lesson 59',
     'a red pen and a blue pen',
     'an old sheet or a frost cloth, and four bricks',
-    'a torch, and her four containers'
+    'a flashlight, and her four containers'
   ],
   steps: [
     'Find the 27th of March. Write LAST FROST on it in red.',
@@ -1006,8 +1006,8 @@ const M10L6_ACTIVITY = {
     'Count backwards from the 13th of November, nine months, along the season strip.',
     'Mark that week. That is when ginger would have to start indoors to make a full crop.',
     'Say out loud which of your four plants the November date matters to most.',
-    'Now build the frost-night kit. Sheet, bricks, torch, all in one place by the door.',
-    'Practise the drill in daylight. Carry ginger and turmeric to the porch, together.',
+    'Now build the frost-night kit. Sheet, bricks, flashlight, all in one place by the door.',
+    'Practice the drill in daylight. Carry ginger and turmeric to the porch, together.',
     'Drape the sheet over anything too big to move, right down to the ground.',
     'Weigh the edges down with the bricks so no warm air can escape underneath.',
     'Water the soil in the afternoon, because damp soil holds heat better than dry soil.',
@@ -1015,7 +1015,7 @@ const M10L6_ACTIVITY = {
     'Write the whole drill out in order, so somebody else could do it without you.'
   ],
   safety:
-    'Containers of wet soil are far heavier than they look, so carry them with a grown-up and keep them off your toes. Never lay plastic straight onto leaves overnight, and never use the torch to go out alone in the dark. Nothing is tasted, ever, without a grown-up.',
+    'Containers of wet soil are far heavier than they look, so carry them with a grown-up and keep them off your toes. Never lay plastic straight onto leaves overnight, and never use the flashlight to go out alone in the dark. Nothing is tasted, ever, without a grown-up.',
   grownUpAsks: [
     'Before we mark anything. When do you think our first freeze usually comes?',
     'The record dates are two months apart. What does that do to your planning?',
@@ -1026,7 +1026,7 @@ const M10L6_ACTIVITY = {
     'Why does the sheet have to reach right down to the ground?',
     'Why water the soil in the afternoon rather than at bedtime?',
     'You counted nine months back from November. Where did you land?',
-    'What is the point of practising this in daylight?',
+    'What is the point of practicing this in daylight?',
     'Say the drill back to me in order, as if I had never done it.'
   ]
 };
@@ -1071,7 +1071,7 @@ export const HERBALISM_M10 = [
     spec: '§10 · beats',
 
     concept:
-      'A weather map stacks four kinds of measurement on one picture, and it only becomes a forecast once you notice which way the weather is travelling.',
+      'A weather map stacks four kinds of measurement on one picture, and it only becomes a forecast once you notice which way the weather is traveling.',
 
     standards: ['S4E4b'],
 
@@ -1079,7 +1079,7 @@ export const HERBALISM_M10 = [
 
     glossary: [
       { word: 'weather map', plain: 'A map with measurements drawn on it, not a photograph of the sky.' },
-      { word: 'temperature', plain: 'How hot or cold the air is. Shown by colour on a map.' },
+      { word: 'temperature', plain: 'How hot or cold the air is. Shown by color on a map.' },
       { word: 'precipitation', plain: 'Anything falling out of the sky. Rain, sleet, hail or snow.' },
       { word: 'pressure', plain: 'How hard the air is pressing down. H means high, L means low.' },
       { word: 'forecast', plain: 'What the weather is expected to do next, worked out from data.' },
@@ -1095,7 +1095,7 @@ export const HERBALISM_M10 = [
       minutes: 13,
       verified: '2026-08-15 · re-checked at youtube.com/oembed',
       teaches: [
-        'what the colours on a weather map mean',
+        'what the colors on a weather map mean',
         'how rain shows up on a map',
         'H and L, and what they stand for',
         'the symbols a meteorologist actually uses',
@@ -1113,13 +1113,13 @@ export const HERBALISM_M10 = [
     hook: M10L1_CHECK_IN,
     core: M10L1_BEATS.map((b) => ({ heading: b.label, text: b.teachingText })),
     doing:
-      'Print today\'s real national weather map and put a star on Atlanta before anything else, because every reading starts from her own spot. Read the four layers off it one at a time — the temperature colour over Georgia, every green patch of precipitation ringed in green, the nearest H and L named, and every front traced in blue for triangles and red for half circles. Then look west of the star, because that is where Georgia\'s tomorrow comes from, and write one dated sentence predicting tomorrow with a reason attached. The sentence does not get changed. The next day she goes outside, writes what actually happened, and works out which layer of the map she read well and which one fooled her.',
+      'Print today\'s real national weather map and put a star on Atlanta before anything else, because every reading starts from her own spot. Read the four layers off it one at a time — the temperature color over Georgia, every green patch of precipitation ringed in green, the nearest H and L named, and every front traced in blue for triangles and red for half circles. Then look west of the star, because that is where Georgia\'s tomorrow comes from, and write one dated sentence predicting tomorrow with a reason attached. The sentence does not get changed. The next day she goes outside, writes what actually happened, and works out which layer of the map she read well and which one fooled her.',
 
     practice: [
       {
         ask: 'What are the four things a weather map is showing you at once?',
         answer: 'Temperature, precipitation, pressure and fronts.',
-        why: 'Each one is a different measurement, and each has its own colour or symbol on the map.'
+        why: 'Each one is a different measurement, and each has its own color or symbol on the map.'
       },
       {
         ask: 'Why does a Georgia gardener look west on the map rather than east?',
@@ -1135,8 +1135,8 @@ export const HERBALISM_M10 = [
         answer: 0,
         feedback: [
           null,
-          'Temperature is shown by the background colour, not by patches.',
-          'Pressure is marked with an H or an L, not with a colour patch.',
+          'Temperature is shown by the background color, not by patches.',
+          'Pressure is marked with an H or an L, not with a color patch.',
           'Fronts are lines with symbols along them, not patches.'
         ]
       },
@@ -1147,7 +1147,7 @@ export const HERBALISM_M10 = [
         feedback: [
           null,
           'Rain shows up as green and blue patches, not as a letter.',
-          'Heat is shown by colour. The H is about pressure.',
+          'Heat is shown by color. The H is about pressure.',
           'A warning is a message, not a symbol drawn on a surface map.'
         ]
       },
@@ -1225,7 +1225,7 @@ export const HERBALISM_M10 = [
     hook: M10L2_CHECK_IN,
     core: M10L2_BEATS.map((b) => ({ heading: b.label, text: b.teachingText })),
     doing:
-      'Draw a cold front down through Alabama on a blank Southeast map, with the triangles on the side it is heading for, and label the air AHEAD of it and BEHIND it. Swap the triangles for half circles and write down what changes. Draw a third front with both symbols alternating, which is a stationary front and is going nowhere. Then open today\'s real surface map, find a real front on it, copy it onto a second blank map in the right colour with its teeth pointing the right way, work out how far it is from Atlanta, and write one dated prediction about what happens when it arrives. Check it tomorrow.',
+      'Draw a cold front down through Alabama on a blank Southeast map, with the triangles on the side it is heading for, and label the air AHEAD of it and BEHIND it. Swap the triangles for half circles and write down what changes. Draw a third front with both symbols alternating, which is a stationary front and is going nowhere. Then open today\'s real surface map, find a real front on it, copy it onto a second blank map in the right color with its teeth pointing the right way, work out how far it is from Atlanta, and write one dated prediction about what happens when it arrives. Check it tomorrow.',
 
     practice: [
       {
@@ -1326,7 +1326,7 @@ export const HERBALISM_M10 = [
         'what it looks like when a map turns into a decision'
       ],
       sourceGap:
-        'NO GAP. This is the first Black American educator in the Herbalism course, and it took until lesson 57. Chesley McNeil is the meteorologist at 11Alive, Atlanta\'s NBC station — her own city\'s weatherman. His 11Alive biography records a BS and MS in Geosciences from Mississippi State, the American Meteorological Society Seal of Approval, Certified Broadcast Meteorologist, Emmy awards, appointment to Georgia\'s Severe Weather Task Force in 2013, a teaching post at Kennesaw State, and membership of the National Association of Black Journalists. Found by searching "11Alive Weather IQ Chesley McNeil explains youtube" and "Chesley McNeil 11Alive explains cold front weather map video youtube" after "Black American meteorologist YouTube channel teaching kids weather maps fronts" produced only articles about Black meteorologists rather than teaching videos. NOTE FOR GIGI: this is a news segment, not a children\'s programme. Watch it first — a cold-snap report can carry a story about people without shelter, and that is a conversation worth having on purpose.'
+        'NO GAP. This is the first Black American educator in the Herbalism course, and it took until lesson 57. Chesley McNeil is the meteorologist at 11Alive, Atlanta\'s NBC station — her own city\'s weatherman. His 11Alive biography records a BS and MS in Geosciences from Mississippi State, the American Meteorological Society Seal of Approval, Certified Broadcast Meteorologist, Emmy awards, appointment to Georgia\'s Severe Weather Task Force in 2013, a teaching post at Kennesaw State, and membership of the National Association of Black Journalists. Found by searching "11Alive Weather IQ Chesley McNeil explains youtube" and "Chesley McNeil 11Alive explains cold front weather map video youtube" after "Black American meteorologist YouTube channel teaching kids weather maps fronts" produced only articles about Black meteorologists rather than teaching videos. NOTE FOR GIGI: this is a news segment, not a children\'s program. Watch it first — a cold-snap report can carry a story about people without shelter, and that is a conversation worth having on purpose.'
     },
 
     checkIn: M10L3_CHECK_IN,
@@ -1697,7 +1697,7 @@ export const HERBALISM_M10 = [
     hook: M10L6_CHECK_IN,
     core: M10L6_BEATS.map((b) => ({ heading: b.label, text: b.teachingText })),
     doing:
-      'Write LAST FROST in red on the 27th of March and FIRST FREEZE in blue on the 13th of November on a one-page year calendar, then put the record extremes beside each average — 11 October and 18 December for the first freeze, and a spring freeze as late as the 25th of April in 1910. Count the weeks between the two marks. Count nine months backwards from November along last lesson\'s season strip to find the week her ginger would have to start indoors. Then build a real frost-night kit by the door and practise the drill in daylight: carry the ginger and turmeric to the porch, drape a sheet right down to the ground over anything too big to move, weight the edges with bricks, and water the soil in the afternoon because damp soil holds heat better than dry. Take the sheet off in the morning before the sun gets on it, and write the whole drill out in order so somebody else could follow it without her.',
+      'Write LAST FROST in red on the 27th of March and FIRST FREEZE in blue on the 13th of November on a one-page year calendar, then put the record extremes beside each average — 11 October and 18 December for the first freeze, and a spring freeze as late as the 25th of April in 1910. Count the weeks between the two marks. Count nine months backwards from November along last lesson\'s season strip to find the week her ginger would have to start indoors. Then build a real frost-night kit by the door and practice the drill in daylight: carry the ginger and turmeric to the porch, drape a sheet right down to the ground over anything too big to move, weight the edges with bricks, and water the soil in the afternoon because damp soil holds heat better than dry. Take the sheet off in the morning before the sun gets on it, and write the whole drill out in order so somebody else could follow it without her.',
 
     practice: [
       {

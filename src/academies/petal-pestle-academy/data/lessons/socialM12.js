@@ -229,7 +229,7 @@ export const SOCIAL_M12 = [
       needs: ['paper', 'a pencil', 'a grown-up', 'her notebook'],
       steps: [
         'Invent a rule for who gets the last slice of cake. Make it sound completely fair.',
-        'Now find a way that rule could always favour one person.',
+        'Now find a way that rule could always favor one person.',
         'Write down the fair-sounding rule and the unfair result side by side.',
         'Ask a grown-up whether the rule mentions that person by name.',
         'Underline the words that do the real work.',
@@ -254,7 +254,7 @@ export const SOCIAL_M12 = [
       { heading: 'The tax, and the clause that let others through', text: 'A poll tax meant paying money to vote. A grandfather clause let a man vote without the test if his grandfather had voted.' }
     ],
     doing:
-      'Invent a rule for who gets the last slice of cake that sounds completely fair. Find a way it could always favour one person. Write the rule and the result side by side, and underline the words doing the work.',
+      'Invent a rule for who gets the last slice of cake that sounds completely fair. Find a way it could always favor one person. Write the rule and the result side by side, and underline the words doing the work.',
     practice: [
       { ask: 'What was a poll tax?', answer: 'Money a person had to pay before voting.', why: 'Poor people could not pay it.' },
       { ask: 'Why did the grandfather clause keep Black men out?', answer: 'Their grandfathers had been enslaved and could not vote.', why: 'It never mentioned race at all.' }
@@ -441,7 +441,7 @@ export const SOCIAL_M12 = [
         label: 'And it ended inside living memory',
         hook: 'The Civil Rights Act was passed in 1964. Work out how long ago that is.',
         teachingText:
-          'Jim Crow laws were struck down through the 1950s and 1960s, after decades of organised effort. People who went to segregated schools are alive now.',
+          'Jim Crow laws were struck down through the 1950s and 1960s, after decades of organized effort. People who went to segregated schools are alive now.',
         example:
           'That is under a hundred years. Somebody in her own family may have lived it, and can be asked.',
         applyIt: {
@@ -482,7 +482,7 @@ export const SOCIAL_M12 = [
     },
     core: [
       { heading: 'The law was only half of it', text: 'Beyond the laws there were customs enforced by threat: which door to use, when to step aside, what could not be said. Breaking a custom could be as dangerous as breaking a law.' },
-      { heading: 'And it ended inside living memory', text: 'Jim Crow laws were struck down through the 1950s and 1960s, after decades of organised effort. People who went to segregated schools are alive now.' }
+      { heading: 'And it ended inside living memory', text: 'Jim Crow laws were struck down through the 1950s and 1960s, after decades of organized effort. People who went to segregated schools are alive now.' }
     ],
     doing:
       'With a grown-up, choose one older person to talk to. Write three simple questions first. Ask what school was like when they were nine. Listen more than you talk and write their exact words.',

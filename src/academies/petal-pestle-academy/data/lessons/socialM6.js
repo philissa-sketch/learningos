@@ -54,7 +54,7 @@ export const SOCIAL_M6 = [
     minutes: 30,
     spec: '§10 · beats',
     concept:
-      'Sacagawea travelled the whole expedition carrying a baby, and it succeeded because of what she knew.',
+      'Sacagawea traveled the whole expedition carrying a baby, and it succeeded because of what she knew.',
     standards: ['SS4H3c'],
     offGrade: null,
     words: ['interpreter', 'nation', 'trade', 'guide'],
@@ -260,7 +260,7 @@ export const SOCIAL_M6 = [
       {
         n: 2,
         label: 'Oregon walked, California ran',
-        hook: 'One took months of walking. The other took a rumour about gold.',
+        hook: 'One took months of walking. The other took a rumor about gold.',
         teachingText:
           'Families crossed to Oregon in wagon trains along the Oregon Trail. Then gold was found in California in 1848, and a rush of people arrived at once.',
         example:

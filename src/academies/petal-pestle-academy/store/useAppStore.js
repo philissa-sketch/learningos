@@ -738,7 +738,7 @@ export const useAppStore = create((set, get) => ({
   async cancelRequest(requestId) {
     const req = get().requests.find((r) => r.requestId === requestId);
     if (!req || req.status !== 'pending') return { ok: false };
-    const updated = { ...req, status: 'declined', decidedAt: new Date().toISOString(), note: 'Cancelled' };
+    const updated = { ...req, status: 'declined', decidedAt: new Date().toISOString(), note: 'Canceled' };
     await putRequest(updated);
     set({ requests: get().requests.map((r) => (r.requestId === requestId ? updated : r)) });
     return { ok: true };

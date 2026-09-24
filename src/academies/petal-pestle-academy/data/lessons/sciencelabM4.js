@@ -222,7 +222,7 @@ const L21_BEATS = [
     label: 'Dust is how you see the beam itself',
     hook: 'She has been looking at rays of light her whole life without seeing a single one.',
     teachingText:
-      'Light is invisible while it is travelling. What she sees is light that has bounced off something into her eye. Put dust or steam in the way and each speck bounces a little light to her, so the whole beam shows up.',
+      'Light is invisible while it is traveling. What she sees is light that has bounced off something into her eye. Put dust or steam in the way and each speck bounces a little light to her, so the whole beam shows up.',
     example:
       'Clap two dusty cushions in a sunbeam and the beam appears out of nowhere as a straight bar of light.',
     applyIt: {
@@ -242,19 +242,19 @@ const L21_BEATS = [
 
 const L21_ACTIVITY = {
   title: 'The three-card path, and a beam made visible',
-  prep: 'Three index cards, a pin, and a dim room. A torch with a narrow beam works best.',
-  needs: ['three index cards', 'a pin', 'modelling clay to stand the cards up', 'a torch', 'a little flour or a steamy kettle'],
+  prep: 'Three index cards, a pin, and a dim room. A flashlight with a narrow beam works best.',
+  needs: ['three index cards', 'a pin', 'modeling clay to stand the cards up', 'a flashlight', 'a little flour or a steamy kettle'],
   steps: [
-    'A grown-up makes one small hole in the centre of each card.',
+    'A grown-up makes one small hole in the center of each card.',
     'Stand all three upright in clay, in a line, holes lined up.',
-    'Put the torch behind the last one and look through the first. Can you see it?',
+    'Put the flashlight behind the last one and look through the first. Can you see it?',
     'Slide the middle card a little to one side. Look again.',
     'Line them up again to prove it comes back.',
-    'Now darken the room, shine the torch across it, and puff a tiny bit of flour into the beam.',
+    'Now darken the room, shine the flashlight across it, and puff a tiny bit of flour into the beam.',
     'Draw what the beam looked like. Straight or curved?'
   ],
   safety:
-    'A grown-up makes the pinholes. Never look into the torch beam directly, and NEVER at the sun. Flour is puffed away from faces.',
+    'A grown-up makes the pinholes. Never look into the flashlight beam directly, and NEVER at the sun. Flour is puffed away from faces.',
   minutes: 14
 };
 
@@ -278,7 +278,7 @@ const L22_BEATS = [
     teachingText:
       'When light hits a mirror it reflects — it bounces off and carries on in a new straight line. Each straight line is still straight. There are just two of them now, meeting at the mirror.',
     example:
-      'A torch beam pointed at a mirror on the potting bench lands as a bright spot on the far wall, nowhere near where it was aimed.',
+      'A flashlight beam pointed at a mirror on the potting bench lands as a bright spot on the far wall, nowhere near where it was aimed.',
     applyIt: {
       prompt: 'A mirror makes light:',
       choices: ['Bounce off in a new straight line', 'Bend into a curve', 'Stop dead', 'Disappear'],
@@ -299,9 +299,9 @@ const L22_BEATS = [
     teachingText:
       'Light bounces off a mirror at the same angle it arrived at. Hit it straight on and it comes straight back. Hit it at a slant and it leaves at the same slant, the other way.',
     example:
-      'Aim the torch at the mirror from the left at a slant, and the bright spot appears on the right at exactly the matching slant.',
+      'Aim the flashlight at the mirror from the left at a slant, and the bright spot appears on the right at exactly the matching slant.',
     applyIt: {
-      prompt: 'She shines the torch straight at a mirror. The light comes:',
+      prompt: 'She shines the flashlight straight at a mirror. The light comes:',
       choices: ['Off to one side', 'Straight back at her', 'Nowhere', 'Round the corner'],
       answer: 1,
       feedback: [
@@ -316,12 +316,12 @@ const L22_BEATS = [
 ];
 
 const L22_ACTIVITY = {
-  title: 'The torch, the mirror and the marked wall',
-  prep: 'A small flat mirror propped upright, a torch, and sticky notes to mark where the spot lands.',
-  needs: ['a small flat mirror', 'a torch', 'sticky notes', 'a dim room', 'her notebook'],
+  title: 'The flashlight, the mirror and the marked wall',
+  prep: 'A small flat mirror propped upright, a flashlight, and sticky notes to mark where the spot lands.',
+  needs: ['a small flat mirror', 'a flashlight', 'sticky notes', 'a dim room', 'her notebook'],
   steps: [
     'Prop the mirror upright on the bench so it cannot fall.',
-    'Shine the torch straight at it. Stick a note where the bright spot lands.',
+    'Shine the flashlight straight at it. Stick a note where the bright spot lands.',
     'Now shine it from well over to the left. Mark that spot too.',
     'Now from well over to the right. Mark it.',
     'Look at your three notes. Is there a pattern?',
@@ -329,7 +329,7 @@ const L22_ACTIVITY = {
     'Write down whether you could predict it before you tried.'
   ],
   safety:
-    'The mirror is propped so it cannot fall and break. Never aim a mirror or a torch at anybody’s eyes, and NEVER at the sun.',
+    'The mirror is propped so it cannot fall and break. Never aim a mirror or a flashlight at anybody’s eyes, and NEVER at the sun.',
   minutes: 14
 };
 
@@ -356,13 +356,13 @@ const L23_BEATS = [
       'Looking straight down at the pencil from above, it looks fine. From the side, at a slant, it looks snapped.',
     applyIt: {
       prompt: 'The pencil looks bent because the LIGHT:',
-      choices: ['Stopped in the water', 'Changed direction going into the water', 'Made the pencil soft', 'Turned a new colour'],
+      choices: ['Stopped in the water', 'Changed direction going into the water', 'Made the pencil soft', 'Turned a new color'],
       answer: 1,
       feedback: [
         'She can see the pencil, so it got through.',
         null,
         'Take it out. It is perfectly stiff.',
-        'It is the same pencil colour.'
+        'It is the same pencil color.'
       ],
       why: 'Refraction. The light bent, and her eye believed it came straight.'
     }
@@ -430,7 +430,7 @@ const L24_BEATS = [
       'A drop of water on a clear plastic sheet over newsprint makes the letters under it swell up.',
     applyIt: {
       prompt: 'What makes the water drop magnify?',
-      choices: ['Its curved shape', 'Its weight', 'Its coldness', 'The colour of the paper'],
+      choices: ['Its curved shape', 'Its weight', 'Its coldness', 'The color of the paper'],
       answer: 0,
       feedback: [
         null,
@@ -681,7 +681,7 @@ export const SCIENCELAB_M4 = [
     ],
     check: [
       { prompt: 'A mirror makes light:', choices: ['Bounce off in a new straight line', 'Bend into a curve', 'Stop dead', 'Vanish'], answer: 0, feedback: [null, 'It changes direction once, sharply.', 'The bright spot says otherwise.', 'It went somewhere.'] },
-      { prompt: 'She shines a torch straight at a mirror. The light comes:', choices: ['Off to one side', 'Nowhere', 'Round the corner', 'Straight back at her'], answer: 3, feedback: ['That needs a slant.', 'It always goes somewhere.', 'That needs a slant too.', null] },
+      { prompt: 'She shines a flashlight straight at a mirror. The light comes:', choices: ['Off to one side', 'Nowhere', 'Round the corner', 'Straight back at her'], answer: 3, feedback: ['That needs a slant.', 'It always goes somewhere.', 'That needs a slant too.', null] },
       { prompt: 'Seeing round a corner with a mirror works because light:', choices: ['Bends round the wall', 'Bounces off at an angle', 'Goes through the wall', 'Slows down'], answer: 1, feedback: ['Light never bends round walls.', null, 'A wall is opaque.', 'Speed is not the reason.'] }
     ]
   },
@@ -729,7 +729,7 @@ export const SCIENCELAB_M4 = [
       { ask: 'What is that bending called?', answer: 'Refraction.', why: 'Light changing direction going from air into water.' }
     ],
     check: [
-      { prompt: 'The pencil looks bent because the light:', choices: ['Stopped in the water', 'Changed direction going in', 'Made the pencil soft', 'Turned a new colour'], answer: 1, feedback: ['She can see it, so it got through.', null, 'Take it out. It is stiff.', 'Same colour as always.'] },
+      { prompt: 'The pencil looks bent because the light:', choices: ['Stopped in the water', 'Changed direction going in', 'Made the pencil soft', 'Turned a new color'], answer: 1, feedback: ['She can see it, so it got through.', null, 'Take it out. It is stiff.', 'Same color as always.'] },
       { prompt: 'A stone at the bottom of a stream looks:', choices: ['Deeper than it is', 'Shallower than it is', 'Exactly where it is', 'A different shape'], answer: 1, feedback: ['Refraction works the other way.', null, 'Reach for one and find out.', 'Its shape is fine.'] },
       { prompt: 'Looking straight down at the pencil from above, it looks:', choices: ['Even more bent', 'Broken in three', 'Fine', 'Twice as long'], answer: 2, feedback: ['The slant is what does it.', 'It only ever looked snapped once.', null, 'Its length looks about right.'] }
     ]
@@ -778,7 +778,7 @@ export const SCIENCELAB_M4 = [
       { ask: 'Which magnifies more, a fat drop or a flat one?', answer: 'The fat one.', why: 'A steeper curve bends the light more.' }
     ],
     check: [
-      { prompt: 'What makes the water drop magnify?', choices: ['Its curved shape', 'Its weight', 'Its coldness', 'The paper colour'], answer: 0, feedback: [null, 'A puddle is heavier and does nothing.', 'Warm water works too.', 'It works on any paper.'] },
+      { prompt: 'What makes the water drop magnify?', choices: ['Its curved shape', 'Its weight', 'Its coldness', 'The paper color'], answer: 0, feedback: [null, 'A puddle is heavier and does nothing.', 'Warm water works too.', 'It works on any paper.'] },
       { prompt: 'Which drop magnifies more?', choices: ['A wide flat one', 'A small fat one', 'They are the same', 'Neither does'], answer: 1, feedback: ['A gentle curve bends light very little.', null, 'Try both on one word.', 'She has seen one work.'] },
       { prompt: 'A curved shape that bends light to make a picture is called a:', choices: ['Mirror', 'Shadow', 'Lens', 'Beam'], answer: 2, feedback: ['A mirror bounces light.', 'A shadow is missing light.', null, 'A beam is a stream of light.'] }
     ]

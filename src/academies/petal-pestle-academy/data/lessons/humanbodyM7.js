@@ -94,7 +94,7 @@ const L1_ACTIVITY = {
     'Put one hand on each side of your ribs. Breathe in deeply.',
     'Write down whether both sides moved the same amount.',
     'Draw your windpipe splitting into two, then four, then eight.',
-    'Colour the left lung slightly smaller than the right one.',
+    'Color the left lung slightly smaller than the right one.',
     'Write one sentence about why they are different sizes.'
   ],
   safety: 'Normal breathing only. No holding your breath, and no deep-breathing races.',
@@ -271,14 +271,14 @@ const L4_CHECK_IN = {
 const L4_BEATS = [
   {
     n: 1,
-    label: 'Air can be measured, in millilitres',
+    label: 'Air can be measured, in milliliters',
     hook: 'Air takes up room, so air can be measured like water.',
     teachingText:
-      'Volume is how much room something takes up. Liquids and gases are both measured in millilitres. A litre is a thousand millilitres.',
+      'Volume is how much room something takes up. Liquids and gases are both measured in milliliters. A liter is a thousand milliliters.',
     example:
-      'A small carton of juice is about 200 millilitres. Five of those make one litre.',
+      'A small carton of juice is about 200 milliliters. Five of those make one liter.',
     applyIt: {
-      prompt: 'How many millilitres are in a litre?',
+      prompt: 'How many milliliters are in a liter?',
       choices: ['10', '100', '1,000', '10,000'],
       answer: 2,
       feedback: [
@@ -317,15 +317,15 @@ const L4_BEATS = [
 ];
 
 const L4_ACTIVITY = {
-  title: 'Measure one breath, in millilitres',
-  prep: 'A large clear bottle, a marker, a jug with millilitre marks, a bowl, a clean straw or tube.',
+  title: 'Measure one breath, in milliliters',
+  prep: 'A large clear bottle, a marker, a jug with milliliter marks, a bowl, a clean straw or tube.',
   needs: ['a big clear bottle', 'a marker pen', 'a measuring jug', 'a bowl', 'a clean straw'],
   steps: [
     'Pour water into the bottle 100 ml at a time. Mark each level.',
     'Fill it right up, cover the top, and turn it upside down in the bowl.',
     'Slide the straw up inside the neck, under the water.',
     'Take a normal breath and blow it all out through the straw.',
-    'Read the mark where the water stopped. Write your number in millilitres.'
+    'Read the mark where the water stopped. Write your number in milliliters.'
   ],
   safety:
     'ONE normal breath, not the biggest you can manage. Nobody holds their breath, nobody competes, and nobody’s number is compared with anybody else’s. Use your own clean straw. Stop and sit down if you feel light-headed.',
@@ -333,7 +333,7 @@ const L4_ACTIVITY = {
 };
 
 const L4_LEDGER = {
-  prompt: 'Write your number in millilitres, and what you had to do to get it.',
+  prompt: 'Write your number in milliliters, and what you had to do to get it.',
   ifSheIsStuck:
     'Ask her how she turned air into a number she could read. Water moved, and the marks said how much. That is the whole method.'
 };
@@ -539,14 +539,14 @@ export const HUMANBODY_M7 = [
     title: 'Measuring one breath',
     minutes: 30,
     spec: '§10 · beats',
-    concept: 'Air takes up space, so a breath can be measured in millilitres using water it pushes out of a bottle.',
+    concept: 'Air takes up space, so a breath can be measured in milliliters using water it pushes out of a bottle.',
     standards: [],
     offGrade: null,
-    words: ['volume', 'millilitre', 'litre'],
+    words: ['volume', 'milliliter', 'liter'],
     glossary: [
       { word: 'volume', plain: 'How much room something takes up.' },
-      { word: 'millilitre', plain: 'A small unit for measuring liquid or air.' },
-      { word: 'litre', plain: 'A thousand millilitres.' }
+      { word: 'milliliter', plain: 'A small unit for measuring liquid or air.' },
+      { word: 'liter', plain: 'A thousand milliliters.' }
     ],
     video: {
       id: 'mOKmjYwfDGU',
@@ -566,12 +566,12 @@ export const HUMANBODY_M7 = [
     core: L4_BEATS.map((b) => ({ heading: b.label, text: b.teachingText })),
     doing: L4_ACTIVITY.steps.join(' '),
     practice: [
-      { ask: 'How many millilitres in a litre?', answer: '1,000.', why: 'Same jump as metres to kilometres.' },
+      { ask: 'How many milliliters in a liter?', answer: '1,000.', why: 'Same jump as meters to kilometers.' },
       { ask: 'What does the water level show?', answer: 'How much air she breathed out.', why: 'Air pushed the water down.' }
     ],
     check: [
       {
-        prompt: 'How many millilitres are in one litre?',
+        prompt: 'How many milliliters are in one liter?',
         choices: ['10', '100', '1,000', '10,000'],
         answer: 2,
         feedback: ['Far too few.', 'Still too few.', null, 'Ten times too many.']
@@ -597,7 +597,7 @@ export const HUMANBODY_M7_META = {
   module: 7,
   title: 'The Lungs',
   blurb:
-    'Where the oxygen comes from — two lungs of different sizes, a branching tree of air pipes, the diaphragm that does all the work, and one breath measured in millilitres.'
+    'Where the oxygen comes from — two lungs of different sizes, a branching tree of air pipes, the diaphragm that does all the work, and one breath measured in milliliters.'
 };
 
 export function humanbodyM7LessonById(id) {

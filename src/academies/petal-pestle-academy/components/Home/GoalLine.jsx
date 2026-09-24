@@ -50,7 +50,7 @@ export function GoalLine({ onNavigate }) {
 
   return (
     <section className="mt-6 panel px-5 py-5">
-      <p className="label-caps">What I am working towards</p>
+      <p className="label-caps">What I am working toward</p>
 
       <p className="mt-1.5 font-display text-lg leading-snug text-ink-900">
         {strand?.label || best.goal.strandId}

@@ -154,7 +154,7 @@ const L2_BEATS = [
   {
     n: 2,
     label: 'Still is not the same as nothing',
-    hook: 'The word "balanced" does not mean no forces. It means the forces have cancelled.',
+    hook: 'The word "balanced" does not mean no forces. It means the forces have canceled.',
     teachingText:
       'This is the part almost everybody gets wrong at first. Something sitting perfectly still can have big forces on it. They just add up to zero.',
     example:
@@ -242,14 +242,14 @@ const L3_BEATS = [
       choices: [
         'Nothing — both were pulled',
         'Two things changed, not one',
-        'The cans were different colours',
+        'The cans were different colors',
         'She should have used rope'
       ],
       answer: 1,
       feedback: [
         'Both were pulled, and the test still cannot answer anything.',
         null,
-        'Colour does not pull.',
+        'Color does not pull.',
         'String is fine. The floor is the problem.'
       ],
       why: 'The weight changed and the ground changed. Two things. The result cannot tell you which mattered.'
@@ -570,7 +570,7 @@ export const SCIENCELAB_M1 = [
       },
       {
         prompt: 'Which of these is NOT a force?',
-        choices: ['Pushing a door shut', 'Pulling a weed', 'The colour of a pot', 'Lifting a can'],
+        choices: ['Pushing a door shut', 'Pulling a weed', 'The color of a pot', 'Lifting a can'],
         answer: 2,
         feedback: ['That is a push.', 'That is a pull.', null, 'That is a pull, upward.']
       },

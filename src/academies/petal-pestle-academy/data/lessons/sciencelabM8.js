@@ -294,7 +294,7 @@ const L46_BEATS = [
   {
     n: 2,
     label: 'The pattern repeats, and that is what makes it a model',
-    hook: 'Georgia does not ask her to memorise five words. It asks her to describe a repeating pattern from her own observations.',
+    hook: 'Georgia does not ask her to memorize five words. It asks her to describe a repeating pattern from her own observations.',
     teachingText:
       'The phases run in the same order every month: new, crescent, quarter, gibbous, full, then back down through gibbous, quarter and crescent to new. Her own log shows it, and a record she gathered herself is worth more than a diagram she was handed.',
     example:
@@ -317,7 +317,7 @@ const L46_BEATS = [
 const L46_ACTIVITY = {
   title: 'Label the log and find the repeat',
   prep: 'Her moon log from Lesson 44, with a month of drawings in it.',
-  needs: ['her completed moon log', 'coloured pencils', 'her notebook'],
+  needs: ['her completed moon log', 'colored pencils', 'her notebook'],
   steps: [
     'Go through every drawing and write its phase name underneath: new, crescent, quarter, gibbous or full.',
     'Count how many nights were cloudy and note that number honestly.',
@@ -332,7 +332,7 @@ const L46_ACTIVITY = {
 };
 
 const L46_LEDGER = {
-  prompt: 'Your labelled log, your cycle drawn as a circle, and the number of days your own record gives for one cycle.',
+  prompt: 'Your labeled log, your cycle drawn as a circle, and the number of days your own record gives for one cycle.',
   ifSheIsStuck:
     'If clouds took too many nights, the pattern is still there in what she has. Ask her to fill the gaps with a dotted outline and mark them as guesses.'
 };
@@ -426,7 +426,7 @@ const L48_BEATS = [
     teachingText:
       'Seasons are not caused by moving nearer or further from the sun. They are caused by the tilt. When her side leans toward the sun, its light arrives more directly and for more hours, and that side warms up. When it leans away, the light comes in at a slant and there is less of it.',
     example:
-      'Shine a torch straight down on paper and you get a small bright patch. Tilt it and the same light spreads out thin and weak.',
+      'Shine a flashlight straight down on paper and you get a small bright patch. Tilt it and the same light spreads out thin and weak.',
     applyIt: {
       prompt: 'Summer happens on her side of the Earth because that side is:',
       choices: ['Closer to the sun', 'Leaning toward the sun', 'Spinning faster', 'Facing the moon'],
@@ -464,24 +464,24 @@ const L48_BEATS = [
 ];
 
 const L48_ACTIVITY = {
-  title: 'The torch, the slant, and her own frost date',
-  prep: 'A torch, squared paper, and her Herbalism sowing notes if she has them.',
-  needs: ['a torch', 'squared paper', 'a pencil', 'her Herbalism notes or a seed packet', 'her notebook'],
+  title: 'The flashlight, the slant, and her own frost date',
+  prep: 'A flashlight, squared paper, and her Herbalism sowing notes if she has them.',
+  needs: ['a flashlight', 'squared paper', 'a pencil', 'her Herbalism notes or a seed packet', 'her notebook'],
   steps: [
-    'Shine the torch straight down onto the squared paper from about 30cm. Draw round the bright patch and count the squares.',
-    'Now tilt the torch well over, same height, and draw round the patch again. Count those squares.',
-    'Same torch, same light. Which patch got more light onto each square?',
+    'Shine the flashlight straight down onto the squared paper from about 30cm. Draw round the bright patch and count the squares.',
+    'Now tilt the flashlight well over, same height, and draw round the patch again. Count those squares.',
+    'Same flashlight, same light. Which patch got more light onto each square?',
     'Write down which one is like summer and which is like winter.',
     'Now find the last frost date for your area on a seed packet or in your Herbalism notes.',
     'Pick one seed and count backwards the weeks it needs before planting out.',
     'Write down the date you would sow it, and why the tilt is the reason that date exists.'
   ],
-  safety: 'Do not shine the torch into eyes. NEVER look at the sun to compare — the torch does the whole job indoors.',
+  safety: 'Do not shine the flashlight into eyes. NEVER look at the sun to compare — the flashlight does the whole job indoors.',
   minutes: 16
 };
 
 const L48_LEDGER = {
-  prompt: 'Your two torch patches with their square counts, your last frost date, and your sowing date for one seed.',
+  prompt: 'Your two flashlight patches with their square counts, your last frost date, and your sowing date for one seed.',
   ifSheIsStuck:
     'The straight-down patch was small and bright; the tilted one was wide and weak. That is summer and winter, on a piece of squared paper.'
 };
@@ -684,7 +684,7 @@ export const SCIENCELAB_M8 = [
     check: [
       { prompt: 'Summer happens on her side of the Earth because that side is:', choices: ['Closer to the sun', 'Leaning toward the sun', 'Spinning faster', 'Facing the moon'], answer: 1, feedback: ['We are actually nearest in January.', null, 'The spin is the same all year.', 'The moon warms nothing.'] },
       { prompt: 'A gardener can be given a last frost date because the seasons:', choices: ['Are set by the weather report', 'Repeat at about the same time each year', 'Are different every single year', 'Depend on the moon'], answer: 1, feedback: ['Reports describe it, they do not set it.', null, 'They shift a little and the pattern holds.', 'The moon does not set the seasons.'] },
-      { prompt: 'Tilting a torch away from straight-down spreads its light out and makes it:', choices: ['Brighter on each square', 'Weaker on each square', 'A different colour', 'Warmer overall'], answer: 1, feedback: ['Spreading it out cannot strengthen it.', null, 'The colour is the same.', 'It is the same torch.'] }
+      { prompt: 'Tilting a flashlight away from straight-down spreads its light out and makes it:', choices: ['Brighter on each square', 'Weaker on each square', 'A different color', 'Warmer overall'], answer: 1, feedback: ['Spreading it out cannot strengthen it.', null, 'The color is the same.', 'It is the same flashlight.'] }
     ]
   }
 ];

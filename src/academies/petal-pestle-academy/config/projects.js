@@ -92,9 +92,9 @@ export const PROJECTS = [
     title: 'The Root Race chart',
     what: 'Two bar charts comparing root depth and root count across the clear cups.',
     runs: 'Measure every two days for ten days, then chart it.',
-    needs: ['the cups from Lesson 9', 'a ruler in centimetres', 'squared paper'],
+    needs: ['the cups from Lesson 9', 'a ruler in centimeters', 'squared paper'],
     steps: [
-      'Measure the longest root in each cup, in centimetres.',
+      'Measure the longest root in each cup, in centimeters.',
       'Count how many roots you can see in each cup.',
       'Plot both, every two days, on separate charts.',
       'Find the cup that wins on depth and the cup that wins on number.'
@@ -113,7 +113,7 @@ export const PROJECTS = [
     steps: [
       'Build the bin and write the date on the lid.',
       'Bury one apple core and one plastic spoon, and mark where each one is.',
-      'Add scraps through the fortnight and note what you added.',
+      'Add scraps over the two weeks and note what you added.',
       'At the end, dig up both and draw what is left of each.'
     ],
     done: 'A working bin, a dated log, and the two drawings side by side.'
@@ -124,16 +124,16 @@ export const PROJECTS = [
     quarter: 1,
     dueWeek: 8,
     title: 'The Adaptation Hunt',
-    what: 'A labelled collection of six real leaves showing six different defences.',
+    what: 'A labeled collection of six real leaves showing six different defences.',
     runs: 'One long walk, then an afternoon mounting it.',
     needs: ['a bag', 'card', 'tape', 'the flower press from Module 7 if it exists yet'],
     steps: [
       'Find a fuzzy leaf, a waxy leaf, a thorn, a tendril, a strong-smelling leaf and a thick one.',
       'Ask before you pick anything, and never taste any of it.',
       'Tape each one to card and label what its trick is.',
-      'Write who or what you think each defence is aimed at.'
+      'Write who or what you think each defense is aimed at.'
     ],
-    done: 'Six mounted specimens, each labelled with its defence and who it is against.'
+    done: 'Six mounted specimens, each labeled with its defense and who it is against.'
   },
   // ================= QUARTER 2 =================
   {
@@ -194,16 +194,16 @@ export const PROJECTS = [
     quarter: 2,
     dueWeek: 8,
     title: 'The Solar Tea Lab',
-    what: 'A sun-brewed tea, with a colour log taken every thirty minutes.',
+    what: 'A sun-brewed tea, with a color log taken every thirty minutes.',
     runs: 'One sunny afternoon, three hours, checked every half hour.',
     needs: ['a clean glass jar with a lid', 'water', 'peppermint or lemon balm or dried hibiscus', 'a sunny spot'],
     steps: [
       'Put the herbs and water in, lid on, in the sunniest place you have.',
-      'Every thirty minutes, look and write down the colour. Do not open it.',
+      'Every thirty minutes, look and write down the color. Do not open it.',
       'After three hours, strain it.',
       'Drink the tea you brewed with the sun, with honey if you want it.'
     ],
-    done: 'Six colour observations half an hour apart, and a tea she made herself.',
+    done: 'Six color observations half an hour apart, and a tea she made herself.',
     note: 'A drink she made. Never a remedy, and the write-up never says it does anything to a person.'
   },
   // ================= QUARTER 3 =================
@@ -246,9 +246,9 @@ export const PROJECTS = [
     module: 11,
     quarter: 3,
     dueWeek: 6,
-    title: 'The Labelled Shelf',
-    what: 'Five dried, jarred, correctly labelled samples from her own garden.',
-    runs: 'A week of drying, then an afternoon jarring and labelling.',
+    title: 'The Labeled Shelf',
+    what: 'Five dried, jarred, correctly labeled samples from her own garden.',
+    runs: 'A week of drying, then an afternoon jarring and labeling.',
     needs: ['five clean jars', 'labels', 'a pen that does not smudge', 'herbs from her containers'],
     steps: [
       'Dry the five properly — a grown-up does anything involving the oven.',
@@ -285,7 +285,7 @@ export const PROJECTS = [
     title: 'From Plant to Pill',
     what: 'One drug traced all the way from the plant it came from to the pill in a box.',
     runs: 'Two afternoons of reading and drawing.',
-    needs: ['card or a big sheet', 'colours', 'the Module 13 lessons'],
+    needs: ['card or a big sheet', 'colors', 'the Module 13 lessons'],
     steps: [
       'Pick one: willow, foxglove, cinchona, periwinkle or sweet wormwood.',
       'Draw the plant, then the compound, then who found it and when.',
@@ -302,7 +302,7 @@ export const PROJECTS = [
     dueWeek: 4,
     title: 'Her Own Fair Test',
     what: 'One experiment she designed and ran herself, with a control group and a written prediction.',
-    runs: 'Design in one afternoon, run across the fortnight, write up at the end.',
+    runs: 'Design in one afternoon, run across the two weeks, write up at the end.',
     needs: ['whatever her question needs', 'a pen', 'her prediction written BEFORE she looks'],
     steps: [
       'Write the question, and what you think will happen, in pen, before anything starts.',
@@ -321,7 +321,7 @@ export const PROJECTS = [
     title: 'The Portrait Wall',
     what: 'Six cards for six women, and one letter she writes to the one she wants to be like.',
     runs: 'Two afternoons.',
-    needs: ['six cards', 'colours', 'writing paper', 'somewhere to hang them'],
+    needs: ['six cards', 'colors', 'writing paper', 'somewhere to hang them'],
     steps: [
       'One card per woman: her name, the year, and the one thing she did that nobody had done.',
       'Hang all six where you will actually see them.',
@@ -337,7 +337,7 @@ export const PROJECTS = [
     dueWeek: 8,
     title: 'Her Field Guide',
     what: 'A field guide to her own garden, built from her own year of records.',
-    runs: 'The whole fortnight. This is the big one.',
+    runs: 'The whole two weeks. This is the big one.',
     needs: ['every Plant Detective Log from September', 'paper', 'her own drawings', 'something to bind it'],
     steps: [
       'Read back through the whole year first, before you write anything new.',
@@ -346,7 +346,7 @@ export const PROJECTS = [
       'Bind it, put her name on it, and date it.'
     ],
     done: 'A finished guide, in her handwriting, from her own data, with her name on the front.',
-    note: 'The capstone of the year. It should take the whole fortnight and it should be the thing she keeps.'
+    note: 'The capstone of the year. It should take the whole two weeks and it should be the thing she keeps.'
   }
 ];
 

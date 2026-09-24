@@ -46,7 +46,7 @@ export const QUOTED = [
 export const MARIGOLD_LINES = [
   'A doctor and a gardener do the same thing, really. Both of them notice something small before it becomes something big.',
   'You do not have to know the answer. You have to know how to go and find it.',
-  'Every plant in my cabinet was once a plant somebody did not recognise.',
+  'Every plant in my cabinet was once a plant somebody did not recognize.',
   'Getting it wrong today is how you get it right in November. That is not a consolation — it is the actual mechanism.',
   'Write down what you observe before you decide what it means. Those are two different jobs and they should not share a pen.',
   'Slow is fine. Stopped is the only real problem.',

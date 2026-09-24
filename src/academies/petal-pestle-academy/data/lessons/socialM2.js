@@ -67,7 +67,7 @@ export const SOCIAL_M2 = [
       verified: '2026-08-17',
       teaches: ['Declaration of Independence', 'Thomas Jefferson', 'rights', 'king', 'independence'],
       sourceGap:
-        'FOUR SEARCHES FOR A SEPARATE NATURAL-RIGHTS VIDEO FOUND NOTHING USABLE. Khan Academy’s is pitched at high school; one channel could not be identified; Tuttle Twins and Hillsdale College are advocacy organisations and are not used. Under the v3.24 rule that is a re-cut, so SS4CG1a folded into this lesson instead. No Black American educator identified for the Declaration at an elementary level. Open.'
+        'FOUR SEARCHES FOR A SEPARATE NATURAL-RIGHTS VIDEO FOUND NOTHING USABLE. Khan Academy’s is pitched at high school; one channel could not be identified; Tuttle Twins and Hillsdale College are advocacy organizations and are not used. Under the v3.24 rule that is a re-cut, so SS4CG1a folded into this lesson instead. No Black American educator identified for the Declaration at an elementary level. Open.'
     },
     checkIn: {
       title: 'Saying why, in writing',
@@ -386,12 +386,12 @@ export const SOCIAL_M2 = [
       'At Lexington, Saratoga and Yorktown the shape of the land helped one side and hurt the other, every time.',
     standards: ['SS4G2a'],
     offGrade: null,
-    words: ['terrain', 'cover', 'ridge', 'harbour'],
+    words: ['terrain', 'cover', 'ridge', 'harbor'],
     glossary: [
       { word: 'terrain', plain: 'The shape of a piece of ground.' },
       { word: 'cover', plain: 'Anything you can hide behind.' },
       { word: 'ridge', plain: 'A long high strip of land.' },
-      { word: 'harbour', plain: 'A safe place for ships beside land.' }
+      { word: 'harbor', plain: 'A safe place for ships beside land.' }
     ],
     video: {
       id: 'wAEgYELqo_4',

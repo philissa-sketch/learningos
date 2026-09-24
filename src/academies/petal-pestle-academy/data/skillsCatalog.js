@@ -158,18 +158,18 @@ export const SKILLS = [
   /* --- Group: measurement — 9 ------------------------------------ */
   {
     id: 'millilitre',
-    displayName: 'Millilitres',
+    displayName: 'Milliliters',
     group: 'measurement',
-    sourceTerms: ['millilitre'],
+    sourceTerms: ['milliliter'],
     lessonCount: 4,
     courses: ['herbalism', 'humanbody'],
     strand: 'measurement-data',
   },
   {
     id: 'millimetre',
-    displayName: 'Millimetres',
+    displayName: 'Millimeters',
     group: 'measurement',
-    sourceTerms: ['millimetre'],
+    sourceTerms: ['millimeter'],
     lessonCount: 2,
     courses: ['humanbody'],
     strand: 'measurement-data',
@@ -287,9 +287,9 @@ export const EXCLUDED_PENDING = [
   {
     term: 'volume',
     proposedId: 'volume',
-    assumedMeaning: 'millilitres — measurement',
+    assumedMeaning: 'milliliters — measurement',
     risk:
-      'The Herbalism sense is almost certainly millilitres and fine. The ' +
+      'The Herbalism sense is almost certainly milliliters and fine. The ' +
       'Human Body one is unverified, and the Human Body carries `sound`, ' +
       '`pitch` and `vibration` — where volume means loudness.',
     checkToRun:

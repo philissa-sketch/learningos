@@ -108,7 +108,7 @@ const L1_LEDGER = {
 
 // =========================================================== LESSON 2
 const L2_CHECK_IN = {
-  title: 'Seven metres, coiled up',
+  title: 'Seven meters, coiled up',
   text: 'The small intestine is the longest part of the tube by a long way.',
   question: 'How long do you think it is, if you pulled it out straight?'
 };
@@ -116,20 +116,20 @@ const L2_CHECK_IN = {
 const L2_BEATS = [
   {
     n: 1,
-    label: 'It is about seven metres long, folded up behind your belly button',
-    hook: 'Seven metres of tube is packed into a space the size of a shoebox.',
+    label: 'It is about seven meters long, folded up behind your belly button',
+    hook: 'Seven meters of tube is packed into a space the size of a shoebox.',
     teachingText:
-      'A grown person’s small intestine is around seven metres from end to end. It is coiled and folded many times over to fit inside. Yours is shorter, because you are shorter.',
+      'A grown person’s small intestine is around seven meters from end to end. It is coiled and folded many times over to fit inside. Yours is shorter, because you are shorter.',
     example:
-      'Seven metres is about four of you lying end to end. All of it is curled up behind your belly button.',
+      'Seven meters is about four of you lying end to end. All of it is curled up behind your belly button.',
     applyIt: {
-      prompt: 'Seven metres written in centimetres is:',
+      prompt: 'Seven meters written in centimeters is:',
       choices: ['70 cm', '700 cm', '7000 cm', '7 cm'],
       answer: 1,
       feedback: [
-        'That is only seven tenths of a metre.',
+        'That is only seven tenths of a meter.',
         null,
-        'That would be seventy metres.',
+        'That would be seventy meters.',
         'That is the number without its unit changed.'
       ]
     }
@@ -139,7 +139,7 @@ const L2_BEATS = [
     label: 'Long means slow, and slow is the point',
     hook: 'The length is not an accident. It buys time.',
     teachingText:
-      'Food takes hours to travel that seven metres. All the way along, useful bits are pulled out of it and passed into the blood. A short tube would let too much go by unused.',
+      'Food takes hours to travel that seven meters. All the way along, useful bits are pulled out of it and passed into the blood. A short tube would let too much go by unused.',
     example:
       'Panning for gold in a long stream finds more than panning in a puddle. More time in the water, more chances to catch something.',
     applyIt: {
@@ -157,12 +157,12 @@ const L2_BEATS = [
 ];
 
 const L2_ACTIVITY = {
-  title: 'Seven metres of string',
-  prep: 'A ball of string, a metre stick or tape measure, and floor space or a yard.',
-  needs: ['string', 'a metre stick or tape measure', 'scissors', 'chalk or tape', 'her notebook'],
+  title: 'Seven meters of string',
+  prep: 'A ball of string, a meter stick or tape measure, and floor space or a yard.',
+  needs: ['string', 'a meter stick or tape measure', 'scissors', 'chalk or tape', 'her notebook'],
   steps: [
-    'Measure and cut a piece of string exactly seven metres long.',
-    'Write down that length in metres, and again in centimetres.',
+    'Measure and cut a piece of string exactly seven meters long.',
+    'Write down that length in meters, and again in centimeters.',
     'Lay it out straight along the floor or the yard, and walk beside it.',
     'Now coil it up as small as you can and measure the pile across.',
     'Write down both numbers with their units, and one sentence about the difference.'
@@ -173,9 +173,9 @@ const L2_ACTIVITY = {
 };
 
 const L2_LEDGER = {
-  prompt: 'Write down how long the small intestine is, in metres and in centimetres.',
+  prompt: 'Write down how long the small intestine is, in meters and in centimeters.',
   ifSheIsStuck:
-    'The conversion is the part to hold on to, not the seven. One metre is a hundred centimetres, so seven metres is seven hundred. Let her say the times-table sentence out loud.'
+    'The conversion is the part to hold on to, not the seven. One meter is a hundred centimeters, so seven meters is seven hundred. Let her say the times-table sentence out loud.'
 };
 
 // =========================================================== LESSON 3
@@ -305,7 +305,7 @@ const L4_ACTIVITY = {
   prep: 'Two identical cups, water, a wet sponge and a measuring jug.',
   needs: ['two cups', 'water', 'a sponge', 'a measuring jug', 'her notebook'],
   steps: [
-    'Measure 200 millilitres of water into a cup and write the number down.',
+    'Measure 200 milliliters of water into a cup and write the number down.',
     'Soak the sponge in it, then lift the sponge out and let it drip for ten seconds.',
     'Pour what is left in the cup into the jug and write down that number.',
     'Squeeze the sponge hard over the second cup and measure what comes out.',
@@ -396,16 +396,16 @@ export const HUMANBODY_M10 = [
     week: 3,
     day: 2,
     n: 2,
-    title: 'Seven metres of small intestine',
+    title: 'Seven meters of small intestine',
     minutes: 30,
     spec: '§10 · beats',
-    concept: 'The small intestine is about seven metres long and folded to fit, and its length buys the time needed to pull useful bits out.',
+    concept: 'The small intestine is about seven meters long and folded to fit, and its length buys the time needed to pull useful bits out.',
     standards: [],
-    offGrade: 'Measurement and unit conversion: metres to centimetres. Her Check-In scored 2.00 on measurement and 0 of 3 on units, both at the test floor.',
-    words: ['metre', 'centimetre', 'coiled'],
+    offGrade: 'Measurement and unit conversion: meters to centimeters. Her Check-In scored 2.00 on measurement and 0 of 3 on units, both at the test floor.',
+    words: ['meter', 'centimeter', 'coiled'],
     glossary: [
-      { word: 'metre', plain: 'A length about as tall as a door handle is high.' },
-      { word: 'centimetre', plain: 'A small length. A hundred of them make one metre.' },
+      { word: 'meter', plain: 'A length about as tall as a door handle is high.' },
+      { word: 'centimeter', plain: 'A small length. A hundred of them make one meter.' },
       { word: 'coiled', plain: 'Wound round and round to fit in a smaller space.' }
     ],
     video: {
@@ -426,15 +426,15 @@ export const HUMANBODY_M10 = [
     core: L2_BEATS.map((b) => ({ heading: b.label, text: b.teachingText })),
     doing: L2_ACTIVITY.steps.join(' '),
     practice: [
-      { ask: 'How long is the small intestine?', answer: 'About seven metres.', why: 'Coiled behind the belly button.' },
-      { ask: 'Seven metres in centimetres?', answer: '700 centimetres.', why: 'One metre is a hundred centimetres.' }
+      { ask: 'How long is the small intestine?', answer: 'About seven meters.', why: 'Coiled behind the belly button.' },
+      { ask: 'Seven meters in centimeters?', answer: '700 centimeters.', why: 'One meter is a hundred centimeters.' }
     ],
     check: [
       {
-        prompt: 'Seven metres written in centimetres is:',
+        prompt: 'Seven meters written in centimeters is:',
         choices: ['70 cm', '7000 cm', '700 cm', '7 cm'],
         answer: 2,
-        feedback: ['That is under a metre.', 'That would be seventy metres.', null, 'The unit has to change too.']
+        feedback: ['That is under a meter.', 'That would be seventy meters.', null, 'The unit has to change too.']
       },
       {
         prompt: 'A longer small intestine means:',
@@ -443,7 +443,7 @@ export const HUMANBODY_M10 = [
         feedback: [null, 'Longer takes longer.', 'It holds more.', 'Length is not weight.']
       },
       {
-        prompt: 'Three metres written in centimetres is:',
+        prompt: 'Three meters written in centimeters is:',
         choices: ['30 cm', '300 cm', '3000 cm', '3 cm'],
         answer: 1,
         feedback: ['Ten times too small.', null, 'Ten times too big.', 'Unit unchanged.']
@@ -525,11 +525,11 @@ export const HUMANBODY_M10 = [
     spec: '§10 · beats',
     concept: 'The large intestine takes water back out of what is left, and useful living things too small to see share that part of the tube.',
     standards: [],
-    offGrade: 'Volume in millilitres, measured and compared. Measurement scored 2.00, at the test floor.',
-    words: ['bacteria', 'millilitre', 'absorb'],
+    offGrade: 'Volume in milliliters, measured and compared. Measurement scored 2.00, at the test floor.',
+    words: ['bacteria', 'milliliter', 'absorb'],
     glossary: [
       { word: 'bacteria', plain: 'Living things far too small to see. Most are harmless and many are useful.' },
-      { word: 'millilitre', plain: 'A small amount of liquid. A thousand of them fill a litre bottle.' },
+      { word: 'milliliter', plain: 'A small amount of liquid. A thousand of them fill a liter bottle.' },
       { word: 'absorb', plain: 'To soak something up and take it in.' }
     ],
     video: {
@@ -581,7 +581,7 @@ export const HUMANBODY_M10_META = {
   module: 10,
   title: 'The Gut, a Long Tube',
   blurb:
-    'Seven metres of string laid out on the floor and walked beside, a lining folded like a towel to buy surface, and the discovery that food is not really inside her until it crosses the wall.'
+    'Seven meters of string laid out on the floor and walked beside, a lining folded like a towel to buy surface, and the discovery that food is not really inside her until it crosses the wall.'
 };
 
 export function humanbodyM10LessonById(id) {

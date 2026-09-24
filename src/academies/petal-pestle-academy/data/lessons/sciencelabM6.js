@@ -87,13 +87,13 @@ const L31_BEATS = [
 
 const L31_ACTIVITY = {
   title: 'The candle and the floodlight',
-  prep: 'A torch, a small night light or a phone torch on its dimmest setting, and a dark room.',
-  needs: ['a bright torch', 'a very dim light', 'a dark room', 'her notebook', 'paper and a pin'],
+  prep: 'A flashlight, a small night light or a phone flashlight on its dimmest setting, and a dark room.',
+  needs: ['a bright flashlight', 'a very dim light', 'a dark room', 'her notebook', 'paper and a pin'],
   steps: [
     'In a dark room, put the dim light at the far end. Look at it and write down how easily you see it.',
-    'Now switch on the bright torch beside you, pointing at the same wall.',
+    'Now switch on the bright flashlight beside you, pointing at the same wall.',
     'Look for the dim light again. Is it still on? Can you still see it?',
-    'Switch the bright torch off. Does the dim light come back?',
+    'Switch the bright flashlight off. Does the dim light come back?',
     'OUTSIDE, WITH YOUR BACK TO THE SUN: make a pinhole in card and let the sun shine THROUGH it onto a second sheet.',
     'Look only at the second sheet. That bright dot is a picture of the sun.',
     'Write one sentence saying where the stars go in the daytime.'
@@ -110,9 +110,9 @@ const L31_LEDGER = {
 
 // ============================================ LESSON 32 · BRIGHTNESS AND DISTANCE
 const L32_CHECK_IN = {
-  title: 'The same torch, twice',
-  text: 'Have a grown-up hold a torch two steps away in a dark room, then twenty steps away, pointing at you the whole time.',
-  question: 'The torch never changed. So why did it look so different the second time?'
+  title: 'The same flashlight, twice',
+  text: 'Have a grown-up hold a flashlight two steps away in a dark room, then twenty steps away, pointing at you the whole time.',
+  question: 'The flashlight never changed. So why did it look so different the second time?'
 };
 
 const L32_BEATS = [
@@ -161,24 +161,24 @@ const L32_BEATS = [
 ];
 
 const L32_ACTIVITY = {
-  title: 'Walk the torch away',
-  prep: 'A dark garden or a long dark hallway, and a torch. A tape measure if you have one.',
-  needs: ['a torch', 'a long dark space', 'chalk or markers', 'her notebook', 'a second identical torch if there is one'],
+  title: 'Walk the flashlight away',
+  prep: 'A dark garden or a long dark hallway, and a flashlight. A tape measure if you have one.',
+  needs: ['a flashlight', 'a long dark space', 'chalk or markers', 'her notebook', 'a second identical flashlight if there is one'],
   steps: [
-    'Grown-up stands two steps away holding the torch toward you. Score its brightness out of 10.',
+    'Grown-up stands two steps away holding the flashlight toward you. Score its brightness out of 10.',
     'Have them step back five steps at a time. Score it again at each stop.',
     'Mark the ground where the brightness dropped to about half.',
     'Draw a graph in the notebook: steps along the bottom, brightness up the side.',
-    'If you have two torches, put one close and one far. Can you tell they are the same torch?',
+    'If you have two flashlights, put one close and one far. Can you tell they are the same flashlight?',
     'Write down what this tells you about a bright star and a faint one.'
   ],
-  safety: 'Walk in a cleared space, looking where you are going. Do not shine the torch into anybody’s eyes.',
+  safety: 'Walk in a cleared space, looking where you are going. Do not shine the flashlight into anybody’s eyes.',
   minutes: 14
 };
 
 const L32_LEDGER = {
   prompt: 'Your brightness graph, and one sentence on why our sun looks so much bigger and brighter than every other star.',
-  ifSheIsStuck: 'Nothing about the torch ever changed. Only how far away it was.'
+  ifSheIsStuck: 'Nothing about the flashlight ever changed. Only how far away it was.'
 };
 
 // ============================================ LESSON 33 · BIG STARS AND SMALL
@@ -217,7 +217,7 @@ const L33_BEATS = [
     teachingText:
       'A bright dot in the sky could be a small star nearby or a giant star far away. Both look the same from here. Working out which is which needs measuring, not looking, and that is what the next lesson is about.',
     example:
-      'A torch two steps away and a floodlight across a field can look equally bright from where she is standing.',
+      'A flashlight two steps away and a floodlight across a field can look equally bright from where she is standing.',
     applyIt: {
       prompt: 'She sees a very bright star. From looking alone, she can say:',
       choices: ['It must be close', 'It must be huge', 'It could be either', 'It must be both'],
@@ -234,19 +234,19 @@ const L33_BEATS = [
 ];
 
 const L33_ACTIVITY = {
-  title: 'The two-torch puzzle',
-  prep: 'A big torch and a small one, and somebody willing to hide how far away they stand.',
-  needs: ['a bright torch', 'a dim torch', 'a long dark space', 'her notebook'],
+  title: 'The two-flashlight puzzle',
+  prep: 'A big flashlight and a small one, and somebody willing to hide how far away they stand.',
+  needs: ['a bright flashlight', 'a dim flashlight', 'a long dark space', 'her notebook'],
   steps: [
-    'Have a grown-up secretly choose one torch and one distance, then switch it on.',
-    'Score how bright it looks. Now guess which torch it was and how far away.',
+    'Have a grown-up secretly choose one flashlight and one distance, then switch it on.',
+    'Score how bright it looks. Now guess which flashlight it was and how far away.',
     'Have them tell you the answer. Were you right?',
     'Do it five more times, writing down each guess and each answer.',
     'Count how many you got right.',
-    'Now they hold BOTH torches at distances that make them look equally bright. Measure both distances.',
+    'Now they hold BOTH flashlights at distances that make them look equally bright. Measure both distances.',
     'Write one sentence about what you would need in order to be sure.'
   ],
-  safety: 'A cleared dark space, and no torch shone into anybody’s eyes.',
+  safety: 'A cleared dark space, and no flashlight shone into anybody’s eyes.',
   minutes: 14
 };
 
@@ -259,7 +259,7 @@ const L33_LEDGER = {
 // ======================================= LESSON 34 · STARS MAKE LIGHT
 const L34_CHECK_IN = {
   title: 'Which of these makes its own light?',
-  text: 'A candle, the moon, a torch, a mirror, and a white plate on a sunny windowsill.',
+  text: 'A candle, the moon, a flashlight, a mirror, and a white plate on a sunny windowsill.',
   question: 'Sort them into two piles: makes its own light, and only shows light from somewhere else.'
 };
 
@@ -310,18 +310,18 @@ const L34_BEATS = [
 
 const L34_ACTIVITY = {
   title: 'Two piles, and a borrowed-light test',
-  prep: 'A dark room, a torch, and a handful of small objects including one white and one shiny.',
-  needs: ['a torch', 'a white ball or plate', 'a mirror', 'a glow-in-the-dark toy if there is one', 'her notebook'],
+  prep: 'A dark room, a flashlight, and a handful of small objects including one white and one shiny.',
+  needs: ['a flashlight', 'a white ball or plate', 'a mirror', 'a glow-in-the-dark toy if there is one', 'her notebook'],
   steps: [
     'Make two columns in the notebook: MAKES ITS OWN and BORROWS IT.',
     'In a dark room, put each object down and look at it with every light off.',
     'Which ones can you still see? Put those in the first column.',
-    'Now shine the torch at each object in turn. Which ones show up now?',
-    'Hold the white ball up and shine the torch on one side only. Look at it from the dark side.',
+    'Now shine the flashlight at each object in turn. Which ones show up now?',
+    'Hold the white ball up and shine the flashlight on one side only. Look at it from the dark side.',
     'Draw what the ball looked like. You have just drawn a moon phase.',
     'Write down which column the sun goes in, and which column Mars goes in.'
   ],
-  safety: 'No torch shone into eyes. A glass mirror stays flat on the bench.',
+  safety: 'No flashlight shone into eyes. A glass mirror stays flat on the bench.',
   minutes: 14
 };
 
@@ -385,7 +385,7 @@ const L35_BEATS = [
 const L35_ACTIVITY = {
   title: 'The steady one and the shivering ones',
   prep: 'A clear night and somewhere with a decent view of the sky. Warm coats.',
-  needs: ['a clear night', 'her notebook', 'a torch with red paper over it', 'a warm coat'],
+  needs: ['a clear night', 'her notebook', 'a flashlight with red paper over it', 'a warm coat'],
   steps: [
     'Go out after dark and let your eyes adjust for a full ten minutes. No bright screens.',
     'Pick six bright points of light. Watch each one for a slow count of ten.',
@@ -396,7 +396,7 @@ const L35_ACTIVITY = {
     'Write one sentence connecting the radiator shimmer to the twinkling.'
   ],
   safety:
-    'A grown-up goes outside with her. Red paper over the torch keeps night eyes working. NEVER do any of this looking anywhere near the sun.',
+    'A grown-up goes outside with her. Red paper over the flashlight keeps night eyes working. NEVER do any of this looking anywhere near the sun.',
   minutes: 16
 };
 
@@ -546,7 +546,7 @@ export const SCIENCELAB_M6 = [
     check: [
       { prompt: 'A star just like our sun, but very far away, would look:', choices: ['Exactly as bright', 'Like a faint dot', 'Bigger than our sun', 'Completely invisible'], answer: 1, feedback: ['Distance always costs brightness.', null, 'Distance makes things look smaller.', 'Faint is not the same as gone.'] },
       { prompt: 'The sun looks much larger than other stars mainly because it is:', choices: ['Hotter than they are', 'Younger than they are', 'Much closer to us', 'A different shape'], answer: 2, feedback: ['Plenty of stars are hotter.', 'Age does not change its size.', null, 'Stars are all round.'] },
-      { prompt: 'A torch is carried twenty steps further away. What actually changed?', choices: ['The torch got dimmer', 'How much of its light reaches her', 'The colour of the beam', 'The size of the bulb'], answer: 1, feedback: ['The torch is untouched.', null, 'The colour is the same.', 'The bulb is the same.'] }
+      { prompt: 'A flashlight is carried twenty steps further away. What actually changed?', choices: ['The flashlight got dimmer', 'How much of its light reaches her', 'The color of the beam', 'The size of the bulb'], answer: 1, feedback: ['The flashlight is untouched.', null, 'The color is the same.', 'The bulb is the same.'] }
     ]
   },
   {
@@ -579,7 +579,7 @@ export const SCIENCELAB_M6 = [
     check: [
       { prompt: 'Two stars sit the same distance away. The brighter one is probably:', choices: ['Closer to us', 'Bigger or hotter', 'Younger', 'Moving faster'], answer: 1, feedback: ['They are the same distance.', null, 'Age is not what she sees.', 'Speed does not change brightness.'] },
       { prompt: 'She sees a very bright star. From looking alone she can say it:', choices: ['Must be close', 'Must be huge', 'Could be either', 'Must be both'], answer: 2, feedback: ['A giant far off looks bright too.', 'A small close one looks bright too.', null, 'It only needs to be one.'] },
-      { prompt: 'To decide whether a bright star is close or huge, she would need to know its:', choices: ['Colour', 'Name', 'Age', 'Distance'], answer: 3, feedback: ['Colour hints at heat, not distance.', 'The name tells her nothing.', 'Age is not the missing piece.', null] }
+      { prompt: 'To decide whether a bright star is close or huge, she would need to know its:', choices: ['Color', 'Name', 'Age', 'Distance'], answer: 3, feedback: ['Color hints at heat, not distance.', 'The name tells her nothing.', 'Age is not the missing piece.', null] }
     ]
   },
   {
@@ -645,7 +645,7 @@ export const SCIENCELAB_M6 = [
     check: [
       { prompt: 'A star twinkles because of something happening:', choices: ['Inside the star itself', 'In our air, near the end of the trip', 'Halfway across space', 'Inside her own eye'], answer: 1, feedback: ['The star shines steadily.', null, 'Nothing out there wobbles it.', 'Everyone sees the same flicker.'] },
       { prompt: 'A steady, unblinking point of light in the night sky is most likely:', choices: ['A very hot star', 'A very cold star', 'A planet', 'A star behind cloud'], answer: 2, feedback: ['Heat does not steady it.', 'Nor does cold.', null, 'Cloud dims rather than steadies.'] },
-      { prompt: 'A planet holds steady because its light reaches her as:', choices: ['A small disc rather than a point', 'A single thin point', 'A much stronger beam', 'A different colour'], answer: 0, feedback: [null, 'That is what a star does.', 'Strength is not the reason.', 'Colour is not the reason.'] }
+      { prompt: 'A planet holds steady because its light reaches her as:', choices: ['A small disc rather than a point', 'A single thin point', 'A much stronger beam', 'A different color'], answer: 0, feedback: [null, 'That is what a star does.', 'Strength is not the reason.', 'Color is not the reason.'] }
     ]
   },
   {

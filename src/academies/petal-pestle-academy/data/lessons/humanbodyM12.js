@@ -88,14 +88,14 @@ const L1_BEATS = [
 ];
 
 const L1_ACTIVITY = {
-  title: 'Hold 1200 millilitres',
+  title: 'Hold 1200 milliliters',
   prep: 'A strong sealable bag, a measuring jug, and water.',
   needs: ['a sealable bag', 'a measuring jug', 'water', 'her notebook'],
   steps: [
-    'Measure 1200 millilitres of water into the jug, filling it in stages if you need to.',
+    'Measure 1200 milliliters of water into the jug, filling it in stages if you need to.',
     'Write down how many pours it took and what each one measured.',
     'Pour it into the bag, seal it properly, and hold it in both hands.',
-    'Write down what 1200 millilitres is in litres.',
+    'Write down what 1200 milliliters is in liters.',
     'Write one sentence about what surprised you when you held it.'
   ],
   safety:
@@ -106,7 +106,7 @@ const L1_ACTIVITY = {
 const L1_LEDGER = {
   prompt: 'Write down the two things that protect your brain, and roughly what size it is.',
   ifSheIsStuck:
-    'Bone and liquid, and about 1200 millilitres. She held that. Ask her to say it in litres as well as millilitres.'
+    'Bone and liquid, and about 1200 milliliters. She held that. Ask her to say it in liters as well as milliliters.'
 };
 
 // =========================================================== LESSON 2
@@ -124,7 +124,7 @@ const L2_BEATS = [
     teachingText:
       'Nerves are thin cords that carry messages as tiny electric signals. A thick bundle runs down inside your spine. Smaller ones branch off it and reach every part of you.',
     example:
-      'The main bundle is the spinal cord. Branches leave it the way roads leave a motorway.',
+      'The main bundle is the spinal cord. Branches leave it the way roads leave a highway.',
     applyIt: {
       prompt: 'Nerves carry messages as:',
       choices: ['Water', 'Tiny electric signals', 'Air', 'Blood'],
@@ -161,14 +161,14 @@ const L2_BEATS = [
 
 const L2_ACTIVITY = {
   title: 'The two-point test',
-  prep: 'Two cotton buds or two hairgrips, a ruler with millimetres, and a helper.',
-  needs: ['two blunt points', 'a ruler with millimetres', 'a helper', 'her notebook'],
+  prep: 'Two cotton buds or two hairgrips, a ruler with millimeters, and a helper.',
+  needs: ['two blunt points', 'a ruler with millimeters', 'a helper', 'her notebook'],
   steps: [
-    'Hold the two points 5 millimetres apart and touch them gently to a fingertip.',
+    'Hold the two points 5 millimeters apart and touch them gently to a fingertip.',
     'With your eyes shut, say whether you feel one point or two.',
-    'Move them further apart until you can tell there are two, and write that distance in millimetres.',
+    'Move them further apart until you can tell there are two, and write that distance in millimeters.',
     'Do the same on the back of the hand, the forearm, and the back of the neck.',
-    'Write the four distances in a list, and write the largest one in centimetres as well.'
+    'Write the four distances in a list, and write the largest one in centimeters as well.'
   ],
   safety:
     'BLUNT points only — cotton buds or hairgrips, handed over by a grown-up. Never a pin, never a needle, and touched gently enough that it does not hurt. Stop the moment anybody says stop.',
@@ -176,9 +176,9 @@ const L2_ACTIVITY = {
 };
 
 const L2_LEDGER = {
-  prompt: 'Write down your four distances in millimetres, smallest first.',
+  prompt: 'Write down your four distances in millimeters, smallest first.',
   ifSheIsStuck:
-    'Ten millimetres make one centimetre. If her largest was 40 mm, that is 4 cm. Getting the order right matters more than the exact numbers.'
+    'Ten millimeters make one centimeter. If her largest was 40 mm, that is 4 cm. Getting the order right matters more than the exact numbers.'
 };
 
 // =========================================================== LESSON 3
@@ -305,12 +305,12 @@ const L4_BEATS = [
 
 const L4_ACTIVITY = {
   title: 'Can you point to where you were touched?',
-  prep: 'A washable felt pen, a ruler with centimetres, and a helper.',
+  prep: 'A washable felt pen, a ruler with centimeters, and a helper.',
   needs: ['a washable pen', 'a ruler', 'a helper', 'her notebook'],
   steps: [
     'Shut your eyes and have your helper touch one spot on the back of your hand.',
     'Keeping your eyes shut, point to where you think it was, and let them mark both spots.',
-    'Open your eyes and measure the gap between the two marks in centimetres.',
+    'Open your eyes and measure the gap between the two marks in centimeters.',
     'Do it four more times, writing down the gap each time.',
     'Write down your smallest gap, your largest, and the difference between them.'
   ],
@@ -341,7 +341,7 @@ export const HUMANBODY_M12 = [
     spec: '§10 · beats',
     concept: 'The brain floats in liquid inside the skull, and different parts of it do different jobs — including ones you never decide.',
     standards: [],
-    offGrade: 'Volume in millilitres, built up in stages and converted to litres. Measurement 2.00 and units 0 of 3, both at the test floor.',
+    offGrade: 'Volume in milliliters, built up in stages and converted to liters. Measurement 2.00 and units 0 of 3, both at the test floor.',
     words: ['skull', 'balance', 'automatic'],
     glossary: [
       { word: 'skull', plain: 'The hard bone box that holds and protects your brain.' },
@@ -384,8 +384,8 @@ export const HUMANBODY_M12 = [
         feedback: [null, 'That part decides things.', 'The skull is bone.', 'The liquid cushions.']
       },
       {
-        prompt: '1200 millilitres written in litres is:',
-        choices: ['12 litres', '120 litres', '1.2 litres', '0.12 litres'],
+        prompt: '1200 milliliters written in liters is:',
+        choices: ['12 liters', '120 liters', '1.2 liters', '0.12 liters'],
         answer: 2,
         feedback: ['Ten times too many.', 'A hundred times too many.', null, 'Ten times too few.']
       }
@@ -404,12 +404,12 @@ export const HUMANBODY_M12 = [
     spec: '§10 · beats',
     concept: 'Nerves carry messages as tiny electric signals along a spinal bundle and its branches, and they are packed far closer in some skin than in others.',
     standards: [],
-    offGrade: 'Millimetres, and converting them to centimetres. Units scored 0 of 3, at the test floor.',
-    words: ['nerve', 'spinal cord', 'millimetre'],
+    offGrade: 'Millimeters, and converting them to centimeters. Units scored 0 of 3, at the test floor.',
+    words: ['nerve', 'spinal cord', 'millimeter'],
     glossary: [
       { word: 'nerve', plain: 'A thin cord that carries messages around your body.' },
       { word: 'spinal cord', plain: 'The thick bundle of nerves running down inside your spine.' },
-      { word: 'millimetre', plain: 'A tiny length. Ten of them make one centimetre.' }
+      { word: 'millimeter', plain: 'A tiny length. Ten of them make one centimeter.' }
     ],
     video: {
       id: 'KZVeFTDszTs',
@@ -446,7 +446,7 @@ export const HUMANBODY_M12 = [
         feedback: ['Spread far apart.', 'Spread far apart.', 'Fewer than a fingertip.', null]
       },
       {
-        prompt: '40 millimetres written in centimetres is:',
+        prompt: '40 millimeters written in centimeters is:',
         choices: ['400 cm', '4 cm', '0.4 cm', '40 cm'],
         answer: 1,
         feedback: ['Far too big.', null, 'Ten times too small.', 'The unit did not change.']
@@ -464,7 +464,7 @@ export const HUMANBODY_M12 = [
     title: 'Reflexes, faster than thinking',
     minutes: 30,
     spec: '§10 · beats',
-    concept: 'A reflex message turns round at the spinal cord instead of travelling to the brain, which is why it is fast and why you cannot switch it off.',
+    concept: 'A reflex message turns round at the spinal cord instead of traveling to the brain, which is why it is fast and why you cannot switch it off.',
     standards: [],
     offGrade: null,
     words: ['reflex', 'shortcut', 'protect'],
@@ -529,7 +529,7 @@ export const HUMANBODY_M12 = [
     spec: '§10 · beats',
     concept: 'Nerves share routes on the way up, so the brain sometimes names the wrong place — which is why where it hurts is a clue rather than a proof.',
     standards: [],
-    offGrade: 'Length in centimetres over five trials, then largest, smallest and the difference. Measurement 2.00, at the test floor.',
+    offGrade: 'Length in centimeters over five trials, then largest, smallest and the difference. Measurement 2.00, at the test floor.',
     words: ['signal', 'route', 'clue'],
     glossary: [
       { word: 'signal', plain: 'A message being sent from one place to another.' },
@@ -585,7 +585,7 @@ export const HUMANBODY_M12_META = {
   module: 12,
   title: 'The Brain and the Nerves',
   blurb:
-    'Twelve hundred millilitres held in both hands, a real bedside test done in millimetres on four patches of her own skin, and the reason a doctor always asks exactly where it hurts.'
+    'Twelve hundred milliliters held in both hands, a real bedside test done in millimeters on four patches of her own skin, and the reason a doctor always asks exactly where it hurts.'
 };
 
 export function humanbodyM12LessonById(id) {

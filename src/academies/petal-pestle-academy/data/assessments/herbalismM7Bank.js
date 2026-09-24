@@ -101,14 +101,14 @@ export const HERBALISM_M7_BANK = [
     lesson: 'hb-m7-01',
     prompt: 'It is 1820. How do you learn which plants are food?',
     choices: [
-      'Guess from the colour'
+      'Guess from the color'
     ,
       'Read the label',
       'Ask someone older who knows',
       'Taste a little and wait'],
     answer: 2,
     feedback: [
-      'Colour tells you nothing about safety.'
+      'Color tells you nothing about safety.'
     ,
       'Nothing had a label on it.',
       null,
@@ -394,7 +394,7 @@ export const HERBALISM_M7_BANK = [
   {
     id: 't-hbm703b',
     lesson: 'hb-m7-03',
-    prompt: 'Why does mould need water?',
+    prompt: 'Why does mold need water?',
     choices: [
       'It is alive, and living things need a drink',
       'It is made of water',
@@ -405,16 +405,16 @@ export const HERBALISM_M7_BANK = [
     feedback: [
       null,
       'It is a fungus, not a puddle.',
-      'Mould has no eyes.',
+      'Mold has no eyes.',
       'Water is exactly what it needs.'
     ],
-    why: 'Mould is a living fungus. Take the water away and it cannot get started.'
+    why: 'Mold is a living fungus. Take the water away and it cannot get started.'
   },
   {
     id: 't-hbm703c',
     lesson: 'hb-m7-03',
     prompt: 'You seal damp mint in a bag. What grows in there?',
-    choices: [ 'New roots', 'New leaves','Nothing', 'Mould'],
+    choices: [ 'New roots', 'New leaves','Nothing', 'Mold'],
     answer: 3,
     feedback: [
       'A cut stem in a shut bag will not root.',
@@ -422,7 +422,7 @@ export const HERBALISM_M7_BANK = [
     ,
       'Damp and sealed is the worst mix there is.',
       null],
-    why: 'Water plus still air is what mould wants. Dry first, seal after.'
+    why: 'Water plus still air is what mold wants. Dry first, seal after.'
   },
   {
     id: 't-hbm703d',
@@ -430,7 +430,7 @@ export const HERBALISM_M7_BANK = [
     prompt: 'Why hang drying herbs somewhere dim?',
     choices: [
       'Dark makes them dry faster',
-      'Sun fades the colour and takes the smell',
+      'Sun fades the color and takes the smell',
       'They are shy of light',
       'It stops them freezing'
     ],
@@ -460,7 +460,7 @@ export const HERBALISM_M7_BANK = [
       'It does look nice. That is not the reason.',
       'A flat stem does not snap.'
     ],
-    why: 'Moving air all around is what dries it fast, before mould can win.'
+    why: 'Moving air all around is what dries it fast, before mold can win.'
   },
   {
     id: 't-hbm703f',
@@ -550,12 +550,12 @@ export const HERBALISM_M7_BANK = [
       'Wash it and dry it again'],
     answer: 1,
     feedback: [
-      'Mould spreads further than you can see.',
+      'Mold spreads further than you can see.',
       null,
-      'Nothing mouldy goes in a jar, ever.'
+      'Nothing moldy goes in a jar, ever.'
     ,
-      'Once mould is in, it is in. Washing does not fix it.'],
-    why: 'Mouldy food is never saved and never tasted. It goes in the bin and you wash up.'
+      'Once mold is in, it is in. Washing does not fix it.'],
+    why: 'Moldy food is never saved and never tasted. It goes in the trash and you wash up.'
   },
 
   // =========================================================================
@@ -811,7 +811,7 @@ export const HERBALISM_M7_BANK = [
     ,
       'They went east first, then came back across.',
       null],
-    why: 'They travelled to Africa first. Goober, the old Southern word for peanut, came from an African language.'
+    why: 'They traveled to Africa first. Goober, the old Southern word for peanut, came from an African language.'
   },
   {
     id: 't-hbm705e',
@@ -925,7 +925,7 @@ export const HERBALISM_M7_BANK = [
     ,
       'Okra is African. It is not from Georgia.',
       null],
-    why: 'The plant was here because people were brought here. They travelled together.'
+    why: 'The plant was here because people were brought here. They traveled together.'
   },
 
   // =========================================================================
@@ -948,7 +948,7 @@ export const HERBALISM_M7_BANK = [
       'A book has no plants in it.'
     ,
       'The plants in a herbarium are picked and pressed.'],
-    why: 'A herbarium is a room of pressed, dried plants, each glued to a labelled sheet.'
+    why: 'A herbarium is a room of pressed, dried plants, each glued to a labeled sheet.'
   },
   {
     id: 't-hbm706b',
@@ -967,7 +967,7 @@ export const HERBALISM_M7_BANK = [
       'It was alive. Somebody picked it.',
       null,
       'Herbarium rooms are not cold rooms.'],
-    why: 'Same rule as drying herbs. No water means no mould.'
+    why: 'Same rule as drying herbs. No water means no mold.'
   },
   {
     id: 't-hbm706c',
@@ -978,7 +978,7 @@ export const HERBALISM_M7_BANK = [
       'Just the name'
     ,
       'What, where, when, who',
-      'Colour, size, smell, shape'],
+      'Color, size, smell, shape'],
     answer: 2,
     feedback: [
       'Without when and who, nobody can use it later.',
@@ -1062,7 +1062,7 @@ export const HERBALISM_M7_BANK = [
       'The label smudges'
     ,
       'It dries faster',
-      'The plant can go mouldy',
+      'The plant can go moldy',
       'Nothing'],
     answer: 2,
     feedback: [

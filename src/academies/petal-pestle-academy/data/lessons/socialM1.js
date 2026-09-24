@@ -231,7 +231,7 @@ export const SOCIAL_M1 = [
     minutes: 30,
     spec: '§10 · beats',
     concept:
-      'Colonists who would not pay organised themselves, and their protest turned into the Boston Massacre and the Boston Tea Party.',
+      'Colonists who would not pay organized themselves, and their protest turned into the Boston Massacre and the Boston Tea Party.',
     standards: ['SS4H1a'],
     offGrade: null,
     words: ['protest', 'boycott', 'massacre', 'liberty'],
@@ -255,16 +255,16 @@ export const SOCIAL_M1 = [
     },
     checkIn: {
       title: 'The thing you refuse to buy',
-      text: 'A shop puts up the price of your favourite drink. You are cross. You could pay it, or you could stop buying it.',
+      text: 'A shop puts up the price of your favorite drink. You are cross. You could pay it, or you could stop buying it.',
       question: 'Which one makes the shop notice you more, and why?'
     },
     beats: [
       {
         n: 1,
-        label: 'They organised, and they had a name',
+        label: 'They organized, and they had a name',
         hook: 'Refusing on your own is a mood. Refusing together is a movement.',
         teachingText:
-          'The Sons of Liberty organised protests. The Daughters of Liberty ran the boycotts. They wove their own cloth so they need not buy British cloth.',
+          'The Sons of Liberty organized protests. The Daughters of Liberty ran the boycotts. They wove their own cloth so they need not buy British cloth.',
         example:
           'A boycott only works if lots of people do it. One person not buying tea changes nothing.',
         applyIt: {
@@ -290,7 +290,7 @@ export const SOCIAL_M1 = [
         label: 'Then it stopped being only words',
         hook: 'In 1770 a crowd and some soldiers met in Boston, and five people died.',
         teachingText:
-          'That was the Boston Massacre. Three years later, colonists tipped a whole shipload of tea into Boston harbour. That was the Boston Tea Party.',
+          'That was the Boston Massacre. Three years later, colonists tipped a whole shipload of tea into Boston harbor. That was the Boston Tea Party.',
         example:
           'They did not steal the tea. They destroyed it. Destroying it was the message.',
         applyIt: {
@@ -298,7 +298,7 @@ export const SOCIAL_M1 = [
           choices: [
             'Drank the tea',
             'Sold the tea',
-            'Threw the tea in the harbour',
+            'Threw the tea in the harbor',
             'Gave the tea away'
           ],
           answer: 2,
@@ -335,17 +335,17 @@ export const SOCIAL_M1 = [
     },
     hook: {
       title: 'The thing you refuse to buy',
-      text: 'A shop puts up the price of your favourite drink. You are cross. You could pay it, or you could stop buying it.',
+      text: 'A shop puts up the price of your favorite drink. You are cross. You could pay it, or you could stop buying it.',
       question: 'Which one makes the shop notice you more, and why?'
     },
     core: [
       {
-        heading: 'They organised, and they had a name',
-        text: 'The Sons of Liberty organised protests. The Daughters of Liberty ran the boycotts. They wove their own cloth so they need not buy British cloth.'
+        heading: 'They organized, and they had a name',
+        text: 'The Sons of Liberty organized protests. The Daughters of Liberty ran the boycotts. They wove their own cloth so they need not buy British cloth.'
       },
       {
         heading: 'Then it stopped being only words',
-        text: 'In 1770 a crowd and some soldiers met in Boston, and five people died. That was the Boston Massacre. In 1773 colonists tipped a shipload of tea into Boston harbour.'
+        text: 'In 1770 a crowd and some soldiers met in Boston, and five people died. That was the Boston Massacre. In 1773 colonists tipped a shipload of tea into Boston harbor.'
       }
     ],
     doing:
@@ -384,7 +384,7 @@ export const SOCIAL_M1 = [
         choices: [
           'Drank the tea',
           'Sold the tea',
-          'Threw the tea in the harbour',
+          'Threw the tea in the harbor',
           'Gave the tea away'
         ],
         answer: 2,
@@ -398,7 +398,7 @@ export const SOCIAL_M1 = [
       {
         prompt: 'The Boston Massacre happened when:',
         choices: [
-          'A ship sank in the harbour',
+          'A ship sank in the harbor',
           'A crowd and soldiers met and five died',
           'Britain raised the tea tax',
           'The colonies wrote a letter'
@@ -655,7 +655,7 @@ export const SOCIAL_M1 = [
         label: 'The British came for the supplies',
         hook: 'The soldiers were not marching out to start a war. They were sent to take gunpowder.',
         teachingText:
-          'British troops marched towards Concord to seize the militia’s supplies. Riders went ahead to warn people. One of them was Paul Revere.',
+          'British troops marched toward Concord to seize the militia’s supplies. Riders went ahead to warn people. One of them was Paul Revere.',
         example:
           'The militia were farmers and shopkeepers. They kept powder in the town and trained on the green.',
         applyIt: {
@@ -727,7 +727,7 @@ export const SOCIAL_M1 = [
     core: [
       {
         heading: 'The British came for the supplies',
-        text: 'British troops marched towards Concord to seize the militia’s supplies. Riders went ahead to warn people. One of them was Paul Revere.'
+        text: 'British troops marched toward Concord to seize the militia’s supplies. Riders went ahead to warn people. One of them was Paul Revere.'
       },
       {
         heading: 'And then somebody fired',

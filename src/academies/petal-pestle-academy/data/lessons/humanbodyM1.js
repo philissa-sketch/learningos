@@ -85,7 +85,7 @@ const L1_BEATS = [
       choices: [
         'Numbers are tidier',
         'So you can compare it another day',
-        'Doctors like maths',
+        'Doctors like math',
         'Warm is a rude word'
       ],
       answer: 1,

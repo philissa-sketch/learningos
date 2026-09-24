@@ -176,10 +176,10 @@ const M11L1_BEATS = [
     example:
       'Hold a whole sprig of dried rosemary in one hand and a pinch of ground rosemary in the other. The ground pinch smells stronger straight away, because the pestle broke open cells that were holding the smell in.',
     applyIt: {
-      prompt: 'Same rosemary, same warm water, same ten minutes. One sample is a whole sprig and one was ground. Which water colours faster?',
+      prompt: 'Same rosemary, same warm water, same ten minutes. One sample is a whole sprig and one was ground. Which water colors faster?',
       choices: [
         'They will match exactly, because it is the same plant',
-        'Neither, because rosemary puts no colour in water',
+        'Neither, because rosemary puts no color in water',
         'The ground one, because much more of it touches the water',
         'The whole one, because the sprig is bigger'
       ],
@@ -331,7 +331,7 @@ const M11L2_ACTIVITY = {
   needs: [
     'a kitchen scale that reads in grams',
     'a measuring cup',
-    'a measuring jug marked in millilitres',
+    'a measuring jug marked in milliliters',
     'a jar with a lid',
     'a bowl',
     'cold tap water',
@@ -346,9 +346,9 @@ const M11L2_ACTIVITY = {
     'Subtract the smallest from the biggest. That gap is how wrong a cup can be.',
     'Now stand your jar on the scale and press tare until the display reads zero.',
     'Spoon mint in until it reads exactly 10 grams, then stop and screw the lid on.',
-    'Measure 100 millilitres of water in the jug, on the table, with your eye level with the mark.',
+    'Measure 100 milliliters of water in the jug, on the table, with your eye level with the mark.',
     'Tare a bowl on the scale, pour that water in, and read the mass.',
-    'Write what you found: 100 millilitres of water comes out at very nearly 100 grams.',
+    'Write what you found: 100 milliliters of water comes out at very nearly 100 grams.',
     'Write every number in your log with its unit beside it, every single time.'
   ],
   safety:
@@ -360,7 +360,7 @@ const M11L2_ACTIVITY = {
     'Why did we press tare instead of doing the subtraction ourselves?',
     'Read the jug from above, then from eye level. Do you get the same answer?',
     'You wrote 10. Ten what? Tell me why that matters in a year.',
-    'Water came out at about 100 grams for 100 millilitres. Would mint do that?',
+    'Water came out at about 100 grams for 100 milliliters. Would mint do that?',
     'Somebody else follows your notes tomorrow. Could they get your numbers?',
     'Which measurement in this house do you trust least, and why?',
     'A doctor writes the number and the unit every time. What is she protecting against?',
@@ -373,12 +373,12 @@ const M11L2_LEDGER = {
   tasks: [
     'Fill the table with your three scoop masses, in grams.',
     'Write the biggest, the smallest, and the gap between them.',
-    'Write what the scale said for 100 millilitres of water.',
+    'Write what the scale said for 100 milliliters of water.',
     'Write one sentence: why is a scale fairer than a cup?'
   ],
   game: {
     title: 'Word Boss',
-    cards: ['MASS', 'VOLUME', 'GRAM', 'MILLILITRE', 'TARE'],
+    cards: ['MASS', 'VOLUME', 'GRAM', 'MILLILITER', 'TARE'],
     rounds: [
       'Say what each word means in your own words. No fancy talk.',
       'A grown-up says the meaning. You say the word. Beat the clock.',
@@ -406,7 +406,7 @@ const M11L3_BEATS = [
     label: 'A fresh leaf is mostly water',
     hook: 'About four fifths of a fresh leaf is water, which is why a whole armful of mint dries down into one small jar.',
     teachingText:
-      'Drying does not destroy the water, it moves it. The water leaves the leaf as vapour and joins the air in the room, which is evaporation doing the whole job. You can measure exactly how much of it left, because the mass that went missing went out as water.',
+      'Drying does not destroy the water, it moves it. The water leaves the leaf as vapor and joins the air in the room, which is evaporation doing the whole job. You can measure exactly how much of it left, because the mass that went missing went out as water.',
     example:
       'Fifty grams of fresh mint that dries to ten grams lost forty grams of water. That is four fifths of what you started with, and you proved it with a scale rather than being told it.',
     applyIt: {
@@ -414,7 +414,7 @@ const M11L3_BEATS = [
       choices: [
         'They soaked down into the drying tray',
         'They turned into the smell of basil',
-        'They left the leaves as water vapour and went into the air',
+        'They left the leaves as water vapor and went into the air',
         'They burned away into nothing at all'
       ],
       answer: 2,
@@ -430,7 +430,7 @@ const M11L3_BEATS = [
   {
     n: 2,
     label: 'Warm, moving, dry air — and thin pieces',
-    hook: 'A thin slice of ginger dries in a day, while a whole knob of it can go mouldy before the middle is dry.',
+    hook: 'A thin slice of ginger dries in a day, while a whole knob of it can go moldy before the middle is dry.',
     teachingText:
       'Four things speed drying up: warm air, moving air, dry air, and small thin pieces. Moisture has to travel from the middle of a piece out to its surface before it can evaporate, so a thick root gets sliced thin before it ever reaches the rack.',
     example:
@@ -471,7 +471,7 @@ const M11L3_ACTIVITY = {
   steps: [
     'Weigh out exactly 50 grams of fresh leaves and set the rest aside.',
     'Spread them in one single layer on the rack, so no leaf sits on another.',
-    'Put the rack somewhere warm and airy but out of direct sunlight, because sunlight takes the colour and the smell as well as the moisture.',
+    'Put the rack somewhere warm and airy but out of direct sunlight, because sunlight takes the color and the smell as well as the moisture.',
     'Write down the date, the time and the starting mass before you walk away.',
     'On the second tray, ask Gigi to slice a small piece of your ginger thin as coins.',
     'Weigh the ginger slices too, and write that number in its own row.',
@@ -530,7 +530,7 @@ const M11L3_LEDGER = {
 
 const M11L4_CHECK_IN = {
   title: 'Same water, two very different results',
-  text: 'Hot water poured over peppermint leaves turns green in about a minute. The same water poured over a slice of ginger hardly changes colour at all. Ginger is a dense rhizome, and water has to work far harder to get inside it.',
+  text: 'Hot water poured over peppermint leaves turns green in about a minute. The same water poured over a slice of ginger hardly changes color at all. Ginger is a dense rhizome, and water has to work far harder to get inside it.',
   question: 'So what would you change first — the heat, the time, or the size of the pieces?'
 };
 
@@ -538,9 +538,9 @@ const M11L4_BEATS = [
   {
     n: 1,
     label: 'Infusion: hot water, soft parts, a lid on top',
-    hook: 'The smell rising off a hot cup is oil turning to vapour and leaving. A lid catches that vapour and drips it back in.',
+    hook: 'The smell rising off a hot cup is oil turning to vapor and leaving. A lid catches that vapor and drips it back in.',
     teachingText:
-      'An infusion is hot water poured over leaves or flowers and then left to stand. Heat makes water molecules move faster, so they pull colour and smell out of a leaf quickly. Leaves are thin, so a few minutes is usually enough.',
+      'An infusion is hot water poured over leaves or flowers and then left to stand. Heat makes water molecules move faster, so they pull color and smell out of a leaf quickly. Leaves are thin, so a few minutes is usually enough.',
     example:
       'Gigi pours just-boiled water over peppermint from your pot and covers the cup with a saucer. Ten minutes later the underside of that saucer is beaded with drops, and those drops smell of mint.',
     applyIt: {
@@ -549,16 +549,16 @@ const M11L4_BEATS = [
         'The open one, because the smell could get out to your nose',
         'They will smell the same, since the mint was the same',
         'Neither, because smell has nothing to do with a lid',
-        'The covered one, because the vapour cooled and dripped back in'
+        'The covered one, because the vapor cooled and dripped back in'
       ],
       answer: 3,
       feedback: [
         'What reached your nose across the room is exactly what the cup lost.',
-        'Same mint, but one cup kept its vapour and one let it go.',
-        'A lid is the difference between keeping that vapour and losing it.',
+        'Same mint, but one cup kept its vapor and one let it go.',
+        'A lid is the difference between keeping that vapor and losing it.',
         null
       ],
-      why: 'Volatile oil leaves as vapour when it is hot, so a lid holds it in and gives it back.'
+      why: 'Volatile oil leaves as vapor when it is hot, so a lid holds it in and gives it back.'
     }
   },
   {
@@ -570,16 +570,16 @@ const M11L4_BEATS = [
     example:
       'Your ginger and turmeric get sliced thin and simmered for twenty minutes, because a rhizome will not give anything up to a two-minute pour. Peppermint in cold water in the fridge goes green overnight without any heat at all.',
     applyIt: {
-      prompt: 'You want colour out of a dried turmeric rhizome. A two-minute pour of hot water, or a twenty-minute simmer?',
+      prompt: 'You want color out of a dried turmeric rhizome. A two-minute pour of hot water, or a twenty-minute simmer?',
       choices: [
-        'Neither, because turmeric gives no colour to water',
+        'Neither, because turmeric gives no color to water',
         'The simmer, because a dense rhizome needs heat and time together',
         'The pour, because hot water always works fastest',
         'Either one, since the water gets hot in both'
       ],
       answer: 1,
       feedback: [
-        'Turmeric will stain a spoon yellow, so it certainly gives colour up.',
+        'Turmeric will stain a spoon yellow, so it certainly gives color up.',
         null,
         'Hot water works fast on a thin leaf, not on a packed root.',
         'The water is hot in both. Only one of them stays hot long enough.'
@@ -607,13 +607,13 @@ const M11L4_ACTIVITY = {
   steps: [
     'Weigh 2 grams of peppermint twice, and 2 grams of thin ginger slices once.',
     'Write your prediction for all three glasses before anything is poured.',
-    'Glass A, infusion: Gigi pours 200 millilitres of just-boiled water over mint.',
+    'Glass A, infusion: Gigi pours 200 milliliters of just-boiled water over mint.',
     'Cover glass A with a saucer at once and start the timer for ten minutes.',
-    'Glass B, decoction: Gigi simmers the ginger in 200 millilitres of water for twenty minutes, lid on.',
-    'Glass C, maceration: put mint in 200 millilitres of cold water and stand it in the fridge overnight.',
-    'Line all three up against white paper and describe each colour in real words.',
-    'Waft the smell towards your nose with your hand. Never lean over a hot glass.',
-    'Fill your table: method, plant part, water temperature, time, colour, smell.',
+    'Glass B, decoction: Gigi simmers the ginger in 200 milliliters of water for twenty minutes, lid on.',
+    'Glass C, maceration: put mint in 200 milliliters of cold water and stand it in the fridge overnight.',
+    'Line all three up against white paper and describe each color in real words.',
+    'Waft the smell toward your nose with your hand. Never lean over a hot glass.',
+    'Fill your table: method, plant part, water temperature, time, color, smell.',
     'Label all three glasses with the method and the time you started.',
     'Write which one used heat, which used time, and which used both.',
     'Gigi decides whether the cooled mint infusion gets tasted at all.'
@@ -628,7 +628,7 @@ const M11L4_ACTIVITY = {
     'The cold glass got there in the end. What did it use instead of heat?',
     'Which of the three would you use for a thin flower, and why?',
     'Which would you use for a piece of bark? Say what makes you sure.',
-    'Colour and smell are not the same thing. Which one changed more?',
+    'Color and smell are not the same thing. Which one changed more?',
     'If you did this again, what one thing would you change?',
     'Why did we label all three glasses before we started comparing?',
     'Say the rule out loud. Who decides whether anything here is tasted?'
@@ -638,7 +638,7 @@ const M11L4_ACTIVITY = {
 const M11L4_LEDGER = {
   sheet: 'M11L4-three-methods-PRINTABLE.pdf',
   tasks: [
-    'Fill the table: method, part, water temperature, time, colour, smell.',
+    'Fill the table: method, part, water temperature, time, color, smell.',
     'Write your prediction for each glass, and then what really happened.',
     'Write which plant part suits each of the three methods, and why.',
     'Write one question about extraction that today did not answer.'
@@ -673,7 +673,7 @@ const M11L5_BEATS = [
     label: 'Water, air, light and heat',
     hook: 'Sunlight fades a dried leaf the same way it fades a curtain, only faster, because a leaf is thin.',
     teachingText:
-      'Four things shorten how long a jar stays good: water, air, light and heat. Water is by far the most dangerous of them, because mould needs only a trace of moisture to begin growing. The other three work slowly instead, taking the colour and the smell away across months.',
+      'Four things shorten how long a jar stays good: water, air, light and heat. Water is by far the most dangerous of them, because mold needs only a trace of moisture to begin growing. The other three work slowly instead, taking the color and the smell away across months.',
     example:
       'A closed cupboard away from the stove deals with light and heat at once, while an airtight lid deals with the air. Drying properly before you ever fill the jar is what deals with the moisture.',
     applyIt: {
@@ -717,42 +717,42 @@ const M11L5_BEATS = [
         'With no dates, you cannot claim they match either.',
         null
       ],
-      why: 'Without a date you have a colour and a story, and a story is not evidence.'
+      why: 'Without a date you have a color and a story, and a story is not evidence.'
     }
   }
 ];
 
 const M11L5_ACTIVITY = {
   title: 'Shelf-life patrol, and a test of your own',
-  prep: 'Ask Gigi before you open her cupboard, and agree that you will put every jar back exactly where it came from. Rule your table first: jar, date found, colour, smell, where it lives.',
+  prep: 'Ask Gigi before you open her cupboard, and agree that you will put every jar back exactly where it came from. Rule your table first: jar, date found, color, smell, where it lives.',
   needs: [
     'ten to twelve jars from the cupboard',
     'her Plant Detective Log and a pen',
     'masking tape',
     'two identical small jars with lids',
     'dried mint from Lesson 63',
-    'a torch, for reading small print',
+    'a flashlight, for reading small print',
     'a thermometer, if there is one'
   ],
   steps: [
     'Take out ten jars and stand them in a row on the counter.',
     'Find a date on each one and write it down, or write NONE if there is not one.',
-    'Note the colour of each, and waft the smell towards you rather than sniffing hard.',
+    'Note the color of each, and waft the smell toward you rather than sniffing hard.',
     'Write down where each jar was living, and how close that was to the stove.',
-    'Rank them from freshest looking to oldest looking, using colour and smell only.',
+    'Rank them from freshest looking to oldest looking, using color and smell only.',
     'Now compare your ranking to the dates you found. Where were you wrong?',
     'Put masking tape on every undated jar and write today date on it.',
     'Move any jar that was sitting in light or beside the stove, and tell Gigi why.',
     'Split your own dried mint between two matching jars, and date both labels.',
     'Stand one jar on the sunny sill and one in the dark cupboard.',
     'Write the date you will open them: four weeks from today.',
-    'On that day, compare colour and smell and write down which one held up.'
+    'On that day, compare color and smell and write down which one held up.'
   ],
   safety:
-    'Look and smell, but taste nothing at all. Waft the air towards your nose instead of putting your nose in the jar. If anything is furry, spotted or smells sour, the lid goes back on and Gigi takes it from there. Wash your hands after handling old jars.',
+    'Look and smell, but taste nothing at all. Waft the air toward your nose instead of putting your nose in the jar. If anything is furry, spotted or smells sour, the lid goes back on and Gigi takes it from there. Wash your hands after handling old jars.',
   grownUpAsks: [
     'Before we open the cupboard. Which jar in here do you think is oldest?',
-    'You ranked them by colour. How close were you when you saw the dates?',
+    'You ranked them by color. How close were you when you saw the dates?',
     'Which jar surprised you most, and what surprised you about it?',
     'This one lives beside the stove. Which of the four spoilers is that?',
     'Why is water worse than light, even though light is doing damage too?',
@@ -768,7 +768,7 @@ const M11L5_ACTIVITY = {
 const M11L5_LEDGER = {
   sheet: 'M11L5-shelf-life-patrol-PRINTABLE.pdf',
   tasks: [
-    'Fill the audit table for ten jars: date, colour, smell, where it lives.',
+    'Fill the audit table for ten jars: date, color, smell, where it lives.',
     'Write the two jars you moved, and the reason for each move.',
     'Write the date you set up your two test jars, and where each one is.',
     'Write your prediction for the sill jar, in one sentence, before you look.'
@@ -831,14 +831,14 @@ const M11L6_BEATS = [
     label: 'A label is what makes an experiment repeatable',
     hook: 'Scientists change one thing at a time. A label is how anybody can tell which one thing that was.',
     teachingText:
-      'Two jars that came out differently only teach you something if you know what was different about them. When both are fully labelled, a change in colour or smell points at a real cause. When neither is, the difference is only a story you tell yourself.',
+      'Two jars that came out differently only teach you something if you know what was different about them. When both are fully labeled, a change in color or smell points at a real cause. When neither is, the difference is only a story you tell yourself.',
     example:
       'Your June jar was air dried over six days and your August jar was oven dried in one hour. The June jar smells stronger. Because both carried full labels, that comparison is worth writing down.',
     applyIt: {
-      prompt: 'One jar of mint is fully labelled and one has no label at all. The labelled one smells much stronger. What have you learned?',
+      prompt: 'One jar of mint is fully labeled and one has no label at all. The labeled one smells much stronger. What have you learned?',
       choices: [
-        'That the unlabelled jar must be older',
-        'Something real, but only about the labelled jar',
+        'That the unlabeled jar must be older',
+        'Something real, but only about the labeled jar',
         'That labels make herbs smell stronger',
         'Nothing whatsoever from either jar'
       ],
@@ -847,7 +847,7 @@ const M11L6_BEATS = [
         'You cannot say that. There is nothing on it to say it with.',
         null,
         'A label is paper. It changes the record, not the plant.',
-        'The labelled jar still tells you its own story properly.'
+        'The labeled jar still tells you its own story properly.'
       ],
       why: 'You can only learn from a comparison when you know what was different, and the label is where that lives.'
     }
@@ -872,7 +872,7 @@ const M11L6_ACTIVITY = {
     'Where you do not know a line, write UNKNOWN rather than guessing at it.',
     'Sign every label with your name, because the collector is part of the record.',
     'Now write a method sheet for your mint infusion on the index card.',
-    'Put real numbers on it: mass in grams, water in millilitres, minutes, and lid on or off.',
+    'Put real numbers on it: mass in grams, water in milliliters, minutes, and lid on or off.',
     'Write it so that somebody who has never met you could follow it exactly.',
     'Hand Gigi two jars. She shuffles them and hands them back later in the day.',
     'Tell her everything that happened to each jar, using only what is on the label.',
@@ -888,7 +888,7 @@ const M11L6_ACTIVITY = {
     'Why is a guessed name worse than an empty line?',
     'What does the batch code do that the date on its own does not?',
     'Read me your method sheet. Could I follow it without asking you anything?',
-    'You wrote 200 millilitres. What would happen if you had written a jugful?',
+    'You wrote 200 milliliters. What would happen if you had written a jugful?',
     'A doctor dates and signs everything she writes. Why do you think that is?',
     'I shuffled your jars. Did the labels hold up, or did you need me?',
     'Which line did you wish you had written, and when did you notice?',
@@ -913,7 +913,7 @@ const M11L6_LEDGER = {
       'Hold up a jar from the bench for each card, and say how it shows that word.'
     ],
     ifSheIsStuck:
-      'Hand her the unlabelled jar and ask her one question about it. She will find she cannot answer, and that is RECORD explained without a definition.'
+      'Hand her the unlabeled jar and ask her one question about it. She will find she cannot answer, and that is RECORD explained without a definition.'
   },
   note: 'Nothing here is graded. Nothing is corrected. This one goes in the binder and stays there, because it is the habit the rest of the course is built on.'
 };
@@ -1006,12 +1006,12 @@ export const HERBALISM_M11 = [
       },
       {
         prompt: 'Crushing a leaf makes more of what?',
-        choices: ['Water', 'Mass', 'Colour', 'Surface area'],
+        choices: ['Water', 'Mass', 'Color', 'Surface area'],
         answer: 3,
         feedback: [
           'Crushing does not add water to anything.',
           'The mass is the same before and after. It just changed shape.',
-          'The colour was already in there, waiting to get out.',
+          'The color was already in there, waiting to get out.',
           null
         ]
       },
@@ -1046,15 +1046,15 @@ export const HERBALISM_M11 = [
 
     standards: [],
 
-    words: ['mass', 'volume', 'gram', 'millilitre', 'tare'],
+    words: ['mass', 'volume', 'gram', 'milliliter', 'tare'],
 
     glossary: [
       { word: 'mass', plain: 'How much matter is in something. A scale measures it.' },
       { word: 'volume', plain: 'How much room something takes up. A cup or a jug measures it.' },
       { word: 'gram', plain: 'The small unit we weigh in. A paperclip is about one gram.' },
-      { word: 'millilitre', plain: 'The small unit we measure liquid in. A teaspoon holds about five.' },
+      { word: 'milliliter', plain: 'The small unit we measure liquid in. A teaspoon holds about five.' },
       { word: 'tare', plain: 'The button that sets a scale back to zero, so the jar is not counted.' },
-      { word: 'unit', plain: 'The word after the number. Grams, millilitres, minutes.' },
+      { word: 'unit', plain: 'The word after the number. Grams, milliliters, minutes.' },
       { word: 'repeatable', plain: 'Done in a way somebody else could copy and get the same answer.' }
     ],
 
@@ -1083,7 +1083,7 @@ export const HERBALISM_M11 = [
     hook: M11L2_CHECK_IN,
     core: M11L2_BEATS.map((b) => ({ heading: b.label, text: b.teachingText })),
     doing:
-      'Zero the scale, then scoop one level cup of dried mint three times and weigh every scoop. Find the biggest and the smallest, subtract, and see for yourself how far a cup can drift. Then put the jar on the scale, press tare so it reads zero, and spoon in exactly ten grams. Measure 100 millilitres of water in a jug at eye level, weigh it, and find that it comes out at very nearly 100 grams. Every number goes into the log with its unit beside it.',
+      'Zero the scale, then scoop one level cup of dried mint three times and weigh every scoop. Find the biggest and the smallest, subtract, and see for yourself how far a cup can drift. Then put the jar on the scale, press tare so it reads zero, and spoon in exactly ten grams. Measure 100 milliliters of water in a jug at eye level, weigh it, and find that it comes out at very nearly 100 grams. Every number goes into the log with its unit beside it.',
 
     practice: [
       {
@@ -1160,11 +1160,11 @@ export const HERBALISM_M11 = [
     words: ['evaporation', 'water content', 'airflow', 'brittle'],
 
     glossary: [
-      { word: 'evaporation', plain: 'Water turning into vapour and drifting away into the air.' },
+      { word: 'evaporation', plain: 'Water turning into vapor and drifting away into the air.' },
       { word: 'water content', plain: 'How much of a thing is water. In a fresh leaf it is most of it.' },
       { word: 'airflow', plain: 'Air moving past. Still air stays damp, while moving air carries water off.' },
       { word: 'brittle', plain: 'Dry enough to snap instead of bend.' },
-      { word: 'vapour', plain: 'Water in the air as a gas, too small to see.' },
+      { word: 'vapor', plain: 'Water in the air as a gas, too small to see.' },
       { word: 'humid', plain: 'Air that is already holding a lot of water, so it takes up less.' },
       { word: 'single layer', plain: 'Spread out so no piece is sitting on top of another.' }
     ],
@@ -1212,10 +1212,10 @@ export const HERBALISM_M11 = [
     check: [
       {
         prompt: '50 grams of fresh mint dries down to 10 grams. What left the leaves?',
-        choices: ['Colour', 'Smell', 'Nothing at all', 'Water, as vapour'],
+        choices: ['Color', 'Smell', 'Nothing at all', 'Water, as vapor'],
         answer: 3,
         feedback: [
-          'The colour fades a little, but colour has almost no mass.',
+          'The color fades a little, but color has almost no mass.',
           'A little smell goes too, but forty grams of it? No.',
           'Forty grams went somewhere, and the scale proves it.',
           null
@@ -1244,7 +1244,7 @@ export const HERBALISM_M11 = [
         feedback: [
           null,
           'Still air sits there getting damper and takes no more.',
-          'A sealed bag traps the vapour and grows mould instead.',
+          'A sealed bag traps the vapor and grows mold instead.',
           'Cold and damp is the slowest place in the house.'
         ]
       }
@@ -1264,7 +1264,7 @@ export const HERBALISM_M11 = [
     spec: '§10 · beats',
 
     concept:
-      'Water pulls colour and smell out of plant material, and you pick between a hot steep, a long simmer and a cold soak by how tough the plant part is.',
+      'Water pulls color and smell out of plant material, and you pick between a hot steep, a long simmer and a cold soak by how tough the plant part is.',
 
     standards: [],
 
@@ -1277,7 +1277,7 @@ export const HERBALISM_M11 = [
       { word: 'maceration', plain: 'A long soak in cold water, with no heat used at all.' },
       { word: 'solvent', plain: 'The liquid that does the pulling out. Here it is plain water.' },
       { word: 'steep', plain: 'To leave something sitting in liquid while it works.' },
-      { word: 'volatile oil', plain: 'The part that carries the smell. Heat turns it to vapour easily.' }
+      { word: 'volatile oil', plain: 'The part that carries the smell. Heat turns it to vapor easily.' }
     ],
 
     video: {
@@ -1305,12 +1305,12 @@ export const HERBALISM_M11 = [
     hook: M11L4_CHECK_IN,
     core: M11L4_BEATS.map((b) => ({ heading: b.label, text: b.teachingText })),
     doing:
-      'Run all three methods side by side with the same scale and the same jug. Glass A is an infusion: Gigi pours 200 millilitres of just-boiled water over 2 grams of peppermint, and the saucer goes on straight away for ten minutes. Glass B is a decoction: Gigi simmers 2 grams of thin ginger slices in 200 millilitres for twenty minutes with the lid on. Glass C is a maceration, standing in cold water in the fridge overnight. Predict first, then line all three against white paper, describe the colours properly, waft the smells towards you, and fill in a table of method, part, temperature, time, colour and smell. Every glass gets labelled with its method and its start time, and Gigi alone decides whether the cooled mint infusion is tasted.',
+      'Run all three methods side by side with the same scale and the same jug. Glass A is an infusion: Gigi pours 200 milliliters of just-boiled water over 2 grams of peppermint, and the saucer goes on straight away for ten minutes. Glass B is a decoction: Gigi simmers 2 grams of thin ginger slices in 200 milliliters for twenty minutes with the lid on. Glass C is a maceration, standing in cold water in the fridge overnight. Predict first, then line all three against white paper, describe the colors properly, waft the smells toward you, and fill in a table of method, part, temperature, time, color and smell. Every glass gets labeled with its method and its start time, and Gigi alone decides whether the cooled mint infusion is tasted.',
 
     practice: [
       {
         ask: 'Why does a lid go on an infusion straight away?',
-        answer: 'Because the smell leaves as vapour, and a lid cools it and drips it back in.',
+        answer: 'Because the smell leaves as vapor, and a lid cools it and drips it back in.',
         why: 'What you can smell across the room is exactly what the cup has lost.'
       },
       {
@@ -1383,11 +1383,11 @@ export const HERBALISM_M11 = [
 
     glossary: [
       { word: 'shelf life', plain: 'How long something stays good once it is stored.' },
-      { word: 'spoilage', plain: 'Food going bad, whether by mould, damp or plain old age.' },
+      { word: 'spoilage', plain: 'Food going bad, whether by mold, damp or plain old age.' },
       { word: 'airtight', plain: 'Sealed so well that no air gets in or out.' },
       { word: 'best before', plain: 'The maker guess at when quality drops off. Not a safety switch.' },
-      { word: 'mould', plain: 'A fungus that grows on damp food. It is alive and it needs water.' },
-      { word: 'fade', plain: 'To lose colour slowly, the way light fades a curtain.' },
+      { word: 'mold', plain: 'A fungus that grows on damp food. It is alive and it needs water.' },
+      { word: 'fade', plain: 'To lose color slowly, the way light fades a curtain.' },
       { word: 'audit', plain: 'Going through everything on purpose and writing down what you find.' }
     ],
 
@@ -1402,7 +1402,7 @@ export const HERBALISM_M11 = [
         'that a printed date is about quality, not a moment when food turns bad',
         'the difference between the dates printed on packets',
         'what actually makes food spoil',
-        'that a date is somebody making a judgement, and how that judgement is made'
+        'that a date is somebody making a judgment, and how that judgment is made'
       ],
       sourceGap:
         'OPEN, and this is the lesson where the gap is most closeable. Searched: "SciShow Kids why does food go bad mold spoilage video", "youtube what do expiration dates mean food spoilage science explained", "youtube water activity food science why drying stops mold explained moisture content", "Black American food scientist youtube channel explains food science educator kids", and "\'The Black Food Scientist\' youtube video shelf life food spoilage water activity preservation". The channel "The Black Food Scientist" (youtube.com/@Theblackfoodscientist) exists and its subject IS this lesson — shelf life, spoilage and water in food — but the searches returned only blog articles and no video id that could be put through noembed. Nothing unverified was used. One verified video from that channel would close this gap outright, and it is the first thing to try before this module is reprinted.'
@@ -1416,12 +1416,12 @@ export const HERBALISM_M11 = [
     hook: M11L5_CHECK_IN,
     core: M11L5_BEATS.map((b) => ({ heading: b.label, text: b.teachingText })),
     doing:
-      'Audit ten jars out of the cupboard. Write down the date on each one, or NONE where there is not one, then the colour, the smell and where the jar was living. Rank them oldest to freshest by look and smell alone, then check your ranking against the dates and find out where your eyes fooled you. Tape a date onto every undated jar and move anything that was sitting in light or beside the stove. Then set up your own test: split your dried mint between two matching jars, date both, stand one on the sunny sill and one in the dark cupboard, and write the date four weeks from now when you will open them.',
+      'Audit ten jars out of the cupboard. Write down the date on each one, or NONE where there is not one, then the color, the smell and where the jar was living. Rank them oldest to freshest by look and smell alone, then check your ranking against the dates and find out where your eyes fooled you. Tape a date onto every undated jar and move anything that was sitting in light or beside the stove. Then set up your own test: split your dried mint between two matching jars, date both, stand one on the sunny sill and one in the dark cupboard, and write the date four weeks from now when you will open them.',
 
     practice: [
       {
         ask: 'Which of the four spoilers matters most in a jar of dried herbs?',
-        answer: 'Water. Mould only needs a trace of it to get started.',
+        answer: 'Water. Mold only needs a trace of it to get started.',
         why: 'Light, air and heat work slowly. Damp can ruin a jar in a week.'
       },
       {
@@ -1437,7 +1437,7 @@ export const HERBALISM_M11 = [
         choices: ['Heat', 'Water', 'Light', 'Air'],
         answer: 1,
         feedback: [
-          'Heat speeds everything up, but water is what mould needs.',
+          'Heat speeds everything up, but water is what mold needs.',
           null,
           'Light fades it over months. Damp can ruin it in days.',
           'Air dulls it slowly, and a good lid handles that.'
@@ -1521,7 +1521,7 @@ export const HERBALISM_M11 = [
         'what belongs in an entry and what does not'
       ],
       sourceGap:
-        'OPEN. No Black American educator found for scientific record-keeping at this level. Searched: "youtube why scientists keep a lab notebook write everything down record keeping science students video", "Black chemist youtube channel kitchen chemistry educator African American science communicator video", "\'ThatBlackChemist\' OR \'That Black Chemist\' youtube video chemistry extraction lab measuring", and "\'Colah B. Tawkin\' youtube video Black in the Garden plants episode". The chemistry search surfaced the channel @ThatBlackChemist and the Black In SciComm channel, and the last surfaced Colah B. Tawkin, a Black American plant educator whose Black In The Garden episodes ARE on YouTube — but every id that came back from those searches was an adult interview or a podcast episode with no bearing on labelling or record-keeping, so none was used. This is the module\'s spine lesson and it deserves better than an Open University clip; another hour on it is worth spending.'
+        'OPEN. No Black American educator found for scientific record-keeping at this level. Searched: "youtube why scientists keep a lab notebook write everything down record keeping science students video", "Black chemist youtube channel kitchen chemistry educator African American science communicator video", "\'ThatBlackChemist\' OR \'That Black Chemist\' youtube video chemistry extraction lab measuring", and "\'Colah B. Tawkin\' youtube video Black in the Garden plants episode". The chemistry search surfaced the channel @ThatBlackChemist and the Black In SciComm channel, and the last surfaced Colah B. Tawkin, a Black American plant educator whose Black In The Garden episodes ARE on YouTube — but every id that came back from those searches was an adult interview or a podcast episode with no bearing on labeling or record-keeping, so none was used. This is the module\'s spine lesson and it deserves better than an Open University clip; another hour on it is worth spending.'
     },
 
     checkIn: M11L6_CHECK_IN,
@@ -1532,7 +1532,7 @@ export const HERBALISM_M11 = [
     hook: M11L6_CHECK_IN,
     core: M11L6_BEATS.map((b) => ({ heading: b.label, text: b.teachingText })),
     doing:
-      'Bring every jar, tray and glass from this module onto the bench and label all of them properly. Five lines each, taken from her log and not from memory: plant, part, when it was picked, how it was prepared, and the date it was jarred, plus a batch code and her signature. Where a line is not known, she writes UNKNOWN instead of guessing. Then she writes a method sheet for her mint infusion with real numbers on it — grams, millilitres, minutes, lid on or off — clear enough for a stranger to follow. Gigi shuffles two jars and hands them back, and she has to say what happened to each one using nothing but the label.',
+      'Bring every jar, tray and glass from this module onto the bench and label all of them properly. Five lines each, taken from her log and not from memory: plant, part, when it was picked, how it was prepared, and the date it was jarred, plus a batch code and her signature. Where a line is not known, she writes UNKNOWN instead of guessing. Then she writes a method sheet for her mint infusion with real numbers on it — grams, milliliters, minutes, lid on or off — clear enough for a stranger to follow. Gigi shuffles two jars and hands them back, and she has to say what happened to each one using nothing but the label.',
 
     practice: [
       {
@@ -1578,8 +1578,8 @@ export const HERBALISM_M11 = [
       {
         prompt: 'Two jars smell different. Only one carries a label. What can you learn?',
         choices: [
-          'That the unlabelled jar is older',
-          'Something real, but only about the labelled jar',
+          'That the unlabeled jar is older',
+          'Something real, but only about the labeled jar',
           'That labels change how herbs smell',
           'Nothing from either jar at all'
         ],
@@ -1588,7 +1588,7 @@ export const HERBALISM_M11 = [
           'There is nothing on that jar to tell you its age.',
           null,
           'A label is paper. It changes the record, not the plant.',
-          'The labelled jar still tells its own story properly.'
+          'The labeled jar still tells its own story properly.'
         ]
       }
     ]
@@ -1600,7 +1600,7 @@ export const HERBALISM_M11_META = {
   module: 11,
   title: 'The Apothecary',
   blurb:
-    'The craft of preparing plant material, done properly. The five jobs a bench has to do, weighing in grams instead of guessing in cups, drying measured on a scale, three ways water gets colour and smell out of a leaf or a root, what shortens the life of a jar, and the five-line label that turns a jar into a record.'
+    'The craft of preparing plant material, done properly. The five jobs a bench has to do, weighing in grams instead of guessing in cups, drying measured on a scale, three ways water gets color and smell out of a leaf or a root, what shortens the life of a jar, and the five-line label that turns a jar into a record.'
 };
 
 export function m11LessonById(id) {

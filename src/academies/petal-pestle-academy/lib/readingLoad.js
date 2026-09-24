@@ -66,8 +66,8 @@ export const SUBJECT_TERMS = new Set([
   'multiply', 'multiplied', 'multiplies', 'multiplication', 'division', 'divided',
   'subtract', 'subtracting', 'denominator', 'denominators', 'numerator', 'fraction',
   'fractions', 'decimal', 'decimals', 'perimeter', 'symmetry', 'triangle', 'rectangle',
-  'rectangular', 'equation', 'expression', 'kilogram', 'kilograms', 'millilitres',
-  'centimetre', 'centimetres', 'average', 'estimate', 'remainder', 'quantity',
+  'rectangular', 'equation', 'expression', 'kilogram', 'kilograms', 'milliliters',
+  'centimeter', 'centimeters', 'average', 'estimate', 'remainder', 'quantity',
   // ELA metalanguage — the words a grammar question needs to name its own topic
   'adverb', 'adjective', 'pronoun', 'pronouns', 'apostrophe', 'punctuation', 'punctuated',
   'sentence', 'sentences', 'paragraph', 'vocabulary', 'comprehension', 'counterargument',
@@ -105,7 +105,7 @@ export const SUBJECT_TERMS = new Set([
  */
 export const COMMON_WORDS = new Set([
   'another', 'together', 'everyone', 'everything', 'anything', 'somebody',
-  'family', 'remember', 'different', 'beautiful', 'favourite', 'favorite',
+  'family', 'remember', 'different', 'beautiful', 'favorite', 'favorite',
   'animal', 'animals', 'usually', 'probably', 'yesterday', 'tomorrow',
   'afternoon', 'understand', 'important', 'grandmother', 'grandma',
   // ---- added v3.70 for prose ----

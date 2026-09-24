@@ -155,7 +155,7 @@ const M4L4_CHECK_IN = {
 const M4L4_BEATS = [
   {
     n: 1,
-    label: 'A plant cannot run, so it wears its armour',
+    label: 'A plant cannot run, so it wears its armor',
     hook: 'A deer will walk right past a plant it could reach. Something stopped it.',
     teachingText:
       'A plant is stuck in one spot. It cannot hide and it cannot run. So it grows parts that make it hard or nasty to eat.',
@@ -181,12 +181,12 @@ const M4L4_BEATS = [
   },
   {
     n: 2,
-    label: 'Armour comes in four shapes',
+    label: 'Armor comes in four shapes',
     hook: 'The fuzz on a leaf is not soft. Under a magnifier it is a field of tiny spears.',
     teachingText:
       'Sharp is a thorn or a spine. Fuzzy is trichomes, tiny hairs that itch or trap. Thick and waxy skin is hard to bite. Sticky latex gums a mouth shut.',
     example:
-      'Your ginger has a thick skin you have to scrape. The papery layers round a garlic clove do the same job. Both are armour.',
+      'Your ginger has a thick skin you have to scrape. The papery layers round a garlic clove do the same job. Both are armor.',
     applyIt: {
       prompt: 'A caterpillar starts on a fuzzy leaf, then crawls off and leaves it. What stopped it?',
       choices: ['A thorn', 'The trichomes', 'Latex', 'The waxy skin'],
@@ -204,7 +204,7 @@ const M4L4_BEATS = [
 
 /** STEP 3 · THE ACTIVITY · 20 minutes. Away from the screen. */
 const M4L4_ACTIVITY = {
-  title: 'The armour hunt',
+  title: 'The armor hunt',
   prep: 'Cut four cards and head them SHARP, FUZZY, THICK, STICKY. Fill a small cup with water and find an eye dropper or a straw.',
   needs: [
     'garden gloves',
@@ -236,22 +236,22 @@ const M4L4_ACTIVITY = {
     'The water sat in a bead on that leaf. What does that tell you?',
     'Why would a plant want water to run off instead of soak in?',
     'That garlic has papers round it. What are they for?',
-    'Which plant here has the best armour? Say why out loud.',
-    'Goats eat thorny plants anyway. What does that tell you about armour?',
+    'Which plant here has the best armor? Say why out loud.',
+    'Goats eat thorny plants anyway. What does that tell you about armor?',
     'You are wearing gloves. Why did I ask for that today?',
     'Is any of this a snack? Which one, and who has to say yes first?',
-    'If you were a plant, which armour would you grow, and why that one?'
+    'If you were a plant, which armor would you grow, and why that one?'
   ]
 };
 
 /** STEP 4 · THE LEDGER ENTRY · 8 minutes. She writes it. Nothing is corrected. */
 const M4L4_LEDGER = {
-  sheet: 'M4L4-armour-hunt-PRINTABLE.pdf',
+  sheet: 'M4L4-armor-hunt-PRINTABLE.pdf',
   tasks: [
     'Fill in the four columns. Sharp, fuzzy, thick, sticky.',
     'Draw the fuzz the way it looked through the magnifier.',
-    'Circle the plant with the best armour. Write one line saying why.',
-    'Write one question about plant armour for Gigi. You must know the answer.'
+    'Circle the plant with the best armor. Write one line saying why.',
+    'Write one question about plant armor for Gigi. You must know the answer.'
   ],
   game: {
     title: 'Word Boss',
@@ -322,7 +322,7 @@ const M4L5_BEATS = [
     teachingText:
       'A strong smell is a chemical the plant made on purpose. Some smells repel — they push insects away. Some attract — they pull helpers in.',
     example:
-      'That is why these plants are in the kitchen. Mint, rosemary, garlic and basil taste strong because they are defended. People liked the taste of the defence.',
+      'That is why these plants are in the kitchen. Mint, rosemary, garlic and basil taste strong because they are defended. People liked the taste of the defense.',
     applyIt: {
       prompt: 'Slugs eat the soft lettuce every night and never touch the rosemary. Why?',
       choices: [
@@ -348,7 +348,7 @@ const M4L5_ACTIVITY = {
   prep: 'Gigi picks four to six plants and names each one out loud. Only named plants go on the tray. Set out one saucer per plant and a bowl of soapy water for hands.',
   needs: [
     'four to six named plants — mint, rosemary, basil, a garlic clove, a slice of ginger, a slice of turmeric',
-    'one saucer per plant, labelled',
+    'one saucer per plant, labeled',
     'a scarf for a blindfold',
     'the score sheet and a pencil',
     'soapy water and a towel',
@@ -428,17 +428,17 @@ const M4L6_CHECK_IN = {
 const M4L6_BEATS = [
   {
     n: 1,
-    label: 'Growing towards what it needs',
+    label: 'Growing toward what it needs',
     hook: 'Turn a plant round on the sill and it will turn itself back in about a week.',
     teachingText:
-      'A plant cannot walk to the light. So it grows towards it instead. Growth that turns like this is called a tropism.',
+      'A plant cannot walk to the light. So it grows toward it instead. Growth that turns like this is called a tropism.',
     example:
       'You met one in Week 1. The bean you planted upside down sent its root down anyway. That is the same trick, aimed at gravity.',
     applyIt: {
       prompt: 'You turn the pot half way round on Monday. By Friday the stem leans the other way. Why?',
       choices: [
         'The pot is heavier on one side',
-        'The stem grew towards the window again',
+        'The stem grew toward the window again',
         'Someone bent it',
         'The plant is sick'
       ],
@@ -449,7 +449,7 @@ const M4L6_BEATS = [
         'Nobody touched it. It took five days, not one push.',
         'A sick plant droops. This one aimed itself.'
       ],
-      why: 'Growth turns towards light. Move the plant and it aims again.'
+      why: 'Growth turns toward light. Move the plant and it aims again.'
     }
   },
   {
@@ -503,7 +503,7 @@ const M4L6_ACTIVITY = {
     'Find any plant with a thin curling thread on it. That is a tendril.',
     'Wrap the tendril once round the string. Just once, gently.',
     'Tape a marker where the tip of the vine is today.',
-    'Check tomorrow. Measure from your tape to the new tip in centimetres.',
+    'Check tomorrow. Measure from your tape to the new tip in centimeters.',
     'Last, lay a long trailing stem flat on the soil and pin it with a hairpin.'
   ],
   safety:
@@ -527,7 +527,7 @@ const M4L6_LEDGER = {
   sheet: 'M4L6-reaching-for-light-PRINTABLE.pdf',
   tasks: [
     'Draw the inside of the box on each check day. Mark where the shoot is.',
-    'Write the centimetres the vine tip moved in one day.',
+    'Write the centimeters the vine tip moved in one day.',
     'Draw a tendril. Draw a creeper. Label which is which.',
     'Write one question about tropisms for Gigi. You must know the answer.'
   ],
@@ -591,7 +591,7 @@ const M8L4_BEATS = [
         'Both lids went on tight. You did them yourself.',
         'Nothing was weighed. Nothing sank.'
       ],
-      why: 'Warm water pulls colour out faster than cold water does. That is the whole jar.'
+      why: 'Warm water pulls color out faster than cold water does. That is the whole jar.'
     }
   },
   {
@@ -599,14 +599,14 @@ const M8L4_BEATS = [
     label: 'Extraction is watching something move',
     hook: 'You can see this one happen. Not many science words let you watch them.',
     teachingText:
-      'Extraction means pulling something out of something else. The warm water pulls colour, smell and flavour out of the leaves and holds them.',
+      'Extraction means pulling something out of something else. The warm water pulls color, smell and flavor out of the leaves and holds them.',
     example:
       'The first pink streaks show under the hibiscus in about 30 minutes. By hour three the streaks have filled the whole jar.',
     applyIt: {
       prompt: 'At 10:30 there are pink streaks under the flowers. At noon the whole jar is red. What moved?',
       choices: [
         'The flowers moved to the top',
-        'Colour moved out of the flowers into the water',
+        'Color moved out of the flowers into the water',
         'The water moved into the flowers',
         'Nothing moved. The light changed'
       ],
@@ -617,7 +617,7 @@ const M8L4_BEATS = [
         'Some water does go in. But the jar turned red, so something came out.',
         'The shady jar had the same light and stayed pale.'
       ],
-      why: 'That is extraction. The colour left the flowers and spread through the water.'
+      why: 'That is extraction. The color left the flowers and spread through the water.'
     }
   }
 ];
@@ -633,7 +633,7 @@ const M8L4_ACTIVITY = {
     'a timer or a clock you can see',
     'a sieve or a tea strainer',
     'a cup',
-    'coloured pencils and the log sheet',
+    'colored pencils and the log sheet',
     'honey, if she wants it'
   ],
   steps: [
@@ -642,9 +642,9 @@ const M8L4_ACTIVITY = {
     'Screw the lid on tight.',
     'Write the start time on a strip of tape. Stick it on the jar.',
     'Stand it in the sunniest spot you have. Then leave it alone.',
-    'Colour the first box on your sheet. That is the water right now.',
+    'Color the first box on your sheet. That is the water right now.',
     'Set the timer for 30 minutes.',
-    'When it goes, colour the next box and write one sentence.',
+    'When it goes, color the next box and write one sentence.',
     'Reset the timer. Do that again. And again.',
     'Keep going for two to three hours. Do not open the lid.',
     'Bring the jar in. Look at all your boxes in a row.',
@@ -662,9 +662,9 @@ const M8L4_ACTIVITY = {
     'Which herb started changing the water first? How can you tell?',
     'Why do we check every thirty minutes and not just at the end?',
     'The shady jar barely moved. What does that tell you about heat?',
-    'What is the word for colour coming out of a leaf into water?',
+    'What is the word for color coming out of a leaf into water?',
     'We could have boiled a kettle in one minute. Why did we take three hours?',
-    'You strained the leaves out. Where did the colour go?',
+    'You strained the leaves out. Where did the color go?',
     'This is a drink you made. Tell me what it is not.',
     'If you ran it again tomorrow, what one thing would you change?'
   ]
@@ -673,9 +673,9 @@ const M8L4_ACTIVITY = {
 const M8L4_LEDGER = {
   sheet: 'M8L4-solar-tea-log-PRINTABLE.pdf',
   tasks: [
-    'Colour one box for every 30 minutes. Six boxes in all.',
+    'Color one box for every 30 minutes. Six boxes in all.',
     'Write one sentence under each box. What you saw, not what you hoped.',
-    'Circle the box where the colour changed the most.',
+    'Circle the box where the color changed the most.',
     'Write one question about extraction for Gigi. You must know the answer.'
   ],
   game: {
@@ -687,7 +687,7 @@ const M8L4_LEDGER = {
       'Stump Gigi. Write her one question you already know the answer to.'
     ],
     ifSheIsStuck:
-      'Lay the six coloured boxes in front of her. Extraction is the thing those boxes are a picture of.'
+      'Lay the six colored boxes in front of her. Extraction is the thing those boxes are a picture of.'
   },
   note: 'Nothing here is graded. Nothing is corrected. Petals are for doing it.'
 };
@@ -746,7 +746,7 @@ const M8L5_BEATS = [
     teachingText:
       'One measurement tells you almost nothing. Six in a row make a shape. The shape is the story — going up, slowing, or flat.',
     example:
-      'Colour one bar a week and stand back. Tall steps mean fast. Steps the same height mean it has stopped.',
+      'Color one bar a week and stand back. Tall steps mean fast. Steps the same height mean it has stopped.',
     applyIt: {
       prompt: 'Her ginger bars go 2, 4, 7, 11, 11, 11. What do the last three say?',
       choices: [
@@ -769,12 +769,12 @@ const M8L5_BEATS = [
 
 const M8L5_ACTIVITY = {
   title: 'Build the Growth Chart',
-  prep: 'Cut four lolly sticks. Rule a grid on a big sheet — weeks along the bottom, centimetres up the side, up to 40. Pick the day and the time this happens every week and write it at the top.',
+  prep: 'Cut four lolly sticks. Rule a grid on a big sheet — weeks along the bottom, centimeters up the side, up to 40. Pick the day and the time this happens every week and write it at the top.',
   needs: [
     'a 30 cm ruler',
     'four lolly sticks and a marker',
     'one big sheet of grid paper',
-    'four coloured pencils, one per container',
+    'four colored pencils, one per container',
     'the log sheet',
     'garden gloves'
   ],
@@ -784,11 +784,11 @@ const M8L5_ACTIVITY = {
     'Pick the tallest leaf on the garlic. Only that leaf, every week.',
     'Tie a loose loop of string on it so you never lose which one.',
     'Measure from the mark on the stick to the tip of that leaf.',
-    'Write the number in centimetres. Not about. The number.',
+    'Write the number in centimeters. Not about. The number.',
     'Do the same for turmeric, ginger and corn.',
     'Also measure the pot itself. That number must not change.',
     'If the pot number changed, you measured wrong. Do it again.',
-    'Colour one bar per plant on the grid.',
+    'Color one bar per plant on the grid.',
     'Before you put it away, write your guess for next week.',
     'Next week, check your guess first. Then measure.'
   ],
@@ -812,8 +812,8 @@ const M8L5_ACTIVITY = {
 const M8L5_LEDGER = {
   sheet: 'M8L5-growth-chart-PRINTABLE.pdf',
   tasks: [
-    'Write this week in centimetres for all four containers.',
-    'Colour the four bars on the big grid.',
+    'Write this week in centimeters for all four containers.',
+    'Color the four bars on the big grid.',
     'Write next week’s guess in the guess box. In pen.',
     'Write one question about measuring for Gigi. You must know the answer.'
   ],
@@ -928,7 +928,7 @@ const M8L6_ACTIVITY = {
     'Write what you will measure, and how often.',
     'Write your guess. In pen. Before you set anything up.',
     'Now set up the two pots. Same soil, same amount, same depth.',
-    'Water both with the jug. The same number of millilitres.',
+    'Water both with the jug. The same number of milliliters.',
     'Label them A and B and put today on both labels.',
     'Measure both today. That is week zero.',
     'Put the sheet in the Plant Detective Log. Check it every week.'
@@ -989,7 +989,7 @@ export const HERBALISM_M4_NEW = [
     minutes: 45,
     spec: '§10 · beats',
 
-    concept: 'A plant cannot run away, so it grows its defence into its own body.',
+    concept: 'A plant cannot run away, so it grows its defense into its own body.',
 
     standards: [],
     offGrade: 'S3L2',
@@ -1003,7 +1003,7 @@ export const HERBALISM_M4_NEW = [
       { word: 'trichome', plain: 'One of the tiny hairs on a leaf. The fuzz.' },
       { word: 'latex', plain: 'Thick white goo that oozes out of a broken stem.' },
       { word: 'waxy', plain: 'A smooth coat on a leaf that water rolls off.' },
-      { word: 'defence', plain: 'Anything that keeps a living thing from being eaten.' },
+      { word: 'defense', plain: 'Anything that keeps a living thing from being eaten.' },
       { word: 'sap', plain: 'The liquid inside a plant that moves food and water about.' }
     ],
 
@@ -1039,7 +1039,7 @@ export const HERBALISM_M4_NEW = [
 
     practice: [
       {
-        ask: 'Why does a plant need armour when an animal does not?',
+        ask: 'Why does a plant need armor when an animal does not?',
         answer: 'An animal can run away. A plant is stuck in one spot.',
         why: 'Everything a plant does about being eaten has to be built into its body.'
       },
@@ -1116,7 +1116,7 @@ export const HERBALISM_M4_NEW = [
       { word: 'chemical', plain: 'Something a plant makes inside itself, far too small to see.' },
       { word: 'volatile', plain: 'A smell light enough to float off the leaf into the air.' },
       { word: 'repel', plain: 'To push something away and keep it away.' },
-      { word: 'attract', plain: 'To pull something towards you.' },
+      { word: 'attract', plain: 'To pull something toward you.' },
       { word: 'crush', plain: 'To squash a leaf so the smell breaks out of it.' },
       { word: 'herb', plain: 'A plant people grow for its leaves, its smell or its taste.' },
       { word: 'pest', plain: 'An animal that eats a plant people are trying to grow.' }
@@ -1135,7 +1135,7 @@ export const HERBALISM_M4_NEW = [
         'a plant reacting to being bitten',
         'airborne chemicals that warn nearby plants',
         'cotton calling in parasitic wasps to deal with caterpillars',
-        'many molecules people use as seasonings are part of a plant defence'
+        'many molecules people use as seasonings are part of a plant defense'
       ],
       sourceGap:
         'No Black American educator found. Searched: "Black herbalist YouTube teaching children herbs smell aromatic plants kids lesson" — returned Herbal Academy blog posts, Run Wild My Child, Wintergreen Botanicals and the School of Evolutionary Herbalism. All written articles, none Black-led, no video. Also searched Kew and university outreach channels for a kid-level plant-smell video and found only adult gardening content. Open. Module 7 Lesson 40 remains the strongest planned place to close this.'
@@ -1223,7 +1223,7 @@ export const HERBALISM_M4_NEW = [
     minutes: 45,
     spec: '§10 · beats',
 
-    concept: 'A plant cannot walk to what it needs, so it grows towards it instead.',
+    concept: 'A plant cannot walk to what it needs, so it grows toward it instead.',
 
     standards: [],
     offGrade: 'S3L2',
@@ -1231,8 +1231,8 @@ export const HERBALISM_M4_NEW = [
     words: ['tropism', 'phototropism', 'gravitropism', 'thigmotropism', 'tendril'],
 
     glossary: [
-      { word: 'tropism', plain: 'Growing in a direction on purpose, towards something.' },
-      { word: 'phototropism', plain: 'Growing towards light. Photo means light.' },
+      { word: 'tropism', plain: 'Growing in a direction on purpose, toward something.' },
+      { word: 'phototropism', plain: 'Growing toward light. Photo means light.' },
       { word: 'gravitropism', plain: 'Roots growing down because of gravity.' },
       { word: 'thigmotropism', plain: 'Growing round something after touching it.' },
       { word: 'tendril', plain: 'A thin curling thread a climber uses to grab hold.' },
@@ -1250,7 +1250,7 @@ export const HERBALISM_M4_NEW = [
       verified: '2026-08-15 · re-checked at youtube.com/oembed',
       teaches: [
         'a tropism is growth aimed in a direction',
-        'growing towards light',
+        'growing toward light',
         'roots growing down with gravity',
         'growing round something a stem has touched'
       ],
@@ -1266,12 +1266,12 @@ export const HERBALISM_M4_NEW = [
     hook: M4L6_CHECK_IN,
     core: M4L6_BEATS.map((b) => ({ heading: b.label, text: b.teachingText })),
     doing:
-      'Build a maze in a shoebox with two cardboard flaps and one hole in the end, stand a sprouted bean at the far end, and watch it work its way round the flaps towards the light. Then go outside, push a stake into the ginger container, tie a string down to the rim, and give a tendril one gentle wrap round it. Tape a marker at the vine tip and measure how far it moves in a day. Finish by pinning a trailing stem flat on the soil to see what a creeper does.',
+      'Build a maze in a shoebox with two cardboard flaps and one hole in the end, stand a sprouted bean at the far end, and watch it work its way round the flaps toward the light. Then go outside, push a stake into the ginger container, tie a string down to the rim, and give a tendril one gentle wrap round it. Tape a marker at the vine tip and measure how far it moves in a day. Finish by pinning a trailing stem flat on the soil to see what a creeper does.',
 
     practice: [
       {
         ask: 'What is a tropism?',
-        answer: 'Growth that turns towards something the plant needs.',
+        answer: 'Growth that turns toward something the plant needs.',
         why: 'Light, gravity and touch each get their own kind of tropism.'
       },
       {
@@ -1283,7 +1283,7 @@ export const HERBALISM_M4_NEW = [
 
     check: [
       {
-        prompt: 'A shoot works its way round two flaps towards one small hole. What is that?',
+        prompt: 'A shoot works its way round two flaps toward one small hole. What is that?',
         choices: ['Gravitropism', 'Phototropism', 'Thigmotropism', 'A tendril'],
         answer: 1,
         feedback: [
@@ -1332,7 +1332,7 @@ export const HERBALISM_M8_NEW = [
     minutes: 45,
     spec: '§10 · beats',
 
-    concept: 'Slow heat from the sun pulls colour, smell and flavour out of a leaf and into the water.',
+    concept: 'Slow heat from the sun pulls color, smell and flavor out of a leaf and into the water.',
 
     standards: [],
 
@@ -1374,18 +1374,18 @@ export const HERBALISM_M8_NEW = [
     hook: M8L4_CHECK_IN,
     core: M8L4_BEATS.map((b) => ({ heading: b.label, text: b.teachingText })),
     doing:
-      'Fill a clean glass jar with cool water, drop in a handful of named food herbs — peppermint, lemon balm, dried hibiscus — screw the lid on tight and stand it in the sunniest spot she has. Tape the start time on the jar. Colour a box on the log sheet every thirty minutes for two to three hours and write one sentence each time about what the water is doing. Then bring it in, pour it through a sieve, add honey if she wants it, and drink the tea she brewed with the sun. It is a drink she made. It is not a remedy.',
+      'Fill a clean glass jar with cool water, drop in a handful of named food herbs — peppermint, lemon balm, dried hibiscus — screw the lid on tight and stand it in the sunniest spot she has. Tape the start time on the jar. Color a box on the log sheet every thirty minutes for two to three hours and write one sentence each time about what the water is doing. Then bring it in, pour it through a sieve, add honey if she wants it, and drink the tea she brewed with the sun. It is a drink she made. It is not a remedy.',
 
     practice: [
       {
         ask: 'What does extraction mean?',
         answer: 'Pulling something out of something else.',
-        why: 'Here the warm water pulls colour and flavour out of the leaves.'
+        why: 'Here the warm water pulls color and flavor out of the leaves.'
       },
       {
         ask: 'Why check the jar every thirty minutes instead of once at the end?',
         answer: 'Because the change is what you are studying, not just the ending.',
-        why: 'Six checks make a row you can read. One check is only a colour.'
+        why: 'Six checks make a row you can read. One check is only a color.'
       }
     ],
 
@@ -1486,7 +1486,7 @@ export const HERBALISM_M8_NEW = [
         'keep going for a month and a year to see more'
       ],
       sourceGap:
-        'A real lead was checked and rejected. Nine PBS’s "Teaching in Room 9" — a St Louis programme taught by local classroom teachers — has an episode called "Observing Weather Patterns - Recording Weather Data", which is dead on topic. Searched it out, found the episode page, and the presenting teacher is named Jeanne Norris with a runtime of 28m20s. I could not establish whether she is a Black American educator, and 28 minutes does not fit a 45-minute lesson with a 20-minute activity in it. Not used, and recorded here rather than dropped. Open.'
+        'A real lead was checked and rejected. Nine PBS’s "Teaching in Room 9" — a St Louis program taught by local classroom teachers — has an episode called "Observing Weather Patterns - Recording Weather Data", which is dead on topic. Searched it out, found the episode page, and the presenting teacher is named Jeanne Norris with a runtime of 28m20s. I could not establish whether she is a Black American educator, and 28 minutes does not fit a 45-minute lesson with a 20-minute activity in it. Not used, and recorded here rather than dropped. Open.'
     },
 
     checkIn: M8L5_CHECK_IN,
@@ -1497,7 +1497,7 @@ export const HERBALISM_M8_NEW = [
     hook: M8L5_CHECK_IN,
     core: M8L5_BEATS.map((b) => ({ heading: b.label, text: b.teachingText })),
     doing:
-      'Push a lolly stick into each of the four containers down to the soil line and mark it — that is a zero point that cannot wander. Tie a loop of string on one chosen leaf per plant so the same leaf gets measured every week. Measure from the mark to the leaf tip in centimetres, on the same day, at the same time, with the same ruler. Measure the pot too, as a check: if the pot number changes, the measuring was wrong. Colour one bar per plant on the big grid, then write next week’s guess before putting it away.',
+      'Push a lolly stick into each of the four containers down to the soil line and mark it — that is a zero point that cannot wander. Tie a loop of string on one chosen leaf per plant so the same leaf gets measured every week. Measure from the mark to the leaf tip in centimeters, on the same day, at the same time, with the same ruler. Measure the pot too, as a check: if the pot number changes, the measuring was wrong. Color one bar per plant on the big grid, then write next week’s guess before putting it away.',
 
     practice: [
       {
@@ -1605,7 +1605,7 @@ export const HERBALISM_M8_NEW = [
         'make observations and do some research',
         'form a hypothesis',
         'design an experiment that changes one variable',
-        'analyse the data you collected',
+        'analyze the data you collected',
         'draw a conclusion from it'
       ],
       sourceGap:
@@ -1620,7 +1620,7 @@ export const HERBALISM_M8_NEW = [
     hook: M8L6_CHECK_IN,
     core: M8L6_BEATS.map((b) => ({ heading: b.label, text: b.teachingText })),
     doing:
-      'Sort six statements about the garden into CAN TEST and CANNOT TEST, and say why each one landed where it did. Then write her own claim about her own garden in one sentence, underline the single thing she is going to change, and list everything that has to stay the same. Write the guess in pen, before anything is set up. Then build it: two matching pots, same soil, same depth, the same number of millilitres of water, labelled A and B and dated. Measure both today — that is week zero — and the sheet goes into the Plant Detective Log to be checked every week.',
+      'Sort six statements about the garden into CAN TEST and CANNOT TEST, and say why each one landed where it did. Then write her own claim about her own garden in one sentence, underline the single thing she is going to change, and list everything that has to stay the same. Write the guess in pen, before anything is set up. Then build it: two matching pots, same soil, same depth, the same number of milliliters of water, labeled A and B and dated. Measure both today — that is week zero — and the sheet goes into the Plant Detective Log to be checked every week.',
 
     practice: [
       {
@@ -1696,7 +1696,7 @@ export const HERBALISM_M8_META = {
   module: 8,
   title: 'The Plant Detective',
   blurb:
-    'The practice of science, in her own garden. Brew tea with the sun and watch the colour move. Measure the same thing the same way until the numbers make a shape. Then make a claim of her own and build the test that settles it.'
+    'The practice of science, in her own garden. Brew tea with the sun and watch the color move. Measure the same thing the same way until the numbers make a shape. Then make a claim of her own and build the test that settles it.'
 };
 
 export function m4NewLessonById(id) {

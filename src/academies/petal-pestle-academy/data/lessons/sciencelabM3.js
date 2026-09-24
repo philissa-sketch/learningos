@@ -124,7 +124,7 @@ const L13_LEDGER = {
 // ================================================= LESSON 14 · WHEEL AND AXLE
 const L14_CHECK_IN = {
   title: 'Drag the bag, then wheel it',
-  text: 'Drag a bag of compost two metres across the path. Now put it in the barrow and push it the same way.',
+  text: 'Drag a bag of compost two meters across the path. Now put it in the barrow and push it the same way.',
   question: 'It weighs exactly the same. Why was one so much harder?'
 };
 
@@ -303,7 +303,7 @@ const L16_BEATS = [
     teachingText:
       'A gentle slope is easier to climb and longer to walk. A steep slope is shorter and harder. Every simple machine makes a trade like this, and the ramp is where it is easiest to see.',
     example:
-      'Sliding the pot up two metres of gentle plank is easier than lifting it half a metre straight up, and she travels four times as far doing it.',
+      'Sliding the pot up two meters of gentle plank is easier than lifting it half a meter straight up, and she travels four times as far doing it.',
     applyIt: {
       prompt: 'A longer, gentler ramp to the same height is:',
       choices: ['Harder to push up', 'Easier to push up', 'Exactly the same', 'Impossible'],
@@ -325,10 +325,10 @@ const L16_ACTIVITY = {
   needs: ['a plank or stiff card', 'books to prop it', 'a pot with soil in it', 'string', 'a tape measure'],
   steps: [
     'Prop the plank on one book. Tie string to the pot and pull it up the slope.',
-    'Measure how far the pot travelled along the plank.',
+    'Measure how far the pot traveled along the plank.',
     'Now prop the plank on three books. Pull the pot up again.',
     'Now on six books. Pull again.',
-    'Write down, for each: how steep, how hard it felt, and how far the pot travelled.',
+    'Write down, for each: how steep, how hard it felt, and how far the pot traveled.',
     'Answer this in the notebook: did any ramp let her do less total work, or just less at a time?'
   ],
   safety: 'Prop the plank against something solid so it cannot slide out. Nobody stands below it.',
@@ -395,7 +395,7 @@ const L17_BEATS = [
 
 const L17_ACTIVITY = {
   title: 'Clay, card and a butter knife',
-  prep: 'Modelling clay or firm play dough. NO pruners and NO axe in this lesson, on purpose.',
+  prep: 'Modeling clay or firm play dough. NO pruners and NO axe in this lesson, on purpose.',
   needs: ['a lump of clay', 'a butter knife', 'a plastic ruler', 'a wooden doorstop if there is one'],
   steps: [
     'Press the flat back of the knife into the clay. Note what happens.',
@@ -473,8 +473,8 @@ const L18_ACTIVITY = {
   needs: ['paper', 'a pencil', 'a marker pen', 'a jar with a screw lid', 'her notebook'],
   steps: [
     'A grown-up cuts a long thin triangle of paper, about as long as the pencil.',
-    'Colour the long slanting edge with the marker so it shows up.',
-    'Wind the triangle round the pencil, wide end first, and look at the coloured line.',
+    'Color the long slanting edge with the marker so it shows up.',
+    'Wind the triangle round the pencil, wide end first, and look at the colored line.',
     'Compare it to the thread on the jar lid. Same shape?',
     'Count how many turns it takes to seal the jar.',
     'Now walk the shed and find all six machines. Write each one and what it is.'
@@ -486,7 +486,7 @@ const L18_ACTIVITY = {
 const L18_LEDGER = {
   prompt: 'List all six simple machines and, next to each, one thing in your garden that is that machine.',
   ifSheIsStuck:
-    'She has met all six this fortnight: trowel, barrow wheel, hanging basket, plank, spade, jar lid. One each, in order.'
+    'She has met all six in these two weeks: trowel, barrow wheel, hanging basket, plank, spade, jar lid. One each, in order.'
 };
 
 export const SCIENCELAB_M3 = [

@@ -31,7 +31,7 @@ export const herbs = [
     emoji: '🌼',
     partsUsed: 'Flowers',
     grows: 'Sunny, open ground. Self-seeds easily and often turns up uninvited.',
-    lookFor: 'Small white petals around a domed yellow centre. The centre is hollow if you slice it — that is how it is told apart from look-alike daisies.',
+    lookFor: 'Small white petals around a domed yellow center. The center is hollow if you slice it — that is how it is told apart from look-alike daisies.',
     traditionalUse: 'Has been dried and brewed as a bedtime tea across Europe and North Africa for thousands of years.',
     fact: 'That yellow "button" in the middle is not one flower. It is hundreds of tiny flowers packed together.'
   },
@@ -42,7 +42,7 @@ export const herbs = [
     emoji: '💜',
     partsUsed: 'Flower buds',
     grows: 'Dry, gravelly soil and full sun. Hates wet feet.',
-    lookFor: 'Grey-green narrow leaves and purple flower spikes on square stems.',
+    lookFor: 'Gray-green narrow leaves and purple flower spikes on square stems.',
     traditionalUse: 'Romans added it to bathwater — the name comes from the Latin lavare, "to wash".',
     fact: 'Lavender is in the mint family. Roll a stem between your fingers and you will feel it is square, not round — that square stem is the family signature.'
   },
@@ -54,7 +54,7 @@ export const herbs = [
     partsUsed: 'Leaves',
     grows: 'Damp soil, part shade. Spreads underground and will take over a bed.',
     lookFor: 'Square stems, paired leaves opposite each other, sharp cool smell when crushed.',
-    traditionalUse: 'Brewed as a tea and used as a flavouring in cooking for centuries across many cultures.',
+    traditionalUse: 'Brewed as a tea and used as a flavoring in cooking for centuries across many cultures.',
     fact: 'Peppermint is a natural hybrid — a cross between watermint and spearmint that happened on its own.'
   },
   {
@@ -65,7 +65,7 @@ export const herbs = [
     partsUsed: 'Petals',
     grows: 'Almost anywhere sunny. Flowers from spring until frost.',
     lookFor: 'Bright orange or yellow daisy-like flowers, sticky green stems.',
-    traditionalUse: 'Petals were used to colour butter and cheese, and it was once called "poor man\'s saffron".',
+    traditionalUse: 'Petals were used to color butter and cheese, and it was once called "poor man\'s saffron".',
     fact: 'The flowers open in the morning and close at dusk, which is where the name comes from — calendae, the first day of the Roman month.'
   },
   {
@@ -119,7 +119,7 @@ export const herbs = [
     emoji: '🫚',
     partsUsed: 'Rhizome (underground stem)',
     grows: 'Warm, humid places. Grown in pots in cooler climates.',
-    lookFor: 'Knobbly tan-coloured rhizome; tall reed-like leaves above ground.',
+    lookFor: 'Knobbly tan-colored rhizome; tall reed-like leaves above ground.',
     traditionalUse: 'One of the earliest traded spices, carried along Asian trade routes for well over two thousand years.',
     fact: 'The knobbly part is not a root. It is a rhizome — a stem that grows sideways underground.'
   },
@@ -129,7 +129,7 @@ export const herbs = [
     latin: 'Taraxacum officinale',
     emoji: '🌻',
     partsUsed: 'Leaves, flowers and root',
-    grows: 'Everywhere. Lawns, cracks in pavement, anywhere with a little soil.',
+    grows: 'Everywhere. Lawns, cracks in the sidewalk, anywhere with a little soil.',
     lookFor: 'Jagged leaves in a flat rosette, hollow unbranched stem with milky sap, single yellow flower per stem.',
     traditionalUse: 'Young leaves were eaten as a spring green across Europe, Asia and North America.',
     fact: 'The name comes from the French dent de lion — lion\'s tooth — for the jagged leaf edge.'
@@ -152,7 +152,7 @@ export const herbs = [
     emoji: '🍃',
     partsUsed: 'Leaves',
     grows: 'Full sun, dry well-drained soil.',
-    lookFor: 'Soft grey-green pebbled leaves, square stems, woody base.',
+    lookFor: 'Soft gray-green pebbled leaves, square stems, woody base.',
     traditionalUse: 'A staple of European kitchen gardens and a common seasoning since Roman times.',
     fact: 'The Latin name shares a root with salvere, "to be well" — which tells you what people thought of it, not what it does.'
   },
@@ -185,7 +185,7 @@ export const herbs = [
     emoji: '🕯️',
     partsUsed: 'Leaves and flowers',
     grows: 'Dry waste ground, roadsides, gravel.',
-    lookFor: 'Enormous soft furry grey-green leaves in year one; a tall yellow flower spike in year two.',
+    lookFor: 'Enormous soft furry gray-green leaves in year one; a tall yellow flower spike in year two.',
     traditionalUse: 'The dried stalks were dipped in tallow and burned as torches in Roman times.',
     fact: 'Mullein is biennial: leaves the first year, flower spike the second, then it dies. Two very different-looking plants that are the same plant.'
   },
@@ -251,9 +251,9 @@ export const herbs = [
     emoji: '🟣',
     partsUsed: 'Flowers, leaves and root',
     grows: 'Prairies and open ground in North America. Full sun.',
-    lookFor: 'Drooping pink-purple petals around a raised spiky orange centre.',
+    lookFor: 'Drooping pink-purple petals around a raised spiky orange center.',
     traditionalUse: 'Used by Plains Indigenous nations long before it appeared in European or American writing.',
-    fact: 'Echinos is Greek for hedgehog — for the spiky centre, which really is prickly to touch.'
+    fact: 'Echinos is Greek for hedgehog — for the spiky center, which really is prickly to touch.'
   },
   {
     id: 'oat-straw',
@@ -273,7 +273,7 @@ export const herbs = [
     emoji: '🤍',
     partsUsed: 'Root and leaves',
     grows: 'Damp ground and salt marshes.',
-    lookFor: 'Soft velvety grey-green leaves and pale pink flowers.',
+    lookFor: 'Soft velvety gray-green leaves and pale pink flowers.',
     traditionalUse: 'The root was boiled with sugar in ancient Egypt and again in 19th-century France to make a sweet — the ancestor of the modern marshmallow.',
     fact: 'The sweet is named after the plant, not the other way round. Modern marshmallows contain none of it.'
   },

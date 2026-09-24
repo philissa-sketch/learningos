@@ -322,10 +322,10 @@ const measurementTemplates = [
         prompt: `Grandma wants to measure a small pinch of dried ${herb}. Which unit makes the most sense?`,
         ...choiceSet(r, 'grams', [
           { v: 'kilograms', why: 'A kilogram is about the weight of a big bag of sugar — far too big for a pinch of dried herb.' },
-          { v: 'litres', why: 'Litres measure liquid, like water or oil. Dried herbs are weighed, not poured.' },
-          { v: 'metres', why: 'Metres measure length, like how tall a plant is — not how heavy something is.' }
+          { v: 'liters', why: 'Liters measure liquid, like water or oil. Dried herbs are weighed, not poured.' },
+          { v: 'meters', why: 'Meters measure length, like how tall a plant is — not how heavy something is.' }
         ]),
-        explanation: 'Grams measure small weights. Kilograms are for heavy things, litres for liquids, metres for length.'
+        explanation: 'Grams measure small weights. Kilograms are for heavy things, liters for liquids, meters for length.'
       };
     }
   },
@@ -393,10 +393,10 @@ const measurementTemplates = [
       const jars = int(r, 3, 6);
       const total = mlPerJar * jars;
       return {
-        prompt: `Grandma pours ${mlPerJar} mL of elderberry syrup into each of ${jars} bottles. How many LITRES of syrup is that in total?`,
+        prompt: `Grandma pours ${mlPerJar} mL of elderberry syrup into each of ${jars} bottles. How many LITERS of syrup is that in total?`,
         ...choiceSet(r, `${(total / 1000).toFixed(3).replace(/0+$/, '').replace(/\.$/, '')} L`, [
-          { v: `${total} L`, why: 'Those are millilitres, not litres. Divide by 1,000 at the end to turn mL into L.' },
-          { v: `${(total / 100).toFixed(2)} L`, why: 'That divides by 100. There are 1,000 millilitres in a litre.' },
+          { v: `${total} L`, why: 'Those are milliliters, not liters. Divide by 1,000 at the end to turn mL into L.' },
+          { v: `${(total / 100).toFixed(2)} L`, why: 'That divides by 100. There are 1,000 milliliters in a liter.' },
           { v: `${(mlPerJar / 1000).toFixed(3)} L`, why: 'That is only one bottle. Multiply by the number of bottles first, then convert.' }
         ]),
         explanation: `${mlPerJar} × ${jars} = ${total} mL, and ${total} ÷ 1000 = ${total / 1000} L.`

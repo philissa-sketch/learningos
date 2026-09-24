@@ -46,7 +46,7 @@ export const scienceItems = [
     choiceFeedback: [
       'Flowers make seeds and attract insects. Something further down does the drinking.',
       null,
-      'Leaves catch sunlight and let out water vapour. Water gets IN somewhere else.',
+      'Leaves catch sunlight and let out water vapor. Water gets IN somewhere else.',
       'Seeds are how a plant makes new plants.'
     ],
     explanation: 'Roots hold the plant steady and pull water and minerals up out of the soil.'
@@ -62,7 +62,7 @@ export const scienceItems = [
     choiceFeedback: [
       null,
       'Water alone is not enough. A plant in a dark cupboard with plenty of water still will not thrive.',
-      'Most plants grow towards light, not away from it.',
+      'Most plants grow toward light, not away from it.',
       'Plants make their own food from sunlight — they do not eat animals. (A few unusual ones catch insects, but that is extra, not their main food.)'
     ],
     explanation: 'Plants use sunlight, water and air (carbon dioxide) to make their own food.'
@@ -75,18 +75,18 @@ export const scienceItems = [
     prompt: 'Grandma dries her herbs before storing them. Why does drying help herbs last longer?',
     choices: [
       'It makes them taste sweeter',
-      'It removes water, so mould finds it harder to grow',
+      'It removes water, so mold finds it harder to grow',
       'It makes them heavier',
       'It turns them into seeds'
     ],
     answer: 1,
     choiceFeedback: [
-      'Drying concentrates flavour, but that is not what stops them spoiling.',
+      'Drying concentrates flavor, but that is not what stops them spoiling.',
       null,
       'Drying makes herbs LIGHTER, because the water leaves.',
       'Drying does not turn a leaf into a seed — those are different parts of the plant.'
     ],
-    explanation: 'Mould and bacteria need moisture. Take the water out and they have a much harder time.'
+    explanation: 'Mold and bacteria need moisture. Take the water out and they have a much harder time.'
   },
   {
     id: 'pl-04',
@@ -119,14 +119,14 @@ export const scienceItems = [
       'grow taller',
       'make seeds so new plants can grow',
       'take in more water',
-      'change colour'
+      'change color'
     ],
     answer: 1,
     choiceFeedback: [
       'Height comes from growth, not from pollen.',
       null,
       'Water comes in through the roots, and pollen has nothing to do with it.',
-      'Flower colour attracts the bee in the first place — it is the cause, not the result.'
+      'Flower color attracts the bee in the first place — it is the cause, not the result.'
     ],
     explanation: 'Pollination lets a flower make seeds. No pollination, no seeds, no next generation.'
   },
@@ -233,7 +233,7 @@ export const scienceItems = [
       'Species do not change as plants are moved. What changes is how the plant grows.',
       'Possible in principle, but the question asks about the PLANT, and there is a well-established biological answer.'
     ],
-    explanation: 'Growing conditions shape a plant\'s chemistry — which is exactly why standardising a plant-based product is difficult.'
+    explanation: 'Growing conditions shape a plant\'s chemistry — which is exactly why standardizing a plant-based product is difficult.'
   },
 
   // =========================================================================

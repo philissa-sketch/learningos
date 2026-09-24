@@ -835,7 +835,7 @@ const M3L5_LEDGER = {
 
 const M3L6_CHECK_IN = {
   title: 'Three out of four',
-  text: 'Look at a plate of food. Take away everything a bee helped grow. Most of the colour goes with it.',
+  text: 'Look at a plate of food. Take away everything a bee helped grow. Most of the color goes with it.',
   question: 'What would still be left on that plate?'
 };
 
@@ -863,14 +863,14 @@ const M3L6_BEATS = [
       prompt: 'A squash plant flowered all summer but grew no squash. What is the likely reason?',
       choices: [
         'No pollinator came to the flowers',
-        'The flowers were the wrong colour',
+        'The flowers were the wrong color',
         'It got too much water',
         'Squash grows from leaves, not flowers'
       ],
       answer: 0,
       feedback: [
         null,
-        'Colour brings pollinators in. It does not make the seed.',
+        'Color brings pollinators in. It does not make the seed.',
         'Too much water hurts the whole plant. These flowered fine.',
         'The squash grows from the flower once pollen has moved.'
       ],
@@ -907,7 +907,7 @@ const M3L6_ACTIVITY = {
     'a timer',
     'a clipboard and a tally sheet',
     'a printed pollinator count from a real survey',
-    'coloured pencils',
+    'colored pencils',
     'your food web sheet from Lesson 16',
     'a sunny still day, mid-morning'
   ],
@@ -921,8 +921,8 @@ const M3L6_ACTIVITY = {
     'Find one thing that is the same in both. Say it out loud.',
     'Find one thing that is different. Say why it might be.',
     'Get out your food web from Lesson 16.',
-    'In one colour, cross out every arrow that stops if pollinators go scarce.',
-    'In a darker colour, cross out what stops if they go extinct.',
+    'In one color, cross out every arrow that stops if pollinators go scarce.',
+    'In a darker color, cross out what stops if they go extinct.',
     'Count the arrows left. That number is your answer.'
   ],
   safety:
@@ -1104,7 +1104,7 @@ export const HERBALISM_M3 = [
       { word: 'decompose', plain: 'To break down into smaller and smaller bits.' },
       { word: 'nutrients', plain: 'The bits of food in the soil that roots pull up.' },
       { word: 'bacteria', plain: 'Living things far too small to see. Most of the work is theirs.' },
-      { word: 'fungi', plain: 'Moulds and mushrooms. They break dead stuff down too.' },
+      { word: 'fungi', plain: 'Molds and mushrooms. They break dead stuff down too.' },
       { word: 'browns', plain: 'Dry dead stuff. Leaves, card, straw. They let air in.' },
       { word: 'greens', plain: 'Wet fresh scraps. Peel, ends, tea leaves. They are the food.' }
     ],
@@ -1591,7 +1591,7 @@ export const HERBALISM_M3 = [
     hook: M3L6_CHECK_IN,
     core: M3L6_BEATS.map((b) => ({ heading: b.label, text: b.teachingText })),
     doing:
-      'Sit a step away from one flowering plant with a clipboard and set a timer for ten minutes. Mark every visitor that lands — bee, fly, wasp, butterfly, beetle — without trying to name the species. Add up the rows, then put a printed pollinator count from a real survey on the table beside your own and find one thing that matches and one thing that does not. Then get the food web out from Lesson 16 and cross out, in one colour, every arrow that stops if pollinators go scarce, and in a darker colour every arrow that stops if they go extinct. Count what is left.',
+      'Sit a step away from one flowering plant with a clipboard and set a timer for ten minutes. Mark every visitor that lands — bee, fly, wasp, butterfly, beetle — without trying to name the species. Add up the rows, then put a printed pollinator count from a real survey on the table beside your own and find one thing that matches and one thing that does not. Then get the food web out from Lesson 16 and cross out, in one color, every arrow that stops if pollinators go scarce, and in a darker color every arrow that stops if they go extinct. Count what is left.',
 
     practice: [
       {

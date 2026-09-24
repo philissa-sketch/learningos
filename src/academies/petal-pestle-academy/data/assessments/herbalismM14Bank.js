@@ -103,7 +103,7 @@ export const HERBALISM_M14_BANK = [
   {
     id: 't-hbm1401c',
     lesson: 'hb-m14-01',
-    prompt: 'A neighbour says a buried fish grew her huge tomatoes. She measured nothing. What have you got?',
+    prompt: 'A neighbor says a buried fish grew her huge tomatoes. She measured nothing. What have you got?',
     choices: [
       'Nothing useful, so the sensible thing is to ignore her',
       'A story worth testing, and nothing more than that',
@@ -131,7 +131,7 @@ export const HERBALISM_M14_BANK = [
     ],
     answer: 3,
     feedback: [
-      'Picking the longest is choosing your favourites, and it spoils the count.',
+      'Picking the longest is choosing your favorites, and it spoils the count.',
       'Measuring a plant does not change how that plant grows.',
       'A test that can only agree with you is not a test.',
       null
@@ -460,11 +460,11 @@ export const HERBALISM_M14_BANK = [
   {
     id: 't-hbm1403b',
     lesson: 'hb-m14-03',
-    prompt: 'Your mulched pots grew four centimetres. Nothing was left bare to compare them with. What can you say?',
+    prompt: 'Your mulched pots grew four centimeters. Nothing was left bare to compare them with. What can you say?',
     choices: [
-      'That mulch grows four centimetres of garlic a fortnight',
+      'That mulch grows four centimeters of garlic every two weeks',
       'That mulch works, but only a little',
-      'That the test needs one more fortnight to finish',
+      'That the test needs two more weeks to finish',
       'Nothing yet, because you do not know what bare pots did'
     ],
     answer: 3,
@@ -479,7 +479,7 @@ export const HERBALISM_M14_BANK = [
   {
     id: 't-hbm1403c',
     lesson: 'hb-m14-03',
-    prompt: 'The mulched pots and the bare pots both grew four centimetres. What is the honest conclusion?',
+    prompt: 'The mulched pots and the bare pots both grew four centimeters. What is the honest conclusion?',
     choices: [
       'The garlic grew for reasons that had nothing to do with mulch',
       'The mulch somehow worked on both groups',
@@ -661,7 +661,7 @@ export const HERBALISM_M14_BANK = [
     choices: [
       'The person doing the measuring, and nobody else',
       'Everybody except the person being tested',
-      'Nobody, because the groups are labelled clearly',
+      'Nobody, because the groups are labeled clearly',
       'The person being tested'
     ],
     answer: 3,
@@ -811,14 +811,14 @@ export const HERBALISM_M14_BANK = [
     choices: [
       'The net weight, because it is what you actually get',
       'The picture on the front of the box',
-      'The colour of the packaging',
+      'The color of the packaging',
       'The shelf the box was sitting on'
     ],
     answer: 0,
     feedback: [
       null,
       'The picture was drawn by somebody paid to make it appealing.',
-      'Colour is a design choice, not a measurement of anything.',
+      'Color is a design choice, not a measurement of anything.',
       'Shelf position is a shop decision and says nothing about the contents.'
     ],
     why: 'Net weight is how much is inside, not counting the packet, and anybody can check it.'

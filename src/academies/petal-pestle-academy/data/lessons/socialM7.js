@@ -82,7 +82,7 @@ export const SOCIAL_M7 = [
         label: 'And the water tells you where you are',
         hook: 'The Continental Divide decides which ocean a raindrop reaches.',
         teachingText:
-          'West of the divide, water runs to the Pacific. East of it, water runs towards the Mississippi and the Gulf of Mexico. The Great Lakes hold fresh water in the north.',
+          'West of the divide, water runs to the Pacific. East of it, water runs toward the Mississippi and the Gulf of Mexico. The Great Lakes hold fresh water in the north.',
         example:
           'The Mississippi drains a basin covering much of the country. That is why New Orleans mattered so much.',
         applyIt: {
@@ -90,14 +90,14 @@ export const SOCIAL_M7 = [
           choices: ['Freeze', 'Flow', 'Flood', 'Dry'],
           answer: 1,
           feedback: ['Not what it does.', null, 'Not what it does.', 'Not what it does.'],
-          why: 'One side goes to the Pacific, the other towards the Gulf.'
+          why: 'One side goes to the Pacific, the other toward the Gulf.'
         }
       }
     ],
     activity: {
       title: 'Six features, one map',
       prep: 'Nothing to buy. A blank map or a hand-drawn outline.',
-      needs: ['a blank map of the United States, or paper', 'coloured pencils', 'her notebook'],
+      needs: ['a blank map of the United States, or paper', 'colored pencils', 'her notebook'],
       steps: [
         'Draw or print an outline of the country.',
         'Mark and label the Atlantic Coastal Plain along the east.',
@@ -111,7 +111,7 @@ export const SOCIAL_M7 = [
     },
     ledger: {
       prompt:
-        'Name the six features you labelled. End with the one you had to look up twice.',
+        'Name the six features you labeled. End with the one you had to look up twice.',
       ifSheIsStuck:
         'Ask her to trace the Mississippi with one finger and say where it ends. That is the Gulf.'
     },
@@ -127,14 +127,14 @@ export const SOCIAL_M7 = [
       },
       {
         heading: 'And the water tells you where you are',
-        text: 'West of the divide, water runs to the Pacific. East of it, water runs towards the Mississippi and the Gulf of Mexico.'
+        text: 'West of the divide, water runs to the Pacific. East of it, water runs toward the Mississippi and the Gulf of Mexico.'
       }
     ],
     doing:
       'Draw an outline of the country. Label the Atlantic Coastal Plain, shade the Great Plains, draw the Continental Divide, the Mississippi, the Gulf and the Great Lakes.',
     practice: [
       { ask: 'What are the Great Plains?', answer: 'Wide flat grassland in the middle of the country.', why: 'The bison herds lived on them.' },
-      { ask: 'What does the Continental Divide do?', answer: 'It decides which way rivers flow.', why: 'One side to the Pacific, the other towards the Gulf.' }
+      { ask: 'What does the Continental Divide do?', answer: 'It decides which way rivers flow.', why: 'One side to the Pacific, the other toward the Gulf.' }
     ],
     check: [
       { prompt: 'The Great Plains are best described as wide:', choices: ['Forests', 'Flat grassland', 'Mountains', 'Swamps'], answer: 1, feedback: ['Not forest.', null, 'Those are the Rockies.', 'Not swamp.'] },
@@ -218,7 +218,7 @@ export const SOCIAL_M7 = [
     activity: {
       title: 'Add the built things to your map',
       prep: 'Nothing to buy. The map from last lesson.',
-      needs: ['her map from lesson 25', 'coloured pencils', 'her notebook'],
+      needs: ['her map from lesson 25', 'colored pencils', 'her notebook'],
       steps: [
         'Take out your map from last lesson.',
         'Mark New York, Boston, Philadelphia and Washington D.C.',
@@ -464,7 +464,7 @@ export const SOCIAL_M7 = [
       prompt:
         'Write what opportunity cost means. Then write yours from this afternoon, and why it was hard.',
       ifSheIsStuck:
-        'Ask her what she nearly chose instead. That is the answer, and it is always the second favourite.'
+        'Ask her what she nearly chose instead. That is the answer, and it is always the second favorite.'
     },
     hook: {
       title: 'You can have one',

@@ -239,7 +239,7 @@ const L3_BEATS = [
 const L3_ACTIVITY = {
   title: 'Map the route',
   prep: 'A large sheet of paper.',
-  needs: ['a large sheet of paper', 'coloured pencils', 'her notebook'],
+  needs: ['a large sheet of paper', 'colored pencils', 'her notebook'],
   steps: [
     'Draw a big outline of a person on the paper.',
     'Mark the brain. Draw a line down the back for the spinal cord.',

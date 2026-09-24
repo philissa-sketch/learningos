@@ -69,7 +69,7 @@ const L1_BEATS = [
     label: 'And they hide the soft parts behind them',
     hook: 'Your ribs are a cage, and your skull is a helmet you were born in.',
     teachingText:
-      'Some bones are shields. Your skull is a hard box round your brain. Your ribs curve round your heart and lungs. The frame is armour as well.',
+      'Some bones are shields. Your skull is a hard box round your brain. Your ribs curve round your heart and lungs. The frame is armor as well.',
     example:
       'Tap your knuckle very gently on your head. The hard part is a bone, right over your brain.',
     applyIt: {
@@ -88,11 +88,11 @@ const L1_BEATS = [
 
 const L1_ACTIVITY = {
   title: 'How tall, and how wide — in two units',
-  prep: 'A tape measure with centimetres AND inches. A doorframe and a pencil.',
+  prep: 'A tape measure with centimeters AND inches. A doorframe and a pencil.',
   needs: ['a tape measure with both units', 'a pencil', 'her notebook', 'a grown-up'],
   steps: [
     'Stand against the doorframe. Have a grown-up mark your height.',
-    'Measure the mark in CENTIMETRES. Write it down.',
+    'Measure the mark in CENTIMETERS. Write it down.',
     'Measure the same mark in INCHES. Write that down too.',
     'Now stretch both arms out wide. Measure fingertip to fingertip, both units.',
     'Put the four numbers in a table. Is your arm span close to your height?'
@@ -105,7 +105,7 @@ const L1_ACTIVITY = {
 const L1_LEDGER = {
   prompt: 'Write your height in both units. Then write which number is bigger, and why.',
   ifSheIsStuck:
-    'Ask her which is longer, one centimetre or one inch. The smaller the unit, the more of them it takes — that is the whole idea, and she just proved it on herself.'
+    'Ask her which is longer, one centimeter or one inch. The smaller the unit, the more of them it takes — that is the whole idea, and she just proved it on herself.'
 };
 
 // =========================================================== LESSON 2
@@ -366,7 +366,7 @@ export const HUMANBODY_M3 = [
     core: L1_BEATS.map((b) => ({ heading: b.label, text: b.teachingText })),
     doing: L1_ACTIVITY.steps.join(' '),
     practice: [
-      { ask: 'Two jobs bones do.', answer: 'Hold you up, and protect soft parts.', why: 'Frame and armour at once.' },
+      { ask: 'Two jobs bones do.', answer: 'Hold you up, and protect soft parts.', why: 'Frame and armor at once.' },
       { ask: 'Which bones guard your brain?', answer: 'Your skull.', why: 'A hard box you were born wearing.' }
     ],
     check: [
@@ -383,7 +383,7 @@ export const HUMANBODY_M3 = [
         feedback: ['They cover more than that.', null, 'That is your skull.', 'Nowhere near.']
       },
       {
-        prompt: 'One centimetre compared with one inch is:',
+        prompt: 'One centimeter compared with one inch is:',
         choices: ['Longer', 'Shorter', 'The same', 'It depends'],
         answer: 1,
         feedback: ['The other way round.', null, 'They are different.', 'It never changes.']

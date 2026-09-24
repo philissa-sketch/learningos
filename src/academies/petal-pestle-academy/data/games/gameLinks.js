@@ -270,7 +270,7 @@ export const GAME_LINKS = [
   {
     id: 'cyberchase-all',
     label: 'All the Cyberchase games',
-    blurb: 'Sixteen of them. Space, railways, bats, rubbish collection.',
+    blurb: 'Sixteen of them. Space, railways, bats, trash collection.',
     url: 'https://pbskids.org/cyberchase/all-games',
     strands: [],
     kind: 'game',

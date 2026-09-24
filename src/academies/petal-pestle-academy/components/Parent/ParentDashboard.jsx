@@ -197,13 +197,13 @@ function OnePageReport({ rows, name, accuracy, answered, settled, total, readAlo
               <>
                 {readAloud.elaCount} of those were in Reading &amp; Writing strands, where hearing
                 the question may change what was measured — treat those levels as partly{' '}
-                <span className="font-700">listening</span> estimates. On maths strands it is good
+                <span className="font-700">listening</span> estimates. On math strands it is good
                 news: it removes a reading load that was never part of the point.
               </>
             ) : (
               <>
                 None were in a Reading &amp; Writing strand, so every level here still means what it
-                says — and hearing a maths question removes reading from a strand that was never
+                says — and hearing a math question removes reading from a strand that was never
                 meant to test it.
               </>
             )}
@@ -228,14 +228,14 @@ function OnePageReport({ rows, name, accuracy, answered, settled, total, readAlo
           <p className="mt-2 text-ink-500">
             Which side a strand sits on is taken from its subject — every Reading &amp; Writing
             strand is treated as one where hearing the question matters. Whether that is right for
-            Grammar and Writing is a judgement, not a measurement, and the counts are here so it can
+            Grammar and Writing is a judgment, not a measurement, and the counts are here so it can
             be made rather than assumed.
           </p>
         </div>
       )}
 
       <p className="mt-3 text-[0.65rem] leading-relaxed text-ink-500">
-        Levels are grade-equivalent estimates from an adaptive staircase, not standardised test
+        Levels are grade-equivalent estimates from an adaptive staircase, not standardized test
         scores. A strand marked “Rough estimate” has had fewer than four questions and should be
         treated as a starting guess. Levels are expected to move.
       </p>

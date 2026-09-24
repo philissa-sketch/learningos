@@ -552,7 +552,7 @@ Later that night, the shadow moved on. The moon was white again.`,
 
 Near the moon, their spacecraft split into two parts. Neil and Buzz rode the small part down to the ground. It was called the Eagle.
 
-Neil stepped out first. Buzz came out next. They walked on the grey dust. They put up a flag and picked up rocks to bring home.
+Neil stepped out first. Buzz came out next. They walked on the gray dust. They put up a flag and picked up rocks to bring home.
 
 Michael did not walk on the moon. He stayed in the big part and flew around and around the moon, alone. His job was just as important. Without him, the others had no ride home.
 
@@ -565,7 +565,7 @@ After about a day, the Eagle flew back up. The three men were together again. Th
           choices: [
             'How to put up a flag',
             'Three men who flew to the moon, and the job each one did',
-            'Why the moon is grey',
+            'Why the moon is gray',
             'How eagles fly'
           ],
           answer: 1,

@@ -67,7 +67,7 @@ const L25_BEATS = [
     teachingText:
       'Sprinkle something light on a surface that is about to vibrate and the grains jump. They are being thrown about by a shaking she cannot see on its own.',
     example:
-      'Stretch cling film over a bowl, sprinkle a few grains of salt on it, and bang a tray beside it. The salt hops without anything touching it.',
+      'Stretch plastic wrap over a bowl, sprinkle a few grains of salt on it, and bang a tray beside it. The salt hops without anything touching it.',
     applyIt: {
       prompt: 'The salt grains hop when she bangs a tray nearby. That is because:',
       choices: ['The salt heard the noise', 'Her breath blew them upward', 'The film under them was vibrating', 'Salt is very light'],
@@ -80,12 +80,12 @@ const L25_BEATS = [
 
 const L25_ACTIVITY = {
   title: 'Four ways to see a sound',
-  prep: 'Nothing to buy. Cling film, a bowl, salt and a rubber band will do all four.',
-  needs: ['a bowl', 'cling film', 'a few grains of salt or dry rice', 'a metal tray', 'a rubber band', 'her notebook'],
+  prep: 'Nothing to buy. Plastic wrap, a bowl, salt and a rubber band will do all four.',
+  needs: ['a bowl', 'plastic wrap', 'a few grains of salt or dry rice', 'a metal tray', 'a rubber band', 'her notebook'],
   steps: [
     'Fingers on your throat. Hum, stop, hum. Write down what you felt.',
     'Stretch a rubber band between two fingers and pluck it. Watch it blur.',
-    'Stretch cling film tightly over the bowl and sprinkle a few salt grains on top.',
+    'Stretch plastic wrap tightly over the bowl and sprinkle a few salt grains on top.',
     'Bang the metal tray close to the bowl, without touching it. Watch the salt.',
     'Now bang it further away. Do the grains still jump?',
     'Write one sentence that is true of all four things you just did.'
@@ -144,7 +144,7 @@ const L26_BEATS = [
 const L26_ACTIVITY = {
   title: 'The loudness ladder',
   prep: 'One rubber band, one pot, and somewhere with room to walk away.',
-  needs: ['a rubber band', 'an open pot or tin', 'salt and cling film from Lesson 25', 'a tape measure', 'her notebook'],
+  needs: ['a rubber band', 'an open pot or can', 'salt and plastic wrap from Lesson 25', 'a tape measure', 'her notebook'],
   steps: [
     'Stretch the band over the pot. Pluck it as gently as you can and write down what you heard.',
     'Pluck it a bit harder. Then harder again. Give each one a number from 1 to 5 for loudness.',
@@ -207,8 +207,8 @@ const L27_BEATS = [
 
 const L27_ACTIVITY = {
   title: 'A greenhouse instrument, tuned',
-  prep: 'Collect rubber bands of several thicknesses. An open box or tin is the body.',
-  needs: ['rubber bands of different thicknesses', 'an open box or tin', 'a row of jars', 'water', 'her notebook'],
+  prep: 'Collect rubber bands of several thicknesses. An open box or can is the body.',
+  needs: ['rubber bands of different thicknesses', 'an open box or can', 'a row of jars', 'water', 'her notebook'],
   steps: [
     'Stretch three bands of different thicknesses over the box. Pluck each one gently.',
     'Write them in order from lowest note to highest. Which was thickest?',
@@ -334,8 +334,8 @@ const L29_BEATS = [
 
 const L29_ACTIVITY = {
   title: 'Build a greenhouse guitar, then spoil it on purpose',
-  prep: 'An open cardboard box or an empty tin. Bands of a few thicknesses.',
-  needs: ['an open box or empty tin', 'three rubber bands', 'an old cloth or scarf', 'her notebook'],
+  prep: 'An open cardboard box or an empty can. Bands of a few thicknesses.',
+  needs: ['an open box or empty can', 'three rubber bands', 'an old cloth or scarf', 'her notebook'],
   steps: [
     'Pluck each band stretched between your fingers. Score the loudness 1 to 5.',
     'Stretch the same bands over the open box. Pluck each one the same way and score again.',
@@ -381,16 +381,16 @@ const L30_BEATS = [
   {
     n: 2,
     label: 'A code turns a signal into a message',
-    hook: 'A torch can only be on or off, and that is enough to say anything at all.',
+    hook: 'A flashlight can only be on or off, and that is enough to say anything at all.',
     teachingText:
       'A signal is any change somebody at the other end can notice. Agree beforehand what each signal means and it becomes a message: one flash for yes, two for no, three for come here. That agreement is the whole invention.',
     example:
-      'One flash means the kettle is on. Nothing about the torch knows that. The two of them agreed it before she walked down the garden.',
+      'One flash means the kettle is on. Nothing about the flashlight knows that. The two of them agreed it before she walked down the garden.',
     applyIt: {
-      prompt: 'What turns a flashing torch into a message rather than just a light?',
-      choices: ['How bright the beam is', 'How far the beam reaches', 'An agreement about what each flash means', 'The colour of the beam'],
+      prompt: 'What turns a flashing flashlight into a message rather than just a light?',
+      choices: ['How bright the beam is', 'How far the beam reaches', 'An agreement about what each flash means', 'The color of the beam'],
       answer: 2,
-      feedback: ['Brightness helps her see it, not understand it.', 'Distance is not meaning.', null, 'Colour could carry a code, but only if agreed first.'],
+      feedback: ['Brightness helps her see it, not understand it.', 'Distance is not meaning.', null, 'Color could carry a code, but only if agreed first.'],
       why: 'A code is an agreement. Without one, a flash is only a flash.'
     }
   }
@@ -398,24 +398,24 @@ const L30_BEATS = [
 
 const L30_ACTIVITY = {
   title: 'Build both, then send a real message',
-  prep: 'Two paper cups, a long piece of string, and a torch. Agree the code BEFORE anybody walks off.',
-  needs: ['two paper or plastic cups', 'about ten metres of string', 'a pencil to make the holes', 'a torch', 'her notebook'],
+  prep: 'Two paper cups, a long piece of string, and a flashlight. Agree the code BEFORE anybody walks off.',
+  needs: ['two paper or plastic cups', 'about ten meters of string', 'a pencil to make the holes', 'a flashlight', 'her notebook'],
   steps: [
     'A grown-up makes one small hole in the bottom of each cup.',
     'Thread the string through and knot it inside so it cannot pull out.',
     'Walk apart until the string is tight and off the ground. Whisper into one cup.',
     'Now let the string sag and whisper again. Write down the difference.',
     'Let the string touch a post while it is tight. What happens?',
-    'Now the torch: agree a code of three signals and write it in the notebook FIRST.',
+    'Now the flashlight: agree a code of three signals and write it in the notebook FIRST.',
     'Walk to the far end of the garden and send one of the three.',
     'Compare what you sent with what they wrote down.'
   ],
-  safety: 'String, never wire. Nothing is put round a neck or a wrist. Do not shine the torch into anybody’s eyes, and never at the sun.',
+  safety: 'String, never wire. Nothing is put round a neck or a wrist. Do not shine the flashlight into anybody’s eyes, and never at the sun.',
   minutes: 16
 };
 
 const L30_LEDGER = {
-  prompt: 'Draw your string telephone and write your torch code. Then say which one worked better, and why.',
+  prompt: 'Draw your string telephone and write your flashlight code. Then say which one worked better, and why.',
   ifSheIsStuck: 'Ask which one still worked when they could not see each other, and which one still worked when it was noisy. They are good at different things.'
 };
 
@@ -449,7 +449,7 @@ export const SCIENCELAB_M5 = [
     ],
     check: [
       { prompt: 'She stops the ringing rubber band with one finger. The sound then:', choices: ['Carries on a while', 'Stops at the same moment', 'Gets higher', 'Gets louder'], answer: 1, feedback: ['The shaking stopped, so the sound stopped.', null, 'Stopping it does not change the note.', 'Stopping it adds nothing.'] },
-      { prompt: 'Salt grains hop on cling film when a tray is banged nearby because the film:', choices: ['Heard the noise', 'Was blown by her breath', 'Was vibrating underneath them', 'Is very slippery'], answer: 2, feedback: ['Film has no ears.', 'Nobody blew on it.', null, 'Slippery would not throw them upward.'] },
+      { prompt: 'Salt grains hop on plastic wrap when a tray is banged nearby because the film:', choices: ['Heard the noise', 'Was blown by her breath', 'Was vibrating underneath them', 'Is very slippery'], answer: 2, feedback: ['Film has no ears.', 'Nobody blew on it.', null, 'Slippery would not throw them upward.'] },
       { prompt: 'Which of these is true of every single sound she has ever heard?', choices: ['Something was shaking', 'Something was hot', 'Something was moving across the ground', 'Something was bright'], answer: 0, feedback: [null, 'A cold bell rings perfectly well.', 'A humming throat goes nowhere.', 'Sound happens in the dark too.'] }
     ]
   },
@@ -549,7 +549,7 @@ export const SCIENCELAB_M5 = [
     check: [
       { prompt: 'Sound travels best through which of these?', choices: ['Empty space', 'Air', 'Something solid like wood', 'Nothing carries it'], answer: 2, feedback: ['There is nothing to pass it along.', 'Air works, but not as well.', null, 'Air, water and wood all carry it.'] },
       { prompt: 'Two astronauts float side by side in space and shout. They hear:', choices: ['Each other clearly', 'A faint echo', 'Nothing at all', 'Only the high notes'], answer: 2, feedback: ['Nothing between them carries it.', 'An echo needs a road too.', null, 'No note gets through at all.'] },
-      { prompt: 'Her ear on the bench hears the far-end scratching clearly because wood is:', choices: ['Packed tightly together', 'Warmer than the air', 'Heavier than the air', 'A much better colour'], answer: 0, feedback: [null, 'Warmth is not the reason.', 'Weight is not the reason.', 'Colour carries nothing.'] }
+      { prompt: 'Her ear on the bench hears the far-end scratching clearly because wood is:', choices: ['Packed tightly together', 'Warmer than the air', 'Heavier than the air', 'A much better color'], answer: 0, feedback: [null, 'Warmth is not the reason.', 'Weight is not the reason.', 'Color carries nothing.'] }
     ]
   },
   {
@@ -614,7 +614,7 @@ export const SCIENCELAB_M5 = [
     ],
     check: [
       { prompt: 'The string telephone stops working when the string goes slack because a loose string:', choices: ['Is too short to reach', 'Cannot pass the shaking along', 'Weighs far too much', 'Blocks out the light'], answer: 1, feedback: ['It is the same length either way.', null, 'Its weight has not changed.', 'Light is not carrying this message.'] },
-      { prompt: 'What turns a flashing torch into a message rather than just a light?', choices: ['How bright the beam is', 'How far the beam reaches', 'An agreement about what each flash means', 'The colour of the beam'], answer: 2, feedback: ['Brightness helps her see it, not understand it.', 'Distance is not meaning.', null, 'Colour could carry a code, but only if agreed first.'] },
+      { prompt: 'What turns a flashing flashlight into a message rather than just a light?', choices: ['How bright the beam is', 'How far the beam reaches', 'An agreement about what each flash means', 'The color of the beam'], answer: 2, feedback: ['Brightness helps her see it, not understand it.', 'Distance is not meaning.', null, 'Color could carry a code, but only if agreed first.'] },
       { prompt: 'Her string telephone would work worst if the tight string were:', choices: ['Made a little bit longer', 'Held higher off the ground', 'Resting against a fence post', 'Made of thin cotton thread'], answer: 2, feedback: ['Length matters less than she expects.', 'Off the ground is better, not worse.', null, 'Thin cotton works well when it is tight.'] }
     ]
   }

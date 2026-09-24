@@ -87,11 +87,11 @@ const L1_BEATS = [
 
 const L1_ACTIVITY = {
   title: 'Fist-sized, and where they sit',
-  prep: 'Paper, a pencil, and a ruler with centimetres.',
+  prep: 'Paper, a pencil, and a ruler with centimeters.',
   needs: ['paper', 'a pencil', 'a ruler', 'her notebook'],
   steps: [
     'Put your closed fist on the paper and draw round it.',
-    'Measure the drawing across at its widest and write that in centimetres.',
+    'Measure the drawing across at its widest and write that in centimeters.',
     'Measure it top to bottom and write that number down too.',
     'Draw a simple back view of a person and mark where the two kidneys sit.',
     'Write one sentence saying what surprised you about where they are.'
@@ -125,10 +125,10 @@ const L2_BEATS = [
       'A tea strainer keeps the leaves and lets the tea through. The holes decide, not the strainer.',
     applyIt: {
       prompt: 'What decides what gets through a filter?',
-      choices: ['Its colour', 'The size of its holes', 'How heavy it is', 'How old it is'],
+      choices: ['Its color', 'The size of its holes', 'How heavy it is', 'How old it is'],
       answer: 1,
       feedback: [
-        'Colour makes no difference.',
+        'Color makes no difference.',
         null,
         'Weight makes no difference.',
         'Age makes no difference.'
@@ -164,7 +164,7 @@ const L2_ACTIVITY = {
   steps: [
     'Turn the top half of the bottle upside down and line it with the cloth.',
     'Add a layer of sand, then a layer of gravel on top.',
-    'Measure 300 millilitres of water, stir in a spoon of soil, and write the amount down.',
+    'Measure 300 milliliters of water, stir in a spoon of soil, and write the amount down.',
     'Pour it slowly through the filter and wait until it stops dripping.',
     'Measure what came through, write it down, and work out how much stayed behind.'
   ],
@@ -234,9 +234,9 @@ const L3_ACTIVITY = {
   prep: 'A balloon, a measuring jug, water, and a sink or tray.',
   needs: ['a balloon', 'a measuring jug', 'water', 'a tape measure', 'her notebook'],
   steps: [
-    'Pour 100 millilitres of water into the balloon and hold the neck shut.',
+    'Pour 100 milliliters of water into the balloon and hold the neck shut.',
     'Measure round the balloon at its widest and write that number down.',
-    'Add another 100 millilitres and measure round it again.',
+    'Add another 100 milliliters and measure round it again.',
     'Do that once more, so you have three volumes and three measurements.',
     'Write one sentence about what happened to the size each time you added water.'
   ],
@@ -248,7 +248,7 @@ const L3_ACTIVITY = {
 const L3_LEDGER = {
   prompt: 'Write down your three volumes and the measurement that went with each one.',
   ifSheIsStuck:
-    'Three pairs of numbers, each with its unit — millilitres for the water, centimetres for the tape. The pattern between them is the finding.'
+    'Three pairs of numbers, each with its unit — milliliters for the water, centimeters for the tape. The pattern between them is the finding.'
 };
 
 // =========================================================== LESSON 4
@@ -286,7 +286,7 @@ const L4_BEATS = [
     teachingText:
       'Water needs warmth to turn into air, and it takes that warmth from your skin. So you cool down while the sweat dries, not while it is wet.',
     example:
-      'Stepping out of a bath in a draught feels cold. Wrapping up in a towel stops it, because you stopped the drying.',
+      'Stepping out of a bath in a draft feels cold. Wrapping up in a towel stops it, because you stopped the drying.',
     applyIt: {
       prompt: 'You cool down when the sweat:',
       choices: ['First appears', 'Dries off into the air', 'Is wiped away at once', 'Runs downwards'],
@@ -339,7 +339,7 @@ export const HUMANBODY_M11 = [
     spec: '§10 · beats',
     concept: 'Two bean-shaped kidneys the size of your fists sit either side of your spine, and their job is cleaning the blood.',
     standards: [],
-    offGrade: 'Measuring a drawn outline in centimetres. Her Check-In scored 2.00 on measurement, at the test floor.',
+    offGrade: 'Measuring a drawn outline in centimeters. Her Check-In scored 2.00 on measurement, at the test floor.',
     words: ['kidney', 'waste', 'spine'],
     glossary: [
       { word: 'kidney', plain: 'One of two bean-shaped organs that clean your blood.' },
@@ -402,12 +402,12 @@ export const HUMANBODY_M11 = [
     spec: '§10 · beats',
     concept: 'A filter lets some things past and holds others back according to hole size, and a kidney filters then takes back what is worth keeping.',
     standards: [],
-    offGrade: 'Volume in millilitres, and subtraction to find what stayed behind. Measurement 2.00 and units 0 of 3, both at the test floor.',
-    words: ['filter', 'dissolve', 'millilitre'],
+    offGrade: 'Volume in milliliters, and subtraction to find what stayed behind. Measurement 2.00 and units 0 of 3, both at the test floor.',
+    words: ['filter', 'dissolve', 'milliliter'],
     glossary: [
       { word: 'filter', plain: 'Something with holes that stops big bits and lets small ones through.' },
       { word: 'dissolve', plain: 'To disappear into a liquid and travel with it.' },
-      { word: 'millilitre', plain: 'A small amount of liquid. A thousand of them fill a litre bottle.' }
+      { word: 'milliliter', plain: 'A small amount of liquid. A thousand of them fill a liter bottle.' }
     ],
     video: {
       id: 'rT_vjf5fMw4',
@@ -433,9 +433,9 @@ export const HUMANBODY_M11 = [
     check: [
       {
         prompt: 'What decides what gets through a filter?',
-        choices: ['Its colour', 'How heavy it is', 'How old it is', 'The size of its holes'],
+        choices: ['Its color', 'How heavy it is', 'How old it is', 'The size of its holes'],
         answer: 3,
-        feedback: ['Colour makes no difference.', 'Weight makes none.', 'Age makes none.', null]
+        feedback: ['Color makes no difference.', 'Weight makes none.', 'Age makes none.', null]
       },
       {
         prompt: 'After filtering, the kidney:',
@@ -464,7 +464,7 @@ export const HUMANBODY_M11 = [
     spec: '§10 · beats',
     concept: 'Waste dissolves in water and leaves that way, and a stretchy bladder holds the liquid until you are ready.',
     standards: [],
-    offGrade: 'Volume in millilitres paired with a length in centimetres — two units read off two instruments in one activity.',
+    offGrade: 'Volume in milliliters paired with a length in centimeters — two units read off two instruments in one activity.',
     words: ['bladder', 'dissolved', 'stretch'],
     glossary: [
       { word: 'bladder', plain: 'A stretchy bag inside you that holds liquid until you empty it.' },

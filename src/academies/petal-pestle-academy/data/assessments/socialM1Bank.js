@@ -126,11 +126,11 @@ export const SOCIAL_M1_BANK = [
   {
     id: 'ss-m1-02-q2',
     lesson: 'ss-m1-02',
-    prompt: 'The group that organised protests was called the:',
+    prompt: 'The group that organized protests was called the:',
     choices: ['Sons of Liberty', 'Kings of Boston', 'Ships of Freedom', 'Farmers of Concord'],
     answer: 0,
     feedback: [null, 'No such group.', 'No such group.', 'No such group.'],
-    why: 'They organised the protests in the towns.'
+    why: 'They organized the protests in the towns.'
   },
   {
     id: 'ss-m1-02-q3',
@@ -154,7 +154,7 @@ export const SOCIAL_M1_BANK = [
     id: 'ss-m1-02-q5',
     lesson: 'ss-m1-02',
     prompt: 'At the Boston Tea Party the tea was:',
-    choices: ['Drunk', 'Sold', 'Thrown in the harbour', 'Sent back'],
+    choices: ['Drunk', 'Sold', 'Thrown in the harbor', 'Sent back'],
     answer: 2,
     feedback: ['They refused to drink it.', 'Selling would be theft.', null, 'It was destroyed, not returned.'],
     why: 'Destroying it said the tax would not be paid at all.'
@@ -184,7 +184,7 @@ export const SOCIAL_M1_BANK = [
     choices: ['Stop all trade', 'Change the law', 'End the war', 'Change almost nothing'],
     answer: 3,
     feedback: ['One person cannot.', 'One person cannot.', 'One person cannot.', null],
-    why: 'A boycott needs numbers. That is why they organised.'
+    why: 'A boycott needs numbers. That is why they organized.'
   },
   {
     id: 'ss-m1-02-q9',

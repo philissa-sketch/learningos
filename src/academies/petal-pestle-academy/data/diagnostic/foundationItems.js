@@ -394,7 +394,7 @@ const foundationVocabulary = [
       prompt: 'Which word means NOT wet?',
       choices: ['Dry', 'Cold', 'Big', 'Green'],
       answer: 0,
-      whys: ['', 'Cold is about heat, not water.', 'Big is about size.', 'Green is a colour.'],
+      whys: ['', 'Cold is about heat, not water.', 'Big is about size.', 'Green is a color.'],
       explanation: 'Wet and dry are opposites.'
     })
   },
@@ -419,7 +419,7 @@ const foundationGrammar = [
       prompt: 'Which word is the name of a thing?  "The pot is red."',
       choices: ['pot', 'is', 'red', 'the'],
       answer: 0,
-      whys: ['', 'That word tells you something about the pot.', 'That word tells you the colour.', 'That word points at the thing. It is not the thing.'],
+      whys: ['', 'That word tells you something about the pot.', 'That word tells you the color.', 'That word points at the thing. It is not the thing.'],
       explanation: 'A pot is a thing, so "pot" is the naming word.'
     })
   },

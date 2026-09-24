@@ -514,7 +514,7 @@ export const WEEKS = {
       title: 'How it ended, and who it touched',
       lessons: ['ss-m11-01', 'ss-m11-02'],
       planned: 2,
-      blurb: 'Four generals and a surrender in a parlour, then the people who never fought at all.'
+      blurb: 'Four generals and a surrender in a parlor, then the people who never fought at all.'
     },
     {
       id: 'social-q3-w6',
@@ -646,7 +646,7 @@ export const WEEKS = {
     { id: 'sciencelab-q3-w8', course: 'sciencelab', quarter: 3, n: 8, module: 8,
       title: 'Naming the phases, and the tilt',
       lessons: ['sl-m8-04', 'sl-m8-05', 'sl-m8-06'], planned: 3,
-      blurb: 'Her own month labelled, why the days grow and shrink, and the tilt behind every frost date on a seed packet.' }
+      blurb: 'Her own month labeled, why the days grow and shrink, and the tilt behind every frost date on a seed packet.' }
   ],
 
   // =========================================================================
@@ -731,7 +731,7 @@ export const WEEKS = {
       blurb: 'Plasma and three kinds of part with three jobs, then arteries, veins and the tiny pipes where the delivery happens.' },
 
     { id: 'humanbody-q2-w4', course: 'humanbody', quarter: 2, n: 4, module: 6,
-      title: 'Eighty thousand kilometres, and the cuff',
+      title: 'Eighty thousand kilometers, and the cuff',
       lessons: ['body-m6-03', 'body-m6-04'], planned: 2,
       blurb: 'The scale of her own plumbing, and what the band on an arm is actually measuring when a doctor pumps it up.' },
 
@@ -744,7 +744,7 @@ export const WEEKS = {
     { id: 'humanbody-q2-w6', course: 'humanbody', quarter: 2, n: 6, module: 7,
       title: 'Counting breaths, measuring one',
       lessons: ['body-m7-03', 'body-m7-04'], planned: 2,
-      blurb: 'Why counting your own breathing changes it, and one breath measured in millilitres with a marked bottle.' },
+      blurb: 'Why counting your own breathing changes it, and one breath measured in milliliters with a marked bottle.' },
 
     // MODULE 8 · Listening to a Chest
     { id: 'humanbody-q2-w7', course: 'humanbody', quarter: 2, n: 7, module: 8,
@@ -766,13 +766,13 @@ export const WEEKS = {
     { id: 'humanbody-q3-w2', course: 'humanbody', quarter: 3, n: 2, module: 9,
       title: 'Where digestion actually starts',
       lessons: ['body-m9-03', 'body-m9-04'], planned: 2,
-      blurb: 'A plain cracker timed until it turns sweet, then the stomach modelled as a bag that squeezes.' },
+      blurb: 'A plain cracker timed until it turns sweet, then the stomach modeled as a bag that squeezes.' },
 
     // MODULE 10 · The Gut, a Long Tube
     { id: 'humanbody-q3-w3', course: 'humanbody', quarter: 3, n: 3, module: 10,
-      title: 'One tube, and seven metres of it',
+      title: 'One tube, and seven meters of it',
       lessons: ['body-m10-01', 'body-m10-02'], planned: 2,
-      blurb: 'The gut as one connected tube pushed by muscle waves, then seven metres of string measured out and walked beside.' },
+      blurb: 'The gut as one connected tube pushed by muscle waves, then seven meters of string measured out and walked beside.' },
 
     { id: 'humanbody-q3-w4', course: 'humanbody', quarter: 3, n: 4, module: 10,
       title: 'Folded to catch, and what lives there',
@@ -783,18 +783,18 @@ export const WEEKS = {
     { id: 'humanbody-q3-w5', course: 'humanbody', quarter: 3, n: 5, module: 11,
       title: 'Two filters, and how a filter works',
       lessons: ['body-m11-01', 'body-m11-02'], planned: 2,
-      blurb: 'Two fist-sized kidneys found by pressing on her own back, then a real filter built from a bottle and measured in millilitres both ways.' },
+      blurb: 'Two fist-sized kidneys found by pressing on her own back, then a real filter built from a bottle and measured in milliliters both ways.' },
 
     { id: 'humanbody-q3-w6', course: 'humanbody', quarter: 3, n: 6, module: 11,
       title: 'Two ways water leaves',
       lessons: ['body-m11-03', 'body-m11-04'], planned: 2,
-      blurb: 'Waste travelling out dissolved in water and waiting in a stretchy bag, then the discovery that a wet hand only cools once it starts to dry.' },
+      blurb: 'Waste traveling out dissolved in water and waiting in a stretchy bag, then the discovery that a wet hand only cools once it starts to dry.' },
 
     // MODULE 12 · The Brain and the Nerves
     { id: 'humanbody-q3-w7', course: 'humanbody', quarter: 3, n: 7, module: 12,
       title: 'The brain, and the wires that reach it',
       lessons: ['body-m12-01', 'body-m12-02'], planned: 2,
-      blurb: 'Twelve hundred millilitres held in both hands, then a real bedside test done in millimetres on four patches of her own skin.' },
+      blurb: 'Twelve hundred milliliters held in both hands, then a real bedside test done in millimeters on four patches of her own skin.' },
 
     { id: 'humanbody-q3-w8', course: 'humanbody', quarter: 3, n: 8, module: 12,
       title: 'Faster than thinking, and sometimes wrong',
@@ -807,7 +807,7 @@ export const WEEKS = {
     { id: 'humanbody-q4-w1', course: 'humanbody', quarter: 4, n: 1, module: 13,
       title: 'What a sense does, and the hole in the picture',
       lessons: ['body-m13-01', 'body-m13-02'], planned: 2,
-      blurb: 'Every sense turning the world into one kind of message, then her own blind spot found with a card and measured in centimetres.' },
+      blurb: 'Every sense turning the world into one kind of message, then her own blind spot found with a card and measured in centimeters.' },
 
     { id: 'humanbody-q4-w2', course: 'humanbody', quarter: 4, n: 2, module: 13,
       title: 'A drum, a chain, and what keeps her upright',
@@ -823,13 +823,13 @@ export const WEEKS = {
     { id: 'humanbody-q4-w4', course: 'humanbody', quarter: 4, n: 4, module: 14,
       title: 'Why growing stops, and what never does',
       lessons: ['body-m14-03', 'body-m14-04'], planned: 2,
-      blurb: 'There is no right height and no right speed, and fourteen days of a fingernail measured in millimetres becomes her first line graph.' },
+      blurb: 'There is no right height and no right speed, and fourteen days of a fingernail measured in millimeters becomes her first line graph.' },
 
     // MODULE 15 · Staying Well
     { id: 'humanbody-q4-w5', course: 'humanbody', quarter: 4, n: 5, module: 15,
       title: 'Germs, soap, and the walls she already has',
       lessons: ['body-m15-01', 'body-m15-02'], planned: 2,
-      blurb: 'A real controlled experiment on her own two hands with oil, pepper and a timer, and every defence traced back to an earlier module.' },
+      blurb: 'A real controlled experiment on her own two hands with oil, pepper and a timer, and every defense traced back to an earlier module.' },
 
     { id: 'humanbody-q4-w6', course: 'humanbody', quarter: 4, n: 6, module: 15,
       title: 'Fever, and what sleep is for',

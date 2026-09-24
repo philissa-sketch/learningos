@@ -211,7 +211,7 @@ export const SOCIAL_M9 = [
         teachingText:
           'Tubman guided around seventy people out of slavery along the Underground Railroad, a secret network of routes and safe houses. She was called a conductor.',
         example:
-          'She travelled at night, in winter, and used songs as signals. She said she never lost a passenger.',
+          'She traveled at night, in winter, and used songs as signals. She said she never lost a passenger.',
         applyIt: {
           prompt: 'The Underground Railroad was a secret network of routes and safe:',
           choices: ['Trains', 'Houses', 'Ships', 'Tunnels'],
@@ -230,7 +230,7 @@ export const SOCIAL_M9 = [
         label: 'Sojourner Truth used her voice',
         hook: 'She could not read or write, and she was one of the best speakers of her century.',
         teachingText:
-          'Sojourner Truth was born enslaved in New York and freed herself. She travelled the country speaking against slavery and for the rights of women.',
+          'Sojourner Truth was born enslaved in New York and freed herself. She traveled the country speaking against slavery and for the rights of women.',
         example:
           'She once went to court to get her son back from a man who had sold him illegally, and she won.',
         applyIt: {
@@ -275,7 +275,7 @@ export const SOCIAL_M9 = [
     },
     core: [
       { heading: 'Harriet Tubman went back', text: 'Tubman guided around seventy people out of slavery along the Underground Railroad, a secret network of routes and safe houses. She was called a conductor.' },
-      { heading: 'Sojourner Truth used her voice', text: 'Sojourner Truth was born enslaved in New York and freed herself. She travelled the country speaking against slavery and for the rights of women.' }
+      { heading: 'Sojourner Truth used her voice', text: 'Sojourner Truth was born enslaved in New York and freed herself. She traveled the country speaking against slavery and for the rights of women.' }
     ],
     doing:
       'Agree two signals with a partner, one for go and one for stop, and hide them in a song. Guide each other through three rooms using only the song. Write down how it felt to depend on a guide.',
@@ -334,7 +334,7 @@ export const SOCIAL_M9 = [
         label: 'They wrote it down and asked',
         hook: 'It started with a meeting and a list of complaints, which is a very American way to begin.',
         teachingText:
-          'Stanton helped organise a convention in 1848 where women set out what they wanted. Anthony organised, travelled and gathered petitions for decades afterwards.',
+          'Stanton helped organize a convention in 1848 where women set out what they wanted. Anthony organized, traveled and gathered petitions for decades afterwards.',
         example:
           'Their document was written to sound like the Declaration of Independence on purpose. The echo was the argument.',
         applyIt: {
@@ -399,7 +399,7 @@ export const SOCIAL_M9 = [
       question: 'What would keep you going, knowing you would not be there at the end?'
     },
     core: [
-      { heading: 'They wrote it down and asked', text: 'Stanton helped organise a convention in 1848 where women set out what they wanted. Anthony organised, travelled and gathered petitions for decades afterwards.' },
+      { heading: 'They wrote it down and asked', text: 'Stanton helped organize a convention in 1848 where women set out what they wanted. Anthony organized, traveled and gathered petitions for decades afterwards.' },
       { heading: 'And the movement split', text: 'When the vote was extended to Black men and not to women, some suffrage leaders opposed the change. It broke friendships that had lasted decades.' }
     ],
     doing:
@@ -427,14 +427,14 @@ export const SOCIAL_M9 = [
     minutes: 30,
     spec: '§10 · beats',
     concept:
-      'A novel changed how hundreds of thousands of people felt about slavery, and a raid on an armoury convinced the South that war was coming.',
+      'A novel changed how hundreds of thousands of people felt about slavery, and a raid on an armory convinced the South that war was coming.',
     standards: ['SS4H5a'],
     offGrade: null,
-    words: ['novel', 'raid', 'armoury', 'tension'],
+    words: ['novel', 'raid', 'armory', 'tension'],
     glossary: [
       { word: 'novel', plain: 'A long made-up story in a book.' },
       { word: 'raid', plain: 'A sudden attack by a small group.' },
-      { word: 'armoury', plain: 'A building where weapons are stored.' },
+      { word: 'armory', plain: 'A building where weapons are stored.' },
       { word: 'tension', plain: 'The feeling before an argument turns into a fight.' }
     ],
     video: {
@@ -480,11 +480,11 @@ export const SOCIAL_M9 = [
         label: 'And the raid',
         hook: 'In 1859 a man tried to start an uprising by seizing a building full of guns.',
         teachingText:
-          'John Brown attacked the armoury at Harper’s Ferry, hoping enslaved people would join him. It failed and he was hanged. The South read it as a warning.',
+          'John Brown attacked the armory at Harper’s Ferry, hoping enslaved people would join him. It failed and he was hanged. The South read it as a warning.',
         example:
           'The North argued about whether he was a hero or a madman. The South stopped arguing and started preparing.',
         applyIt: {
-          prompt: 'John Brown attacked an armoury, which is a building holding:',
+          prompt: 'John Brown attacked an armory, which is a building holding:',
           choices: ['Food', 'Weapons', 'Books', 'Cotton'],
           answer: 1,
           feedback: [
@@ -525,17 +525,17 @@ export const SOCIAL_M9 = [
     },
     core: [
       { heading: 'The book', text: 'Harriet Beecher Stowe wrote Uncle Tom’s Cabin in 1852. Northern readers who had never seen slavery felt it for the first time. Southern writers attacked it furiously.' },
-      { heading: 'And the raid', text: 'In 1859 John Brown attacked the armoury at Harper’s Ferry, hoping enslaved people would join him. It failed and he was hanged. The South read it as a warning.' }
+      { heading: 'And the raid', text: 'In 1859 John Brown attacked the armory at Harper’s Ferry, hoping enslaved people would join him. It failed and he was hanged. The South read it as a warning.' }
     ],
     doing:
       'Pick something you believe should change. Write four lines arguing it with reasons, then four lines telling a story that shows the same thing. Ask a grown-up which landed harder.',
     practice: [
       { ask: 'What was Uncle Tom’s Cabin?', answer: 'A novel about slavery, written in 1852.', why: 'It reached people an argument never had.' },
-      { ask: 'What did John Brown try to do?', answer: 'Seize an armoury and start an uprising.', why: 'It failed, and the South read it as a warning.' }
+      { ask: 'What did John Brown try to do?', answer: 'Seize an armory and start an uprising.', why: 'It failed, and the South read it as a warning.' }
     ],
     check: [
       { prompt: 'Uncle Tom’s Cabin was a:', choices: ['Law', 'Novel', 'Speech', 'Map'], answer: 1, feedback: ['Not a law.', null, 'Not a speech.', 'Not a map.'] },
-      { prompt: 'An armoury is a building where people store:', choices: ['Food', 'Weapons', 'Books', 'Cotton'], answer: 1, feedback: ['Not it.', null, 'Not it.', 'Not it.'] },
+      { prompt: 'An armory is a building where people store:', choices: ['Food', 'Weapons', 'Books', 'Cotton'], answer: 1, feedback: ['Not it.', null, 'Not it.', 'Not it.'] },
       { prompt: 'John Brown’s raid happened at Harper’s:', choices: ['Hill', 'Ferry', 'Bridge', 'Field'], answer: 1, feedback: ['Not the name.', null, 'Not the name.', 'Not the name.'] }
     ]
   }

@@ -409,7 +409,7 @@ const M6L3_ACTIVITY = {
     'Wipe the brush gently along the silks.',
     'Tie a tag on that ear. You pollinated it yourself.',
     'Walk to three other flowers in the yard.',
-    'For each one write colour, smell and landing pad.',
+    'For each one write color, smell and landing pad.',
     'Then write your guess. Bee, butterfly, bird or wind.'
   ],
   safety:
@@ -432,7 +432,7 @@ const M6L3_ACTIVITY = {
 const M6L3_LEDGER = {
   sheet: 'M6L3-who-carries-the-pollen-PRINTABLE.pdf',
   tasks: [
-    'Fill in your flower chart. Colour, smell, landing pad.',
+    'Fill in your flower chart. Color, smell, landing pad.',
     'Write your guess for each one. Bee, butterfly, bird or wind.',
     'Draw your corn plant. Mark the tassel and mark the silks.',
     'Write one question about pollinators for Gigi. You must know the answer.'
@@ -481,7 +481,7 @@ const M6L4_BEATS = [
       choices: [
         'One of each is too small to spot',
         'Bees do not like those three flowers',
-        'The pots were the wrong colour',
+        'The pots were the wrong color',
         'It was too windy that week'
       ],
       answer: 0,
@@ -754,13 +754,13 @@ const M6L6_BEATS = [
       'A mushroom is only the fruit of a fungus. The real body is the mat of threads under the soil. Like an apple on a tree.',
     applyIt: {
       prompt: 'You lifted a small weed out. Its roots have pale fuzzy strands. What are they most likely?',
-      choices: ['Fungal threads', 'Baby roots', 'A spider web', 'Fertiliser'],
+      choices: ['Fungal threads', 'Baby roots', 'A spider web', 'Fertilizer'],
       answer: 0,
       feedback: [
         null,
         'Roots come off the plant and are much thicker.',
         'Webs are made above ground. This was under the soil.',
-        'Fertiliser is powder or liquid. It does not grow strands.'
+        'Fertilizer is powder or liquid. It does not grow strands.'
       ],
       why: 'Most plants carry a fungus on their roots. Ask a grown-up before touching soil fuzz you do not know.'
     }
@@ -800,7 +800,7 @@ const M6L6_ACTIVITY = {
     'one store-bought mushroom',
     '20 white beads — sugar',
     '20 blue beads — water',
-    '20 grey beads — minerals',
+    '20 gray beads — minerals',
     'two cups and a piece of string'
   ],
   steps: [
@@ -812,7 +812,7 @@ const M6L6_ACTIVITY = {
     'Turn the store mushroom over. Break the stem in half.',
     'Part two. You are the plant. Gigi is the fungus.',
     'Only you may pick up white sugar beads. Only you.',
-    'Gigi holds the far cup of blue and grey. You cannot reach it.',
+    'Gigi holds the far cup of blue and gray. You cannot reach it.',
     'Play one round with no trading at all. Count what each of you has.',
     'Play a second round trading freely. Count again.'
   ],
@@ -922,7 +922,7 @@ export const HERBALISM_M6_NEW = [
     hook: M6L2_CHECK_IN,
     core: M6L2_BEATS.map((b) => ({ heading: b.label, text: b.teachingText })),
     doing:
-      'Take a big flower apart on the table, outside to inside, and tape every part down on a labelled sheet. Sepals first, then petals, then one whole stamen with its anther tapped out onto dark paper so the pollen shows. Touch the stigma and say out loud how it feels. Then a grown-up slices the ovary across, and you count the ovules through a lens and write the number down — that is the most seeds this one flower could ever make. Finish by taking a second flower apart with your eyes shut, naming each part by feel.',
+      'Take a big flower apart on the table, outside to inside, and tape every part down on a labeled sheet. Sepals first, then petals, then one whole stamen with its anther tapped out onto dark paper so the pollen shows. Touch the stigma and say out loud how it feels. Then a grown-up slices the ovary across, and you count the ovules through a lens and write the number down — that is the most seeds this one flower could ever make. Finish by taking a second flower apart with your eyes shut, naming each part by feel.',
 
     practice: [
       {
@@ -1030,7 +1030,7 @@ export const HERBALISM_M6_NEW = [
     hook: M6L3_CHECK_IN,
     core: M6L3_BEATS.map((b) => ({ heading: b.label, text: b.teachingText })),
     doing:
-      'Hold dark paper under your corn tassel on a still morning and tap it once, then put a lens on the yellow dust that falls. Find the silks coming out of the ear and follow one down with your finger. Then be the bee: brush pollen off the tassel, wipe it along the silks, and tie a tag on the ear you did yourself. Finish by walking to three other flowers in the yard and writing down colour, smell and whether there is anywhere to land — then guess who each one is built for.',
+      'Hold dark paper under your corn tassel on a still morning and tap it once, then put a lens on the yellow dust that falls. Find the silks coming out of the ear and follow one down with your finger. Then be the bee: brush pollen off the tassel, wipe it along the silks, and tie a tag on the ear you did yourself. Finish by walking to three other flowers in the yard and writing down color, smell and whether there is anywhere to land — then guess who each one is built for.',
 
     practice: [
       {
@@ -1041,7 +1041,7 @@ export const HERBALISM_M6_NEW = [
       {
         ask: 'How can you spot a wind-pollinated flower just by looking?',
         answer: 'It is small and dull, with no scent and no nectar.',
-        why: 'Wind cannot see colour or smell scent. Paying for them would be a waste.'
+        why: 'Wind cannot see color or smell scent. Paying for them would be a waste.'
       }
     ],
 
@@ -1127,7 +1127,7 @@ export const HERBALISM_M6_NEW = [
       teaches: [
         'that a garden can be made into a bee habitat on purpose',
         'making a home for bees at your own house',
-        'NOTE: content beyond the title could NOT be confirmed — see judgement call 2 in the file header'
+        'NOTE: content beyond the title could NOT be confirmed — see judgment call 2 in the file header'
       ],
       sourceGap:
         'No Black American educator found for this lesson, and this is the lesson where one was most likely. Searched: "Ron Finley gangsta gardener youtube video planting for kids garden pollinators" — Ron Finley is a Black American urban gardener and educator, but everything found is food justice and adult-facing (TED talk EzZzZ_qpZ4w, MasterClass trailer), nothing on pollinators for children. Searched: "\'Garden Marcus\' OR \'Marcus Bridgewater\' youtube video pollinators bees flowers garden teaching" and "gardenmarcuskids Garden Marcus kids video seeds soil roots episode watch" — found a real Black American educator\'s children\'s channel, "Discover, Grow, Bloom with Garden Marcus", and verified two of its videos at noembed (F8Z04N_D4pg seeds, gxz2ij2tIUc planting herbs). No pollinator episode exists on it, and those two are pitched younger than nine. Also searched: "youtube how to make a pollinator garden kids what to plant water bare ground nesting native bees short video"; "Xerces Society youtube video pollinator garden nesting habitat bare ground water dish pebbles". Recorded as a live lead for Module 2 and Module 7. Open.'
@@ -1141,7 +1141,7 @@ export const HERBALISM_M6_NEW = [
     hook: M6L4_CHECK_IN,
     core: M6L4_BEATS.map((b) => ({ heading: b.label, text: b.teachingText })),
     doing:
-      'Build the patch in three stations. One: a shallow saucer of pebbles with the water stopping just below the pebble tops, set on the ground beside your containers. Two: a wide pot of plain soil, patted flat, with nothing on top of it at all — no mulch, no bark — standing in the sunniest spot you have, because most native bees nest in bare ground. Three: flowers planted in clumps of three of a kind, labelled with the name and the date. Then draw a twelve-box bloom calendar and shade in when each plant will be open, and find the month with nothing in it.',
+      'Build the patch in three stations. One: a shallow saucer of pebbles with the water stopping just below the pebble tops, set on the ground beside your containers. Two: a wide pot of plain soil, patted flat, with nothing on top of it at all — no mulch, no bark — standing in the sunniest spot you have, because most native bees nest in bare ground. Three: flowers planted in clumps of three of a kind, labeled with the name and the date. Then draw a twelve-box bloom calendar and shade in when each plant will be open, and find the month with nothing in it.',
 
     practice: [
       {
@@ -1367,7 +1367,7 @@ export const HERBALISM_M6_NEW = [
     hook: M6L6_CHECK_IN,
     core: M6L6_BEATS.map((b) => ({ heading: b.label, text: b.teachingText })),
     doing:
-      'Scrape under old mulch with gloves on and hunt for pale threads with a lens. Pull one small weed up whole, swish its roots in a jar of water, lay them on a white plate and look for the fuzz. Then run the trade game: you are the plant and only you can pick up the white sugar beads, Gigi is the fungus and only she can reach the far cup of blue water beads and grey mineral beads. Play one round where nobody trades and count what each of you ends up with. Play a second round trading freely and count again.',
+      'Scrape under old mulch with gloves on and hunt for pale threads with a lens. Pull one small weed up whole, swish its roots in a jar of water, lay them on a white plate and look for the fuzz. Then run the trade game: you are the plant and only you can pick up the white sugar beads, Gigi is the fungus and only she can reach the far cup of blue water beads and gray mineral beads. Play one round where nobody trades and count what each of you ends up with. Play a second round trading freely and count again.',
 
     practice: [
       {

@@ -81,27 +81,27 @@ export const PROMPTS = {
     'What is one question you had today that nobody answered?',
     'Write down one thing you got wrong today and what you now think instead.',
     'Which plant near you would survive if nobody watered it for a week? Why do you think so?',
-    'What colour is the sky right at the edge, where it meets the ground?'
+    'What color is the sky right at the edge, where it meets the ground?'
   ],
   plant: [
     'Pick one leaf. Is the edge smooth, toothed, or lobed? Draw the edge in words.',
     'Look at where the leaves join the stem. Are they opposite each other, or do they take turns?',
     'How many petals? Count them. Do all the flowers on the plant have the same number?',
     'Is the stem round or square when you roll it between your fingers?',
-    'Look underneath a leaf. Is it the same colour as the top? Is it hairy?',
+    'Look underneath a leaf. Is it the same color as the top? Is it hairy?',
     'What is this plant doing right now — growing, flowering, seeding, or resting?',
     'Find two plants that look alike. Write down one thing that tells them apart.',
     'Where is this plant growing — full sun, half shade, deep shade? How can you tell?',
     'Is anything else living on this plant? Insects, spots, holes, webs?',
     'Measure it. How tall, and what did you measure with?',
     'If you came back in two weeks, what do you predict will have changed?',
-    'Draw it in words for someone who has never seen one: shape, height, colour, smell.'
+    'Draw it in words for someone who has never seen one: shape, height, color, smell.'
   ],
   pressed: [
     'What did you press, and exactly where did it come from?',
     'What date did you pick it? What was the weather that day?',
     'Was the plant growing wild or did somebody plant it?',
-    'What colour was it when you picked it? Come back in a month and write what colour it is then.',
+    'What color was it when you picked it? Come back in a month and write what color it is then.',
     'Was it flowering, seeding, or just leaves?',
     'Who was with you when you found it?'
   ],

@@ -212,7 +212,7 @@ const L3_BEATS = [
     teachingText:
       'A doctor listens high and low, left and right, front and back. Different spots are nearer different parts. One spot is not the whole picture.',
     example:
-      'Front and centre is nearest the heart. Out to the sides and on the back is nearest the lungs.',
+      'Front and center is nearest the heart. Out to the sides and on the back is nearest the lungs.',
     applyIt: {
       prompt: 'Why does a doctor listen in several places?',
       choices: [
@@ -235,7 +235,7 @@ const L3_BEATS = [
 const L3_ACTIVITY = {
   title: 'Six spots, and a map',
   prep: 'A stethoscope or the tube. A willing grown-up who has agreed.',
-  needs: ['a tube or stethoscope', 'a grown-up', 'paper', 'coloured pencils'],
+  needs: ['a tube or stethoscope', 'a grown-up', 'paper', 'colored pencils'],
   steps: [
     'Draw a simple outline of a chest and back on your paper.',
     'Listen at six places: high left, high right, low left, low right, and two on the back.',
@@ -328,7 +328,7 @@ const L4_ACTIVITY = {
 const L4_LEDGER = {
   prompt: 'Write one thing you can do now that you could not do in Module 1.',
   ifSheIsStuck:
-    'She could count a pulse in week one. She can now count breaths, measure a breath in millilitres, and listen to two organs. Any one of those is the answer.'
+    'She could count a pulse in week one. She can now count breaths, measure a breath in milliliters, and listen to two organs. Any one of those is the answer.'
 };
 
 // ---------------------------------------------------------------------------

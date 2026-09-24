@@ -14,7 +14,7 @@ export const SOCIAL_M11_META = {
   module: 11,
   title: 'What the War Did',
   blurb:
-    'Four generals and a surrender in a front parlour, what four years did to people who never fought, and the three amendments that changed the Constitution for ever.'
+    'Four generals and a surrender in a front parlor, what four years did to people who never fought, and the three amendments that changed the Constitution for ever.'
 };
 
 export const SOCIAL_M11 = [
@@ -26,19 +26,19 @@ export const SOCIAL_M11 = [
     week: 5,
     day: 1,
     n: 41,
-    title: 'Four generals and a parlour',
+    title: 'Four generals and a parlor',
     minutes: 30,
     spec: '§10 · beats',
     concept:
       'Lee, Grant, Jackson and Sherman each fought differently, and the war ended with two of them in a small front room.',
     standards: ['SS4H5d'],
     offGrade: null,
-    words: ['general', 'strategy', 'terms', 'parlour'],
+    words: ['general', 'strategy', 'terms', 'parlor'],
     glossary: [
       { word: 'general', plain: 'The officer who commands a whole army.' },
       { word: 'strategy', plain: 'The plan for winning a whole war, not one battle.' },
       { word: 'terms', plain: 'The conditions agreed when one side gives up.' },
-      { word: 'parlour', plain: 'The front sitting room of a house.' }
+      { word: 'parlor', plain: 'The front sitting room of a house.' }
     ],
     video: {
       id: 'r0cHwkJ8Lc0',
@@ -76,7 +76,7 @@ export const SOCIAL_M11 = [
       {
         n: 2,
         label: 'And it ended in a front room',
-        hook: 'The surrender was signed in somebody’s parlour, at a table.',
+        hook: 'The surrender was signed in somebody’s parlor, at a table.',
         teachingText:
           'In April 1865 Lee surrendered to Grant at Appomattox Court House. Grant’s terms let the Confederate soldiers go home and keep their horses.',
         example:

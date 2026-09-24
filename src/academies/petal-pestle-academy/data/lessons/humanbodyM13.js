@@ -127,12 +127,12 @@ const L2_BEATS = [
       'The black circle in the middle of an eye is not a spot. It is a hole, and the darkness is the inside of your own eye.',
     applyIt: {
       prompt: 'The picture that lands at the back of your eye is:',
-      choices: ['The right way up', 'Upside down', 'Flat grey', 'Not a picture at all'],
+      choices: ['The right way up', 'Upside down', 'Flat gray', 'Not a picture at all'],
       answer: 1,
       feedback: [
         'The lens flips it on the way in.',
         null,
-        'It is in full colour.',
+        'It is in full color.',
         'It is very much a picture.'
       ]
     }
@@ -161,13 +161,13 @@ const L2_BEATS = [
 
 const L2_ACTIVITY = {
   title: 'Find your own blind spot, and measure it',
-  prep: 'A plain card or postcard, a pen, and a ruler with centimetres.',
+  prep: 'A plain card or postcard, a pen, and a ruler with centimeters.',
   needs: ['a card', 'a pen', 'a ruler', 'her notebook'],
   steps: [
     'On the card draw a small cross on the left and a solid dot on the right, about 10 cm apart.',
     'Hold the card at arm’s length, shut your left eye, and look straight at the cross.',
-    'Move the card slowly towards your face until the dot vanishes, and stop there.',
-    'Measure from the card to your face in centimetres and write that number down.',
+    'Move the card slowly toward your face until the dot vanishes, and stop there.',
+    'Measure from the card to your face in centimeters and write that number down.',
     'Swap eyes — shut the right, look at the dot — and write the second number down.'
   ],
   safety:
@@ -176,7 +176,7 @@ const L2_ACTIVITY = {
 };
 
 const L2_LEDGER = {
-  prompt: 'Write down your two distances in centimetres, and which eye each one belongs to.',
+  prompt: 'Write down your two distances in centimeters, and which eye each one belongs to.',
   ifSheIsStuck:
     'The numbers will not match exactly and that is fine — two eyes, two measurements. Ask her which was further and let her guess why.'
 };
@@ -233,10 +233,10 @@ const L3_BEATS = [
 
 const L3_ACTIVITY = {
   title: 'A drum and a rubber band',
-  prep: 'A bowl, cling film or a balloon skin, a rubber band, dry rice, and a saucepan lid.',
-  needs: ['a bowl', 'cling film', 'a rubber band', 'a few grains of rice', 'her notebook'],
+  prep: 'A bowl, plastic wrap or a balloon skin, a rubber band, dry rice, and a saucepan lid.',
+  needs: ['a bowl', 'plastic wrap', 'a rubber band', 'a few grains of rice', 'her notebook'],
   steps: [
-    'Stretch the cling film tightly over the bowl and hold it with the rubber band.',
+    'Stretch the plastic wrap tightly over the bowl and hold it with the rubber band.',
     'Scatter a few grains of rice on top and bang a saucepan lid nearby.',
     'Write down what the rice does, and what that tells you about the air.',
     'Stretch the rubber band between two fingers and pluck it gently, then hard.',
@@ -271,12 +271,12 @@ const L4_BEATS = [
       'Spin round and stop, and the world keeps turning for a second. The liquid was still moving after you stopped.',
     applyIt: {
       prompt: 'The loops in your ear tell you:',
-      choices: ['How loud something is', 'Which way your head moved', 'What colour something is', 'How far away it is'],
+      choices: ['How loud something is', 'Which way your head moved', 'What color something is', 'How far away it is'],
       answer: 1,
       feedback: [
         'That is the hearing coil.',
         null,
-        'Colour is an eye job.',
+        'Color is an eye job.',
         'Distance uses two ears and two eyes.'
       ]
     }
@@ -288,7 +288,7 @@ const L4_BEATS = [
     teachingText:
       'If something makes a noise on your left, the sound arrives at your left ear a fraction sooner and a little louder. Your brain compares the two and works out a direction.',
     example:
-      'Which is why you turn your head towards a sound without deciding to — the comparison happens before you think.',
+      'Which is why you turn your head toward a sound without deciding to — the comparison happens before you think.',
     applyIt: {
       prompt: 'You work out where a sound came from by:',
       choices: ['Guessing', 'Comparing what each ear received', 'Looking first', 'Using one ear carefully'],
@@ -309,7 +309,7 @@ const L4_ACTIVITY = {
   needs: ['a ticking clock', 'a tape measure', 'a scarf for a blindfold', 'a helper', 'her notebook'],
   steps: [
     'Put the ticking clock down and walk backwards until you can only just still hear it.',
-    'Measure that distance in metres, then write it again in centimetres.',
+    'Measure that distance in meters, then write it again in centimeters.',
     'Now sit still, wear the blindfold, and have your helper tick the clock from four places.',
     'Point to where you think each one came from, and record right or wrong for each.',
     'Take the blindfold off and write one sentence about which direction was hardest.'
@@ -320,9 +320,9 @@ const L4_ACTIVITY = {
 };
 
 const L4_LEDGER = {
-  prompt: 'Write down your hearing distance in metres and in centimetres, and how many directions you got right.',
+  prompt: 'Write down your hearing distance in meters and in centimeters, and how many directions you got right.',
   ifSheIsStuck:
-    'One metre is a hundred centimetres, and she has converted three times now. Four out of four is not the point — the point is that two ears beat one.'
+    'One meter is a hundred centimeters, and she has converted three times now. Four out of four is not the point — the point is that two ears beat one.'
 };
 
 // ---------------------------------------------------------------------------
@@ -404,7 +404,7 @@ export const HUMANBODY_M13 = [
     spec: '§10 · beats',
     concept: 'An eye works like a camera and lands its picture upside down, and every eye has a blind spot the brain quietly fills in.',
     standards: [],
-    offGrade: 'Distance in centimetres, measured twice and compared. Her Check-In scored 2.00 on measurement, at the test floor.',
+    offGrade: 'Distance in centimeters, measured twice and compared. Her Check-In scored 2.00 on measurement, at the test floor.',
     words: ['lens', 'blind spot', 'pupil'],
     glossary: [
       { word: 'lens', plain: 'A clear curved part that bends light to make a sharp picture.' },
@@ -436,9 +436,9 @@ export const HUMANBODY_M13 = [
     check: [
       {
         prompt: 'The picture that lands at the back of your eye is:',
-        choices: ['The right way up', 'Flat grey', 'Not a picture at all', 'Upside down'],
+        choices: ['The right way up', 'Flat gray', 'Not a picture at all', 'Upside down'],
         answer: 3,
-        feedback: ['The lens flips it.', 'It is in colour.', 'It is a picture.', null]
+        feedback: ['The lens flips it.', 'It is in color.', 'It is a picture.', null]
       },
       {
         prompt: 'You cannot normally notice your blind spot because:',
@@ -529,7 +529,7 @@ export const HUMANBODY_M13 = [
     spec: '§10 · beats',
     concept: 'Three fluid-filled loops in the ear report which way your head moved, and comparing two ears is how you work out where a sound came from.',
     standards: [],
-    offGrade: 'A distance in metres converted to centimetres. Units scored 0 of 3, at the test floor.',
+    offGrade: 'A distance in meters converted to centimeters. Units scored 0 of 3, at the test floor.',
     words: ['balance', 'loop', 'direction'],
     glossary: [
       { word: 'balance', plain: 'Staying upright without falling over.' },
@@ -560,9 +560,9 @@ export const HUMANBODY_M13 = [
     check: [
       {
         prompt: 'The loops in your ear tell you:',
-        choices: ['How loud something is', 'Which way your head moved', 'What colour something is', 'How heavy it is'],
+        choices: ['How loud something is', 'Which way your head moved', 'What color something is', 'How heavy it is'],
         answer: 1,
-        feedback: ['That is the hearing coil.', null, 'Colour is an eye job.', 'Weight is not a sense.']
+        feedback: ['That is the hearing coil.', null, 'Color is an eye job.', 'Weight is not a sense.']
       },
       {
         prompt: 'You work out where a sound came from by:',
@@ -571,7 +571,7 @@ export const HUMANBODY_M13 = [
         feedback: ['It is a measurement.', 'You turn before you look.', null, 'One ear cannot compare.']
       },
       {
-        prompt: '4 metres written in centimetres is:',
+        prompt: '4 meters written in centimeters is:',
         choices: ['40 cm', '400 cm', '4000 cm', '4 cm'],
         answer: 1,
         feedback: ['Ten times too small.', null, 'Ten times too big.', 'The unit did not change.']
@@ -585,7 +585,7 @@ export const HUMANBODY_M13_META = {
   module: 13,
   title: 'Eyes and Ears',
   blurb:
-    'The oldest self-experiment in vision — her own blind spot found with a card and measured in centimetres — rice dancing on a drum skin, and the discovery that her ears are what keep her upright.'
+    'The oldest self-experiment in vision — her own blind spot found with a card and measured in centimeters — rice dancing on a drum skin, and the discovery that her ears are what keep her upright.'
 };
 
 export function humanbodyM13LessonById(id) {

@@ -116,7 +116,7 @@ export const elaItems = [
     prompt: 'Which sentence best states the CONTRAST the author is making?',
     choices: [
       'Nettles are dangerous and should be avoided',
-      'A plant can be both a defence and a food, depending on how it is treated',
+      'A plant can be both a defense and a food, depending on how it is treated',
       'Cooking makes all plants safe to eat',
       'Nettles have hollow hairs'
     ],
@@ -144,12 +144,12 @@ export const elaItems = [
     ],
     answer: 2,
     choiceFeedback: [
-      'That reads "language" too literally. She is talking about the FORM knowledge has to take to be recognised, not which words were spoken.',
+      'That reads "language" too literally. She is talking about the FORM knowledge has to take to be recognized, not which words were spoken.',
       'A reasonable idea, but not what she says. She is making a point about what counts as knowledge, not about translation services.',
       null,
       'She says the opposite — the plants had been named for generations.'
     ],
-    explanation: '"Not written in the language the journals read" means the knowledge was real but unrecognised by that system.'
+    explanation: '"Not written in the language the journals read" means the knowledge was real but unrecognized by that system.'
   },
   {
     id: 'rc-07',
@@ -205,15 +205,15 @@ export const elaItems = [
     choices: [
       'add a scientific fact for interest',
       'show that the difference between the two entries came from status, not evidence',
-      'explain how chemists analyse plants',
-      'suggest the plants were mislabelled'
+      'explain how chemists analyze plants',
+      'suggest the plants were mislabeled'
     ],
     answer: 1,
     choiceFeedback: [
       'It is a fact, but it is placed as an argument. Ask what work the sentence does, not just what it says.',
       null,
       'The passage explains no chemistry at all. It only asserts that the chemistry stayed the same.',
-      'Mislabelling is never suggested — the passage says it was the IDENTICAL remedy.'
+      'Mislabeling is never suggested — the passage says it was the IDENTICAL remedy.'
     ],
     explanation: 'By noting the chemistry was unchanged, the author shows only the speaker changed — so status, not evidence, decided.'
   },
@@ -297,7 +297,7 @@ export const elaItems = [
     level: 4.0,
     type: 'choice',
     prompt: 'The herbs were ABUNDANT this summer. Which word means the same as ABUNDANT?',
-    choices: ['plentiful', 'scarce', 'expensive', 'colourful'],
+    choices: ['plentiful', 'scarce', 'expensive', 'colorful'],
     answer: 0,
     choiceFeedback: [
       null,
@@ -376,7 +376,7 @@ export const elaItems = [
     choiceFeedback: [
       'Potent means the opposite of weak.',
       null,
-      'Potent is about strength of effect, not flavour.',
+      'Potent is about strength of effect, not flavor.',
       'Potent says nothing about what a remedy is made from.'
     ],
     explanation: 'Potent means having a strong effect. Related words: potential, potency.'
@@ -656,7 +656,7 @@ export const elaItems = [
     choices: [
       'Mint needs water about twice a week.',
       'Keep mint where it gets some sunshine.',
-      'My favourite colour is purple.',
+      'My favorite color is purple.',
       'Trim the tops so the plant grows bushy.'
     ],
     answer: 2,
@@ -666,7 +666,7 @@ export const elaItems = [
       null,
       'This is about caring for mint, so it belongs.'
     ],
-    explanation: 'Every sentence in a paragraph should stick to the topic. A favourite colour is off-topic here.'
+    explanation: 'Every sentence in a paragraph should stick to the topic. A favorite color is off-topic here.'
   },
   {
     id: 'ws-03',
@@ -696,7 +696,7 @@ export const elaItems = [
     type: 'choice',
     prompt: 'Maya wrote: "Chamomile is easy to grow." Which sentence best SUPPORTS that with evidence?',
     choices: [
-      'Chamomile is my favourite herb.',
+      'Chamomile is my favorite herb.',
       'Chamomile flowers are white and yellow.',
       'It survives poor soil, needs little water, and reseeds itself each year.',
       'Everyone should grow chamomile.'
@@ -842,7 +842,7 @@ export const elaItems = [
     strand: 'reading-comprehension',
     level: 3.1,
     type: 'choice',
-    passage: 'Grandma keeps her dried herbs in dark glass jars on a low shelf. She says sunlight fades the colour and takes the smell away.',
+    passage: 'Grandma keeps her dried herbs in dark glass jars on a low shelf. She says sunlight fades the color and takes the smell away.',
     prompt: 'Why does Grandma use dark glass jars?',
     choices: ['Because dark jars are prettier', 'To keep sunlight off the herbs', 'Because they are cheaper', 'To make the shelf tidy'],
     answer: 1,
@@ -852,7 +852,7 @@ export const elaItems = [
       'Price is not mentioned anywhere in the passage.',
       'Tidiness is not the reason given. Look at the second sentence.'
     ],
-    explanation: 'The second sentence gives the reason: sunlight fades the colour and takes the smell away.'
+    explanation: 'The second sentence gives the reason: sunlight fades the color and takes the smell away.'
   },
   {
     id: 'rc-12',
@@ -882,13 +882,13 @@ export const elaItems = [
     level: 3.8,
     type: 'choice',
     prompt: 'Grandma said the seedlings were FRAGILE. What does FRAGILE mean?',
-    choices: ['easily broken or damaged', 'very strong', 'growing quickly', 'brightly coloured'],
+    choices: ['easily broken or damaged', 'very strong', 'growing quickly', 'brightly colored'],
     answer: 0,
     choiceFeedback: [
       null,
       'Fragile means the opposite of strong.',
       'Fragile describes how easily something breaks, not how fast it grows.',
-      'Fragile is not about colour.'
+      'Fragile is not about color.'
     ],
     explanation: 'Fragile means delicate — easily broken. You see it stamped on parcels for the same reason.'
   },
@@ -1065,9 +1065,9 @@ export const elaItems = [
     strand: 'reading-comprehension',
     level: 2.6,
     type: 'choice',
-    passage: 'Grandma hangs her herbs upside down in the shed. The air moves around them and dries them slowly. If she dried them in the sun, the colour would fade.',
+    passage: 'Grandma hangs her herbs upside down in the shed. The air moves around them and dries them slowly. If she dried them in the sun, the color would fade.',
     prompt: 'Why does Grandma dry her herbs in the shed?',
-    choices: ['The shed is closer to the house', 'The sun would fade their colour', 'Herbs will not dry in the sun', 'She has no room outside'],
+    choices: ['The shed is closer to the house', 'The sun would fade their color', 'Herbs will not dry in the sun', 'She has no room outside'],
     answer: 1,
     choiceFeedback: [
       'The passage never says where the shed is.',
@@ -1075,7 +1075,7 @@ export const elaItems = [
       'The passage does not say sun-dried herbs stay wet. It names a different problem.',
       'The passage never mentions running out of room.'
     ],
-    explanation: 'The last sentence gives the reason: the sun would make the colour fade.'
+    explanation: 'The last sentence gives the reason: the sun would make the color fade.'
   },
   {
     id: 'rc-17',
@@ -1101,10 +1101,10 @@ export const elaItems = [
     type: 'choice',
     passage: 'Nettle leaves sting when you brush past them. Tiny hairs on the leaf break off in your skin. Growers wear thick gloves before they touch a nettle patch.',
     prompt: 'What causes the sting?',
-    choices: ['The colour of the leaf', 'Tiny hairs that break off in the skin', 'Thick gloves', 'The size of the patch'],
+    choices: ['The color of the leaf', 'Tiny hairs that break off in the skin', 'Thick gloves', 'The size of the patch'],
     answer: 1,
     choiceFeedback: [
-      'The passage never mentions the colour.',
+      'The passage never mentions the color.',
       null,
       'Gloves are what stops the sting, not what causes it.',
       'The passage does not say the size of the patch matters.'
@@ -1285,7 +1285,7 @@ export const elaItems = [
     prompt: 'The stem felt FIRM. What does FIRM mean?',
     choices: ['hard and solid', 'soft and floppy', 'bright green', 'very tall'],
     answer: 0,
-    choiceFeedback: [null, 'Floppy is the opposite of firm.', 'That is a colour, not how it feels.', 'That is height, not how it feels.'],
+    choiceFeedback: [null, 'Floppy is the opposite of firm.', 'That is a color, not how it feels.', 'That is height, not how it feels.'],
     explanation: 'Firm means hard and solid, not soft.'
   },
   {
@@ -1329,7 +1329,7 @@ export const elaItems = [
     prompt: 'The basil WILTED in the heat. What does WILTED mean?',
     choices: ['went limp and droopy', 'grew taller', 'turned bright green', 'made new seeds'],
     answer: 0,
-    choiceFeedback: [null, 'Growing is the opposite of what a wilted plant does.', 'A wilted plant loses colour, it does not gain it.', 'Making seeds is not about drooping.'],
+    choiceFeedback: [null, 'Growing is the opposite of what a wilted plant does.', 'A wilted plant loses color, it does not gain it.', 'Making seeds is not about drooping.'],
     explanation: 'A wilted plant has gone limp and droopy, usually from a lack of water.'
   },
   {
@@ -1393,10 +1393,10 @@ export const elaItems = [
     level: 5.2,
     type: 'choice',
     prompt: 'To INFUSE dried petals in hot water is to —',
-    choices: ['let them soak so the water takes on their colour and scent', 'grind them to powder', 'dry them a second time', 'plant them again'],
+    choices: ['let them soak so the water takes on their color and scent', 'grind them to powder', 'dry them a second time', 'plant them again'],
     answer: 0,
     choiceFeedback: [null, 'Grinding breaks a thing up. Infusing soaks it.', 'Infusing uses water, so it is not a way of drying.', 'Petals are not planted.'],
-    explanation: 'To infuse is to soak something so the water takes on its colour and scent.'
+    explanation: 'To infuse is to soak something so the water takes on its color and scent.'
   },
   {
     id: 'vo-25',
@@ -1720,7 +1720,7 @@ export const elaItems = [
     prompt: 'Which sentence states a claim most clearly?',
     choices: ['Growing herbs at home saves money over a year.', 'Herbs and gardens and things like that.', 'I think maybe herbs might be cheaper, possibly.', 'Herbs are green.'],
     answer: 0,
-    choiceFeedback: [null, 'That is a list of topics, not a claim about any of them.', 'So many hedges that the reader cannot tell what is being claimed.', 'That is a fact about colour, not a claim worth arguing.'],
+    choiceFeedback: [null, 'That is a list of topics, not a claim about any of them.', 'So many hedges that the reader cannot tell what is being claimed.', 'That is a fact about color, not a claim worth arguing.'],
     explanation: 'A claim says one clear thing that a reader could agree or disagree with.'
   },
   {

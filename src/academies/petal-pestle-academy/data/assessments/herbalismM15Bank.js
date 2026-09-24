@@ -92,7 +92,7 @@ export const HERBALISM_M15_BANK = [
     feedback: [
       'She trained in Massachusetts, and there was no earlier college anywhere.',
       'That was Susan McKinney Steward, who taught music before medicine.',
-      'Steward practised in Brooklyn. Crumpler was in Massachusetts and Virginia.'
+      'Steward practiced in Brooklyn. Crumpler was in Massachusetts and Virginia.'
     ,
       null],
     why: 'Eight years of real work is what got the doctors who watched her to recommend her.'
@@ -187,7 +187,7 @@ export const HERBALISM_M15_BANK = [
     feedback: [
       'It employed doctors. It did not train them.'
     ,
-      'Crumpler practised in Boston too, and that is not what the Bureau was.',
+      'Crumpler practiced in Boston too, and that is not what the Bureau was.',
       'That describes something more like the oncology society founded in 1964.',
       null],
     why: 'It is why there was medical work in Richmond in 1865 for a doctor willing to go.'
@@ -242,7 +242,7 @@ export const HERBALISM_M15_BANK = [
       'Never. Nothing in this course is ever an instruction about a person.',
       null,
       'That belongs to a doctor and a pharmacist, and it is not a job for you.'],
-    why: 'Reading about medicine is how you begin. Practising it is a job you grow into, and years away.'
+    why: 'Reading about medicine is how you begin. Practicing it is a job you grow into, and years away.'
   },
 
   // =========================================================================
@@ -271,7 +271,7 @@ export const HERBALISM_M15_BANK = [
     feedback: [
       'She worked in Ohio much later, at Wilberforce University.'
     ,
-      'Massachusetts is where Crumpler trained and practised.',
+      'Massachusetts is where Crumpler trained and practiced.',
       'Pennsylvania is where Cole was born and took her degree.',
       null],
     why: 'She was the third Black woman in the country to earn a medical degree and the first in New York State.'
@@ -421,7 +421,7 @@ export const HERBALISM_M15_BANK = [
       'Choosing costs money, and Cole knew exactly who had none.',
       null,
       'A doctor visiting more often does not add a window to the wall.'],
-    why: 'A map of conditions is a record and not a judgement, and Cole asked for laws rather than blaming families.'
+    why: 'A map of conditions is a record and not a judgment, and Cole asked for laws rather than blaming families.'
   },
 
   // =========================================================================
@@ -449,7 +449,7 @@ export const HERBALISM_M15_BANK = [
       'How an enzyme breaks down corn starch',
       'How cholesterol travels through an artery',
       'How DNA winds around histones',
-      'How a plant senses the colour of light'
+      'How a plant senses the color of light'
     ],
     answer: 0,
     feedback: [
@@ -633,7 +633,7 @@ export const HERBALISM_M15_BANK = [
       'A drawing is a record of cells and not the cells themselves.',
       null,
       'That is a catheter, which Wright also used, for a different problem.'],
-    why: 'Wright grew cells from the patient\'s own tumour so the drugs could be tried on those exact cells.'
+    why: 'Wright grew cells from the patient\'s own tumor so the drugs could be tried on those exact cells.'
   },
   {
     id: 't-hbm1504b',
@@ -657,7 +657,7 @@ export const HERBALISM_M15_BANK = [
   {
     id: 't-hbm1504c',
     lesson: 'hb-m15-04',
-    prompt: 'A drug kills the tumour cells in the dish. Why is the question still not settled?',
+    prompt: 'A drug kills the tumor cells in the dish. Why is the question still not settled?',
     choices: [
       'Because dish results are usually wrong',
       'Because a dish has no blood, no liver and no rest of a body',
@@ -714,7 +714,7 @@ export const HERBALISM_M15_BANK = [
       'To let a patient decide the amount for themselves'
     ,
       'To make the treatment cheaper for the hospital',
-      'Because some tumours sit deep inside an organ and are hard to reach',
+      'Because some tumors sit deep inside an organ and are hard to reach',
       'Because patients preferred tubes to tablets'],
     answer: 2,
     feedback: [
@@ -766,7 +766,7 @@ export const HERBALISM_M15_BANK = [
   {
     id: 't-hbm1504i',
     lesson: 'hb-m15-04',
-    prompt: 'A hospital team tests a chemical against tumours. Who decides what a patient is given, and measures it?',
+    prompt: 'A hospital team tests a chemical against tumors. Who decides what a patient is given, and measures it?',
     choices: [
       'Anybody in the family who has read about it',
       'The scientist who first found the chemical'
@@ -799,7 +799,7 @@ export const HERBALISM_M15_BANK = [
       null,
       'Salt water can harm a plant badly, which is why the question is worth asking.',
       'Most plants struggle in salty water, so corn is not unusual.'],
-    why: 'Test on twenty spare seeds first, which is exactly what Wright did with a piece of a tumour.'
+    why: 'Test on twenty spare seeds first, which is exactly what Wright did with a piece of a tumor.'
   },
 
   // =========================================================================
@@ -889,7 +889,7 @@ export const HERBALISM_M15_BANK = [
       'A movement ordered by the spinal cord',
       'The fluid that cushions the brain'
     ,
-      'A bundle of fibres carrying signals as electricity',
+      'A bundle of fibers carrying signals as electricity',
       'A thin tube that carries extra fluid somewhere else'],
     answer: 3,
     feedback: [
@@ -1022,7 +1022,7 @@ export const HERBALISM_M15_BANK = [
       'A medicine that kills a virus already inside you'
     ,
       'A shape from the virus, without the virus doing anything',
-      'A whole living virus, so the body can practise fighting'],
+      'A whole living virus, so the body can practice fighting'],
     answer: 2,
     feedback: [
       'A body cannot read, and it learns shapes instead.',
@@ -1040,7 +1040,7 @@ export const HERBALISM_M15_BANK = [
       'Which country the germ came from'
     ,
       'The name of whatever made you ill',
-      'A shape it can recognise again later',
+      'A shape it can recognize again later',
       'How many germs arrived that day'],
     answer: 2,
     feedback: [
@@ -1092,7 +1092,7 @@ export const HERBALISM_M15_BANK = [
   {
     id: 't-hbm1506f',
     lesson: 'hb-m15-06',
-    prompt: 'What was Kizzmekia Corbett\'s job at the vaccine research centre?',
+    prompt: 'What was Kizzmekia Corbett\'s job at the vaccine research center?',
     choices: [
       'She ran the hospital where patients were treated',
       'She was the scientific lead for the coronavirus vaccine team',
@@ -1101,7 +1101,7 @@ export const HERBALISM_M15_BANK = [
     ],
     answer: 1,
     feedback: [
-      'It is a research centre, and treating patients happens elsewhere.',
+      'It is a research center, and treating patients happens elsewhere.',
       null,
       'She finished her doctorate in 2014 and led a team afterwards.',
       'Rules like that are written by other parts of government.'
@@ -1117,7 +1117,7 @@ export const HERBALISM_M15_BANK = [
       'How DNA is wound around proteins inside a nucleus',
       'How fluid drains from around a child\'s brain'
     ,
-      'How cancer drugs reach tumours deep inside an organ'],
+      'How cancer drugs reach tumors deep inside an organ'],
     answer: 0,
     feedback: [
       null,
@@ -1132,14 +1132,14 @@ export const HERBALISM_M15_BANK = [
     lesson: 'hb-m15-06',
     prompt: 'You turn your corn container round and within days the stems lean the other way. What is happening?',
     choices: [
-      'The draught from the window is pushing the stems over'
+      'The draft from the window is pushing the stems over'
     ,
       'The plant remembers where the window used to be',
-      'The plant is sensing where the light is now and growing towards it',
+      'The plant is sensing where the light is now and growing toward it',
       'The plant is growing faster in every direction at once'],
     answer: 2,
     feedback: [
-      'Move it away from any draught and it still leans, so air is not doing it.'
+      'Move it away from any draft and it still leans, so air is not doing it.'
     ,
       'It responds to the light in front of it, not to the light that has gone.',
       null,

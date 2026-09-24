@@ -71,7 +71,7 @@ export const SOCIAL_M5 = [
       verified: '2026-08-17',
       teaches: ['War of 1812', 'burning of Washington', 'Capitol', 'White House', 'British troops'],
       sourceGap:
-        'PragerU Kids appeared in this search with a Francis Scott Key video and is NOT used — an advocacy organisation with a stated political position is not a neutral educational publisher, and the exclusion is written down rather than quietly applied. No Black American educator identified for the War of 1812 at an elementary level. Open.'
+        'PragerU Kids appeared in this search with a Francis Scott Key video and is NOT used — an advocacy organization with a stated political position is not a neutral educational publisher, and the exclusion is written down rather than quietly applied. No Black American educator identified for the War of 1812 at an elementary level. Open.'
     },
     checkIn: {
       title: 'The second time',
@@ -253,7 +253,7 @@ export const SOCIAL_M5 = [
             'That is in Texas.',
             'That was burned, not shelled.'
           ],
-          why: 'A fort guarding Baltimore harbour.'
+          why: 'A fort guarding Baltimore harbor.'
         }
       },
       {
@@ -343,7 +343,7 @@ export const SOCIAL_M5 = [
       },
       {
         prompt: 'At dawn Key looked for and saw the:',
-        choices: ['Ships', 'Flag', 'Sun', 'Harbour'],
+        choices: ['Ships', 'Flag', 'Sun', 'Harbor'],
         answer: 1,
         feedback: ['Not what he sought.', null, 'Not what he sought.', 'Not what he sought.']
       }
@@ -571,9 +571,9 @@ export const SOCIAL_M5 = [
       {
         n: 2,
         label: 'And it would have failed without Sacagawea',
-        hook: 'A Shoshone woman travelled with them, carrying a baby, and the journey depended on her.',
+        hook: 'A Shoshone woman traveled with them, carrying a baby, and the journey depended on her.',
         teachingText:
-          'Sacagawea knew plants, spoke languages the men did not, and helped them get horses. A group travelling with a woman and child was read as peaceful.',
+          'Sacagawea knew plants, spoke languages the men did not, and helped them get horses. A group traveling with a woman and child was read as peaceful.',
         example:
           'She is on her own lesson next week, because one paragraph is not enough for what she did.',
         applyIt: {
@@ -623,7 +623,7 @@ export const SOCIAL_M5 = [
       },
       {
         heading: 'And it would have failed without Sacagawea',
-        text: 'Sacagawea knew plants, spoke languages the men did not, and helped them get horses. A group travelling with a woman and child was read as peaceful.'
+        text: 'Sacagawea knew plants, spoke languages the men did not, and helped them get horses. A group traveling with a woman and child was read as peaceful.'
       }
     ],
     doing:

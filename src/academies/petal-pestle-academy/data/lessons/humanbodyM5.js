@@ -78,7 +78,7 @@ const L1_BEATS = [
 
 const L1_ACTIVITY = {
   title: 'Build a fist-sized heart',
-  prep: 'Modelling clay or playdough. Paper and a pencil.',
+  prep: 'Modeling clay or playdough. Paper and a pencil.',
   needs: ['clay or dough', 'paper', 'a pencil', 'her notebook'],
   steps: [
     'Make a fist. That is roughly the size of your own heart.',

@@ -403,16 +403,16 @@ const L11_BEATS = [
 const L11_ACTIVITY = {
   title: 'Your weight on six worlds',
   prep: 'Use these rough multipliers — the Moon 0.17, Mars 0.38, Earth 1, Saturn 1.07, Neptune 1.14, Jupiter 2.34.',
-  needs: ['a scale', 'a calculator', 'her notebook', 'coloured pencils'],
+  needs: ['a scale', 'a calculator', 'her notebook', 'colored pencils'],
   steps: [
-    'Weigh yourself, or weigh a favourite thing if you would rather.',
+    'Weigh yourself, or weigh a favorite thing if you would rather.',
     'Multiply that number by each of the six numbers above.',
     'Draw a bar for each world, tallest to shortest.',
     'Which world is nearest to Earth? Which is the strangest?',
     'Now do the same for your watering can.',
     'Write one sentence about what did NOT change on any of the six.'
   ],
-  safety: 'None. This one is arithmetic and colouring.',
+  safety: 'None. This one is arithmetic and coloring.',
   minutes: 12
 };
 
@@ -600,7 +600,7 @@ export const SCIENCELAB_M2 = [
     ],
     check: [
       { prompt: 'A big stone and a small pebble are dropped together. They land:', choices: ['Stone first', 'Pebble first', 'Differently each time', 'Together'], answer: 3, feedback: ['The guess almost everyone makes.', 'Small does not help.', 'Try it five times.', null] },
-      { prompt: 'The leaf falls slowly because of its:', choices: ['Shape', 'Weight', 'Colour', 'Age'], answer: 0, feedback: [null, 'Crumple it and it falls fast at the same weight.', 'Colour does not catch air.', 'A dry dead leaf does the same.'] },
+      { prompt: 'The leaf falls slowly because of its:', choices: ['Shape', 'Weight', 'Color', 'Age'], answer: 0, feedback: [null, 'Crumple it and it falls fast at the same weight.', 'Color does not catch air.', 'A dry dead leaf does the same.'] },
       { prompt: 'Crumpling a leaf into a ball makes it fall faster because:', choices: ['It got heavier', 'It catches less air', 'Gravity got stronger', 'It is smaller so lighter'], answer: 1, feedback: ['Nothing was added.', null, 'Gravity did not change.', 'Its weight is exactly the same.'] }
     ]
   },
@@ -649,7 +649,7 @@ export const SCIENCELAB_M2 = [
     check: [
       { prompt: 'The sprouting jar is turned on its side. In two days the root has:', choices: ['Stopped', 'Kept going sideways', 'Curved to head down again', 'Become a shoot'], answer: 2, feedback: ['It keeps growing.', 'It corrects itself.', null, 'A root stays a root.'] },
       { prompt: 'One bean is grown in a dark cupboard so that nobody can say the root was following:', choices: ['The light', 'The water', 'The soil', 'The wind'], answer: 0, feedback: [null, 'The paper is damp all over.', 'There is no soil in the jar.', 'There is no wind in a jar.'] },
-      { prompt: 'A root turning shows gravity changing an object’s:', choices: ['Colour', 'Weight', 'Direction', 'Mass'], answer: 2, feedback: ['Roots stay white.', 'Its weight barely alters.', null, 'Nothing was added or taken away.'] }
+      { prompt: 'A root turning shows gravity changing an object’s:', choices: ['Color', 'Weight', 'Direction', 'Mass'], answer: 2, feedback: ['Roots stay white.', 'Its weight barely alters.', null, 'Nothing was added or taken away.'] }
     ]
   },
   {
@@ -695,7 +695,7 @@ export const SCIENCELAB_M2 = [
     ],
     check: [
       { prompt: 'On the moon, the compost bag would have:', choices: ['Less mass and less weight', 'More mass, same weight', 'The same mass but less weight', 'No mass'], answer: 2, feedback: ['None of it fell out.', 'Nothing was added.', null, 'It is still compost.'] },
-      { prompt: 'Carrying a bag up a mountain changes its:', choices: ['Mass a lot', 'Mass not at all', 'Colour', 'Shape'], answer: 1, feedback: ['Nothing was added or lost.', null, 'Carrying does not repaint it.', 'It is the same bag.'] },
+      { prompt: 'Carrying a bag up a mountain changes its:', choices: ['Mass a lot', 'Mass not at all', 'Color', 'Shape'], answer: 1, feedback: ['Nothing was added or lost.', null, 'Carrying does not repaint it.', 'It is the same bag.'] },
       { prompt: 'People mix up mass and weight because on Earth:', choices: ['They always go together', 'They are the same word', 'Neither can be measured', 'Scales are broken'], answer: 0, feedback: [null, 'They are two different words for two different things.', 'Both can be measured.', 'Scales work fine.'] }
     ]
   },

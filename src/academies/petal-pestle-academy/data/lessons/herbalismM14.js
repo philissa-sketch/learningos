@@ -144,7 +144,7 @@ const M14L1_BEATS = [
     example:
       'Gigi remembers that the garlic did beautifully the year she used the blue bucket. That is a story. Six containers, measured every week in pen, would be evidence.',
     applyIt: {
-      prompt: 'A neighbour says her tomatoes grew huge because she buried a fish under them. She measured nothing. What do you have so far?',
+      prompt: 'A neighbor says her tomatoes grew huge because she buried a fish under them. She measured nothing. What do you have so far?',
       choices: [
         'Evidence, because she saw the whole thing happen herself',
         'A story worth testing, and nothing more than that',
@@ -194,7 +194,7 @@ const M14L1_ACTIVITY = {
   prep: 'Gigi writes one testable claim about the garden on a card before you begin, using a difference she genuinely does not know the answer to. Something like: the garlic leaves on the sunny side of the container are longer than the ones on the shady side. Have a ruler, a pen that does not rub out and a fresh page ready.',
   needs: [
     'her garlic container, and the corn container as well if it is going',
-    'a ruler marked in centimetres',
+    'a ruler marked in centimeters',
     'a pen that does not rub out',
     'a fresh page ruled into two columns of ten rows',
     'twenty small paper tags or bits of masking tape',
@@ -220,7 +220,7 @@ const M14L1_ACTIVITY = {
     'Before we measure anything. What would change your mind about this claim?',
     'You measured one leaf each. Honestly now, could you have picked a pair to prove either answer?',
     'How did you decide which ten leaves to tag? Say the rule you used.',
-    'Why does it matter that you did not get to choose your favourites?',
+    'Why does it matter that you did not get to choose your favorites?',
     'What is the difference between the average and any single leaf on your list?',
     'Your longest and shortest leaves are far apart. Does that ruin the test?',
     'Suppose the averages came out almost the same. What would you write then?',
@@ -235,7 +235,7 @@ const M14L1_LEDGER = {
   sheet: 'M14L1-story-or-evidence-PRINTABLE.pdf',
   tasks: [
     'Write the claim at the top, then your two columns of ten measurements.',
-    'Write both averages, and the difference between them, in centimetres.',
+    'Write both averages, and the difference between them, in centimeters.',
     'Write one sentence that your numbers actually support. No more than that.',
     'Write the sample size on the line provided. It is the number of leaves you measured.'
   ],
@@ -299,7 +299,7 @@ const M14L2_BEATS = [
     example:
       'Your corn perked up after the night watering. It also got cooler, the sun went down, the wind dropped and a shower passed at midnight. Any of those could be the reason.',
     applyIt: {
-      prompt: 'You sang to your turmeric every morning for a fortnight and it sprouted on day twelve. Turmeric usually sprouts somewhere between day ten and day twenty. What can you honestly say?',
+      prompt: 'You sang to your turmeric every morning for two weeks and it sprouted on day twelve. Turmeric usually sprouts somewhere between day ten and day twenty. What can you honestly say?',
       choices: [
         'The singing worked, because it sprouted while you were singing',
         'Nothing about the singing, because that is when it sprouts anyway',
@@ -325,7 +325,7 @@ const M14L2_ACTIVITY = {
     'six matching containers with drainage holes',
     'soil from one bag, mixed in one bucket first',
     'six seeds or cloves of the same kind, from the same packet',
-    'a measuring jug marked in millilitres',
+    'a measuring jug marked in milliliters',
     'labels and a pen that does not rub out',
     'a ruler',
     'the planning sheet',
@@ -341,7 +341,7 @@ const M14L2_ACTIVITY = {
     'Mix all the soil in one bucket, then fill all six containers to the same line.',
     'Plant one seed in each, all at the same depth, measured with the ruler.',
     'Label three pots NIGHT and three pots MORNING, and add the date to every label.',
-    'Give every pot the same number of millilitres from the same jug.',
+    'Give every pot the same number of milliliters from the same jug.',
     'Set the two groups side by side in the same light, because light is being held still.',
     'Write the day you will measure, and how you will measure it, before you finish.'
   ],
@@ -404,16 +404,16 @@ const M14L3_BEATS = [
     example:
       'Mulch three garlic pots and leave three bare, everything else the same. If both groups improve equally, the improvement was June and not the mulch.',
     applyIt: {
-      prompt: 'Your mulched pots grew four centimetres this fortnight. You have nothing to compare them with. What does the four centimetres tell you about mulch?',
+      prompt: 'Your mulched pots grew four centimeters in these two weeks. You have nothing to compare them with. What does the four centimeters tell you about mulch?',
       choices: [
-        'That mulch grows four centimetres of garlic a fortnight',
+        'That mulch grows four centimeters of garlic every two weeks',
         'That mulch works, but only a little bit',
         'Nothing yet, because you do not know what bare pots did',
-        'That the test needs to run for another fortnight'
+        'That the test needs to run for another two weeks'
       ],
       answer: 2,
       feedback: [
-        'The garlic grew four centimetres. Nothing has shown that the mulch is why.',
+        'The garlic grew four centimeters. Nothing has shown that the mulch is why.',
         'Working a little is still a claim, and you have no comparison to support it.',
         null,
         'Longer will not help. A missing control group stays missing.'
@@ -430,7 +430,7 @@ const M14L3_BEATS = [
     example:
       'A scraped knee heals in about a week whether anybody fusses over it or not. Whatever was put on it on day six will get the credit for day seven.',
     applyIt: {
-      prompt: 'Both groups of garlic grew four centimetres, mulched and bare alike. What is the honest conclusion?',
+      prompt: 'Both groups of garlic grew four centimeters, mulched and bare alike. What is the honest conclusion?',
       choices: [
         'The mulch worked on both groups somehow',
         'The garlic grew for reasons that had nothing to do with mulch',
@@ -466,7 +466,7 @@ const M14L3_ACTIVITY = {
     'Flip the coin for each pot in turn and write down which group it landed in.',
     'Say out loud why flipping a coin is fairer than picking the pots yourself.',
     'Label three pots MULCH and three pots BARE, and date every label.',
-    'Water all six with exactly the same number of millilitres from the same jug.',
+    'Water all six with exactly the same number of milliliters from the same jug.',
     'Weigh each pot straight afterwards and write down its starting mass in grams.',
     'Spread mulch on the three MULCH pots only, then weigh those three again.',
     'Write down the new mass, because the mulch itself has added some.',
@@ -532,9 +532,9 @@ const M14L4_BEATS = [
     teachingText:
       'A placebo is something with no active ingredient in it, handed over as though it were the real thing. Expecting help changes what a person notices, what they remember and how much attention they pay, and that is not lying. It is how attention works in everybody, including you.',
     example:
-      'Tell somebody a glass holds special mountain water and they will taste something in it. Pour the same tap water into both glasses and they will still pick a favourite.',
+      'Tell somebody a glass holds special mountain water and they will taste something in it. Pour the same tap water into both glasses and they will still pick a favorite.',
     applyIt: {
-      prompt: 'Gigi tells you she gave three of your pots a special plant food. A fortnight later you rank those three as the greenest. Then she tells you all six got plain water. What happened?',
+      prompt: 'Gigi tells you she gave three of your pots a special plant food. Two weeks later you rank those three as the greenest. Then she tells you all six got plain water. What happened?',
       choices: [
         'Gigi tricked you, so nothing you measured counts for anything',
         'Those three really were greener, so the plain water worked',
@@ -583,7 +583,7 @@ const M14L4_ACTIVITY = {
   title: 'Run the placebo on yourself, then run it on somebody else',
   prep: 'Gigi sets this up before Azianna comes in. She codes the six pots A to F with tape, keeps the key hidden, and tells Azianna that three of them have been given a special plant food without saying which. She gives all six exactly the same water and nothing else. Round two needs two identical glasses and one jug of ordinary tap water. Both rounds end with the truth told kindly, and neither round is left as a joke on anybody.',
   needs: [
-    'the six pots, relabelled A to F by a grown-up',
+    'the six pots, relabeled A to F by a grown-up',
     'a hidden key sheet that only Gigi can see',
     'a ruler and a ranking sheet',
     'two identical clean glasses',
@@ -639,7 +639,7 @@ const M14L4_LEDGER = {
       'A grown-up describes a test. You say what still needs hiding, and from whom.'
     ],
     ifSheIsStuck:
-      'Read her own confident sentence about the special three back to her, in her own handwriting. PLACEBO stops being a word the moment she recognises herself in it.'
+      'Read her own confident sentence about the special three back to her, in her own handwriting. PLACEBO stops being a word the moment she recognizes herself in it.'
   },
   note: 'Nothing here is graded. Nothing is corrected. Petals are for doing it.'
 };
@@ -669,14 +669,14 @@ const M14L5_BEATS = [
         'The picture, because it shows what is inside',
         'The net weight, because it is the amount you are actually getting',
         'Neither, because the boxes are the same size',
-        'The colour of the box, because bright colours mean fresher food'
+        'The color of the box, because bright colors mean fresher food'
       ],
       answer: 1,
       feedback: [
         'The picture on the front is a drawing that somebody was paid to make.',
         null,
         'Same box, different amount inside. That is exactly why the weight is printed.',
-        'Colour is a choice made by a designer, not a measurement of anything.'
+        'Color is a choice made by a designer, not a measurement of anything.'
       ],
       why: 'The printed numbers are the part of the packet that somebody can be held to.'
     }
@@ -715,7 +715,7 @@ const M14L5_ACTIVITY = {
   needs: [
     'five packages: food, tea, spice, a seed packet and a bag of plant food',
     'a table ruled into five rows and four columns',
-    'a highlighter or a coloured pencil',
+    'a highlighter or a colored pencil',
     'a pen that does not rub out',
     'two blank labels and a jar of her own dried herbs from the apothecary module',
     'a magnifier for the small print'
@@ -855,7 +855,7 @@ const M14L6_ACTIVITY = {
     'Mark each prediction HELD, CHANGED or NOT YET, and date each mark.',
     'Take an index card for each of your three garden claims and write the claim at the top.',
     'On each card, write the exact result that would make you drop that claim.',
-    'Be specific with numbers. If the two averages come within one centimetre, say so on the card.',
+    'Be specific with numbers. If the two averages come within one centimeter, say so on the card.',
     'Sign and date every card, then clip it to the sheet it belongs with.',
     'Now rule the timeline strip and mark 1979, 1982, 1984 and 2005 along it.',
     'Write what happened at each mark, and measure the gap between the first and the last.',
@@ -1072,7 +1072,7 @@ export const HERBALISM_M14 = [
     hook: M14L2_CHECK_IN,
     core: M14L2_BEATS.map((b) => ({ heading: b.label, text: b.teachingText })),
     doing:
-      'Design and set up a real test of a real claim: does watering at night grow better plants than watering in the morning. Six matching containers, soil mixed in one bucket first, the same seed from the same packet at the same depth, and the same millilitres from the same jug. Three pots are watered at night by Gigi and three in the morning, and everything else on the planning sheet is listed as held still. She writes her prediction in pen and, underneath it, the exact result that would prove her wrong, both dated before a single seed goes in.',
+      'Design and set up a real test of a real claim: does watering at night grow better plants than watering in the morning. Six matching containers, soil mixed in one bucket first, the same seed from the same packet at the same depth, and the same milliliters from the same jug. Three pots are watered at night by Gigi and three in the morning, and everything else on the planning sheet is listed as held still. She writes her prediction in pen and, underneath it, the exact result that would prove her wrong, both dated before a single seed goes in.',
 
     practice: [
       {
@@ -1101,7 +1101,7 @@ export const HERBALISM_M14 = [
           'More changes is blurrier, not better.',
           null,
           'Light is a condition, and you just made it different between the groups.',
-          'Cancelling out is not a thing conditions do. They pile up.'
+          'Canceling out is not a thing conditions do. They pile up.'
         ]
       },
       {
@@ -1159,7 +1159,7 @@ export const HERBALISM_M14 = [
       { word: 'comparison', plain: 'Holding two results side by side to see what is different.' },
       { word: 'baseline', plain: 'The measurement you take at the start, before anything is changed.' },
       { word: 'null result', plain: 'Finding no difference. It is a real answer, not a failure.' },
-      { word: 'randomise', plain: 'To let chance decide, like a coin flip, so nobody can choose the easy ones.' },
+      { word: 'randomize', plain: 'To let chance decide, like a coin flip, so nobody can choose the easy ones.' },
       { word: 'conclusion', plain: 'What your numbers let you say at the end, and no more than that.' }
     ],
 
@@ -1188,7 +1188,7 @@ export const HERBALISM_M14 = [
     hook: M14L3_CHECK_IN,
     core: M14L3_BEATS.map((b) => ({ heading: b.label, text: b.teachingText })),
     doing:
-      'Test whether mulch really keeps a pot damper, using a scale as the instrument. Six matching pots, and a coin flip decides which three get mulched so that nobody chooses the healthy ones. Water all six with the same millilitres, weigh every pot straight afterwards, then weigh all six at the same time every day for a week. The mass that goes missing is the water that left, which is the measurement from the apothecary module used again. Average the three mulched losses and the three bare losses, compare them, and write down what the control group made it possible to say.',
+      'Test whether mulch really keeps a pot damper, using a scale as the instrument. Six matching pots, and a coin flip decides which three get mulched so that nobody chooses the healthy ones. Water all six with the same milliliters, weigh every pot straight afterwards, then weigh all six at the same time every day for a week. The mass that goes missing is the water that left, which is the measurement from the apothecary module used again. Average the three mulched losses and the three bare losses, compare them, and write down what the control group made it possible to say.',
 
     practice: [
       {
@@ -1205,9 +1205,9 @@ export const HERBALISM_M14 = [
 
     check: [
       {
-        prompt: 'Your mulched pots grew four centimetres. You have nothing else to compare them with. What can you say about mulch?',
+        prompt: 'Your mulched pots grew four centimeters. You have nothing else to compare them with. What can you say about mulch?',
         choices: [
-          'That mulch grows four centimetres a fortnight',
+          'That mulch grows four centimeters every two weeks',
           'That mulch works a little',
           'Nothing, because you do not know what bare pots did',
           'That mulch works better in June than in March'
@@ -1446,14 +1446,14 @@ export const HERBALISM_M14 = [
         choices: [
           'The picture on the front',
           'The net weight printed on the back',
-          'The colour of the packaging',
+          'The color of the packaging',
           'Which one is on the higher shelf'
         ],
         answer: 1,
         feedback: [
           'The picture was drawn by somebody who was paid to make it appealing.',
           null,
-          'Colour is a design choice, not a measurement of anything.',
+          'Color is a design choice, not a measurement of anything.',
           'Shelf position is a shop decision and tells you nothing about the contents.'
         ]
       },

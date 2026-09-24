@@ -108,7 +108,7 @@ export const SOCIAL_M8 = [
     activity: {
       title: 'Run a market with ten counters',
       prep: 'Nothing to buy. Counters and two other people if possible.',
-      needs: ['ten counters or sweets', 'two other people if possible', 'her notebook'],
+      needs: ['ten counters or candies', 'two other people if possible', 'her notebook'],
       steps: [
         'Put out ten counters. Ask two people how many they each want.',
         'If they want more than ten between them, raise the price in claps.',
@@ -163,12 +163,12 @@ export const SOCIAL_M8 = [
       'People do what they are best at and swap for the rest, and a swap both sides agreed to leaves both better off.',
     standards: ['SS4E1c', 'SS4E1d', 'SS4E1e'],
     offGrade: null,
-    words: ['trade', 'exchange', 'goods', 'specialise'],
+    words: ['trade', 'exchange', 'goods', 'specialize'],
     glossary: [
       { word: 'trade', plain: 'Swapping goods, or buying and selling them.' },
       { word: 'exchange', plain: 'Giving one thing and getting another.' },
       { word: 'goods', plain: 'Things that are made or grown to be sold.' },
-      { word: 'specialise', plain: 'To do one job and get very good at it.' }
+      { word: 'specialize', plain: 'To do one job and get very good at it.' }
     ],
     video: {
       id: '6zKT75tjclE',
@@ -179,7 +179,7 @@ export const SOCIAL_M8 = [
       verified: '2026-08-17',
       teaches: ['trade', 'exchange', 'goods', 'buyers', 'sellers'],
       sourceGap:
-        '⚠️ THIS LESSON CARRIES THREE ELEMENTS BECAUSE TWO HAD NO VIDEO. Four searches for specialization and voluntary exchange at an elementary level returned only CrashCourse (high school), Learn Liberty and the Foundation for Economic Education — advocacy organisations, excluded on the same rule as PragerU. The cost is recorded rather than hidden. No Black American educator identified. Open.'
+        '⚠️ THIS LESSON CARRIES THREE ELEMENTS BECAUSE TWO HAD NO VIDEO. Four searches for specialization and voluntary exchange at an elementary level returned only CrashCourse (high school), Learn Liberty and the Foundation for Economic Education — advocacy organizations, excluded on the same rule as PragerU. The cost is recorded rather than hidden. No Black American educator identified. Open.'
     },
     checkIn: {
       title: 'Nobody is good at everything',
@@ -192,11 +192,11 @@ export const SOCIAL_M8 = [
         label: 'Do one thing well',
         hook: 'A person who tries to make everything makes everything badly.',
         teachingText:
-          'To specialise is to do one job and get very good at it. The north specialised in making things. The south specialised in growing them.',
+          'To specialize is to do one job and get very good at it. The north specialized in making things. The south specialized in growing them.',
         example:
           'Northern mills spun cloth. Southern farms grew the cotton the mills needed. Neither could do the other well.',
         applyIt: {
-          prompt: 'To specialise means to do one job and get very:',
+          prompt: 'To specialize means to do one job and get very:',
           choices: ['Rich', 'Good at it', 'Tired', 'Busy'],
           answer: 1,
           feedback: ['Not the meaning.', null, 'Not the meaning.', 'Not the meaning.'],
@@ -237,7 +237,7 @@ export const SOCIAL_M8 = [
     },
     ledger: {
       prompt:
-        'Write what specialising means and what voluntary exchange means. End with your two group totals.',
+        'Write what specializing means and what voluntary exchange means. End with your two group totals.',
       ifSheIsStuck:
         'Ask her whether anything new came into the room. Nothing did, and everybody was happier.'
     },
@@ -247,17 +247,17 @@ export const SOCIAL_M8 = [
       question: 'What is the obvious thing for those two to do?'
     },
     core: [
-      { heading: 'Do one thing well', text: 'To specialise is to do one job and get very good at it. The north specialised in making things. The south specialised in growing them.' },
+      { heading: 'Do one thing well', text: 'To specialize is to do one job and get very good at it. The north specialized in making things. The south specialized in growing them.' },
       { heading: 'Then swap, and both gain', text: 'A trade both sides agreed to is voluntary exchange. Each side wanted what the other had more than what they were giving up.' }
     ],
     doing:
       'Give three people two random objects each. Everybody scores their own two out of ten. Let them swap freely for five minutes, then score again and compare the group totals.',
     practice: [
-      { ask: 'What does it mean to specialise?', answer: 'To do one job and get very good at it.', why: 'It is why trade is worth doing.' },
+      { ask: 'What does it mean to specialize?', answer: 'To do one job and get very good at it.', why: 'It is why trade is worth doing.' },
       { ask: 'Who gains in a voluntary exchange?', answer: 'Both sides.', why: 'Each wanted the other thing more.' }
     ],
     check: [
-      { prompt: 'To specialise means to do one job and get very:', choices: ['Rich', 'Good at it', 'Tired', 'Busy'], answer: 1, feedback: ['Not it.', null, 'Not it.', 'Not it.'] },
+      { prompt: 'To specialize means to do one job and get very:', choices: ['Rich', 'Good at it', 'Tired', 'Busy'], answer: 1, feedback: ['Not it.', null, 'Not it.', 'Not it.'] },
       { prompt: 'In a trade both sides agreed to, how many sides gain?', choices: ['Neither', 'One', 'Both', 'Only the seller'], answer: 2, feedback: ['Nobody would agree.', 'One would refuse.', null, 'The buyer gains too.'] },
       { prompt: 'Goods are things made or grown to be:', choices: ['Kept', 'Sold', 'Hidden', 'Counted'], answer: 1, feedback: ['Not it.', null, 'Not it.', 'Not it.'] }
     ]
@@ -333,13 +333,13 @@ export const SOCIAL_M8 = [
         teachingText:
           'Steamboats could travel upstream against the current. The telegraph sent signals along a wire, so news moved faster than any rider.',
         example:
-          'Before the telegraph, news travelled at the speed of a horse or a ship. Afterwards it travelled at once.',
+          'Before the telegraph, news traveled at the speed of a horse or a ship. Afterwards it traveled at once.',
         applyIt: {
           prompt: 'The telegraph sent messages along a:',
           choices: ['Road', 'Wire', 'River', 'Rail'],
           answer: 1,
           feedback: ['Not how.', null, 'Not how.', 'Not how.'],
-          why: 'News stopped travelling at the speed of a horse.'
+          why: 'News stopped traveling at the speed of a horse.'
         }
       }
     ],
@@ -377,7 +377,7 @@ export const SOCIAL_M8 = [
       'Mix beans and pasta in a bowl. Separate them by hand for two minutes and count. Mix a fresh batch, use a sieve for two minutes, and count again. Work out how many times faster the tool was.',
     practice: [
       { ask: 'What is productivity?', answer: 'How much work gets done in a set time.', why: 'A machine changes it without adding hours.' },
-      { ask: 'What did the telegraph change?', answer: 'News stopped travelling at the speed of a horse.', why: 'Signals went along a wire instead.' }
+      { ask: 'What did the telegraph change?', answer: 'News stopped traveling at the speed of a horse.', why: 'Signals went along a wire instead.' }
     ],
     check: [
       { prompt: 'The cotton gin separated cotton from its:', choices: ['Leaves', 'Seeds', 'Roots', 'Water'], answer: 1, feedback: ['Not the job.', null, 'Not the job.', 'Not the job.'] },
@@ -398,12 +398,12 @@ export const SOCIAL_M8 = [
     minutes: 30,
     spec: '§10 · beats',
     concept:
-      'The cotton gin saved labour and increased slavery, because it made growing cotton worth doing on far more land.',
+      'The cotton gin saved labor and increased slavery, because it made growing cotton worth doing on far more land.',
     standards: ['SS4E1f'],
     offGrade: null,
-    words: ['labour', 'profit', 'spread', 'enslaved'],
+    words: ['labor', 'profit', 'spread', 'enslaved'],
     glossary: [
-      { word: 'labour', plain: 'Work done by people.' },
+      { word: 'labor', plain: 'Work done by people.' },
       { word: 'profit', plain: 'Money left over after the costs are paid.' },
       { word: 'spread', plain: 'To reach across more places than before.' },
       { word: 'enslaved', plain: 'Held as property by another person, by force.' }
@@ -448,7 +448,7 @@ export const SOCIAL_M8 = [
         teachingText:
           'All of that was still done by hand, by enslaved people. More cotton meant more of that work, so slavery spread west and grew instead of shrinking.',
         example:
-          'A machine that saves labour in one step can increase the labour needed in every other step.',
+          'A machine that saves labor in one step can increase the labor needed in every other step.',
         applyIt: {
           prompt: 'After the cotton gin, the number of enslaved people:',
           choices: ['Fell sharply', 'Grew', 'Stayed exactly the same', 'Reached zero'],

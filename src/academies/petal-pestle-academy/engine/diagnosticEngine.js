@@ -401,7 +401,7 @@ export const RE_DIAGNOSTIC = {
       afterModules: [3, 7, 10, 12, 14],
       why:
         'Units 0 of 3 and elapsed time 0 of 1 at the Check-In. M3 measures her in cm AND inches, ' +
-        'M7 one breath in millilitres, M10 seven metres of string in metres and cm, M12 the ' +
+        'M7 one breath in milliliters, M10 seven meters of string in meters and cm, M12 the ' +
         'two-point test in mm, M14 a fingernail in mm every third day. By the end of those five ' +
         'she has kept a notebook of her own measurements and the strand can be measured honestly.'
     },

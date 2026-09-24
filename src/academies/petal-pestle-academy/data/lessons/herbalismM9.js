@@ -230,7 +230,7 @@ const M9L1_BEATS = [
     teachingText:
       'The atmosphere is the deep blanket of air around the Earth. Weather is whatever that air is doing over one place. It keeps changing, because the air is never still.',
     example:
-      'The cold that reached your garlic was somewhere else last night. It travelled here, and it brought its temperature along. Your garden never moved at all.',
+      'The cold that reached your garlic was somewhere else last night. It traveled here, and it brought its temperature along. Your garden never moved at all.',
     applyIt: {
       prompt: 'Your four buckets have not moved. Today is freezing and windy. What actually changed?',
       choices: [
@@ -405,7 +405,7 @@ const M9L2_BEATS = [
       prompt: 'Your wind vane is pointing hard at the north side of the garden. What does that tell you?',
       choices: [
         'The wind is coming from the north',
-        'The wind is blowing away towards the north',
+        'The wind is blowing away toward the north',
         'The wind is blowing at a northerly speed',
         'North is where the most rain fell'
       ],
@@ -430,7 +430,7 @@ const M9L2_ACTIVITY = {
     'a cheap outdoor thermometer',
     'a pencil with an eraser on the end, a plastic straw, a dressmaking pin',
     'stiff card for the arrow and the tail, and scissors',
-    'a lump of modelling clay and a compass',
+    'a lump of modeling clay and a compass',
     'a permanent marker and four small stones'
   ],
   steps: [
@@ -664,7 +664,7 @@ const M9L4_BEATS = [
     label: 'Sort by height first, then by shape',
     hook: 'Cirrus clouds are so high and so cold that they hold no water at all. They are made of ice.',
     teachingText:
-      'Cirrus clouds are the highest. They look thin and wispy, like hair pulled across the sky. Cumulus clouds sit lower, like piles of cotton wool with flat bottoms. Stratus is lowest of all. It is the flat grey sheet that takes the colour out of a day.',
+      'Cirrus clouds are the highest. They look thin and wispy, like hair pulled across the sky. Cumulus clouds sit lower, like piles of cotton wool with flat bottoms. Stratus is lowest of all. It is the flat gray sheet that takes the color out of a day.',
     example:
       'Stand on your step and look straight up. Separate puffs with blue between them are cumulus. One dull lid with no edges anywhere is stratus.',
     applyIt: {
@@ -674,7 +674,7 @@ const M9L4_BEATS = [
       feedback: [
         null,
         'Cumulus is lower and lumpy. No blue shows through the middle of a puff.',
-        'Stratus is a low grey sheet. Nothing shows through it.',
+        'Stratus is a low gray sheet. Nothing shows through it.',
         'Fog is cloud sitting on the ground, not streaks miles above you.'
       ],
       why: 'High, thin and wispy is cirrus every time. The ice crystals are why it looks brushed on.'
@@ -710,14 +710,14 @@ const M9L4_BEATS = [
 
 const M9L4_ACTIVITY = {
   title: 'Cloud watch from the back step',
-  prep: 'Add two columns to your fourteen-day log: CLOUD TYPE and SKY COVER. Make a small cloud key on card. Draw three pictures on it: a wispy streak, a flat-bottomed puff, and a flat grey lid. Keep the key on the clipboard.',
+  prep: 'Add two columns to your fourteen-day log: CLOUD TYPE and SKY COVER. Make a small cloud key on card. Draw three pictures on it: a wispy streak, a flat-bottomed puff, and a flat gray lid. Keep the key on the clipboard.',
   needs: [
     'your log sheet with the two new columns',
     'the three-picture cloud key on card',
-    'coloured pencils',
+    'colored pencils',
     'your marked spot on the back step',
     'a phone or camera, if you have one',
-    'a jumper, because you will be standing still'
+    'a sweater, because you will be standing still'
   ],
   steps: [
     'Stand on your marked spot, facing the same way as always.',
@@ -731,7 +731,7 @@ const M9L4_ACTIVITY = {
     'Look at the cloud bottoms. Are they flat, ragged, or impossible to find?',
     'Watch for a moment. Say out loud which way they are drifting.',
     'Fill in the rest of the row: temperature, rain, wind direction.',
-    'Do the whole thing again tomorrow, and every day, until the fortnight ends.'
+    'Do the whole thing again tomorrow, and every day, until the two weeks end.'
   ],
   safety:
     'Never look at the sun, not even briefly, and not through a phone. It can damage your eyes before you feel anything. Look up standing still rather than walking, so you do not trip over the containers. Come in at once if you hear thunder. Put a coat on before you stand about.',
@@ -741,7 +741,7 @@ const M9L4_ACTIVITY = {
     'You said a quarter covered. Show me with your hands how much that is.',
     'Cirrus is made of ice, even in summer. Why do you think that is?',
     'Which way are they drifting? Does that match your wind vane?',
-    'Your neighbour would say "cloudy". What are you writing, and why is it better?',
+    'Your neighbor would say "cloudy". What are you writing, and why is it better?',
     'What would make today\'s row hard for somebody else to trust?',
     'Which cloud will you see most often in a Georgia February?',
     'Does the sky over your ginger pot differ from the sky over the corn?',
@@ -761,7 +761,7 @@ const M9L4_LEDGER = {
     title: 'Name That Sky',
     cards: [
       'THIN WHITE STREAKS, VERY HIGH',
-      'FLAT GREY LID OVER EVERYTHING',
+      'FLAT GRAY LID OVER EVERYTHING',
       'WHITE PUFFS WITH FLAT BOTTOMS',
       'PUFFS PILING UP TALL AND DARK',
       'NO CLOUD AT ALL'
@@ -808,7 +808,7 @@ const M9L5_BEATS = [
     label: 'What each kind usually comes before',
     hook: 'Cirrus often arrives a full day ahead of the weather it announces. It is the earliest warning your own eyes can give you.',
     teachingText:
-      'Cirrus streaking in high above usually means a change is on its way, though not today. Stratus that thickens and drops lower brings slow grey drizzle that lasts. Small scattered cumulus means fair weather. The same cumulus piling into tall dark towers means a storm is building.',
+      'Cirrus streaking in high above usually means a change is on its way, though not today. Stratus that thickens and drops lower brings slow gray drizzle that lasts. Small scattered cumulus means fair weather. The same cumulus piling into tall dark towers means a storm is building.',
     example:
       'Wednesday started with harmless cumulus over the corn bucket. They grew taller all morning, until their bottoms went dark and flat. The growing is the part that mattered, not the puffs at breakfast.',
     applyIt: {
@@ -879,7 +879,7 @@ const M9L5_ACTIVITY = {
     'Tomorrow, take the reading BEFORE the envelope is opened. That order matters.',
     'Open it. Read the forecast aloud, then fill in the scoring strip honestly.',
     'If you were wrong, name the clue that misled you. Do not just write "wrong".',
-    'Do it again every day. By the end of the fortnight you will have six scored forecasts.',
+    'Do it again every day. By the end of the two weeks you will have six scored forecasts.',
     'On the last day, count how many you got right. Does that surprise you?'
   ],
   safety:
@@ -911,7 +911,7 @@ const M9L5_LEDGER = {
     title: 'Then What?',
     cards: [
       'HIGH THIN STREAKS SPREADING IN',
-      'GREY SHEET DROPPING LOWER ALL MORNING',
+      'GRAY SHEET DROPPING LOWER ALL MORNING',
       'SMALL PUFFS WITH LOTS OF BLUE',
       'PUFFS GROWING INTO DARK TOWERS',
       'PRESSURE FALLING AND WIND SWINGING ROUND'
@@ -1010,10 +1010,10 @@ const M9L6_BEATS = [
 
 const M9L6_ACTIVITY = {
   title: 'Graph fourteen days, then find the pattern in them',
-  prep: 'Tape two sheets of grid paper together, landscape, so fourteen days will fit across. Have the finished log, a ruler and three colours ready. Gigi prints one page of real Georgia weather data for the same fortnight. That gives you a second set of numbers on the table.',
+  prep: 'Tape two sheets of grid paper together, landscape, so fourteen days will fit across. Have the finished log, a ruler and three colors ready. Gigi prints one page of real Georgia weather data for the same two weeks. That gives you a second set of numbers on the table.',
   needs: [
     'grid paper, two sheets taped together',
-    'a ruler, a pencil and three coloured pencils',
+    'a ruler, a pencil and three colored pencils',
     'your completed fourteen-day log',
     'a printed page of real local weather data for the same dates',
     'your six scored forecasts from Lesson 53',
@@ -1024,15 +1024,15 @@ const M9L6_ACTIVITY = {
     'Rule the side line and mark the degrees. Start a little below your lowest reading.',
     'Label both lines. An axis with no label is a picture, not a graph.',
     'Put one dot for each day\'s temperature. Join the dots with a ruled line.',
-    'In a second colour, draw a bar up from each day for the rain that fell.',
-    'In a third colour, letter the cloud above each day. C for cirrus, S for stratus, U for cumulus.',
-    'Now stand back. Look at the whole fortnight at once, without reading any numbers.',
+    'In a second color, draw a bar up from each day for the rain that fell.',
+    'In a third color, letter the cloud above each day. C for cirrus, S for stratus, U for cumulus.',
+    'Now stand back. Look at the whole two weeks at once, without reading any numbers.',
     'Question one. Where are the highest and lowest points? How far apart are they?',
     'Question two. Do the rain bars land on warm days, cold days, or neither?',
     'Question three. What happened to the temperature after a north wind?',
     'Answer each in a full sentence. Say how many days it held and how many it did not.',
     'Put the printed data beside yours. Find one thing that agrees and one that does not.',
-    'Last, push the thermometer into the corn bucket soil. Read it against your fortnight.',
+    'Last, push the thermometer into the corn bucket soil. Read it against your two weeks.',
     'Finish this sentence. From my own data, the corn can go in when ____, and it is not yet because ____.'
   ],
   safety:
@@ -1041,7 +1041,7 @@ const M9L6_ACTIVITY = {
     'Before you plot. From the column alone, which day was coldest? How long did that take?',
     'Now look at the graph. Same question. What was different about answering it?',
     'Why does the side line start below your lowest reading, not at zero?',
-    'What would happen to your line if you had not labelled the days?',
+    'What would happen to your line if you had not labeled the days?',
     'Show me a pattern. Now show me how often it held and how often it broke.',
     'Is that a pattern, or two days that happened to match?',
     'The printed data disagrees on one day. Does that make one of you wrong?',
@@ -1371,7 +1371,7 @@ export const HERBALISM_M9 = [
     hook: M9L3_CHECK_IN,
     core: M9L3_BEATS.map((b) => ({ heading: b.label, text: b.teachingText })),
     doing:
-      'Read the station twice on purpose. Once badly, once properly, and then compare the two. First glance down at the thermometer from above. Squint at the gauge from standing height. Write those numbers on a sheet marked CARELESS. Then do it again the right way. Crouch until your eye is level with the water. Read the line the thermometer actually reaches, not the nearest round number. Watch the vane for a slow count of twenty before you commit. Empty the gauge into a jug and put it back exactly where it was. Then work out how far apart your two sets of numbers were. Last, agree one reading time that will hold for the whole fortnight.',
+      'Read the station twice on purpose. Once badly, once properly, and then compare the two. First glance down at the thermometer from above. Squint at the gauge from standing height. Write those numbers on a sheet marked CARELESS. Then do it again the right way. Crouch until your eye is level with the water. Read the line the thermometer actually reaches, not the nearest round number. Watch the vane for a slow count of twenty before you commit. Empty the gauge into a jug and put it back exactly where it was. Then work out how far apart your two sets of numbers were. Last, agree one reading time that will hold for the whole two weeks.',
 
     practice: [
       {
@@ -1454,7 +1454,7 @@ export const HERBALISM_M9 = [
 
     glossary: [
       { word: 'cirrus', plain: 'The highest clouds. Thin white streaks, made of ice.' },
-      { word: 'stratus', plain: 'A low flat grey sheet that covers the whole sky.' },
+      { word: 'stratus', plain: 'A low flat gray sheet that covers the whole sky.' },
       { word: 'cumulus', plain: 'Puffy clouds with flat bottoms, like piled cotton wool.' },
       { word: 'sky cover', plain: 'How much of the sky the cloud is covering, counted in quarters.' },
       { word: 'observation', plain: 'Something you actually saw and wrote down, not something you decided.' },
@@ -1471,7 +1471,7 @@ export const HERBALISM_M9 = [
       teaches: [
         'cirrus clouds are highest and look thin and wispy',
         'cumulus clouds are puffy with flat bottoms',
-        'stratus clouds are low flat grey sheets',
+        'stratus clouds are low flat gray sheets',
         'how to tell the three apart by height and shape'
       ],
       sourceGap:
@@ -1486,7 +1486,7 @@ export const HERBALISM_M9 = [
     hook: M9L4_CHECK_IN,
     core: M9L4_BEATS.map((b) => ({ heading: b.label, text: b.teachingText })),
     doing:
-      'Stand on your marked spot. Look up for a slow count of thirty before you write a word. Hold a three-picture cloud key beside the sky. Match what is up there to cirrus, cumulus or stratus. Write both names if two kinds are showing. Then cut the sky into quarters in your head and record how many are covered. "Cloudy" is not a measurement. "Cumulus over a quarter of the sky at eight" is. Sketch it in the margin in twenty seconds and photograph it if you can. Watch which way it is drifting, and check that against your wind vane. Then do the whole thing again tomorrow, and every day, until the fortnight ends.',
+      'Stand on your marked spot. Look up for a slow count of thirty before you write a word. Hold a three-picture cloud key beside the sky. Match what is up there to cirrus, cumulus or stratus. Write both names if two kinds are showing. Then cut the sky into quarters in your head and record how many are covered. "Cloudy" is not a measurement. "Cumulus over a quarter of the sky at eight" is. Sketch it in the margin in twenty seconds and photograph it if you can. Watch which way it is drifting, and check that against your wind vane. Then do the whole thing again tomorrow, and every day, until the two weeks end.',
 
     practice: [
       {
@@ -1509,12 +1509,12 @@ export const HERBALISM_M9 = [
         feedback: [
           null,
           'Cumulus is lower and lumpy, and no blue shows through the middle of a puff.',
-          'Stratus is a low grey sheet with nothing showing through it.',
+          'Stratus is a low gray sheet with nothing showing through it.',
           'That is a cumulus tower gone dark, and it is nothing like thin or wispy.'
         ]
       },
       {
-        prompt: 'The whole sky is one flat grey lid with no edges anywhere. Which cloud?',
+        prompt: 'The whole sky is one flat gray lid with no edges anywhere. Which cloud?',
         choices: ['Stratus', 'Cirrus', 'Cumulus', 'Sky cover'],
         answer: 0,
         feedback: [
@@ -1618,7 +1618,7 @@ export const HERBALISM_M9 = [
         choices: [
           'A storm, quite possibly this afternoon',
           'Clear weather for the rest of the week',
-          'A slow grey drizzle that lasts all day',
+          'A slow gray drizzle that lasts all day',
           'Nothing, because cumulus is a fair-weather cloud'
         ],
         answer: 0,
@@ -1686,7 +1686,7 @@ export const HERBALISM_M9 = [
     glossary: [
       { word: 'data', plain: 'Measurements you wrote down, kept together so you can compare them.' },
       { word: 'graph', plain: 'A picture of your numbers, so you can see their shape all at once.' },
-      { word: 'axis', plain: 'One of the two labelled lines a graph is built on.' },
+      { word: 'axis', plain: 'One of the two labeled lines a graph is built on.' },
       { word: 'pattern', plain: 'Something that happens the same way over and over again.' },
       { word: 'average', plain: 'The middle sort of number. Add them all up and share them out evenly.' },
       { word: 'range', plain: 'The distance between your highest reading and your lowest.' }
@@ -1718,7 +1718,7 @@ export const HERBALISM_M9 = [
     hook: M9L6_CHECK_IN,
     core: M9L6_BEATS.map((b) => ({ heading: b.label, text: b.teachingText })),
     doing:
-      'Turn the whole fortnight into one picture. Rule fourteen equal steps along the bottom for the days, and the degrees up the side. Label both axes. Plot a dot for each day\'s temperature and join them with a ruled line. Add the rainfall as coloured bars underneath, and a tiny letter above each day for the cloud. Then stand back and answer three questions in full sentences. Where are the highest and lowest points, and how far apart? Do the rain bars land on the warm days or the cold ones? What happened to the temperature after each north wind? Every time, say how many days it held and how many it did not. Put a printed page of real local data beside yours. Find one thing that agrees and one that does not. Finish by pushing a thermometer into the corn bucket. Write down which soil reading you are waiting for before the corn can go in.',
+      'Turn the whole two weeks into one picture. Rule fourteen equal steps along the bottom for the days, and the degrees up the side. Label both axes. Plot a dot for each day\'s temperature and join them with a ruled line. Add the rainfall as colored bars underneath, and a tiny letter above each day for the cloud. Then stand back and answer three questions in full sentences. Where are the highest and lowest points, and how far apart? Do the rain bars land on the warm days or the cold ones? What happened to the temperature after each north wind? Every time, say how many days it held and how many it did not. Put a printed page of real local data beside yours. Find one thing that agrees and one that does not. Finish by pushing a thermometer into the corn bucket. Write down which soil reading you are waiting for before the corn can go in.',
 
     practice: [
       {
@@ -1745,7 +1745,7 @@ export const HERBALISM_M9 = [
         answer: 0,
         feedback: [
           null,
-          'Tidy is nice, but an unlabelled graph is a picture and not a measurement.',
+          'Tidy is nice, but an unlabeled graph is a picture and not a measurement.',
           'How it was drawn has nothing to do with what it means.',
           'Labels do not hold dots anywhere. They say what the dots are counting.'
         ]

@@ -91,15 +91,15 @@ export const GREENHOUSE_ITEMS = [
   // sill was the window box, and the rest of it — the whole width of the back
   // glass, the best light in the room — was bare.
   { id: 'gh-sill-seedlings', spot: onSurface('sill', 0.14), name: 'Seedling Pots', icon: '🌱', cost: 40, desc: 'Six little pots in a row, all at different heights.' },
-  { id: 'gh-sill-bottles', spot: onSurface('sill', 0.30), name: 'Coloured Bottles', icon: '🫗', cost: 60, desc: 'Green, blue and amber. The light comes through them.' },
+  { id: 'gh-sill-bottles', spot: onSurface('sill', 0.30), name: 'Colored Bottles', icon: '🫗', cost: 60, desc: 'Green, blue and amber. The light comes through them.' },
   { id: 'gh-sill-orchid', spot: onSurface('sill', 0.72), name: 'Windowsill Orchid', icon: '🌸', cost: 95, desc: 'Fussy, dramatic, and worth every bit of it.' },
-  { id: 'gh-stained-glass', layer: 'roof', spot: { u: 0.78, t: 0.02, lift: 300 }, name: 'Stained Glass Panel', icon: '🪟', cost: 340, desc: 'Leaves and petals in coloured glass, set high in the back window. It throws colour across the floor.' },
+  { id: 'gh-stained-glass', layer: 'roof', spot: { u: 0.78, t: 0.02, lift: 300 }, name: 'Stained Glass Panel', icon: '🪟', cost: 340, desc: 'Leaves and petals in colored glass, set high in the back window. It throws color across the floor.' },
 
   // ---- ON THE WALL SHELVES -----------------------------------------------
   // The lower board was drawn at v2.1 and completely bare until v3.15, and the
   // upper one carried nothing for sale either.
   { id: 'gh-shelf-baskets', spot: onSurface('shelfLower', 0.50), name: 'Woven Baskets', icon: '🧺', cost: 45, desc: 'Stacked three deep. One always has something in it.' },
-  { id: 'gh-shelf-tins', spot: onSurface('shelfUpper', 0.40), name: 'Seed Tins', icon: '🥫', cost: 55, desc: 'Labelled in pencil so they can be changed.' },
+  { id: 'gh-shelf-tins', spot: onSurface('shelfUpper', 0.40), name: 'Seed Tins', icon: '🥫', cost: 55, desc: 'Labeled in pencil so they can be changed.' },
   { id: 'gh-shelf-clock', spot: onSurface('shelfUpper', 0.85), name: 'Greenhouse Clock', icon: '🕰️', cost: 115, desc: 'Runs four minutes slow. Nobody has ever fixed it.' },
 
   // ---- ON THE POTTING BENCH ----------------------------------------------
@@ -168,7 +168,7 @@ export const SHELF_ITEMS = [
   { id: 'sh-microscope', shelf: { row: 0, x: 500 }, name: 'Brass Microscope', icon: '🔬', cost: 145, desc: 'Where the chamomile turns into hundreds of flowers.' },
   { id: 'sh-journal', shelf: { row: 1, x: 505 }, name: 'Field Journal', icon: '📓', cost: 65, desc: 'Waterproof cover. Every page will get muddy.' },
   { id: 'sh-drying-rack', shelf: { row: 2, x: 320 }, name: 'Drying Rack', icon: '🪢', cost: 110, desc: 'Bunches hung upside down in the dark.' },
-  { id: 'sh-cabinet', shelf: { row: 2, x: 520 }, name: 'Apothecary Cabinet', icon: '🗄️', cost: 200, desc: 'Forty tiny drawers. All of them labelled.' },
+  { id: 'sh-cabinet', shelf: { row: 2, x: 520 }, name: 'Apothecary Cabinet', icon: '🗄️', cost: 200, desc: 'Forty tiny drawers. All of them labeled.' },
   { id: 'sh-seed-envelopes', shelf: { row: 1, x: 60 }, name: 'Seed Envelopes', icon: '✉️', cost: 45, desc: 'Folded from paper, dated in the corner.' },
   { id: 'sh-recipe-box', shelf: { row: 1, x: 620 }, name: 'Recipe Box', icon: '🗃️', cost: 70, desc: 'Index cards, some in handwriting older than she is.' },
   { id: 'sh-oil-burner', shelf: { row: 2, x: 420 }, name: 'Oil Burner', icon: '🕯️', cost: 95, desc: 'Warms the room and the whole hallway smells of it.' },

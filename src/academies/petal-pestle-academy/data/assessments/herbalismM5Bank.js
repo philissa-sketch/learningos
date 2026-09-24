@@ -51,7 +51,7 @@ export const HERBALISM_M5_BANK = [
     id: 't-hbm501a',
     lesson: 'hb-m5-01',
     prompt: 'A puddle dries up in the sun. Where did the water go?',
-    choices: ['Into the air as vapour', 'Into the ground only', 'It is gone for good', 'The sun drank it'],
+    choices: ['Into the air as vapor', 'Into the ground only', 'It is gone for good', 'The sun drank it'],
     answer: 0,
     feedback: [
       null,
@@ -59,7 +59,7 @@ export const HERBALISM_M5_BANK = [
       'Water never disappears. It changes form.',
       'The sun heats water. It does not drink it.'
     ],
-    why: 'Heat turns the water into vapour and it rises. That is evaporation.'
+    why: 'Heat turns the water into vapor and it rises. That is evaporation.'
   },
   {
     id: 't-hbm501b',
@@ -73,13 +73,13 @@ export const HERBALISM_M5_BANK = [
       null,
       'That is gas turning back into drops.'
     ],
-    why: 'Evaporation is liquid water becoming water vapour.'
+    why: 'Evaporation is liquid water becoming water vapor.'
   },
   {
     id: 't-hbm501c',
     lesson: 'hb-m5-01',
     prompt: 'On a hot day a cold glass goes wet. Why?',
-    choices: ['The glass leaked', 'Vapour turned back into drops', 'The ice pushed water out', 'Warm air is always wet'],
+    choices: ['The glass leaked', 'Vapor turned back into drops', 'The ice pushed water out', 'Warm air is always wet'],
     answer: 1,
     feedback: [
       'Glass does not leak.',
@@ -87,7 +87,7 @@ export const HERBALISM_M5_BANK = [
       'The ice is inside and it stays inside.',
       'Air only makes drops when something cools it.'
     ],
-    why: 'The cold glass cools the air beside it. The vapour becomes drops. Condensation.'
+    why: 'The cold glass cools the air beside it. The vapor becomes drops. Condensation.'
   },
   {
     id: 't-hbm501d',
@@ -96,7 +96,7 @@ export const HERBALISM_M5_BANK = [
     choices: ['Steam over a hot pot', 'Fog on a mirror', 'A dry windy day', 'Snow falling from a cloud'],
     answer: 3,
     feedback: [
-      'That is water going up as vapour.',
+      'That is water going up as vapor.',
       'That is condensation on glass.',
       'Nothing is falling.',
       null
@@ -113,9 +113,9 @@ export const HERBALISM_M5_BANK = [
       'A lid changes it a great deal.',
       'Water leaves the open one every day.',
       null,
-      'The lid catches the vapour and it drips back in.'
+      'The lid catches the vapor and it drips back in.'
     ],
-    why: 'A cover traps the vapour, so it turns back into drops and falls in again.'
+    why: 'A cover traps the vapor, so it turns back into drops and falls in again.'
   },
   {
     id: 't-hbm501f',
@@ -129,7 +129,7 @@ export const HERBALISM_M5_BANK = [
       'Cotton is a plant. A cloud only looks like it.',
       'Clouds are wet, not dry.'
     ],
-    why: 'Cool air turns vapour into tiny drops, and billions of them together make a cloud.'
+    why: 'Cool air turns vapor into tiny drops, and billions of them together make a cloud.'
   },
   {
     id: 't-hbm501g',
@@ -163,7 +163,7 @@ export const HERBALISM_M5_BANK = [
     id: 't-hbm501i',
     lesson: 'hb-m5-01',
     prompt: 'A wet towel dries faster on which kind of day?',
-    choices: ['Hot and windy', 'Cold and still', 'Cool and cloudy', 'Rainy and grey'],
+    choices: ['Hot and windy', 'Cold and still', 'Cool and cloudy', 'Rainy and gray'],
     answer: 0,
     feedback: [
       null,
@@ -194,7 +194,7 @@ export const HERBALISM_M5_BANK = [
   {
     id: 't-hbm502a',
     lesson: 'hb-m5-02',
-    prompt: 'Ice, water and vapour are how many different things?',
+    prompt: 'Ice, water and vapor are how many different things?',
     choices: ['One thing in three states', 'Two things', 'None of these', 'Three different things'],
     answer: 0,
     feedback: [
@@ -231,7 +231,7 @@ export const HERBALISM_M5_BANK = [
       'The sun is warming the jar, not freezing it.',
       'The inside of that jar is wet.'
     ],
-    why: 'Vapour rises, meets the cooler lid, and turns back into drops. Condensation.'
+    why: 'Vapor rises, meets the cooler lid, and turns back into drops. Condensation.'
   },
   {
     id: 't-hbm502d',
@@ -251,7 +251,7 @@ export const HERBALISM_M5_BANK = [
     id: 't-hbm502e',
     lesson: 'hb-m5-02',
     prompt: 'Which one is water as a gas?',
-    choices: ['A puddle', 'Snow', 'Water vapour', 'An ice cube'],
+    choices: ['A puddle', 'Snow', 'Water vapor', 'An ice cube'],
     answer: 2,
     feedback: [
       'A puddle is water as a liquid.',
@@ -259,7 +259,7 @@ export const HERBALISM_M5_BANK = [
       null,
       'Ice is water as a solid.'
     ],
-    why: 'Water vapour is water as a gas, and you cannot see it.'
+    why: 'Water vapor is water as a gas, and you cannot see it.'
   },
   {
     id: 't-hbm502f',
@@ -279,7 +279,7 @@ export const HERBALISM_M5_BANK = [
     id: 't-hbm502g',
     lesson: 'hb-m5-02',
     prompt: 'Which change needs heat to go IN?',
-    choices: ['Vapour turning to drops', 'Water turning to ice', 'Drops running down glass', 'Water turning to vapour'],
+    choices: ['Vapor turning to drops', 'Water turning to ice', 'Drops running down glass', 'Water turning to vapor'],
     answer: 3,
     feedback: [
       'That change gives heat up.',
@@ -315,7 +315,7 @@ export const HERBALISM_M5_BANK = [
       'Nothing turned into ice.',
       'Nothing fell out of a cloud.'
     ],
-    why: 'Warm vapour meets the cold glass and turns into tiny drops.'
+    why: 'Warm vapor meets the cold glass and turns into tiny drops.'
   },
   {
     id: 't-hbm502j',
@@ -347,7 +347,7 @@ export const HERBALISM_M5_BANK = [
       'Plastic does not melt in the sun like that.',
       'Nobody opened it.'
     ],
-    why: 'Leaves let water out as vapour. Trapped in a bag it turns back into drops.'
+    why: 'Leaves let water out as vapor. Trapped in a bag it turns back into drops.'
   },
   {
     id: 't-hbm503b',
@@ -356,7 +356,7 @@ export const HERBALISM_M5_BANK = [
     choices: ['Condensation', 'Germination', 'Transpiration', 'Evaporation'],
     answer: 2,
     feedback: [
-      'That is vapour turning back into drops.',
+      'That is vapor turning back into drops.',
       'That is a seed waking up.',
       null,
       'That is water leaving a puddle or a pond.'
@@ -456,10 +456,10 @@ export const HERBALISM_M5_BANK = [
     feedback: [
       null,
       'A leaf does not make ice.',
-      'It leaves as vapour, not as a solid.',
+      'It leaves as vapor, not as a solid.',
       'Sap stays inside the plant.'
     ],
-    why: 'It leaves as water vapour, which you cannot see until it cools.'
+    why: 'It leaves as water vapor, which you cannot see until it cools.'
   },
   {
     id: 't-hbm503j',
@@ -869,12 +869,12 @@ export const HERBALISM_M5_BANK = [
     id: 't-hbm506h',
     lesson: 'hb-m5-06',
     prompt: 'Two pots look the same. How do you tell which is dry?',
-    choices: ['Count the leaves', 'Lift them and feel the weight', 'Look at the colour of the pot', 'Shake them'],
+    choices: ['Count the leaves', 'Lift them and feel the weight', 'Look at the color of the pot', 'Shake them'],
     answer: 1,
     feedback: [
       'Leaf count is not about water.',
       null,
-      'Colour depends on the pot, not the water.',
+      'Color depends on the pot, not the water.',
       'Shaking tells you nothing useful.'
     ],
     why: 'A dry pot is much lighter. Lifting is a fast, honest check.'

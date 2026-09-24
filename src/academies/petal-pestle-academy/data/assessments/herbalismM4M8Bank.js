@@ -128,7 +128,7 @@ export const HERBALISM_M4_NEW_BANK = [
       null,
       'Seeing would not help. It still could not leave.'
     ],
-    why: 'Stuck in one spot means the defence has to be built into the body.'
+    why: 'Stuck in one spot means the defense has to be built into the body.'
   },
   {
     id: 't-hbm404e',
@@ -185,7 +185,7 @@ export const HERBALISM_M4_NEW_BANK = [
       'Thorns do nothing at all',
       'That plant has no adaptation',
       'Goats are plants',
-      'Some animals get past a defence'
+      'Some animals get past a defense'
     ],
     answer: 3,
     feedback: [
@@ -194,7 +194,7 @@ export const HERBALISM_M4_NEW_BANK = [
       'A goat eats. A plant does not.',
       null
     ],
-    why: 'Armour works on most eaters. A few work out how to beat it.'
+    why: 'Armor works on most eaters. A few work out how to beat it.'
   },
   {
     id: 't-hbm404i',
@@ -213,7 +213,7 @@ export const HERBALISM_M4_NEW_BANK = [
       'Roots do that job.',
       'A tough skin keeps them off, not on.'
     ],
-    why: 'Thick skin is armour, same as a thorn. It just does it quietly.'
+    why: 'Thick skin is armor, same as a thorn. It just does it quietly.'
   },
   {
     id: 't-hbm404j',
@@ -232,7 +232,7 @@ export const HERBALISM_M4_NEW_BANK = [
       'Bees go to flowers, not to buried cloves.',
       null
     ],
-    why: 'It is armour and a raincoat at once. Same idea as a seed coat.'
+    why: 'It is armor and a raincoat at once. Same idea as a seed coat.'
   },
 
   // =========================================================================
@@ -243,7 +243,7 @@ export const HERBALISM_M4_NEW_BANK = [
     lesson: 'hb-m4-05',
     prompt: 'What does repel mean?',
     choices: [
-      'To pull something towards you',
+      'To pull something toward you',
       'To squash a leaf',
       'To float off into the air',
       'To push something away'
@@ -264,8 +264,8 @@ export const HERBALISM_M4_NEW_BANK = [
     choices: [
       'To push something away',
       'To smell of nothing',
-      'To pull something towards you',
-      'To grow towards light'
+      'To pull something toward you',
+      'To grow toward light'
     ],
     answer: 2,
     feedback: [
@@ -288,7 +288,7 @@ export const HERBALISM_M4_NEW_BANK = [
     ],
     answer: 3,
     feedback: [
-      'Colour has nothing to do with smell.',
+      'Color has nothing to do with smell.',
       'That is a thorn, from the day before.',
       'That is latex, also from the day before.',
       null
@@ -341,7 +341,7 @@ export const HERBALISM_M4_NEW_BANK = [
     answer: 2,
     feedback: [
       'Attract would mean pulling them in. They stay away.',
-      'Volatile is about the smell travelling, not what it does.',
+      'Volatile is about the smell traveling, not what it does.',
       null,
       'Aromatic just means it smells strong. This is about the slugs.'
     ],
@@ -373,7 +373,7 @@ export const HERBALISM_M4_NEW_BANK = [
     choices: [
       'They are the easiest plants to grow',
       'They have the biggest leaves',
-      'People liked the taste of the plant defence',
+      'People liked the taste of the plant defense',
       'They have no smell at all'
     ],
     answer: 2,
@@ -444,7 +444,7 @@ export const HERBALISM_M4_NEW_BANK = [
       'That is a stake.',
       'That is a creeper.'
     ],
-    why: 'A tropism is growing on purpose towards something.'
+    why: 'A tropism is growing on purpose toward something.'
   },
   {
     id: 't-hbm406b',
@@ -458,7 +458,7 @@ export const HERBALISM_M4_NEW_BANK = [
       'That one needs a touch. It touched nothing.',
       'A tendril is a part, not a kind of growing.'
     ],
-    why: 'Photo means light. It grew towards the light it could reach.'
+    why: 'Photo means light. It grew toward the light it could reach.'
   },
   {
     id: 't-hbm406c',
@@ -550,7 +550,7 @@ export const HERBALISM_M4_NEW_BANK = [
     lesson: 'hb-m4-06',
     prompt: 'You turn a pot half way round. What happens in a week?',
     choices: [
-      'The stem leans back towards the window',
+      'The stem leans back toward the window',
       'The stem stays exactly as it is',
       'The plant dies',
       'The roots come up'
@@ -590,7 +590,7 @@ export const HERBALISM_M4_NEW_BANK = [
     choices: ['Phototropism', 'Tendril', 'Gravitropism', 'Thigmotropism'],
     answer: 1,
     feedback: [
-      'That is growing towards light.',
+      'That is growing toward light.',
       null,
       'That is roots growing down.',
       'That is growing round something after a touch.'
@@ -620,7 +620,7 @@ export const HERBALISM_M8_NEW_BANK = [
       'That is an infusion.',
       'That is an observation.'
     ],
-    why: 'The warm water pulls the colour out of the leaves. That is extraction.'
+    why: 'The warm water pulls the color out of the leaves. That is extraction.'
   },
   {
     id: 't-hbm804b',
@@ -648,7 +648,7 @@ export const HERBALISM_M8_NEW_BANK = [
     choices: [
       'To soak a plant in water',
       'To write down what you saw',
-      'To pull colour out of a leaf',
+      'To pull color out of a leaf',
       'To pour through a sieve so the bits stay behind'
     ],
     answer: 3,
@@ -685,7 +685,7 @@ export const HERBALISM_M8_NEW_BANK = [
     prompt: 'One jar in sun went deep red. The shady one stayed pale. Why?',
     choices: [
       'The sunny jar had more leaves',
-      'Warm water pulls colour out faster',
+      'Warm water pulls color out faster',
       'Shade makes water thicker',
       'The shady lid was loose'
     ],
@@ -777,7 +777,7 @@ export const HERBALISM_M8_NEW_BANK = [
   {
     id: 't-hbm804j',
     lesson: 'hb-m8-04',
-    prompt: 'You strain the tea. Where has the colour gone?',
+    prompt: 'You strain the tea. Where has the color gone?',
     choices: [
       'It stayed in the sieve with the leaves',
       'It is in the water in the cup',
@@ -786,12 +786,12 @@ export const HERBALISM_M8_NEW_BANK = [
     ],
     answer: 1,
     feedback: [
-      'The sieve holds bits, not colour.',
+      'The sieve holds bits, not color.',
       null,
       'The cup is red. It did not go anywhere.',
       'It came out of them. It is not going back.'
     ],
-    why: 'The colour was extracted into the water. Straining only removes the leaves.'
+    why: 'The color was extracted into the water. Straining only removes the leaves.'
   },
 
   // =========================================================================
@@ -937,7 +937,7 @@ export const HERBALISM_M8_NEW_BANK = [
     choices: [
       'Say the next number before you know it',
       'Write down the number you measured',
-      'Colour in a bar',
+      'Color in a bar',
       'Check the pot has not changed'
     ],
     answer: 0,

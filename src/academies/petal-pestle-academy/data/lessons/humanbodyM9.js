@@ -87,7 +87,7 @@ const L1_ACTIVITY = {
     'Write one sentence saying which kind you have most of, and why that might be.'
   ],
   safety:
-    'Looking and counting only. Nothing about how anybody’s teeth look, and no comparing with anybody else — this is a map, not a judgement.',
+    'Looking and counting only. Nothing about how anybody’s teeth look, and no comparing with anybody else — this is a map, not a judgment.',
   minutes: 12
 };
 
@@ -154,7 +154,7 @@ const L2_BEATS = [
 
 const L2_ACTIVITY = {
   title: 'The fence-post model',
-  prep: 'Modelling clay and a small stick or a lolly stick.',
+  prep: 'Modeling clay and a small stick or a lolly stick.',
   needs: ['clay', 'a stick', 'a ruler', 'her notebook'],
   steps: [
     'Press the clay into a block. That block is your jaw.',
@@ -317,7 +317,7 @@ const L4_ACTIVITY = {
     'Write one sentence about which part of the model was your stomach muscles.'
   ],
   safety:
-    'Seal the bag properly and keep it away from anybody smaller. Nothing in this model is eaten afterwards — it goes in the bin.',
+    'Seal the bag properly and keep it away from anybody smaller. Nothing in this model is eaten afterwards — it goes in the trash.',
   minutes: 14
 };
 

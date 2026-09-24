@@ -267,11 +267,11 @@ export const HERBALISM_Q1_BANK = [
     id: 't-hb103e',
     lesson: 'hb-1-03',
     prompt: 'Why is stem shape worth writing in your journal?',
-    choices: ['It makes the plant grow', 'It changes the colour', 'It is a clue to the name', 'It keeps bugs away'],
+    choices: ['It makes the plant grow', 'It changes the color', 'It is a clue to the name', 'It keeps bugs away'],
     answer: 2,
     feedback: [
       'Writing something down does not change how it grows.',
-      'Shape and colour are two different things.',
+      'Shape and color are two different things.',
       null,
       'Shape has nothing to do with pests.'
     ],
@@ -355,7 +355,7 @@ export const HERBALISM_Q1_BANK = [
     id: 't-hb105a',
     lesson: 'hb-1-05',
     prompt: 'Which is the best note to write in a field journal?',
-    choices: ['Very pretty', 'Long and pointed', 'My favourite one', 'Quite nice'],
+    choices: ['Very pretty', 'Long and pointed', 'My favorite one', 'Quite nice'],
     answer: 1,
     feedback: [
       'That tells you nothing about the leaf.',
@@ -411,7 +411,7 @@ export const HERBALISM_Q1_BANK = [
     id: 't-hb105e',
     lesson: 'hb-1-05',
     prompt: 'You line four leaves up from widest to thinnest. You are sorting by —',
-    choices: ['Colour', 'Age', 'Smell', 'Shape'],
+    choices: ['Color', 'Age', 'Smell', 'Shape'],
     answer: 3,
     feedback: [
       'They could all be the same green.',
@@ -603,11 +603,11 @@ export const HERBALISM_Q1_BANK = [
     answer: 0,
     feedback: [
       null,
-      'Colour adds no warmth.',
+      'Color adds no warmth.',
       'Edges belong to leaves.',
       'Roots are under the soil.'
     ],
-    why: 'The colour is an advert. It tells a bee where to land.'
+    why: 'The color is an advert. It tells a bee where to land.'
   },
   {
     id: 't-hb108d',
@@ -618,7 +618,7 @@ export const HERBALISM_Q1_BANK = [
     feedback: [
       'Height has nothing to do with visitors.',
       null,
-      'Flowers do not change colour when nobody comes.',
+      'Flowers do not change color when nobody comes.',
       'More pollen is no use if none of it moves.'
     ],
     why: 'Pollen has to travel for seeds to form. No visitor often means no seed.'
@@ -715,10 +715,10 @@ export const HERBALISM_Q1_BANK = [
     id: 't-hb110a',
     lesson: 'hb-1-10',
     prompt: 'Plants in the same family share —',
-    choices: ['The same colour', 'The same height', 'The same kind of build', 'The same name'],
+    choices: ['The same color', 'The same height', 'The same kind of build', 'The same name'],
     answer: 2,
     feedback: [
-      'Family members come in many colours.',
+      'Family members come in many colors.',
       'Height varies a great deal inside one family.',
       null,
       'They each have their own name.'
@@ -1157,9 +1157,9 @@ export const HERBALISM_Q1_BANK = [
     id: 't-hb103j',
     lesson: 'hb-1-03',
     prompt: 'Rolling a stem in your fingers can tell you —',
-    choices: ['How old it is', 'How tall it will grow', 'What colour its flower is', 'Whether it is square'],
+    choices: ['How old it is', 'How tall it will grow', 'What color its flower is', 'Whether it is square'],
     answer: 3,
-    feedback: ['Age does not show that way.', 'Height does not show that way.', 'Colour is on the flower.', null],
+    feedback: ['Age does not show that way.', 'Height does not show that way.', 'Color is on the flower.', null],
     why: 'Rolling a stem tells you if it has edges. A square stem is a real clue.'
   },
 
@@ -1224,7 +1224,7 @@ export const HERBALISM_Q1_BANK = [
     id: 't-hb105g',
     lesson: 'hb-1-05',
     prompt: 'In a journal you should write that a leaf is —',
-    choices: ['Lovely', 'My favourite', 'Long and pointed', 'Quite nice'],
+    choices: ['Lovely', 'My favorite', 'Long and pointed', 'Quite nice'],
     answer: 2,
     feedback: ['That says nothing about the leaf.', 'That is about you.', null, 'Nobody could find it from that.'],
     why: 'Say what you see. Long, wide or pointed is what a herbalist writes down.'
@@ -1298,7 +1298,7 @@ export const HERBALISM_Q1_BANK = [
     id: 't-hb106j',
     lesson: 'hb-1-06',
     prompt: 'Leaves at the top of a plant can —',
-    choices: ['Always match the low ones', 'Look different from the low ones', 'Have no edge', 'Change colour only'],
+    choices: ['Always match the low ones', 'Look different from the low ones', 'Have no edge', 'Change color only'],
     answer: 1,
     feedback: ['They do not always match.', null, 'Every leaf has an edge.', 'The shape can differ too.'],
     why: 'Top leaves can look different. Always check two or three.'
@@ -1386,7 +1386,7 @@ export const HERBALISM_Q1_BANK = [
     choices: ['Keep rain off', 'Feed the roots', 'Tell bees where to land', 'Hold the stem up'],
     answer: 2,
     feedback: ['Rain is not the reason.', 'Roots feed themselves from the soil.', null, 'The stem holds the flower.'],
-    why: 'The colour is a sign, not decoration. It tells bees where to land.'
+    why: 'The color is a sign, not decoration. It tells bees where to land.'
   },
   {
     id: 't-hb108j',
@@ -1394,7 +1394,7 @@ export const HERBALISM_Q1_BANK = [
     prompt: 'If no bee ever visits a flower, the plant may —',
     choices: ['Grow taller', 'Lose its leaves', 'Turn brown', 'Make no seeds'],
     answer: 3,
-    feedback: ['Height is not affected.', 'Leaves are not affected.', 'Colour is not the point.', null],
+    feedback: ['Height is not affected.', 'Leaves are not affected.', 'Color is not the point.', null],
     why: 'Pollen has to travel for seeds to form.'
   },
 
@@ -1450,9 +1450,9 @@ export const HERBALISM_Q1_BANK = [
     id: 't-hb110f',
     lesson: 'hb-1-10',
     prompt: 'A plant family is a group that shares —',
-    choices: ['The same colour', 'The same build', 'The same garden', 'The same name'],
+    choices: ['The same color', 'The same build', 'The same garden', 'The same name'],
     answer: 1,
-    feedback: ['Colour can differ inside a family.', null, 'Where it grows is not the point.', 'Names differ inside a family.'],
+    feedback: ['Color can differ inside a family.', null, 'Where it grows is not the point.', 'Names differ inside a family.'],
     why: 'A family shares the same build. Same kind of stem, same kind of flower.'
   },
   {
@@ -1506,9 +1506,9 @@ export const HERBALISM_Q1_BANK = [
     id: 't-hb111g',
     lesson: 'hb-1-11',
     prompt: 'You name a plant by —',
-    choices: ['Working through clues in order', 'Guessing quickly', 'Asking how it feels', 'Its colour alone'],
+    choices: ['Working through clues in order', 'Guessing quickly', 'Asking how it feels', 'Its color alone'],
     answer: 0,
-    feedback: [null, 'You do not name a plant by guessing.', 'A feeling is not a clue.', 'Colour alone is not enough.'],
+    feedback: [null, 'You do not name a plant by guessing.', 'A feeling is not a clue.', 'Color alone is not enough.'],
     why: 'You do not name a plant by guessing. You work through clues in order.'
   },
   {
@@ -1591,16 +1591,16 @@ export const HERBALISM_Q1_BANK = [
     id: 't-hb113f',
     lesson: 'hb-1-13',
     prompt: 'Every journal page must carry —',
-    choices: ['A photo', 'A name', 'A colour', 'The date and the place'],
+    choices: ['A photo', 'A name', 'A color', 'The date and the place'],
     answer: 3,
-    feedback: ['A photo is not required.', 'You may not know the name yet.', 'Colour alone is not enough.', null],
+    feedback: ['A photo is not required.', 'You may not know the name yet.', 'Color alone is not enough.', null],
     why: 'Write the day and where you were. Without those, the rest is just a drawing.'
   },
   {
     id: 't-hb113g',
     lesson: 'hb-1-13',
     prompt: 'Instead of lovely, you should write —',
-    choices: ['Very nice', 'Four white petals', 'My favourite', 'Quite good'],
+    choices: ['Very nice', 'Four white petals', 'My favorite', 'Quite good'],
     answer: 1,
     feedback: ['That says nothing about the plant.', null, 'That is about you.', 'That says nothing you can use.'],
     why: 'Write what you saw, not what you felt. One of those helps you next spring.'

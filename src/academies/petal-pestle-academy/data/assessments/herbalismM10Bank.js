@@ -82,7 +82,7 @@ export const HERBALISM_M10_BANK = [
     answer: 0,
     feedback: [
       null,
-      'Temperature is shown by the background colour, not by patches.',
+      'Temperature is shown by the background color, not by patches.',
       'Pressure is marked with a letter, either H or L.',
       'A front is a line with symbols on it, never a patch.'
     ],
@@ -96,14 +96,14 @@ export const HERBALISM_M10_BANK = [
       'A photograph taken from space',
       'Measurements drawn on top of a map',
       'What a meteorologist hopes will happen',
-      'The colour of the sky today'
+      'The color of the sky today'
     ],
     answer: 1,
     feedback: [
       'Satellite pictures exist, but a surface map is drawn from instrument readings.',
       null,
       'Hoping is not measuring, and a map is built out of measurements.',
-      'The colours stand for temperature, not for how the sky looks.'
+      'The colors stand for temperature, not for how the sky looks.'
     ],
     why: 'Every mark on a weather map came off an instrument somewhere, which is why it can be trusted.'
   },
@@ -115,7 +115,7 @@ export const HERBALISM_M10_BANK = [
     answer: 2,
     feedback: [
       'Rain is a green or blue patch, not a letter.',
-      'Heat is shown by colour, and an H can sit over a very cold place.',
+      'Heat is shown by color, and an H can sit over a very cold place.',
       null,
       'A hurricane has its own symbol and its own warning.'
     ],
@@ -124,16 +124,16 @@ export const HERBALISM_M10_BANK = [
   {
     id: 't-hbm1001d',
     lesson: 'hb-m10-01',
-    prompt: 'Which layer of the map is shown by colour?',
+    prompt: 'Which layer of the map is shown by color?',
     choices: ['Wind', 'Pressure', 'Fronts', 'Temperature'],
     answer: 3,
     feedback: [
-      'Wind is drawn with arrows or barbs, not with a colour wash.',
-      'Pressure gets a letter, H or L, rather than a colour.',
+      'Wind is drawn with arrows or barbs, not with a color wash.',
+      'Pressure gets a letter, H or L, rather than a color.',
       'Fronts are lines with triangles or half circles along them.',
       null
     ],
-    why: 'The colour wash across a weather map is the temperature layer, warm at one end and cold at the other.'
+    why: 'The color wash across a weather map is the temperature layer, warm at one end and cold at the other.'
   },
   {
     id: 't-hbm1001e',
@@ -174,14 +174,14 @@ export const HERBALISM_M10_BANK = [
     prompt: 'What turns a weather map into a forecast?',
     choices: [
       'Waiting until tomorrow morning',
-      'Printing it in colour',
-      'Knowing which way the weather is travelling',
+      'Printing it in color',
+      'Knowing which way the weather is traveling',
       'Adding more symbols to it'
     ],
     answer: 2,
     feedback: [
       'Waiting until tomorrow is not predicting. It is just finding out.',
-      'Colour makes it easier to read, but it does not make it a prediction.',
+      'Color makes it easier to read, but it does not make it a prediction.',
       null,
       'More symbols would only crowd the map. Direction is what matters.'
     ],
@@ -194,7 +194,7 @@ export const HERBALISM_M10_BANK = [
     choices: ['Temperature', 'Precipitation', 'Pressure', 'Soil type'],
     answer: 3,
     feedback: [
-      'Temperature is the colour layer, and it is definitely on there.',
+      'Temperature is the color layer, and it is definitely on there.',
       'Precipitation shows as green and blue patches.',
       'Pressure is marked with H and L on every surface map.',
       null
@@ -295,14 +295,14 @@ export const HERBALISM_M10_BANK = [
     lesson: 'hb-m10-02',
     prompt: 'What usually follows a cold front through Georgia?',
     choices: [
-      'Days of grey drizzle that never lifts',
+      'Days of gray drizzle that never lifts',
       'A short hard burst of rain, then cooler and clearer',
       'Slowly rising temperatures and no rain',
       'Nothing changes at all'
     ],
     answer: 1,
     feedback: [
-      'Grey and endless is what a stalled front does, not a cold front.',
+      'Gray and endless is what a stalled front does, not a cold front.',
       null,
       'A cold front brings colder air behind it, which is the whole point.',
       'A front is the edge of different air, so something always changes.'
@@ -366,19 +366,19 @@ export const HERBALISM_M10_BANK = [
     lesson: 'hb-m10-02',
     prompt: 'Which way do the triangles on a cold front point?',
     choices: [
-      'Towards the nearest H',
+      'Toward the nearest H',
       'North, always',
       'Back the way it came',
       'The way the front is moving'
     ],
     answer: 3,
     feedback: [
-      'The symbols have nothing to do with where the pressure centres sit.',
+      'The symbols have nothing to do with where the pressure centers sit.',
       'A front can move in any direction, and the symbols follow it.',
       'That would tell you where it has been, which helps nobody.',
       null
     ],
-    why: 'The symbol carries two things at once: which kind of front it is, and which way it is travelling.'
+    why: 'The symbol carries two things at once: which kind of front it is, and which way it is traveling.'
   },
   {
     id: 't-hbm1002i',
@@ -686,7 +686,7 @@ export const HERBALISM_M10_BANK = [
     id: 't-hbm1004e',
     lesson: 'hb-m10-04',
     prompt: 'Dr Shepherd says weather is your mood. What is climate in the same sentence?',
-    choices: ['Your personality', 'Your birthday', 'Your favourite season', 'Your temper today'],
+    choices: ['Your personality', 'Your birthday', 'Your favorite season', 'Your temper today'],
     answer: 0,
     feedback: [
       null,
