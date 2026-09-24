@@ -243,9 +243,12 @@ export function stopSpeaking() {
  * question and each answer choice land as separate thoughts instead of one
  * long run-on. Returns true if speech actually started.
  */
-export function speakChunks(chunks, { onEnd } = {}) {
+export function speakChunks(chunks, { onEnd, queue = false } = {}) {
   if (!speechSupported()) return false;
-  stopSpeaking();
+  // `queue` (Sept 24 2026): Dr. Marigold's second message on the same screen
+  // waits for her first instead of cutting it off. Every button press still
+  // stops whatever was being said, because buttons never pass queue.
+  if (!queue) stopSpeaking();
   const parts = (chunks || []).map((c) => String(c || '').trim()).filter(Boolean);
   if (parts.length === 0) return false;
 

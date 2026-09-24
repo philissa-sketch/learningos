@@ -382,8 +382,8 @@ function VoicePanel() {
         <span>
           <span className="font-700">Dr. Marigold speaks out loud</span>
           <span className="block text-xs text-ink-700">
-            Her good-morning and her Morning Circle reminders, once a day each, without pressing the
-            speaker. Everything else still waits for the 🔊 button.
+            Every message of hers is said out loud when it appears, without pressing the speaker.
+            Turn this off and she only speaks when the 🔊 button is pressed.
           </span>
         </span>
       </label>

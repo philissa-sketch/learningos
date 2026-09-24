@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { MarigoldAvatar } from './MarigoldAvatar.jsx';
 import { MARIGOLD } from '../../lib/marigold.js';
 import { speechSupported, speakChunks, stopSpeaking } from '../../lib/speech.js';
+import { sayMessage } from '../../lib/marigoldVoice.js';
 
 /**
  * Dr. Marigold, saying one thing.
@@ -17,6 +18,17 @@ import { speechSupported, speakChunks, stopSpeaking } from '../../lib/speech.js'
  */
 export function MarigoldMessage({ text, tone = 'good', size = 'base', showName = true, quote = null }) {
   const [speaking, setSpeaking] = useState(false);
+
+  // ---- SHE SAYS IT OUT LOUD WHEN IT APPEARS (Gigi, Sept 24 2026) ----
+  // "Every time she has a message have her say it out loud." Spoken when the
+  // message first shows and again whenever its words change. The rules (queue
+  // on one screen, no repeats within a minute, wait for her first tap, the
+  // Grown-Up Corner switch) live in lib/marigoldVoice.js. The 🔊 button below
+  // still works for hearing it again.
+  const quoteText = quote ? quote.text + (quote.who ? `, said ${quote.who}` : '') : '';
+  useEffect(() => {
+    sayMessage([text, quoteText]);
+  }, [text, quoteText]);
 
   const toneCls =
     tone === 'start'

@@ -61,6 +61,8 @@ const SELF_TEST = process.argv.includes('--self-test');
 const SRC = {
   circleLib: 'lib/morningCircle.js',
   voiceLib: 'lib/marigoldVoice.js',
+  speech: 'lib/speech.js',
+  message: 'components/Mentor/MarigoldMessage.jsx',
   gateLib: 'lib/testGate.js',
   engine: 'lib/assessmentEngine.js',
   links: 'lib/blockLinks.js',
@@ -106,7 +108,9 @@ function pretendBrowser({ tapped }) {
     speechSynthesis: {
       getVoices: () => [{ name: 'Samantha', lang: 'en-US', localService: true }],
       speak: (u) => spoken.push(u.text),
-      cancel: () => {},
+      cancel: () => {
+        win.cancels++;
+      },
       speaking: false,
       pending: false,
       addEventListener: () => {},
@@ -115,6 +119,7 @@ function pretendBrowser({ tapped }) {
     },
     addEventListener: (t, fn) => listeners.set(t, [...(listeners.get(t) || []), fn]),
     removeEventListener: (t, fn) => listeners.set(t, (listeners.get(t) || []).filter((f) => f !== fn)),
+    cancels: 0,
     fire: (t) => [...(listeners.get(t) || [])].forEach((fn) => fn({ type: t })),
     listening: (t) => (listeners.get(t) || []).length
   };
@@ -209,6 +214,9 @@ function checkWiring(ctx, fail) {
   if (!/sayOncePerDay\('greeting'/.test(s.today)) fail('Dr. Marigold does not say good morning on Today');
   if (!/sayOncePerDay\('reminder'/.test(s.today)) fail('Dr. Marigold does not say the reminder out loud');
   if (!/sayOncePerDay\('finished'/.test(s.circleView)) fail('Dr. Marigold does not say well done when Circle finishes');
+  if (!/useEffect\(\(\) => \{\s*sayMessage\(\[text, quoteText\]\);\s*\}, \[text, quoteText\]\);/.test(s.message)) {
+    fail('Dr. Marigold’s message box does not say its message out loud when it appears or changes');
+  }
   if (!/setMarigoldSpeaksAloud\(/.test(s.parent)) fail('the Grown-Up Corner has no switch for Dr. Marigold speaking');
   // tests
   if (/retakeStatus\(\s*[wq]Attempts/.test(s.lessons)) fail('LessonsView still gates a test with retakeStatus alone');
@@ -246,6 +254,43 @@ async function checkVoice(ctx, fail) {
   v3.setMarigoldSpeaksAloud(false);
   v3.sayOncePerDay('greeting', 'Good morning', day);
   if (b3.spoken.length) fail('with the Grown-Up Corner switch off, she still spoke');
+
+  // EVERY MESSAGE, OUT LOUD (Gigi, Sept 24 2026).
+  const b5 = pretendBrowser({ tapped: true });
+  const v5 = await ctx.loadVoice();
+  v5.sayMessage(['Right now it is Mathematics.']);
+  if (b5.spoken.length !== 1) fail('a Dr. Marigold message was not said out loud when it appeared');
+  v5.sayMessage(['Right now it is Mathematics.']);
+  if (b5.spoken.length !== 1) fail('the same message was said twice within a minute');
+  const cancelsBefore = b5.win.cancels;
+  v5.sayMessage(['Good morning, Azianna!']);
+  if (b5.spoken.length !== 2) fail('a second, different message on the same screen was not said');
+  if (b5.win.cancels !== cancelsBefore) fail('a second message on the same screen cut off the first one');
+  const b6 = pretendBrowser({ tapped: false });
+  const v6 = await ctx.loadVoice();
+  v6.sayMessage(['One.']);
+  v6.sayMessage(['Two.']);
+  if (b6.spoken.length) fail('messages were spoken before the page was tapped');
+  b6.win.fire('pointerup');
+  if (b6.spoken.join('|') !== 'One.|Two.') fail(`after her first tap the waiting messages were: ${b6.spoken.join('|') || 'none'}`);
+  const b7 = pretendBrowser({ tapped: true });
+  const v7 = await ctx.loadVoice();
+  v7.setMarigoldSpeaksAloud(false);
+  v7.sayMessage(['Hello.']);
+  if (b7.spoken.length) fail('with the Grown-Up Corner switch off, a message was still said');
+  const b8 = pretendBrowser({ tapped: true });
+  const v8 = await ctx.loadVoice();
+  v8.sayMessage(['Good morning, Azianna!']);
+  v8.sayOncePerDay('greeting', 'Good morning, Azianna!', day);
+  if (b8.spoken.length !== 1) fail('the greeting box and the greeting line were both spoken (said twice)');
+  if (v8.saidOnRecord().greeting !== day) fail('the greeting was heard but not recorded as said, so it comes again');
+  // A "read it to me" button (no queue) must still stop her.
+  const b9 = pretendBrowser({ tapped: true });
+  const sp = await ctx.loadSpeech();
+  sp.speakChunks(['a'], { queue: true });
+  if (b9.win.cancels !== 0) fail('a queued message stops whatever was being said');
+  sp.speakChunks(['b']);
+  if (b9.win.cancels !== 1) fail('a read-it-to-me button no longer stops Dr. Marigold first');
 
   // Not marked said when speech could not start.
   const b4 = pretendBrowser({ tapped: true });
@@ -364,7 +409,8 @@ async function context(broken = {}) {
   const engine = await loadModule(SRC.engine, broken.src?.engine);
   const links = await loadModule(SRC.links, broken.src?.links);
   const loadVoice = () => loadModule(SRC.voiceLib, src.voiceLib);
-  return { src, circle, gate, engine, links, loadVoice };
+  const loadSpeech = () => loadModule(SRC.speech, src.speech);
+  return { src, circle, gate, engine, links, loadVoice, loadSpeech };
 }
 
 // ---------------------------------------------------------------------------
@@ -389,7 +435,14 @@ const BUGS = [
   ['no spoken greeting', 'today', "sayOncePerDay('greeting'", "void ('greeting'"],
   ['voice on pointerdown', 'voiceLib', "window.addEventListener('pointerup', onFirstTap, true);", "window.addEventListener('pointerdown', onFirstTap, true);"],
   ['switch ignored', 'voiceLib', 'if (!marigoldSpeaksAloud() || !speechSupported()) return false;', 'if (!speechSupported()) return false;'],
-  ['marked said while still waiting', 'voiceLib', '  pending = { kind, text, dayKey };\n  return true;', '  pending = { kind, text, dayKey };\n  markSaid(kind, dayKey);\n  return true;'],
+  ['marked said while still waiting', 'voiceLib', 'if (pending.length < MAX_WAITING) pending.push(item);', 'if (pending.length < MAX_WAITING) pending.push(item); if (item.kind) markSaid(item.kind, item.dayKey);'],
+  ['messages not spoken', 'message', 'sayMessage([text, quoteText]);', ''],
+  ['repeats herself', 'voiceLib', 'const repeat = lastSpoken && lastSpoken.key === key && now - lastSpoken.at < REPEAT_WINDOW_MS;', 'const repeat = false;'],
+  ['cuts herself off', 'voiceLib', 'const queue = now - lastStartedAt < SAME_SCREEN_MS;', 'const queue = false;'],
+  ['waiting messages dropped', 'voiceLib', 'list.forEach(speakItem);', 'list.slice(0, 1).forEach(speakItem);'],
+  ['greeting said twice', 'voiceLib', 'if (!repeat) {', 'if (true) {'],
+  ['queue ignored in speech', 'speech', 'if (!queue) stopSpeaking();', 'stopSpeaking();'],
+  ['buttons stop nothing', 'speech', 'if (!queue) stopSpeaking();', ''],
   ['no switch in the Grown-Up Corner', 'parent', 'setMarigoldSpeaksAloud(e.target.checked);', ''],
   ['three tests in a day', 'gateLib', 'if (testsSatToday(allAttempts, todayKey) >= 1) {', 'if (false) {'],
   ['reading check counts', 'gateLib', "export const COUNTED_TEST_KINDS = ['weekly', 'quarter'];", "export const COUNTED_TEST_KINDS = ['weekly', 'quarter', 'reading-check'];"],
