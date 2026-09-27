@@ -1,8 +1,9 @@
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { getJourney, journeySummary } from '../../lib/journey.js';
 import { getShipStatus, shipSummary } from '../../lib/shipSystems.js';
 import { useAppStore } from '../../store/useAppStore.js';
 import { ShipDiagram } from './ShipDiagram.jsx';
+import { ShipInterior } from './ShipInterior.jsx';
 
 // ---------------------------------------------------------------------------
 // THE JOURNEY AND THE SHIP — the two screens for logic that already existed.
@@ -137,12 +138,41 @@ export function JourneySection({ xp, totalMastered, currentRank }) {
  * THE SHIP
  * ===================================================================== */
 
-export function ShipSection({ stats }) {
+export function ShipSection({ stats, journey = null, rank = null }) {
   const status = useMemo(() => getShipStatus(stats), [stats]);
   const summary = shipSummary(status);
   // Bought spacecraft parts mount onto the drawing.
   const unlocked = useAppStore((s) => s.unlockedCosmetics);
   const owned = useMemo(() => new Set(unlocked || []), [unlocked]);
+
+  /**
+   * ---- ABOARD. (Sept 27, 2026.) ----
+   *
+   * The parent: *"there is a flat rocket ship. I prefer for that to be a place
+   * that can be entered."* The hull stays exactly as it was — it is the best
+   * single picture in this app — and it now has a way in. Inside is
+   * `ShipInterior`, drawn from the same seven counters, so the outside and the
+   * inside cannot disagree about how built the ship is.
+   */
+  const [aboard, setAboard] = useState(false);
+  const equippedAvatar = useAppStore((s) => s.equippedAvatar);
+  const equippedGear = useAppStore((s) => s.equippedGear) || {};
+  const readinessAwards = useAppStore((s) => s.readinessAwards) || {};
+  const awards = useMemo(() => Object.keys(readinessAwards), [readinessAwards]);
+
+  if (aboard) {
+    return (
+      <ShipInterior
+        shipStatus={status}
+        journey={journey}
+        rank={rank}
+        awards={awards}
+        avatar={equippedAvatar}
+        gear={equippedGear}
+        onLeave={() => setAboard(false)}
+      />
+    );
+  }
 
   return (
     <div>
@@ -160,6 +190,14 @@ export function ShipSection({ stats }) {
       <div className="mb-4">
         <ShipDiagram systems={status.systems} owned={owned} />
       </div>
+
+      <button
+        type="button"
+        onClick={() => setAboard(true)}
+        className="mb-4 w-full rounded-xl bg-signal-cyan px-4 py-3 font-display text-sm font-700 text-space-950 transition hover:brightness-110"
+      >
+        Step aboard — two decks to walk
+      </button>
 
       <p className="mb-3 text-sm text-ink-300">
         Every subject builds a real part of the vehicle. A ship does not fly without all of them.

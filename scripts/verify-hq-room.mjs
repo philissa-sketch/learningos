@@ -2003,17 +2003,36 @@ console.log('\n--- 13. the room model ---');
 
   /* ---- 12b. presence: never empty, never nothing ---- */
   {
+    /**
+     * ---- WHAT "PRESENT" MEANS SINCE THE SHIP. (Sept 27, 2026.) ----
+     *
+     * A room used to be present when he owned something in it. The vehicle
+     * from the My Ship screen is a room whose contents are DRAWN, not bought,
+     * so it carries `scenery: true` and is present from the first day. The
+     * invariant these checks hold has not moved — "never a door onto a bare
+     * floor" — only the way a room can satisfy it: owning a piece, or being
+     * furnished by construction.
+     */
+    const sceneryIds = ROOMS.HQ_ROOMS.filter((r) => r.scenery).map((r) => r.id);
+    const withoutScenery = (ids) => ids.filter((id) => !sceneryIds.includes(id));
+
     ok('the hub is present even when he owns nothing at all',
-      ROOMS.presentRooms({ owned: new Set() }).map((r) => r.id).join() === ROOMS.HOME_ROOM,
+      withoutScenery(ROOMS.presentRooms({ owned: new Set() }).map((r) => r.id)).join() === ROOMS.HOME_ROOM,
       'a boy with no furniture still has somewhere to stand');
+
+    ok('a scenery room is present from the first day, and draws its own contents',
+      sceneryIds.length > 0
+        && sceneryIds.every((id) => ROOMS.presentRooms({ owned: new Set() }).some((r) => r.id === id))
+        && sceneryIds.every((id) => ROOMS.roomById(id).pieces.length === 0),
+      'a scenery room that also claimed catalogue pieces would be two things at once');
 
     /**
      * THE TWO-PIECE CASE, which is the one the session prompt names.
      * Both directions: two pieces in one room is one room, two pieces in two
      * rooms is two rooms.
      */
-    const one = ROOMS.presentRooms({ owned: new Set(['hq-desk', 'hq-lamp']) }).map((r) => r.id);
-    const two = ROOMS.presentRooms({ owned: new Set(['hq-desk', 'hq-telescope']) }).map((r) => r.id);
+    const one = withoutScenery(ROOMS.presentRooms({ owned: new Set(['hq-desk', 'hq-lamp']) }).map((r) => r.id));
+    const two = withoutScenery(ROOMS.presentRooms({ owned: new Set(['hq-desk', 'hq-telescope']) }).map((r) => r.id));
     ok('two pieces in one room give exactly one room',
       one.length === 1 && one[0] === ROOMS.HOME_ROOM, one.join());
     ok('...and two pieces in two rooms give exactly two',
@@ -2039,6 +2058,8 @@ console.log('\n--- 13. the room model ---');
         const owned = new Set([pieceId]);
         for (const room of ROOMS.presentRooms({ owned, rule, milestones: allMilestones })) {
           if (room.id === ROOMS.HOME_ROOM) continue;
+          // A scenery room owns nothing on purpose; it is full of drawn things.
+          if (room.scenery) continue;
           if (ROOMS.ownedPiecesIn(room.id, owned).length === 0) leaks.push(`${rule}/${pieceId}/${room.id}`);
         }
       }
@@ -2047,8 +2068,8 @@ console.log('\n--- 13. the room model ---');
       leaks.length === 0, leaks.slice(0, 4).join(', '));
 
     ok('...and the year rule is still a real second condition, not dead code',
-      ROOMS.presentRooms({ owned: new Set(['hq-lab']), rule: 'year', milestones: new Set() }).length === 1
-        && ROOMS.presentRooms({ owned: new Set(['hq-lab']), rule: 'year', milestones: new Set(['year-1']) }).length === 2,
+      withoutScenery(ROOMS.presentRooms({ owned: new Set(['hq-lab']), rule: 'year', milestones: new Set() }).map((r) => r.id)).length === 1
+        && withoutScenery(ROOMS.presentRooms({ owned: new Set(['hq-lab']), rule: 'year', milestones: new Set(['year-1']) }).map((r) => r.id)).length === 2,
       'v1 section 6 pacing must stay switchable by one constant');
   }
 

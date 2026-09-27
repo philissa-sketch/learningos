@@ -1,8 +1,11 @@
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { useAppStore } from '../../store/useAppStore.js';
 import { AVATARS, ROCKETS, avatarIconFor, DEFAULT_AVATAR_ID, DEFAULT_ROCKET_ID } from '../../lib/rewards.js';
 import { playPurchase, unlockAudio } from '../../lib/sfx.js';
 import { HQRoom } from './HQRoom.jsx';
+import { ShipInterior } from './ShipInterior.jsx';
+import { getShipStatus } from '../../lib/shipSystems.js';
+import { getJourney } from '../../lib/journey.js';
 import { CadetAvatar } from './CadetAvatar.jsx';
 import { RocketSwatch } from './RocketSwatch.jsx';
 import { academyContent } from '../../content/academyContent.js';
@@ -95,6 +98,29 @@ function PickGrid({ items, equippedId, onPick }) {
 
 export function InventorySection() {
   const unlocked = useAppStore((s) => s.unlockedCosmetics);
+
+  /**
+   * ---- ABOARD, OR IN THE HQ. (Sept 27, 2026.) ----
+   *
+   * Two rooms, and this is which one is open. The ship's readings come from
+   * the same store selectors the My Ship screen uses — `getGamificationStats`
+   * for the seven systems, the journey for the viewport, the rank for the
+   * seat, the awards he was actually given for the rack. Read here and passed
+   * down so the interior itself stays free of the store and a guard can run
+   * it in plain Node.
+   */
+  const [aboard, setAboard] = useState(false);
+  const getGamificationStats = useAppStore((s) => s.getGamificationStats);
+  const currentRank = useAppStore((s) => s.currentRank);
+  const xp = useAppStore((s) => s.xp) || 0;
+  const readinessAwards = useAppStore((s) => s.readinessAwards) || {};
+  const awardIds = useMemo(() => Object.keys(readinessAwards), [readinessAwards]);
+  const shipStats = useMemo(() => getGamificationStats(), [getGamificationStats, xp]);
+  const shipStatus = useMemo(() => getShipStatus(shipStats), [shipStats]);
+  const journey = useMemo(
+    () => getJourney(xp, shipStats.totalMastered || 0, currentRank),
+    [xp, shipStats.totalMastered, currentRank]
+  );
   const equippedAvatar = useAppStore((s) => s.equippedAvatar) || DEFAULT_AVATAR_ID;
   const equippedRocket = useAppStore((s) => s.equippedRocket);
   const equippedGear = useAppStore((s) => s.equippedGear) || {};
@@ -212,7 +238,25 @@ export function InventorySection() {
         slots he has not bought yet are drawn faintly rather than hidden, for
         the same reason locked badges now show progress.
       */}
-      <HQRoom />
+      {/*
+        TWO ROOMS, ONE SWITCH. The HQ and the ship are both rooms in
+        `hqRooms.js`; this is the pair of doors between them. The ship draws
+        itself from the same seven counters the hull on the My Ship screen
+        uses, so the two views of the vehicle cannot disagree.
+      */}
+      {aboard
+        ? (
+          <ShipInterior
+            shipStatus={shipStatus}
+            journey={journey}
+            rank={currentRank}
+            awards={awardIds}
+            avatar={equippedAvatar}
+            gear={equippedGear}
+            onLeave={() => setAboard(false)}
+          />
+        )
+        : <HQRoom onBoard={() => setAboard(true)} />}
 
       {/* -------- Gear — tappable, one item per slot -------- */}
       <div>

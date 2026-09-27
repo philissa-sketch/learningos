@@ -1862,7 +1862,7 @@ function CadetInRoom({ spot, avatar, gear, reachY = null }) {
 }
 
 
-export function HQRoom() {
+export function HQRoom({ onBoard = null }) {
   const unlocked = useAppStore((s) => s.unlockedCosmetics);
   const owned = useMemo(() => new Set(unlocked || []), [unlocked]);
   const equippedAvatar = useAppStore((s) => s.equippedAvatar) || DEFAULT_AVATAR_ID;
@@ -2339,6 +2339,24 @@ export function HQRoom() {
           <div className="h-1.5 w-24 overflow-hidden rounded-full bg-space-800">
             <div className="h-full rounded-full bg-signal-amber transition-all" style={{ width: `${pct}%` }} />
           </div>
+          {/*
+            ---- THE WAY ABOARD. (Sept 27, 2026.) ----
+
+            The parent asked for two places open: this room, and the vehicle
+            from the My Ship screen, which used to be a drawing. The ship is a
+            room in `hqRooms.js` like any other — it simply furnishes itself —
+            and this is the door. It is not gated on owning anything: the
+            vehicle exists from day one, half-built, and his work fills it in.
+          */}
+          {onBoard && (
+            <button
+              type="button"
+              onClick={onBoard}
+              className="rounded-lg border border-signal-cyan/50 bg-signal-cyan/10 px-3 py-1 text-xs font-display font-700 text-signal-cyan transition hover:bg-signal-cyan/20"
+            >
+              Board the ship
+            </button>
+          )}
           {ownedHq > 0 && (
             <button
               type="button"

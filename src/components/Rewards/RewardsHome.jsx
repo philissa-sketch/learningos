@@ -3,6 +3,7 @@ import { useAppStore } from '../../store/useAppStore.js';
 import { evaluateBadges } from '../../lib/badges.js';
 import { AVATARS, ROCKETS, avatarIconFor, DEFAULT_AVATAR_ID, DEFAULT_ROCKET_ID } from '../../lib/rewards.js';
 import { JourneySection, ShipSection } from './MissionJourney.jsx';
+import { getJourney } from '../../lib/journey.js';
 import { ChallengesSection, HistorySection } from './ChallengesSection.jsx';
 import { SupplySection } from './SupplyStore.jsx';
 import { InventorySection } from './InventorySection.jsx';
@@ -989,7 +990,10 @@ export function RewardsHome() {
         {tab === 'mine' && (
           <div className="space-y-6">
             <InventorySection />
-            <ShipSection stats={stats} />
+            {/* The ship's own journey and rank travel in, so the viewport
+                and the seat plate read the same records the Journey tab does
+                rather than computing a second answer. */}
+            <ShipSection stats={stats} journey={getJourney(xp || 0, totalMastered, currentRank)} rank={currentRank} />
           </div>
         )}
 

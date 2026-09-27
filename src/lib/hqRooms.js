@@ -155,6 +155,26 @@ export const HQ_ROOMS = [
       'hq-patch-wall'
     ]
   },
+  /**
+   * ---- THE SHIP IS A ROOM. (Sept 27, 2026.) ----
+   *
+   * The parent asked for two places open now: here, and the vehicle from the
+   * My Ship screen, which had been a picture. Its decks are drawn by
+   * `ShipInterior` from `shipInterior.js` rather than furnished out of the
+   * catalogue, so it holds no pieces and `scenery` says why — see
+   * `roomIsPresent`, where an empty piece list would otherwise hide it.
+   *
+   * It has no `unlock` because it is not earned: the vehicle exists from the
+   * first day, half-built, and what he does fills it in. That IS the growth.
+   */
+  {
+    id: 'ship',
+    name: 'The Ship',
+    blurb: 'Two decks. Everything you have built, from the inside.',
+    unlock: null,
+    scenery: true,
+    pieces: []
+  },
   {
     id: 'workshop',
     name: 'Workshop',
@@ -298,6 +318,15 @@ export function roomIsPresent(room, { owned = new Set(), rule = ROOM_PRESENCE, m
    * this one, never a replacement for it, and the guard checks the invariant
    * against BOTH rules rather than against the shipped default.
    */
+  /**
+   * A SCENERY ROOM IS NOT AN EMPTY ROOM.
+   *
+   * The invariant below is "he is never shown a door onto a bare floor". A
+   * room whose contents are drawn rather than bought satisfies that by
+   * construction — the ship's decks are full the first time he opens them —
+   * so it is exempt from the ownership test and from nothing else.
+   */
+  if (room.scenery) return true;
   if (!room.pieces.some((id) => owned.has(id))) return false;
   if (rule === 'year') return Boolean(room.unlock) && milestones.has(room.unlock);
   return true;
