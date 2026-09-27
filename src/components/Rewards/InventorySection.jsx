@@ -3,7 +3,7 @@ import { useAppStore } from '../../store/useAppStore.js';
 import { AVATARS, ROCKETS, avatarIconFor, DEFAULT_AVATAR_ID, DEFAULT_ROCKET_ID } from '../../lib/rewards.js';
 import { playPurchase, unlockAudio } from '../../lib/sfx.js';
 import { HQRoom } from './HQRoom.jsx';
-import { ShipInterior } from './ShipInterior.jsx';
+import { ShipCutaway } from './ShipCutaway.jsx';
 import { getShipStatus } from '../../lib/shipSystems.js';
 import { getJourney } from '../../lib/journey.js';
 import { CadetAvatar } from './CadetAvatar.jsx';
@@ -246,7 +246,7 @@ export function InventorySection() {
       */}
       {aboard
         ? (
-          <ShipInterior
+          <ShipCutaway
             shipStatus={shipStatus}
             journey={journey}
             rank={currentRank}

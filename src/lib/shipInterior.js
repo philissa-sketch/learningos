@@ -267,11 +267,25 @@ export function stationReading(station, { shipStatus = null, journey = null, ran
   if (station.system) {
     const sys = (shipStatus?.systems || []).find((s) => s.id === station.system) || null;
     if (!sys) return { kind: 'system', pct: null, label: station.name, empty: true, note: station.empty };
+    /**
+     * ---- WHAT WOULD FINISH IT. (Sept 27, 2026.) ----
+     *
+     * "8 of 40" is a score. "32 more brings this online" is a next step, and
+     * it is the same number said the useful way round. A system already
+     * finished says so instead — there is nothing left to ask of him there,
+     * and a bar sitting at full with a nag under it is how a reward turns
+     * into a chore.
+     */
+    const left = Math.max(0, sys.target - sys.current);
     return {
       kind: 'system',
       pct: sys.pct,
       label: sys.name,
       detail: `${sys.current} of ${sys.target} · ${sys.subjectLabel}`,
+      built: sys.built === true,
+      nextStep: sys.built
+        ? 'Flight-ready.'
+        : `${left} more and this comes online.`,
       empty: sys.current === 0,
       /**
        * THE SUBJECT COMES FROM THE HULL, NOT FROM THIS FILE.
@@ -328,4 +342,30 @@ export function stationReading(station, { shipStatus = null, journey = null, ran
 /** Every hull system id this interior claims to hold a station for. */
 export function systemsInside() {
   return STATIONS.filter((s) => s.system).map((s) => s.system);
+}
+
+/**
+ * ---- IS THE SHIP FINISHED? ----
+ *
+ * Asked of the hull, never worked out here: `getShipStatus` already answers
+ * "is every system built", and a second opinion about that is exactly the
+ * drift this file exists to avoid. What is added is what it MEANS inside —
+ * the engines are lit, and the viewport is an arrival rather than a heading.
+ *
+ * Null when there is no hull status at all: nothing came back is not "no".
+ */
+export function shipIsFlightReady(shipStatus) {
+  if (!shipStatus || !Array.isArray(shipStatus.systems) || shipStatus.systems.length === 0) return null;
+  return shipStatus.flightReady === true;
+}
+
+/** The one line the deck shows about the whole vehicle. */
+export function readinessLine(shipStatus) {
+  const ready = shipIsFlightReady(shipStatus);
+  if (ready === null) return 'No readings from the hull.';
+  if (ready) return 'Every system is flight-ready. This ship can go anywhere.';
+  const built = shipStatus.systems.filter((s) => s.built).length;
+  const weakest = [...shipStatus.systems].sort((a, b) => a.pct - b.pct)[0];
+  return `${built} of ${shipStatus.systems.length} systems flight-ready`
+    + (weakest ? ` · ${weakest.name} is furthest behind` : '');
 }

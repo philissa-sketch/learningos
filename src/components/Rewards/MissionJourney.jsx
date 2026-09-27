@@ -3,7 +3,7 @@ import { getJourney, journeySummary } from '../../lib/journey.js';
 import { getShipStatus, shipSummary } from '../../lib/shipSystems.js';
 import { useAppStore } from '../../store/useAppStore.js';
 import { ShipDiagram } from './ShipDiagram.jsx';
-import { ShipInterior } from './ShipInterior.jsx';
+import { ShipCutaway } from './ShipCutaway.jsx';
 
 // ---------------------------------------------------------------------------
 // THE JOURNEY AND THE SHIP — the two screens for logic that already existed.
@@ -151,7 +151,7 @@ export function ShipSection({ stats, journey = null, rank = null }) {
    * The parent: *"there is a flat rocket ship. I prefer for that to be a place
    * that can be entered."* The hull stays exactly as it was — it is the best
    * single picture in this app — and it now has a way in. Inside is
-   * `ShipInterior`, drawn from the same seven counters, so the outside and the
+   * `ShipCutaway`, drawn from the same seven counters, so the outside and the
    * inside cannot disagree about how built the ship is.
    */
   const [aboard, setAboard] = useState(false);
@@ -162,7 +162,7 @@ export function ShipSection({ stats, journey = null, rank = null }) {
 
   if (aboard) {
     return (
-      <ShipInterior
+      <ShipCutaway
         shipStatus={status}
         journey={journey}
         rank={rank}

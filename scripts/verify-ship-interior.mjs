@@ -159,7 +159,7 @@ console.log('\n--- 6. the two doors ---');
 {
   const hq = read('src/components/Rewards/HQRoom.jsx');
   const host = read('src/components/Rewards/InventorySection.jsx');
-  const ship = read('src/components/Rewards/ShipInterior.jsx');
+  const ship = read('src/components/Rewards/ShipCutaway.jsx');
   ok('the HQ has a way aboard', /Board the ship/.test(hq) && /onBoard/.test(hq));
   ok('...and it is not gated on owning furniture',
     !/ownedHq > 0 && onBoard|onBoard && ownedHq/.test(hq),
@@ -169,6 +169,51 @@ console.log('\n--- 6. the two doors ---');
   ok('the interior itself never touches the store',
     !/useAppStore/.test(ship),
     'a room a guard cannot run in plain Node is a room nothing can check');
+}
+
+
+console.log('\n--- 7. the next step, and the finished ship ---');
+{
+  const tanks = I.STATIONS.find((s) => s.id === 'fuel-tanks');
+  const part = getShipStatus({ masteredPropulsion: 14 });
+  const r = I.stationReading(tanks, { shipStatus: part });
+  ok('an unfinished system says what would finish it', /\b56\b/.test(r.nextStep) && /comes? online/i.test(r.nextStep), r.nextStep);
+  ok('...and the number is the hull\'s, not a second count',
+    Number(/\d+/.exec(r.nextStep)[0]) === part.systems.find((x) => x.id === 'propulsion').target - 14);
+
+  const doneOne = getShipStatus({ masteredPropulsion: 999 });
+  const finished = I.stationReading(tanks, { shipStatus: doneOne });
+  ok('a finished system stops asking for anything', /flight-ready/i.test(finished.nextStep) && finished.built === true, finished.nextStep);
+  ok('...and is never reported as empty', finished.empty === false);
+
+  ok('readiness is asked of the hull', I.shipIsFlightReady(doneOne) === false, 'one system built is not a finished ship');
+  /**
+   * Life support is COMPUTED from workouts, garden sessions and meals — there
+   * is no `lifeSupport` counter to hand it. Passing one and expecting a
+   * finished ship is the mistake this check nearly shipped with: the hull
+   * ignored it, the ship was not ready, and the check was wrong rather than
+   * the code.
+   */
+  const all = getShipStatus({
+    masteredPropulsion: 999, khanMathUnitsCompleted: 999, writingEntries: 999,
+    booksCompleted: 999, masteredOnboard: 999, guitarSessions: 999,
+    workoutsLogged: 999, gardenSessions: 999, mealsLogged: 999
+  });
+  ok('every system built IS a finished ship', I.shipIsFlightReady(all) === true);
+  ok('...and the deck says so', /can go anywhere/i.test(I.readinessLine(all)));
+  ok('no hull status is null, never false', I.shipIsFlightReady(null) === null,
+    'nothing came back must not read as "not ready"');
+  ok('a half-built ship counts what is built', /\b0 of 7\b/.test(I.readinessLine(part)), I.readinessLine(part));
+
+  const deck = read('src/components/Rewards/ShipCutaway.jsx');
+  /**
+   * In the cutaway a finished ship is drawn per ROOM — every room reaches its
+   * complete tier and lights up — rather than as one glow over a single deck.
+   * The property is the same: finished has to be visible, not merely stated.
+   */
+  ok('the finished state is drawn, not just written',
+    /flightReady/.test(deck) && /tier >= 3/.test(deck),
+    'a finished ship that only says so in a sentence is a scoreboard, not a room');
 }
 
 console.log(`\n${passed} passed, ${failures.length} failed`);
