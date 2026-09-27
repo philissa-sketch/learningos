@@ -96,8 +96,12 @@ function PickGrid({ items, equippedId, onPick }) {
   );
 }
 
-export function InventorySection() {
+export function InventorySection({ onOpenNext = null }) {
   const unlocked = useAppStore((s) => s.unlockedCosmetics);
+  // What is inside a room, and the job that can be run from in it. Both live
+  // in the store because both are this Academy's own units, books and logs.
+  const getShipRoomSupply = useAppStore((s) => s.getShipRoomSupply);
+  const runStationJob = useAppStore((s) => s.runStationJob);
 
   /**
    * ---- ABOARD, OR IN THE HQ. (Sept 27, 2026.) ----
@@ -254,6 +258,10 @@ export function InventorySection() {
             avatar={equippedAvatar}
             gear={equippedGear}
             onLeave={() => setAboard(false)}
+            supplyFor={getShipRoomSupply}
+            onOpenNext={onOpenNext}
+            onRunJob={runStationJob}
+            owned={owned}
           />
         )
         : <HQRoom onBoard={() => setAboard(true)} />}

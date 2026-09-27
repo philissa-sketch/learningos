@@ -54,6 +54,7 @@ const ok = (cond, msg, detail) => {
 const avatarSrc = read('src/components/Rewards/CadetAvatar.jsx');
 const inventorySrc = read('src/components/Rewards/InventorySection.jsx');
 const hqSrc = read('src/components/Rewards/HQRoom.jsx');
+const cutawaySrc = read('src/components/Rewards/ShipCutaway.jsx');
 const storeSrc = read('src/components/Rewards/RewardsHome.jsx');
 const meterSrc = read('src/components/Dashboard/RocketProgressMeter.jsx');
 const boardSrc = read('src/components/Dashboard/MissionControlDashboard.jsx');
@@ -240,6 +241,54 @@ console.log('\n--- 3. mission equipment reaches the rack and the ship ---');
    */
   ok(/shows on your cadet/.test(inventorySrc) && /My Ship/.test(inventorySrc),
     'the Inventory screen tells him where his equipment actually went');
+
+  /**
+   * ---- THE HOLE THIS SECTION HAD ALL ALONG. (Sept 27, 2026.) ----
+   *
+   * Nothing here ever asserted that the four ship parts were DRAWN anywhere.
+   * The flat spacecraft on the My Ship screen happened to draw them, so the
+   * property held by luck rather than by test — and the day the parent asked
+   * for that drawing to be removed, four items costing up to 600 coins each
+   * could have quietly become invisible with every check still green.
+   *
+   * They now mount on the cutaway's hull, and this says so. Stated against the
+   * catalogue rather than a copied list, so adding a fifth part to the store
+   * fails here until it has somewhere to go.
+   */
+  const cutawayCode = codeOnly(cutawaySrc);
+  const unmounted = SHIP_PARTS.filter((id) => !cutawayCode.includes(`'${id}'`));
+  ok(unmounted.length === 0,
+    'every ship part he can buy is drawn on the ship',
+    unmounted.join(', ') + '  <- bought, and mounted nowhere');
+
+  const mountArt = (cutawayCode.match(/const MOUNT_ART = \{([\s\S]*?)\n\};/) || [, ''])[1];
+  const artIdsOnShip = [...mountArt.matchAll(/'(eq-[a-z-]+)':/g)].map((m) => m[1]);
+  ok(artIdsOnShip.length === SHIP_PARTS.length,
+    'the ship draws exactly the parts the store sells, no more',
+    `ship draws ${artIdsOnShip.length}, store sells ${SHIP_PARTS.length}`);
+  const ghostOnShip = artIdsOnShip.filter((id) => !MISSION_EQUIPMENT.some((i) => i.id === id));
+  ok(ghostOnShip.length === 0, 'no part is bolted on that nobody can buy', ghostOnShip.join(', '));
+
+  ok(/bought parts mounted/.test(cutawayCode) && /Supply store/.test(cutawayCode),
+    'the ship says how many bought parts are on it, and where the rest come from',
+    'this sentence answers "I bought a booster, where did it go?" and moved with the parts');
+
+  /**
+   * ---- DEFINED IS NOT DRAWN ----
+   *
+   * The check above finds the artwork. A mutation run proved that was not
+   * enough: deleting the line that RENDERS the mounts left every id still
+   * present in the file and the whole section green. Art that nothing paints
+   * is the same purchase-goes-nowhere fault one step later, so the render is
+   * asserted too — and `mounted` must come from what he owns, not from a
+   * hardcoded list that would bolt parts onto a ship nobody paid for.
+   */
+  ok(/MOUNT_ART\[id\]/.test(cutawayCode),
+    'the bought parts are actually painted, not merely defined',
+    'a MOUNT_ART map that nothing renders is a purchase that goes nowhere');
+  ok(/mounted\s*=\s*useMemo\([\s\S]{0,200}owned/.test(cutawayCode),
+    'what is mounted is read from what he owns',
+    'a hardcoded mount list would bolt parts onto a ship nobody paid for');
 }
 
 // ===========================================================================

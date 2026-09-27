@@ -523,7 +523,7 @@ export default function App({ initialView = 'dashboard', onSignOut }) {
         )}
         {view === 'schedule' && <SchedulerHome initialMode={scheduleMode} />}
         {view === 'academic' && <AcademicHome focus={academicFocus} />}
-        {view === 'rewards' && <RewardsHome />}
+        {view === 'rewards' && <RewardsHome onOpenView={setView} />}
         {view === 'pe' && <PEHome onExit={() => setView('dashboard')} />}
         {/* ---- THIS SCHOOL'S OWN SCREENS (Sept 17, 2026) ----
 

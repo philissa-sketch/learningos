@@ -11792,6 +11792,345 @@ const seedRows = khanFirstSeedRows().map((r) => ({ ...r, completed: false, grade
   },
 
   /** One snapshot for badges, certificates, and the coin header. */
+  /**
+   * ===========================================================================
+   * WHAT IS INSIDE ONE OF THE SHIP'S ROOMS.
+   * ===========================================================================
+   *
+   * The cutaway's rooms became places you go into on Sept 27, 2026, after the
+   * parent said they "look like doors that open up to a room where actions can
+   * be done inside". `src/lib/shipRoom.js` decides the SHAPE of an open room.
+   * This decides its CONTENTS, and it lives in the store for one reason: the
+   * contents are this school's units, books, entries and logs, and the ship's
+   * own files are generic and must stay that way.
+   *
+   * Three answers per room:
+   *
+   *   installed  the real work already in it, newest first, named
+   *   next       the next piece, and where in the app it is done
+   *   job        one thing he can do from inside the room
+   *
+   * ---- THE RULE FOR A JOB ----
+   *
+   * A job writes to a ledger something else already reads. There is no
+   * ship-only counter anywhere, and nothing here invents progress: every job
+   * below calls an action that existed before the ship did, and the room shows
+   * the result through the same reading its bar is drawn from. A button that
+   * only made the ship look better would be the tap-to-collect timer this
+   * whole thing was built to avoid.
+   *
+   * A job whose prerequisite is missing is NULL, with a reason. It is never a
+   * disabled button that implies he did something wrong.
+   */
+
+  /** Mastered lessons in the given subjects, newest first, with their titles. */
+  shipRoomMasteredItems(subjects) {
+    const { lessonProgress } = get();
+    const want = new Set(subjects);
+    const rows = [];
+    for (const [id, p] of Object.entries(lessonProgress || {})) {
+      if (!p || !p.mastered) continue;
+      if (!want.has(LESSON_SUBJECT.get(id))) continue;
+      rows.push({ id, title: LESSON_TITLE.get(id) || id, when: p.lastCompletedDate || null });
+    }
+    return rows.sort((a, b) => String(b.when || '').localeCompare(String(a.when || '')));
+  },
+
+  /** The most recently mastered lesson in those subjects — what a note attaches to. */
+  shipRoomLastMastered(subjects) {
+    const rows = get().shipRoomMasteredItems(subjects);
+    return rows.length ? rows[0] : null;
+  },
+
+  /**
+   * A writing prompt he has not answered yet — what the Comms job writes into.
+   * Skill prompts first, since those are the taught ones.
+   */
+  shipRoomOpenWritingPrompt() {
+    const { writingEntries } = get();
+    const prompts = Array.isArray(writingPrompts) ? writingPrompts : [];
+    const done = new Set(writingEntries.map((e) => e.promptId));
+    return prompts.find((p) => p.category === 'skill' && !done.has(p.id))
+      || prompts.find((p) => !done.has(p.id))
+      || null;
+  },
+
+  /**
+   * Everything one room needs to be opened and stood in.
+   *
+   * Returns null for a system this Academy does not run, which is how a school
+   * with no guitar or no garden gets a ship that simply has fewer rooms rather
+   * than rooms that throw.
+   */
+  getShipRoomSupply(systemId) {
+    const s = get();
+    const today = todayStr();
+
+    if (systemId === 'guidance') {
+      const rows = s.khanAcademyAssignments.filter((a) => a.completed && a.subject === 'math');
+      const installed = [...rows]
+        .sort((a, b) => String(b.completedAt || '').localeCompare(String(a.completedAt || '')))
+        .map((a) => ({ id: a.id, title: a.skillTitle, when: a.completedAt || null }));
+      const upNext = s.khanAcademyAssignments.find((a) => !a.completed && a.subject === 'math') || null;
+      const ticked = s.khanDailyLog?.[today]?.math === true;
+      return {
+        installed,
+        next: upNext
+          ? { title: upNext.skillTitle, url: upNext.khanAcademyUrl || null, view: null,
+              cta: 'Open the unit' }
+          : null,
+        job: ticked
+          ? { id: 'guidance-check', state: 'done', label: 'Guidance check run today.', fields: [] }
+          : {
+              id: 'guidance-check',
+              label: 'Run the guidance check',
+              hint: "Marks today's maths practice on the daily log — the same tick the dashboard uses.",
+              verb: 'Run it',
+              fields: []
+            }
+      };
+    }
+
+    if (systemId === 'propulsion' || systemId === 'onboard') {
+      const subjects = systemId === 'propulsion' ? ['science', 'aerospace'] : ['technology', 'robotics'];
+      const installed = s.shipRoomMasteredItems(subjects);
+      const last = installed.length ? installed[0] : null;
+      const upNext = subjects.map((sub) => s.getTodaysMission(sub)).find(Boolean) || null;
+      return {
+        installed,
+        next: upNext ? { title: upNext.title, view: 'lessons', lessonId: upNext.id, cta: 'Go work on it' } : null,
+        job: last
+          ? {
+              id: `${systemId}-note`,
+              label: systemId === 'propulsion' ? 'Leave a burn note' : 'Leave a maintenance note',
+              hint: `One line, in your own words, on "${last.title}". Nobody marks it — it is kept because saying a thing back is how it sticks.`,
+              verb: 'Log it',
+              lessonId: last.id,
+              fields: [{ key: 'text', type: 'text', label: 'Your note', placeholder: 'What it actually does, in one line…', maxLength: 400 }]
+            }
+          : { state: 'blocked', reason: 'Nothing mastered in here yet to write a note about.' }
+      };
+    }
+
+    if (systemId === 'comms') {
+      const prompts = Array.isArray(writingPrompts) ? writingPrompts : [];
+      const byId = new Map(prompts.map((p) => [p.id, p]));
+      for (const p of allProjects(academyContent())) byId.set(p.id, p);
+      const installed = [...s.writingEntries]
+        .sort((a, b) => new Date(b.completedAt) - new Date(a.completedAt))
+        .map((e) => ({
+          id: e.id,
+          title: byId.get(e.promptId)?.title || 'Log entry',
+          when: e.completedAt ? String(e.completedAt).slice(0, 10) : null
+        }));
+      const open = s.shipRoomOpenWritingPrompt();
+      return {
+        installed,
+        next: open ? { title: open.title, view: 'journal', cta: 'Open the journal' } : null,
+        job: open
+          ? {
+              id: 'comms-entry',
+              label: 'File a mission log',
+              hint: open.prompt || open.title,
+              verb: 'Send it',
+              promptId: open.id,
+              fields: [{ key: 'text', type: 'text', label: 'Your log', placeholder: 'Write it here…', rows: 6, minLength: 40 }]
+            }
+          : { state: 'done', reason: 'Every prompt in the log is answered.' }
+      };
+    }
+
+    if (systemId === 'sensors') {
+      const books = s.academicBooks || [];
+      const installed = books
+        .filter((b) => b.status === 'completed')
+        .sort((a, b) => String(b.completedAt || '').localeCompare(String(a.completedAt || '')))
+        .map((b) => ({ id: b.id, title: b.author ? `${b.title} — ${b.author}` : b.title, when: b.completedAt || null }));
+      const reading = books.find((b) => b.status === 'in-progress') || null;
+      return {
+        installed,
+        next: reading
+          ? { title: reading.title, view: 'academic', focus: { kind: 'book', id: reading.id }, cta: 'Open the book' }
+          : null,
+        job: reading
+          ? {
+              id: 'sensors-progress',
+              label: 'Log reading progress',
+              hint: `${reading.title} — ${reading.unitsDone || 0} of ${reading.totalUnits || '?'} done.`,
+              verb: 'Log it',
+              bookId: reading.id,
+              fields: [{ key: 'units', type: 'number', label: 'Finished since last time', min: 1, max: 200, placeholder: '1' }]
+            }
+          : { state: 'blocked', reason: 'No book is open right now. Start one in the Academic Centre and this comes alive.' }
+      };
+    }
+
+    if (systemId === 'life-support') {
+      /**
+       * ---- THE LIST HAS TO ADD UP TO THE BAR. (Sept 27, 2026.) ----
+       *
+       * Life support is the one system fed by three activities, and meals only
+       * count a third each — logging lunch is real, but it is not a workout.
+       * The first version listed every meal as its own row, so a bay reading
+       * "3 of 150" showed five things installed. A child who checks would have
+       * caught that in a second, and been right to stop trusting the rest.
+       *
+       * Meals are therefore banked in threes here, exactly as the counter banks
+       * them, and a part-finished third stays off the shelf until it is one.
+       */
+      const workouts = (s.peWorkoutLog || []).map((w) => ({ id: `w${w.id}`, title: w.category ? `Workout — ${w.category}` : 'Workout', when: w.date || null }));
+      const beds = (s.gardenLog || []).filter((r) => r.kind === 'session')
+        .map((g) => ({ id: `g${g.id}`, title: g.title || 'Bed session', when: g.date || null }));
+      const mealRows = [...(s.peMeals || [])].sort((a, b) => String(a.date || '').localeCompare(String(b.date || '')));
+      const meals = [];
+      for (let i = 2; i < mealRows.length; i += 3) {
+        meals.push({ id: `m${mealRows[i].id}`, title: 'Three meals logged', when: mealRows[i].date || null });
+      }
+      const installed = [...workouts, ...beds, ...meals]
+        .sort((a, b) => String(b.when || '').localeCompare(String(a.when || '')));
+      return {
+        installed,
+        next: { title: "Today's block", view: 'pe', cta: 'Open it' },
+        job: {
+          id: 'life-meal',
+          label: 'Log a meal',
+          hint: 'Three logged meals bring one more unit of life support online — food is a system on a real ship.',
+          verb: 'Log it',
+          fields: [
+            { key: 'description', type: 'text', label: 'What you ate', placeholder: 'Eggs, toast, orange juice', maxLength: 120 },
+            { key: 'proteinG', type: 'number', label: 'Protein (g)', min: 0, max: 200, placeholder: '20' }
+          ]
+        }
+      };
+    }
+
+    /**
+     * ---- THE SEAT IS ONE OF THE TWO ROOMS THAT ARE HIS ON DAY ONE ----
+     *
+     * So it must not be empty on day one. It holds the ladder: the ranks he
+     * has already passed, and the one he is climbing towards. Read from the
+     * same RANKS table the rank badge uses, so the seat cannot claim a rank
+     * the rest of the app does not.
+     */
+    if (systemId === 'pilot-seat') {
+      const tier = s.currentRank?.tier || 1;
+      const installed = RANKS.filter((r) => r.tier <= tier)
+        .sort((a, b) => b.tier - a.tier)
+        .map((r) => ({ id: `rank-${r.tier}`, title: r.name, when: null }));
+      const ahead = RANKS.find((r) => r.tier === tier + 1) || null;
+      return {
+        installed,
+        next: ahead ? { title: `${ahead.name} — ${ahead.blurb}`, view: 'progress', cta: 'See what it takes' } : null,
+        job: null
+      };
+    }
+
+    /**
+     * The badge rack is not a subject's output, so it is asked for by room id
+     * rather than by system. It lists what he has actually been given and
+     * nothing he has not — the rack was built on that promise and a "coming
+     * soon" row would break it.
+     */
+    if (systemId === 'badge-rack') {
+      const awarded = s.readinessAwards || {};
+      const installed = Object.entries(awarded)
+        .map(([id, row]) => {
+          const skill = READINESS_SKILLS.find((k) => k.id === id) || null;
+          const level = typeof row === 'string' ? row : (row?.level || null);
+          return {
+            id,
+            title: skill ? `${skill.icon} ${skill.name}${level ? ` — ${level}` : ''}` : id,
+            when: typeof row === 'object' ? (row?.awardedAt || null) : null
+          };
+        })
+        .sort((a, b) => String(b.when || '').localeCompare(String(a.when || '')));
+      return { installed, next: null, job: null };
+    }
+
+    if (systemId === 'morale') {
+      const installed = (s.guitarLog || []).filter((r) => r.kind === 'practice')
+        .sort((a, b) => String(b.date || '').localeCompare(String(a.date || '')))
+        .map((r) => ({ id: r.id, title: r.title || 'Practice session', when: r.date || null }));
+      const doneToday = (s.guitarLog || []).some((r) => r.kind === 'practice' && r.date === today);
+      return {
+        installed,
+        next: { title: 'Practice', view: 'guitar', cta: 'Open it' },
+        job: doneToday
+          ? { id: 'morale-practice', state: 'done', label: 'Practice logged today.', fields: [] }
+          : {
+              id: 'morale-practice',
+              label: 'Log a practice session',
+              hint: 'Crews have carried instruments since Gemini. This is the same log the practice screen writes to.',
+              verb: 'Log it',
+              fields: [{ key: 'title', type: 'text', label: 'What you worked on', placeholder: 'Chord changes', maxLength: 120 }]
+            }
+      };
+    }
+
+    return null;
+  },
+
+  /**
+   * Run one station job.
+   *
+   * Every branch calls an action that already existed. This method owns no
+   * counter of its own and writes nothing the rest of the app cannot see.
+   * Returns `{ ok, message }` so the room can say what happened without
+   * needing to know which table moved.
+   */
+  async runStationJob(systemId, payload = {}) {
+    const s = get();
+    const text = String(payload.text || '').trim();
+
+    if (systemId === 'guidance') {
+      await s.markKhanDailySubject('math', true);
+      return { ok: true, message: 'Guidance check logged for today.' };
+    }
+
+    if (systemId === 'propulsion' || systemId === 'onboard') {
+      const lessonId = payload.lessonId || null;
+      if (!lessonId || !text) return { ok: false, message: 'Needs a line of your own before it can be filed.' };
+      await s.recordSelfExplanation(lessonId, 'Station log', text);
+      return { ok: true, message: 'Note filed against that lesson.' };
+    }
+
+    if (systemId === 'comms') {
+      const promptId = payload.promptId || null;
+      if (!promptId || text.length < 40) return { ok: false, message: 'A log needs at least a couple of sentences.' };
+      await s.submitWritingEntry(promptId, text);
+      return { ok: true, message: 'Log sent. Comms just moved.' };
+    }
+
+    if (systemId === 'sensors') {
+      const bookId = payload.bookId || null;
+      const add = Math.max(1, Math.round(Number(payload.units) || 0));
+      if (!bookId || !add) return { ok: false, message: 'How many did you finish?' };
+      const book = (s.academicBooks || []).find((b) => b.id === bookId);
+      if (!book) return { ok: false, message: 'That book is no longer on the shelf.' };
+      await s.recordBookProgress(bookId, (book.unitsDone || 0) + add);
+      return { ok: true, message: 'Progress logged.' };
+    }
+
+    if (systemId === 'life-support') {
+      const description = String(payload.description || '').trim();
+      if (!description) return { ok: false, message: 'What did you eat?' };
+      await s.addPEMeal({
+        date: todayStr(),
+        mealType: 'meal',
+        description,
+        proteinG: Number(payload.proteinG) || 0
+      });
+      return { ok: true, message: 'Meal logged.' };
+    }
+
+    if (systemId === 'morale') {
+      await s.recordGuitarLogEntry({ kind: 'practice', title: String(payload.title || '').trim() || 'Practice session' });
+      return { ok: true, message: 'Practice logged.' };
+    }
+
+    return { ok: false, message: 'No job at this station.' };
+  },
+
   getGamificationStats() {
     const s = get();
     const totalMastered = totalMasteredCount(s);

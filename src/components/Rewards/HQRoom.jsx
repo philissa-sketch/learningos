@@ -3117,8 +3117,10 @@ export function HQRoom({ onBoard = null }) {
           * The parent: **"where does the mission equipment go after purchasing
           * from the store."**
           *
-          * It goes here, and onto the ship — `ShipDiagram` has mounted these
-          * four parts onto the drawn spacecraft since the day it was written.
+          * It goes here, and onto the ship — these four parts have been mounted
+          * on the spacecraft since the day that was written. (The flat drawing
+          * that first carried them was retired on Sept 27, 2026, once the ship
+          * could be walked into; the parts moved to the cutaway's hull with it.)
           * This paragraph told him it was "still to come" the whole time, so
           * the app's own answer to her question was that his purchase went
           * nowhere. It had gone somewhere; the copy had not caught up.

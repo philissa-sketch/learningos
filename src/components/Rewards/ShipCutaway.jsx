@@ -5,6 +5,8 @@ import {
   cellsOn, cellFor, deckOfCell, routeBetween, shaftSpot, standingSpot, tierFor, TIER_NAMES
 } from '../../lib/shipCutaway.js';
 import { STATIONS, readinessLine, shipIsFlightReady, stationReading } from '../../lib/shipInterior.js';
+import { roomInterior, roomIsSealed } from '../../lib/shipRoom.js';
+import { ShipRoomCard } from './ShipRoomCard.jsx';
 
 /**
  * =============================================================================
@@ -123,9 +125,50 @@ function Fitout({ cell, reading }) {
 }
 
 /** One room in the cutaway. */
-function Room({ cell, station, reading, active, onPick }) {
+function Room({ cell, station, reading, active, sealed = false, onPick }) {
   const tier = tierFor(reading?.pct);
   const empty = reading?.empty;
+
+  /**
+   * ---- A SEALED ROOM IS A SHUT HATCH, NOT A DIMMED ROOM. (Sept 27, 2026.) ----
+   *
+   * The parent's note was that the rooms "should open with growth but not the
+   * finality of the ship" — the first version drew all ten finished on day
+   * one. A hatch shows no fit-out, no bar, and not even the room's name: what
+   * is behind it is the reward for opening it, and a room that advertises
+   * itself is a shop window. The plate says SEALED and the panel underneath
+   * says what opens it, once he taps.
+   */
+  if (sealed) {
+    const midY = cell.h / 2;
+    return (
+      <g
+        transform={`translate(${cell.x} ${cell.y})`}
+        onClick={() => onPick?.(station.id)}
+        style={{ cursor: 'pointer' }}
+        role="button"
+        tabIndex={0}
+        aria-label={`Sealed hatch — ${station.name} has not been started`}
+        onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') onPick?.(station.id); }}
+      >
+        <rect x="2" y="2" width={cell.w - 4} height={cell.h - 4} rx="10"
+          fill="#0b131b" stroke={active ? TRIM : '#2a3d4e'} strokeWidth={active ? 2.4 : 1.4} />
+        {/* Riveted plate across the opening. */}
+        <rect x="16" y={midY - 62} width={cell.w - 32} height="124" rx="8"
+          fill="#12202c" stroke="#33485b" strokeWidth="2" />
+        {[0, 1, 2, 3].map((i) => (
+          <circle key={i} cx={28 + i * ((cell.w - 56) / 3)} cy={midY - 48} r="3" fill="#33485b" />
+        ))}
+        {[0, 1, 2, 3].map((i) => (
+          <circle key={`b${i}`} cx={28 + i * ((cell.w - 56) / 3)} cy={midY + 48} r="3" fill="#33485b" />
+        ))}
+        {/* The seam, so it reads as something that could open. */}
+        <line x1={cell.w / 2} y1={midY - 56} x2={cell.w / 2} y2={midY + 56} stroke="#0b131b" strokeWidth="3" />
+        <text x={cell.w / 2} y={midY + 5} textAnchor="middle" fontSize="15" fill="#6b8aa3" opacity="0.9"
+          letterSpacing="3">SEALED</text>
+      </g>
+    );
+  }
 
   return (
     <g
@@ -208,6 +251,81 @@ function Walker({ x, y, walking, avatar, gear, scale = 0.62, label = null }) {
   );
 }
 
+/**
+ * ---- THE FOUR PARTS HE CAN BUY. (Moved here Sept 27, 2026.) ----
+ *
+ * These used to bolt onto the flat drawing on the My Ship screen, which the
+ * parent asked to remove once the cutaway could be walked into. They had to
+ * come with it: a store that sells a thing which then appears nowhere is the
+ * exact fault `verify-store-visibility` exists to prevent.
+ *
+ * All four are EXTERIOR — boosters, a heat shield, an antenna, a solar array —
+ * so they sit outside the cut, around a hull that is already drawn in
+ * elevation. Nothing here reads a counter: a part is on the ship if it was
+ * bought, and absent if it was not.
+ */
+const MOUNT_LABEL = {
+  'eq-solar': 'Solar array',
+  'eq-antenna': 'Antenna',
+  'eq-heatshield': 'Heat shield',
+  'eq-booster': 'Boosters'
+};
+
+/** Drawn under the fins so the fins sit on top of the shield, as they would. */
+function HeatShield() {
+  return (
+    // Spans the full hull width. Inset from the walls it read as a stray band
+    // floating under the ship rather than as the base of it.
+    <path d="M170 818 Q600 868 1030 818 L1030 844 Q600 894 170 844 Z"
+      stroke={WARM} strokeWidth="3" fill="rgba(245,165,36,.12)" />
+  );
+}
+
+function Boosters() {
+  return (
+    <g stroke={WARM} strokeWidth="2.5" fill="rgba(245,165,36,.10)">
+      {/* Flush with the hull wall (x 160 and 1040), not floating beside it. */}
+      <rect x="108" y="600" width="52" height="224" rx="22" />
+      <rect x="1040" y="600" width="52" height="224" rx="22" />
+      <path d="M134 824 L134 858 M1066 824 L1066 858" strokeLinecap="round" />
+    </g>
+  );
+}
+
+function SolarArray() {
+  return (
+    <g stroke={GO} strokeWidth="2.5" fill="rgba(52,211,153,.14)">
+      <rect x="18" y="380" width="130" height="92" rx="5" />
+      <rect x="1052" y="380" width="130" height="92" rx="5" />
+      <path d="M148 426 L160 426 M1052 426 L1040 426" />
+      <path d="M52 380 L52 472 M96 380 L96 472 M1104 380 L1104 472 M1148 380 L1148 472" opacity=".55" />
+    </g>
+  );
+}
+
+function Antenna() {
+  return (
+    /**
+     * A dish seen edge-on, on a mast bolted to the hull wall. The first render
+     * drew it as an open arc, which read as a hook hanging in space — a dish
+     * needs a face you can see it pointing with.
+     */
+    <g stroke={LIT} strokeWidth="2.5" fill="rgba(34,211,238,.14)">
+      <ellipse cx="98" cy="300" rx="15" ry="46" transform="rotate(-30 98 300)" />
+      <path d="M98 300 L158 312" />
+      <path d="M98 300 L70 276" />
+      <circle cx="70" cy="276" r="6" fill={LIT} />
+    </g>
+  );
+}
+
+const MOUNT_ART = {
+  'eq-heatshield': <HeatShield />,
+  'eq-booster': <Boosters />,
+  'eq-solar': <SolarArray />,
+  'eq-antenna': <Antenna />
+};
+
 export function ShipCutaway({
   shipStatus = null,
   journey = null,
@@ -216,7 +334,24 @@ export function ShipCutaway({
   crew = [],
   avatar,
   gear,
-  onLeave
+  onLeave,
+  /**
+   * ---- THE THREE THINGS THIS FILE REFUSES TO KNOW. (Sept 27, 2026.) ----
+   *
+   * `supplyFor(systemId)` returns what is inside a room — this Academy's own
+   * units, books, entries and logs. `onOpenNext(next)` takes him to wherever
+   * that work is done; the destination travels inside `next`, as data, so no
+   * screen name is written here. `onRunJob(systemId, payload)` runs the
+   * station job against the real ledger.
+   *
+   * All three are optional. Given none, the ship still draws and still walks —
+   * it just has nothing to do inside it, which is what the guards render.
+   */
+  supplyFor = null,
+  onOpenNext = null,
+  onRunJob = null,
+  /** The cosmetics he has actually bought. Only the four hull parts are read. */
+  owned = null
 }) {
   const readings = useMemo(() => {
     const map = {};
@@ -227,6 +362,8 @@ export function ShipCutaway({
   const [atId, setAtId] = useState('pilot-seat');
   const [pos, setPos] = useState(() => standingSpot('pilot-seat') || { x: HULL.x + 100, y: DECKS[0].floor });
   const [walking, setWalking] = useState(false);
+  const [jobBusy, setJobBusy] = useState(false);
+  const [jobResult, setJobResult] = useState(null);
   const legs = useRef([]);
 
   /**
@@ -237,9 +374,22 @@ export function ShipCutaway({
    */
   useEffect(() => () => legs.current.forEach(clearTimeout), []);
 
+  /**
+   * ---- WALKING STOPS AT A SEALED HATCH ----
+   *
+   * Tapping one still SELECTS it, so the panel underneath can say what opens
+   * it — but nobody walks into a room that is not there yet. Keeping the
+   * figure out of sealed rooms is most of what makes the ship feel like it
+   * grows rather than like parts of it are switched off.
+   */
   const walkTo = (stationId) => {
     const station = STATIONS.find((s) => s.id === stationId);
     if (!station || !cellFor(stationId)) return;
+    setJobResult(null);
+    if (roomIsSealed(station, readings[stationId])) {
+      setAtId(stationId);
+      return;
+    }
     legs.current.forEach(clearTimeout);
     legs.current = [];
     setAtId(stationId);
@@ -262,8 +412,28 @@ export function ShipCutaway({
   };
 
   const here = STATIONS.find((s) => s.id === atId) || null;
-  const hereReading = atId ? readings[atId] : null;
   const flightReady = shipIsFlightReady(shipStatus) === true;
+
+  /** The bought hull parts, in a fixed order so the drawing never reshuffles. */
+  const mounted = useMemo(
+    () => Object.keys(MOUNT_ART).filter((id) => owned && owned.has && owned.has(id)),
+    [owned]
+  );
+
+  /**
+   * The inside of the room he is in. `supplyFor` is asked only for a room that
+   * is actually open — a sealed room must not even assemble its contents, or a
+   * stray render would leak what is behind the hatch into the DOM.
+   */
+  const interior = useMemo(() => {
+    if (!here) return null;
+    const reading = readings[here.id];
+    const sealed = roomIsSealed(here, reading);
+    // Keyed by system where a room has one, and by the room's own id where it
+    // does not — the badge rack holds badges, not a subject's output.
+    const supply = !sealed && supplyFor ? supplyFor(here.system || here.id) : null;
+    return roomInterior(here, reading, supply);
+  }, [here, readings, supplyFor]);
 
   return (
     <div className="rounded-xl border border-space-700 bg-space-900 p-3 shadow-panel">
@@ -277,6 +447,16 @@ export function ShipCutaway({
         <div>
           <p className="text-xs font-display uppercase tracking-widest text-signal-cyan">The Ship</p>
           <p className={'text-xs ' + (flightReady ? 'text-signal-green' : 'text-ink-500')}>{readinessLine(shipStatus)}</p>
+          {/*
+            The flat drawing used to carry this sentence. It answers a real
+            question — "I bought a booster, where did it go?" — so it moved
+            with the parts rather than being dropped with the picture.
+          */}
+          <p className="mt-0.5 text-[11px] text-ink-600">
+            {mounted.length === 0
+              ? 'Boosters, a heat shield, an antenna and a solar array can be bought in the Supply store and bolted on.'
+              : `${mounted.length} of 4 bought parts mounted: ${mounted.map((id) => MOUNT_LABEL[id]).join(', ')}.`}
+          </p>
         </div>
         {onLeave && (
           <button
@@ -320,6 +500,8 @@ export function ShipCutaway({
         <rect x={HULL.x - 40} y={DECKS[0].head - 6} width={HULL.w + 80}
           height={DECKS[DECKS.length - 1].floor + 40 - DECKS[0].head} rx="26"
           fill={HULL_DARK} stroke={TRIM} strokeWidth="3" />
+        {/* The heat shield goes on before the fins, so the fins sit over it. */}
+        {mounted.includes('eq-heatshield') && MOUNT_ART['eq-heatshield']}
         {[-1, 1].map((side) => {
           const baseY = DECKS[DECKS.length - 1].floor + 30;
           return (
@@ -328,6 +510,10 @@ export function ShipCutaway({
               fill={HULL_MID} stroke={TRIM} strokeWidth="3" />
           );
         })}
+        {/* Everything else he has bought, bolted to the outside of the hull. */}
+        {mounted.filter((id) => id !== 'eq-heatshield').map((id) => (
+          <g key={id}>{MOUNT_ART[id]}</g>
+        ))}
 
         {/* The lift shaft, floor to nose. */}
         <rect x={SHAFT.x} y={DECKS[0].head} width={SHAFT.w} height={DECKS[DECKS.length - 1].floor - DECKS[0].head}
@@ -357,7 +543,8 @@ export function ShipCutaway({
               if (!station) return null;
               return (
                 <Room key={cell.id} cell={cell} station={station} reading={readings[cell.id]}
-                  active={atId === cell.id} onPick={walkTo} />
+                  active={atId === cell.id} sealed={roomIsSealed(station, readings[cell.id])}
+                  onPick={walkTo} />
               );
             })}
           </g>
@@ -375,25 +562,36 @@ export function ShipCutaway({
         <Walker x={pos.x} y={pos.y} walking={walking} avatar={avatar} gear={gear} />
       </svg>
 
-      <div className="mt-2 min-h-[3.5rem] rounded-lg border border-space-700 bg-space-950 px-3 py-2">
-        {here ? (
-          <>
-            <p className="font-display text-sm font-700 text-ink-100">
-              {here.name}
-              {hereReading?.detail ? <span className="ml-2 text-xs font-400 text-ink-500">{hereReading.detail}</span> : null}
-            </p>
-            <p className="mt-0.5 text-xs text-ink-400">
-              {hereReading?.empty && hereReading?.note ? hereReading.note : here.doing}
-            </p>
-            {hereReading?.nextStep && (
-              <p className={'mt-1 text-xs font-display font-700 ' + (hereReading.built ? 'text-signal-green' : 'text-signal-cyan')}>
-                {hereReading.nextStep}
-              </p>
-            )}
-          </>
-        ) : (
-          <p className="text-xs text-ink-500">Tap a room and he walks to it. The shaft is the lift between decks.</p>
-        )}
+      {/*
+        ---- THE ROOM HE IS STANDING IN. (Sept 27, 2026.) ----
+
+        This used to be a one-line readout under the picture: the room's name
+        and how far along it was. The parent's note was that the rooms look
+        like doors that open into somewhere things can be done — so the strip
+        became the inside of the room, and a sealed hatch shows one sentence
+        instead.
+      */}
+      <div className="mt-2">
+        <ShipRoomCard
+          interior={interior}
+          busy={jobBusy}
+          result={jobResult}
+          onOpenNext={onOpenNext ? (next) => onOpenNext(next) : null}
+          onRunJob={onRunJob && here?.system
+            ? async (job, values) => {
+                setJobBusy(true);
+                setJobResult(null);
+                try {
+                  const out = await onRunJob(here.system, { ...(job || {}), ...(values || {}) });
+                  setJobResult(out || { ok: true, message: 'Done.' });
+                } catch {
+                  setJobResult({ ok: false, message: 'That did not save. Try once more.' });
+                } finally {
+                  setJobBusy(false);
+                }
+              }
+            : null}
+        />
       </div>
     </div>
   );

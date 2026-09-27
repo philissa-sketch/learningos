@@ -2,7 +2,6 @@ import { useMemo, useState } from 'react';
 import { getJourney, journeySummary } from '../../lib/journey.js';
 import { getShipStatus, shipSummary } from '../../lib/shipSystems.js';
 import { useAppStore } from '../../store/useAppStore.js';
-import { ShipDiagram } from './ShipDiagram.jsx';
 import { ShipCutaway } from './ShipCutaway.jsx';
 
 // ---------------------------------------------------------------------------
@@ -138,7 +137,7 @@ export function JourneySection({ xp, totalMastered, currentRank }) {
  * THE SHIP
  * ===================================================================== */
 
-export function ShipSection({ stats, journey = null, rank = null }) {
+export function ShipSection({ stats, journey = null, rank = null, onOpenNext = null }) {
   const status = useMemo(() => getShipStatus(stats), [stats]);
   const summary = shipSummary(status);
   // Bought spacecraft parts mount onto the drawing.
@@ -158,6 +157,8 @@ export function ShipSection({ stats, journey = null, rank = null }) {
   const equippedAvatar = useAppStore((s) => s.equippedAvatar);
   const equippedGear = useAppStore((s) => s.equippedGear) || {};
   const readinessAwards = useAppStore((s) => s.readinessAwards) || {};
+  const getShipRoomSupply = useAppStore((s) => s.getShipRoomSupply);
+  const runStationJob = useAppStore((s) => s.runStationJob);
   const awards = useMemo(() => Object.keys(readinessAwards), [readinessAwards]);
 
   if (aboard) {
@@ -170,6 +171,10 @@ export function ShipSection({ stats, journey = null, rank = null }) {
         avatar={equippedAvatar}
         gear={equippedGear}
         onLeave={() => setAboard(false)}
+        supplyFor={getShipRoomSupply}
+        onOpenNext={onOpenNext}
+        onRunJob={runStationJob}
+        owned={owned}
       />
     );
   }
@@ -185,10 +190,6 @@ export function ShipSection({ stats, journey = null, rank = null }) {
         <div className="mt-3">
           <Bar pct={status.overallPercent / 100} tone={status.flightReady ? 'green' : 'amber'} />
         </div>
-      </div>
-
-      <div className="mb-4">
-        <ShipDiagram systems={status.systems} owned={owned} />
       </div>
 
       <button

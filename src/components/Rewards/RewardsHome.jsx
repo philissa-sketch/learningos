@@ -833,7 +833,26 @@ function ReadinessSection() {
   );
 }
 
-export function RewardsHome() {
+/**
+ * ---- WHERE "GO WORK ON IT" GOES. (Sept 27, 2026.) ----
+ *
+ * The ship's rooms became places with a next piece in them, and each next
+ * piece names the screen it is done on. The ship's own files never learn any
+ * of those names: the destination rides inside `next`, and this — a file that
+ * already names this Academy — is where it turns into a view change.
+ *
+ * A `url` means the work lives on somebody else's site, so it opens in its own
+ * tab rather than replacing his school with it.
+ */
+export function RewardsHome({ onOpenView = null }) {
+  const openNext = (next) => {
+    if (!next) return;
+    if (next.url) {
+      try { window.open(next.url, '_blank', 'noopener,noreferrer'); } catch { /* popup blocked */ }
+      return;
+    }
+    if (next.view && onOpenView) onOpenView(next.view);
+  };
   // Lands on Journey, not Missions: it is the screen that answers "where am I
   // and where am I going" in one look, and it reads well even at zero XP.
   /**
@@ -989,11 +1008,11 @@ export function RewardsHome() {
         {/* ---- MY STUFF — everything he owns, and nothing he can buy ---- */}
         {tab === 'mine' && (
           <div className="space-y-6">
-            <InventorySection />
+            <InventorySection onOpenNext={openNext} />
             {/* The ship's own journey and rank travel in, so the viewport
                 and the seat plate read the same records the Journey tab does
                 rather than computing a second answer. */}
-            <ShipSection stats={stats} journey={getJourney(xp || 0, totalMastered, currentRank)} rank={currentRank} />
+            <ShipSection stats={stats} journey={getJourney(xp || 0, totalMastered, currentRank)} rank={currentRank} onOpenNext={openNext} />
           </div>
         )}
 
