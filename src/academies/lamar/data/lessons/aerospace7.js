@@ -217,6 +217,42 @@ export const aerospaceLessons7 = [
           'A modern commercial airliner cruises well below the speed of sound — Yeager was the first to fly AT the speed of sound, which airliners deliberately avoid.'
         ],
         xp: 10
+      },
+      {
+        id: 'q11',
+        type: 'numeric',
+        prompt:
+          'The Wright Flyer\'s first flight covered 120 feet in 12 seconds. What was its average speed, in feet per second?',
+        answer: '10',
+        explanation:
+          'Average speed is distance divided by time: 120 ft ÷ 12 s = 10 feet per second.\n\nThat is about 7 miles per hour — slower than a person can run. The achievement was not speed. It was that the machine was controlled.',
+        commonMistakes: {
+          '120':
+            'That is the distance, not the speed. Speed asks how much distance per second, so divide the distance by the time.',
+          '12':
+            'That is the time, not the speed. Divide the distance by the time: 120 ÷ 12.',
+          '1440':
+            'That multiplies instead of dividing. Speed is distance ÷ time, not distance × time.'
+        },
+        xp: 10
+      },
+      {
+        id: 'q12',
+        type: 'numeric',
+        prompt:
+          'The fourth flight that day covered 852 feet in 59 seconds. What was its average speed, to the nearest whole foot per second?',
+        answer: '14',
+        explanation:
+          '852 ÷ 59 = 14.4, which rounds to 14 feet per second.\n\nCompare it to the first flight\'s 10 ft/s: the same machine, the same day, going faster because the pilot was learning the controls as he flew.',
+        commonMistakes: {
+          '14.4':
+            'Right arithmetic — the question asked for the nearest whole number, so round 14.4 down to 14.',
+          '15':
+            'Close. 852 ÷ 59 = 14.4, and 14.4 rounds down to 14, not up to 15.',
+          '852':
+            'That is the distance. Divide it by the 59 seconds to get speed.'
+        },
+        xp: 10
       }
     ]
   },
@@ -428,6 +464,42 @@ export const aerospaceLessons7 = [
           "200 years overstates it — the real gap between 1903 and 1976 is 73 years.",
           "These are two clearly distinct historical milestones, 73 years apart, not the same year."
         ],
+        xp: 10
+      },
+      {
+        id: 'q11',
+        type: 'numeric',
+        prompt:
+          'The first flight of December 17, 1903 covered 120 feet. The fourth covered 852 feet. How many times farther was the fourth flight? Round to one decimal place.',
+        answer: '7.1',
+        explanation:
+          '852 ÷ 120 = 7.1.\n\nFour flights, one morning, and the last one went seven times farther than the first. That is what a day of learning a brand-new machine looks like.',
+        commonMistakes: {
+          '732':
+            'That is the difference (852 − 120), not how many times farther. \'How many times\' asks you to divide.',
+          '7':
+            'Almost — 852 ÷ 120 = 7.1, and the question asked for one decimal place.',
+          '0.14':
+            'That divides the wrong way round. Put the larger distance on top: 852 ÷ 120.'
+        },
+        xp: 10
+      },
+      {
+        id: 'q12',
+        type: 'numeric',
+        prompt:
+          'The first flight lasted 12 seconds and the fourth lasted 59 seconds. How many times longer was the fourth flight in the air? Round to one decimal place.',
+        answer: '4.9',
+        explanation:
+          '59 ÷ 12 = 4.9.\n\nNotice it is a smaller multiple than the distance (7.1×). The fourth flight was not just longer — it was faster too, which is why distance grew more than time did.',
+        commonMistakes: {
+          '47':
+            'That is the difference in seconds, not how many times longer. Divide rather than subtract.',
+          '5':
+            'Close — 59 ÷ 12 = 4.9, and the question asked for one decimal place.',
+          '7.1':
+            'That is the distance answer. This question asks about time: 59 ÷ 12.'
+        },
         xp: 10
       }
     ]
@@ -694,6 +766,42 @@ export const aerospaceLessons7 = [
           "The two contributing effects (pressure difference and deflected airflow) are well understood and well documented — it's not a mystery, even though the two are often explained incompletely."
         ],
         xp: 10
+      },
+      {
+        id: 'q11',
+        type: 'numeric',
+        prompt:
+          'An aircraft is flying straight and level at a constant altitude. It weighs 2,400 pounds. How many pounds of lift must its wings be producing?',
+        answer: '2400',
+        explanation:
+          'In steady level flight lift equals weight exactly — 2,400 pounds.\n\nIf lift were larger the aircraft would climb; if it were smaller it would descend. \'Level\' is not a setting on the aircraft. It is what balanced forces look like.',
+        commonMistakes: {
+          '1200':
+            'That is half the weight. The wings have to carry all of it, not part of it.',
+          '4800':
+            'That is double. Lift equals weight in level flight — more lift than weight means a climb.',
+          '0':
+            'With no lift the aircraft falls. In level flight lift exactly matches weight.'
+        },
+        xp: 10
+      },
+      {
+        id: 'q12',
+        type: 'numeric',
+        prompt:
+          'The same aircraft meets 300 pounds of drag. How many pounds of thrust must the engine produce to hold a constant speed?',
+        answer: '300',
+        explanation:
+          'Thrust equals drag at constant speed — 300 pounds.\n\nThe four forces pair up: lift against weight, thrust against drag. Steady flight is both pairs balanced at once.',
+        commonMistakes: {
+          '2400':
+            'That is the weight, which is balanced by lift. Drag is balanced by thrust.',
+          '2700':
+            'That adds weight and drag. The two pairs are separate: lift–weight, and thrust–drag.',
+          '600':
+            'That is double the drag. More thrust than drag means the aircraft speeds up, not that it holds speed.'
+        },
+        xp: 10
       }
     ]
   },
@@ -917,6 +1025,42 @@ export const aerospaceLessons7 = [
           "Angle of attack and ground effect are especially relevant during takeoff and landing specifically, not just cruise flight."
         ],
         xp: 10
+      },
+      {
+        id: 'q11',
+        type: 'numeric',
+        prompt:
+          'A trainer aircraft weighs 1,800 pounds and its wings are producing 2,100 pounds of lift. What is the net upward force, in pounds?',
+        answer: '300',
+        explanation:
+          '2,100 − 1,800 = 300 pounds of net upward force, so the aircraft climbs.\n\nNet force is what is left over after opposing forces cancel. Nothing moves in a new way until one side wins.',
+        commonMistakes: {
+          '3900':
+            'That adds the forces. Lift and weight act in opposite directions, so they subtract.',
+          '2100':
+            'That is the lift on its own. The weight is still pulling down — subtract it.',
+          '1800':
+            'That is the weight on its own. Net force is lift minus weight.'
+        },
+        xp: 10
+      },
+      {
+        id: 'q12',
+        type: 'numeric',
+        prompt:
+          'An aircraft produces 5,000 pounds of thrust while meeting 4,200 pounds of drag. What is the net forward force, in pounds?',
+        answer: '800',
+        explanation:
+          '5,000 − 4,200 = 800 pounds of net forward force, so the aircraft accelerates.\n\nIt keeps speeding up until drag rises to meet thrust — which it does, because drag grows with speed. That is why every aircraft has a top speed.',
+        commonMistakes: {
+          '9200':
+            'That adds them. Thrust and drag oppose each other, so they subtract.',
+          '5000':
+            'That is the thrust alone. Drag is pulling back — subtract it.',
+          '4200':
+            'That is the drag alone. Net force is thrust minus drag.'
+        },
+        xp: 10
       }
     ]
   },
@@ -1123,6 +1267,42 @@ export const aerospaceLessons7 = [
           'By definition, a glider has no propulsion system — its wings generate real lift using motion from gravity or rising air currents.',
           'Gliders can stay aloft for hours using rising air currents — their high-aspect-ratio wings are designed for efficient, sustained lift.'
         ],
+        xp: 10
+      },
+      {
+        id: 'q11',
+        type: 'numeric',
+        prompt:
+          'A rectangular wing has a chord (front-to-back distance) of 4 feet and a span (tip-to-tip distance) of 30 feet. What is its wing area, in square feet?',
+        answer: '120',
+        explanation:
+          'Area of a rectangle is length × width: 4 ft × 30 ft = 120 square feet.\n\nWing area is one of the few things an engineer can change directly to get more lift — which is why a glider built to stay up has such long wings.',
+        commonMistakes: {
+          '34':
+            'That adds the two measurements. Area is length × width, not length + width.',
+          '68':
+            'That is the perimeter (the distance round the edge), not the area.',
+          '7.5':
+            'That divides. Area multiplies the two sides: 4 × 30.'
+        },
+        xp: 10
+      },
+      {
+        id: 'q12',
+        type: 'numeric',
+        prompt:
+          'Two wings have exactly the same shape, speed and angle. One has 120 square feet of area and the other has 180. How many times more lift does the larger wing produce?',
+        answer: '1.5',
+        explanation:
+          '180 ÷ 120 = 1.5, so the larger wing makes one and a half times the lift.\n\nWith everything else held equal, lift is proportional to area: half again the wing, half again the lift.',
+        commonMistakes: {
+          '60':
+            'That is the difference in square feet, not how many times more. \'How many times\' asks you to divide.',
+          '300':
+            'That adds the two areas together. Compare them by dividing.',
+          '0.67':
+            'That divides the wrong way round. The larger area goes on top: 180 ÷ 120.'
+        },
         xp: 10
       }
     ]
@@ -1346,6 +1526,42 @@ export const aerospaceLessons7 = [
           "Both genuinely and measurably affect real lift in flight — that's exactly why both are covered in this lesson."
         ],
         xp: 10
+      },
+      {
+        id: 'q11',
+        type: 'numeric',
+        prompt:
+          'Lift grows with the SQUARE of airspeed. If an aircraft doubles its speed and changes nothing else, by what factor does its lift increase?',
+        answer: '4',
+        explanation:
+          'Doubling speed multiplies lift by 2 × 2 = 4.\n\nThis is why a minimum takeoff speed exists. Below it, full engine power still will not produce enough lift, because lift is not keeping pace with the throttle — it is keeping pace with the square of the speed.',
+        commonMistakes: {
+          '2':
+            'That is the speed factor. Lift follows the SQUARE of speed, so 2 becomes 2 × 2.',
+          '8':
+            'That cubes it. Lift goes with the square (2 × 2 = 4), not the cube.',
+          '16':
+            'That squares it twice. Doubling speed means 2 × 2 = 4.'
+        },
+        xp: 10
+      },
+      {
+        id: 'q12',
+        type: 'numeric',
+        prompt:
+          'A wing produces 1,000 pounds of lift at 100 mph. Holding everything else the same, how many pounds of lift does it produce at 200 mph?',
+        answer: '4000',
+        explanation:
+          'The speed doubled, so lift goes up by 2 × 2 = 4. 1,000 × 4 = 4,000 pounds.\n\nIt also explains the danger in the other direction: lose half your airspeed and you lose three quarters of your lift.',
+        commonMistakes: {
+          '2000':
+            'That doubles the lift. Lift follows the square of speed, so doubling speed quadruples lift.',
+          '1000':
+            'That is the lift at the original speed. The speed has doubled — the lift changes.',
+          '10000':
+            'That multiplies by ten. Doubling speed multiplies lift by 4.'
+        },
+        xp: 10
       }
     ]
   },
@@ -1547,6 +1763,42 @@ export const aerospaceLessons7 = [
           'Retracting landing gear has a real, measurable aerodynamic benefit.',
           "Retracting gear doesn't change the aircraft's weight — the benefit is aerodynamic, not a weight change."
         ],
+        xp: 10
+      },
+      {
+        id: 'q11',
+        type: 'numeric',
+        prompt:
+          'An aircraft experiences 250 pounds of parasite drag and 400 pounds of induced drag. What is the total drag, in pounds?',
+        answer: '650',
+        explanation:
+          '250 + 400 = 650 pounds.\n\nThe two kinds behave in opposite ways as speed changes: parasite drag grows with speed, induced drag shrinks. Add them and the total has a low point in the middle — the speed at which an aircraft is most efficient.',
+        commonMistakes: {
+          '150':
+            'That subtracts them. Both kinds of drag pull backwards, so they add together.',
+          '400':
+            'That is induced drag on its own. Parasite drag is acting too — add both.',
+          '100000':
+            'That multiplies them. Forces in the same direction add.'
+        },
+        xp: 10
+      },
+      {
+        id: 'q12',
+        type: 'numeric',
+        prompt:
+          'A glider travels 8 miles forward while descending 1 mile. What is its glide ratio (forward distance divided by height lost)?',
+        answer: '8',
+        explanation:
+          '8 ÷ 1 = 8, usually written 8:1.\n\nGlide ratio is a direct measure of aerodynamic efficiency — how far you get for every unit you fall. A modern competition glider reaches better than 60:1.',
+        commonMistakes: {
+          '9':
+            'That adds the distances. Glide ratio divides forward distance by height lost.',
+          '7':
+            'That subtracts. Glide ratio is a division: 8 ÷ 1.',
+          '0.125':
+            'That divides the wrong way round. Forward distance goes on top.'
+        },
         xp: 10
       }
     ]
@@ -1770,6 +2022,42 @@ export const aerospaceLessons7 = [
           "These shapes are driven by real functional aerodynamic requirements, not visual style choices."
         ],
         xp: 10
+      },
+      {
+        id: 'q11',
+        type: 'numeric',
+        prompt:
+          'Drag also grows with the SQUARE of airspeed. An aircraft meets 200 pounds of drag at 150 mph. How many pounds of drag does it meet at 300 mph?',
+        answer: '800',
+        explanation:
+          'The speed doubled, so drag goes up by 2 × 2 = 4. 200 × 4 = 800 pounds.\n\nThis is the reason going faster costs so much fuel. Twice the speed needs four times the thrust just to hold it.',
+        commonMistakes: {
+          '400':
+            'That doubles the drag. Drag follows the square of speed, so doubling speed quadruples drag.',
+          '200':
+            'That is the drag at the slower speed. Doubling the speed changes it.',
+          '1600':
+            'That multiplies by eight. Doubling speed multiplies drag by 4, not 8.'
+        },
+        xp: 10
+      },
+      {
+        id: 'q12',
+        type: 'numeric',
+        prompt:
+          'A glider descends 2,000 feet while covering 60,000 feet of ground. What is its glide ratio?',
+        answer: '30',
+        explanation:
+          '60,000 ÷ 2,000 = 30, or 30:1.\n\nThat is a good glider. From one mile up it could reach a runway 30 miles away with no engine — which is exactly the calculation a pilot makes when one quits.',
+        commonMistakes: {
+          '58000':
+            'That subtracts. Glide ratio divides forward distance by height lost.',
+          '62000':
+            'That adds them. Glide ratio is a division.',
+          '0.033':
+            'That divides the wrong way round. Forward distance goes on top: 60,000 ÷ 2,000.'
+        },
+        xp: 10
       }
     ]
   },
@@ -1987,6 +2275,42 @@ export const aerospaceLessons7 = [
           'A high thrust-to-weight ratio helps takeoff and climb performance — it does not prevent takeoff.',
           'A thrust-to-weight ratio above 1 has a dramatic real-world effect on performance.'
         ],
+        xp: 10
+      },
+      {
+        id: 'q11',
+        type: 'numeric',
+        prompt:
+          'A jet engine produces 12,000 pounds of thrust. An aircraft is fitted with two of them. What is the total thrust, in pounds?',
+        answer: '24000',
+        explanation:
+          '12,000 × 2 = 24,000 pounds.\n\nTwin engines are not only about power. An airliner must be able to keep flying on one, which means each engine alone has to be enough to climb away — a requirement that shapes the whole design.',
+        commonMistakes: {
+          '12000':
+            'That is one engine. The aircraft has two, so double it.',
+          '6000':
+            'That halves it. Two engines give more thrust than one, not less.',
+          '1200':
+            'Check the place value — one engine is 12,000 pounds, not 1,200.'
+        },
+        xp: 10
+      },
+      {
+        id: 'q12',
+        type: 'numeric',
+        prompt:
+          'An aircraft weighs 30,000 pounds and its engines produce 15,000 pounds of thrust. What is its thrust-to-weight ratio? Give your answer as a decimal.',
+        answer: '0.5',
+        explanation:
+          '15,000 ÷ 30,000 = 0.5.\n\nBelow 1 the aircraft cannot climb straight up — it needs its wings to make lift. Above 1 it could accelerate vertically on thrust alone.',
+        commonMistakes: {
+          '2':
+            'That divides the wrong way round. Thrust-to-weight puts thrust on top: 15,000 ÷ 30,000.',
+          '45000':
+            'That adds them. A ratio is a division.',
+          '15000':
+            'That is the thrust on its own. A ratio compares it to the weight.'
+        },
         xp: 10
       }
     ]
@@ -2219,6 +2543,42 @@ export const aerospaceLessons7 = [
           "All four techniques apply to ACTIVE, running engines — not shut-off ones.",
           "Each of these techniques has a real, direct, documented effect on flight control and performance."
         ],
+        xp: 10
+      },
+      {
+        id: 'q11',
+        type: 'numeric',
+        prompt:
+          'A fighter weighs 25,000 pounds and produces 32,000 pounds of thrust. What is its thrust-to-weight ratio, to two decimal places?',
+        answer: '1.28',
+        explanation:
+          '32,000 ÷ 25,000 = 1.28.\n\nAbove 1.0, which means it can accelerate straight up — climbing vertically on engine power alone, with the wings doing nothing. Very few aircraft can.',
+        commonMistakes: {
+          '0.78':
+            'That divides the wrong way round. Thrust goes on top: 32,000 ÷ 25,000.',
+          '7000':
+            'That subtracts. A ratio is a division, not a difference.',
+          '1.3':
+            'Right arithmetic — the question asked for two decimal places, so 1.28.'
+        },
+        xp: 10
+      },
+      {
+        id: 'q12',
+        type: 'numeric',
+        prompt:
+          'A rocket on the pad weighs 900,000 pounds. Its thrust must be greater than its weight to lift off at all. How many pounds of thrust must it exceed?',
+        answer: '900000',
+        explanation:
+          'It must exceed 900,000 pounds — its own weight.\n\nThis is the hardest moment of any launch. The rocket is at its heaviest, full of fuel, and has to beat its entire weight before it moves an inch. Every second after this one is easier.',
+        commonMistakes: {
+          '450000':
+            'That is half the weight. Thrust has to beat all of it or the rocket stays on the pad.',
+          '1800000':
+            'That doubles it. It only has to exceed the weight, not double it — though more does mean a faster climb.',
+          '0':
+            'A rocket with no thrust does not move. It must beat its full weight.'
+        },
         xp: 10
       }
     ]

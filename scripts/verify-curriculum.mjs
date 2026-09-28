@@ -101,9 +101,36 @@ for (const lesson of allLessons) {
   // The 10-question rule applies to the subjects Mission Control actively
   // builds. Archived Math/Reading/Science lessons predate it (4 questions
   // each) and are deliberately frozen — see subjects.js ARCHIVED_SUBJECTS.
+  //
+  // ---- TEN RECALL QUESTIONS, PLUS ANY CALCULATIONS. (Sept 28, 2026.) ----
+  //
+  // This used to count EVERY question and demand exactly ten. That was the
+  // right rule while every question was multiple choice, and it quietly became
+  // the wrong one the day a lesson started asking the student to work
+  // something out: a review against his career found the aerospace track had
+  // 600 questions and not one that required a calculation.
+  //
+  // So the contract is stated as what it always meant — the recall set is ten,
+  // fixed, comparable across every lesson — and a calculation is a different
+  // kind of item that sits on top of it rather than displacing one.
+  //
+  // THE CAP IS THE OTHER HALF OF THAT. Without it "on top of" becomes a way to
+  // grow a lesson indefinitely, and lesson LENGTH is a real constraint: his day
+  // is already full, and aerospace gets forty-five minutes a week. Four is
+  // enough to make the point and small enough to feel like part of the lesson.
   const activeBuilt = ACTIVE_SUBJECTS.includes(lesson.subject) && !lesson.isQuarterlyExam && !lesson.isTrailblazerBio;
-  if (activeBuilt && lesson.questions.length !== 10) {
-    shapeErrors.push(`${lesson.id}: ${lesson.questions.length} questions (expected 10)`);
+  if (activeBuilt) {
+    const recall = lesson.questions.filter((q) => q.type === 'choice').length;
+    const calculations = lesson.questions.filter((q) => q.type === 'numeric').length;
+    if (recall !== 10) {
+      shapeErrors.push(`${lesson.id}: ${recall} recall questions (expected 10)`);
+    }
+    if (calculations > 4) {
+      shapeErrors.push(`${lesson.id}: ${calculations} calculations (at most 4 — a lesson has to fit in the block)`);
+    }
+    if (lesson.questions.length > 14) {
+      shapeErrors.push(`${lesson.id}: ${lesson.questions.length} questions total (at most 14)`);
+    }
   }
   for (const q of lesson.questions) {
     if (q.type !== 'choice') continue;

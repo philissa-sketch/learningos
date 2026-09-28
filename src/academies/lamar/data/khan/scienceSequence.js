@@ -181,8 +181,8 @@ export const SCIENCE_KHAN_SEQUENCE = {
    *
    *   Q1  Biology, all ten units, + Course Challenge
    *   Q2  Chemistry, all five, + CC
-   *   Q3  Earth & Space, all six, + CC
-   *   Q4  Physics, all five, + CC
+   *   Q3  Physics, all five, + CC        <- swapped Sept 28, 2026
+   *   Q4  Earth & Space, all six, + CC    <- swapped Sept 28, 2026
    *   Summer  empty
    *
    * One course per quarter, start to finish, ending in its own Course
@@ -243,8 +243,33 @@ export const SCIENCE_KHAN_SEQUENCE = {
     { skillTitle: 'Thermal Energy and Heat', gradeLevel: '7th', khanAcademyUrl: CHEM + 'thermal-energy-and-heat', sequenceInQuarter: 4, items: 5, courseId: 'chem', khanUnit: 4 },
     { skillTitle: 'Explore Chemistry Through Simulations', gradeLevel: '7th', khanAcademyUrl: CHEM + 'explore-chemistry-through-simulations', sequenceInQuarter: 5, items: 2, courseId: 'chem', khanUnit: 5, noMastery: true }
   ],
-  /** Earth & Space, whole — the parent flagged it as "a big part of his career choice." */
+  /**
+   * ---- PHYSICS MOVED UP A QUARTER. (Sept 28, 2026.) ----
+   *
+   * The parent, after a review of the whole school against the aerospace
+   * career: physics earlier. Aerospace engineering IS applied physics, and
+   * physics was the last course of the year and the smallest — five units
+   * arriving in April, after the aerospace track had already taught orbits,
+   * thrust and reentry without it.
+   *
+   * It now runs in Q3, alongside the aerospace lessons on orbital mechanics
+   * and satellites, where the two explain each other. Earth & space takes Q4.
+   *
+   * WHAT DID NOT CHANGE: one whole Khan course per quarter, each ending in
+   * its own Course Challenge. The two courses swapped places; the structure
+   * that made that structure good is untouched. Earth & space was placed in
+   * Q3 deliberately — she had called it "a big part of his career choice" —
+   * so this is a re-ordering of two things she wanted, not a demotion of one.
+   */
   'Q3 2026-2027': [
+    { skillTitle: 'Motion and Forces', gradeLevel: '7th', khanAcademyUrl: PHYS + 'motion-and-forces', sequenceInQuarter: 1, items: 11, courseId: 'phys', khanUnit: 1 },
+    { skillTitle: 'Non-Contact Interactions', gradeLevel: '7th', khanAcademyUrl: PHYS + 'non-contact-interactions', sequenceInQuarter: 2, items: 7, courseId: 'phys', khanUnit: 2 },
+    { skillTitle: 'Energy', gradeLevel: '7th', khanAcademyUrl: PHYS + 'energy', sequenceInQuarter: 3, items: 9, courseId: 'phys', khanUnit: 3 },
+    { skillTitle: 'Waves', gradeLevel: '7th', khanAcademyUrl: PHYS + 'waves', sequenceInQuarter: 4, items: 8, courseId: 'phys', khanUnit: 4 },
+    { skillTitle: 'Explore Physics Through Simulations', gradeLevel: '7th', khanAcademyUrl: PHYS + 'explore-physics-through-simulations', sequenceInQuarter: 5, items: 2, courseId: 'phys', khanUnit: 5, noMastery: true }
+  ],
+  /** Earth & Space, whole — "a big part of his career choice", now closing the year. */
+  'Q4 2026-2027': [
     { skillTitle: 'Earth in Space', gradeLevel: '7th', khanAcademyUrl: EARTH + 'earth-in-space', sequenceInQuarter: 1, items: 6, courseId: 'earth', khanUnit: 1 },
     { skillTitle: 'The Earth-Sun-Moon System', gradeLevel: '7th', khanAcademyUrl: EARTH + 'the-earth-sun-moon-system', sequenceInQuarter: 2, items: 6, courseId: 'earth', khanUnit: 2 },
     { skillTitle: 'Weather and Climate', gradeLevel: '7th', khanAcademyUrl: EARTH + 'weather-and-climate', sequenceInQuarter: 3, items: 7, courseId: 'earth', khanUnit: 3 },
@@ -252,14 +277,6 @@ export const SCIENCE_KHAN_SEQUENCE = {
     { skillTitle: 'Earth and Society', gradeLevel: '7th', khanAcademyUrl: EARTH + 'earth-and-society', sequenceInQuarter: 5, items: 7, courseId: 'earth', khanUnit: 5 },
     // Verified slug — this one carries an `-ms-ess` suffix.
     { skillTitle: 'Explore Earth and Space Science Through Simulations', gradeLevel: '7th', khanAcademyUrl: EARTH + 'explore-earth-and-space-science-through-simulations-ms-ess', sequenceInQuarter: 6, items: 2, courseId: 'earth', khanUnit: 6, noMastery: true }
-  ],
-  /** Physics, whole. Motion, forces and energy — the closest course to aerospace. */
-  'Q4 2026-2027': [
-    { skillTitle: 'Motion and Forces', gradeLevel: '7th', khanAcademyUrl: PHYS + 'motion-and-forces', sequenceInQuarter: 1, items: 11, courseId: 'phys', khanUnit: 1 },
-    { skillTitle: 'Non-Contact Interactions', gradeLevel: '7th', khanAcademyUrl: PHYS + 'non-contact-interactions', sequenceInQuarter: 2, items: 7, courseId: 'phys', khanUnit: 2 },
-    { skillTitle: 'Energy', gradeLevel: '7th', khanAcademyUrl: PHYS + 'energy', sequenceInQuarter: 3, items: 9, courseId: 'phys', khanUnit: 3 },
-    { skillTitle: 'Waves', gradeLevel: '7th', khanAcademyUrl: PHYS + 'waves', sequenceInQuarter: 4, items: 8, courseId: 'phys', khanUnit: 4 },
-    { skillTitle: 'Explore Physics Through Simulations', gradeLevel: '7th', khanAcademyUrl: PHYS + 'explore-physics-through-simulations', sequenceInQuarter: 5, items: 2, courseId: 'phys', khanUnit: 5, noMastery: true }
   ],
   /**
    * Summer carries NO Khan science.
@@ -291,8 +308,8 @@ export const SCIENCE_KHAN_SEQUENCE = {
 export const SCIENCE_COURSE_CHALLENGES = [
   { skillTitle: 'Middle School Chemistry — Course Challenge', gradeLevel: '7th', khanAcademyUrl: 'https://www.khanacademy.org/science/ms-chemistry/test/xc370bc422b7f75fc:course-challenge', batchLabel: 'Q2 2026-2027', isCourseChallenge: true, sequenceInQuarter: 99, courseId: 'chem' },
   { skillTitle: 'Middle School Biology — Course Challenge', gradeLevel: '7th', khanAcademyUrl: 'https://www.khanacademy.org/science/ms-biology/test/x0c5bb03129646fd6:course-challenge', batchLabel: 'Q1 2026-2027', isCourseChallenge: true, sequenceInQuarter: 99, courseId: 'bio' },
-  { skillTitle: 'Middle School Physics — Course Challenge', gradeLevel: '8th', khanAcademyUrl: 'https://www.khanacademy.org/science/ms-physics/test/x1baed5db7c1bb50b:course-challenge', batchLabel: 'Q4 2026-2027', isCourseChallenge: true, sequenceInQuarter: 99, courseId: 'phys' },
-  { skillTitle: 'Middle School Earth and Space Science — Course Challenge', gradeLevel: '7th', khanAcademyUrl: 'https://www.khanacademy.org/science/middle-school-earth-and-space-science/test/x87d03b443efbea0a:course-challenge', batchLabel: 'Q3 2026-2027', isCourseChallenge: true, sequenceInQuarter: 99, courseId: 'earth' }
+  { skillTitle: 'Middle School Physics — Course Challenge', gradeLevel: '8th', khanAcademyUrl: 'https://www.khanacademy.org/science/ms-physics/test/x1baed5db7c1bb50b:course-challenge', batchLabel: 'Q3 2026-2027', isCourseChallenge: true, sequenceInQuarter: 99, courseId: 'phys' },
+  { skillTitle: 'Middle School Earth and Space Science — Course Challenge', gradeLevel: '7th', khanAcademyUrl: 'https://www.khanacademy.org/science/middle-school-earth-and-space-science/test/x87d03b443efbea0a:course-challenge', batchLabel: 'Q4 2026-2027', isCourseChallenge: true, sequenceInQuarter: 99, courseId: 'earth' }
 ];
 
 /** Rows for one quarter, shaped the way the store's seeding loops expect. */

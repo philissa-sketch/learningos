@@ -298,6 +298,42 @@ export const aerospaceQ1Exam = {
       explanation: 'True — fighter jets accept a lower lift-to-drag/fuel-efficiency tradeoff from low-bypass engines in exchange for maximum thrust and speed.',
       choiceFeedback: [null, 'This is a real, deliberate engineering tradeoff — the statement is True.'],
       xp: 10
-    }
-  ]
+    },
+      {
+        id: 'q23',
+        type: 'numeric',
+        prompt:
+          'An aircraft in steady level flight weighs 3,200 pounds and meets 400 pounds of drag. How many pounds of thrust is it producing?',
+        answer: '400',
+        explanation:
+          'Thrust equals drag at constant speed — 400 pounds. The 3,200 pounds of weight is balanced by lift, not by thrust.\n\nThe four forces pair up, and the pairs do not mix: lift against weight, thrust against drag.',
+        commonMistakes: {
+          '3200':
+            'That is the weight, which is balanced by lift. Thrust balances drag.',
+          '3600':
+            'That adds weight and drag together. The two pairs are separate.',
+          '2800':
+            'That subtracts drag from weight. Thrust simply matches drag at a steady speed.'
+        },
+        xp: 10
+      },
+      {
+        id: 'q24',
+        type: 'numeric',
+        prompt:
+          'Both lift and drag grow with the SQUARE of airspeed. An aircraft triples its speed. By what factor does its drag increase?',
+        answer: '9',
+        explanation:
+          'Tripling speed multiplies drag by 3 × 3 = 9.\n\nThis is the single most expensive fact in aviation. Three times the speed needs nine times the thrust to push through the air — which is why supersonic airliners were never cheap to run.',
+        commonMistakes: {
+          '3':
+            'That is the speed factor. Drag follows the SQUARE of speed, so 3 becomes 3 × 3.',
+          '6':
+            'That doubles the speed factor. Squaring means 3 × 3, not 3 × 2.',
+          '27':
+            'That cubes it. Drag goes with the square (3 × 3 = 9), not the cube.'
+        },
+        xp: 10
+      }
+    ]
 };

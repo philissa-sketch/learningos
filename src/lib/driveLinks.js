@@ -176,23 +176,67 @@ export function folderForRecordKind(kind) {
 }
 
 /**
- * Folder links created in the parent's own Drive on August 6, 2026, at
- * her request, and seeded so the feature works on first open rather than
- * presenting eight empty boxes.
+ * =============================================================================
+ * NOTHING IS SEEDED HERE ANY MORE, AND THAT IS THE FIX.
+ * =============================================================================
  *
- * SEEDED, NOT HARDCODED: these go in as normal rows the first time the
- * app loads and can be edited or cleared like any other link. This
- * follows the same static-seed-plus-persisted-override pattern used for
- * books, assignments, and Khan Academy work — the seed is a starting
- * point, and her edit always wins.
+ * WHAT HAPPENED. (Sept 28, 2026.)
+ *
+ * The parent, looking at the cell-model card: **"this link leads to 404 error
+ * message."** She checked her Drive: the eight folders are gone.
+ *
+ * Eight folder ids were baked into this file on Aug 6, 2026 — created in her
+ * Drive that day, so they were real when they were written. They are not real
+ * now, and NOTHING IN THE APP COULD EVER HAVE NOTICED. A Drive id is an opaque
+ * string on somebody else's server: the app cannot open it, cannot check it,
+ * and cannot tell a live folder from a deleted one. It presented all eight as
+ * working links for seven weeks.
+ *
+ * That is worse than having no link at all. A child told "upload it here" who
+ * lands on a 404 concludes the app is broken, or that his work has nowhere to
+ * go. The honest state — "no folder linked yet, here is how to link one" — was
+ * always available and was not used, because a seeded link made the first open
+ * look finished.
+ *
+ * ---- THE RULE NOW ----
+ *
+ * No external id ships in this codebase. Every folder link is pasted by the
+ * parent in the Parent Dashboard, which is the only party who can actually see
+ * whether the folder exists. `scripts/verify-drive-links.mjs` enforces it.
+ *
+ * An empty seed map is deliberate, not an oversight, and is left as a named
+ * export so the store's seeding path keeps its shape: it now seeds nothing,
+ * every folder starts unlinked, and every card that shows one says so.
  */
-export const SEEDED_FOLDER_URLS = {
-  root: 'https://drive.google.com/drive/folders/1VKP1msqBwA2Rowg8HI_XD_io5HNtj2KY',
-  'field-trip': 'https://drive.google.com/drive/folders/1tFeIVhfytHJ6-FboWA8BwSZgOSE9BxtI',
-  award: 'https://drive.google.com/drive/folders/1Ybc9x2TwxiTbliGpRT7keEEk064ToPpZ',
-  test: 'https://drive.google.com/drive/folders/1VI4XunRoGVIp7-kBIoLCEnow5fHT80Bl',
-  'work-sample': 'https://drive.google.com/drive/folders/13Kb2V7Y98ZyxgzzXf3pC97_aaNVS_7s4',
-  portfolio: 'https://drive.google.com/drive/folders/1zqjMaJGpv0fPwuFe3xcIJWeqLlRQHLEA',
-  extracurricular: 'https://drive.google.com/drive/folders/1b5bvwnqIuV9k6xI4z7m718Z40aAnQAeq',
-  packets: 'https://drive.google.com/drive/folders/16WRqEQwJ-Q5-eqmyBQIIPociTIJuygVc'
-};
+export const SEEDED_FOLDER_URLS = {};
+
+/**
+ * ---- THE EIGHT DEAD ONES, KEPT SO THEY CAN BE CLEANED UP ----
+ *
+ * The seeds above were not merely displayed — they were WRITTEN into each
+ * browser's database on first open, as ordinary rows. Deleting them from this
+ * file therefore fixes nothing on a computer that has already run the app:
+ * both his and hers still hold all eight, and would go on offering them.
+ *
+ * So hydrate compares every saved folder link against this list and clears the
+ * matches. Only an EXACT match is cleared: a folder the parent pasted herself
+ * is never touched, even if it turns out to be dead too, because the app has
+ * no standing to overrule her about her own Drive.
+ *
+ * This list may be deleted once both computers have opened the app again.
+ */
+export const RETIRED_FOLDER_URLS = [
+  'https://drive.google.com/drive/folders/1VKP1msqBwA2Rowg8HI_XD_io5HNtj2KY',
+  'https://drive.google.com/drive/folders/1tFeIVhfytHJ6-FboWA8BwSZgOSE9BxtI',
+  'https://drive.google.com/drive/folders/1Ybc9x2TwxiTbliGpRT7keEEk064ToPpZ',
+  'https://drive.google.com/drive/folders/1VI4XunRoGVIp7-kBIoLCEnow5fHT80Bl',
+  'https://drive.google.com/drive/folders/13Kb2V7Y98ZyxgzzXf3pC97_aaNVS_7s4',
+  'https://drive.google.com/drive/folders/1zqjMaJGpv0fPwuFe3xcIJWeqLlRQHLEA',
+  'https://drive.google.com/drive/folders/1b5bvwnqIuV9k6xI4z7m718Z40aAnQAeq',
+  'https://drive.google.com/drive/folders/16WRqEQwJ-Q5-eqmyBQIIPociTIJuygVc'
+];
+
+/** True for a link this app put there and has since been shown to be dead. */
+export function isRetiredFolderUrl(url) {
+  return typeof url === 'string' && RETIRED_FOLDER_URLS.includes(url.trim());
+}

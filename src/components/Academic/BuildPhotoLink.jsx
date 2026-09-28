@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { normalizeEvidenceUrl } from '../../lib/driveLinks.js';
-import { SEEDED_FOLDER_URLS } from '../../lib/driveLinks.js';
+import { useAppStore } from '../../store/useAppStore.js';
 
 /**
  * ---- THE PHOTO OF THE BUILD. (Sept 24, 2026.) ----
@@ -26,6 +26,18 @@ import { SEEDED_FOLDER_URLS } from '../../lib/driveLinks.js';
  * back. The link travels in the daily export, which means she can open the
  * photo from her own machine while she grades — which an upload trapped in
  * his browser could never have done.
+ *
+ * ---- WHERE THE FOLDER LINK COMES FROM. (Sept 28, 2026.) ----
+ *
+ * It is read live from the parent's own saved link, not from a constant. This
+ * card used to point at a folder id baked into the code, and the parent found
+ * it the honest way: **"this link leads to 404 error message."** The folder
+ * had been deleted and nothing in the app could tell — an external id is a
+ * string the app cannot check.
+ *
+ * With no folder linked the card says so and says where to set one. Step 2
+ * below is the only step that needs a folder, so the other two still stand:
+ * he can take the photo and paste its link whatever the parent has set up.
  */
 export function BuildPhotoLink({ assignment, onSave }) {
   const [value, setValue] = useState(assignment.photoUrl || '');
@@ -34,7 +46,7 @@ export function BuildPhotoLink({ assignment, onSave }) {
 
   const saved = assignment.photoUrl || null;
   const dirty = value.trim() !== (saved || '');
-  const folder = SEEDED_FOLDER_URLS.portfolio;
+  const folder = useAppStore((s) => s.evidenceLinks?.portfolio) || null;
 
   async function save() {
     if (busy) return;
@@ -68,10 +80,19 @@ export function BuildPhotoLink({ assignment, onSave }) {
           <li>1. Take the photo of the finished build.</li>
           <li>
             2.{' '}
-            <a href={folder} target="_blank" rel="noreferrer" className="text-signal-cyan underline">
-              Open the Portfolio Projects folder ↗
-            </a>{' '}
-            and upload it there.
+            {folder ? (
+              <>
+                <a href={folder} target="_blank" rel="noreferrer" className="text-signal-cyan underline">
+                  Open the Portfolio Projects folder ↗
+                </a>{' '}
+                and upload it there.
+              </>
+            ) : (
+              <span className="text-ink-500">
+                Upload it wherever your photos are kept. No Portfolio Projects folder is linked
+                yet — a grown-up can set one in the Parent Dashboard, under Records.
+              </span>
+            )}
           </li>
           <li>3. Copy its link and paste it below, so it travels with your work.</li>
         </ol>

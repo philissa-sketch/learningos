@@ -3,6 +3,7 @@ import { guardianWord, learnerWord, stateWord } from '../../lib/schoolWords.js';
 import { useAppStore, totalMasteredCount } from '../../store/useAppStore.js';
 import { XP_PER_COIN, XP_PER_CREDIT, CREDIT_AUTO_APPROVE_MAX } from '../../lib/economy.js';
 import { CurrencyControlsSection } from './CurrencyControlsSection.jsx';
+import { GradeLadderCard } from './GradeLadderCard.jsx';
 import { GRADE_SCALE_SUMMARY, gradeColor } from '../../lib/gradeScale.js';
 import { PercentGradeInput } from './GradeControls.jsx';
 import { groupByQuarter, getCurrentQuarter, quarterRank } from '../../lib/schoolQuarter.js';
@@ -993,7 +994,33 @@ export function ParentDashboard({ onSignOut, onOpenAcademicCenter = null }) {
       {section === 'parent-time' && <ParentTimeSection />}
       {section === 'coming-up' && <ComingUpSection />}
       {section === 'gradebook' && <GradebookSection />}
-      {section === 'khan-academy' && <KhanAcademyGradesSection />}
+      {section === 'khan-academy' && (
+        <>
+          {/*
+            ---- THE MATHS LADDER SITS ABOVE THE GRADES. (Sept 28, 2026.) ----
+
+            A review against his aerospace goal found maths carrying the
+            weakest verification of any subject here: every other subject had
+            quarterly exams, maths had none. The plan behind it is four grade
+            levels in one school year, each the foundation of the next, ending
+            in Algebra I in 8th grade — which is what a calculus-gated career
+            actually requires.
+
+            The Course Challenges were already seeded and were being treated as
+            one more optional unit at the end of a quarter. They are the gate
+            now, and this is where she sees whether it is holding — and whether
+            it is holding on something only she can clear.
+          */}
+          <div className="mb-4">
+            <GradeLadderCard
+              subject="math"
+              title="Maths — grade level ladder"
+              note="A grade level opens when the one below it has been passed. The target is Algebra I in 8th grade, which is what puts Calculus in 12th."
+            />
+          </div>
+          <KhanAcademyGradesSection />
+        </>
+      )}
       {section === 'rewards-manager' && <RewardsManagerSection />}
       {section === 'currency' && <CurrencyControlsSection />}
       {section === 'readiness' && <ReadinessManagerSection />}

@@ -27,8 +27,18 @@ export function isAnswerCorrect(question, submittedValue) {
   if (question.type === 'choice') {
     return submittedValue === question.answer;
   }
-  // numeric/text: normalize whitespace and case before comparing
-  const normalize = (v) => String(v).trim().toLowerCase().replace(/\s+/g, '');
+  /**
+   * numeric/text: normalize whitespace and case before comparing.
+   *
+   * ---- COMMAS TOO, SINCE SEPT 28, 2026. ----
+   *
+   * Aerospace questions that ask for a real force in pounds produce four- and
+   * six-digit answers, and a child who writes 24,000 the way every book writes
+   * it was being marked wrong for punctuation. No correct answer anywhere in
+   * the app depends on a comma, so stripping them can only turn a right answer
+   * that looked wrong into a right answer.
+   */
+  const normalize = (v) => String(v).trim().toLowerCase().replace(/\s+/g, '').replace(/,/g, '');
   return normalize(submittedValue) === normalize(question.answer);
 }
 

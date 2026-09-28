@@ -20,11 +20,17 @@
     "  khanAcademyAssignments  -- one course sequence, seeded for everybody",
     "  rewards 25              -- a catalog the platform ships rather than a school",
     "Zero is the target for those. It is not the target for every line, which is",
-    "why this file counts rather than forbids."
+    "why this file counts rather than forbids.",
+    "",
+    "evidenceLinks went 8 -> 0 on Sept 28, 2026. Eight Google Drive folder ids were",
+    "seeded into every school; the folders behind them had been deleted and nothing",
+    "in the app could tell, so all eight were presented as working links until the",
+    "parent hit a 404. No external id ships now -- see scripts/verify-drive-links.mjs.",
+    "Tightened deliberately rather than left slack, so re-seeding shows up in a diff."
   ],
   "seeded": {
     "currentRank": 5,
-    "evidenceLinks": 8,
+    "evidenceLinks": 0,
     "fieldTrips": 21,
     "khanAcademyAssignments": 130,
     "ledger": 1,

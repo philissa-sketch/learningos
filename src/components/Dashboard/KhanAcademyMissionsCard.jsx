@@ -1,8 +1,9 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useAppStore } from '../../store/useAppStore.js';
 import { getCurrentQuarter, isQuarterlyBatchLabel, isCalendarYearBatchLabel, hasSchoolStarted, schoolYearStartDate } from '../../lib/schoolQuarter.js';
 import { academyContent } from '../../content/academyContent.js';
 import { subjectCardLabel as subjectCardLabelFor } from '../../content/slots/subjects.js';
+import { ladderState, rowIsLocked, ladderSummary } from '../../lib/gradeLadder.js';
 
 const { khanGrammarUnitForUrl = () => null, scienceCourseForUrl = () => null } = academyContent().khanSequences;
 // Read at call time, not at import: these look the answer up in the school
@@ -179,7 +180,52 @@ export function KhanSubjectGroup({ subject, lessons }) {
   const [expanded, setExpanded] = useState(false);
   const sorted = [...lessons].sort((a, b) => sequenceKey(a) - sequenceKey(b));
   const doneCount = sorted.filter((l) => l.completed).length;
-  const next = sorted.find((l) => !l.completed);
+
+  /**
+   * ---- A GRADE LEVEL IS EARNED BEFORE THE NEXT ONE OPENS. (Sept 28, 2026.)
+   *
+   * `lessons` is only this quarter. The ladder needs the WHOLE subject,
+   * because the test that opens this quarter's level was sat in a previous
+   * one. Selected from state rather than through a store method on purpose:
+   * the store's own comment warns that a selected function's reference never
+   * changes, so a component that selects one never re-renders when the rows
+   * behind it move. The array does change, so this stays live.
+   */
+  const allRows = useAppStore((s) => s.khanAcademyAssignments);
+  const ladder = useMemo(
+    () => ladderState((allRows || []).filter((r) => r.subject === subject)),
+    [allRows, subject]
+  );
+  const shut = sorted.filter((l) => rowIsLocked(ladder, l));
+  const openRows = sorted.filter((l) => !rowIsLocked(ladder, l));
+  const gate = shut.length > 0 ? ladderSummary(ladder) : null;
+
+  /**
+   * ---- THE KEY HAS TO BE ON THE SCREEN, NOT JUST IN THE SENTENCE ----
+   *
+   * This card shows the CURRENT quarter only. The test that opens this
+   * quarter's level was set in a previous one, so once the gate bites, the
+   * door names a course challenge the board would not have rendered — he
+   * would read "pass the 5th Course Challenge", look down the page, and not
+   * find it anywhere.
+   *
+   * That is the same stranding the module already refuses at row level, one
+   * level up: the key exists, and he cannot reach it. So the blocking
+   * challenge is pulled in from its own quarter and shown here, as the thing
+   * to do today.
+   */
+  const gateKey = useMemo(() => {
+    if (!gate?.blockedBy) return null;
+    const here = sorted.find((l) => l.isCourseChallenge && l.gradeLevel === gate.blockedBy);
+    if (here) return null; // already on this quarter's board
+    return (allRows || []).find(
+      (r) => r.subject === subject && r.isCourseChallenge && r.gradeLevel === gate.blockedBy
+    ) || null;
+  }, [allRows, subject, sorted, gate?.blockedBy]);
+
+  // Never offered from behind a shut door, and never the door's own key: the
+  // course challenge stays reachable so there is always a way forward.
+  const next = openRows.find((l) => !l.completed);
 
   return (
     <div className="rounded-lg border border-space-700 bg-space-900/60 p-3">
@@ -195,8 +241,37 @@ export function KhanSubjectGroup({ subject, lessons }) {
           <p className="mb-1 text-[10px] font-display uppercase tracking-widest text-signal-cyan">Today's lesson</p>
           <LessonRow assignment={next} emphasized />
         </div>
+      ) : gate ? (
+        /*
+          Everything left this quarter is behind the gate. Saying "all caught
+          up" here would be a lie he could act on — he would stop for the day
+          with the one thing that opens the door still undone.
+        */
+        <div className="mt-2">
+          <p className="text-sm text-signal-amber">
+            Nothing more opens until the {gate.blockedBy} Course Challenge is passed.
+          </p>
+          {gateKey && (
+            <div className="mt-2">
+              <p className="mb-1 text-[10px] font-display uppercase tracking-widest text-signal-cyan">
+                Do this one
+              </p>
+              <LessonRow assignment={gateKey} emphasized />
+            </div>
+          )}
+        </div>
       ) : (
         <p className="mt-2 text-sm text-signal-green">✅ All caught up for this quarter — nice work.</p>
+      )}
+
+      {/* The shut door, named, with the one thing that opens it. */}
+      {gate && (
+        <div className="mt-2 rounded-lg border border-signal-amber/40 bg-signal-amber/5 px-3 py-2">
+          <p className="font-display text-xs font-700 uppercase tracking-widest text-signal-amber">
+            ▨ {shut.length} {shut.length === 1 ? 'unit' : 'units'} locked
+          </p>
+          <p className="mt-0.5 text-xs leading-relaxed text-ink-300">{gate.opensWhen}</p>
+        </div>
       )}
 
       {sorted.length > 1 && (
@@ -215,11 +290,16 @@ export function KhanSubjectGroup({ subject, lessons }) {
                   real bug: it made the same lesson visually appear twice
                   on screen, which looked exactly like a duplicated
                   lesson even though the underlying data was correct. */}
-              {sorted
+              {openRows
                 .filter((lesson) => lesson.id !== next?.id)
                 .map((lesson) => (
                   <LessonRow key={lesson.id} assignment={lesson} />
                 ))}
+              {shut.map((lesson) => (
+                <p key={lesson.id} className="px-2 py-1 text-xs text-ink-600">
+                  ▨ {lesson.skillTitle}
+                </p>
+              ))}
             </div>
           )}
         </>

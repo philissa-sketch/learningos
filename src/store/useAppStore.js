@@ -184,7 +184,7 @@ import {
 } from '../lib/weeklyWords.js';
 import { nextReviewScheduleEntry } from '../engine/dailyPractice.js';
 import { studyCycleKey, nextTermBlitzSlot } from '../lib/studyCycle.js';
-import { EVIDENCE_FOLDER_KEYS, SEEDED_FOLDER_URLS, normalizeEvidenceUrl, REFERENCE_LINK_TYPES } from '../lib/driveLinks.js';
+import { EVIDENCE_FOLDER_KEYS, SEEDED_FOLDER_URLS, isRetiredFolderUrl, normalizeEvidenceUrl, REFERENCE_LINK_TYPES } from '../lib/driveLinks.js';
 import { normalizeHelpUrl } from '../lib/homeworkHelp.js';
 import { missionScoresForSubject, missionEvidencePhrase } from '../lib/missionGrades.js';
 import {
@@ -4285,8 +4285,33 @@ const seedRows = khanFirstSeedRows().map((r) => ({ ...r, completed: false, grade
      * "I cleared this link on purpose" is distinguished from "never
      * seeded", and without it a cleared link would silently come back.
      */
+    /**
+     * ---- CLEARING THE EIGHT DEAD LINKS. (Sept 28, 2026.) ----
+     *
+     * Eight folder links were seeded into every browser's database on first
+     * open in August. The folders behind them no longer exist, and removing
+     * the seeds from the code does nothing for a computer that already ran
+     * the app — both his and hers still hold all eight and would keep
+     * offering them.
+     *
+     * So a saved link that is EXACTLY one of the retired ones is cleared here
+     * and in the database, once. A link the parent pasted herself is never
+     * touched: the app has no standing to overrule her about her own Drive,
+     * and a wrongly-cleared folder is worse than a dead one she can see.
+     */
     const evidenceLinks = {};
-    for (const row of evidenceLinkRows) evidenceLinks[row.key] = row.url ?? null;
+    const deadLinkKeys = [];
+    for (const row of evidenceLinkRows) {
+      if (isRetiredFolderUrl(row.url)) {
+        evidenceLinks[row.key] = null;
+        deadLinkKeys.push(row.key);
+      } else {
+        evidenceLinks[row.key] = row.url ?? null;
+      }
+    }
+    if (deadLinkKeys.length > 0) {
+      await Promise.all(deadLinkKeys.map((key) => saveEvidenceLinkRecord(key, null)));
+    }
     const missingFolderKeys = EVIDENCE_FOLDER_KEYS.filter(
       (key) => !Object.prototype.hasOwnProperty.call(evidenceLinks, key) && SEEDED_FOLDER_URLS[key]
     );
