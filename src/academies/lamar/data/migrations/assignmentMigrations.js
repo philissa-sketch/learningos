@@ -201,8 +201,24 @@ export const ASSIGNMENT_CORRECTIONS = {
   'asg::socialStudies::Q1::3': { fromNote: 'Model or labelled cross-section of the borehole well from the end of the book. Photograph it, label the parts that matter, and write down the real measurements you used. The engineering in the last chapters is the point.', note: 'Build or draw a cross-section of the borehole well from the end of the book. Label at least 6 parts, write down the real measurements you used, and photograph the finished thing. Finish with 2 sentences on why that well changes life in the village.' },
 };
 
+/**
+ * Slots dropped after they had already been seeded, so the rows already in a
+ * database can be cleaned up. See the block above the cleanup in
+ * useAppStore.js for why each one went.
+ *
+ * A SLOT ID LISTED HERE MUST NOT ALSO BE LIVE IN placeholders.js.
+ * verify-retired-slots-stay-retired.mjs holds that, because breaking it is
+ * silent and expensive:
+ *
+ * `asg::aerospace::Q2::2` sat here from Aug 8, 2026, when it was the
+ * *Chasing Space* book report that got dropped. The id was later REUSED for a
+ * completely different assignment — the bottle rocket's second launch, due
+ * 2026-12-04 — and this line was never removed. So on every single app load
+ * the cleanup deleted that rocket assignment and the seeder built it again
+ * with no due date. The parent's Sept 28 export caught it: id 125,
+ * `dueDate: null`, created five seconds before she pressed Export.
+ */
 export const RETIRED_ASSIGNMENT_SLOTS = [
-  'asg::aerospace::Q2::2',
   'asg::socialStudies::Q2::3',
   'asg::aerospace::Q1::2'
 ];

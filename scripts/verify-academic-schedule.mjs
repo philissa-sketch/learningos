@@ -283,8 +283,29 @@ console.log('\n--- 7. the corrections actually reach a database that already exi
     /\[\]\.concat\(fix\.fromDueDate\)\.includes\(row\.dueDate\)/.test(store)
       || /row\.dueDate === fix\.fromDueDate/.test(store),
     'a date she set herself must never be moved back');
+  /**
+   * SCOPED TO THE CORRECTIONS PASS. (Sept 28, 2026.)
+   *
+   * This searched the WHOLE store, and on Sept 28 it fired on a line three
+   * hundred lines away that moves no date at all: the duplicate scorer (below WORK_FIELDS), which
+   * compares a row's due date to the shipped one only to decide which of two
+   * DUPLICATE rows to keep. Nothing is rewritten there and the rule this check
+   * exists to protect was never in question.
+   *
+   * The rule itself is unchanged and is worth restating, because it is the one
+   * this school has broken most often: inside the corrections pass a date may
+   * move only off an EXACT value the app itself shipped. A range or a
+   * comparison there would sweep up a date she chose, and she would have no
+   * way of knowing it had happened.
+   */
+  const correctionsPass = store.slice(
+    store.indexOf('ASSIGNMENT_CORRECTIONS: assignmentCorrections = {}'),
+    store.indexOf('const WORK_FIELDS = [')
+  );
+  ok('the corrections pass was located', correctionsPass.length > 400 && correctionsPass.length < store.length,
+    `${correctionsPass.length} chars`);
   ok('...and it is still an exact match, never a range or a comparison',
-    !/row\.dueDate\s*[<>]/.test(store),
+    !/row\.dueDate\s*[<>]/.test(correctionsPass),
     'anything looser than equality would sweep up dates she chose');
   /**
    * WIDENED THE SAME WAY `fromDueDate` WAS, AND FOR THE SAME REASON.

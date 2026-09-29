@@ -90,7 +90,17 @@ console.log('\n--- 2. the school supplies them, optionally ---');
    */
   ok('the corrections came across', Object.keys(repairs.ASSIGNMENT_CORRECTIONS || {}).length === 34,
     `${Object.keys(repairs.ASSIGNMENT_CORRECTIONS || {}).length} — the move must not drop one`);
-  ok('the retired slots came across', (repairs.RETIRED_ASSIGNMENT_SLOTS || []).length === 3);
+  /**
+   * Two, not three. `asg::aerospace::Q2::2` was removed on Sept 28, 2026: it
+   * had been retired in August as the *Chasing Space* book report, and the slot
+   * id was later reused for the bottle rocket's second launch. A live
+   * assignment on the retired list is deleted and rebuilt on every app load.
+   * verify-retired-slots-stay-retired.mjs now holds that invariant directly, so
+   * this number may shrink again — but only alongside a slot genuinely coming
+   * back to life, never by accident.
+   */
+  ok('the retired slots came across', (repairs.RETIRED_ASSIGNMENT_SLOTS || []).length === 2,
+    `${(repairs.RETIRED_ASSIGNMENT_SLOTS || []).length}`);
   ok('the book swaps came across', Object.keys(repairs.BOOK_SWAPS || {}).length === 8);
   ok('the slot is not required of every Academy',
     !/REQUIRED_SLOTS[\s\S]{0,400}'migrations'/.test(src('src/content/academyContent.js')),

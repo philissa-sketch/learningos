@@ -392,6 +392,18 @@ const WORD_PRACTICE_CORRECT_XP = 5;
 
 const WORD_POOLS = { spelling: spellingWordPool, vocabulary: vocabularyWordPool };
 
+/**
+ * What an assignment IS, as opposed to what he has DONE on it: the tuple the
+ * parent edits on the scheduling dialog.
+ *
+ * Declared once, at module scope, because two places have to agree on it
+ * exactly -- scheduleAcademicAssignment, which stamps `scheduleUpdatedAt`
+ * when one of these moves, and the daily-handoff import, which carries the
+ * tuple to the other computer on the strength of that stamp. If the two lists
+ * ever drift apart, a field silently stops travelling and nothing says so.
+ */
+const SCHEDULE_EDIT_FIELDS = ['title', 'dueDate', 'type', 'note'];
+
 // Version stamped into every progress export (exportProgressData) and checked
 // on import (importProgressData). Bump only when the payload changes in a way
 // an older app could not merge safely; older backups (including files with no
@@ -4049,6 +4061,19 @@ const seedRows = khanFirstSeedRows().map((r) => ({ ...r, completed: false, grade
       for (const [quarter, slots] of Object.entries(byQuarter)) {
         for (const slot of slots) {
           if (existingAssignmentSlotIds.has(slot.slotId)) continue;
+          /**
+           * A RETIRED slot must never be re-seeded.
+           *
+           * The cleanup three hundred lines above deletes the rows for the
+           * retired slots. This loop then found those slotIds missing and
+           * built them again -- so every single app load deleted three rows
+           * and created three replacements, and the next load deleted those.
+           * A dropped assignment came back on his board on every boot, the id
+           * counter climbed three per load, and the parent's export showed a
+           * row for a slot she had dropped on Sept 5 that had been created
+           * five seconds before she pressed Export.
+           */
+          if (retiredSlots.has(slot.slotId)) continue;
           missingAssignmentSeeds.push({
             subject,
             slotId: slot.slotId,
@@ -4056,7 +4081,19 @@ const seedRows = khanFirstSeedRows().map((r) => ({ ...r, completed: false, grade
             type: slot.type,
             title: slot.title ?? null,
             note: slot.note,
-            dueDate: null,
+            /**
+             * Born with its due date, not null.
+             *
+             * The backfill that fills an empty dueDate from the seed runs
+             * ABOVE this block and reads rows that already exist, so a row
+             * created here missed it and spent a whole hydrate cycle with no
+             * date -- undated on his board, and sorted wrong everywhere that
+             * orders by due date. Setting it at birth is the same value the
+             * backfill would have written on the next load; a date she
+             * changes later is still hers, because the backfill only ever
+             * fills an EMPTY one.
+             */
+            dueDate: slot.dueDate ?? null,
             status: slot.title ? 'not-started' : 'placeholder',
             rejectedRecommendationIds: [],
             format: slot.format ?? null,
@@ -4229,12 +4266,117 @@ const seedRows = khanFirstSeedRows().map((r) => ({ ...r, completed: false, grade
       ];
     }
 
-    // Clean up duplicates the StrictMode race created before the guard
-    // above existed. Keyed by slotId, keeping whichever copy carries real
-    // work — a title, progress, or milestones — over an untouched one, so
-    // cleaning up can never cost the parent something she entered.
-    // Custom rows (slotId null) are never touched; they're hers.
-    function dedupeBySlot(rows, hasRealWork) {
+    /**
+     * =====================================================================
+     * DE-DUPLICATION MUST NOT COST ANYBODY THEIR WORK. (Rewritten Sept 28, 2026.)
+     * =====================================================================
+     *
+     * THE BUG THIS FIXES. The parent: **"I have graded and the app removed the
+     * grades, also, he had due dates changed because work was due too close
+     * together and now all those have reverted back."**
+     *
+     * Both halves were this function. Duplicates keyed by slotId were resolved
+     * with `group.find(hasRealWork)`, and the test for an assignment was
+     * `Boolean(a.title) || a.status !== 'placeholder' || a.milestones?.length`.
+     *
+     * EVERY SEEDED ASSIGNMENT HAS A TITLE. So every copy passed the test, and
+     * `find` returned whichever happened to sit first in the array — insertion
+     * order, effectively arbitrary. The other copies were DELETED outright.
+     *
+     * When a fresh seed copy sorted ahead of her real one, the row carrying her
+     * grade and her rescheduled due date was permanently removed, and the seed
+     * copy that replaced it showed the original date and no grade. That is
+     * exactly what she saw: grades gone, dates reverted. Silently, on hydrate,
+     * with nothing written down anywhere.
+     *
+     * The old test also named nothing she does. A grade, a feedback note, a
+     * due date she moved, a rubric score — none of them counted as "real work".
+     *
+     * ---- WHAT IT DOES NOW ----
+     *
+     * 1. SCORES every copy by how much real work it carries, from both of them:
+     *    her grading and scheduling, his progress and writing.
+     * 2. Keeps the richest, tie-broken by lowest id so it is stable.
+     * 3. MERGES the losers' work into the keeper before deleting them. Scoring
+     *    alone is not enough: if one copy holds her grade and another holds his
+     *    finished milestones, keeping either still loses something. Nothing is
+     *    deleted until the thing it carried is somewhere else.
+     *
+     * Custom rows (slotId null) are never touched; they are hers.
+     */
+
+    /** Fields that hold real work, in the order a merge should prefer them. */
+    const WORK_FIELDS = [
+      'grade', 'gradedAt', 'feedback', 'rubricScores',
+      'completedAt', 'startedAt',
+      'notesText', 'notesTextWords', 'draftText', 'draftTextWords',
+      'finalText', 'finalTextWords',
+      'photoUrl', 'photoUpdatedAt', 'reflection', 'reflectionAt',
+      'unitsDone'
+    ];
+
+    const hasValue = (v) =>
+      v !== undefined && v !== null && v !== '' && !(Array.isArray(v) && v.length === 0);
+
+    /**
+     * How much of somebody's work is on this row.
+     *
+     * A grade is weighted highest because it is the scarcest: he can redo a
+     * lesson, she cannot recover a mark she entered weeks ago from memory.
+     */
+    function workScore(row, seedDueDate) {
+      let n = 0;
+      if (hasValue(row.grade)) n += 100;
+      if (hasValue(row.gradedAt)) n += 20;
+      if (hasValue(row.feedback)) n += 20;
+      if (hasValue(row.rubricScores)) n += 20;
+      if (hasValue(row.completedAt)) n += 15;
+      if (hasValue(row.startedAt)) n += 10;
+      // A due date that is not the one we shipped is one she chose.
+      /**
+       * A date she MOVED, which means a date LATER than the shipped one.
+       *
+       * This was `!== seedDueDate` for one day and it was wrong in the exact
+       * case it was written for. Every date this parent has ever changed, she
+       * moved LATER — twice for the same reason, in her own words: "work was
+       * due too close together", and "there were projects due before he was
+       * given the assignments. The projects were moved to where he was
+       * learning about that particular subject."
+       *
+       * A date EARLIER than the seed is not hers. It is a row that predates a
+       * correction — the Aug 10 audit found every maths project for the year
+       * carrying a Q1 date — and `!==` scored those stale rows fifty points
+       * ABOVE the corrected copy, so the deduper would have kept the wrong one
+       * and put the too-early date back on his board. That is the bug she
+       * reported, rebuilt inside the fix for it.
+       */
+      if (hasValue(row.dueDate) && seedDueDate && row.dueDate > seedDueDate) n += 50;
+      /**
+       * A stamped row is not a guess. `scheduleUpdatedAt` is written only when
+       * a person moved something on the scheduling dialog, so unlike the date
+       * heuristic above it needs no comparison against the seed to be trusted:
+       * the stamp IS the evidence. It outranks the heuristic and everything
+       * below it, and stays under a grade, which remains the one thing that
+       * cannot be recovered from memory.
+       *
+       * It requires a TITLE. Clearing the title is how a slot is retired back
+       * to a placeholder, and that clearing stamps the row like any other
+       * edit. Without this clause an emptied placeholder scored 110 against a
+       * graded row's 101, became the keeper, and the grade was deleted --
+       * caught only by mutation-testing the rescue rule underneath it.
+       */
+      if (hasValue(row.scheduleUpdatedAt) && hasValue(row.title)) n += 60;
+      if (row.status && row.status !== 'placeholder' && row.status !== 'not-started') n += 10;
+      n += (row.milestones || []).filter((m) => m.completedAt).length * 8;
+      for (const f of ['notesText', 'draftText', 'finalText', 'photoUrl', 'reflection']) {
+        if (hasValue(row[f])) n += 8;
+      }
+      if ((row.milestones || []).length) n += 1;
+      if (hasValue(row.title)) n += 1;
+      return n;
+    }
+
+    function dedupeBySlot(rows, scoreOf) {
       const groups = {};
       for (const row of rows) {
         if (!row.slotId) continue;
@@ -4242,32 +4384,93 @@ const seedRows = khanFirstSeedRows().map((r) => ({ ...r, completed: false, grade
       }
       const idsToDelete = [];
       const superseded = new Set();
+      const rescued = [];
       for (const group of Object.values(groups)) {
         if (group.length === 1) continue;
-        const keeper =
-          group.find(hasRealWork) || [...group].sort((a, b) => (a.id ?? 0) - (b.id ?? 0))[0];
-        for (const row of group) {
-          if (row.id !== keeper.id) {
-            idsToDelete.push(row.id);
-            superseded.add(row.id);
+        const ranked = [...group].sort(
+          (a, b) => scoreOf(b) - scoreOf(a) || (a.id ?? 0) - (b.id ?? 0)
+        );
+        const keeper = ranked[0];
+        /**
+         * Carry anything the losers hold that the keeper does not. Only ever
+         * FILLS A GAP — a value already on the keeper is never overwritten,
+         * because the keeper won on score and its own record is the better one.
+         */
+        const patch = {};
+        for (const loser of ranked.slice(1)) {
+          for (const field of WORK_FIELDS) {
+            if (!hasValue(loser[field])) continue;
+            if (hasValue(keeper[field]) || hasValue(patch[field])) continue;
+            patch[field] = loser[field];
           }
+          const keeperTicks = (keeper.milestones || []).filter((m) => m.completedAt).length;
+          const loserTicks = (loser.milestones || []).filter((m) => m.completedAt).length;
+          if (loserTicks > keeperTicks && !patch.milestones) patch.milestones = loser.milestones;
+          /**
+           * The schedule tuple is rescued on its own rule, NOT the fill-a-gap
+           * rule above -- because a reschedule is not a gap. The keeper HAS a
+           * due date; it is simply the older one.
+           *
+           * Without this, a copy holding a grade (100) always beat a copy
+           * holding her new date (60), the gap rule found the keeper's dueDate
+           * already filled, and her date went quietly back to the shipped one
+           * -- the reported bug, surviving inside its own fix a second time.
+           *
+           * Same rule as the import: the newest deliberate edit wins, whole,
+           * and only from a loser that still has a title on it.
+           */
+          const loserStamp = loser.scheduleUpdatedAt || '';
+          const bestStamp = patch.scheduleUpdatedAt || keeper.scheduleUpdatedAt || '';
+          if (loserStamp > bestStamp && hasValue(loser.title)) {
+            patch.scheduleUpdatedAt = loserStamp;
+            for (const field of SCHEDULE_EDIT_FIELDS) patch[field] = loser[field];
+          }
+          idsToDelete.push(loser.id);
+          superseded.add(loser.id);
         }
+        if (Object.keys(patch).length > 0) rescued.push({ id: keeper.id, patch });
       }
-      return { idsToDelete, superseded };
+      return { idsToDelete, superseded, rescued };
     }
 
-    const bookDupes = dedupeBySlot(academicBooks, (b) => Boolean(b.title));
+    /**
+     * The seed's own due date per slot, so a date she changed can be told apart
+     * from the one we shipped. Without it a rescheduled assignment looks
+     * identical to an untouched one and the copy carrying her change can lose.
+     */
+    const seededDueDate = {};
+    for (const byQuarter of Object.values(quarterlyAcademicPlaceholders || {})) {
+      for (const slots of Object.values(byQuarter || {})) {
+        for (const slot of slots || []) {
+          if (slot?.slotId && slot.dueDate) seededDueDate[slot.slotId] = slot.dueDate;
+        }
+      }
+    }
+
+    const bookDupes = dedupeBySlot(academicBooks, (b) => workScore(b, null));
     if (bookDupes.idsToDelete.length > 0) {
-      academicBooks = academicBooks.filter((b) => !bookDupes.superseded.has(b.id));
-      await Promise.all(bookDupes.idsToDelete.map((id) => deleteAcademicBookRecord(id)));
+      const byId = new Map(bookDupes.rescued.map((r) => [r.id, r.patch]));
+      academicBooks = academicBooks
+        .filter((b) => !bookDupes.superseded.has(b.id))
+        .map((b) => (byId.has(b.id) ? { ...b, ...byId.get(b.id) } : b));
+      await Promise.all([
+        ...bookDupes.rescued.map((r) => updateAcademicBookRecord(r.id, r.patch)),
+        ...bookDupes.idsToDelete.map((id) => deleteAcademicBookRecord(id))
+      ]);
     }
 
     const assignmentDupes = dedupeBySlot(
       academicAssignments,
-      (a) => Boolean(a.title) || a.status !== 'placeholder' || a.milestones?.length
+      (a) => workScore(a, seededDueDate[a.slotId] || null)
     );
     if (assignmentDupes.idsToDelete.length > 0) {
-      academicAssignments = academicAssignments.filter((a) => !assignmentDupes.superseded.has(a.id));
+      const byId = new Map(assignmentDupes.rescued.map((r) => [r.id, r.patch]));
+      academicAssignments = academicAssignments
+        .filter((a) => !assignmentDupes.superseded.has(a.id))
+        .map((a) => (byId.has(a.id) ? { ...a, ...byId.get(a.id) } : a));
+      // The rescue is written BEFORE the delete, so a failure between the two
+      // leaves a harmless duplicate rather than a grade that existed nowhere.
+      await Promise.all(assignmentDupes.rescued.map((r) => updateAcademicAssignmentRecord(r.id, r.patch)));
       await Promise.all(assignmentDupes.idsToDelete.map((id) => deleteAcademicAssignmentRecord(id)));
     }
 
@@ -7330,6 +7533,69 @@ const seedRows = khanFirstSeedRows().map((r) => ({ ...r, completed: false, grade
     }
 
     /**
+     * ======================================================================
+     * WHAT THE ASSIGNMENT *IS* NOW TRAVELS -- BUT ONLY A DELIBERATE EDIT.
+     * (Sep 29, 2026.)
+     * ======================================================================
+     *
+     * The split above calls title / note / dueDate / type HERS and then moved
+     * none of them. So a date she changed on her computer never reached his.
+     * He kept working to the shipped dates, projects stayed due before the
+     * lessons that teach them, and every time she re-spaced a week it had to
+     * be re-spaced again on the other machine by hand -- or not at all.
+     *
+     * Carrying them unconditionally is what the Aug 11 split correctly
+     * refused: his build is often days old, and his stale copy of a row would
+     * hand back the date she had just corrected.
+     *
+     * `scheduleUpdatedAt` is the thing that tells those two apart. It is
+     * written in exactly one place -- scheduleAcademicAssignment, and only
+     * when a value actually moved -- so its presence is proof that a person
+     * changed this row on purpose. The rule:
+     *
+     *   incoming has no stamp            -> nothing crosses. A stale build
+     *                                       can never win, because a row
+     *                                       carrying only the shipped date
+     *                                       has nothing to win with.
+     *   incoming stamp <= local stamp    -> nothing crosses.
+     *   incoming stamp strictly newer    -> the whole tuple crosses together.
+     *
+     * The tuple moves as a unit on purpose. Retitling an assignment and
+     * re-dating it is ONE decision; splitting it across two machines would
+     * build a row that never existed on either.
+     *
+     * A BLANK TITLE DOES NOT TRAVEL. Clearing the title is how she retires a
+     * slot back to a placeholder, and that also clears startedAt/completedAt
+     * on her machine -- but status is his and does not cross, so sending the
+     * blank alone would leave his copy marked complete with no title on it.
+     * Retiring a slot stays a local act. That is a real limit and it is
+     * written here rather than discovered later.
+     *
+     * This is the only place in this whole import where a value is REPLACED
+     * rather than only added to, so it is fenced to four fields that describe
+     * the task. No status, no milestone, no writing, no grade, no timestamp
+     * of his is reachable from here.
+     *
+     * EXPORT_VERSION is deliberately NOT bumped. An older app ignores an
+     * unknown field and merges exactly as it did before -- it simply does not
+     * carry schedule edits -- which is safe, and which is the bar that
+     * constant sets. Bumping would make her files unreadable on his computer
+     * until the folder is copied across, which is precisely the situation
+     * this change exists to survive.
+     */
+    function scheduleChanges(local, incoming) {
+      const stamp = incoming?.scheduleUpdatedAt;
+      if (typeof stamp !== 'string' || !stamp) return null;
+      if (stamp <= (local?.scheduleUpdatedAt || '')) return null;
+      if (!hasText(incoming?.title)) return null;
+      const changes = { scheduleUpdatedAt: stamp };
+      for (const field of SCHEDULE_EDIT_FIELDS) {
+        if (incoming[field] !== undefined) changes[field] = incoming[field];
+      }
+      return changes;
+    }
+
+    /**
      * ==================================================================
      * "ADD YOUR OWN" NEVER REACHED THE OTHER COMPUTER. (Aug 23, 2026.)
      * ==================================================================
@@ -7397,6 +7663,11 @@ const seedRows = khanFirstSeedRows().map((r) => ({ ...r, completed: false, grade
         if (reflected) Object.assign(changes, reflected);
         const photo = photoChanges(local, incoming);
         if (photo) Object.assign(changes, photo);
+        // What the assignment IS crosses only on a deliberate, strictly newer
+        // edit -- see scheduleChanges. Books carry no stamp, so for the book
+        // merge this is always a no-op.
+        const scheduled = scheduleChanges(local, incoming);
+        if (scheduled) Object.assign(changes, scheduled);
         // A grade travels on its own terms, exactly as it does everywhere else
         // in this import — a grade beats no grade, later gradedAt wins.
         if (incomingGradeWins(local, incoming)) {
@@ -10498,6 +10769,39 @@ const seedRows = khanFirstSeedRows().map((r) => ({ ...r, completed: false, grade
       type: type === undefined ? existing.type : type,
       note: note === undefined ? existing.note : note
     };
+
+    /**
+     * ====================================================================
+     * A DATE SHE MOVES MUST REACH HIS COMPUTER. (Sep 29, 2026.)
+     * ====================================================================
+     *
+     * The parent: **"he had due dates changed because work was due too close
+     * together and now all those have reverted back"**, and separately,
+     * **"there were projects due before he was given the assignments. The
+     * projects were moved to where he was learning about that particular
+     * subject."**
+     *
+     * The daily-handoff import declares title, note, dueDate and type HERS
+     * (see the field split above mergeBySlot) and then carries none of them,
+     * for a reason that was right on Aug 11 and is still right: his machine
+     * runs an older build for days at a time, and a stale copy handing back
+     * an old date would wipe a correction she had only just made. A
+     * direction-blind merge cannot tell a correction from a leftover.
+     *
+     * A TIMESTAMP CAN. This stamp is written in exactly one place -- here,
+     * where a person deliberately reschedules a slot -- and never by hydrate,
+     * never by ASSIGNMENT_CORRECTIONS, never by the seeder. So a row that
+     * merely carries the shipped date has no stamp at all and can never
+     * outrank one that does, however old the build that sent it. Only a later
+     * deliberate edit beats an earlier deliberate edit.
+     *
+     * It is set only when a value actually MOVED. Re-opening the dialog and
+     * saving it unchanged must not lift this row above the other machine's
+     * real edit.
+     */
+    if (SCHEDULE_EDIT_FIELDS.some((field) => changes[field] !== existing[field])) {
+      changes.scheduleUpdatedAt = new Date().toISOString();
+    }
 
     if (!nextTitle) {
       changes.status = 'placeholder';
