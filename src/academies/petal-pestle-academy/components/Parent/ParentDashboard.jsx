@@ -1710,7 +1710,7 @@ function ImportPanel() {
            somebody made once and never says what the screen is FOR. Rewritten
            to answer the three questions in order: what the file is, where it
            comes from, and what happens after. ---- */}
-      <h2 className="font-display text-lg text-ink-900">Bring her work onto this computer</h2>
+      <h2 className="font-display text-lg text-ink-900">Bring her daily work onto this computer</h2>
       <p className="mt-2 text-sm text-ink-700">
         <span className="font-700">Her app keeps everything on HER laptop.</span> This screen copies
         it onto yours, so you can see what she has done without standing over her shoulder.
@@ -1718,9 +1718,10 @@ function ImportPanel() {
 
       <ol className="mt-3 space-y-2 text-sm text-ink-700">
         <li>
-          <span className="font-700">1 · On her laptop</span> — Grown-Up Corner → Settings →{' '}
-          <span className="font-700">Export / download backup</span>. That saves one file into her
-          Downloads folder. Its name ends in <span className="font-mono text-xs">.json</span>.
+          <span className="font-700">1 · On her laptop</span> — at the end of her day, on her Today
+          screen, she taps <span className="font-700">Send my work to Gigi</span>. That saves one file
+          into her Downloads folder, named like{' '}
+          <span className="font-mono text-xs">azianna-work-2026-09-29.json</span>.
         </li>
         <li>
           <span className="font-700">2 · Get that one file over here</span> — email it to yourself,
@@ -1762,9 +1763,10 @@ function ImportPanel() {
           file somebody carries across.
         </p>
         <p className="mt-2 text-xs text-ink-700">
-          <span className="font-700">To send her a note:</span> write it in Notes, then{' '}
-          <span className="font-700">Export / download backup</span> on this computer, put that
-          file on her laptop, and load it there. It will show up on her Home screen.
+          <span className="font-700">To send her notes and grades:</span> enter them here, then{' '}
+          <span className="font-700">Settings → Export / download backup</span> on this computer, and
+          put that file on her laptop. On her Today screen she taps{' '}
+          <span className="font-700">Load what Gigi sent</span>. Notes show up on her Home screen.
         </p>
       </div>
 
@@ -1842,7 +1844,8 @@ function ImportPanel() {
             {preview.learnerName ? `This file is ${preview.learnerName}'s.` : 'Ready to load.'}
           </p>
           <p className="mt-1 text-xs text-ink-500">
-            Nothing here is deleted or overwritten — this adds what is missing.
+            Nothing here is deleted. New work is added, and a record she has moved on since (a
+            review question, a draft, a lesson read again) is updated to the newer one.
           </p>
 
           {verdict && verdict.headline && (
@@ -2195,7 +2198,13 @@ export function ParentDashboard({ onExit }) {
 
         {/* LearningOS (Sept 23, 2026): this school's add-only loader replaces the
             standalone app's merge — see screens/GrownUpCorner/GrownUpCorner.jsx. */}
-        {tab === 'import' && <BackupPanel />}
+        {/* Sept 29 2026: the daily trade (merges edits) first, then the one-time backup tools. */}
+        {tab === 'import' && (
+          <div className="space-y-5">
+            <ImportPanel />
+            <BackupPanel />
+          </div>
+        )}
         {tab === 'remeasure' && <RemeasurePanel />}
         {tab === 'goals' && <GoalsPanel />}
         {tab === 'hours' && <HoursPanel />}
@@ -2262,7 +2271,7 @@ export function ParentDashboard({ onExit }) {
               </button>
               <p className="mt-2 text-xs text-ink-500">
                 Going the other way — loading a file that came off her laptop — is{' '}
-                <span className="font-700">Bring her work onto this computer</span>, on the Load tab.
+                <span className="font-700">Bring her daily work onto this computer</span>, on the Load tab.
               </p>
             </div>
 

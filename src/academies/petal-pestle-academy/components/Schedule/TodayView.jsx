@@ -28,6 +28,7 @@ import { sayOncePerDay, saidOnRecord } from '../../lib/marigoldVoice.js';
 import { marigoldCallsHer } from '../../lib/marigoldName.js';
 import { readingToday, khanWatchFor, READING_MINUTES } from '../../lib/readingProgress.js';
 import { unitUrl } from '../../data/khan/khanUnits.js';
+import { SendWorkCard } from './SendWorkCard.jsx';
 
 // ---------------------------------------------------------------------------
 // TODAY — her school day, with a bell.
@@ -653,6 +654,9 @@ export function TodayView({ onNavigate }) {
         <span className="tnum">{instructionalMinutes(blocks)}</span> minutes of school today, not
         counting breaks. A grown-up can change any of it in the Grown-Up Corner.
       </p>
+
+      {/* Sept 29 2026: her half of the handoff, like Lamar's. Gigi: "so she can send me her work." */}
+      <SendWorkCard />
 
       <div className="mt-6 flex flex-wrap justify-center gap-2">
         <button
