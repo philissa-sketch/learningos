@@ -19,8 +19,12 @@
 //     built for says "no class"; a subject with nothing has no Year grade.
 //  3. ONE NUMBER — a cell is the grade of record (her latest attempt); her best
 //     is still reachable inside the quarter.
-//  4. EVERY SUBJECT — every app subject, and Reading as two rows (with
-//     read-aloud / on her own, never blended), each work landing in its quarter.
+//  4. EVERY SUBJECT — every course; Language Arts as SEPARATE rows (Writing,
+//     Spelling, Vocabulary, Grammar from Khan, Reading two ways), never one
+//     blended grade — Gigi: "I wanted to see the grades separate because I
+//     wanted to see her improvements"; every Friday test its own line.
+//  4b. PROGRESS — every row's First → latest is her first score and her
+//     newest, in the order the work happened.
 //  5. KHAN — Math and Grammar rows always there, their Year is exactly the Khan
 //     tab's average, a Course Challenge is not averaged in, and no Khan result
 //     changes any of this app's grades.
@@ -57,6 +61,7 @@ async function loadModule(rel, source) {
 
 const { allWeeks } = await import(pathToFileURL(join(ROOT, 'config/assessment.js')).href);
 const { GRADEBOOK_SUBJECTS } = await import(pathToFileURL(join(ROOT, 'lib/gradebook.js')).href);
+const COURSES = GRADEBOOK_SUBJECTS.filter((s) => s.kind === 'course');
 const { courseAverage } = await import(pathToFileURL(join(ROOT, 'lib/khanGrade.js')).href);
 
 const Q1 = '2026-09-10';
@@ -77,12 +82,19 @@ const KHAN = [
   { gradeId: 'k3', courseId: 'math2', kind: 'course-challenge', unitN: null, unit: 'Course Challenge', grade: 'F', percent: 20, at: Q3 },
   { gradeId: 'k4', courseId: 'grammar', kind: 'unit', unitN: 1, unit: 'Nouns', grade: 'A', percent: 95, at: Q1 }
 ];
+// Two Friday spelling tests in Q1 (60 then 80) and one vocabulary test (90).
+const WORDS = [
+  { id: 's1', kind: 'spelling', listId: 'word-study-q1-w1', dayKey: '2026-09-11', right: 6, total: 10, percent: 60 },
+  { id: 's2', kind: 'spelling', listId: 'word-study-q1-w2', dayKey: '2026-09-18', right: 8, total: 10, percent: 80 },
+  { id: 'v1', kind: 'vocab-test', listId: 'vocab-q1-w1', dayKey: '2026-09-18', right: 9, total: 10, percent: 90 },
+  { id: 'w1', kind: 'word-activity', dayKey: '2026-09-15', percent: 5 }
+];
 
 function run(ctx) {
   const out = [];
   const fail = (m) => out.push(m);
   const C = ctx.card;
-  const card = C.reportCard({ attempts: ATTEMPTS, khanGrades: KHAN, writingMarks: [], spellingResults: [] });
+  const card = C.reportCard({ attempts: ATTEMPTS, khanGrades: KHAN, writingMarks: [], spellingResults: WORDS });
   const rows = card.groups.flatMap((g) => g.rows);
   const row = (id) => rows.find((r) => r.id === id);
   const at = (id, q) => row(id)?.cells.find((c) => c.quarter === q);
@@ -113,7 +125,23 @@ function run(ctx) {
   if (!best) fail('her best attempt (90%) is no longer inside the quarter');
 
   // 4. EVERY SUBJECT
-  for (const s of GRADEBOOK_SUBJECTS) if (!row(s.id)) fail(`${s.label} is not on the report card`);
+  for (const s of COURSES) if (!row(s.id)) fail(`${s.label} is not on the report card`);
+  const la = card.groups.find((g) => g.id === 'language-arts');
+  const laIds = (la?.rows || []).map((r) => r.id);
+  for (const id of ['writing', 'spelling', 'vocabulary', 'khan-grammar', 'reading-lessons', 'reading-own']) if (!laIds.includes(id)) fail(`Language Arts has no separate "${id}" row`);
+  if (row('language-arts')) fail('a blended Language Arts row is back, hiding the separate parts');
+  if (at('spelling', 1)?.percent !== 70) fail(`Spelling Q1 is not the average of her two tests (70), got ${at('spelling', 1)?.percent}`);
+  if ((row('spelling')?.itemsByQuarter[1] || []).length !== 2) fail('each Friday spelling test is not its own line inside the quarter');
+  if (at('vocabulary', 1)?.percent !== 90) fail('the vocabulary test is not in Vocabulary');
+  if (row('spelling') && rows.some((r) => r.id !== 'vocabulary' && (r.itemsByQuarter?.[1] || []).some((i) => i.id === 'v1'))) fail('a vocabulary test was counted in another row');
+
+  // 4b. PROGRESS
+  const sp = row('spelling')?.progress;
+  if (!sp || sp.first !== 60 || sp.latest !== 80 || sp.direction !== 'up') fail(`Spelling does not show 60% → 80% going up (got ${JSON.stringify(sp)})`);
+  if (C.progressText(sp || null) !== '60% → 80% ↑') fail(`progress is written "${C.progressText(sp || null)}", not "60% → 80% ↑"`);
+  const mp = row('khan-math2')?.progress;
+  if (!mp || mp.first !== 84 || mp.latest !== 64 || mp.direction !== 'down') fail('Math progress counts the Course Challenge, or goes the wrong way');
+  if (row('vocabulary')?.progress !== null) fail('one score is shown as progress');
   const rl = row('reading-lessons');
   const ro = row('reading-own');
   if (!rl || !ro) fail('Reading is not two rows');
@@ -128,14 +156,15 @@ function run(ctx) {
   const math = row('khan-math2');
   const gram = row('khan-grammar');
   if (!math || !gram) fail('Math and Grammar are not on the report card');
-  if (math && math.group !== 'khan') fail('Math is not in the Khan group');
+  if (math && math.group !== 'math') fail('Math is not in the Math group');
+  if (!laIds.includes('khan-grammar')) fail('Grammar is not in Language Arts');
   if (math && math.year?.percent !== courseAverage('math2', KHAN).percent) fail(`Math's Year (${math.year?.percent}) is not the Khan tab's average (${courseAverage('math2', KHAN).percent})`);
   if (math && at('khan-math2', 3).percent !== 64) fail('the Course Challenge was averaged into Math');
   if (math && at('khan-math2', 1).percent !== 84) fail('a Q1 Khan unit is not in Q1');
   const emptyKhan = C.reportCard({ attempts: [], khanGrades: [] }).groups.flatMap((g) => g.rows);
   if (!emptyKhan.find((r) => r.id === 'khan-math2') || !emptyKhan.find((r) => r.id === 'khan-grammar')) fail('Math and Grammar vanish when nothing is entered');
-  const noKhan = C.reportCard({ attempts: ATTEMPTS, khanGrades: [] }).groups.flatMap((g) => g.rows).filter((r) => r.group === 'app');
-  const withKhan = rows.filter((r) => r.group === 'app');
+  const noKhan = C.reportCard({ attempts: ATTEMPTS, khanGrades: [], spellingResults: WORDS }).groups.flatMap((g) => g.rows).filter((r) => r.source === 'app');
+  const withKhan = rows.filter((r) => r.source === 'app');
   if (JSON.stringify(noKhan.map((r) => [r.id, r.cells, r.year])) !== JSON.stringify(withKhan.map((r) => [r.id, r.cells, r.year]))) fail('a Khan result changed one of this app’s grades');
 
   // 6. THE SCREEN
@@ -147,6 +176,8 @@ function run(ctx) {
   if ((p.match(/cellText\(/g) || []).length < 4) fail('the screen writes grades itself instead of through cellText()');
   if (/\{\s*\w+\.letter\s*\}\s*·/.test(p)) fail('the screen formats a grade by hand instead of through cellText()');
   if (!/row\.detail === 'course' \?/.test(p)) fail('subject cards no longer open into their weeks');
+  if (!/<th className="py-2">First → latest<\/th>/.test(p) || !/\{progressText\(r\.progress\)\}/.test(p)) fail('the report card has no First → latest column');
+  if (!/First → latest: \{progressText\(row\.progress\)\}/.test(p)) fail('a subject card does not show First → latest');
   return out;
 }
 
@@ -162,12 +193,20 @@ const BUGS = [
   ['two numbers in a cell', 'card', "return `${c.letter} · ${c.percent}%`;", "return `${c.letter} · ${c.percent}%${c.best ? ` best ${c.best}%` : ''} (best)`;"],
   ['best shown as the grade', 'card', 'return cell(q, s.builtQuarters.includes(q), row ? row.percent : null);', 'return cell(q, s.builtQuarters.includes(q), row ? row.percentBest : null);'],
   ['best lost from the quarter', 'card', "best: a.percentBest !== a.percent ? a.percentBest : null", 'best: null'],
-  ['Reading blended into one row', 'card', "cells: QUARTERS.map((q) => cell(q, true, byQ[q].own?.percent ?? null)),", "cells: QUARTERS.map((q) => cell(q, true, byQ[q].own?.percent ?? byQ[q].lessons?.percent ?? null)),"],
+  ['Reading blended into one row', 'card', 'return cell(q, true, (own ? s.own : s.lessons)?.percent ?? null);', 'return cell(q, true, (s.own || s.lessons)?.percent ?? null);'],
   ['Reading dropped', 'card', '...readingRows(attempts)', ''],
-  ['Khan rows dropped', 'card', "{ id: 'khan', label: 'Khan Academy · entered on the Khan tab', rows: khanRows(khanGrades) }", "{ id: 'khan', label: 'Khan Academy · entered on the Khan tab', rows: [] }"],
-  ['Khan blended into the app', 'card', 'rows: [...appRows({ attempts, writingMarks, spellingResults }), ...readingRows(attempts)]', "rows: [...appRows({ attempts, writingMarks, spellingResults: [...spellingResults, ...khanGrades.map((g) => ({ kind: 'spelling', percent: g.percent, dayKey: g.at }))] }), ...readingRows(attempts)]"],
-  ['Course Challenge averaged in', 'card', 'const units = mine.filter((g) => !isChallenge(g));', 'const units = mine;'],
-  ['Khan Year not the Khan tab’s', 'card', 'year: avg ? graded(avg.percent) : null,', 'year: graded(quarterAvg(1)),'],
+  ['Khan rows dropped', 'card', 'const khan = khanRows(khanGrades);', 'const khan = [];'],
+  ['Khan blended into the app', 'card', "spellingResults, isTest: (r) => r.kind === 'spelling' || r.kind == null,", "spellingResults: [...spellingResults, ...khanGrades.map((g) => ({ kind: 'spelling', percent: g.percent, dayKey: g.at }))], isTest: (r) => r.kind === 'spelling' || r.kind == null,"],
+  ['Course Challenge averaged in', 'card', 'percent: !isChallenge(g) && isNum(g.percent) ? g.percent : null,', 'percent: isNum(g.percent) ? g.percent : null,'],
+  ['Khan Year not the Khan tab’s', 'card', 'row.year = avg ? graded(avg.percent) : null;', 'row.year = graded(mean(mine.map((g) => g.percent).filter(isNum)));'],
+  ['Language Arts blended back', 'card', ".filter((s) => s.kind === 'course')", '.filter(() => true)'],
+  ['Friday tests collapsed to one line', 'card', 'itemsByQuarter: Object.fromEntries(QUARTERS.map((q) => [q, inOrder.filter((i) => i.quarter === q)])),', 'itemsByQuarter: Object.fromEntries(QUARTERS.map((q) => [q, inOrder.filter((i) => i.quarter === q).slice(-1)])),'],
+  ['progress backwards', 'card', 'const first = list[0];\n  const latest = list[list.length - 1];', 'const first = list[list.length - 1];\n  const latest = list[0];'],
+  ['one score shown as progress', 'card', 'if (list.length < 2) return null;', 'if (list.length < 1) return null;'],
+  ['vocabulary counted as spelling', 'card', "isTest: (r) => r.kind === 'spelling' || r.kind == null,", "isTest: (r) => r.kind !== 'word-activity',"],
+  ['Grammar pulled out of Language Arts', 'card', "group: c.subject === 'math' ? 'math' : 'language-arts',", "group: c.subject === 'math' ? 'math' : 'khan',"],
+  ['no First → latest column', 'panel', '<th className="py-2">First → latest</th>', ''],
+  ['card hides First → latest', 'panel', 'First → latest: {progressText(row.progress)}', 'Progress'],
   ['empty Khan rows hidden', 'card', "export const KHAN_ALWAYS = ['math2', 'grammar'];", 'export const KHAN_ALWAYS = [];'],
   ['quarters out of order', 'card', 'export const QUARTERS = [1, 2, 3, 4];', 'export const QUARTERS = [1, 2, 4, 3];'],
   ['opens on What is sticking', 'panel', "const [tab, setTab] = useState('grades');", "const [tab, setTab] = useState('sticking');"],
@@ -183,7 +222,7 @@ if (!SELF_TEST) {
     real.forEach((f) => console.log(`FAIL  ${f}`));
     process.exit(1);
   }
-  console.log('One report card: every subject has Quarter 1–4 and a Year, "—" never a zero, one number a cell, Reading as two rows, Math and Grammar from the Khan tab unblended.');
+  console.log('One report card: every subject has Quarter 1–4, a Year and First → latest; "—" never a zero; Language Arts as separate rows; every Friday test its own line; Khan unblended.');
   console.log('NOT TESTED HERE: how the screen looks.');
   console.log('PASS');
   process.exit(0);

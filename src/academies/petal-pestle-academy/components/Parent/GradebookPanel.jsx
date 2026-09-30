@@ -6,7 +6,7 @@ import { reviewSummary, troubleSpots, dayKeyOf, daysBetween } from '../../lib/re
 import { bankItemById, itemsForLessons } from '../../data/assessments/appBank.js'; // v3.25 — every course
 import { APP_COURSES, lessonById } from '../../data/lessons/appCourses.js'; // v3.95 — every course, at last
 import { testLoadByDay, retakeState } from '../../lib/gradebook.js';
-import { reportCard, cellText, CELL } from '../../lib/reportCard.js';
+import { reportCard, cellText, progressText, CELL } from '../../lib/reportCard.js';
 
 // ---------------------------------------------------------------------------
 // THE GRADEBOOK.
@@ -30,9 +30,12 @@ import { reportCard, cellText, CELL } from '../../lib/reportCard.js';
 //      yet" was written three different ways.
 //   3. ONE NUMBER PER CELL. The grade of record is her latest attempt. Her best
 //      is shown inside the quarter, beside the attempt it came from.
-//   4. MATH AND GRAMMAR ARE ON THE REPORT CARD, in their own Khan group, read
-//      from the Khan tab (where they are still entered). No Khan result is
-//      blended into any of this app's grades.
+//   4. THREE GROUPS: Courses, Language Arts, Math. Language Arts is SIX
+//      SEPARATE ROWS (Writing, Spelling, Vocabulary, Grammar from Khan, and
+//      Reading two ways), never one blended grade: "I wanted to see the grades
+//      separate because I wanted to see her improvements." Every row has a
+//      First → latest column for the same reason. Khan rows are read from the
+//      Khan tab, where they are still entered, and never blended into anything.
 //   5. THE TOOLS MOVED TO TABS, UNCHANGED: What is sticking, Every test (with
 //      how much was asked of her each day), Lesson checks. "What is sticking"
 //      used to be first on this screen by an earlier decision; Gigi moved it
@@ -45,6 +48,13 @@ const BAND_STYLE = {
   'got-it': 'border-sage-500 bg-sage-300/25',
   nearly: 'border-gold-500 bg-gold-300/25',
   'go-back': 'border-clay-500 bg-clay-500/10'
+};
+
+const PROGRESS_STYLE = {
+  up: 'font-700 text-sage-700',
+  down: 'font-700 text-clay-500',
+  same: 'text-ink-700',
+  none: 'text-ink-500'
 };
 
 export const GRADEBOOK_TABS = [
@@ -140,13 +150,14 @@ function GradesTab({ card, attemptsByTest }) {
                     Q{q}
                   </th>
                 ))}
-                <th className="py-2">Year</th>
+                <th className="py-2 pr-3">Year</th>
+                <th className="py-2">First → latest</th>
               </tr>
             </thead>
             {card.groups.map((g) => (
               <tbody key={g.id}>
                 <tr>
-                  <td colSpan={card.quarters.length + 2} className="pb-1 pt-3 label-caps text-ink-500">
+                  <td colSpan={card.quarters.length + 3} className="pb-1 pt-3 label-caps text-ink-500">
                     {g.label}
                   </td>
                 </tr>
@@ -162,7 +173,10 @@ function GradesTab({ card, attemptsByTest }) {
                         {cellText(c)}
                       </td>
                     ))}
-                    <td className="tnum py-2 font-700 text-ink-900">{r.year ? cellText(r.year) : '—'}</td>
+                    <td className="tnum py-2 pr-3 font-700 text-ink-900">{r.year ? cellText(r.year) : '—'}</td>
+                    <td className={`tnum whitespace-nowrap py-2 text-xs ${PROGRESS_STYLE[r.progress?.direction || 'none']}`}>
+                      {progressText(r.progress)}
+                    </td>
                   </tr>
                 ))}
               </tbody>
@@ -172,7 +186,8 @@ function GradesTab({ card, attemptsByTest }) {
         <p className="mt-3 text-[0.7rem] text-ink-500">
           <span className="font-700">—</span> not reached yet (never a zero) ·{' '}
           <span className="italic">no class</span> that course has no class that quarter · each grade is
-          her latest attempt; her best is inside the quarter below.
+          her latest attempt; her best is inside the quarter below · <span className="font-700">First → latest</span>{' '}
+          is her first score and her newest, so you can see her improve.
         </p>
       </section>
 
@@ -204,6 +219,11 @@ function SubjectCard({ row, attemptsByTest }) {
         <span className="tnum text-sm font-700 text-ink-900">{row.year ? cellText(row.year) : '—'}</span>
       </div>
       <p className="mt-1 text-xs text-ink-700">{row.counts}</p>
+      {row.progress && (
+        <p className={`tnum mt-1 text-xs ${PROGRESS_STYLE[row.progress.direction]}`}>
+          First → latest: {progressText(row.progress)} ({row.progress.count} results)
+        </p>
+      )}
 
       <div className="mt-3 space-y-1.5">
         {row.cells.map((c) => {
