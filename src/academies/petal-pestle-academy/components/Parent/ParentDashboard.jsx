@@ -20,6 +20,7 @@ import { WritingPiecesPanel } from './WritingPiecesPanel.jsx';
 import { GoalsPanel } from './GoalsPanel.jsx';
 import { JournalMarkPanel } from './JournalMarkPanel.jsx';
 import { BackupPanel } from '../../screens/GrownUpCorner/BackupPanel.jsx';
+import { GamesGuidePanel } from './GamesGuidePanel.jsx';
 import { kindMeta } from '../../data/journal/journalPrompts.js';
 import { previewImport, importBackup } from '../../db/db.js';
 import { importVerdict, whenLabel } from '../../lib/importGuard.js';
@@ -2211,6 +2212,7 @@ export function ParentDashboard({ onExit }) {
         {/* v3.78 — the document O.C.G.A. § 20-2-690(c) actually asks for. */}
         {tab === 'annual' && <AnnualReportPanel />}
         {tab === 'khan' && <KhanGradesPanel />}
+        {tab === 'games' && <GamesGuidePanel />}
         {tab === 'writingpieces' && <WritingPiecesPanel />}
         {tab === 'messages' && <MessagesPanel />}
         {tab === 'schedule' && <SchedulePanel />}

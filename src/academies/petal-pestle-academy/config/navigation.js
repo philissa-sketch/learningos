@@ -218,7 +218,11 @@ export const PARENT_NAV = [
   {
     id: 'day',
     label: 'Her day',
-    sections: [{ id: 'schedule', label: 'Her day' }]
+    sections: [
+      { id: 'schedule', label: 'Her day' },
+      // Sept 30 2026: the weekly Kahoot / Blooket / Gimkit routine. Gigi: "put it in the Grown-up corner."
+      { id: 'games', label: 'Review games' }
+    ]
   },
   {
     // Gigi's line, kept: Import · Export · Backup all under Settings.
