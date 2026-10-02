@@ -8,6 +8,30 @@ import { presentQuestion } from '../../lib/assessmentEngine.js';
 import { dayKeyOf } from '../../lib/reviewQueue.js';
 import { lessonFinishSummary } from '../../lib/lessonFinish.js';
 import { lessonById } from '../../data/lessons/appCourses.js';
+import {
+  emptyWork, recordPick, setFlag, setWarmIds, restoreCheck, restoreExtra,
+  restoreWarm, restoreApply, checkFromEvents, mergeCheck
+} from '../../lib/lessonWork.js';
+
+// HER WORK IS KEPT. Every tap goes through here to the store (and IndexedDB), and
+// the screen reads it back, so leaving a lesson and returning shows her answers.
+// Reads the live store so two quick taps never overwrite each other.
+function useLessonWork(lessonId) {
+  const work = useAppStore((s) => s.lessonWork?.[lessonId]) || EMPTY_WORK;
+  const save = useAppStore((s) => s.saveLessonWork);
+  const change = (fn) => {
+    const cur = useAppStore.getState().lessonWork?.[lessonId] || emptyWork();
+    const next = fn(cur);
+    if (next !== cur) save(lessonId, next);
+  };
+  return {
+    work,
+    pick: (bucket, key, text) => change((w) => recordPick(w, bucket, key, text)),
+    flag: (name, value) => change((w) => setFlag(w, name, value)),
+    freezeWarm: (ids) => change((w) => setWarmIds(w, ids))
+  };
+}
+const EMPTY_WORK = emptyWork();
 
 // ---------------------------------------------------------------------------
 // READING A LESSON.
@@ -235,11 +259,18 @@ export function LessonReader({ lesson, onBack, unitTitle }) {
   const alreadyRead = useAppStore((s) => !!s.lessonReads[lesson?.id]);
 
   const [speaking, setSpeaking] = useState(false);
-  const [answers, setAnswers] = useState({});
   const [finished, setFinished] = useState(false);
-  // The practice gate's extra round.
-  const [extraOpen, setExtraOpen] = useState(false);
-  const [extraAnswers, setExtraAnswers] = useState({});
+  const { work, pick, flag } = useLessonWork(lesson?.id);
+  // A lesson finished before work was kept has its Quick check answers in the
+  // record finish() wrote; they only fill gaps, saved picks win.
+  const itemEvents = useAppStore((s) => s.itemEvents);
+  const answers = useMemo(
+    () =>
+      lesson
+        ? mergeCheck(restoreCheck(lesson, work), alreadyRead ? checkFromEvents(lesson, itemEvents) : {})
+        : {},
+    [lesson, work, alreadyRead, itemEvents]
+  );
 
   // Deterministic, so a re-render never deals her a different question
   // mid-thought. Seeded on the lesson and the day.
@@ -251,13 +282,13 @@ export function LessonReader({ lesson, onBack, unitTitle }) {
       .map((q) => presentQuestion(q, `practice|${lesson.id}|${dayKeyOf()}`));
   }, [lesson]);
 
+  const extraAnswers = useMemo(() => restoreExtra(extraPool, work), [extraPool, work]);
+  const extraOpen = work.extraOpen || Object.keys(extraAnswers).length > 0;
+
   useEffect(() => {
     stopSpeaking();
     setSpeaking(false);
-    setAnswers({});
     setFinished(false);
-    setExtraOpen(false);
-    setExtraAnswers({});
   }, [lesson?.id]);
 
   useEffect(() => () => stopSpeaking(), []);
@@ -285,7 +316,7 @@ export function LessonReader({ lesson, onBack, unitTitle }) {
   async function answerExtra(qIndex, choiceIndex) {
     const q = extraPool[qIndex];
     if (extraAnswers[qIndex] !== undefined) return;
-    setExtraAnswers((a) => ({ ...a, [qIndex]: choiceIndex }));
+    pick('extra', q.id, q.choices[choiceIndex]);
     // Bank questions, so this is a real retrieval and moves the boxes — and
     // takes the question out of any test she sits later today.
     await recordReview([{ questionId: q.id, correct: choiceIndex === q.answer }], 'practice');
@@ -312,15 +343,18 @@ export function LessonReader({ lesson, onBack, unitTitle }) {
     // The Quick check is `instruction` — answered while the teaching is still
     // on screen. It counts toward mastery, but it is recognition rather than
     // retention (§3.6), and the warm-up days later is the stronger evidence.
-    await recordItemEvents(
-      (lesson.check || []).map((c, i) => ({
-        questionId: `${lesson.id}-check-${i + 1}`,
-        lessonId: lesson.id,
-        evidenceSource: 'instruction',
-        correct: answers[i] === c.answer,
-        chosen: answers[i] ?? null
-      }))
-    );
+    // Reading it AGAIN does not record the same answers a second time.
+    if (!alreadyRead) {
+      await recordItemEvents(
+        (lesson.check || []).map((c, i) => ({
+          questionId: `${lesson.id}-check-${i + 1}`,
+          lessonId: lesson.id,
+          evidenceSource: 'instruction',
+          correct: answers[i] === c.answer,
+          chosen: answers[i] ?? null
+        }))
+      );
+    }
 
     await markLessonRead(lesson.id, {
       asked: gate.asked,
@@ -490,7 +524,7 @@ export function LessonReader({ lesson, onBack, unitTitle }) {
                 )}
               </div>
 
-              {b.applyIt && <ApplyIt beat={b} />}
+              {b.applyIt && <ApplyIt beat={b} lessonId={lesson.id} />}
             </article>
           ))}
         </section>
@@ -611,7 +645,7 @@ export function LessonReader({ lesson, onBack, unitTitle }) {
                         key={choice}
                         type="button"
                         disabled={settled}
-                        onClick={() => setAnswers((a) => ({ ...a, [ci]: i }))}
+                        onClick={() => pick('check', c.prompt, choice)}
                         className={`flex w-full items-start gap-2.5 rounded-xl border-2 px-3.5 py-2.5 text-left text-sm ${cls}`}
                       >
                         <span className="mt-0.5 flex h-5 w-5 flex-none items-center justify-center rounded-full bg-cream-200 text-[0.65rem] font-700 text-ink-700">
@@ -667,7 +701,7 @@ export function LessonReader({ lesson, onBack, unitTitle }) {
               </p>
               <button
                 type="button"
-                onClick={() => setExtraOpen(true)}
+                onClick={() => flag('extraOpen', true)}
                 className="mt-3 rounded-full bg-gold-500 px-6 py-2.5 font-700 text-ink-900 hover:bg-gold-700"
               >
                 Give me the extra practice
@@ -844,10 +878,17 @@ function PracticeRow({ p }) {
 //    wrong idea left standing here is a wrong idea carried into the lesson.
 // ---------------------------------------------------------------------------
 function RetrieveBeat({ lessonId }) {
-  const ids = useAppStore((s) => s.lessonRetrieveFor(lessonId));
+  const liveIds = useAppStore((s) => s.lessonRetrieveFor(lessonId));
   const recordReview = useAppStore((s) => s.recordReview);
-  const [picked, setPicked] = useState({});
-  const [done, setDone] = useState(false);
+  const { work, pick, flag, freezeWarm } = useLessonWork(lessonId);
+  // The questions she was dealt are kept, because the live pool shrinks the
+  // moment she answers (today's answered ones are taken out of it).
+  const ids = work.warmIds || liveIds;
+  const done = work.warmDone;
+  useEffect(() => {
+    if (!work.warmIds && liveIds.length) freezeWarm(liveIds);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [liveIds.join('|'), !!work.warmIds]);
 
   // ---- EVERY QUESTION CARRIES THE LESSON IT CAME FROM. ----
   //
@@ -877,9 +918,11 @@ function RetrieveBeat({ lessonId }) {
   // every course, and any morning the pool is thin.
   if (questions.length === 0) return null;
 
+  const picked = restoreWarm(questions, work);
+
   function choose(q, i) {
     if (picked[q.id] !== undefined) return;
-    setPicked((p) => ({ ...p, [q.id]: i }));
+    pick('warm', q.id, q.choices[i]);
   }
 
   const answered = questions.filter((q) => picked[q.id] !== undefined).length;
@@ -891,7 +934,7 @@ function RetrieveBeat({ lessonId }) {
 
   async function finishRetrieve() {
     if (done) return;
-    setDone(true);
+    flag('warmDone', true);
     await recordReview(
       questions.map((q) => ({ questionId: q.id, correct: picked[q.id] === q.answer })),
       'review'
@@ -989,9 +1032,10 @@ function RetrieveBeat({ lessonId }) {
   );
 }
 
-function ApplyIt({ beat }) {
-  const [picked, setPicked] = useState(null);
+function ApplyIt({ beat, lessonId }) {
+  const { work, pick } = useLessonWork(lessonId);
   const q = beat.applyIt;
+  const picked = restoreApply(q, work);
   const right = picked !== null && picked === q.answer;
 
   return (
@@ -1008,7 +1052,7 @@ function ApplyIt({ beat }) {
               key={c}
               type="button"
               disabled={reveal}
-              onClick={() => setPicked(i)}
+              onClick={() => pick('apply', q.prompt, q.choices[i])}
               className={`flex w-full items-start gap-2.5 rounded-petal border-2 px-3.5 py-2.5 text-left text-[0.9rem] ${
                 reveal && i === q.answer
                   ? 'border-sage-500 bg-sage-300/25 text-ink-900'

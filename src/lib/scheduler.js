@@ -176,7 +176,10 @@ export function buildCalendarItems({ assignments = [], academicAssignments = [],
       typeLabel: a.assignmentType || 'Assignment',
       dueDate: a.dueDate,
       done: Boolean(a.completed),
-      source: 'planner'
+      source: 'planner',
+      // What the row names, so a row can open it. A bare key cannot say which
+      // table an id belongs to; `source` + `recordId` can.
+      recordId: a.id
     }));
 
   for (const a of academicAssignments) {
@@ -189,6 +192,7 @@ export function buildCalendarItems({ assignments = [], academicAssignments = [],
       dueDate: a.dueDate,
       done: a.status === 'completed',
       source: 'academic',
+      recordId: a.id,
       /**
        * WHEN IT HAS TO BE UNDERWAY, not just when it is due. (Aug 14, 2026.)
        *
@@ -233,7 +237,8 @@ export function buildCalendarItems({ assignments = [], academicAssignments = [],
       typeLabel: 'Field Trip',
       dueDate: t.date,
       done: t.status === 'completed',
-      source: 'fieldTrip'
+      source: 'fieldTrip',
+      recordId: t.id
     });
   }
 

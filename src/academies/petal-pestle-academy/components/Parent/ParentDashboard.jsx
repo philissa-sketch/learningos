@@ -94,7 +94,8 @@ const PREVIEW_LABELS = {
   requests: 'Seed requests',
   itemEvents: 'Answers she gave',
   baselines: 'Starting points',
-  journalMarks: 'Journal marks'
+  journalMarks: 'Journal marks',
+  gameEntries: 'Game codes'
 };
 
 

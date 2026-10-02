@@ -8,8 +8,11 @@
 //
 // The routine itself (decided Sept 30): games follow her progress, one site a
 // day, files made by Claude each week from her backup. See the project doc
-// her-weekly-review-games.md. This screen only explains it; it stores nothing.
+// her-weekly-review-games.md. This screen explains it; the one thing it holds
+// is Today's game code (Oct 1 2026), kept by TodaysGamePanel at the top.
 // ---------------------------------------------------------------------------
+
+import { TodaysGamePanel } from './TodaysGamePanel.jsx';
 
 export const GAME_WEEK = [
   { day: 'Monday', site: 'Kahoot', game: 'Today’s game', holds: 'Her next lesson in each class that meets today, plus Math and Grammar unit questions.' },
@@ -30,6 +33,8 @@ const card = 'panel px-5 py-5';
 export function GamesGuidePanel() {
   return (
     <div className="space-y-5">
+      <TodaysGamePanel />
+
       <section className={card}>
         <div className="flex flex-wrap items-start justify-between gap-3">
           <div>

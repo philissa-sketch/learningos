@@ -256,6 +256,29 @@ console.log('\n--- the row she grades from opens the work she is grading ---');
     /assignment\.notesText/.test(picker));
 }
 
+console.log('\n--- Parent Dashboard rows open the work they name (Oct 2 2026, fifth report) ---');
+{
+  const pd = read('src/components/Dashboard/ParentDashboard.jsx');
+  const sched = read('src/lib/scheduler.js');
+  ok('calendar items carry the id of the record they name (academic, planner, field trip)',
+    (sched.match(/recordId: [aat]\.id/g) || []).length === 3,
+    'a row with no id has nothing to open — the cause of the Sep 8 report');
+  ok('Coming Up is handed the Academic Center opener',
+    /<ComingUpSection[\s\S]{0,80}?onOpenAcademicCenter=\{onOpenAcademicCenter\}/.test(pd));
+  ok('an academic row opens its own assignment as kind "grade"',
+    /item\.source === 'academic'[\s\S]{0,160}?onOpenAcademicCenter\(\{ kind: 'grade', id: item\.recordId \}\)/.test(pd));
+  ok('planner, field-trip and mission rows open their own sections',
+    /onGoTo\('planner'\)/.test(pd) && /onGoTo\('field-trips'\)/.test(pd) && /onGoTo\('mission-evaluations'\)/.test(pd));
+  ok('both Coming Up row lists (overdue and upcoming) pass the opener',
+    (pd.match(/<ComingUpRow [^>]*onOpen=\{openerFor\(item\)\}/g) || []).length === 2,
+    'fixing one list and not the other is how this rule has been reported five times');
+  ok('the row renders a button only when it has somewhere to go',
+    /\{onOpen && \(\s*<button[\s\S]{0,200}?onClick=\{onOpen\}/.test(pd));
+  ok('Academic Success Center completed rows open the assignment',
+    /<AcademicSuccessCenterSection onOpenAcademicCenter=\{onOpenAcademicCenter\} \/>/.test(pd)
+      && /onOpenAcademicCenter\(\{ kind: 'grade', id: row\.id \}\)/.test(pd));
+}
+
 console.log(`\n${passed} passed, ${failures.length} failed`);
 if (failures.length) {
   console.log(`\n${failures.length} CHECK(S) FAILED`);

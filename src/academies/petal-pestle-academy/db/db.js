@@ -15,6 +15,7 @@
 // ---------------------------------------------------------------------------
 
 import Dexie from 'dexie';
+import { mergeGameEntries, countNewEntries } from '../data/games/gameCodes.js';
 import {
   answerKey,
   sittingKey,
@@ -483,6 +484,8 @@ export async function previewImport(data) {
   const haveDrafts = new Map(writingDrafts.map((w) => [w.slotId, w]));
   const haveSpelling = new Set(spellingResults.map((r) => r.resultId));
   const localStrands = new Map(strandStates.map((s) => [s.strandId, s]));
+  const localGameEntries = (await db.meta.get('gameEntries'))?.value || {};
+  const incomingGameEntries = (data.meta || []).find((m) => m.key === 'gameEntries')?.value || {};
 
   const inAnswers = data.answers || [];
   const inStrands = data.strandStates || [];
@@ -545,6 +548,13 @@ export async function previewImport(data) {
       new: (data.lessonReads || []).filter((l) => !haveLessons.has(l.lessonId)).length
     },
     reviewItems: { incoming: (data.reviewItems || []).length },
+
+    // Today's game code or link. Counted, so a file whose only news is a code
+    // is not refused as "adds nothing".
+    gameEntries: {
+      incoming: Object.keys(incomingGameEntries).length,
+      new: countNewEntries(localGameEntries, incomingGameEntries)
+    },
 
     // ---- FOUR TABLES THE PREVIEW NEVER MENTIONED ----
     //
@@ -806,6 +816,15 @@ export async function importBackup(data) {
         const local = (await db.meta.get(key))?.value;
         if (local == null) await db.meta.put({ key, value: metaIn.get(key) });
       }
+
+      // ---- today's game code or link (Oct 1 2026) ----
+      // Per site, the entry made LATER wins, and an entry that fails the same
+      // test as one typed by hand (its own site's host, https, a real day) is
+      // dropped. See data/games/gameCodes.js.
+      if (metaIn.has('gameEntries')) {
+        const local = (await db.meta.get('gameEntries'))?.value || {};
+        await db.meta.put({ key: 'gameEntries', value: mergeGameEntries(local, metaIn.get('gameEntries')) });
+      }
     }
   );
 
@@ -841,7 +860,7 @@ export async function exportAll() {
       db.spellingResults.toArray()
     ]);
   // The passcode is a household convenience, not a secret worth exporting.
-  const safeMeta = meta.filter((m) => m.key !== 'parentPasscode');
+  const safeMeta = meta.filter((m) => m.key !== 'parentPasscode' && m.key !== 'lessonWork');
   return {
     app: 'Petal & Pestle Academy',
     // An export that calls itself v6 while carrying v7 data is a file that

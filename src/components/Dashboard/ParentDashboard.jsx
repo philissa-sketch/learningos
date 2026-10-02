@@ -992,7 +992,16 @@ export function ParentDashboard({ onSignOut, onOpenAcademicCenter = null }) {
       )}
       {section === 'attendance' && <AttendanceSection />}
       {section === 'parent-time' && <ParentTimeSection />}
-      {section === 'coming-up' && <ComingUpSection />}
+      {section === 'coming-up' && (
+        <ComingUpSection
+          onOpenAcademicCenter={onOpenAcademicCenter}
+          onGoTo={(target) => {
+            setSection(target);
+            const group = SECTION_GROUPS.find((g) => g.sections.some((x) => x.id === target));
+            if (group) setOpenGroup(group.id);
+          }}
+        />
+      )}
       {section === 'gradebook' && <GradebookSection />}
       {section === 'khan-academy' && (
         <>
@@ -1026,7 +1035,7 @@ export function ParentDashboard({ onSignOut, onOpenAcademicCenter = null }) {
       {section === 'readiness' && <ReadinessManagerSection />}
       {section === 'field-trips' && <FieldTripsSection />}
       {section === 'writing-journal' && <WritingJournalReviewSection />}
-      {section === 'academic-success-center' && <AcademicSuccessCenterSection />}
+      {section === 'academic-success-center' && <AcademicSuccessCenterSection onOpenAcademicCenter={onOpenAcademicCenter} />}
       {section === 'pe-fitness-nutrition' && <PEFitnessNutritionSection />}
       {section === 'mission-comms' && <MissionCommsParentSection />}
       {section === 'weekly-report' && <WeeklyReportSection />}
@@ -1082,7 +1091,7 @@ const COMING_UP_DAYS = 14;
  * Deliberately excludes completed work and untitled placeholder slots —
  * this answers "what needs attention," not "what exists."
  */
-function ComingUpSection() {
+function ComingUpSection({ onOpenAcademicCenter = null, onGoTo = null }) {
   const assignments = useAppStore((s) => s.assignments);
   const academicAssignments = useAppStore((s) => s.academicAssignments);
   /**
@@ -1109,6 +1118,33 @@ function ComingUpSection() {
 
   const today = todayDateStr();
   const through = toDateStr(addDays(parseDateStr(today), COMING_UP_DAYS));
+
+  /**
+   * A ROW THAT NAMES A THING MUST OPEN THAT THING — fifth report. (Oct 2, 2026.)
+   *
+   * The parent: "in the Parent Dashboard nothing in there is linked to the
+   * assignments." Coming Up was the panel she reads first and its rows were
+   * plain text. Each row now opens the screen where that work actually lives:
+   *
+   *   academic  -> the Academic Center's Parent Setup tab, on THAT assignment
+   *                ({ kind: 'grade' } — hers, with his finished copy)
+   *   planner   -> the Planner section, where the custom assignment is listed
+   *   fieldTrip -> Field Trips
+   *   mission   -> Mission Evaluations
+   *
+   * Returns null when the row cannot be opened (no handler, or no id), and the
+   * row then renders without a button rather than with one that does nothing.
+   */
+  const openerFor = (item) => {
+    if (item.source === 'academic' && onOpenAcademicCenter && typeof item.recordId === 'number') {
+      return () => onOpenAcademicCenter({ kind: 'grade', id: item.recordId });
+    }
+    if (!onGoTo) return null;
+    if (item.source === 'planner') return () => onGoTo('planner');
+    if (item.source === 'fieldTrip') return () => onGoTo('field-trips');
+    if (typeof item.key === 'string' && item.key.startsWith('mission::')) return () => onGoTo('mission-evaluations');
+    return null;
+  };
 
   // Plus the work that carries no assignment record: the week-numbered writing
   // journal and hands-on projects, and the garden's own calendar. Both were
@@ -1155,7 +1191,7 @@ function ComingUpSection() {
           <p className="text-xs font-display uppercase tracking-widest text-signal-red">Past Due</p>
           <div className="mt-3 space-y-1.5">
             {overdue.map((item) => (
-              <ComingUpRow key={item.key} item={item} tone="overdue" />
+              <ComingUpRow key={item.key} item={item} tone="overdue" onOpen={openerFor(item)} />
             ))}
           </div>
         </div>
@@ -1227,7 +1263,7 @@ function ComingUpSection() {
                 </p>
                 <div className="mt-1.5 space-y-1.5">
                   {byDate[dateStr].map((item) => (
-                    <ComingUpRow key={item.key} item={item} tone={dateStr === today ? 'today' : 'upcoming'} />
+                    <ComingUpRow key={item.key} item={item} tone={dateStr === today ? 'today' : 'upcoming'} onOpen={openerFor(item)} />
                   ))}
                 </div>
               </div>
@@ -1239,7 +1275,7 @@ function ComingUpSection() {
   );
 }
 
-function ComingUpRow({ item, tone }) {
+function ComingUpRow({ item, tone, onOpen = null }) {
   return (
     <div className="flex items-center justify-between gap-3 rounded-lg border border-space-700 bg-space-900 px-3 py-2">
       <div className="min-w-0">
@@ -1283,6 +1319,15 @@ function ComingUpRow({ item, tone }) {
       >
         {item.source === 'academic' ? 'Academic Center' : 'Planner'}
       </span>
+      {onOpen && (
+        <button
+          type="button"
+          onClick={onOpen}
+          className="flex-none rounded-md border border-signal-cyan/40 px-2.5 py-1 text-xs font-display font-700 text-signal-cyan transition hover:bg-signal-cyan/10"
+        >
+          Open
+        </button>
+      )}
     </div>
   );
 }
@@ -2368,7 +2413,7 @@ function BookPicker() {
   );
 }
 
-function AcademicSuccessCenterSection() {
+function AcademicSuccessCenterSection({ onOpenAcademicCenter = null }) {
   const academicAssignments = useAppStore((s) => s.academicAssignments);
   const academicBooks = useAppStore((s) => s.academicBooks);
 
@@ -2450,6 +2495,15 @@ function AcademicSuccessCenterSection() {
                       >
                         {row.grade ? `Grade: ${row.grade}` : 'Not graded yet'}
                       </span>
+                      {onOpenAcademicCenter && typeof row.id === 'number' && (
+                        <button
+                          type="button"
+                          onClick={() => onOpenAcademicCenter({ kind: 'grade', id: row.id })}
+                          className="shrink-0 rounded-md border border-signal-cyan/40 px-2.5 py-1 text-xs font-display font-700 text-signal-cyan transition hover:bg-signal-cyan/10"
+                        >
+                          {row.grade ? 'Open' : 'Read & grade'}
+                        </button>
+                      )}
                     </div>
                   ))}
                 </div>

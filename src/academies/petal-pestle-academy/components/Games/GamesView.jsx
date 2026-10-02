@@ -3,6 +3,7 @@ import { GAME_LINKS } from '../../data/games/gameLinks.js';
 import { DEFAULT_SCHEDULE } from '../../config/schedule.js';
 import { dayKeyOf } from '../../lib/reviewQueue.js';
 import { strandLabel } from '../../config/strands.js';
+import { entriesForDay, scheduledSiteFor, siteById, displayCode, playUrl } from '../../data/games/gameCodes.js';
 
 // ---------------------------------------------------------------------------
 // SOMETHING TO DO INSTEAD OF WALKING AWAY.
@@ -54,12 +55,61 @@ export function GamesView() {
   const left = subjectBlocks.filter((b) => !doneToday[b.id]).length;
   const links = orderedForHer(strands);
 
+  // ---- TODAY'S GAME (Oct 1 2026) ----
+  // The code or link Gigi typed for a game she started. Only entries made FOR
+  // today are ever shown; yesterday's code is dead and is not shown.
+  const today = dayKeyOf();
+  const gameEntries = useAppStore((s) => s.gameEntries);
+  const todays = entriesForDay(gameEntries, today);
+  const scheduled = siteById(scheduledSiteFor(today));
+
   return (
     <section className="mx-auto max-w-3xl px-4 py-6">
       <h1 className="font-display text-3xl leading-tight text-ink-900">Play</h1>
       <p className="mt-1.5 text-sm text-ink-700">
         Good things to do when you have finished and there is still time.
       </p>
+
+      {/* ---- YOUR GAME TODAY. Short words: she reads below her age. ---- */}
+      {todays.length > 0 ? (
+        <div className="mt-4 space-y-3">
+          {todays.map((e) => {
+            const site = siteById(e.site);
+            return (
+              <div key={e.site} className="rounded-petal border-2 border-lavender-500 bg-lavender-300/20 px-4 py-4">
+                <p className="label-caps text-ink-700">Your game today</p>
+                <p className="mt-1 font-display text-2xl text-ink-900">{site.label}</p>
+                {e.kind === 'code' && (
+                  <p className="mt-1 text-sm text-ink-900">
+                    Your code is{' '}
+                    <span className="font-display text-3xl tracking-wider text-lavender-700">{displayCode(e.value)}</span>
+                  </p>
+                )}
+                <a
+                  href={playUrl(e)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-3 inline-block rounded-full bg-lavender-700 px-6 py-2.5 text-sm font-700 text-white hover:bg-lavender-500"
+                >
+                  {e.kind === 'code' ? `Open ${site.label}` : `Play ${site.label}`}
+                </a>
+                <p className="mt-2 text-xs text-ink-700">
+                  {e.kind === 'code' ? 'Open it, then type your code.' : 'It opens in a new tab.'}
+                </p>
+              </div>
+            );
+          })}
+        </div>
+      ) : (
+        scheduled && (
+          <div className="mt-4 rounded-petal border border-cream-300 bg-white px-4 py-3">
+            <p className="text-sm text-ink-900">
+              <span className="font-700">Today’s game is {scheduled.label}.</span> Gigi will give you the code when it
+              is ready.
+            </p>
+          </div>
+        )
+      )}
 
       {/* ---- WHAT IS LEFT. A SENTENCE, NOT A GATE. ---- */}
       <div className="mt-4 rounded-petal border-2 border-gold-500 bg-gold-300/20 px-4 py-3">

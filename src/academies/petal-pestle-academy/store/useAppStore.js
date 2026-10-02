@@ -11,6 +11,8 @@
 
 import { create } from 'zustand';
 import { khanGradeRow } from '../lib/khanGrade.js';
+import { makeGameEntry, cleanEntries } from '../data/games/gameCodes.js';
+import { cleanAllWork, cleanWork } from '../lib/lessonWork.js';
 import {
   db,
   readMeta,
@@ -167,6 +169,13 @@ export const useAppStore = create((set, get) => ({
   /** dayKey -> { dayKey, done: { blockId: isoTimestamp } } */
   scheduleDays: {},
 
+  /** Today's game: { gimkit?, kahoot?, blooket? } -> { site, kind, value, forDay, setAt }.
+   *  Typed by a grown-up; shown on her Games tab on its day only. Rules live in
+   *  data/games/gameCodes.js. Stored in meta, so it rides in the backup file. */
+  gameEntries: {},
+  // Her taps inside each lesson, kept on THIS computer only (not in the backup file).
+  lessonWork: {},
+
   // Lessons, tests and the spaced-review boxes. lessonReads and reviewItems are
   // maps keyed by lessonId / questionId; attempts is an append-only list.
   lessonReads: {},
@@ -261,6 +270,9 @@ export const useAppStore = create((set, get) => ({
         loadSpellingResults()
       ]);
 
+      const gameEntries = cleanEntries(await readMeta('gameEntries', {}));
+      const lessonWork = cleanAllWork(await readMeta('lessonWork', {}));
+
       const scheduleDays = {};
       for (const row of scheduleDayRows || []) scheduleDays[row.dayKey] = row;
 
@@ -313,6 +325,8 @@ export const useAppStore = create((set, get) => ({
         scheduleBlocks:
           Array.isArray(scheduleBlocks) && scheduleBlocks.length ? scheduleBlocks : DEFAULT_SCHEDULE,
         scheduleDays,
+        gameEntries,
+        lessonWork,
         lessonReads,
         projectStatus,
         reviewItems,
@@ -1040,6 +1054,38 @@ export const useAppStore = create((set, get) => ({
   async resetScheduleBlocks() {
     await writeMeta('scheduleBlocks', null);
     set({ scheduleBlocks: DEFAULT_SCHEDULE });
+  },
+
+  // -------------------------------------------------------------------------
+  // Today's game — the code or link for her Gimkit / Kahoot / Blooket game
+  // -------------------------------------------------------------------------
+
+  /** Save one site's entry for a day. Returns { ok, reason? } so the screen can
+   *  say in words why a link was not taken. Nothing is written when it fails. */
+  async saveGameEntry(siteId, raw, forDay) {
+    const made = makeGameEntry(siteId, raw, forDay);
+    if (!made.ok) return made;
+    const next = { ...get().gameEntries, [siteId]: made.entry };
+    await writeMeta('gameEntries', next);
+    set({ gameEntries: next });
+    return { ok: true, entry: made.entry };
+  },
+
+  /** Keep one lesson's work. Called on every tap; a same-object save is skipped. */
+  async saveLessonWork(lessonId, work) {
+    if (!lessonId || !work) return;
+    const cur = get().lessonWork;
+    if (cur[lessonId] === work) return;
+    const next = { ...cur, [lessonId]: cleanWork(work) };
+    set({ lessonWork: next });
+    try { await writeMeta('lessonWork', next); } catch { /* the screen still has it */ }
+  },
+
+  async clearGameEntry(siteId) {
+    const next = { ...get().gameEntries };
+    delete next[siteId];
+    await writeMeta('gameEntries', next);
+    set({ gameEntries: next });
   },
 
   /** Tick or un-tick a block for a given day. Un-ticking is deliberate: a child
