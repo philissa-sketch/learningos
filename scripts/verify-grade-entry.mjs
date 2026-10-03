@@ -227,7 +227,7 @@ console.log('\n--- the row she grades from opens the work she is grading ---');
     /onOpenAcademicCenter = null/.test(parent) && /onOpenAcademicCenter=\{onOpenAcademicCenter\}/.test(parent),
     'every previous version of this fault broke at a seam between two files');
   ok('...and App gives the Parent Dashboard the same handler his board uses',
-    /<ParentDashboard onSignOut=\{onSignOut\} onOpenAcademicCenter=\{openAcademicCenter\} \/>/.test(app)
+    /<ParentDashboard onSignOut=\{onSignOut\} onOpenAcademicCenter=\{openAcademicCenter\}[^>]*\/>/.test(app)
       && /const openAcademicCenter = \(focus = null\) =>/.test(app));
   ok("...which accepts 'grade' as a real kind",
     /focus\.kind === 'grade'/.test(app) && /typeof focus\.id === 'number'/.test(app),
@@ -266,7 +266,7 @@ console.log('\n--- Parent Dashboard rows open the work they name (Oct 2 2026, fi
   ok('Coming Up is handed the Academic Center opener',
     /<ComingUpSection[\s\S]{0,80}?onOpenAcademicCenter=\{onOpenAcademicCenter\}/.test(pd));
   ok('an academic row opens its own assignment as kind "grade"',
-    /item\.source === 'academic'[\s\S]{0,160}?onOpenAcademicCenter\(\{ kind: 'grade', id: item\.recordId \}\)/.test(pd));
+    /t\.kind === 'academic'[\s\S]{0,160}?onOpenAcademicCenter\(\{ kind: 'grade', id: t\.id \}\)/.test(pd));
   ok('planner, field-trip and mission rows open their own sections',
     /onGoTo\('planner'\)/.test(pd) && /onGoTo\('field-trips'\)/.test(pd) && /onGoTo\('mission-evaluations'\)/.test(pd));
   ok('both Coming Up row lists (overdue and upcoming) pass the opener',
@@ -277,6 +277,29 @@ console.log('\n--- Parent Dashboard rows open the work they name (Oct 2 2026, fi
   ok('Academic Success Center completed rows open the assignment',
     /<AcademicSuccessCenterSection onOpenAcademicCenter=\{onOpenAcademicCenter\} \/>/.test(pd)
       && /onOpenAcademicCenter\(\{ kind: 'grade', id: row\.id \}\)/.test(pd));
+
+  // ---- the second report, same day: rows that were still text ----
+  const tgt = read('src/lib/itemTarget.js');
+  const app = read('src/App.jsx');
+  const mm = read('src/components/Morning/MorningMeeting.jsx');
+  const feeds = read('src/lib/plannerFeeds.js');
+  const cal = read('src/lib/plannerCalendar.js');
+  ok('one shared answer to "what does this row open", for every kind of dated row',
+    ['academic', 'planner', 'fieldTrip', 'writing-schedule', 'garden', "mission::"].every((k) => tgt.includes(k)),
+    'a rule written at each call site is how this was reported five times');
+  ok('Writing Journal rows carry the prompt they are, so they can open it',
+    /promptId: id/.test(feeds) && /findScheduledItem/.test(tgt));
+  ok('project-step rows carry the assignment they belong to',
+    /recordId: a\.id,\s*recordSource: source/.test(cal));
+  ok('his "What today looks like" rows open their work (late, due today, next 7 days, rest of month)',
+    (mm.match(/<ItemTitle item=\{i\} onOpenItem=\{onOpenItem\} \/>/g) || []).length === 4);
+  ok('...and App hands the Morning Meeting a handler that reaches an assignment, a prompt and the garden',
+    /onOpenItem=\{openPlannerItem\}/.test(app)
+      && /openAcademicCenter\(\{ kind: 'assignment', id: t\.id \}\)/.test(app)
+      && /setActivePrompt\(t\.prompt\)/.test(app)
+      && /setView\('garden'\)/.test(app));
+  ok('the parent can reach his garden and the Journal review from Coming Up',
+    /onOpenView=\{setView\}/.test(app) && /onGoTo\('writing-journal'\)/.test(pd) && /onOpenView\('garden'\)/.test(pd));
 }
 
 console.log(`\n${passed} passed, ${failures.length} failed`);

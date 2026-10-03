@@ -225,6 +225,8 @@ export function writingScheduleCalendarItems({ writingEntries = [] } = {}) {
         dueDate,
         done,
         source: 'writing-schedule',
+        // The prompt this row IS, so a row can open it. See lib/itemTarget.js.
+        promptId: id,
         schoolWeek: week
       });
     }
@@ -388,4 +390,4 @@ export function gardenForDate(dateStr = todayDateStr(), { gardenLog = [] } = {})
   };
 }
 
-export { getSchoolWeekNumber };
+export { getSchoolWeekNumber, findItemById as findScheduledItem };

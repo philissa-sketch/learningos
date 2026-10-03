@@ -1,6 +1,7 @@
 import { lazy, Suspense, useCallback, useEffect, useMemo, useState } from 'react';
 import { useAppStore } from './store/useAppStore.js';
 import { applyTheme } from './lib/themes.js';
+import { itemTarget } from './lib/itemTarget.js';
 import { NavBar } from './components/Navigation/NavBar.jsx';
 import { academyContent } from './content/academyContent.js';
 import { schoolViewLoader } from './content/slots/views.js';
@@ -202,6 +203,21 @@ export default function App({ initialView = 'dashboard', onSignOut }) {
       && typeof focus.id === 'number';
     setAcademicFocus(ok ? { kind: focus.kind, id: focus.id } : null);
     setView('academic');
+  };
+  /**
+   * WHAT A DATED ROW OPENS, on HIS screens. (Oct 2, 2026.) The parent, with a
+   * screenshot of "What today looks like": "None of these link back to his
+   * assignment." The decision of what a row opens is lib/itemTarget.js; this
+   * is only the part that knows how to get to each screen.
+   */
+  const openPlannerItem = (item) => {
+    const t = itemTarget(item);
+    if (!t) return;
+    if (t.kind === 'academic') openAcademicCenter({ kind: 'assignment', id: t.id });
+    else if (t.kind === 'prompt') setActivePrompt(t.prompt);
+    else if (t.kind === 'garden') setView('garden');
+    else if (t.kind === 'planner') { setScheduleMode('weekly'); setView('schedule'); }
+    else if (t.kind === 'fieldTrip') { setScheduleMode('monthly'); setView('schedule'); }
   };
   const [typingMode, setTypingMode] = useState(null); // null | 'home' | 'lessons' | 'speedtest'
   const [studySkill, setStudySkill] = useState(null); // 'spelling' | 'vocabulary' | null
@@ -557,6 +573,7 @@ export default function App({ initialView = 'dashboard', onSignOut }) {
               setView('schedule');
             }}
             onOpenProgress={() => setView('progress')}
+            onOpenItem={openPlannerItem}
           />
         )}
         {view === 'parent' && (
@@ -575,7 +592,7 @@ export default function App({ initialView = 'dashboard', onSignOut }) {
               * handler his board already uses; the Parent Dashboard simply
               * never had it.
               */}
-            <ParentDashboard onSignOut={onSignOut} onOpenAcademicCenter={openAcademicCenter} />
+            <ParentDashboard onSignOut={onSignOut} onOpenAcademicCenter={openAcademicCenter} onOpenView={setView} />
           </ParentGate>
         )}
       </>

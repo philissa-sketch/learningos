@@ -41,6 +41,7 @@ import {
   getNextCalendarItemsBeyond
 } from '../../lib/scheduler.js';
 import { derivedPlannerItems } from '../../lib/plannerFeeds.js';
+import { itemTarget } from '../../lib/itemTarget.js';
 import { participationSummary, participationPhrases } from '../../lib/participationRecord.js';
 import { ExerciseVideoManager } from '../PE/ExerciseVideoManager.jsx';
 import { REFERENCE_LINK_TYPES } from '../../lib/driveLinks.js';
@@ -883,7 +884,7 @@ function SignOutSection({ onSignOut }) {
   );
 }
 
-export function ParentDashboard({ onSignOut, onOpenAcademicCenter = null }) {
+export function ParentDashboard({ onSignOut, onOpenAcademicCenter = null, onOpenView = null }) {
   const [section, setSection] = useState('mission-control-board');
   const [openGroup, setOpenGroup] = useState('board');
   const activeGroup = SECTION_GROUPS.find((g) => g.id === openGroup) || null;
@@ -995,6 +996,7 @@ export function ParentDashboard({ onSignOut, onOpenAcademicCenter = null }) {
       {section === 'coming-up' && (
         <ComingUpSection
           onOpenAcademicCenter={onOpenAcademicCenter}
+          onOpenView={onOpenView}
           onGoTo={(target) => {
             setSection(target);
             const group = SECTION_GROUPS.find((g) => g.sections.some((x) => x.id === target));
@@ -1091,7 +1093,7 @@ const COMING_UP_DAYS = 14;
  * Deliberately excludes completed work and untitled placeholder slots —
  * this answers "what needs attention," not "what exists."
  */
-function ComingUpSection({ onOpenAcademicCenter = null, onGoTo = null }) {
+function ComingUpSection({ onOpenAcademicCenter = null, onGoTo = null, onOpenView = null }) {
   const assignments = useAppStore((s) => s.assignments);
   const academicAssignments = useAppStore((s) => s.academicAssignments);
   /**
@@ -1136,13 +1138,17 @@ function ComingUpSection({ onOpenAcademicCenter = null, onGoTo = null }) {
    * row then renders without a button rather than with one that does nothing.
    */
   const openerFor = (item) => {
-    if (item.source === 'academic' && onOpenAcademicCenter && typeof item.recordId === 'number') {
-      return () => onOpenAcademicCenter({ kind: 'grade', id: item.recordId });
+    const t = itemTarget(item);
+    if (!t) return null;
+    if (t.kind === 'academic') {
+      return onOpenAcademicCenter ? () => onOpenAcademicCenter({ kind: 'grade', id: t.id }) : null;
     }
+    if (t.kind === 'garden') return onOpenView ? () => onOpenView('garden') : null;
     if (!onGoTo) return null;
-    if (item.source === 'planner') return () => onGoTo('planner');
-    if (item.source === 'fieldTrip') return () => onGoTo('field-trips');
-    if (typeof item.key === 'string' && item.key.startsWith('mission::')) return () => onGoTo('mission-evaluations');
+    if (t.kind === 'planner') return () => onGoTo('planner');
+    if (t.kind === 'fieldTrip') return () => onGoTo('field-trips');
+    if (t.kind === 'mission') return () => onGoTo('mission-evaluations');
+    if (t.kind === 'prompt') return () => onGoTo('writing-journal');
     return null;
   };
 
@@ -1317,7 +1323,15 @@ function ComingUpRow({ item, tone, onOpen = null }) {
             : 'border-ink-600/40 bg-ink-900/20 text-ink-500')
         }
       >
-        {item.source === 'academic' ? 'Academic Center' : 'Planner'}
+        {item.source === 'academic'
+          ? 'Academic Center'
+          : item.source === 'garden'
+            ? 'Garden'
+            : item.source === 'writing-schedule'
+              ? 'Journal'
+              : item.source === 'fieldTrip'
+                ? 'Field Trip'
+                : 'Planner'}
       </span>
       {onOpen && (
         <button

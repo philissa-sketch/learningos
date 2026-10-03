@@ -67,7 +67,10 @@ function buildMilestoneItems({ assignments = [], academicAssignments = [] }) {
         stepIndex: i + 1,
         stepTotal: steps.length,
         isFinalStep: i === steps.length - 1,
-        source: 'milestone'
+        source: 'milestone',
+        // The assignment this step belongs to, and which table it is in.
+        recordId: a.id,
+        recordSource: source
       });
     });
   };

@@ -1,4 +1,5 @@
 import { useState, useMemo, useRef } from 'react';
+import { itemTarget } from '../../lib/itemTarget.js';
 import { guardianWord } from '../../lib/schoolWords.js';
 import { useAppStore } from '../../store/useAppStore.js';
 import { todayDateStr, formatShortDate, parseDateStr, addDays, toDateStr } from '../../lib/scheduler.js';
@@ -140,7 +141,25 @@ function Step({ n, title, children, done }) {
   );
 }
 
-export function MorningMeeting({ onExit, onOpenSchedule, onOpenPlanner, onOpenProgress }) {
+/**
+ * A dated row's title. A link when the row has somewhere to go (and the screen
+ * was handed a way to get there), plain text otherwise -- never a button that
+ * does nothing. Oct 2, 2026: "None of these link back to his assignment."
+ */
+function ItemTitle({ item, onOpenItem }) {
+  if (!onOpenItem || !itemTarget(item)) return <>{item.title}</>;
+  return (
+    <button
+      type="button"
+      onClick={() => onOpenItem(item)}
+      className="text-left text-signal-cyan underline decoration-dotted underline-offset-2 hover:text-ink-100"
+    >
+      {item.title}
+    </button>
+  );
+}
+
+export function MorningMeeting({ onExit, onOpenSchedule, onOpenPlanner, onOpenProgress, onOpenItem = null }) {
   const today = todayDateStr();
 
   const scheduleBlocks = useAppStore((s) => s.scheduleBlocks);
@@ -643,7 +662,7 @@ export function MorningMeeting({ onExit, onOpenSchedule, onOpenPlanner, onOpenPr
               <ul className="mt-1.5 space-y-1">
                 {overdue.slice(0, 6).map((i) => (
                   <li key={i.id ?? `${i.title}-${i.dueDate}`} className="text-sm text-ink-200">
-                    {i.title}{' '}
+                    <ItemTitle item={i} onOpenItem={onOpenItem} />{' '}
                     <span className="text-xs text-ink-500">— was due {shortDate(i.dueDate)}</span>
                   </li>
                 ))}
@@ -659,7 +678,7 @@ export function MorningMeeting({ onExit, onOpenSchedule, onOpenPlanner, onOpenPr
               <ul className="mt-1.5 space-y-1">
                 {dueToday.map((i) => (
                   <li key={i.id ?? i.title} className="text-sm text-ink-200">
-                    {i.title}
+                    <ItemTitle item={i} onOpenItem={onOpenItem} />
                   </li>
                 ))}
               </ul>
@@ -720,7 +739,7 @@ export function MorningMeeting({ onExit, onOpenSchedule, onOpenPlanner, onOpenPr
                     <span className="w-24 shrink-0 font-mono text-xs text-ink-500">
                       {shortDate(i.dueDate)}
                     </span>
-                    <span className="min-w-0 flex-1 text-ink-200">{i.title}</span>
+                    <span className="min-w-0 flex-1 text-ink-200"><ItemTitle item={i} onOpenItem={onOpenItem} /></span>
                   </li>
                 ))}
               </ul>
@@ -747,7 +766,7 @@ export function MorningMeeting({ onExit, onOpenSchedule, onOpenPlanner, onOpenPr
                       <span className="w-24 shrink-0 font-mono text-xs text-ink-500">
                         {shortDate(i.dueDate)}
                       </span>
-                      <span className="min-w-0 flex-1 text-ink-300">{i.title}</span>
+                      <span className="min-w-0 flex-1 text-ink-300"><ItemTitle item={i} onOpenItem={onOpenItem} /></span>
                     </li>
                   ))}
                 </ul>
