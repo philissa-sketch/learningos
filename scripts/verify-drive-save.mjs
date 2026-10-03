@@ -80,6 +80,11 @@ const btn = read('src/components/Academic/SaveToDriveButton.jsx');
 ok('assignment writing boxes (notes, rough draft, finished copy) have it',
   /<SaveToDriveButton/.test(writer) && /Notes & structure[\s\S]{0,80}text: notes/.test(writer) && /Finished copy', text: final/.test(writer));
 ok('Writing Journal / project entries have it', /<SaveToDriveButton/.test(engine));
+ok('the button is visible on the card, not hidden inside the collapsed "Write it here" box',
+  writer.indexOf('<SaveToDriveButton') > writer.indexOf('{msg && <p'),
+  'the parent saw only the photo-link field because it was inside the closed box');
+ok('she can file his work herself from the grading screen',
+  /<SaveToDriveButton[\s\S]{0,60}Save his work to Drive/.test(read('src/components/Academic/AssignmentFormatPicker.jsx')));
 ok('the file is built at click time, so unsaved typing is included',
   /const doc = build\(\)/.test(btn) && /build=\{\(\) =>/.test(writer));
 ok('a browser without the folder picker is told so, not left with a dead button',

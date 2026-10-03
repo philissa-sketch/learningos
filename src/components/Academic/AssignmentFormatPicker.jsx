@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useAppStore } from '../../store/useAppStore.js';
 import { wordProgress } from '../../lib/writingCheck.js';
 import { academyContent } from '../../content/academyContent.js';
+import { SaveToDriveButton } from './SaveToDriveButton.jsx';
 
 const { RUBRIC_LEVELS = [], criteriaForFormat = () => null, findFormat = () => null, formatsForType = () => [], sizeFor = () => null, suggestedGradeFromRubric = () => null } = academyContent().academicCenter;
 
@@ -153,6 +154,21 @@ function SubmittedWork({ assignment, format = null }) {
       </div>
       {/* His notes are working material, not the submission, so they sit under
           the report rather than competing with it. */}
+      {/* So she can file his work herself, from the screen she grades on. */}
+      <SaveToDriveButton
+        label="Save his work to Drive"
+        build={() => ({
+          date: assignment.dueDate,
+          subject: (academyContent().subjects?.SUBJECT_LABELS || {})[assignment.subject] || assignment.subject,
+          title: assignment.title,
+          byline: [assignment.type, assignment.dueDate ? `due ${assignment.dueDate}` : null].filter(Boolean).join(' · '),
+          sections: [
+            { heading: 'Notes & structure', text: assignment.notesText || '' },
+            { heading: 'Rough draft', text: assignment.draftText || '' },
+            { heading: 'Finished copy', text: assignment.finalText || '' }
+          ]
+        })}
+      />
       {assignment.notesText && (
         <details className="mt-2">
           <summary className="cursor-pointer text-[11px] text-ink-500 hover:text-ink-300">

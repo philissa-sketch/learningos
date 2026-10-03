@@ -353,24 +353,27 @@ export function AssignmentWriter({ assignment, format, steps, onSave, defaultOpe
             </div>
           )}
 
-          {/* A second copy outside the browser. Reads the boxes as they are NOW. */}
-          <SaveToDriveButton
-            build={() => ({
-              date: assignment.dueDate,
-              subject: (academyContent().subjects?.SUBJECT_LABELS || {})[assignment.subject] || assignment.subject,
-              title: assignment.title,
-              byline: [assignment.type, assignment.dueDate ? `due ${assignment.dueDate}` : null].filter(Boolean).join(' · '),
-              sections: [
-                { heading: 'Notes & structure', text: notes },
-                { heading: 'Rough draft', text: draft },
-                { heading: 'Finished copy', text: final }
-              ]
-            })}
-          />
-
           {msg && <p className="text-[11px] font-display text-signal-green">{msg}</p>}
         </div>
       )}
+
+      {/* A second copy outside the browser. Reads the boxes as they are NOW.
+          Outside the collapsible box ON PURPOSE: the parent, Oct 3 -- "The only
+          thing I see is to save the drive link." It lived inside "Write it
+          here", closed by default, so the card showed only the photo-link field. */}
+      <SaveToDriveButton
+        build={() => ({
+          date: assignment.dueDate,
+          subject: (academyContent().subjects?.SUBJECT_LABELS || {})[assignment.subject] || assignment.subject,
+          title: assignment.title,
+          byline: [assignment.type, assignment.dueDate ? `due ${assignment.dueDate}` : null].filter(Boolean).join(' · '),
+          sections: [
+            { heading: 'Notes & structure', text: notes },
+            { heading: 'Rough draft', text: draft },
+            { heading: 'Finished copy', text: final }
+          ]
+        })}
+      />
     </div>
   );
 }
