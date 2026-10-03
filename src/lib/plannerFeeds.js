@@ -285,6 +285,9 @@ export function gardenCalendarItems({ gardenLog = [], year = 2026 } = {}) {
       // different kind of scheduling.
       schoolWeek: getSchoolWeekNumber(parseDateStr(closes.date)),
       done: false, // written up through the Writing Journal; see below
+      // The write-up IS a Journal project with this id; carried so the row can
+      // open the place he types it. See lib/itemTarget.js.
+      promptId: build.projectId,
       source: 'garden'
     });
   }

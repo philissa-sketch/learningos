@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { guardianWord } from '../../lib/schoolWords.js';
 import { useAppStore } from '../../store/useAppStore.js';
 import { WritingCheckerLink } from './WritingCheckerLink.jsx';
+import { SaveToDriveButton } from '../Academic/SaveToDriveButton.jsx';
 import { checkWriting } from '../../lib/writingCheck.js';
 import { pairedBuildFor } from '../../lib/weeklyPlan.js';
 import { academyContent } from '../../content/academyContent.js';
@@ -519,6 +520,18 @@ export function WritingPromptEngine({ prompt, onExit }) {
       <div className="mt-3">
         <WritingCheckerLink />
       </div>
+
+      {/* A second copy outside the browser — his reports and explanations are
+          the record, and the browser's copy lives on one computer. */}
+      <SaveToDriveButton
+        build={() => ({
+          date: new Date().toLocaleDateString('en-CA'),
+          subject: (academyContent().subjects?.SUBJECT_LABELS || {})[prompt.subject] || prompt.subject || '',
+          title: prompt.title,
+          byline: prompt.category === 'experiment' ? 'Hands-on experiment' : isProject ? 'Journal entry' : 'Writing practice',
+          sections: [{ heading: '', text }]
+        })}
+      />
 
       {/*
         WHAT THE CHECK FOUND, IN HIS WORDS, WITH THE SENTENCE IT MEANS.

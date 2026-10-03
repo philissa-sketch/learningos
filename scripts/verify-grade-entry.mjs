@@ -300,6 +300,21 @@ console.log('\n--- Parent Dashboard rows open the work they name (Oct 2 2026, fi
       && /setView\('garden'\)/.test(app));
   ok('the parent can reach his garden and the Journal review from Coming Up',
     /onOpenView=\{setView\}/.test(app) && /onGoTo\('writing-journal'\)/.test(pd) && /onOpenView\('garden'\)/.test(pd));
+
+  // ---- Oct 3: the box he types in, and the rows that sent her to a list ----
+  const rr = read('src/lib/readingResponse.js');
+  const view = read('src/components/Academic/AcademicAssignmentsView.jsx');
+  const writer = read('src/components/Academic/AssignmentWriter.jsx');
+  ok('a Reading Assignment has a writing box (it had no format, so it had none)',
+    /type === 'Reading Assignment' \? READING_RESPONSE_FORMAT/.test(rr) && /writerFormatFor\(assignment, findFormat\)/.test(view));
+  ok('...and it does not turn into "format not picked yet" on the card',
+    !/Reading Assignment/.test(read('src/academies/lamar/data/academicSuccessCenter/reportFormats.js').match(/export function formatsForType[\s\S]*?\n}/)[0]));
+  ok('the writing box is open when he arrives from a row that named that assignment',
+    /defaultOpen=\{focused\}/.test(view) && /useState\(Boolean\(defaultOpen\)\)/.test(writer));
+  ok('a garden build opens its write-up, not the garden',
+    /promptId: build\.projectId/.test(feeds) && /prompt \? \{ kind: 'prompt', prompt \} : \{ kind: 'garden' \}/.test(tgt));
+  ok('the parent opens the prompt itself, not the list of entries',
+    /onOpenPrompt\(t\.prompt\)/.test(pd) && /onOpenPrompt=\{setActivePrompt\}/.test(app));
 }
 
 console.log(`\n${passed} passed, ${failures.length} failed`);

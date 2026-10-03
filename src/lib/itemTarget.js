@@ -35,7 +35,12 @@ export function itemTarget(item) {
     const prompt = item.promptId ? findScheduledItem(item.promptId) : null;
     return prompt ? { kind: 'prompt', prompt } : null;
   }
-  if (item.source === 'garden') return { kind: 'garden' };
+  if (item.source === 'garden') {
+    // A garden BUILD has a write-up in the Journal; the Friday session and the
+    // planting windows do not, and go to the garden.
+    const prompt = item.promptId ? findScheduledItem(item.promptId) : null;
+    return prompt ? { kind: 'prompt', prompt } : { kind: 'garden' };
+  }
   if (typeof item.key === 'string' && item.key.startsWith('mission::')) return { kind: 'mission' };
   return null;
 }

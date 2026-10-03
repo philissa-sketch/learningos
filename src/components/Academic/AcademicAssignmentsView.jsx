@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { guardianWord } from '../../lib/schoolWords.js';
 import { AssignmentWriter } from './AssignmentWriter.jsx';
+import { writerFormatFor } from '../../lib/readingResponse.js';
 import { BuildPhotoLink } from './BuildPhotoLink.jsx';
 import { useAppStore } from '../../store/useAppStore.js';
 import { getCurrentQuarter } from '../../lib/schoolQuarter.js';
@@ -175,7 +176,7 @@ function AssignmentRow({ assignment, focused = false, onSetStatus, onToggleMiles
   const isReal = Boolean(assignment.title);
   const steps = isReal && hasMilestones(assignment.type) ? milestonesFor(assignment) : [];
   const progress = milestoneProgress(assignment);
-  const format = isReal ? findFormat(assignment.type, assignment.format) : null;
+  const format = isReal ? writerFormatFor(assignment, findFormat) : null;
   const size = sizeFor(format);
   // A type that HAS formats but hasn't had one picked yet is worth
   // saying out loud — otherwise he just sees a vaguer assignment and
@@ -402,6 +403,7 @@ function AssignmentRow({ assignment, focused = false, onSetStatus, onToggleMiles
           format={format}
           steps={steps}
           onSave={onSaveWriting}
+          defaultOpen={focused}
         />
       )}
 

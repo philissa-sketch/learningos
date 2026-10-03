@@ -592,7 +592,7 @@ export default function App({ initialView = 'dashboard', onSignOut }) {
               * handler his board already uses; the Parent Dashboard simply
               * never had it.
               */}
-            <ParentDashboard onSignOut={onSignOut} onOpenAcademicCenter={openAcademicCenter} onOpenView={setView} />
+            <ParentDashboard onSignOut={onSignOut} onOpenAcademicCenter={openAcademicCenter} onOpenView={setView} onOpenPrompt={setActivePrompt} />
           </ParentGate>
         )}
       </>

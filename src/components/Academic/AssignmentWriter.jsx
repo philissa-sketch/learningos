@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { wordProgress } from '../../lib/writingCheck.js';
 import { academyContent } from '../../content/academyContent.js';
+import { SaveToDriveButton } from './SaveToDriveButton.jsx';
 
 const { sizeFor = () => null } = academyContent().academicCenter;
 
@@ -41,11 +42,14 @@ const { sizeFor = () => null } = academyContent().academicCenter;
  * of things to check — the same information, but nothing to do with it. On the
  * Edit & finish step it is what he works through.
  */
-export function AssignmentWriter({ assignment, format, steps, onSave }) {
+export function AssignmentWriter({ assignment, format, steps, onSave, defaultOpen = false }) {
   const [notes, setNotes] = useState(assignment.notesText || '');
   const [draft, setDraft] = useState(assignment.draftText || '');
   const [final, setFinal] = useState(assignment.finalText || '');
-  const [open, setOpen] = useState(false);
+  // Open when he arrived here from a row that named THIS assignment -- a box he
+  // has to find and expand after being sent to the work is the same hunt the
+  // link was meant to end. (Oct 3, 2026.)
+  const [open, setOpen] = useState(Boolean(defaultOpen));
   const [msg, setMsg] = useState(null);
   const [checked, setChecked] = useState({});
 
@@ -348,6 +352,21 @@ export function AssignmentWriter({ assignment, format, steps, onSave }) {
               )}
             </div>
           )}
+
+          {/* A second copy outside the browser. Reads the boxes as they are NOW. */}
+          <SaveToDriveButton
+            build={() => ({
+              date: assignment.dueDate,
+              subject: (academyContent().subjects?.SUBJECT_LABELS || {})[assignment.subject] || assignment.subject,
+              title: assignment.title,
+              byline: [assignment.type, assignment.dueDate ? `due ${assignment.dueDate}` : null].filter(Boolean).join(' · '),
+              sections: [
+                { heading: 'Notes & structure', text: notes },
+                { heading: 'Rough draft', text: draft },
+                { heading: 'Finished copy', text: final }
+              ]
+            })}
+          />
 
           {msg && <p className="text-[11px] font-display text-signal-green">{msg}</p>}
         </div>

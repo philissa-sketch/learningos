@@ -884,7 +884,7 @@ function SignOutSection({ onSignOut }) {
   );
 }
 
-export function ParentDashboard({ onSignOut, onOpenAcademicCenter = null, onOpenView = null }) {
+export function ParentDashboard({ onSignOut, onOpenAcademicCenter = null, onOpenView = null, onOpenPrompt = null }) {
   const [section, setSection] = useState('mission-control-board');
   const [openGroup, setOpenGroup] = useState('board');
   const activeGroup = SECTION_GROUPS.find((g) => g.id === openGroup) || null;
@@ -997,6 +997,7 @@ export function ParentDashboard({ onSignOut, onOpenAcademicCenter = null, onOpen
         <ComingUpSection
           onOpenAcademicCenter={onOpenAcademicCenter}
           onOpenView={onOpenView}
+          onOpenPrompt={onOpenPrompt}
           onGoTo={(target) => {
             setSection(target);
             const group = SECTION_GROUPS.find((g) => g.sections.some((x) => x.id === target));
@@ -1093,7 +1094,7 @@ const COMING_UP_DAYS = 14;
  * Deliberately excludes completed work and untitled placeholder slots —
  * this answers "what needs attention," not "what exists."
  */
-function ComingUpSection({ onOpenAcademicCenter = null, onGoTo = null, onOpenView = null }) {
+function ComingUpSection({ onOpenAcademicCenter = null, onGoTo = null, onOpenView = null, onOpenPrompt = null }) {
   const assignments = useAppStore((s) => s.assignments);
   const academicAssignments = useAppStore((s) => s.academicAssignments);
   /**
@@ -1148,7 +1149,7 @@ function ComingUpSection({ onOpenAcademicCenter = null, onGoTo = null, onOpenVie
     if (t.kind === 'planner') return () => onGoTo('planner');
     if (t.kind === 'fieldTrip') return () => onGoTo('field-trips');
     if (t.kind === 'mission') return () => onGoTo('mission-evaluations');
-    if (t.kind === 'prompt') return () => onGoTo('writing-journal');
+    if (t.kind === 'prompt') return onOpenPrompt ? () => onOpenPrompt(t.prompt) : () => onGoTo('writing-journal');
     return null;
   };
 
