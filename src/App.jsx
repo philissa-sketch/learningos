@@ -215,7 +215,7 @@ export default function App({ initialView = 'dashboard', onSignOut }) {
     if (!t) return;
     if (t.kind === 'academic') openAcademicCenter({ kind: 'assignment', id: t.id });
     else if (t.kind === 'prompt') setActivePrompt(t.prompt);
-    else if (t.kind === 'garden') setView('garden');
+    else if (t.kind === 'view') setView(t.view);
     else if (t.kind === 'planner') { setScheduleMode('weekly'); setView('schedule'); }
     else if (t.kind === 'fieldTrip') { setScheduleMode('monthly'); setView('schedule'); }
   };

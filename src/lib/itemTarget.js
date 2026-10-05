@@ -7,7 +7,7 @@ import { findScheduledItem } from './plannerFeeds.js';
  * Oct 2, 2026 -- the parent, twice in one day: "in the Parent Dashboard
  * nothing in there is linked to the assignments", then, with screenshots,
  * "None of these link back to his assignment." The first fix linked the rows
- * that carried an academic id and left the Writing Journal, Garden and
+ * that carried an academic id and left the Writing Journal, project and
  * step rows as text, and left his own "What today looks like" card unlinked.
  * That is the fifth report of one rule: a row that names a thing must open
  * that thing. The rule lives here now, not at each call site.
@@ -15,8 +15,8 @@ import { findScheduledItem } from './plannerFeeds.js';
  *   academic   -> { kind: 'academic', id }     the Academic Center assignment
  *   milestone  -> its parent assignment (academic) or the planner (custom)
  *   planner    -> { kind: 'planner' }          a custom Planner assignment
- *   writing    -> { kind: 'prompt', prompt }   the Journal piece / project
- *   garden     -> { kind: 'garden' }
+ *   a prompt   -> { kind: 'prompt', prompt }   a Journal piece / project
+ *   a screen   -> { kind: 'view', view }      the feed names it (openView)
  *   fieldTrip  -> { kind: 'fieldTrip' }
  *   mission    -> { kind: 'mission' }
  *
@@ -31,16 +31,14 @@ export function itemTarget(item) {
   }
   if (src === 'planner') return { kind: 'planner' };
   if (item.source === 'fieldTrip') return { kind: 'fieldTrip' };
-  if (item.source === 'writing-schedule') {
-    const prompt = item.promptId ? findScheduledItem(item.promptId) : null;
-    return prompt ? { kind: 'prompt', prompt } : null;
+  // Anything that IS a Journal prompt or project opens the place he types it.
+  // A hands-on build, a project and a weekly writing piece all carry one.
+  if (item.promptId) {
+    const prompt = findScheduledItem(item.promptId);
+    if (prompt) return { kind: 'prompt', prompt };
   }
-  if (item.source === 'garden') {
-    // A garden BUILD has a write-up in the Journal; the Friday session and the
-    // planting windows do not, and go to the garden.
-    const prompt = item.promptId ? findScheduledItem(item.promptId) : null;
-    return prompt ? { kind: 'prompt', prompt } : { kind: 'garden' };
-  }
+  // A row whose feed names a screen (see plannerFeeds) opens that screen.
+  if (item.openView) return { kind: 'view', view: item.openView };
   if (typeof item.key === 'string' && item.key.startsWith('mission::')) return { kind: 'mission' };
   return null;
 }

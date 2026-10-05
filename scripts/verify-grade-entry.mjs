@@ -285,7 +285,7 @@ console.log('\n--- Parent Dashboard rows open the work they name (Oct 2 2026, fi
   const feeds = read('src/lib/plannerFeeds.js');
   const cal = read('src/lib/plannerCalendar.js');
   ok('one shared answer to "what does this row open", for every kind of dated row',
-    ['academic', 'planner', 'fieldTrip', 'writing-schedule', 'garden', "mission::"].every((k) => tgt.includes(k)),
+    ['academic', 'planner', 'fieldTrip', 'promptId', 'openView', "mission::"].every((k) => tgt.includes(k)),
     'a rule written at each call site is how this was reported five times');
   ok('Writing Journal rows carry the prompt they are, so they can open it',
     /promptId: id/.test(feeds) && /findScheduledItem/.test(tgt));
@@ -297,9 +297,9 @@ console.log('\n--- Parent Dashboard rows open the work they name (Oct 2 2026, fi
     /onOpenItem=\{openPlannerItem\}/.test(app)
       && /openAcademicCenter\(\{ kind: 'assignment', id: t\.id \}\)/.test(app)
       && /setActivePrompt\(t\.prompt\)/.test(app)
-      && /setView\('garden'\)/.test(app));
+      && /setView\(t\.view\)/.test(app));
   ok('the parent can reach his garden and the Journal review from Coming Up',
-    /onOpenView=\{setView\}/.test(app) && /onGoTo\('writing-journal'\)/.test(pd) && /onOpenView\('garden'\)/.test(pd));
+    /onOpenView=\{setView\}/.test(app) && /onGoTo\('writing-journal'\)/.test(pd) && /onOpenView\(t\.view\)/.test(pd));
 
   // ---- Oct 3: the box he types in, and the rows that sent her to a list ----
   const rr = read('src/lib/readingResponse.js');
@@ -312,7 +312,7 @@ console.log('\n--- Parent Dashboard rows open the work they name (Oct 2 2026, fi
   ok('the writing box is open when he arrives from a row that named that assignment',
     /defaultOpen=\{focused\}/.test(view) && /useState\(Boolean\(defaultOpen\)\)/.test(writer));
   ok('a garden build opens its write-up, not the garden',
-    /promptId: build\.projectId/.test(feeds) && /prompt \? \{ kind: 'prompt', prompt \} : \{ kind: 'garden' \}/.test(tgt));
+    /promptId: build\.projectId/.test(feeds) && /item\.promptId[\s\S]{0,160}kind: 'prompt'[\s\S]{0,200}item\.openView\) return \{ kind: 'view'/.test(tgt));
   ok('the parent opens the prompt itself, not the list of entries',
     /onOpenPrompt\(t\.prompt\)/.test(pd) && /onOpenPrompt=\{setActivePrompt\}/.test(app));
 }

@@ -1144,7 +1144,7 @@ function ComingUpSection({ onOpenAcademicCenter = null, onGoTo = null, onOpenVie
     if (t.kind === 'academic') {
       return onOpenAcademicCenter ? () => onOpenAcademicCenter({ kind: 'grade', id: t.id }) : null;
     }
-    if (t.kind === 'garden') return onOpenView ? () => onOpenView('garden') : null;
+    if (t.kind === 'view') return onOpenView ? () => onOpenView(t.view) : null;
     if (!onGoTo) return null;
     if (t.kind === 'planner') return () => onGoTo('planner');
     if (t.kind === 'fieldTrip') return () => onGoTo('field-trips');

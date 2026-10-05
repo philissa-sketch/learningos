@@ -264,6 +264,9 @@ export function gardenCalendarItems({ gardenLog = [], year = 2026 } = {}) {
       dueDate: day.date,
       schoolWeek: getSchoolWeekNumber(parseDateStr(day.date)),
       done: (gardenLog || []).some((r) => r.date === day.date),
+      // The screen a row opens. Named HERE, in the school's own feed, so the
+      // shared target rules (lib/itemTarget.js) never have to know its name.
+      openView: 'garden',
       source: 'garden'
     });
   }
@@ -288,6 +291,7 @@ export function gardenCalendarItems({ gardenLog = [], year = 2026 } = {}) {
       // The write-up IS a Journal project with this id; carried so the row can
       // open the place he types it. See lib/itemTarget.js.
       promptId: build.projectId,
+      openView: 'garden',
       source: 'garden'
     });
   }
@@ -318,6 +322,7 @@ export function gardenCalendarItems({ gardenLog = [], year = 2026 } = {}) {
         (r) => r.kind === 'planting' && r.date && r.date <= w.date && r.date >= toDateStr(addDays(new Date(`${w.date}T12:00:00`), -14))
       ),
       source: 'garden',
+      openView: 'garden',
       immovable: true
     });
   }
