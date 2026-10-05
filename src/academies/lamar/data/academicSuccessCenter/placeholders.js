@@ -212,6 +212,15 @@ export const quarterlyAcademicPlaceholders = {
        * pattern every other report in this file uses.
        */
       { slotId: 'asg::reading::Q1::2', type: 'Book Report', dueDate: '2026-10-30', format: 'creative-project', title: 'Hatchet — book jacket redesign', note: 'Redesign the cover and write a 150-word back-cover blurb. Deliberately a visual project: his writing is two strands behind his reading, and Q1 is grammar catch-up. Dated to open after the A Long Walk to Water report is turned in — see the note above.' },
+      /**
+       * Red-Tail Angels' reading lives on the English Language Arts card.
+       * (Moved Oct 5, 2026 at the parent's direction.) It kept its
+       * `asg::socialStudies::Q1::2` slot id on purpose: a slot id is the
+       * identity a hydrated row is matched on, so renaming it would orphan the
+       * row and seed a duplicate. Only the subject it is filed under moved —
+       * for an already-hydrated row that happens in ASSIGNMENT_CORRECTIONS.
+       */
+      { slotId: 'asg::socialStudies::Q1::2', type: 'Reading Assignment', dueDate: '2026-10-30', title: 'Red-Tail Angels: The Tuskegee Airmen — weekly chapter pacing', note: 'Weekly chapter pacing. Read it for itself — the historical analysis that used to follow it was dropped Sept 5, 2026, and Q2\'s writing is the family-history research paper instead.' },
       { slotId: 'asg::writing::Q1::1', type: 'Writing Portfolio Entry', format: 'writing-sample', dueDate: '2026-10-23', title: 'Q1 writing portfolio — his strongest Journal entry', note: 'Pick your strongest Writing Journal entry from this quarter. Write two sentences saying why it is the best one. Then revise it once more: fix every spelling and grammar error, and rewrite the one paragraph you know is weakest. Turn in the revised version, not the original.' }
     ],
     'Q2 2026-2027': [
@@ -240,7 +249,6 @@ export const quarterlyAcademicPlaceholders = {
     // against Khan's Early Agrarian Societies unit rather than a lesson.
     'Q1 2026-2027': [
       { slotId: 'asg::socialStudies::Q1::1', type: 'Reading Assignment', dueDate: '2026-08-28', title: 'A Long Walk to Water — weekly chapter pacing', note: 'Paced alongside Khan Academy\'s Early Agrarian Societies World History unit' },
-      { slotId: 'asg::socialStudies::Q1::2', type: 'Reading Assignment', dueDate: '2026-10-30', title: 'Red-Tail Angels: The Tuskegee Airmen — weekly chapter pacing', note: 'Weekly chapter pacing. Read it for itself — the historical analysis that used to follow it was dropped Sept 5, 2026, and Q2\'s writing is the family-history research paper instead.' },
       /**
        * THE BOOK REPORT FOR A LONG WALK TO WATER. (Added Aug 10, 2026.)
        *
@@ -630,5 +638,18 @@ export const ACADEMIC_SUBJECT_ORDER = [
   'reading',
   'math'
 ];
+
+/**
+ * ASSIGNMENT TYPES THAT GET A CARD OF THEIR OWN.
+ *
+ * Oct 5, 2026. The parent: the Q1 writing portfolio was sitting inside the
+ * English Language Arts card among the reading work, and should have its own.
+ * Maps an assignment TYPE to the heading of the card it is shown on. It only
+ * changes where the row is DRAWN — the row keeps its subject, so its grade
+ * still counts toward English Language Arts on the report card and transcript.
+ */
+export const ASSIGNMENT_CARD_SPLITS = {
+  'Writing Portfolio Entry': 'Writing Portfolio'
+};
 
 export { READING_QUARTERS as ACADEMIC_SUCCESS_CENTER_QUARTER_ORDER };

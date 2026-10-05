@@ -11,8 +11,7 @@ import { orderAssignments } from '../../lib/academicOrder.js';
 import {
   ASSIGNMENT_STATUS_LABELS,
   statusBadgeClass,
-  subjectHeading,
-  orderedSubjects,
+  assignmentCards,
   orderedQuarters,
   formatDueDate,
   dueDateStatus
@@ -56,7 +55,6 @@ export function AcademicAssignmentsView({ focusAssignmentId = null }) {
   const scheduled = inQuarter.filter((a) => a.status !== 'placeholder');
   const unscheduledCount = inQuarter.length - scheduled.length;
   const visible = showUnscheduled ? inQuarter : scheduled;
-  const subjects = orderedSubjects(visible);
 
   const completed = scheduled.filter((a) => a.status === 'completed').length;
 
@@ -106,12 +104,12 @@ export function AcademicAssignmentsView({ focusAssignmentId = null }) {
         <p className="text-sm text-ink-500">Nothing to show for {quarter}.</p>
       )}
 
-      {subjects.map((subject) => {
-        const rows = orderAssignments(visible.filter((a) => a.subject === subject));
+      {assignmentCards(visible).map((card) => {
+        const rows = orderAssignments(card.rows);
         return (
-          <div key={subject} className="rounded-xl border border-space-700 bg-space-800 p-5 shadow-panel">
+          <div key={card.key} className="rounded-xl border border-space-700 bg-space-800 p-5 shadow-panel">
             <p className="text-xs font-display uppercase tracking-widest text-signal-cyan">
-              {subjectHeading(subject)}
+              {card.heading}
             </p>
             <div className="mt-3 space-y-2">
               {rows.map((assignment) => (

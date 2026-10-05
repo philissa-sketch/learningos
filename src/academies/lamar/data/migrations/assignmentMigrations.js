@@ -132,7 +132,14 @@ export const ASSIGNMENT_CORRECTIONS = {
       'Historical-analysis report on a world-regional history read',
       'Weekly chapter pacing. The historical analysis is due three weeks after you finish it.'
     ],
-    note: 'Weekly chapter pacing. Read it for itself — the historical analysis that used to follow it was dropped Sept 5, 2026, and Q2\'s writing is the family-history research paper instead.'
+    note: 'Weekly chapter pacing. Read it for itself — the historical analysis that used to follow it was dropped Sept 5, 2026, and Q2\'s writing is the family-history research paper instead.',
+    // Oct 5, 2026. The parent: this reading was sitting on the Social Studies
+    // card under A Long Walk to Water, and belongs on the English Language Arts
+    // card. The slot id stays `socialStudies` — it is the identity the row is
+    // matched on — and only the subject it is filed under moves. Applies only
+    // while the row still says `fromSubject` AND he has not touched it.
+    fromSubject: 'socialStudies',
+    subject: 'reading'
   },
   'asg::science::Q3::1': {
     fromNote: [

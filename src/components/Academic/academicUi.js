@@ -2,7 +2,7 @@ import { parseDateStr, todayDateStr } from '../../lib/scheduler.js';
 import { academyContent } from '../../content/academyContent.js';
 import { isKhanTaughtSubject as isKhanTaughtSubjectFor } from '../../content/slots/subjects.js';
 
-const { ACADEMIC_SUBJECT_ORDER = [], ACADEMIC_SUCCESS_CENTER_QUARTER_ORDER } = academyContent().academicCenter;
+const { ACADEMIC_SUBJECT_ORDER = [], ACADEMIC_SUCCESS_CENTER_QUARTER_ORDER, ASSIGNMENT_CARD_SPLITS = {} } = academyContent().academicCenter;
 const { SUBJECT_LABELS = {} } = academyContent().subjects;
 // Read at call time, not at import: these look the answer up in the school
 // that is open now. They were functions handed over by the school until
@@ -59,6 +59,41 @@ export function orderedSubjects(rows) {
   const ordered = ACADEMIC_SUBJECT_ORDER.filter((s) => present.has(s));
   const extras = [...present].filter((s) => !ACADEMIC_SUBJECT_ORDER.includes(s)).sort();
   return [...ordered, ...extras];
+}
+
+/**
+ * The cards to draw for a set of assignment rows: one per subject, in the
+ * Center's order, plus a card of its own right after it for any type the
+ * school lists in ASSIGNMENT_CARD_SPLITS (its writing portfolio, say).
+ *
+ * A split changes only where a row is DRAWN. Each row keeps its subject, so
+ * grades, the report card and the transcript are untouched. A school that
+ * lists no splits gets exactly one card per subject, as before.
+ *
+ * `canAdd` is false on a split card: "add another assignment" belongs to the
+ * subject's own card, not to a card that exists for one type.
+ */
+export function assignmentCards(rows) {
+  const cards = [];
+  for (const subject of orderedSubjects(rows)) {
+    const main = [];
+    const split = new Map();
+    for (const row of rows) {
+      if (row.subject !== subject) continue;
+      const heading = ASSIGNMENT_CARD_SPLITS[row.type];
+      if (heading) {
+        if (!split.has(heading)) split.set(heading, []);
+        split.get(heading).push(row);
+      } else {
+        main.push(row);
+      }
+    }
+    if (main.length > 0) cards.push({ key: subject, subject, heading: subjectHeading(subject), rows: main, canAdd: true });
+    for (const [heading, splitRows] of split) {
+      cards.push({ key: subject + '::' + heading, subject, heading, rows: splitRows, canAdd: false });
+    }
+  }
+  return cards;
 }
 
 /** Quarters in real school-year order, unknown ones appended alphabetically. */

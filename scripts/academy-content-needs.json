@@ -35,6 +35,7 @@
   "ACADEMIC_SUBJECT_ORDER",
   "ACADEMIC_SUCCESS_CENTER_QUARTER_ORDER",
   "ACTIVE_SUBJECTS",
+  "ASSIGNMENT_CARD_SPLITS",
   "AVATAR_GEAR",
   "BLACK_EXCELLENCE_KNOWN_GAPS",
   "BOOK_RANGE_LABELS",
@@ -171,6 +172,7 @@
   "resolveSuggestedDueDate": "academicCenter",
   "candidatesForBook": "academicCenter",
   "ACADEMIC_SUBJECT_ORDER": "academicCenter",
+  "ASSIGNMENT_CARD_SPLITS": "academicCenter",
   "activeMilestone": "academicCenter",
   "instructionProgress": "compliance",
   "GEORGIA_LAW_CITATION": "compliance",
@@ -361,7 +363,8 @@
     "slot": "academicCenter",
     "names": [
      "ACADEMIC_SUBJECT_ORDER",
-     "ACADEMIC_SUCCESS_CENTER_QUARTER_ORDER"
+     "ACADEMIC_SUCCESS_CENTER_QUARTER_ORDER",
+     "ASSIGNMENT_CARD_SPLITS"
     ]
    },
    {

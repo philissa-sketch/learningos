@@ -17,6 +17,7 @@ import {
   statusBadgeClass,
   subjectHeading,
   orderedSubjects,
+  assignmentCards,
   orderedQuarters,
   formatDueDate
 } from './academicUi.js';
@@ -381,23 +382,23 @@ function AssignmentSetup({ focusAssignmentId = null }) {
 
       <AcceptAllAssignments assignments={inQuarter} booksBySubject={booksBySubject} quarter={quarter} />
 
-      {subjects.map((subject) => (
-        <div key={subject} className="rounded-xl border border-space-700 bg-space-800 p-5 shadow-panel">
+      {assignmentCards(inQuarter).map((card) => (
+        <div key={card.key} className="rounded-xl border border-space-700 bg-space-800 p-5 shadow-panel">
           <p className="text-xs font-display uppercase tracking-widest text-signal-cyan">
-            {subjectHeading(subject)}
+            {card.heading}
           </p>
           <div className="mt-3 space-y-2">
-            {orderAssignments(inQuarter.filter((a) => a.subject === subject))
+            {orderAssignments(card.rows)
               .map((assignment) => (
                 <AssignmentEditor
                   key={assignment.id}
                   assignment={assignment}
-                  booksForSubject={booksBySubject[subject] || []}
+                  booksForSubject={booksBySubject[card.subject] || []}
                   focused={assignment.id === focusAssignmentId}
                 />
               ))}
           </div>
-          <AddCustomAssignment subject={subject} quarter={quarter} />
+          {card.canAdd && <AddCustomAssignment subject={card.subject} quarter={quarter} />}
         </div>
       ))}
 

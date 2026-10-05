@@ -4231,6 +4231,15 @@ const seedRows = khanFirstSeedRows().map((r) => ({ ...r, completed: false, grade
         !row.startedAt &&
         !row.milestones?.some((m) => m.completedAt) &&
         (!row.status || row.status === 'not-started' || row.status === 'placeholder');
+      /**
+       * A SUBJECT MOVE — the row is filed on the wrong card.
+       *
+       * Guarded on the subject it is expected to be sitting under, and refused
+       * on anything he has touched: the subject decides which course a grade
+       * counts toward, so a started or graded row keeps the one it was done
+       * under. The slot id never changes — it is the row's identity.
+       */
+      if (fix.subject && untouchedByHim && row.subject === fix.fromSubject) changes.subject = fix.subject;
       if (fix.type && untouchedByHim && row.type === fix.fromType && row.format === fix.fromFormat) {
         changes.type = fix.type;
         changes.format = fix.format;
