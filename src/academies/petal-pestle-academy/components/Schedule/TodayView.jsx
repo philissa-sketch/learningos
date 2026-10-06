@@ -29,6 +29,7 @@ import { marigoldCallsHer } from '../../lib/marigoldName.js';
 import { readingToday, khanWatchFor, READING_MINUTES } from '../../lib/readingProgress.js';
 import { unitUrl } from '../../data/khan/khanUnits.js';
 import { SendWorkCard } from './SendWorkCard.jsx';
+import { projectBoard } from '../../lib/academicCenter.js';
 
 // ---------------------------------------------------------------------------
 // TODAY — her school day, with a bell.
@@ -95,6 +96,20 @@ export function TodayView({ onNavigate }) {
   const stepsBySlot = Object.fromEntries(
     Object.values(writingDrafts || {}).map((d) => [d.slotId, d.steps || []])
   );
+
+  // Oct 5 2026, Gigi: "add Azianna projects to her Today so she can complete
+  // them." Her module projects lived only in Academic Center -> Projects, the
+  // Friday list and the Grown-Up Corner, so nothing on Today ever said they
+  // existed and her record shows 0 of 4. This is the knock. It asks the SAME
+  // function the Projects tab asks (projectBoard), so the card and the tab can
+  // never disagree about what is open. It is a doorway, not a debt: no red, no
+  // count of "late", and it disappears when nothing is open.
+  const projectStatus = useAppStore((s) => s.projectStatus);
+  const projectsOpen = projectBoard({
+    lessonsRead,
+    projectStatus: projectStatus || {},
+    drafts: writingDrafts || {}
+  }).filter((p) => p.state === 'now' || p.state === 'earlier');
 
   const day = todayKey();
   const done = useAppStore((s) => s.scheduleDays[day]?.done || {});
@@ -337,6 +352,35 @@ export function TodayView({ onNavigate }) {
           </p>
         )}
       </section>
+
+      {/* Her projects: the doorway to Academic Center -> Projects. */}
+      {projectsOpen.length > 0 && (
+        <section className="mt-5 rounded-petal border-2 border-sage-500 bg-sage-300/15 px-4 py-4">
+          <p className="font-display text-base text-ink-900">🌱 Your projects</p>
+          <p className="mt-0.5 text-xs text-ink-700">
+            {projectsOpen.length === 1
+              ? 'You have one project to make. Open it to see what you need and what to do.'
+              : `You have ${projectsOpen.length} projects to make. Pick any one. Open it to see what you need and what to do.`}
+          </p>
+          <ul className="mt-2 space-y-1.5">
+            {projectsOpen.slice(0, 5).map((p) => (
+              <li key={p.id} className="flex flex-wrap items-center justify-between gap-2">
+                <span className="text-sm text-ink-900">
+                  <span className="font-700">{p.title}</span>{' '}
+                  <span className="text-xs text-ink-500">· Module {p.module}</span>
+                </span>
+                <button
+                  type="button"
+                  onClick={() => throughCircle('blk-projects', () => onNavigate?.('projects'))}
+                  className="rounded-full bg-sage-700 px-4 py-1.5 text-xs font-700 text-white hover:bg-sage-500"
+                >
+                  Open
+                </button>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
 
       {/* What is happening right now */}
       <section className="mt-5">

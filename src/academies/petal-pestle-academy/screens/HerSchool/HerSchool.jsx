@@ -161,6 +161,7 @@ export function HerSchool({ onSignOut }) {
           {/* Sept 24 2026: Today's book report button opens the Academic Center
               on its Book Reports tab: her book report, not a list to search. */}
           {view === 'bookReport' && <AcademicCenterView startTab="reports" onNavigate={navigate} />}
+          {view === 'projects' && <AcademicCenterView startTab="projects" onNavigate={navigate} />}
           {view === 'academic' && <AcademicCenterView onNavigate={navigate} />}
           {view === 'wordWeek' && <WordWeekView onExit={() => navigate('today')} />}
           {view === 'readingLesson' && <ReadingLessonView onExit={() => navigate('today')} />}
