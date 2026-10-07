@@ -168,7 +168,21 @@ export const quarterlyAcademicPlaceholders = {
        * his hands until Sept 18, and that is the deliberate trade for not
        * having two books open at once.
        */
-      { slotId: 'asg::reading::Q1::1', type: 'Reading Assignment', dueDate: '2026-10-09', title: 'Hatchet — Gary Paulsen', note: 'Weekly chapter pacing. Survival story, short chapters, strong momentum — chosen to keep him reading while Q1 rebuilds grammar. Starts Sept 18, when the A Long Walk to Water report is turned in.' },
+      /**
+       * THE HATCHET READING (asg::reading::Q1::1) WAS RETIRED. (Oct 5, 2026.)
+       *
+       * The parent: Red-Tail Angels was on his English card twice — once as the
+       * Social Studies reading moved there, due Oct 30, and once on this slot,
+       * where the Hatchet reading had been swapped to it, due Oct 9. She kept
+       * the Oct 30 one. This slot is in RETIRED_ASSIGNMENT_SLOTS, so it is never
+       * seeded again and an untouched row is deleted on hydrate.
+       *
+       * The jacket report below now goes with the Oct 30 reading rather than the
+       * Oct 9 one, and stays due Oct 30 — the same day he finishes the book, at
+       * the parent's direction. That is deliberately inside the usual "a report
+       * lands two weeks after its book" rule; verify-assignment-dates.mjs and
+       * verify-academic-schedule.mjs name this one slot as the exception.
+       */
       /**
        * TWO BOOK REPORTS WERE OPEN AT ONCE. (Moved Sept 5, 2026.)
        *
@@ -211,7 +225,7 @@ export const quarterlyAcademicPlaceholders = {
        * When it lands, this date is free to go back to the three-weeks-after
        * pattern every other report in this file uses.
        */
-      { slotId: 'asg::reading::Q1::2', type: 'Book Report', dueDate: '2026-10-30', format: 'creative-project', title: 'Hatchet — book jacket redesign', note: 'Redesign the cover and write a 150-word back-cover blurb. Deliberately a visual project: his writing is two strands behind his reading, and Q1 is grammar catch-up. Dated to open after the A Long Walk to Water report is turned in — see the note above.' },
+      { slotId: 'asg::reading::Q1::2', type: 'Book Report', dueDate: '2026-10-30', format: 'creative-project', title: 'Red-Tail Angels — book jacket redesign', note: 'Redesign the cover and write a 150-word back-cover blurb. Deliberately a visual project: his writing is two strands behind his reading, and Q1 is grammar catch-up. Runs alongside the Red-Tail Angels reading and is due the day he finishes it.' },
       /**
        * Red-Tail Angels' reading lives on the English Language Arts card.
        * (Moved Oct 5, 2026 at the parent's direction.) It kept its

@@ -72,6 +72,7 @@ for (const [subject, byQuarter] of Object.entries(quarterlyAcademicPlaceholders)
 }
 const at = (d) => new Date(d + 'T12:00:00');
 const GRADED_WRITING = ['Book Report', 'Research Paper', 'Presentation'];
+const SAME_DAY_AS_BOOK = new Set(['asg::reading::Q1::2']);
 
 console.log(`\nscheduled assignments: ${ROWS.length}`);
 
@@ -187,6 +188,12 @@ console.log('\n--- 5. a promised report is a scheduled report ---');
     const read = ROWS.find((r) => r.type === 'Reading Assignment' && (r.title || '').toLowerCase().includes(book));
     if (!read) continue;
     const days = Math.round((at(rep.dueDate) - at(read.dueDate)) / 86400000);
+    // ONE NAMED EXCEPTION. Oct 5, 2026: the parent chose to have the Red-Tail
+    // Angels jacket report due the SAME DAY as the book (Oct 30) rather than
+    // two weeks later, which would have pushed it into Q2's grade. It is
+    // allowed only while it stays exactly that way — a drift to 3 days or to
+    // 10 days fails, so the exception cannot quietly swallow a real mistake.
+    if (SAME_DAY_AS_BOOK.has(rep.slotId) && days === 0) continue;
     if (days < 14) tooTight.push(`${rep.title} — ${days} days after the book`);
   }
   ok('every book report lands at least two weeks after its book', tooTight.length === 0,

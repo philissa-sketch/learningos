@@ -69,15 +69,12 @@ export const ASSIGNMENT_CORRECTIONS = {
   // his row was hydrated weeks ago and seeds never overwrite an existing
   // row. That is the mistake this whole table exists to catch, and it was
   // made again here before the table was remembered.
+  // Oct 5, 2026. The jacket report went with the Red-Tail Angels reading and
+  // stays due Oct 30 (the reading's own finish date) at the parent's direction.
+  // A row still on the Oct 9 date it held while Hatchet was the book takes it.
   'asg::reading::Q1::2':      { fromDueDate: '2026-10-09', dueDate: '2026-10-30' },
-  // And the BOOK itself. A Reading Assignment carries a 21-day lead, so
-  // Hatchet DUE Sept 18 had been saying "start now" since Aug 28 — on his
-  // board beside the report he was supposed to be finishing. The parent
-  // asked for the book to start Sept 18, when that report is due, which
-  // means finishing Oct 9. It lands on the date the report above just
-  // vacated, and Oct 30 is then three weeks after it: the pattern every
-  // other report in this file uses.
-  'asg::reading::Q1::1':      { fromDueDate: '2026-09-18', dueDate: '2026-10-09' },
+  // asg::reading::Q1::1 (the Hatchet reading) was retired Oct 5, 2026 — see
+  // RETIRED_ASSIGNMENT_SLOTS. Its date correction went with it.
   // --- dates: outside their own quarter, or inside a school break ----
   //
   // Found Aug 30, 2026 by scripts/verify-assignment-dates.mjs, written
@@ -227,7 +224,11 @@ export const ASSIGNMENT_CORRECTIONS = {
  */
 export const RETIRED_ASSIGNMENT_SLOTS = [
   'asg::socialStudies::Q2::3',
-  'asg::aerospace::Q1::2'
+  'asg::aerospace::Q1::2',
+  // Oct 5, 2026. The Hatchet reading, later swapped to Red-Tail Angels and
+  // dated Oct 9, which left Red-Tail on the English card twice. The parent
+  // kept the Oct 30 one (asg::socialStudies::Q1::2) and dropped this.
+  'asg::reading::Q1::1'
 ];
 
 export const BOOK_SWAPS = {

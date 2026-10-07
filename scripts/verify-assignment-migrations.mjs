@@ -88,7 +88,7 @@ console.log('\n--- 2. the school supplies them, optionally ---');
    * already hold it. It may grow; it must never SHRINK without the entries
    * being retired deliberately.
    */
-  ok('the corrections came across', Object.keys(repairs.ASSIGNMENT_CORRECTIONS || {}).length === 34,
+  ok('the corrections came across', Object.keys(repairs.ASSIGNMENT_CORRECTIONS || {}).length === 33,
     `${Object.keys(repairs.ASSIGNMENT_CORRECTIONS || {}).length} — the move must not drop one`);
   /**
    * Two, not three. `asg::aerospace::Q2::2` was removed on Sept 28, 2026: it
@@ -99,7 +99,7 @@ console.log('\n--- 2. the school supplies them, optionally ---');
    * this number may shrink again — but only alongside a slot genuinely coming
    * back to life, never by accident.
    */
-  ok('the retired slots came across', (repairs.RETIRED_ASSIGNMENT_SLOTS || []).length === 2,
+  ok('the retired slots came across', (repairs.RETIRED_ASSIGNMENT_SLOTS || []).length === 3,
     `${(repairs.RETIRED_ASSIGNMENT_SLOTS || []).length}`);
   ok('the book swaps came across', Object.keys(repairs.BOOK_SWAPS || {}).length === 8);
   ok('the slot is not required of every Academy',
