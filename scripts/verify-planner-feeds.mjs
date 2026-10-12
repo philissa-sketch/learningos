@@ -596,8 +596,12 @@ console.log('\n--- 4. a due date now carries its run-up ---');
     /onOpenAcademicCenter\?\.\(\{ kind: 'book', id: book\.id \}\)/.test(acCard));
   ok('...its step rows open that assignment',
     /onOpenAcademicCenter\?\.\(\{ kind: 'assignment', id: assignment\.id \}\)/.test(acCard));
+  // Oct 6, 2026: the due rows ask itemTarget (via openFor) instead of linking
+  // only when a title starts with an assignment's, so a field trip opens too.
+  // An assignment row still resolves to its assignment — in openFor's fallback.
   ok('...and its due rows open theirs',
-    /kind: 'assignment', id: assignmentFor\(item\)\.id/.test(acCard));
+    /onOpen=\{openFor\(item\)\}/.test(acCard) && /itemTarget\(item\)/.test(acCard)
+      && /kind: 'assignment', id: a\.id/.test(acCard));
 
   /**
    * ---- TWO DATES ON ONE ROW (Aug 26, 2026) ----

@@ -7,6 +7,7 @@ import { academyContent } from './content/academyContent.js';
 import { schoolViewLoader } from './content/slots/views.js';
 import { firstScreen } from './content/firstScreen.js';
 import { MissionControlDashboard } from './components/Dashboard/MissionControlDashboard.jsx';
+import { FieldTripBrief } from './components/Dashboard/FieldTripBrief.jsx';
 // ParentGate is deliberately NOT lazy-loaded like the dashboard it wraps.
 // It is small, and it has to render the lock screen without pulling the
 // dashboard chunk down first — because the gate returns early when
@@ -166,6 +167,7 @@ export default function App({ initialView = 'dashboard', onSignOut }) {
   const [scheduleMode, setScheduleMode] = useState('daily');
   const [activeLesson, setActiveLesson] = useState(null);
   const [activePrompt, setActivePrompt] = useState(null);
+  const [activeFieldTrip, setActiveFieldTrip] = useState(null); // a field trip id | null
   /**
    * Which thing the Academic Center should open at: `{ kind, id }` or null.
    *
@@ -217,7 +219,7 @@ export default function App({ initialView = 'dashboard', onSignOut }) {
     else if (t.kind === 'prompt') setActivePrompt(t.prompt);
     else if (t.kind === 'view') setView(t.view);
     else if (t.kind === 'planner') { setScheduleMode('weekly'); setView('schedule'); }
-    else if (t.kind === 'fieldTrip') { setScheduleMode('monthly'); setView('schedule'); }
+    else if (t.kind === 'fieldTrip') setActiveFieldTrip(t.id);
   };
   const [typingMode, setTypingMode] = useState(null); // null | 'home' | 'lessons' | 'speedtest'
   const [studySkill, setStudySkill] = useState(null); // 'spelling' | 'vocabulary' | null
@@ -362,6 +364,8 @@ export default function App({ initialView = 'dashboard', onSignOut }) {
     );
   } else if (activePrompt) {
     content = <WritingPromptEngine prompt={activePrompt} onExit={() => setActivePrompt(null)} />;
+  } else if (activeFieldTrip !== null) {
+    content = <FieldTripBrief tripId={activeFieldTrip} onExit={() => setActiveFieldTrip(null)} />;
   } else if (typingMode === 'lessons') {
     content = <TypingLessons onExit={() => setTypingMode(null)} onGoToSpeedTest={() => setTypingMode('speedtest')} />;
   } else if (typingMode === 'speedtest') {
@@ -458,6 +462,7 @@ export default function App({ initialView = 'dashboard', onSignOut }) {
         <NavBar view={view} onNavigate={setView} onSignOut={onSignOut} />
         {view === 'dashboard' && (
           <MissionControlDashboard
+            onOpenItem={openPlannerItem}
             onStartLesson={setActiveLesson}
             onOpenJournal={() => setView('journal')}
             onStartWeeklyProject={setActivePrompt}

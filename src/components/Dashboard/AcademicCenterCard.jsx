@@ -1,3 +1,4 @@
+import { itemTarget } from '../../lib/itemTarget.js';
 import { useAppStore } from '../../store/useAppStore.js';
 import {
   buildCalendarItems,
@@ -54,7 +55,7 @@ const LOOKAHEAD_DAYS = 7;
  * thing it is about, and Open lands on the work he is actually in the middle
  * of rather than a list of twenty books.
  */
-export function AcademicCenterCard({ onOpenAcademicCenter }) {
+export function AcademicCenterCard({ onOpenAcademicCenter, onOpenItem = null }) {
   const academicBooks = useAppStore((s) => s.academicBooks);
   const academicAssignments = useAppStore((s) => s.academicAssignments);
   // Field trips are the THIRD dated table. Left out of every calendar
@@ -153,6 +154,19 @@ export function AcademicCenterCard({ onOpenAcademicCenter }) {
   /** The assignment behind a calendar row, when there is one. */
   const assignmentFor = (item) =>
     academicAssignments.find((a) => a.title && item.title && item.title.startsWith(a.title)) || null;
+
+  /**
+   * WHAT A DUE ROW OPENS. Decided by itemTarget, the one place every dated row
+   * asks — so a field trip, a Journal piece or a mission opens something just
+   * like an assignment does. The old rule only linked a row when its title
+   * happened to start with an assignment's title, which left every other kind
+   * of row as text: hovering and clicking a field trip did nothing.
+   */
+  const openFor = (item) => {
+    if (onOpenItem && itemTarget(item)) return () => onOpenItem(item);
+    const a = assignmentFor(item);
+    return a && onOpenAcademicCenter ? () => onOpenAcademicCenter({ kind: 'assignment', id: a.id }) : null;
+  };
 
   if (
     reading.length === 0 &&
@@ -330,9 +344,7 @@ export function AcademicCenterCard({ onOpenAcademicCenter }) {
                 item={item}
                 today={today}
                 tone="overdue"
-                onOpen={assignmentFor(item) && onOpenAcademicCenter
-                  ? () => onOpenAcademicCenter({ kind: 'assignment', id: assignmentFor(item).id })
-                  : null}
+                onOpen={openFor(item)}
               />
             ))}
           </div>
@@ -351,9 +363,7 @@ export function AcademicCenterCard({ onOpenAcademicCenter }) {
                 item={item}
                 today={today}
                 tone="upcoming"
-                onOpen={assignmentFor(item) && onOpenAcademicCenter
-                  ? () => onOpenAcademicCenter({ kind: 'assignment', id: assignmentFor(item).id })
-                  : null}
+                onOpen={openFor(item)}
               />
             ))}
           </div>

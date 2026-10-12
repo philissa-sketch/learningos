@@ -109,6 +109,7 @@ export function MissionControlDashboard({
   onQuizWords,
   onPracticeWords,
   onOpenAcademicCenter,
+  onOpenItem,
   onOpenPE,
   onOpenView,
   onOpenTyping,
@@ -1624,7 +1625,7 @@ export function MissionControlDashboard({
         * It renders null when there is nothing due and no book in progress, so
         * mounting it costs an empty day nothing.
         */}
-      <AcademicCenterCard onOpenAcademicCenter={onOpenAcademicCenter} />
+      <AcademicCenterCard onOpenAcademicCenter={onOpenAcademicCenter} onOpenItem={onOpenItem} />
 
       {/* Free tutoring from the library — below the work, not above it. It is
           what to do when the work is hard, and the order printed on the card

@@ -17,7 +17,7 @@ import { findScheduledItem } from './plannerFeeds.js';
  *   planner    -> { kind: 'planner' }          a custom Planner assignment
  *   a prompt   -> { kind: 'prompt', prompt }   a Journal piece / project
  *   a screen   -> { kind: 'view', view }      the feed names it (openView)
- *   fieldTrip  -> { kind: 'fieldTrip' }
+ *   fieldTrip  -> { kind: 'fieldTrip', id }   his read-only page for that trip
  *   mission    -> { kind: 'mission' }
  *
  * Returns null when a row has nothing to open, so callers render no button
@@ -30,7 +30,7 @@ export function itemTarget(item) {
     return typeof item.recordId === 'number' ? { kind: 'academic', id: item.recordId } : null;
   }
   if (src === 'planner') return { kind: 'planner' };
-  if (item.source === 'fieldTrip') return { kind: 'fieldTrip' };
+  if (item.source === 'fieldTrip') return typeof item.recordId === 'number' ? { kind: 'fieldTrip', id: item.recordId } : null;
   // Anything that IS a Journal prompt or project opens the place he types it.
   // A hands-on build, a project and a weekly writing piece all carry one.
   if (item.promptId) {
