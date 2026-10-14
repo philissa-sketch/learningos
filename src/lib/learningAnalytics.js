@@ -13,11 +13,10 @@ import { instructionMinutes } from './instructionTime.js';
  *   the exercise and nutrition numbers that were blocked until PE and
  *   Nutrition existed. They exist now; that blocker is cleared.
  *
- *   NOT ANSWERABLE, and said so in the UI rather than faked — which
- *   learning style works best (needs a defined taxonomy first: a real
- *   research question, not a feature), and whether he is on track for
- *   yearly goals (yearly goals do not exist as a concept anywhere in
- *   this app yet).
+ *   FORMERLY "NOT ANSWERABLE", now answered in src/lib/analyticsAnswers.js
+ *   — on track for the year (derived from the year plan), next week's
+ *   focus (ranked from the same records), and learning style (from the
+ *   parent's Setup Questions answer, never guessed per lesson).
  *
  *   NOT ANSWERABLE YET, but now accumulating — which lessons take
  *   longest. Duration was never recorded; as of August 6, 2026 it is.
@@ -330,42 +329,3 @@ export function slowestLessons({ allLessons = [], lessonProgress = {}, limit = 5
   }
   return rows.sort((a, b) => b.minutes - a.minutes).slice(0, limit);
 }
-
-/**
- * The questions this dashboard deliberately does not answer, and why.
- *
- * Shipped as data rather than prose buried in a component, because a
- * dashboard that silently omits a question the parent was promised is
- * indistinguishable from one that forgot. Saying "not yet, and here is
- * what it would take" is the honest version.
- */
-export const UNANSWERED_QUESTIONS = [
-  {
-    id: 'duration',
-    question: 'Which lessons take him the longest?',
-    status: 'Collecting now',
-    detail:
-      'Lesson duration was never recorded — only whether he finished and how accurate he was. Recording started August 6, 2026, so this fills in as he works. Attempts before that date have no time and never will.'
-  },
-  {
-    id: 'learning-style',
-    question: 'Which learning style works best for him?',
-    status: 'Needs a decision first',
-    detail:
-      'There is no defined way to categorize a lesson’s learning style in this app, so there is nothing to correlate outcomes against. That is a real research and design question, not a missing chart.'
-  },
-  {
-    id: 'yearly-goals',
-    question: 'Is he on track for the year?',
-    status: 'Needs goals to exist',
-    detail:
-      'Yearly goals aren’t a concept anywhere in this app yet, so “on track” has nothing to measure against. Mastery pace below is the honest substitute until targets are set.'
-  },
-  {
-    id: 'next-week',
-    question: 'What should he focus on next week?',
-    status: 'Built elsewhere',
-    detail:
-      'This is the targeted-recommendations engine already scoped in Phase 5. Building a second one here would mean maintaining two that disagree.'
-  }
-];

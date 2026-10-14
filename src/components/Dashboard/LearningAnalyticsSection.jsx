@@ -7,9 +7,10 @@ import {
   readingRollup,
   habitConsistency,
   wellnessSummary,
-  slowestLessons,
-  UNANSWERED_QUESTIONS
+  slowestLessons
 } from '../../lib/learningAnalytics.js';
+import { buildYearPlan, yearProgress, schoolDaysBetween } from '../../lib/yearPlan.js';
+import { onTrackForYear, nextWeekFocus, learningStyleView } from '../../lib/analyticsAnswers.js';
 import { academyContent } from '../../content/academyContent.js';
 
 const { allLessons = [] } = academyContent().lessons;
@@ -33,13 +34,18 @@ const { SUBJECT_LABELS = {} } = academyContent().subjects;
  *      indistinguishable from one that forgot, and "not yet, here's what
  *      it would take" is worth more than a chart that implies an answer.
  */
-export function LearningAnalyticsSection() {
+export function LearningAnalyticsSection({ onGoTo = () => {} }) {
   const lessonProgress = useAppStore((s) => s.lessonProgress);
   const allAttendance = useAppStore((s) => s.allAttendance);
   const readingLog = useAppStore((s) => s.readingLog);
   const peDailyLog = useAppStore((s) => s.peDailyLog);
   const peWorkoutLog = useAppStore((s) => s.peWorkoutLog);
   const peBodyMetrics = useAppStore((s) => s.peBodyMetrics);
+  const academicAssignments = useAppStore((s) => s.academicAssignments);
+  const academicBooks = useAppStore((s) => s.academicBooks);
+  const missionEvaluations = useAppStore((s) => s.missionEvaluations);
+  const khanAcademyAssignments = useAppStore((s) => s.khanAcademyAssignments);
+  const learnerProfile = useAppStore((s) => s.learnerProfile);
   const getAllSubjectsForRecordkeeping = useAppStore((s) => s.getAllSubjectsForRecordkeeping);
 
   const today = todayDateStr();
@@ -52,6 +58,34 @@ export function LearningAnalyticsSection() {
   const habits = habitConsistency({ allAttendance, today });
   const wellness = wellnessSummary({ peDailyLog, peWorkoutLog, peBodyMetrics, today });
   const slowest = slowestLessons({ allLessons, lessonProgress });
+
+  const yearPlan = buildYearPlan({
+    today,
+    allLessons,
+    lessonProgress,
+    academicAssignments,
+    academicBooks,
+    missionEvaluations,
+    allAttendance,
+    khanAcademyAssignments
+  });
+  const onTrack = onTrackForYear({
+    yearPlan,
+    progress: yearProgress(yearPlan, today),
+    today,
+    schoolDaysBetween
+  });
+  const labelFor = (s) => SUBJECT_LABELS[s] || s;
+  const focus = nextWeekFocus({
+    onTrack,
+    assignments: academicAssignments,
+    momentum,
+    reading,
+    wellness,
+    today,
+    labelFor
+  });
+  const style = learningStyleView({ profile: learnerProfile, momentum });
 
   const hasAnyData = time.total > 0 || pace.totalMastered > 0 || habits.daysWorked > 0;
 
@@ -185,7 +219,16 @@ export function LearningAnalyticsSection() {
             <div className="rounded-xl border border-space-700 bg-space-800 p-5 shadow-panel">
               <p className="text-xs font-display uppercase tracking-widest text-signal-cyan">Reading</p>
               {reading.sessions === 0 ? (
-                <p className="mt-2 text-sm text-ink-500">Nothing logged in the last 4 weeks.</p>
+                <>
+                  <p className="mt-2 text-sm text-ink-500">Nothing logged in the last 4 weeks.</p>
+                  <button
+                    type="button"
+                    onClick={() => onGoTo('reading-log')}
+                    className="mt-2 rounded-md border border-space-600 px-2 py-1 text-xs text-signal-cyan"
+                  >
+                    Open the Reading Log
+                  </button>
+                </>
               ) : (
                 <>
                   <p className="mt-2 font-display text-3xl font-700 text-signal-cyan">
@@ -227,6 +270,20 @@ export function LearningAnalyticsSection() {
                     value={wellness.avgActivityMinutes ? `${wellness.avgActivityMinutes}m` : '—'}
                   />
                 </div>
+                {wellness.daysLogged === 0 && (
+                  <div className="mt-3 flex flex-wrap items-center gap-3 text-xs text-ink-500">
+                    <span>
+                      Workouts are logged, but no daily protein, sleep or activity, so those three are blank.
+                    </span>
+                    <button
+                      type="button"
+                      onClick={() => onGoTo('pe-fitness-nutrition')}
+                      className="rounded-md border border-space-600 px-2 py-1 text-signal-cyan"
+                    >
+                      Open PE &amp; Nutrition
+                    </button>
+                  </div>
+                )}
                 <p className="mt-3 text-xs text-ink-600">
                   Averaged across the {wellness.daysLogged} days actually logged, not across all 28. An average
                   over blank days would read as “he ate badly” when it means “nothing was written down,” and
@@ -272,25 +329,166 @@ export function LearningAnalyticsSection() {
         </>
       )}
 
-      {/* What this can't tell you — stated, not omitted. */}
-      <div className="rounded-xl border border-space-700 bg-space-800 p-5 shadow-panel">
-        <p className="text-xs font-display uppercase tracking-widest text-ink-500">What this can’t tell you</p>
-        <p className="mt-1 text-xs text-ink-500">
-          Four questions worth asking that this dashboard doesn’t answer, and why — better than quietly leaving
-          them out.
-        </p>
-        <div className="mt-3 space-y-2">
-          {UNANSWERED_QUESTIONS.map((item) => (
-            <div key={item.id} className="rounded-lg border border-space-700 bg-space-900 px-3 py-2.5">
-              <div className="flex flex-wrap items-center justify-between gap-2">
-                <p className="font-display text-sm font-700 text-ink-300">{item.question}</p>
-                <span className="flex-none rounded-full border border-space-600 px-2 py-0.5 text-[10px] font-display uppercase tracking-widest text-ink-500">
-                  {item.status}
-                </span>
-              </div>
-              <p className="mt-1 text-xs text-ink-600">{item.detail}</p>
+      <AnswerCards
+        onTrack={onTrack}
+        focus={focus}
+        style={style}
+        slowest={slowest}
+        labelFor={labelFor}
+        onGoTo={onGoTo}
+      />
+    </div>
+  );
+}
+
+const WORD = {
+  ahead: 'Ahead',
+  'on-pace': 'On pace',
+  behind: 'Behind',
+  'not-started': 'Not started'
+};
+
+function Pill({ children, tone }) {
+  const cls =
+    tone === 'good'
+      ? 'border-signal-cyan text-signal-cyan'
+      : tone === 'warn'
+        ? 'border-signal-amber text-signal-amber'
+        : 'border-space-600 text-ink-500';
+  return (
+    <span className={'flex-none rounded-full border px-2 py-0.5 text-[10px] font-display uppercase tracking-widest ' + cls}>
+      {children}
+    </span>
+  );
+}
+
+/**
+ * The four questions this page used to list as unanswerable. Each now shows
+ * what the app can say, and when it still cannot, the one thing that would
+ * change that, as a button.
+ */
+function AnswerCards({ onTrack, focus, style, slowest, labelFor, onGoTo }) {
+  const overallWord = {
+    'on-track': ['On track', 'good'],
+    watch: ['Watch one subject', 'warn'],
+    behind: ['Behind', 'warn'],
+    'not-started': ['Too early to say', 'plain']
+  }[onTrack.overall];
+
+  return (
+    <div className="rounded-xl border border-space-700 bg-space-800 p-5 shadow-panel">
+      <p className="text-xs font-display uppercase tracking-widest text-signal-cyan">Four questions</p>
+      <p className="mt-1 text-xs text-ink-500">
+        Each one is answered from records already in the app. Where something is still missing, the button
+        takes you to the place that fills it.
+      </p>
+
+      <div className="mt-3 space-y-3">
+        <div className="rounded-lg border border-space-700 bg-space-900 px-3 py-3">
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            <p className="font-display text-sm font-700 text-ink-100">Is he on track for the year?</p>
+            <Pill tone={overallWord[1]}>{overallWord[0]}</Pill>
+          </div>
+          <p className="mt-1 text-xs text-ink-500">
+            {onTrack.daysLogged} school days logged; the calendar says about {onTrack.expectedDays} should be done
+            by now{onTrack.required ? `, and ${onTrack.required} are required for the year` : ''}.
+            {onTrack.reachable === false && ' The required total is no longer reachable on the school calendar alone.'}
+          </p>
+          {onTrack.rows.length > 0 && (
+            <div className="mt-2 space-y-1">
+              {onTrack.rows.map((r) => (
+                <div key={r.subject} className="flex items-center justify-between gap-2 text-sm">
+                  <span className="text-ink-300">{labelFor(r.subject)}</span>
+                  <span className="text-xs text-ink-500">
+                    {r.mastered}/{r.total} mastered · about {Math.round(r.expected)} expected ·{' '}
+                    <span className={r.word === 'behind' ? 'text-signal-amber' : 'text-signal-cyan'}>
+                      {WORD[r.word]}
+                    </span>
+                  </span>
+                </div>
+              ))}
             </div>
-          ))}
+          )}
+          <p className="mt-2 text-xs text-ink-600">
+            Expected is a straight line through the quarter ({Math.round(onTrack.quarterShare * 100)}% of it has
+            gone). Lessons are not taught at an even rate, so treat this as a prompt to look.
+          </p>
+        </div>
+
+        <div className="rounded-lg border border-space-700 bg-space-900 px-3 py-3">
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            <p className="font-display text-sm font-700 text-ink-100">What should he focus on next week?</p>
+            <Pill tone="good">From his records</Pill>
+          </div>
+          <ol className="mt-2 space-y-2">
+            {focus.map((f, i) => (
+              <li key={f.id} className="flex items-start justify-between gap-3">
+                <div className="min-w-0">
+                  <p className="text-sm text-ink-300">
+                    {i + 1}. {f.title}
+                  </p>
+                  <p className="text-xs text-ink-600">{f.why}</p>
+                </div>
+                {f.go && (
+                  <button
+                    type="button"
+                    onClick={() => onGoTo(f.go)}
+                    className="flex-none rounded-md border border-space-600 px-2 py-1 text-xs text-signal-cyan"
+                  >
+                    Open
+                  </button>
+                )}
+              </li>
+            ))}
+          </ol>
+        </div>
+
+        <div className="rounded-lg border border-space-700 bg-space-900 px-3 py-3">
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            <p className="font-display text-sm font-700 text-ink-100">Which learning style works best for him?</p>
+            <Pill tone={style.answered ? 'good' : 'warn'}>{style.answered ? 'From your answers' : 'Needs your answer'}</Pill>
+          </div>
+          {style.answered ? (
+            <div className="mt-1 space-y-1 text-xs text-ink-500">
+              {style.worksBest.length > 0 && <p>You said what works: {style.worksBest.join(', ')}.</p>}
+              {style.attention && <p>Focus span: {style.attention}.</p>}
+              {style.notes && <p>{style.notes}</p>}
+              {style.speedingUp.length > 0 && (
+                <p>
+                  Subjects speeding up right now: {style.speedingUp.map(labelFor).join(', ')}. Compare that with
+                  how those lessons are taught before deciding a style is the reason.
+                </p>
+              )}
+            </div>
+          ) : (
+            <>
+              <p className="mt-1 text-xs text-ink-500">
+                The app does not label lessons by style, and guessing would be worse than asking. Your answer in
+                Setup Questions is the setup; it appears here the moment you save it.
+              </p>
+              <button
+                type="button"
+                onClick={() => onGoTo('learner-profile')}
+                className="mt-2 rounded-md border border-space-600 px-2 py-1 text-xs text-signal-cyan"
+              >
+                Answer "How they learn best"
+              </button>
+            </>
+          )}
+        </div>
+
+        <div className="rounded-lg border border-space-700 bg-space-900 px-3 py-3">
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            <p className="font-display text-sm font-700 text-ink-100">Which lessons take him the longest?</p>
+            <Pill tone={slowest.length > 0 ? 'good' : 'plain'}>
+              {slowest.length > 0 ? 'Answered above' : 'Recording now'}
+            </Pill>
+          </div>
+          <p className="mt-1 text-xs text-ink-500">
+            {slowest.length > 0
+              ? 'See "Longest lessons" above. Only attempts since timing began are counted.'
+              : 'Timing is on. Nothing for you to do: the first list appears after he finishes a few lessons.'}
+          </p>
         </div>
       </div>
     </div>

@@ -247,8 +247,18 @@ console.log('\n--- the row she grades from opens the work she is grading ---');
 
   ok('his finished copy is readable without a format being picked',
     /function SubmittedWork/.test(picker)
-      && /\{assignment\.status === 'completed' &&[\s\S]{0,220}?<SubmittedWork assignment=\{assignment\} \/>/.test(picker),
+      && /hasSavedWork\(assignment\) && \(\s*<div className="mt-3">\s*<SubmittedWork assignment=\{assignment\} format=\{chosen\} \/>/.test(picker),
     'it lived inside RubricScorer, which needs a format — a completed report with none showed nothing');
+  // Oct 12, 2026. The parent, on an in-progress Math project: "I am unable to
+  // find his work for this project." It only showed once the status was
+  // 'completed', and a project with no format gave him no box to type in.
+  ok('...and at EVERY status, not only once completed (she could not find an in-progress project\'s work)',
+    /status === 'completed' && chosen \? \(\s*<RubricScorer/.test(picker) // the RUBRIC still waits for completion; reading does not
+      && /function hasSavedWork\(a\)[\s\S]{0,160}notesText[\s\S]{0,40}photoUrl/.test(picker));
+  ok('...and a type with no formats to pick still shows what he wrote on it',
+    /options\.length === 0\) \{\s*return hasSavedWork\(assignment\)/.test(picker));
+  ok('...and notes alone are shown rather than hidden',
+    /His notes — he has not saved a draft yet/.test(picker));
   ok('...final first, and it says which it is showing',
     /assignment\.finalText[\s\S]{0,120}?'His finished copy'[\s\S]{0,220}?'His rough draft/.test(picker),
     'grading a rough draft believing it is the finished copy is worse than not showing it');
@@ -315,6 +325,23 @@ console.log('\n--- Parent Dashboard rows open the work they name (Oct 2 2026, fi
     /promptId: build\.projectId/.test(feeds) && /item\.promptId[\s\S]{0,160}kind: 'prompt'[\s\S]{0,200}item\.openView\) return \{ kind: 'view'/.test(tgt));
   ok('the parent opens the prompt itself, not the list of entries',
     /onOpenPrompt\(t\.prompt\)/.test(pd) && /onOpenPrompt=\{setActivePrompt\}/.test(app));
+
+  // ---- A project with no format picked still gives him a box. (Oct 12, 2026.) ----
+  const { writerFormatFor, WORK_RESPONSE_FORMAT, READING_RESPONSE_FORMAT: RR } = await import('../src/lib/readingResponse.js');
+  const pickerSrc = read('src/components/Academic/AssignmentFormatPicker.jsx');
+  const noneFound = () => null;
+  const pickedFormat = { id: 'applied-math', name: 'Applied maths project' };
+  const onlyApplied = (type, id) => (id === 'applied-math' ? pickedFormat : null);
+  ok('a Portfolio Entry with no format gets the plain "Explain your work" box',
+    writerFormatFor({ type: 'Portfolio Entry', format: null }, noneFound) === WORK_RESPONSE_FORMAT);
+  ok('...a Reading Assignment still gets the reading response',
+    writerFormatFor({ type: 'Reading Assignment', format: null }, noneFound) === RR);
+  ok('...and a format she picks replaces it at once',
+    writerFormatFor({ type: 'Portfolio Entry', format: 'applied-math' }, onlyApplied) === pickedFormat);
+  ok('...the fallback has sections and a checklist for the writer to use',
+    WORK_RESPONSE_FORMAT.sections.length >= 3 && WORK_RESPONSE_FORMAT.checklist.length >= 3 && WORK_RESPONSE_FORMAT.rubricKind === 'written');
+  ok('...and the picker no longer tells her he gets "a generic assignment"',
+    !/he'll see a generic assignment/.test(pickerSrc) && /Explain your work/.test(pickerSrc));
 }
 
 console.log(`\n${passed} passed, ${failures.length} failed`);

@@ -1044,7 +1044,15 @@ export function ParentDashboard({ onSignOut, onOpenAcademicCenter = null, onOpen
       {section === 'weekly-report' && <WeeklyReportSection />}
       {section === 'report-card' && <ReportCardSection />}
       {section === 'mission-evaluations' && <MissionEvaluationSection />}
-      {section === 'analytics' && <LearningAnalyticsSection />}
+      {section === 'analytics' && (
+        <LearningAnalyticsSection
+          onGoTo={(target) => {
+            setSection(target);
+            const group = SECTION_GROUPS.find((g) => g.sections.some((x) => x.id === target));
+            if (group) setOpenGroup(group.id);
+          }}
+        />
+      )}
       {section === 'year-plan' && <YearPlanSection />}
       {section === 'planner' && <PlannerSection />}
       {section === 'compliance' && <ComplianceSection />}

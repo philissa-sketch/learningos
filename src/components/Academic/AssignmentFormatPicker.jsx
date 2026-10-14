@@ -25,7 +25,16 @@ export function AssignmentFormatPicker({ assignment }) {
   const [open, setOpen] = useState(false);
 
   const options = formatsForType(assignment.type);
-  if (options.length === 0 || !assignment.title) return null;
+  if (!assignment.title) return null;
+  // A type with no formats to pick (a Reading Assignment) still has his writing
+  // on it now, and she has to be able to read it.
+  if (options.length === 0) {
+    return hasSavedWork(assignment) ? (
+      <div className="mt-3 border-t border-space-700 pt-2">
+        <SubmittedWork assignment={assignment} />
+      </div>
+    ) : null;
+  }
 
   const chosen = findFormat(assignment.type, assignment.format);
 
@@ -49,7 +58,7 @@ export function AssignmentFormatPicker({ assignment }) {
         </div>
       ) : (
         <p className="mt-1.5 text-xs text-ink-500">
-          No format picked yet — he'll see a generic assignment until you choose one.
+          No format picked yet — he gets a plain "Explain your work" box until you choose one.
         </p>
       )}
 
@@ -77,14 +86,21 @@ export function AssignmentFormatPicker({ assignment }) {
         </div>
       )}
 
-      {assignment.status === 'completed' &&
-        (chosen ? (
-          <RubricScorer assignment={assignment} format={chosen} />
-        ) : (
+      {/*
+        HIS WORK IS SHOWN AT EVERY STAGE, NOT ONLY ONCE COMPLETED. (Oct 12, 2026.)
+        This used to wait for status 'completed', so an in-progress project with
+        a draft, notes or a photo on it showed her nothing — "I am unable to find
+        his work." The rubric still waits for completion; reading does not.
+      */}
+      {assignment.status === 'completed' && chosen ? (
+        <RubricScorer assignment={assignment} format={chosen} />
+      ) : (
+        hasSavedWork(assignment) && (
           <div className="mt-3">
-            <SubmittedWork assignment={assignment} />
+            <SubmittedWork assignment={assignment} format={chosen} />
           </div>
-        ))}
+        )
+      )}
     </div>
   );
 }
@@ -103,6 +119,11 @@ export function AssignmentFormatPicker({ assignment }) {
  * The rubric genuinely needs a format: its criteria come from one. His writing
  * does not, so it no longer waits for one.
  */
+/** Anything he has saved on this assignment: notes, a draft, a finished copy or a photo. */
+function hasSavedWork(a) {
+  return Boolean(a.finalText || a.draftText || a.notesText || a.photoUrl);
+}
+
 function SubmittedWork({ assignment, format = null }) {
   /**
    * A BUILD IS SUBMITTED AS A PHOTOGRAPH. (Sept 24, 2026.)
@@ -117,7 +138,9 @@ function SubmittedWork({ assignment, format = null }) {
     ? { text: assignment.finalText, label: 'His finished copy' }
     : assignment.draftText
       ? { text: assignment.draftText, label: 'His rough draft — he has not saved a finished copy yet' }
-      : null;
+      : assignment.notesText
+        ? { text: assignment.notesText, label: 'His notes — he has not saved a draft yet' }
+        : null;
   if (!shown && !photo) return null;
 
   if (!shown) {
@@ -169,7 +192,7 @@ function SubmittedWork({ assignment, format = null }) {
           ]
         })}
       />
-      {assignment.notesText && (
+      {assignment.notesText && shown.text !== assignment.notesText && (
         <details className="mt-2">
           <summary className="cursor-pointer text-[11px] text-ink-500 hover:text-ink-300">
             His notes ({assignment.notesTextWords || 0} words)
