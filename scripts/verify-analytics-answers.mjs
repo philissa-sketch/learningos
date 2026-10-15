@@ -37,6 +37,16 @@ ok('the first days of a quarter read as too early, not behind', early.overall ==
 const empty = onTrackForYear({});
 ok('no plan never throws and says too early', empty.overall === 'not-started');
 
+const st = onTrackForYear({ yearPlan: plan, today: '2026-10-14', schoolDaysBetween, started: { a: 5 } });
+ok('started-but-not-mastered is counted per subject', st.rows.find((r) => r.subject === 'a').startedNotMastered === 3);
+ok('the focus item tells you to finish started lessons', nextWeekFocus({ onTrack: st, today: '2026-10-14' }).some((x) => /started but not mastered/.test(x.why)));
+
+const ov = onTrackForYear({ yearPlan: plan, today: '2026-10-14', schoolDaysBetween,
+  pace: { a: { days: 26, needs: 71, state: 'over', daysSoFar: 20 }, b: { days: 11, needs: 11, state: 'tight', daysSoFar: 9 } } });
+ok('an over-scheduled subject is overloaded, not behind', ov.rows.find((r) => r.subject === 'a').word === 'overloaded' && ov.behindSubjects.length === 0);
+ok('overloaded subjects get their own focus item with the day counts', nextWeekFocus({ onTrack: ov, today: '2026-10-14' }).some((x) => x.id === 'over-a' && /71/.test(x.why) && /26/.test(x.why)));
+ok('expected uses owned days, not calendar days', ov.rows.find((r) => r.subject === 'b').expected === Math.round(20 * 9 / 11 * 10) / 10);
+
 // --- next week --------------------------------------------------------------
 const f = nextWeekFocus({
   onTrack: t,

@@ -9,7 +9,8 @@ import {
   wellnessSummary,
   slowestLessons
 } from '../../lib/learningAnalytics.js';
-import { buildYearPlan, yearProgress, schoolDaysBetween } from '../../lib/yearPlan.js';
+import { buildYearPlan, yearProgress, schoolDaysBetween, QUARTER_SPANS } from '../../lib/yearPlan.js';
+import { quarterPacing, ownedDaysInQuarter } from '../../lib/pacing.js';
 import { onTrackForYear, nextWeekFocus, learningStyleView } from '../../lib/analyticsAnswers.js';
 import { academyContent } from '../../content/academyContent.js';
 
@@ -69,7 +70,26 @@ export function LearningAnalyticsSection({ onGoTo = () => {} }) {
     allAttendance,
     khanAcademyAssignments
   });
+  const currentQuarter = yearPlan.find((q) => q.status === 'current');
+  const started = {};
+  for (const l of allLessons) {
+    if (currentQuarter && l.quarter === currentQuarter.batchLabel && lessonProgress[l.id]) {
+      started[l.subject] = (started[l.subject] || 0) + 1;
+    }
+  }
+  const ownedPace = {};
+  if (currentQuarter) {
+    const span = QUARTER_SPANS.find((q) => q.id === currentQuarter.id);
+    const khanRows = khanAcademyAssignments || [];
+    const whole = quarterPacing(span, khanRows);
+    const sofar = ownedDaysInQuarter({ ...span, end: today < span.end ? today : span.end }, khanRows).owned;
+    for (const r of whole.rows) {
+      ownedPace[r.subject] = { days: r.days, needs: r.needs, state: r.state, daysSoFar: sofar[r.subject] || 0 };
+    }
+  }
   const onTrack = onTrackForYear({
+    pace: ownedPace,
+    started,
     yearPlan,
     progress: yearProgress(yearPlan, today),
     today,
@@ -342,6 +362,7 @@ export function LearningAnalyticsSection({ onGoTo = () => {} }) {
 }
 
 const WORD = {
+  overloaded: 'Too much for the days',
   ahead: 'Ahead',
   'on-pace': 'On pace',
   behind: 'Behind',
@@ -400,8 +421,11 @@ function AnswerCards({ onTrack, focus, style, slowest, labelFor, onGoTo }) {
                 <div key={r.subject} className="flex items-center justify-between gap-2 text-sm">
                   <span className="text-ink-300">{labelFor(r.subject)}</span>
                   <span className="text-xs text-ink-500">
-                    {r.mastered}/{r.total} mastered · about {Math.round(r.expected)} expected ·{' '}
-                    <span className={r.word === 'behind' ? 'text-signal-amber' : 'text-signal-cyan'}>
+                    {r.mastered}/{r.total} mastered
+                    {r.startedNotMastered > 0 ? ` · ${r.startedNotMastered} started, not mastered` : ''} · about{' '}
+                    {Math.round(r.expected)} expected
+                    {r.word === 'overloaded' ? ` · needs ${r.neededDays} days, has ${r.ownedDays}` : ''} ·{' '}
+                    <span className={r.word === 'behind' || r.word === 'overloaded' ? 'text-signal-amber' : 'text-signal-cyan'}>
                       {WORD[r.word]}
                     </span>
                   </span>

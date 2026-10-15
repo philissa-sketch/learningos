@@ -39,7 +39,7 @@ function paceWord(mastered, expected) {
  * `expected` is a straight line through the quarter. Lessons are not taught at
  * an even rate, so this is a prompt to look, labelled as such, not a verdict.
  */
-export function onTrackForYear({ yearPlan = [], progress = null, today = toDateStr(new Date()), schoolDaysBetween }) {
+export function onTrackForYear({ yearPlan = [], progress = null, today = toDateStr(new Date()), schoolDaysBetween, started = {}, pace = {} }) {
   const current = yearPlan.find((q) => q.status === 'current') || null;
   const doneDays = yearPlan.filter((q) => q.status === 'complete').reduce((n, q) => n + (q.schoolDays || 0), 0);
   let elapsedInCurrent = 0;
@@ -55,14 +55,32 @@ export function onTrackForYear({ yearPlan = [], progress = null, today = toDateS
     quarterShare = Math.min(1, elapsedInCurrent / current.schoolDays);
     rows = Object.entries(current.bySubject || {})
       .map(([subject, v]) => {
-        const expected = Math.round(v.total * quarterShare * 10) / 10;
-        return { subject, total: v.total, mastered: v.mastered, expected, word: paceWord(v.mastered, expected) };
+        const own = pace[subject] || null;
+        // A subject taught in a shared block is paced against the days it
+        // actually OWNS, not against the calendar, and a subject whose quarter
+        // holds more work than days is over-scheduled, which is not the same
+        // as falling behind.
+        const share = own && own.days > 0 ? Math.min(1, own.daysSoFar / own.days) : quarterShare;
+        const expected = Math.round(v.total * share * 10) / 10;
+        const begun = Math.max(0, (started[subject] || 0) - v.mastered);
+        const overloaded = Boolean(own && (own.state === 'over' || own.state === 'buffered'));
+        return {
+          subject,
+          total: v.total,
+          mastered: v.mastered,
+          expected,
+          word: overloaded ? 'overloaded' : paceWord(v.mastered, expected),
+          startedNotMastered: begun,
+          ownedDays: own ? own.days : null,
+          neededDays: own ? own.needs : null
+        };
       })
       .sort((a, b) => a.mastered - a.expected - (b.mastered - b.expected));
   }
 
   const daysWord = expectedDays < 5 ? 'not-started' : paceWord(daysLogged, expectedDays * 0.9);
   const behindSubjects = rows.filter((r) => r.word === 'behind');
+  const overloadedSubjects = rows.filter((r) => r.word === 'overloaded');
 
   return {
     currentLabel: current ? current.id : null,
@@ -74,6 +92,7 @@ export function onTrackForYear({ yearPlan = [], progress = null, today = toDateS
     reachable: progress ? Boolean(progress.onTrack) : null,
     rows,
     behindSubjects,
+    overloadedSubjects,
     overall:
       daysWord === 'behind' || behindSubjects.length >= 2 || progress?.onTrack === false
         ? 'behind'
@@ -123,7 +142,19 @@ export function nextWeekFocus({
       id: `pace-${r.subject}`,
       weight: 80 - Math.round(r.mastered - r.expected),
       title: `Extra time on ${labelFor(r.subject)}`,
-      why: `${r.mastered} of ${r.total} lessons mastered; about ${Math.round(r.expected)} would be expected by now.`,
+      why:
+        `${r.mastered} of ${r.total} lessons mastered; about ${Math.round(r.expected)} would be expected by now.` +
+        (r.startedNotMastered > 0 ? ` ${r.startedNotMastered} more were started but not mastered, so finish those first.` : ''),
+      go: null
+    });
+  }
+
+  for (const r of onTrack?.overloadedSubjects || []) {
+    items.push({
+      id: `over-${r.subject}`,
+      weight: 70,
+      title: `${labelFor(r.subject)} has more work than days this quarter`,
+      why: `It needs about ${r.neededDays} school days of work and owns ${r.ownedDays}. Move some of it to a later quarter or give it open Fridays (Planning, Pacing).`,
       go: null
     });
   }
