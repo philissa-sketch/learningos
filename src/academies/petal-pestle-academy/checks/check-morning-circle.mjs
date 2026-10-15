@@ -30,8 +30,12 @@
 //  5. HER VOICE — run against a pretend browser: a line waits for her first tap
 //     (on pointerup, which a touch screen needs), is spoken once, is marked
 //     said only once spoken, and the Grown-Up Corner switch silences it.
-//  6. ONE TEST A DAY — a weekly or quarter test today closes the next one; a
-//     reading check does not count.
+//  6. NO LIMIT ON TESTS PER DAY — Gigi removed "one test a day" on Oct 15 2026
+//     ("Remove the one test a day rule. The retake in 2 days can stay."). Sitting
+//     a weekly or quarter test today must not close another test: not a first
+//     attempt, not a re-take whose 2-day wait is over, however many she has sat.
+//     The 2-day wait, the 3-attempt limit and going back over the missed
+//     lessons all still hold. The old wording and helpers may not come back.
 //  7. RE-TAKE AFTER GOING BACK — a re-take opens only when every lesson missed
 //     on the last attempt has been re-read AFTER it; the 2-day and 3-attempt
 //     rules still hold; LessonsView uses testGate for both kinds of test.
@@ -84,6 +88,10 @@ const read = (rel) => readFileSync(join(ROOT, rel), 'utf8');
 // files, so one line can be broken without touching her folder.
 let tmp = null;
 let tmpN = 0;
+// Where each deliberately-broken module was written, so a module that imports
+// it (testGate.js imports assessmentEngine.js) can be pointed at the broken copy
+// and not at the real file.
+const brokenUrl = {};
 async function loadModule(rel, source) {
   if (source == null) return import(pathToFileURL(join(ROOT, rel)).href + `?v=${tmpN++}`);
   tmp = tmp || mkdtempSync(join(tmpdir(), 'pp-circle-'));
@@ -91,6 +99,7 @@ async function loadModule(rel, source) {
   const fixed = source.replace(/from\s+'(\.{1,2}\/[^']+)'/g, (_, p) => `from '${pathToFileURL(resolve(dir, p)).href}'`);
   const file = join(tmp, `m${tmpN++}-${rel.replace(/[\\/]/g, '_')}`);
   writeFileSync(file, fixed);
+  brokenUrl[rel] = pathToFileURL(file).href;
   return import(pathToFileURL(file).href);
 }
 
@@ -314,17 +323,49 @@ function checkGate(ctx, fail) {
   const at = (d, h = '14:00') => `${d}T${h}:00.000Z`;
   const weekly = (d, extra = {}) => ({ kind: 'weekly', dayKey: d, at: at(d), fraction: 0.5, revisit: [], ...extra });
 
-  // 6. one a day
-  const sat = [weekly(today, { testId: 'x' })];
-  if (g.testGate({ attemptsForTest: [], allAttempts: sat, lessonReads: {}, todayKey: today }).allowed) {
-    fail('a second test opens on the same day (Sept 18: three in one sitting)');
+  // 6. no limit on tests per day (Oct 15 2026)
+  const sat1 = [weekly(today, { testId: 'x' })];
+  if (!g.testGate({ attemptsForTest: [], allAttempts: sat1, lessonReads: {}, todayKey: today }).allowed) {
+    fail('a first attempt is closed after one test was sat today (one-a-day is back)');
   }
-  const rc = [{ kind: 'reading-check', dayKey: today, at: at(today) }];
-  if (!g.testGate({ attemptsForTest: [], allAttempts: rc, lessonReads: {}, todayKey: today }).allowed) {
-    fail('a reading check counts as the day’s test');
+  const sat3 = [
+    weekly(today, { testId: 'x' }),
+    weekly(today, { testId: 'y' }),
+    { kind: 'quarter', dayKey: today, at: at(today), fraction: 0.5, revisit: [], testId: 'q' }
+  ];
+  if (!g.testGate({ attemptsForTest: [], allAttempts: sat3, lessonReads: {}, todayKey: today }).allowed) {
+    fail('a first attempt is closed after three tests were sat today (a daily cap is back)');
+  }
+  // A re-take whose two days are up and whose lessons are re-read opens even
+  // when tests were sat today.
+  const oldTry = weekly('2026-09-20', { testId: 'z', revisit: [{ lesson: 'hb-1-04', misses: 2 }] });
+  const reRead = { 'hb-1-04': { lastReadAt: at('2026-09-23') } };
+  const gateAfterTests = g.testGate({ attemptsForTest: [oldTry], allAttempts: [oldTry, ...sat3], lessonReads: reRead, todayKey: today });
+  if (!gateAfterTests.allowed) fail(`a re-take that is due is closed after other tests were sat today: ${gateAfterTests.reason}`);
+  if (typeof (g.testGate({ attemptsForTest: [], allAttempts: sat3, lessonReads: {}, todayKey: today }).reason) === 'string'
+      && /one test a day/i.test(g.testGate({ attemptsForTest: [], allAttempts: sat3, lessonReads: {}, todayKey: today }).reason || '')) {
+    fail('the gate still says "one test a day"');
+  }
+  if (g.testsSatToday || g.COUNTED_TEST_KINDS) fail('testGate.js still exports the one-a-day helpers');
+  if (/testsSatToday|COUNTED_TEST_KINDS|One test a day\. You have/.test(ctx.src.gateLib)) {
+    fail('lib/testGate.js still contains the one-a-day code or wording');
   }
   if (!g.testGate({ attemptsForTest: [], allAttempts: [weekly('2026-09-23')], lessonReads: {}, todayKey: today }).allowed) {
     fail('yesterday’s test blocks today’s');
+  }
+  // The re-take of the test she just sat today is still closed — by the TWO-DAY
+  // wait, not by any daily rule.
+  const justSat = weekly(today, { testId: 'x', revisit: [] });
+  const justSatGate = g.testGate({ attemptsForTest: [justSat], allAttempts: [justSat], lessonReads: {}, todayKey: today });
+  if (justSatGate.allowed) fail('a test just sat today can be re-taken today (the two-day wait is gone)');
+  if (!/2 days/.test(justSatGate.reason || '')) fail('the two-day wait message is gone');
+  const oneDayAgo = weekly('2026-09-23', { testId: 'x', revisit: [] });
+  if (g.testGate({ attemptsForTest: [oneDayAgo], allAttempts: [], lessonReads: {}, todayKey: today }).allowed) {
+    fail('a re-take opens one day after the last attempt (needs two)');
+  }
+  const twoDaysAgo = weekly('2026-09-22', { testId: 'x', revisit: [] });
+  if (!g.testGate({ attemptsForTest: [twoDaysAgo], allAttempts: [], lessonReads: {}, todayKey: today }).allowed) {
+    fail('a re-take stays closed two days after the last attempt');
   }
 
   // 7. re-take after going back
@@ -412,8 +453,15 @@ async function context(broken = {}) {
   const src = {};
   for (const [k, rel] of Object.entries(SRC)) src[k] = broken.src?.[k] ?? read(rel);
   const circle = await loadModule(SRC.circleLib, broken.src?.circleLib);
-  const gate = await loadModule(SRC.gateLib, broken.src?.gateLib);
   const engine = await loadModule(SRC.engine, broken.src?.engine);
+  // testGate.js gets its re-take rules (the 2-day wait, the 3-attempt limit) from
+  // assessmentEngine.js. When the self-test breaks the engine, the gate has to
+  // import THAT copy, or the break never reaches it and nothing can catch it.
+  let gateSource = broken.src?.gateLib;
+  if (broken.src?.engine != null) {
+    gateSource = (gateSource ?? read(SRC.gateLib)).replace("'./assessmentEngine.js'", `'${brokenUrl[SRC.engine]}'`);
+  }
+  const gate = await loadModule(SRC.gateLib, gateSource);
   const links = await loadModule(SRC.links, broken.src?.links);
   const loadVoice = () => loadModule(SRC.voiceLib, src.voiceLib);
   const loadSpeech = () => loadModule(SRC.speech, src.speech);
@@ -454,8 +502,12 @@ const BUGS = [
   ['queue ignored in speech', 'speech', 'if (!queue) stopSpeaking();', 'stopSpeaking();'],
   ['buttons stop nothing', 'speech', 'if (!queue) stopSpeaking();', ''],
   ['no switch in the Grown-Up Corner', 'parent', 'setMarigoldSpeaksAloud(e.target.checked);', ''],
-  ['three tests in a day', 'gateLib', 'if (testsSatToday(allAttempts, todayKey) >= 1) {', 'if (false) {'],
-  ['reading check counts', 'gateLib', "export const COUNTED_TEST_KINDS = ['weekly', 'quarter'];", "export const COUNTED_TEST_KINDS = ['weekly', 'quarter', 'reading-check'];"],
+  ['one test a day comes back', 'gateLib', '  const reReadFirst = lessonsToReReadFirst(attemptsForTest, lessonReads);', "  if ((allAttempts || []).some((a) => a && a.dayKey === todayKey && a.kind === 'weekly')) return { allowed: false, reason: 'One test a day.', reReadFirst: [], attemptNumber: base.attemptNumber };\n  const reReadFirst = lessonsToReReadFirst(attemptsForTest, lessonReads);"],
+  ['a cap of three a day comes back', 'gateLib', '  const reReadFirst = lessonsToReReadFirst(attemptsForTest, lessonReads);', "  if ((allAttempts || []).filter((a) => a && a.dayKey === todayKey).length >= 3) return { allowed: false, reason: 'Three tests is enough for today.', reReadFirst: [], attemptNumber: base.attemptNumber };\n  const reReadFirst = lessonsToReReadFirst(attemptsForTest, lessonReads);"],
+  ['one-a-day helper exported again', 'gateLib', "import { retakeStatus } from './assessmentEngine.js';", "import { retakeStatus } from './assessmentEngine.js';\nexport const COUNTED_TEST_KINDS = ['weekly', 'quarter'];"],
+  ['two-day wait removed', 'engine', 'if (waited < RETAKE.minDaysBetween) {', 'if (false) {'],
+  ['two-day wait cut to one', 'engine', 'if (waited < RETAKE.minDaysBetween) {', 'if (waited < 1) {'],
+  ['three-attempt limit removed', 'engine', 'if (list.length >= RETAKE.maxAttempts) {', 'if (false) {'],
   ['re-take without going back', 'gateLib', 'if (reReadFirst.length) {', 'if (false) {'],
   ['re-read compared backwards', 'gateLib', 'row.lastReadAt > latest.at', 'row.lastReadAt < latest.at'],
   ['LessonsView back to retakeStatus', 'lessons', 'const wRetake = gateFor(wAttempts);', 'const wRetake = retakeStatus(wAttempts, today);'],
@@ -473,7 +525,7 @@ async function main() {
       console.log(`\n${real.failures.length} failed.`);
       process.exit(1);
     }
-    console.log('Morning Circle, Dr. Marigold’s voice, one test a day, re-take after going back, no repeated question, read-aloud reminder.');
+    console.log('Morning Circle, Dr. Marigold’s voice, no daily test limit, 2-day re-take wait, re-take after going back, no repeated question, read-aloud reminder.');
     console.log('NOT TESTED HERE: how the screens look, and whether Chrome on her Chromebook plays the voice.');
     console.log('PASS');
     return;

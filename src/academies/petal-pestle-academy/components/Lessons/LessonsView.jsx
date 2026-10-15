@@ -19,8 +19,9 @@ import {
   officialAttempt
 } from '../../lib/assessmentEngine.js';
 import { dayKeyOf } from '../../lib/reviewQueue.js';
-// Sept 23 2026: one test a day, and a re-take opens after the missed lessons
-// are gone over. testGate wraps retakeStatus; see lib/testGate.js.
+// Sept 23 2026: a re-take opens after the missed lessons are gone over.
+// (One test a day was removed Oct 15 2026.) testGate wraps retakeStatus; see
+// lib/testGate.js.
 import { testGate } from '../../lib/testGate.js';
 
 // ---------------------------------------------------------------------------
