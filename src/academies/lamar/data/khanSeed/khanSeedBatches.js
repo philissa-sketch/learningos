@@ -1,5 +1,5 @@
 // ---------------------------------------------------------------------------
-// THIS SCHOOL'S KHAN ACADEMY ASSIGNMENTS — 129 rows across 21 batches.
+// THIS SCHOOL'S KHAN ACADEMY ASSIGNMENTS — 129 rows across 22 batches.
 //
 // Moved out of src/store/useAppStore.js on Sept 20, 2026 — the last of
 // GENERIC_CARRYOVER fault 2. The store seeded one child's whole Khan
@@ -241,21 +241,38 @@ export const KHAN_SEED_BATCHES = Object.freeze({
       // (internet research, cybersecurity, AI).
       { subject: 'technology', skillTitle: 'Digital information', gradeLevel: '7th', khanAcademyUrl: 'https://www.khanacademy.org/computing/computers-and-internet/xcae6f4a7ff015e7d:digital-information', sequenceInQuarter: 1 },
       { subject: 'technology', skillTitle: 'Computers', gradeLevel: '7th', khanAcademyUrl: 'https://www.khanacademy.org/computing/computers-and-internet/xcae6f4a7ff015e7d:computers', sequenceInQuarter: 2 },
-      { subject: 'technology', skillTitle: 'The Internet', gradeLevel: '7th', khanAcademyUrl: 'https://www.khanacademy.org/computing/computers-and-internet/xcae6f4a7ff015e7d:the-internet', sequenceInQuarter: 3 },
-      { subject: 'technology', skillTitle: 'Online data security', gradeLevel: '7th', khanAcademyUrl: 'https://www.khanacademy.org/computing/computers-and-internet/xcae6f4a7ff015e7d:online-data-security', sequenceInQuarter: 4 },
-      { subject: 'technology', skillTitle: 'Computing innovations', gradeLevel: '7th', khanAcademyUrl: 'https://www.khanacademy.org/computing/computers-and-internet/xcae6f4a7ff015e7d:computing-innovations', sequenceInQuarter: 5 },
       // Course: Intro to computer science - Python — units 1-6, Khan's order.
       // Real programming, and the language actually used in aerospace work.
-      { subject: 'technology', skillTitle: 'Computational thinking with variables', gradeLevel: '7th', gradedBy: 'project', khanAcademyUrl: 'https://www.khanacademy.org/computing/intro-to-python-fundamentals/x5279a44ae0ab15d6:computational-thinking-with-variables', sequenceInQuarter: 6 },
-      { subject: 'technology', skillTitle: 'Designing algorithms with conditionals', gradeLevel: '7th', gradedBy: 'project', khanAcademyUrl: 'https://www.khanacademy.org/computing/intro-to-python-fundamentals/x5279a44ae0ab15d6:designing-algorithms-with-conditionals', sequenceInQuarter: 7 },
-      { subject: 'technology', skillTitle: 'Simulating phenomena with loops', gradeLevel: '7th', gradedBy: 'project', khanAcademyUrl: 'https://www.khanacademy.org/computing/intro-to-python-fundamentals/x5279a44ae0ab15d6:simulating-phenomena-with-loops', sequenceInQuarter: 8 },
-      { subject: 'technology', skillTitle: 'Playing games with functions', gradeLevel: '7th', gradedBy: 'project', khanAcademyUrl: 'https://www.khanacademy.org/computing/intro-to-python-fundamentals/x5279a44ae0ab15d6:playing-games-with-functions', sequenceInQuarter: 9 },
-      { subject: 'technology', skillTitle: 'Automating tasks with lists', gradeLevel: '7th', gradedBy: 'project', khanAcademyUrl: 'https://www.khanacademy.org/computing/intro-to-python-fundamentals/x5279a44ae0ab15d6:automating-tasks-with-lists', sequenceInQuarter: 10 },
-      { subject: 'technology', skillTitle: 'Analyzing data with dictionaries', gradeLevel: '7th', gradedBy: 'project', khanAcademyUrl: 'https://www.khanacademy.org/computing/intro-to-python-fundamentals/x5279a44ae0ab15d6:analyzing-data-with-dictionaries', sequenceInQuarter: 11 },
-      // Course Challenge for Computers and the Internet — that course
-      // finishes this quarter, so its challenge sorts last here (99), same
-      // convention as every math Course Challenge.
-      { subject: 'technology', skillTitle: 'Course Challenge — Computers and the Internet', gradeLevel: '7th', isCourseChallenge: true, khanAcademyUrl: 'https://www.khanacademy.org/computing/computers-and-internet/test/xcae6f4a7ff015e7d:course-challenge', sequenceInQuarter: 99 }
+      { subject: 'technology', skillTitle: 'Computational thinking with variables', gradeLevel: '7th', gradedBy: 'project', khanAcademyUrl: 'https://www.khanacademy.org/computing/intro-to-python-fundamentals/x5279a44ae0ab15d6:computational-thinking-with-variables', sequenceInQuarter: 3 },
+      { subject: 'technology', skillTitle: 'Designing algorithms with conditionals', gradeLevel: '7th', gradedBy: 'project', khanAcademyUrl: 'https://www.khanacademy.org/computing/intro-to-python-fundamentals/x5279a44ae0ab15d6:designing-algorithms-with-conditionals', sequenceInQuarter: 4 },
+      { subject: 'technology', skillTitle: 'Simulating phenomena with loops', gradeLevel: '7th', gradedBy: 'project', khanAcademyUrl: 'https://www.khanacademy.org/computing/intro-to-python-fundamentals/x5279a44ae0ab15d6:simulating-phenomena-with-loops', sequenceInQuarter: 5 },
+      { subject: 'technology', skillTitle: 'Playing games with functions', gradeLevel: '7th', gradedBy: 'project', khanAcademyUrl: 'https://www.khanacademy.org/computing/intro-to-python-fundamentals/x5279a44ae0ab15d6:playing-games-with-functions', sequenceInQuarter: 6 },
+      { subject: 'technology', skillTitle: 'Automating tasks with lists', gradeLevel: '7th', gradedBy: 'project', khanAcademyUrl: 'https://www.khanacademy.org/computing/intro-to-python-fundamentals/x5279a44ae0ab15d6:automating-tasks-with-lists', sequenceInQuarter: 7 },
+      { subject: 'technology', skillTitle: 'Analyzing data with dictionaries', gradeLevel: '7th', gradedBy: 'project', khanAcademyUrl: 'https://www.khanacademy.org/computing/intro-to-python-fundamentals/x5279a44ae0ab15d6:analyzing-data-with-dictionaries', sequenceInQuarter: 8 }
+    ],
+
+  // ---- MOVED TO SUMMER 2027 ON OCT 16, 2026 — her call ------------------------
+  //
+  // The three unfinished units of "Computers and the Internet" and its Course
+  // Challenge. Q1 Technology carried 23 lessons AND these four units
+  // (about 32 days at the measured eight a unit) on 26 Tuesdays and Thursdays,
+  // and Summer's Tuesdays and Thursdays had nothing on them. The first two units
+  // are finished and stay in Q1, where their grades were earned.
+  //
+  // Khan's order is kept: The Internet, Online data security, Computing
+  // innovations, then the challenge last (99). Only the quarter moved.
+  //
+  // `lessons` COUNTED OFF THE LIVE COURSE PAGES, Oct 16, 2026 (one lesson is
+  // one sitting, the rule pacing.js uses for World History): The Internet 10,
+  // Online data security 7, Computing innovations 4, and the challenge 1 -- 22
+  // days, not the flat 8 a unit (32) the app had been guessing. The same count
+  // on "Digital information" gives 8 lessons, which is where the 8 came from.
+  technologySummerRows: [
+      // Course: Computers and the Internet — units 3 to 5, in Khan's order.
+      { subject: 'technology', skillTitle: 'The Internet', gradeLevel: '7th', khanAcademyUrl: 'https://www.khanacademy.org/computing/computers-and-internet/xcae6f4a7ff015e7d:the-internet', sequenceInQuarter: 1, lessons: 10 },
+      { subject: 'technology', skillTitle: 'Online data security', gradeLevel: '7th', khanAcademyUrl: 'https://www.khanacademy.org/computing/computers-and-internet/xcae6f4a7ff015e7d:online-data-security', sequenceInQuarter: 2, lessons: 7 },
+      { subject: 'technology', skillTitle: 'Computing innovations', gradeLevel: '7th', khanAcademyUrl: 'https://www.khanacademy.org/computing/computers-and-internet/xcae6f4a7ff015e7d:computing-innovations', sequenceInQuarter: 3, lessons: 4 },
+      { subject: 'technology', skillTitle: 'Course Challenge — Computers and the Internet', gradeLevel: '7th', isCourseChallenge: true, khanAcademyUrl: 'https://www.khanacademy.org/computing/computers-and-internet/test/xcae6f4a7ff015e7d:course-challenge', sequenceInQuarter: 99, lessons: 1 }
     ],
 
   technologyQ3Rows: [

@@ -3211,6 +3211,63 @@ const seedRows = khanFirstSeedRows().map((r) => ({ ...r, completed: false, grade
       khanAcademyAssignments = [...khanAcademyAssignments, ...preparedRows.map((r, i) => ({ id: newIds[i], ...r }))];
     }
 
+    /**
+     * ==================================================================
+     * THE UNFINISHED "COMPUTERS AND THE INTERNET" UNITS MOVED FROM Q1 TO
+     * SUMMER (Oct 16, 2026). Her call.
+     * ==================================================================
+     *
+     * Q1 Technology held 23 lessons plus four more Khan units on 26
+     * Tuesdays and Thursdays, and Summer's Tuesdays and Thursdays had
+     * nothing on them. Same move, same rules, as the Q2 -> Q3 one above:
+     *
+     *   - Reseeding cannot do it. The seed is keyed on (subject, skillTitle,
+     *     batchLabel), so a relabelled seed would add a SECOND copy beside
+     *     the row he already has. The existing rows are relabelled first,
+     *     on every hydrate.
+     *   - A FINISHED unit never moves. Its grade was earned in Q1 and
+     *     belongs to Q1's record.
+     *   - For the same reason a unit he has already finished is never seeded
+     *     again under the new label, or he would be handed it twice.
+     *   - Khan's order is kept: only the quarter and the position inside
+     *     Summer change, so the challenge is still last.
+     */
+    const technologySummerLabel = 'Summer 2027';
+    const technologySummerRows = khanSeedRows('technologySummerRows');
+    const technologySummerByTitle = new Map(technologySummerRows.map((r) => [r.skillTitle, r]));
+    const technologySummerMoved = [];
+    khanAcademyAssignments = khanAcademyAssignments.map((a) => {
+      if (a.subject !== 'technology') return a;
+      const inQ1 = a.batchLabel === 'Q1 2026-2027';
+      if (!inQ1 && a.batchLabel !== technologySummerLabel) return a;
+      const target = technologySummerByTitle.get(a.skillTitle);
+      if (!target) return a;
+      if (inQ1 && a.completed) return a;
+      if (a.batchLabel === technologySummerLabel && a.sequenceInQuarter === target.sequenceInQuarter && a.lessons === target.lessons) return a;
+      const moved = { ...a, batchLabel: technologySummerLabel, sequenceInQuarter: target.sequenceInQuarter, lessons: target.lessons };
+      technologySummerMoved.push(moved);
+      return moved;
+    });
+    if (technologySummerMoved.length > 0) {
+      await Promise.all(technologySummerMoved.map((r) => updateKhanAcademyAssignmentRecord(r.id, r)));
+    }
+
+    const missingTechnologySummerRows = technologySummerRows.filter(
+      (r) =>
+        !khanAcademyAssignments.some(
+          (a) =>
+            a.subject === r.subject &&
+            a.skillTitle === r.skillTitle &&
+            (a.batchLabel === technologySummerLabel || a.completed)
+        )
+    );
+    if (missingTechnologySummerRows.length > 0) {
+      const createdAt = new Date().toISOString();
+      const preparedRows = missingTechnologySummerRows.map((r) => ({ ...r, completed: false, grade: null, completedAt: null, createdAt, batchLabel: technologySummerLabel }));
+      const newIds = await Promise.all(preparedRows.map((r) => addKhanAcademyAssignmentRecord(r)));
+      khanAcademyAssignments = [...khanAcademyAssignments, ...preparedRows.map((r, i) => ({ id: newIds[i], ...r }))];
+    }
+
     const courseChallengeRows = khanSeedRows('courseChallengeRows');
     const missingCourseChallengeRows = courseChallengeRows.filter(
       (r) => !khanAcademyAssignments.some((a) => a.subject === r.subject && a.skillTitle === r.skillTitle && a.batchLabel === r.batchLabel)

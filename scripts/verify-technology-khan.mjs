@@ -44,15 +44,16 @@ const ok = (c, m, d) => { console.log(`${c ? 'PASS' : 'FAIL'}  ${m}`); if (!c) {
 
 const q1 = grabRows('technologyQ1Rows');
 const q3 = grabRows('technologyQ3Rows');
-console.log(`Technology Q1: ${q1.length} rows · Q3: ${q3.length} rows · total ${q1.length + q3.length}\n`);
+const qs = grabRows('technologySummerRows');
+console.log(`Technology Q1: ${q1.length} rows · Summer: ${qs.length} rows · Q3: ${q3.length} rows · total ${q1.length + qs.length + q3.length}\n`);
 
-for (const [label, rows] of [['Q1', q1], ['Q3', q3]]) {
+for (const [label, rows] of [['Q1', q1], ['Summer', qs], ['Q3', q3]]) {
   console.log(`--- ${label} in seeded order ---`);
   for (const r of rows) console.log(`  ${String(r.seq).padStart(2)}  ${r.skillTitle}${r.gradedBy ? '  [project-graded]' : ''}${r.isCourseChallenge ? '  [course challenge]' : ''}`);
   console.log('');
 }
 
-const all = [...q1, ...q3];
+const all = [...q1, ...qs, ...q3];
 ok(all.every((r) => r.subject === 'technology'), 'every row is subject "technology"');
 ok(all.every((r) => r.url && r.url.startsWith('https://www.khanacademy.org/computing/')), 'every URL is a real Khan Academy computing URL');
 const titles = all.map((r) => r.skillTitle);
@@ -62,12 +63,14 @@ const urls = all.map((r) => r.url);
 const dupU = urls.filter((u, i) => urls.indexOf(u) !== i);
 ok(dupU.length === 0, 'no duplicate unit URLs', dupU.join(', '));
 
-for (const [label, rows] of [['Q1', q1], ['Q3', q3]]) {
+for (const [label, rows] of [['Q1', q1], ['Summer', qs], ['Q3', q3]]) {
   const normal = rows.filter((r) => r.seq !== 99).map((r) => r.seq);
   const expected = Array.from({ length: normal.length }, (_, i) => i + 1);
   ok(JSON.stringify(normal) === JSON.stringify(expected), `${label} sequenceInQuarter is 1..${normal.length} with no gaps or repeats`, `got ${normal.join(',')}`);
 }
-ok(q1.filter((r) => r.isCourseChallenge).every((r) => r.seq === 99), 'each Course Challenge sorts last (sequence 99)');
+ok([...q1, ...qs].filter((r) => r.isCourseChallenge).every((r) => r.seq === 99), 'each Course Challenge sorts last (sequence 99)');
+ok(qs.length > 0 && qs[qs.length - 1].isCourseChallenge === true, 'Summer ends with the Course Challenge, after its units');
+ok(qs.slice(0, -1).map((r) => r.skillTitle).join('|') === ['The Internet', 'Online data security', 'Computing innovations'].join('|'), "Summer keeps Khan's order: The Internet, Online data security, Computing innovations");
 
 // ---------------------------------------------------------------------------
 // THE Q2 -> Q3 MOVE (Aug 26, 2026, audit item O-3).
@@ -137,7 +140,8 @@ function hydrate(install) {
 }
 
 /** Quarter targets from PROJECT_PLAN (Q1 ~12, and ~8 for the second batch). */
-ok(Math.abs(q1.length - 12) <= 1, `Q1 row count (${q1.length}) matches the ~12 target`);
+// Eight stay in Q1 and four moved to Summer on Oct 16, 2026, so the Q1 BATCH is still ~12 in total.
+ok(Math.abs(q1.length + qs.length - 12) <= 1, `Q1 plus the units moved to Summer (${q1.length + qs.length}) match the ~12 target`);
 ok(Math.abs(q3.length - 8) <= 1, `Q3 row count (${q3.length}) matches the ~8 target`);
 
 console.log(`\n${fail === 0 ? 'ALL CHECKS PASSED' : fail + ' CHECK(S) FAILED'}`);

@@ -49,7 +49,8 @@ function ok(label, cond, detail = '') {
 }
 
 const ROW_COUNT = 132;
-const ROW_DIGEST = 'cdaa1af64a08d102';
+// Oct 16, 2026: four unfinished Technology units moved Q1 -> a new Summer batch, on purpose.
+const ROW_DIGEST = 'b625e4c580c4dee5';
 
 const store = src('src/store/useAppStore.js');
 const seed = await import(
@@ -82,7 +83,7 @@ console.log('\n--- 2. every row came across, byte for byte ---');
     rows.push([name, r.subject, r.skillTitle, r.khanAcademyUrl || ''].join('|'));
   }
   ok(`all ${ROW_COUNT} rows are there`, rows.length === ROW_COUNT, `${rows.length} found`);
-  ok('21 batches', names.length === 21, `${names.length}`);
+  ok('22 batches', names.length === 22, `${names.length}`);
 
   const digest = crypto.createHash('sha256').update(rows.sort().join('\n')).digest('hex').slice(0, 16);
   ok('every batch, subject, title and link is unchanged', digest === ROW_DIGEST,
