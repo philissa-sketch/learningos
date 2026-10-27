@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { guardianWord } from '../../lib/schoolWords.js';
 import { useAppStore } from '../../store/useAppStore.js';
 import { WritingCheckerLink } from './WritingCheckerLink.jsx';
+import { EvidenceLinkInput } from '../Dashboard/EvidenceLink.jsx';
 import { SaveToDriveButton } from '../Academic/SaveToDriveButton.jsx';
 import { checkWriting } from '../../lib/writingCheck.js';
 import { pairedBuildFor } from '../../lib/weeklyPlan.js';
@@ -91,6 +92,17 @@ export function WritingPromptEngine({ prompt, onExit }) {
    * is the half of the fix he can see.
    */
   const [saving, setSaving] = useState(false);
+  /**
+   * A HANDS-ON PROJECT IS SUBMITTED AS A PICTURE. (Oct 27, 2026.)
+   *
+   * The parent: *"Lamar completed the tinkercad assignment and there isn't
+   * anywhere for him to upload it."* These prompts say "Screenshot it" and
+   * "Photograph the finished model", and the screen that collects them had
+   * a text box and nothing else. Shown on projects — `category:
+   * 'experiment'` — because that is where the thing he made is the work.
+   */
+  const isHandsOn = prompt?.category === 'experiment';
+  const [photoUrl, setPhotoUrl] = useState('');
   /**
    * The last check he ran on THIS text, or null if he has not run one — or has
    * typed since. Typing resets it deliberately: a check he passed three
@@ -216,7 +228,13 @@ export function WritingPromptEngine({ prompt, onExit }) {
     setSaving(true);
     let entry;
     try {
-      entry = await submitWritingEntry(prompt.id, text, { checkIssues: issueCount });
+      entry = await submitWritingEntry(prompt.id, text, {
+        checkIssues: issueCount,
+        photoUrl: isHandsOn && photoUrl.trim() ? photoUrl.trim() : null
+      });
+    } catch (err) {
+      setSaving(false);
+      throw err;
     } finally {
       setSaving(false);
     }
@@ -224,7 +242,8 @@ export function WritingPromptEngine({ prompt, onExit }) {
     await clearWritingDraft(prompt.id);
     // The entry IS the record now; a leftover draft would be a second copy.
     setDraftSaved('');
-    setJustSubmitted({ wordCount: entry.wordCount });
+    setPhotoUrl('');
+    setJustSubmitted({ wordCount: entry.wordCount, photoUrl: entry.photoUrl || null });
   };
 
   const handleSubmit = async () => {
@@ -588,6 +607,22 @@ export function WritingPromptEngine({ prompt, onExit }) {
 
       {checked && checked.issues.length === 0 && checked.note && (
         <p className="mt-3 text-xs text-ink-400">{checked.note}</p>
+      )}
+
+      {isHandsOn && (
+        <div className="mt-3 rounded-lg border border-space-700 bg-space-900 p-3">
+          <p className="font-display text-sm font-700 text-ink-100">A picture of what you made</p>
+          <p className="mt-0.5 mb-2 text-xs text-ink-500">
+            Photograph or screenshot it, put the file in Drive, then paste the share link here. The
+            write-up and the picture are turned in together.
+          </p>
+          <EvidenceLinkInput
+            value={photoUrl}
+            onChange={setPhotoUrl}
+            folderKey="work-sample"
+            placeholder="Paste the link to your photo or screenshot"
+          />
+        </div>
       )}
 
       <button

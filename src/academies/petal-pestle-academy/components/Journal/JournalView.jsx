@@ -12,12 +12,8 @@ import {
 import { miniLessonFor } from '../../data/writing/writingProgramme.js';
 import { WRITING_PIECES, piecesForYear, BOOK_REPORT } from '../../data/writing/writingPieces.js';
 import { bookReportNow } from '../../lib/bookReportSchedule.js';
-import {
-  BOOK_REPORT_FORMATS,
-  formatById,
-  REPORT_SIZE,
-  DEFAULT_FORMAT_ID
-} from '../../data/writing/reportFormats.js';
+import { formatById, REPORT_SIZE, DEFAULT_FORMAT_ID } from '../../data/writing/reportFormats.js';
+import { reportBookChoices } from '../../lib/academicCenter.js';
 
 // ---------------------------------------------------------------------------
 // THE HERBALIST'S JOURNAL.
@@ -375,6 +371,7 @@ export function ThisWeeksStep() {
   const saveWritingDraft = useAppStore((s) => s.saveWritingDraft);
   const toggleWritingStep = useAppStore((s) => s.toggleWritingStep);
   const [refused, setRefused] = useState(false);
+  const [changingBook, setChangingBook] = useState(false);
 
   const lessonsRead = Object.keys(lessonReads || {});
   const stepsBySlot = Object.fromEntries(
@@ -383,7 +380,10 @@ export function ThisWeeksStep() {
   const now = bookReportNow(lessonsRead, stepsBySlot);
   const draft = drafts?.[now.slotId] || { bookTitle: '', notes: '', draft: '', steps: [] };
   const done = new Set(draft.steps || []);
-  const fmt = formatById(draft.formatId) || formatById(DEFAULT_FORMAT_ID);
+  // ONE FORMAT, NOT A CHOICE (Gigi, Oct 27 2026: "not a choice of what kind of
+  // book report. I don't know why that is on there."). Every report is the
+  // usual one. A formatId an older draft stored is ignored.
+  const fmt = formatById(DEFAULT_FORMAT_ID);
 
   if (now.state === 'not-yet') {
     return (
@@ -394,7 +394,7 @@ export function ThisWeeksStep() {
           <span className="font-700">
             {now.weeksAway === 1 ? 'one week' : `${now.weeksAway} weeks`}
           </span>
-          . Nothing to do for it yet — you can read what it asks for below whenever you like.
+          . Nothing to do for it yet.
         </p>
       </section>
     );
@@ -405,205 +405,221 @@ export function ThisWeeksStep() {
     setRefused(r?.ok === false);
   }
 
+  // THE BOOK IS PICKED FROM HER SHELF, NEVER TYPED (Gigi, Oct 27 2026: "there
+  // are books for the year and none of the books showed up in the book report
+  // area so she checked out a different book").
+  const books = reportBookChoices(now.quarter, drafts || {});
+  const bookTitle = books.assigned?.title || draft.bookTitle || '';
+  const bookInfo =
+    books.assigned || books.options.find((b) => b.title === bookTitle) || null;
+  const needsBook = !bookTitle || changingBook;
+
+  const step = now.step;
+  const box = step.box; // 'notes' | 'draft' | 'final' | null
+  const boxLabel = { notes: 'Your four sentences', draft: 'Your report', final: 'Your finished report' }[box];
+  const boxRows = { notes: 5, draft: 10, final: 10 }[box];
+  const boxEmpty = box ? !String(draft[box] || '').trim() : false;
+
   return (
     <section className="mt-10">
       <div className="panel px-5 py-5">
         <p className="label-caps text-sage-700">
           Your book report · Quarter {now.quarter} · step {now.stepNumber} of {now.of}
         </p>
-        <h2 className="mt-1 font-display text-xl text-ink-900">{now.step.step}</h2>
-        <p className="mt-2 text-[1.02rem] leading-relaxed text-ink-900">{now.step.ask}</p>
-        {now.step.example && (
-          <p className="mt-2 text-sm text-ink-500">{now.step.example}</p>
-        )}
 
-        {/* All four steps, so she can see where this one sits. Ticking is one
-            tap and undoable — the point of a weekly step is that the week's
-            question is just "did I do it". */}
-        <div className="mt-4 space-y-1.5">
-          {BOOK_REPORT.steps.map((st) => {
-            const isDone = done.has(st.n);
-            return (
-              <button
-                key={st.n}
-                type="button"
-                onClick={() => tick(st.n)}
-                className={`flex w-full items-center gap-2.5 rounded-petal border px-3 py-2 text-left text-sm ${
-                  st.n === now.stepNumber
-                    ? 'border-sage-500 bg-sage-300/15'
-                    : 'border-cream-300 bg-white'
-                }`}
-              >
-                <span
-                  className={`flex h-5 w-5 flex-none items-center justify-center rounded-full text-[0.65rem] font-700 ${
-                    isDone ? 'bg-sage-500 text-white' : 'bg-cream-200 text-ink-700'
-                  }`}
-                >
-                  {isDone ? '✓' : st.n}
-                </span>
-                <span className={isDone ? 'text-ink-500 line-through' : 'text-ink-900'}>
-                  {st.step}
-                </span>
-              </button>
-            );
-          })}
+        {/* The four steps as dots, so she can see how far she is. Not buttons. */}
+        <div className="mt-2 flex items-center gap-2" aria-hidden="true">
+          {BOOK_REPORT.steps.map((st) => (
+            <span
+              key={st.n}
+              className={`flex h-6 w-6 items-center justify-center rounded-full text-[0.7rem] font-700 ${
+                done.has(st.n)
+                  ? 'bg-sage-500 text-white'
+                  : st.n === now.stepNumber
+                    ? 'bg-gold-300 text-ink-900'
+                    : 'bg-cream-200 text-ink-500'
+              }`}
+            >
+              {done.has(st.n) ? '✓' : st.n}
+            </span>
+          ))}
         </div>
 
-        {refused && (
-          <p className="mt-3 rounded-petal bg-gold-300/25 px-3.5 py-2.5 text-sm text-ink-900">
-            Put your finished report in the last box first, then tick that one. A tick on its own
-            does not save any of your writing.
-          </p>
-        )}
-
-        {/* ---- WHICH KIND OF REPORT. v3.83, and it is the point of the
-             rewrite. His file: "Five book reports are scheduled this year, and
-             every one of them said only 'write a report.' SAME SHAPE FIVE TIMES
-             IS HOW A BOOK REPORT BECOMES A CHORE." Hers were four identical
-             ones. Chosen once per report; the sections and the checklist below
-             follow from it. ---- */}
-        <div className="mt-5">
-          <span className="label-caps text-ink-500">What kind of report</span>
-          <div className="mt-1.5 flex flex-wrap gap-1.5">
-            {BOOK_REPORT_FORMATS.map((f) => (
-              <button
-                key={f.id}
-                type="button"
-                onClick={() => saveWritingDraft(now.slotId, { formatId: f.id })}
-                className={`rounded-full px-3 py-1.5 text-xs font-700 ${
-                  fmt.id === f.id
-                    ? 'bg-lavender-500 text-white'
-                    : 'border border-cream-300 bg-white text-ink-700 hover:border-lavender-500'
-                }`}
-              >
-                {f.name}
-              </button>
-            ))}
-          </div>
-          <p className="mt-1.5 text-[0.7rem] text-ink-500">{fmt.bestFor}</p>
-        </div>
-
-        {/* The sections ARE the outline. On screen while she writes, not on a
-            different page she has to remember. */}
+        {/* ---- THE BOOK ---- */}
         <div className="mt-4 rounded-petal bg-cream-100 px-4 py-3">
-          <p className="label-caps text-ink-500">What it needs in it</p>
-          <ol className="mt-1.5 space-y-1">
-            {fmt.sections.map((sec, i) => (
-              <li key={i} className="text-sm text-ink-900">
-                {i + 1}. {sec}
-              </li>
-            ))}
-          </ol>
-          {fmt.kind === 'written' && (
-            <p className="mt-2 text-[0.7rem] text-ink-500">{REPORT_SIZE.headline}</p>
+          {!needsBook ? (
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <p className="text-sm text-ink-900">
+                <span className="label-caps text-ink-500">Your book</span>
+                <br />
+                <span className="font-700">📖 {bookTitle}</span>
+                {bookInfo?.author ? <span className="text-ink-700"> by {bookInfo.author}</span> : null}
+              </p>
+              {!books.assigned && books.options.length > 1 && (
+                <button
+                  type="button"
+                  onClick={() => setChangingBook(true)}
+                  className="text-xs font-700 text-lavender-700 underline"
+                >
+                  A different book from my shelf
+                </button>
+              )}
+            </div>
+          ) : (
+            <div>
+              <p className="text-sm font-700 text-ink-900">Which book is your report about? Tap it.</p>
+              {books.options.length === 0 ? (
+                <p className="mt-2 text-sm text-ink-700">
+                  There is no book on your shelf for this report yet. Ask Gigi to choose one for you.
+                </p>
+              ) : (
+                <div className="mt-2 space-y-1.5">
+                  {books.options.map((b) => (
+                    <button
+                      key={b.title}
+                      type="button"
+                      onClick={() => {
+                        saveWritingDraft(now.slotId, { bookTitle: b.title });
+                        setChangingBook(false);
+                      }}
+                      className="block w-full rounded-petal border border-cream-300 bg-white px-3 py-2 text-left text-sm hover:border-sage-500"
+                    >
+                      <span className="font-700 text-ink-900">📖 {b.title}</span>
+                      {b.author ? <span className="text-ink-700"> by {b.author}</span> : null}
+                      {b.note ? <span className="mt-0.5 block text-xs text-ink-500">{b.note}</span> : null}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
           )}
         </div>
 
-        <label className="mt-5 block">
-          <span className="label-caps text-ink-500">The book</span>
-          <input
-            type="text"
-            value={draft.bookTitle || ''}
-            onChange={(e) => saveWritingDraft(now.slotId, { bookTitle: e.target.value })}
-            placeholder="What are you reading?"
-            className="mt-1 w-full rounded-petal border border-cream-300 px-3 py-2 text-sm"
-          />
-        </label>
+        {/* ---- TODAY'S STEP, ALONE ---- */}
+        {!needsBook && (
+          <>
+            {now.allDone && (
+              <p className="mt-5 rounded-petal bg-sage-300/20 px-4 py-3 text-sm text-ink-900">
+                ✓ Your book report is finished. It is in your Portfolio.
+              </p>
+            )}
+            <h2 className="mt-5 font-display text-xl text-ink-900">{step.step}</h2>
+            <p className="mt-2 text-[1.02rem] leading-relaxed text-ink-900">{step.ask}</p>
+            {step.example && <p className="mt-2 text-sm text-ink-500">{step.example}</p>}
 
-        {/* THREE BOXES, NOT TWO. Notes is the plan, draft is the rough writing,
-            final is the finished piece. Collapsing any pair deletes the week
-            between them — and the last step is ticked against `final`, so the
-            polish week cannot be claimed on the unrevised draft. */}
-        <label className="mt-4 block">
-          <span className="label-caps text-ink-500">My plan · three or four lines</span>
-          <textarea
-            rows={3}
-            value={draft.notes || ''}
-            onChange={(e) => saveWritingDraft(now.slotId, { notes: e.target.value })}
-            placeholder="Short lines, not sentences. One for each paragraph you will write."
-            className="mt-1 w-full rounded-petal border border-cream-300 px-3 py-2 text-sm"
-          />
-        </label>
-
-        <label className="mt-4 block">
-          <span className="label-caps text-ink-500">Rough draft</span>
-          <textarea
-            rows={8}
-            value={draft.draft || ''}
-            onChange={(e) => saveWritingDraft(now.slotId, { draft: e.target.value })}
-            placeholder="One paragraph a day. It does not have to be good yet."
-            className="mt-1 w-full rounded-petal border border-cream-300 px-3 py-2 text-sm leading-relaxed"
-          />
-        </label>
-
-        <button
-          type="button"
-          onClick={() =>
-            saveWritingDraft(now.slotId, {
-              draft: draft.draft || fmt.sections.map((sec) => `${sec.toUpperCase()}\n\n`).join('\n')
-            })
-          }
-          disabled={Boolean(String(draft.draft || '').trim())}
-          className={`mt-2 rounded-full px-4 py-1.5 text-xs font-700 ${
-            String(draft.draft || '').trim()
-              ? 'cursor-not-allowed bg-cream-200 text-ink-500'
-              : 'border border-lavender-500 bg-white text-lavender-700 hover:bg-lavender-300/25'
-          }`}
-        >
-          Start from the headings
-        </button>
-        {/* ⚠️ OFFERED ONLY WHILE THE BOX IS EMPTY, so it can never eat her work. */}
-        <p className="mt-1 text-[0.68rem] text-ink-500">
-          Only while the box is empty, so it can never write over what you have.
-        </p>
-
-        <label className="mt-4 block">
-          <span className="label-caps text-ink-500">The finished one</span>
-          <textarea
-            rows={8}
-            value={draft.final || ''}
-            onChange={(e) => saveWritingDraft(now.slotId, { final: e.target.value })}
-            placeholder="Copy your draft here and fix it as you go. This is the one you hand in."
-            className="mt-1 w-full rounded-petal border border-cream-300 px-3 py-2 text-sm leading-relaxed"
-          />
-        </label>
-
-        {/* ---- THE CHECKLIST, TICKABLE, ON THE LAST STEP ONLY. ----
-             His note: it "was a static bulleted list of things to check — the
-             same information, but nothing to do with it. On the Edit & finish
-             step it is what he works through." Shown once she is on step 4, so
-             it is a job rather than a wall of rules on day one. ---- */}
-        {now.stepNumber === BOOK_REPORT.steps.length && (
-          <div className="mt-5 rounded-petal border border-sage-500 bg-sage-300/10 px-4 py-3.5">
-            <p className="label-caps text-sage-700">Before you hand it in</p>
-            <div className="mt-2 space-y-1.5">
-              {fmt.checklist.map((line, i) => {
-                const key = `${fmt.id}-${i}`;
-                const on = Boolean(draft.checked?.[key]);
-                return (
+            {step.starters.length > 0 && (
+              <div className="mt-3 rounded-petal bg-gold-300/15 px-4 py-3">
+                <p className="label-caps text-ink-500">Start each one like this</p>
+                <ol className="mt-1.5 space-y-1">
+                  {step.starters.map((line, i) => (
+                    <li key={i} className="text-sm text-ink-900">
+                      {i + 1}. {line}
+                    </li>
+                  ))}
+                </ol>
+                {box && (
                   <button
-                    key={key}
                     type="button"
+                    disabled={!boxEmpty}
                     onClick={() =>
-                      saveWritingDraft(now.slotId, {
-                        checked: { ...(draft.checked || {}), [key]: !on }
-                      })
+                      saveWritingDraft(now.slotId, { [box]: step.starters.map((l) => `${l}\n\n`).join('') })
                     }
-                    className="flex w-full items-center gap-2.5 text-left text-sm"
+                    className={`mt-2 rounded-full px-4 py-1.5 text-xs font-700 ${
+                      boxEmpty
+                        ? 'border border-lavender-500 bg-white text-lavender-700 hover:bg-lavender-300/25'
+                        : 'cursor-not-allowed bg-cream-200 text-ink-500'
+                    }`}
                   >
-                    <span
-                      className={`flex h-5 w-5 flex-none items-center justify-center rounded-full text-[0.65rem] font-700 ${
-                        on ? 'bg-sage-500 text-white' : 'bg-white text-ink-500 ring-1 ring-cream-300'
-                      }`}
-                    >
-                      {on ? '✓' : ''}
-                    </span>
-                    <span className={on ? 'text-ink-500 line-through' : 'text-ink-900'}>{line}</span>
+                    Put these in my box
                   </button>
-                );
-              })}
-            </div>
-          </div>
+                )}
+              </div>
+            )}
+
+            {box && (
+              <label className="mt-4 block">
+                <span className="label-caps text-ink-500">{boxLabel}</span>
+                <textarea
+                  rows={boxRows}
+                  value={draft[box] || ''}
+                  onChange={(e) => saveWritingDraft(now.slotId, { [box]: e.target.value })}
+                  className="mt-1 w-full rounded-petal border border-cream-300 px-3 py-2 text-sm leading-relaxed"
+                />
+                {box !== 'notes' && (
+                  <span className="mt-1 block text-[0.7rem] text-ink-500">{REPORT_SIZE.headline}</span>
+                )}
+              </label>
+            )}
+
+            {/* The last step's list, a job and not a wall of rules on day one. */}
+            {now.stepNumber === BOOK_REPORT.steps.length && (
+              <div className="mt-4 rounded-petal border border-sage-500 bg-sage-300/10 px-4 py-3.5">
+                <p className="label-caps text-sage-700">Before you hand it in</p>
+                <div className="mt-2 space-y-1.5">
+                  {fmt.checklist.map((line, i) => {
+                    const key = `${fmt.id}-${i}`;
+                    const on = Boolean(draft.checked?.[key]);
+                    return (
+                      <button
+                        key={key}
+                        type="button"
+                        onClick={() =>
+                          saveWritingDraft(now.slotId, { checked: { ...(draft.checked || {}), [key]: !on } })
+                        }
+                        className="flex w-full items-center gap-2.5 text-left text-sm"
+                      >
+                        <span
+                          className={`flex h-5 w-5 flex-none items-center justify-center rounded-full text-[0.65rem] font-700 ${
+                            on ? 'bg-sage-500 text-white' : 'bg-white text-ink-500 ring-1 ring-cream-300'
+                          }`}
+                        >
+                          {on ? '✓' : ''}
+                        </span>
+                        <span className={on ? 'text-ink-500 line-through' : 'text-ink-900'}>{line}</span>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+
+            {refused && (
+              <p className="mt-3 rounded-petal bg-gold-300/25 px-3.5 py-2.5 text-sm text-ink-900">
+                Write in the box first, then tick this step. A tick on its own does not save any
+                of your writing.
+              </p>
+            )}
+
+            <button
+              type="button"
+              onClick={() => tick(now.stepNumber)}
+              className="mt-4 rounded-full bg-sage-700 px-5 py-2 text-sm font-700 text-white hover:bg-sage-500"
+            >
+              I did this step ✓
+            </button>
+            {now.stepNumber > 1 && (
+              <button
+                type="button"
+                onClick={() => tick(now.stepNumber - 1)}
+                className="ml-3 text-xs text-ink-500 underline"
+              >
+                Undo the step before
+              </button>
+            )}
+          </>
+        )}
+
+        {/* Earlier boxes, out of the way but never lost. */}
+        {!needsBook && (String(draft.notes || '').trim() || String(draft.draft || '').trim()) && now.stepNumber > 2 && (
+          <details className="mt-4 text-sm text-ink-700">
+            <summary className="cursor-pointer text-xs font-700 text-ink-500">What I wrote before</summary>
+            {String(draft.notes || '').trim() && (
+              <p className="mt-2 whitespace-pre-wrap">{draft.notes}</p>
+            )}
+            {now.stepNumber > 3 && String(draft.draft || '').trim() && (
+              <p className="mt-2 whitespace-pre-wrap">{draft.draft}</p>
+            )}
+          </details>
         )}
       </div>
     </section>

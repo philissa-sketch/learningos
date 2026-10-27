@@ -75,7 +75,8 @@ import {
 } from '../lib/reviewQueue.js';
 import { WARM_UP, LESSON_RETRIEVE, PETALS, SEEDS } from '../config/assessment.js';
 import { warmUpSize } from '../lib/morningCircle.js';
-import { SETUP_SLOT, researchSlot, canTickResearch, bookReportSlot } from '../lib/academicCenter.js';
+import { SETUP_SLOT, researchSlot, canTickResearch, bookReportSlot, canTickProjectStep } from '../lib/academicCenter.js';
+import { PROJECTS } from '../config/projects.js';
 import { isEvidenceSource, isAttemptState } from '../config/evidence.js';
 import { proposeGrowthGoals, goalProgress, MIN_ASKED_FOR_A_GOAL } from '../lib/goals.js';
 import { SCHOOL_YEAR, END_OF_SUMMER } from '../config/calendar.js';
@@ -1211,6 +1212,33 @@ export const useAppStore = create((set, get) => ({
   },
 
   /**
+   * PROJECT STEPS (Oct 27 2026). A project is four steps, and Today asks for
+   * the first one not ticked, each school day, until they are all ticked and
+   * she calls it finished. Only her current step can be ticked, so the steps
+   * go in order; un-ticking a step takes the later ones with it, so a
+   * mis-tap is fixable. Ticking the first step is what STARTS a project: a
+   * started project stays hers until it is done (projectBoard).
+   */
+  async toggleProjectStep(projectId, n) {
+    const project = PROJECTS.find((p) => p.id === projectId);
+    if (!project) return { ok: false, reason: 'no-such-project' };
+    const now = new Date().toISOString();
+    const existing = get().projectStatus[projectId] || { projectId, startedAt: now };
+    if (existing.doneAt) return { ok: false, reason: 'already-finished' };
+    const have = new Set(existing.stepsDone || []);
+    if (have.has(n)) {
+      for (const s of [...have]) if (s >= n) have.delete(s);
+    } else {
+      if (!canTickProjectStep(project, n, existing)) return { ok: false, reason: 'out-of-order' };
+      have.add(n);
+    }
+    const row = { ...existing, projectId, stepsDone: [...have].sort((a, b) => a - b), startedAt: existing.startedAt || now };
+    await putProject(row);
+    set({ projectStatus: { ...get().projectStatus, [projectId]: row } });
+    return { ok: true, row };
+  },
+
+  /**
    * THE v3.12 GRANDFATHERING, run once.
    *
    * Her balance is COMPUTED from the effort counters, not stored. So lowering the
@@ -1585,6 +1613,15 @@ export const useAppStore = create((set, get) => ({
     // exists; this is what makes that claim true.
     if (!have.has(n) && n === finalStep && !String(row.final || '').trim()) {
       return { ok: false, reason: 'nothing-finished' };
+    }
+    // Oct 27 2026: the same rule for the two writing steps before it. Step 2's
+    // box is the four sentences and step 3's is the report; a tick with the
+    // box empty is a record of writing that is not there.
+    if (!have.has(n) && n === 2 && !String(row.notes || '').trim()) {
+      return { ok: false, reason: 'nothing-written' };
+    }
+    if (!have.has(n) && n === 3 && !String(row.draft || '').trim()) {
+      return { ok: false, reason: 'nothing-written' };
     }
     if (have.has(n)) have.delete(n);
     else have.add(n);

@@ -344,6 +344,7 @@ export const quarterlyAcademicPlaceholders = {
     // Q4 now holds Environment & Culture (SS7G2/SS7G4, plus the rest of the
     // geography strand as those lessons are completed).
     'Q4 2026-2027': [
+      { slotId: 'asg::socialStudies::Q4::2', type: 'Portfolio Entry', format: 'investigation', dueDate: '2027-05-07', title: 'Environment and culture — one region, one problem, one fix', note: 'Pick one region from this quarter — Africa, Southwest Asia, or Southern & Eastern Asia. Name one environmental problem from the lessons and draw a map showing where it hits hardest. Then give 3 specific facts about how the people there live with it. Finish with one engineering response that already exists somewhere in the world, roughly what it cost, and whether it would work in your region and why. Photograph the map and put the link on this card.' },
     ],
     'Summer 2027': [
       { slotId: 'asg::socialStudies::Summer::1', type: 'Reading Assignment', dueDate: '2027-07-16', title: 'Free choice from the Black American Excellence Library', note: 'Independent summer reading' }

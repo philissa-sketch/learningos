@@ -10,6 +10,7 @@ import {
   parseDateStr
 } from '../../lib/scheduler.js';
 import { orderBooks } from '../../lib/academicOrder.js';
+import { derivedPlannerItems } from '../../lib/plannerFeeds.js';
 import { academyContent } from '../../content/academyContent.js';
 
 const { activeMilestone = () => null, hasMilestones = () => null, leadStatus = () => null, milestoneProgress = () => null, startByFor = () => null } = academyContent().academicCenter;
@@ -65,6 +66,8 @@ export function AcademicCenterCard({ onOpenAcademicCenter, onOpenItem = null }) 
   // an exam and carried no date at all until Aug 29, 2026.
   const missionEvaluations = useAppStore((s) => s.missionEvaluations);
   const assignments = useAppStore((s) => s.assignments);
+  const writingEntries = useAppStore((s) => s.writingEntries);
+  const gardenLog = useAppStore((s) => s.gardenLog);
 
   const today = todayDateStr();
   const through = toDateStr(addDays(parseDateStr(today), LOOKAHEAD_DAYS));
@@ -72,7 +75,30 @@ export function AcademicCenterCard({ onOpenAcademicCenter, onOpenItem = null }) 
   // Planner items are included on purpose: from the student's side this
   // is just "what's due soon," and splitting it by which table it lives
   // in would be an implementation detail leaking into his day.
-  const items = buildCalendarItems({ assignments, academicAssignments, fieldTrips, missionEvaluations });
+  /**
+   * ---- HIS SCREEN AND HERS WERE READING DIFFERENT LISTS. (Oct 27, 2026.)
+   *
+   * The parent: *"In the everyday tab in the parent dashboard there is a lot
+   * of past due work that isn't showing up for him."*
+   *
+   * This card built its list from `buildCalendarItems` alone. Her Coming Up
+   * panel builds it from that PLUS `derivedPlannerItems` — the week-numbered
+   * Writing Journal pieces, the hands-on projects, and the garden sessions.
+   * None of those three has an assignment record behind it, so none of them
+   * ever reached the one component that shows him what is past due.
+   *
+   * It is also why a project "showed up and disappeared before completion":
+   * the Balloon Rocket Race and the Rubber Band Airplane reach him through
+   * the week's routine, which only ever shows the current week. When that
+   * week ended they left his screen entirely, because the card that would
+   * have carried them on as overdue was never given them.
+   *
+   * Same two sources, same order, as ParentDashboard's Coming Up.
+   */
+  const items = [
+    ...buildCalendarItems({ assignments, academicAssignments, fieldTrips, missionEvaluations }),
+    ...derivedPlannerItems({ writingEntries, gardenLog })
+  ];
   const upcoming = getUpcomingCalendarItems(items, today, through).filter((i) => !i.done);
   const overdue = getOverdueCalendarItems(items, today);
 

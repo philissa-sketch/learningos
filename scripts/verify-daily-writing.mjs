@@ -380,12 +380,15 @@ console.log('\n--- he has to look at it before it is saved ---');
   ok('...typing again puts the check back',
     /if \(checked\) setChecked\(null\);/.test(engine),
     'a check he passed three paragraphs ago is not a check on what he is about to save');
+  // The options object gained `photoUrl` on Oct 27, 2026, so the hands-on
+  // projects can turn in a picture of the build. What this guards is
+  // unchanged: the override count still travels with the entry.
   ok('...and what he overrode is recorded',
-    /submitWritingEntry\(prompt\.id, text, \{ checkIssues: issueCount \}\)/.test(engine));
+    /submitWritingEntry\(prompt\.id, text, \{[\s\S]{0,240}?checkIssues: issueCount/.test(engine));
 
   const store2 = codeOnly(read('src/store/useAppStore.js'));
   ok('the store stores it',
-    /async submitWritingEntry\(promptId, text, \{ checkIssues = null \} = \{\}\)/.test(store2)
+    /async submitWritingEntry\(promptId, text, \{ checkIssues = null[^)]*\} = \{\}\)/.test(store2)
       && /checkIssues: Number\.isFinite\(checkIssues\) \? checkIssues : null/.test(store2));
   ok('...as null when nothing checked, never as zero',
     !/checkIssues: checkIssues \|\| 0/.test(store2),

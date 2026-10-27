@@ -269,10 +269,12 @@ export function pickProject(local, incoming) {
   }
   if (incoming.doneAt && !local.doneAt) return incoming;
   if (local.doneAt && !incoming.doneAt) return local;
-  if (local.startedAt && incoming.startedAt) {
-    return local.startedAt <= incoming.startedAt ? local : incoming;
-  }
-  return local;
+  // Neither is finished: keep the earlier start, and never lose a ticked step
+  // from either machine (Oct 27 2026: projects now have steps).
+  const stepsDone = [...new Set([...(local.stepsDone || []), ...(incoming.stepsDone || [])])].sort((x, y) => x - y);
+  const keep =
+    local.startedAt && incoming.startedAt && incoming.startedAt < local.startedAt ? incoming : local;
+  return stepsDone.length ? { ...keep, stepsDone } : keep;
 }
 
 /**

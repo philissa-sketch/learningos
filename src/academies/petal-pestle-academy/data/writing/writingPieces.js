@@ -233,42 +233,58 @@ export const BOOK_REPORT = {
     {
       n: 1,
       id: 'read',
-      step: 'Read the book',
+      step: 'Read your book',
       ask:
-        'Just read it. When something matters, mark the page — a line you liked, ' +
-        'a moment where somebody changes. A scrap of paper is enough. ' +
-        'You do not write anything this week.',
-      example: 'Marking as you go is the trick. Those places are very hard to find again later.'
+        'Read a little of your book every day. Put a bookmark or a scrap of paper ' +
+        'in a page you like. When you have finished the book, tick this step.',
+      example: 'Do not write anything yet. Today is only for reading.',
+      box: null,
+      starters: []
     },
     {
       n: 2,
       id: 'notes',
-      step: 'Notes and what it will say',
+      step: 'Say what happened',
       ask:
-        'Go back to the places you marked. Out of those, choose the three or four ' +
-        'things your report will say. Write them in the notes box as short lines, ' +
-        'not sentences. This is a plan, not writing.',
-      example: 'Next week you write one paragraph for each line. That is why there are three or four.'
+        'Finish the four sentences below. Short is fine. You can say each one out ' +
+        'loud first, then write it. Then tick this step.',
+      example: 'These four sentences are your plan. Tomorrow you make each one a paragraph.',
+      box: 'notes',
+      starters: [
+        'The book is called ___ and it was written by ___.',
+        'It is about ___.',
+        'The person I liked best is ___, because ___.',
+        'My favorite part was ___, because ___.'
+      ]
     },
     {
       n: 3,
       id: 'draft',
-      step: 'Rough draft',
+      step: 'Write it out',
       ask:
-        'One paragraph a day. One for each line in your plan. Give a real bit of ' +
-        'the book each time. None of it has to be good yet. Do not go back and ' +
-        'fix anything this week.',
-      example: 'Four short days and the whole draft is done. No long afternoon at the end.'
+        'Turn each sentence into a small paragraph. One paragraph a day is plenty. ' +
+        'Put in one real thing from the book each time. It does not have to be ' +
+        'perfect. Tick this step when all four are written.',
+      example: 'Four short days, and the whole report is done.',
+      box: 'draft',
+      starters: [
+        'WHAT THE BOOK IS: the name, the writer, and what it is about.',
+        'THE PERSON: who they are and what they wanted.',
+        'MY FAVORITE PART: what happened and why you liked it.',
+        'WOULD I TELL A FRIEND: yes or no, and one reason.'
+      ]
     },
     {
       n: 4,
       id: 'polish',
-      step: 'Edit and finish',
+      step: 'Read it to Gigi and finish',
       ask:
-        'Read your draft out loud to somebody. Reading it out loud finds more than ' +
-        'your eyes do. Fix the places where you stumble, copy it into the last box, ' +
-        'and tick the list.',
-      example: 'You are listening for the parts where you run out of breath.'
+        'Read your report out loud to Gigi. Listen for the places where you stumble ' +
+        'and fix them. Copy the finished report into the last box, check the list, ' +
+        'and tick this step.',
+      example: 'Reading out loud finds more than your eyes do.',
+      box: 'final',
+      starters: []
     }
   ],
 

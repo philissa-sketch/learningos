@@ -29,7 +29,7 @@ import { marigoldCallsHer } from '../../lib/marigoldName.js';
 import { readingToday, khanWatchFor, READING_MINUTES } from '../../lib/readingProgress.js';
 import { unitUrl } from '../../data/khan/khanUnits.js';
 import { SendWorkCard } from './SendWorkCard.jsx';
-import { projectBoard } from '../../lib/academicCenter.js';
+import { projectBoard, projectToday } from '../../lib/academicCenter.js';
 
 // ---------------------------------------------------------------------------
 // TODAY — her school day, with a bell.
@@ -105,11 +105,21 @@ export function TodayView({ onNavigate }) {
   // never disagree about what is open. It is a doorway, not a debt: no red, no
   // count of "late", and it disappears when nothing is open.
   const projectStatus = useAppStore((s) => s.projectStatus);
-  const projectsOpen = projectBoard({
+  // Oct 27 2026, Gigi: her projects "just show up once and do not prompt her
+  // throughout the week to finish before giving her a new project." Now ONE
+  // project is in hand (projectBoard marks it 'now'), Today asks for its next
+  // step every school day, and the project after it waits until this one is
+  // finished or a grown-up sets it aside.
+  const projectBoardNow = projectBoard({
     lessonsRead,
     projectStatus: projectStatus || {},
     drafts: writingDrafts || {}
-  }).filter((p) => p.state === 'now' || p.state === 'earlier');
+  });
+  const projectNow = projectToday(projectBoardNow, projectStatus || {});
+  const toggleProjectStep = useAppStore((s) => s.toggleProjectStep);
+  // Same function the book report screen asks, so the knock and the screen it
+  // opens can never disagree about which report, or which step.
+  const bookNow = bookReportNow(lessonsRead, stepsBySlot);
 
   const day = todayKey();
   const done = useAppStore((s) => s.scheduleDays[day]?.done || {});
@@ -353,32 +363,61 @@ export function TodayView({ onNavigate }) {
         )}
       </section>
 
-      {/* Her projects: the doorway to Academic Center -> Projects. */}
-      {projectsOpen.length > 0 && (
-        <section className="mt-5 rounded-petal border-2 border-sage-500 bg-sage-300/15 px-4 py-4">
-          <p className="font-display text-base text-ink-900">🌱 Your projects</p>
+      {/* THE BOOK REPORT, every school day until it is finished (Oct 27 2026).
+          It used to be a small button inside the writing block that she never
+          pressed. This is the knock: one step, today, one tap to start it. */}
+      {bookNow.state === 'open' && !bookNow.allDone && (
+        <section className="mt-5 rounded-petal border-2 border-gold-300 bg-gold-300/15 px-4 py-4">
+          <p className="font-display text-base text-ink-900">📖 Your book report</p>
           <p className="mt-0.5 text-xs text-ink-700">
-            {projectsOpen.length === 1
-              ? 'You have one project to make. Open it to see what you need and what to do.'
-              : `You have ${projectsOpen.length} projects to make. Pick any one. Open it to see what you need and what to do.`}
+            Step {bookNow.stepNumber} of {bookNow.of}: <span className="font-700">{bookNow.step.step}</span>. Today is about 15 minutes.
           </p>
-          <ul className="mt-2 space-y-1.5">
-            {projectsOpen.slice(0, 5).map((p) => (
-              <li key={p.id} className="flex flex-wrap items-center justify-between gap-2">
-                <span className="text-sm text-ink-900">
-                  <span className="font-700">{p.title}</span>{' '}
-                  <span className="text-xs text-ink-500">· Module {p.module}</span>
-                </span>
-                <button
-                  type="button"
-                  onClick={() => throughCircle('blk-projects', () => onNavigate?.('projects'))}
-                  className="rounded-full bg-sage-700 px-4 py-1.5 text-xs font-700 text-white hover:bg-sage-500"
-                >
-                  Open
-                </button>
-              </li>
-            ))}
-          </ul>
+          <button
+            type="button"
+            onClick={() => throughCircle('blk-writing', () => onNavigate?.('bookReport'))}
+            className="mt-2 rounded-full bg-sage-700 px-4 py-1.5 text-xs font-700 text-white hover:bg-sage-500"
+          >
+            Do today’s step
+          </button>
+        </section>
+      )}
+
+      {/* Her project: ONE, with today's step. The next one waits. */}
+      {projectNow && (
+        <section className="mt-5 rounded-petal border-2 border-sage-500 bg-sage-300/15 px-4 py-4">
+          <p className="font-display text-base text-ink-900">🌱 Your project: {projectNow.project.title}</p>
+          {projectNow.allStepsDone ? (
+            <p className="mt-0.5 text-xs text-ink-700">
+              Every step is ticked. Open it and press “I finished it”.
+            </p>
+          ) : (
+            <p className="mt-0.5 text-xs text-ink-700">
+              Step {projectNow.stepNumber} of {projectNow.of}: {projectNow.step}
+            </p>
+          )}
+          <div className="mt-2 flex flex-wrap gap-2">
+            {!projectNow.allStepsDone && (
+              <button
+                type="button"
+                onClick={() => toggleProjectStep(projectNow.project.id, projectNow.stepNumber)}
+                className="rounded-full border border-sage-700 bg-white px-4 py-1.5 text-xs font-700 text-sage-700 hover:bg-sage-300/25"
+              >
+                I did this step ✓
+              </button>
+            )}
+            <button
+              type="button"
+              onClick={() => throughCircle('blk-projects', () => onNavigate?.('projects'))}
+              className="rounded-full bg-sage-700 px-4 py-1.5 text-xs font-700 text-white hover:bg-sage-500"
+            >
+              Open my project
+            </button>
+          </div>
+          {projectNow.next && (
+            <p className="mt-2 text-[0.7rem] text-ink-500">
+              Your next project starts when this one is finished.
+            </p>
+          )}
         </section>
       )}
 

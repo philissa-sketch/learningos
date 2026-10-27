@@ -5613,7 +5613,7 @@ const seedRows = khanFirstSeedRows().map((r) => ({ ...r, completed: false, grade
    * an unknown, never as a zero. A zero would read as "he checked and it was
    * clean", which is a claim this app would have no evidence for.
    */
-  async submitWritingEntry(promptId, text, { checkIssues = null } = {}) {
+  async submitWritingEntry(promptId, text, { checkIssues = null, photoUrl = null } = {}) {
     const state = get();
     const wordCount = text.trim().split(/\s+/).filter(Boolean).length;
     const completedAt = new Date().toISOString();
@@ -5629,7 +5629,22 @@ const seedRows = khanFirstSeedRows().map((r) => ({ ...r, completed: false, grade
       completedAt,
       grade: null,
       gradedAt: null,
-      checkIssues: Number.isFinite(checkIssues) ? checkIssues : null
+      checkIssues: Number.isFinite(checkIssues) ? checkIssues : null,
+      /**
+       * A BUILD IS NOT WORDS. (Oct 27, 2026.)
+       *
+       * The parent: *"Lamar completed the tinkercad assignment and there
+       * isn't anywhere for him to upload it."* There was not. The hands-on
+       * projects — the balloon rocket, the rubber-band airplane, the
+       * Tinkercad nameplate — are written up through this same engine, and
+       * it offered a text box and nothing else, while the prompts themselves
+       * said "Screenshot it" and "Photograph the finished model".
+       *
+       * A link, not a file: this app stores no files, on purpose, so that
+       * his work outlives it and a browser reset cannot take it. Same rule
+       * and same validator as every other evidence link in the record.
+       */
+      photoUrl: null
     };
 
     /**
@@ -5652,11 +5667,22 @@ const seedRows = khanFirstSeedRows().map((r) => ({ ...r, completed: false, grade
      * pool is scheduled several times a year, and a genuine second attempt is
      * different text; neither must be swallowed by this.
      */
+    const link = photoUrl ? normalizeEvidenceUrl(photoUrl) : null;
+    if (link && !link.ok) return { ok: false, error: link.error };
+    if (link) entry.photoUrl = link.url;
+
     const twin = state.writingEntries.find(
       (e) => e.promptId === promptId && e.grade == null && e.text === text
     );
     if (twin) {
-      const changes = { wordCount, completedAt, checkIssues: entry.checkIssues };
+      const changes = {
+        wordCount,
+        completedAt,
+        checkIssues: entry.checkIssues,
+        // A picture added on the second press is the one thing a repeat save
+        // may legitimately carry; never blank one he already attached.
+        ...(entry.photoUrl ? { photoUrl: entry.photoUrl } : {})
+      };
       await updateWritingEntryRecord(twin.id, changes);
       const merged = { ...twin, ...changes };
       set({ writingEntries: state.writingEntries.map((e) => (e.id === twin.id ? merged : e)) });
@@ -5675,6 +5701,25 @@ const seedRows = khanFirstSeedRows().map((r) => ({ ...r, completed: false, grade
     await saveMeta({ xp, streak: state.streak, lastActiveDate: state.lastActiveDate });
     await get().bumpTodayAttendance('writingEntries');
     return withId;
+  },
+
+  /**
+   * Attach or change the picture on an entry already turned in — the build
+   * is photographed on Saturday, the write-up happened on Thursday. Same
+   * sequencing the Academic Center's evidence links were built for.
+   */
+  async saveWritingEntryPhoto(entryId, url) {
+    const state = get();
+    const existing = (state.writingEntries || []).find((e) => e.id === entryId);
+    if (!existing) return { ok: false, error: 'That entry is not in the record.' };
+    const checked = normalizeEvidenceUrl(url);
+    if (!checked.ok) return { ok: false, error: checked.error };
+    const changes = { photoUrl: checked.url };
+    await updateWritingEntryRecord(entryId, changes);
+    set({
+      writingEntries: state.writingEntries.map((e) => (e.id === entryId ? { ...e, ...changes } : e))
+    });
+    return { ok: true, url: checked.url };
   },
 
   /**

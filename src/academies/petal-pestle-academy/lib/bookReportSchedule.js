@@ -142,22 +142,43 @@ export function weekWithinQuarter(week) {
  */
 export function bookReportNow(lessonsRead = [], stepsDoneBySlot = {}, weeks = WEEKS) {
   const week = spineWeek(lessonsRead, weeks);
-  const quarter = quarterOfWeek(week);
+  const nowQuarter = quarterOfWeek(week);
   const inQuarter = weekWithinQuarter(week);
-  const slotId = `book-report-q${quarter}`;
+  const total = BOOK_REPORT.steps.length;
 
-  if (inQuarter < OPENS_AT_WEEK_IN_QUARTER) {
-    return {
-      state: 'not-yet',
-      quarter,
-      slotId,
-      opensAtWeek: OPENS_AT_WEEK_IN_QUARTER,
-      weeksAway: OPENS_AT_WEEK_IN_QUARTER - inQuarter
-    };
+  // ⚠️ ONE REPORT AT A TIME, OLDEST FIRST (Gigi, Oct 27 2026: "She isn't doing
+  // any of it. She will need prompts"). Her Quarter 1 report was never started
+  // and the screen jumped to Quarter 2's. A report that has opened stays hers
+  // until its four steps are done; the next quarter's report waits behind it.
+  // A quarter's report opens at week 5 of that quarter, and every quarter
+  // before the one she is in has already opened.
+  let q = null;
+  for (let c = 1; c <= nowQuarter; c += 1) {
+    const opened = c < nowQuarter || inQuarter >= OPENS_AT_WEEK_IN_QUARTER;
+    if (!opened) continue;
+    const have = new Set(stepsDoneBySlot[`book-report-q${c}`] || []);
+    if (have.size < total) {
+      q = c;
+      break;
+    }
   }
 
-  const total = BOOK_REPORT.steps.length;
-  const byWeek = inQuarter - OPENS_AT_WEEK_IN_QUARTER + 1; // 1..4
+  if (q === null) {
+    if (inQuarter < OPENS_AT_WEEK_IN_QUARTER) {
+      return {
+        state: 'not-yet',
+        quarter: nowQuarter,
+        slotId: `book-report-q${nowQuarter}`,
+        opensAtWeek: OPENS_AT_WEEK_IN_QUARTER,
+        weeksAway: OPENS_AT_WEEK_IN_QUARTER - inQuarter
+      };
+    }
+    // Every opened report is finished: show the current one as all done.
+    q = nowQuarter;
+  }
+
+  const slotId = `book-report-q${q}`;
+  const byWeek = q === nowQuarter ? inQuarter - OPENS_AT_WEEK_IN_QUARTER + 1 : total + 1; // 1..4
 
   // What she has already ticked wins over what the week suggests. A child who
   // read the whole book in week 5 is on step 3, not step 1.
@@ -165,26 +186,24 @@ export function bookReportNow(lessonsRead = [], stepsDoneBySlot = {}, weeks = WE
   let n = 1;
   while (n <= total && done.has(n)) n += 1;
 
-  // ⚠️ Sept 24 2026: this was Math.max(n, byWeek), so once the week moved on
-  // she was put on the WEEK's step even with earlier steps undone: "Rough
-  // draft" before she had read the book. Her rule: a step may only ask for
-  // what the one before it gave her. So she is always on her first step not
-  // done. Working ahead still counts (n is past every ticked step); falling
-  // behind shows up for a grown-up through `running`, never as a skipped step.
+  // ⚠️ Sept 24 2026: she is always on her first step not done. A step may only
+  // ask for what the one before it gave her. Falling behind shows up for a
+  // grown-up through `running`, never as a skipped step.
   const stepNumber = Math.min(total, n);
   const step = BOOK_REPORT.steps.find((s) => s.n === stepNumber) || null;
 
   return {
     state: 'open',
-    quarter,
+    quarter: q,
     slotId,
     step,
     stepNumber,
     of: total,
-    // True when the week has moved past a step she has not ticked. Shown to a
-    // grown-up, never phrased to her as being behind — §32.
     running: byWeek > stepNumber ? false : byWeek < stepNumber,
     weekOfQuarter: inQuarter,
+    // True when this is an EARLIER quarter's report she is still finishing.
+    // Shown to a grown-up, never phrased to her as being behind (§32).
+    carriedOver: q < nowQuarter,
     allDone: done.size >= total
   };
 }

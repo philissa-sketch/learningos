@@ -26,6 +26,7 @@ import {
   RESEARCH_BOXES,
   bookReportStatus,
   projectBoard,
+  canFinishProject,
   researchNow,
   researchSlot,
   canTickResearch,
@@ -162,13 +163,26 @@ function BookReportsTab() {
 function ProjectsTab() {
   const her = useHer();
   const setProjectDone = useAppStore((s) => s.setProjectDone);
+  const toggleProjectStep = useAppStore((s) => s.toggleProjectStep);
   const board = projectBoard(her);
   const [openId, setOpenId] = useState(board[0]?.id || null);
-  const WORDS = { now: 'This module', earlier: 'From an earlier module', later: 'Later', done: '✓ Done', 'set-aside': 'Set aside by a grown-up' };
+  const [said, setSaid] = useState('');
+  const WORDS = {
+    now: 'Your project now',
+    next: 'Next, when this one is finished',
+    earlier: 'From an earlier module',
+    later: 'Later',
+    done: '✓ Done',
+    'set-aside': 'Set aside by a grown-up'
+  };
   return (
     <div className="space-y-3">
+      {said && <p className="rounded-petal bg-gold-300/25 px-3.5 py-2.5 text-sm text-ink-900">{said}</p>}
       {board.map((p) => {
         const open = openId === p.id;
+        const row = her.projectStatus?.[p.id] || {};
+        const have = new Set(row.stepsDone || []);
+        const canFinish = canFinishProject(p, row);
         return (
           <div key={p.id} className={`rounded-petal border-2 px-4 py-3 ${p.state === 'now' ? 'border-sage-500 bg-sage-300/10' : 'border-cream-300 bg-white'}`}>
             <button type="button" onClick={() => setOpenId(open ? null : p.id)} className="flex w-full items-baseline justify-between gap-2 text-left">
@@ -187,15 +201,37 @@ function ProjectsTab() {
                     <li key={x}>{x}</li>
                   ))}
                 </ul>
-                <p className="mt-3 font-700">What you do</p>
-                <ol className="list-decimal pl-5">
-                  {p.steps.map((x) => (
-                    <li key={x}>{x}</li>
-                  ))}
-                </ol>
+                <p className="mt-3 font-700">What you do. Tick each one when you have done it.</p>
+                <div className="mt-1.5 space-y-1.5">
+                  {p.steps.map((x, i) => {
+                    const n = i + 1;
+                    const on = have.has(n);
+                    const mine = p.state !== 'set-aside' && p.state !== 'done';
+                    return (
+                      <button
+                        key={x}
+                        type="button"
+                        disabled={!mine}
+                        onClick={async () => {
+                          const r = await toggleProjectStep(p.id, n);
+                          setSaid(r?.ok === false ? 'Do the step before it first, then tick this one.' : '');
+                        }}
+                        className="flex w-full items-start gap-2.5 text-left text-sm"
+                      >
+                        <span className={`mt-0.5 flex h-5 w-5 flex-none items-center justify-center rounded-full text-[0.65rem] font-700 ${on ? 'bg-sage-500 text-white' : 'bg-cream-200 text-ink-700'}`}>
+                          {on ? '✓' : n}
+                        </span>
+                        <span className={on ? 'text-ink-500 line-through' : 'text-ink-900'}>{x}</span>
+                      </button>
+                    );
+                  })}
+                </div>
                 <p className="mt-3 font-700">It is finished when</p>
                 <p>{p.done}</p>
-                {p.state !== 'set-aside' && (
+                {p.state !== 'set-aside' && p.state !== 'done' && !canFinish && (
+                  <p className="mt-3 text-xs text-ink-500">The finish button shows up when you have ticked every step.</p>
+                )}
+                {p.state !== 'set-aside' && (p.state === 'done' || canFinish) && (
                   <button type="button" onClick={() => setProjectDone(p.id, p.state !== 'done')} className={`${primary} mt-3`}>
                     {p.state === 'done' ? 'Not finished after all' : 'I finished it'}
                   </button>

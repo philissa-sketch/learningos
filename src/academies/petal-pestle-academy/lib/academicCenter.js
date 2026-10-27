@@ -89,24 +89,84 @@ export function currentModule(lessonsRead = [], weeks = WEEKS) {
 }
 
 /**
- * Every project with its state, the current one first.
- * state: 'done' | 'now' | 'earlier' (its module is past and it is not done) |
+ * Every project with its state, the one she is ON first.
+ * state: 'done' | 'now' | 'next' (open by her progress, waiting behind the one
+ *        she is on) | 'earlier' (its module is past, not done, not pushed) |
  *        'later' | 'set-aside' (a grown-up turned it off)
+ *
+ * ⚠️ ONE PROJECT IS 'now', NEVER SEVERAL (Gigi, Oct 27 2026: her projects "just
+ * show up once and do not prompt her throughout the week to finish before
+ * giving her a new project"). Today used to list every open project and say
+ * "pick any one", and her record holds none finished. The rule:
+ *   · a project she has STARTED (ticked a step) stays 'now' until it is done;
+ *   · otherwise it is this module's project;
+ *   · if that one is already done, the most recent earlier one not done.
+ * A new project is only ever given when the one in hand is finished or set
+ * aside by a grown-up.
  */
 export function projectBoard({ lessonsRead = [], projectStatus = {}, drafts = {}, weeks = WEEKS } = {}) {
   const mod = currentModule(lessonsRead, weeks);
   const off = new Set(setupFrom(drafts).projectsOff);
+  const isDone = (id) => !!projectStatus?.[id]?.doneAt;
+  const started = (id) => (projectStatus?.[id]?.stepsDone || []).length > 0;
+  const live = PROJECTS.filter((p) => !off.has(p.id) && !isDone(p.id));
+  const byModule = (x, y) => x.module - y.module;
+  const activeId =
+    live.filter((p) => started(p.id)).sort(byModule)[0]?.id ||
+    live.find((p) => p.module === mod)?.id ||
+    live.filter((p) => p.module < mod).sort((x, y) => y.module - x.module)[0]?.id ||
+    null;
   const rows = PROJECTS.map((p) => {
-    const done = !!projectStatus?.[p.id]?.doneAt;
     let state = 'later';
     if (off.has(p.id)) state = 'set-aside';
-    else if (done) state = 'done';
-    else if (p.module === mod) state = 'now';
+    else if (isDone(p.id)) state = 'done';
+    else if (p.id === activeId) state = 'now';
+    else if (p.module === mod) state = 'next';
     else if (p.module < mod) state = 'earlier';
-    return { ...p, state, doneAt: projectStatus?.[p.id]?.doneAt || null };
+    return { ...p, state, doneAt: projectStatus?.[p.id]?.doneAt || null, stepsDone: projectStatus?.[p.id]?.stepsDone || [] };
   });
-  const order = { now: 0, earlier: 1, later: 2, done: 3, 'set-aside': 4 };
+  const order = { now: 0, next: 1, earlier: 2, later: 3, done: 4, 'set-aside': 5 };
   return rows.sort((a, b) => order[a.state] - order[b.state] || a.module - b.module);
+}
+
+/**
+ * What the project in hand asks of her TODAY: its first step not ticked.
+ * Null when there is no project in hand. `next` is the project waiting behind
+ * it, so the screen can say "your next project starts when this one is done".
+ */
+export function projectToday(board = [], projectStatus = {}) {
+  const p = board.find((x) => x.state === 'now');
+  if (!p) return null;
+  const have = new Set(projectStatus?.[p.id]?.stepsDone || []);
+  let n = 1;
+  while (n <= p.steps.length && have.has(n)) n += 1;
+  const all = n > p.steps.length;
+  return {
+    project: p,
+    stepNumber: all ? null : n,
+    step: all ? null : p.steps[n - 1],
+    of: p.steps.length,
+    stepsDone: have.size,
+    allStepsDone: all,
+    next: board.find((x) => x.state === 'next') || null
+  };
+}
+
+/** A project can be called finished only when every step has been ticked. */
+export function canFinishProject(project, row) {
+  const have = new Set(row?.stepsDone || []);
+  return !!project && project.steps.every((_, i) => have.has(i + 1));
+}
+
+/**
+ * May this project step be ticked? Only the first one not ticked, so the steps
+ * go in order. Un-ticking is always allowed and takes the later steps with it.
+ */
+export function canTickProjectStep(project, n, row) {
+  const have = new Set(row?.stepsDone || []);
+  let first = 1;
+  while (first <= project.steps.length && have.has(first)) first += 1;
+  return n === first;
 }
 
 // ---------------------------------------------------------------------------
@@ -193,6 +253,35 @@ export function libraryShelf(drafts = {}) {
   }).filter(Boolean);
   const added = setup.library.map((b) => ({ kind: 'added', ...b }));
   return { course, reports, added };
+}
+
+/**
+ * THE BOOKS SHE MAY WRITE ABOUT (Gigi, Oct 27 2026: "there are books for the
+ * year and none of the books showed up in the book report area so she checked
+ * out a different book").
+ *
+ * The report screen had a blank box for the title. Now:
+ *   assigned  a book a grown-up chose for the quarter in Grown-Up Setup. If
+ *             there is one, it is the only book offered.
+ *   options   otherwise, the verified Reading-course books of THAT quarter plus
+ *             any a grown-up added to her library. A quarter whose reading
+ *             modules are not written yet offers every written Reading-course
+ *             book instead, never a guessed title.
+ * She taps one. She does not type a title.
+ */
+export function reportBookChoices(q, drafts = {}) {
+  const setup = setupFrom(drafts);
+  const chosen = setup.bookFor[q];
+  const assigned = chosen?.title ? { title: chosen.title, author: chosen.author || '' } : null;
+  const shelf = libraryShelf(drafts);
+  const written = shelf.course.filter((b) => b.kind === 'reading');
+  const ofQuarter = written.filter((b) => b.quarter === q);
+  const pool = ofQuarter.length ? ofQuarter : written;
+  const seen = new Set();
+  const options = [...pool, ...shelf.added]
+    .map((b) => ({ title: b.title, author: b.author || '', note: b.note || '' }))
+    .filter((b) => b.title && !seen.has(b.title) && seen.add(b.title));
+  return { assigned, options, fromQuarter: ofQuarter.length > 0 };
 }
 
 // ---------------------------------------------------------------------------
