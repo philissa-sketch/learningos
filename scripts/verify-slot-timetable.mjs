@@ -170,8 +170,10 @@ console.log('\n--- 6. what is taught on a day ---');
   ok('the terms school teaches that term’s courses',
     JSON.stringify(subjectsForDay(P, D('2026-09-08'))) === JSON.stringify(PETAL.SUBJECTS_BY_TERM.q1));
   ok('...a different list in a different term',
-    JSON.stringify(PETAL.SUBJECTS_BY_TERM.q1) !== JSON.stringify(PETAL.SUBJECTS_BY_TERM.q2)
-    && JSON.stringify(subjectsForDay(P, D('2026-11-04'))) === JSON.stringify(PETAL.SUBJECTS_BY_TERM.q2));
+    // Q1 against Q3, not Q2: The Science Lab moved from Q1+Q3 to Q1+Q2 on Oct 27
+    // 2026, so Q1 and Q2 now teach the same list and only Q3 drops a course.
+    JSON.stringify(PETAL.SUBJECTS_BY_TERM.q1) !== JSON.stringify(PETAL.SUBJECTS_BY_TERM.q3)
+    && JSON.stringify(subjectsForDay(P, D('2027-01-13'))) === JSON.stringify(PETAL.SUBJECTS_BY_TERM.q3));
   ok('nothing is taught outside the terms', subjectsForDay(P, D('2027-05-28')).length === 0);
 }
 

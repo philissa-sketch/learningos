@@ -183,9 +183,10 @@ export const DEFAULT_SCHEDULE = [
     // and enforced by scripts/check-curriculum-volume.mjs, which fails if the two
     // courses ever claim the same quarter or leave one empty.
     //
-    //   Q1, Q3  The Science Lab — the Georgia standards a garden cannot reach:
+    //   Q1, Q2  The Science Lab (moved from Q1+Q3, Oct 27 2026, Gigi) — the Georgia standards a garden cannot reach:
     //           forces, gravity, simple machines, light, sound, stars, the moon.
-    //   Q2, Q4  The Human Body — ENRICHMENT, and labeled that way on purpose. No
+    //   Q3, Q4  (Human Body has since moved to the 2:45 rotation; this time is garden/projects)
+    //   (old note) The Human Body — ENRICHMENT, and labeled that way on purpose. No
     //           Georgia fourth-grade standard covers the human body; cells and
     //           inherited traits are fifth grade. It stays because it is the course
     //           she opens the app for, and it is not counted as her science.
@@ -197,7 +198,7 @@ export const DEFAULT_SCHEDULE = [
     // …"). It used to end "— The Human Body moved to the 2:45 rotating block at
     // v3.22", a note for grown-ups that she heard aloud. That history lives in
     // the comment above.
-    note: 'The Science Lab this quarter. In Q2 and Q4 this time is for the garden and your projects.'
+    note: 'The Science Lab this quarter. In Q3 and Q4 this time is for the garden and your projects.'
   },
   {
     // ---- THIS BLOCK CHANGES SUBJECT BY DAY (v3.22) ----

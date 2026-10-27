@@ -481,7 +481,7 @@ const SG = 'No Black American educator confirmed for elementary astronomy. Searc
 
 export const SCIENCELAB_M7 = [
   {
-    id: 'sl-m7-01', course: 'sciencelab', module: 7, quarter: 3, week: 5, day: 1, n: 37,
+    id: 'sl-m7-01', course: 'sciencelab', module: 7, quarter: 2, week: 5, day: 1, n: 37,
     title: 'Eight worlds, in order',
     minutes: 30, spec: '§10 · beats',
     concept: 'Eight planets orbit the sun in a fixed order, held there by the same gravity that keeps the moon going round us.',
@@ -514,7 +514,7 @@ export const SCIENCELAB_M7 = [
     ]
   },
   {
-    id: 'sl-m7-02', course: 'sciencelab', module: 7, quarter: 3, week: 5, day: 2, n: 38,
+    id: 'sl-m7-02', course: 'sciencelab', module: 7, quarter: 2, week: 5, day: 2, n: 38,
     title: 'Rocky worlds and gas giants',
     minutes: 30, spec: '§10 · beats',
     concept: 'The inner four planets are small and solid; the outer four are enormous and have no surface to stand on.',
@@ -547,7 +547,7 @@ export const SCIENCELAB_M7 = [
     ]
   },
   {
-    id: 'sl-m7-03', course: 'sciencelab', module: 7, quarter: 3, week: 5, day: 3, n: 39,
+    id: 'sl-m7-03', course: 'sciencelab', module: 7, quarter: 2, week: 5, day: 3, n: 39,
     title: 'A model where the sizes are right',
     minutes: 30, spec: '§10 · beats',
     concept: 'An honest size model shrinks everything by the same amount, and doing so shows how enormously the sun dwarfs the planets.',
@@ -580,7 +580,7 @@ export const SCIENCELAB_M7 = [
     ]
   },
   {
-    id: 'sl-m7-04', course: 'sciencelab', module: 7, quarter: 3, week: 6, day: 1, n: 40,
+    id: 'sl-m7-04', course: 'sciencelab', module: 7, quarter: 2, week: 6, day: 1, n: 40,
     title: 'A model where the distances are right',
     minutes: 30, spec: '§10 · beats',
     concept: 'The solar system is overwhelmingly empty, and the gaps between planets grow enormously the further out she goes.',
@@ -612,7 +612,7 @@ export const SCIENCELAB_M7 = [
     ]
   },
   {
-    id: 'sl-m7-05', course: 'sciencelab', module: 7, quarter: 3, week: 6, day: 2, n: 41,
+    id: 'sl-m7-05', course: 'sciencelab', module: 7, quarter: 2, week: 6, day: 2, n: 41,
     title: 'Why no model can do both at once',
     minutes: 30, spec: '§10 · beats',
     concept: 'Her size model and her distance model contradict each other, and knowing what a model leaves out is the point of the standard.',
@@ -663,7 +663,7 @@ export const SCIENCELAB_M7 = [
     ]
   },
   {
-    id: 'sl-m7-06', course: 'sciencelab', module: 7, quarter: 3, week: 6, day: 3, n: 42,
+    id: 'sl-m7-06', course: 'sciencelab', module: 7, quarter: 2, week: 6, day: 3, n: 42,
     title: 'Seeing what her eyes cannot',
     minutes: 30, spec: '§10 · beats',
     concept: 'A telescope above the air sees without any wobble, and every better tool has made the known sky larger.',

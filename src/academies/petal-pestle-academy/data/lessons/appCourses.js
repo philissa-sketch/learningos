@@ -61,7 +61,7 @@ export const APP_COURSES = [
     blurb:
       'The Georgia science a garden cannot honestly reach — forces, gravity, simple machines, light, sound, the stars and the moon. Half an hour a day in the 2:10 block.',
     minutes: 30,
-    quarters: [1, 3],
+    quarters: [1, 2],
     modules: SCIENCELAB_MODULES,
     lessons: ALL_SCIENCELAB_LESSONS
   },

@@ -598,52 +598,54 @@ export const WEEKS = {
       lessons: ['sl-m4-04', 'sl-m4-05', 'sl-m4-06'], planned: 3,
       blurb: 'The mirror and the angle, the pencil that is not really broken, and a water drop working as a lens.' },
 
-    // ===================== QUARTER 3 =====================
+    // ===================== QUARTER 2 =====================
     //
-    // The 2:10 block is The Human Body in Q2, so The Science Lab picks up again
-    // in January. Same shape: three lessons Monday to Wednesday, the review game
+    // Oct 27 2026, Gigi: Science Lab runs Q1 and Q2, so this is QUARTER 2. The test
+    // ids below still say q3 ON PURPOSE: her saved attempts are keyed by id, and
+    // renaming them would orphan results she has already earned. The quarter
+    // field is what the gradebook and the Quarter 2 exam read. Same shape: three lessons Monday to Wednesday, the review game
     // and the test on day 4.
 
     // MODULE 5 · Sound in the Greenhouse — S4P2a · S4P2b
-    { id: 'sciencelab-q3-w1', course: 'sciencelab', quarter: 3, n: 1, module: 5,
+    { id: 'sciencelab-q3-w1', course: 'sciencelab', quarter: 2, n: 1, module: 5,
       title: 'What a sound is',
       lessons: ['sl-m5-01', 'sl-m5-02', 'sl-m5-03'], planned: 3,
       blurb: 'Something has to shake; how hard it shakes makes it loud; how fast it shakes makes it high.' },
 
-    { id: 'sciencelab-q3-w2', course: 'sciencelab', quarter: 3, n: 2, module: 5,
+    { id: 'sciencelab-q3-w2', course: 'sciencelab', quarter: 2, n: 2, module: 5,
       title: 'Carrying a sound',
       lessons: ['sl-m5-04', 'sl-m5-05', 'sl-m5-06'], planned: 3,
       blurb: 'Sound needs a road, a hollow box makes it louder, and a tight string carries a message across the garden.' },
 
     // MODULE 6 · The Sun and the Stars — S4E1a · S4E1b · S4E1c
-    { id: 'sciencelab-q3-w3', course: 'sciencelab', quarter: 3, n: 3, module: 6,
+    { id: 'sciencelab-q3-w3', course: 'sciencelab', quarter: 2, n: 3, module: 6,
       title: 'The sun, and how bright a star looks',
       lessons: ['sl-m6-01', 'sl-m6-02', 'sl-m6-03'], planned: 3,
       blurb: 'The sun is a star; distance makes a star faint; and size does too, so looking alone cannot tell her which.' },
 
-    { id: 'sciencelab-q3-w4', course: 'sciencelab', quarter: 3, n: 4, module: 6,
+    { id: 'sciencelab-q3-w4', course: 'sciencelab', quarter: 2, n: 4, module: 6,
       title: 'Stars, planets and the telescope',
       lessons: ['sl-m6-04', 'sl-m6-05', 'sl-m6-06'], planned: 3,
       blurb: 'One makes light and one borrows it, how to spot a planet from the back step, and four dots beside Jupiter.' },
 
     // MODULE 7 · The Solar System, and What a Model Gets Wrong — S4E1d · S4E1a
-    { id: 'sciencelab-q3-w5', course: 'sciencelab', quarter: 3, n: 5, module: 7,
+    { id: 'sciencelab-q3-w5', course: 'sciencelab', quarter: 2, n: 5, module: 7,
       title: 'Eight worlds, and a model of size',
       lessons: ['sl-m7-01', 'sl-m7-02', 'sl-m7-03'], planned: 3,
       blurb: 'The order, the split between rock and gas, and a size model built on the kitchen bench.' },
 
-    { id: 'sciencelab-q3-w6', course: 'sciencelab', quarter: 3, n: 6, module: 7,
+    { id: 'sciencelab-q3-w6', course: 'sciencelab', quarter: 2, n: 6, module: 7,
       title: 'Distance, limits, and better tools',
       lessons: ['sl-m7-04', 'sl-m7-05', 'sl-m7-06'], planned: 3,
       blurb: 'A distance model walked down the garden, why it cannot agree with the size model, and seeing from above the air.' },
 
     // MODULE 8 · The Moon, the Day and the Year — S4E2a · S4E2b · S4E2c
-    { id: 'sciencelab-q3-w7', course: 'sciencelab', quarter: 3, n: 7, module: 8,
+    { id: 'sciencelab-q3-w7', course: 'sciencelab', quarter: 2, n: 7, module: 8,
       title: 'The day, the month, and the changing moon',
       lessons: ['sl-m8-01', 'sl-m8-02', 'sl-m8-03'], planned: 3,
       blurb: 'A shadow clock, the moon log opened for a month, and why the moon changes shape without changing at all.' },
 
-    { id: 'sciencelab-q3-w8', course: 'sciencelab', quarter: 3, n: 8, module: 8,
+    { id: 'sciencelab-q3-w8', course: 'sciencelab', quarter: 2, n: 8, module: 8,
       title: 'Naming the phases, and the tilt',
       lessons: ['sl-m8-04', 'sl-m8-05', 'sl-m8-06'], planned: 3,
       blurb: 'Her own month labeled, why the days grow and shrink, and the tilt behind every frost date on a seed packet.' }

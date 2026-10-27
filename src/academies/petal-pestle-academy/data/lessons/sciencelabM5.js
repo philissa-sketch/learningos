@@ -421,7 +421,7 @@ const L30_LEDGER = {
 
 export const SCIENCELAB_M5 = [
   {
-    id: 'sl-m5-01', course: 'sciencelab', module: 5, quarter: 3, week: 1, day: 1, n: 25,
+    id: 'sl-m5-01', course: 'sciencelab', module: 5, quarter: 2, week: 1, day: 1, n: 25,
     title: 'Something has to shake',
     minutes: 30, spec: '§10 · beats',
     concept: 'Every sound is made by something vibrating, and the sound stops the instant the shaking does.',
@@ -454,7 +454,7 @@ export const SCIENCELAB_M5 = [
     ]
   },
   {
-    id: 'sl-m5-02', course: 'sciencelab', module: 5, quarter: 3, week: 1, day: 2, n: 26,
+    id: 'sl-m5-02', course: 'sciencelab', module: 5, quarter: 2, week: 1, day: 2, n: 26,
     title: 'Loud and soft — how hard it shakes',
     minutes: 30, spec: '§10 · beats',
     concept: 'Loudness comes from how far the thing swings as it vibrates, and it has nothing to do with the note.',
@@ -487,7 +487,7 @@ export const SCIENCELAB_M5 = [
     ]
   },
   {
-    id: 'sl-m5-03', course: 'sciencelab', module: 5, quarter: 3, week: 1, day: 3, n: 27,
+    id: 'sl-m5-03', course: 'sciencelab', module: 5, quarter: 2, week: 1, day: 3, n: 27,
     title: 'High and low — how fast it shakes',
     minutes: 30, spec: '§10 · beats',
     concept: 'Pitch comes from how fast something vibrates; length, tightness and thickness change it and plucking harder does not.',
@@ -520,7 +520,7 @@ export const SCIENCELAB_M5 = [
     ]
   },
   {
-    id: 'sl-m5-04', course: 'sciencelab', module: 5, quarter: 3, week: 2, day: 1, n: 28,
+    id: 'sl-m5-04', course: 'sciencelab', module: 5, quarter: 2, week: 2, day: 1, n: 28,
     title: 'Sound has to travel through something',
     minutes: 30, spec: '§10 · beats',
     concept: 'A vibration passes from one bit of stuff to the next, so sound needs a road and cannot cross empty space.',
@@ -553,7 +553,7 @@ export const SCIENCELAB_M5 = [
     ]
   },
   {
-    id: 'sl-m5-05', course: 'sciencelab', module: 5, quarter: 3, week: 2, day: 2, n: 29,
+    id: 'sl-m5-05', course: 'sciencelab', module: 5, quarter: 2, week: 2, day: 2, n: 29,
     title: 'The box that makes it louder',
     minutes: 30, spec: '§10 · beats',
     concept: 'A hollow box takes the shaking from a thin string and pushes far more air with it, which is why every instrument has a body.',
@@ -586,7 +586,7 @@ export const SCIENCELAB_M5 = [
     ]
   },
   {
-    id: 'sl-m5-06', course: 'sciencelab', module: 5, quarter: 3, week: 2, day: 3, n: 30,
+    id: 'sl-m5-06', course: 'sciencelab', module: 5, quarter: 2, week: 2, day: 3, n: 30,
     title: 'Send a message across the garden',
     minutes: 30, spec: '§10 · beats',
     concept: 'A tight string carries a vibration a long way, and an agreed code is what turns any signal into a message.',

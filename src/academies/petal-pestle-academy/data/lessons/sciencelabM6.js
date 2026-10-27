@@ -484,7 +484,7 @@ const L36_LEDGER = {
 
 export const SCIENCELAB_M6 = [
   {
-    id: 'sl-m6-01', course: 'sciencelab', module: 6, quarter: 3, week: 3, day: 1, n: 31,
+    id: 'sl-m6-01', course: 'sciencelab', module: 6, quarter: 2, week: 3, day: 1, n: 31,
     title: 'The sun is a star, and the nearest one',
     minutes: 30, spec: '§10 · beats',
     concept: 'The sun is an ordinary star that happens to be very close, and the other stars never stop shining in the daytime.',
@@ -517,7 +517,7 @@ export const SCIENCELAB_M6 = [
     ]
   },
   {
-    id: 'sl-m6-02', course: 'sciencelab', module: 6, quarter: 3, week: 3, day: 2, n: 32,
+    id: 'sl-m6-02', course: 'sciencelab', module: 6, quarter: 2, week: 3, day: 2, n: 32,
     title: 'Why some stars look brighter — distance',
     minutes: 30, spec: '§10 · beats',
     concept: 'Light spreads out as it travels, so distance alone can make an identical star look faint and small.',
@@ -550,7 +550,7 @@ export const SCIENCELAB_M6 = [
     ]
   },
   {
-    id: 'sl-m6-03', course: 'sciencelab', module: 6, quarter: 3, week: 3, day: 3, n: 33,
+    id: 'sl-m6-03', course: 'sciencelab', module: 6, quarter: 2, week: 3, day: 3, n: 33,
     title: 'Big stars and small stars',
     minutes: 30, spec: '§10 · beats',
     concept: 'Brightness has two causes — real size and distance — and looking at the sky alone cannot tell her which one she is seeing.',
@@ -583,7 +583,7 @@ export const SCIENCELAB_M6 = [
     ]
   },
   {
-    id: 'sl-m6-04', course: 'sciencelab', module: 6, quarter: 3, week: 4, day: 1, n: 34,
+    id: 'sl-m6-04', course: 'sciencelab', module: 6, quarter: 2, week: 4, day: 1, n: 34,
     title: 'Stars make light. Planets only borrow it.',
     minutes: 30, spec: '§10 · beats',
     concept: 'A star makes its own light; a planet shines only with light that bounced off it, which is why so few planets are visible.',
@@ -616,7 +616,7 @@ export const SCIENCELAB_M6 = [
     ]
   },
   {
-    id: 'sl-m6-05', course: 'sciencelab', module: 6, quarter: 3, week: 4, day: 2, n: 35,
+    id: 'sl-m6-05', course: 'sciencelab', module: 6, quarter: 2, week: 4, day: 2, n: 35,
     title: 'Why stars twinkle and planets do not',
     minutes: 30, spec: '§10 · beats',
     concept: 'Twinkling happens in our own moving air, and a planet arrives as a small disc whose wobbles cancel out.',
@@ -649,7 +649,7 @@ export const SCIENCELAB_M6 = [
     ]
   },
   {
-    id: 'sl-m6-06', course: 'sciencelab', module: 6, quarter: 3, week: 4, day: 3, n: 36,
+    id: 'sl-m6-06', course: 'sciencelab', module: 6, quarter: 2, week: 4, day: 3, n: 36,
     title: 'Before the telescope, and after it',
     minutes: 30, spec: '§10 · beats',
     concept: 'A telescope gathers far more light than an eye, and every better tool has changed what we know the sky contains.',

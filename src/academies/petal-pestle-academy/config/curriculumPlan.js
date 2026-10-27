@@ -156,13 +156,13 @@ export const APP_COURSES = [
     title: 'The Science Lab',
     block: 'blk-science',
     minutesPerDay: 30,
-    quarters: [1, 3],
+    quarters: [1, 2],
     lessonDaysPerWeek: 3,
     weeklyTestQuestions: 8,
     kind: 'science',
     state: 'complete',
     lessonsWritten: 48,
-    note: 'What the garden cannot reach: forces, light, sound, stars, the moon. Mon-Wed in the 2:10 block; in Q2 and Q4 that half hour is garden and project time.'
+    note: 'What the garden cannot reach: forces, light, sound, stars, the moon. Mon-Wed in the 2:10 block; in Q3 and Q4 that half hour is garden and project time (moved from Q1+Q3 to Q1+Q2, Oct 27 2026, at Gigi’s request).'
   },
   {
     id: 'humanbody',
@@ -386,15 +386,15 @@ export const STANDARD_OWNERS = [
   { element: 'S4P1a', course: 'sciencelab', quarter: 1, vehicle: 'Opaque, transparent, translucent — tested with leaves and greenhouse plastic.' },
   { element: 'S4P1b', course: 'sciencelab', quarter: 1, vehicle: 'A mirror, a flashlight and angles.' },
   { element: 'S4P1c', course: 'sciencelab', quarter: 1, vehicle: 'A pencil bending in a glass of water.' },
-  { element: 'S4P2a', course: 'sciencelab', quarter: 3, vehicle: 'Rubber bands, rulers and jars of water. Strength and speed of vibration.' },
-  { element: 'S4P2b', course: 'sciencelab', quarter: 3, vehicle: 'Build a thing that sends a message across the yard.' },
-  { element: 'S4E1a', course: 'sciencelab', quarter: 3, vehicle: 'From the naked eye to Galileo to James Webb.' },
-  { element: 'S4E1b', course: 'sciencelab', quarter: 3, vehicle: 'Why the sun looks bigger than every other star.' },
-  { element: 'S4E1c', course: 'sciencelab', quarter: 3, vehicle: 'Stars burn. Planets do not.' },
-  { element: 'S4E1d', course: 'sciencelab', quarter: 3, vehicle: 'Build a scale solar system and find out what the model gets wrong.' },
-  { element: 'S4E2a', course: 'sciencelab', quarter: 3, vehicle: 'Why the light lasts longer in June — and why that matters to a gardener.' },
-  { element: 'S4E2b', course: 'sciencelab', quarter: 3, vehicle: 'Draw the moon every night for a month.' },
-  { element: 'S4E2c', course: 'sciencelab', quarter: 3, vehicle: 'The tilt. Why Georgia has a first and last frost date at all.' }
+  { element: 'S4P2a', course: 'sciencelab', quarter: 2, vehicle: 'Rubber bands, rulers and jars of water. Strength and speed of vibration.' },
+  { element: 'S4P2b', course: 'sciencelab', quarter: 2, vehicle: 'Build a thing that sends a message across the yard.' },
+  { element: 'S4E1a', course: 'sciencelab', quarter: 2, vehicle: 'From the naked eye to Galileo to James Webb.' },
+  { element: 'S4E1b', course: 'sciencelab', quarter: 2, vehicle: 'Why the sun looks bigger than every other star.' },
+  { element: 'S4E1c', course: 'sciencelab', quarter: 2, vehicle: 'Stars burn. Planets do not.' },
+  { element: 'S4E1d', course: 'sciencelab', quarter: 2, vehicle: 'Build a scale solar system and find out what the model gets wrong.' },
+  { element: 'S4E2a', course: 'sciencelab', quarter: 2, vehicle: 'Why the light lasts longer in June — and why that matters to a gardener.' },
+  { element: 'S4E2b', course: 'sciencelab', quarter: 2, vehicle: 'Draw the moon every night for a month.' },
+  { element: 'S4E2c', course: 'sciencelab', quarter: 2, vehicle: 'The tilt. Why Georgia has a first and last frost date at all.' }
 ];
 
 /** Elements Georgia does NOT require in fourth grade that the app teaches anyway. */

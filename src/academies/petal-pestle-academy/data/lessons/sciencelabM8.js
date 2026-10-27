@@ -490,7 +490,7 @@ const SG8 = 'No Black American educator confirmed for elementary astronomy. Sear
 
 export const SCIENCELAB_M8 = [
   {
-    id: 'sl-m8-01', course: 'sciencelab', module: 8, quarter: 3, week: 7, day: 1, n: 43,
+    id: 'sl-m8-01', course: 'sciencelab', module: 8, quarter: 2, week: 7, day: 1, n: 43,
     title: 'The Earth spins — that is one day',
     minutes: 30, spec: '§10 · beats',
     concept: 'The Earth turns once every twenty-four hours, which makes day and night and swings every shadow round.',
@@ -523,7 +523,7 @@ export const SCIENCELAB_M8 = [
     ]
   },
   {
-    id: 'sl-m8-02', course: 'sciencelab', module: 8, quarter: 3, week: 7, day: 2, n: 44,
+    id: 'sl-m8-02', course: 'sciencelab', module: 8, quarter: 2, week: 7, day: 2, n: 44,
     title: 'The moon goes round us — that is one month',
     minutes: 30, spec: '§10 · beats',
     concept: 'The moon circles the Earth in about twenty-nine and a half days, and three separate motions give us the day, the month and the year.',
@@ -556,7 +556,7 @@ export const SCIENCELAB_M8 = [
     ]
   },
   {
-    id: 'sl-m8-03', course: 'sciencelab', module: 8, quarter: 3, week: 7, day: 3, n: 45,
+    id: 'sl-m8-03', course: 'sciencelab', module: 8, quarter: 2, week: 7, day: 3, n: 45,
     title: 'Why the moon changes shape',
     minutes: 30, spec: '§10 · beats',
     concept: 'Half the moon is always lit, and the phases come from the angle she views that lit half from — not from the Earth’s shadow.',
@@ -589,7 +589,7 @@ export const SCIENCELAB_M8 = [
     ]
   },
   {
-    id: 'sl-m8-04', course: 'sciencelab', module: 8, quarter: 3, week: 8, day: 1, n: 46,
+    id: 'sl-m8-04', course: 'sciencelab', module: 8, quarter: 2, week: 8, day: 1, n: 46,
     title: 'Naming the phases, from her own month',
     minutes: 30, spec: '§10 · beats',
     concept: 'New, crescent, quarter, gibbous and full name every shape she drew, and her own log shows the pattern repeating.',
@@ -622,7 +622,7 @@ export const SCIENCELAB_M8 = [
     ]
   },
   {
-    id: 'sl-m8-05', course: 'sciencelab', module: 8, quarter: 3, week: 8, day: 2, n: 47,
+    id: 'sl-m8-05', course: 'sciencelab', module: 8, quarter: 2, week: 8, day: 2, n: 47,
     title: 'Why the days get longer and shorter',
     minutes: 30, spec: '§10 · beats',
     concept: 'The steady tilt of the Earth means her side leans toward the sun for half the year and away for the other half, changing the hours of daylight.',
@@ -655,7 +655,7 @@ export const SCIENCELAB_M8 = [
     ]
   },
   {
-    id: 'sl-m8-06', course: 'sciencelab', module: 8, quarter: 3, week: 8, day: 3, n: 48,
+    id: 'sl-m8-06', course: 'sciencelab', module: 8, quarter: 2, week: 8, day: 3, n: 48,
     title: 'The tilt, and Georgia’s frost dates',
     minutes: 30, spec: '§10 · beats',
     concept: 'Seasons come from the tilt rather than from distance, and a steady tilt with a repeating orbit is why a gardener can be given a last frost date.',

@@ -11,7 +11,7 @@
 // "Page not found". Khan's science index starts at 6th grade now.
 //
 //   Q1  Modules 1-4   forces, gravity, simple machines, light   24 lessons
-//   Q3  Modules 5-8   sound, stars and planets, the moon        24 lessons
+//   Q2  Modules 5-8   sound, stars and planets, the moon        24 lessons
 // ---------------------------------------------------------------------------
 
 import { SCIENCELAB_M1, SCIENCELAB_M1_META } from './sciencelabM1.js';
@@ -69,11 +69,11 @@ export const SCIENCELAB_MODULES = [
     elements: ['S4P1a', 'S4P1b', 'S4P1c'],
     lessons: SCIENCELAB_M4.map((l) => l.id)
   },
-  // ===================== QUARTER 3 =====================
+  // ===================== QUARTER 2 =====================
   {
     n: 5,
     ...SCIENCELAB_M5_META,
-    quarter: 3,
+    quarter: 2,
     weeks: [1, 2],
     elements: ['S4P2a', 'S4P2b'],
     lessons: SCIENCELAB_M5.map((l) => l.id)
@@ -81,7 +81,7 @@ export const SCIENCELAB_MODULES = [
   {
     n: 6,
     ...SCIENCELAB_M6_META,
-    quarter: 3,
+    quarter: 2,
     weeks: [3, 4],
     elements: ['S4E1a', 'S4E1b', 'S4E1c'],
     lessons: SCIENCELAB_M6.map((l) => l.id)
@@ -89,7 +89,7 @@ export const SCIENCELAB_MODULES = [
   {
     n: 7,
     ...SCIENCELAB_M7_META,
-    quarter: 3,
+    quarter: 2,
     weeks: [5, 6],
     // Lesson 42 is a TOOLS lesson, not a model lesson, so this module carries
     // S4E1a alongside S4E1d — the same shape as Module 4 carrying three.
@@ -99,7 +99,7 @@ export const SCIENCELAB_MODULES = [
   {
     n: 8,
     ...SCIENCELAB_M8_META,
-    quarter: 3,
+    quarter: 2,
     weeks: [7, 8],
     elements: ['S4E2a', 'S4E2b', 'S4E2c'],
     lessons: SCIENCELAB_M8.map((l) => l.id)
