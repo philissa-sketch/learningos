@@ -39,6 +39,8 @@ import { khanFor, KHAN_COURSES } from '../data/khan/khanMap.js';
 import {
   nextUnitFor,
   nextUnitForStrand,
+  currentCourseFor,
+  courseComplete,
   courseChallengeUrl,
   KHAN_UNIT_COURSES
 } from '../data/khan/khanUnits.js';
@@ -324,7 +326,18 @@ export function resolveBlockTarget(block, strands = {}, grades = [], lessonsRead
     // `nextUnitFor` returns null when every unit is graded, and that is when
     // the block offers the Course Challenge - the finish line she asked for.
     if (khan.unitCourse) {
-      const course = KHAN_UNIT_COURSES[khan.unitCourse];
+      // ---- A FINISHED COURSE HANDS HER TO THE NEXT ONE — Oct 27 2026 ----
+      //
+      // Gigi: "Azianna has completed her course challenge for math and it has
+      // been graded but the next Units of math isn't opening."
+      //
+      // This block used to keep the course her LEVEL chose for ever, so after
+      // the last unit AND the graded Course Challenge it returned the Course
+      // Challenge again. `currentCourseFor` walks the ladder (2nd -> 3rd -> 4th
+      // ... grade math) past every finished course. Her level still decides
+      // where she STARTS; this only decides where she goes next.
+      const unitCourseId = currentCourseFor(khan.unitCourse, grades);
+      const course = KHAN_UNIT_COURSES[unitCourseId];
       // ---- v3.81 — HER STRAND WALKS ITS OWN LANE ----
       //
       // Gigi, Aug 25 2026, choosing between leaving the order alone and giving
@@ -346,7 +359,7 @@ export function resolveBlockTarget(block, strands = {}, grades = [], lessonsRead
       // units are themes rather than strands. Then this is the whole course in
       // order, exactly as before, and the detail line says so rather than
       // claiming the unit is about her strand.
-      const picked = nextUnitForStrand(khan.unitCourse, lowest.id, grades);
+      const picked = nextUnitForStrand(unitCourseId, lowest.id, grades);
       const next = picked?.unit || null;
       const onHerLane = Boolean(picked?.lane);
       if (!next) {
@@ -364,7 +377,7 @@ export function resolveBlockTarget(block, strands = {}, grades = [], lessonsRead
         //
         // And when her lane is done but the course is not, she moves to the
         // rest of it in order rather than being told she has finished.
-        const wholeCourseLeft = nextUnitFor(khan.unitCourse, grades);
+        const wholeCourseLeft = nextUnitFor(unitCourseId, grades);
         if (wholeCourseLeft) {
           return {
             kind: 'khan',
@@ -372,12 +385,12 @@ export function resolveBlockTarget(block, strands = {}, grades = [], lessonsRead
             url: `https://www.khanacademy.org${course.base}/${wholeCourseLeft.slug}`,
             detail: `${course.label} \u00b7 Unit ${wholeCourseLeft.n} of ${course.units.length}`,
             exact: true,
-            courseId: khan.unitCourse,
+            courseId: unitCourseId,
             unitN: wholeCourseLeft.n
           };
         }
-        const challenge = courseChallengeUrl(khan.unitCourse);
-        if (challenge) {
+        const challenge = courseChallengeUrl(unitCourseId);
+        if (challenge && !courseComplete(unitCourseId, grades)) {
           return {
             kind: 'khan',
             label: 'Course Challenge',
@@ -389,11 +402,23 @@ export function resolveBlockTarget(block, strands = {}, grades = [], lessonsRead
             // choose the course herself could disagree with the block, and a
             // grade filed against the wrong course advances nothing while
             // looking, on the record, exactly like one that did.
-            courseId: khan.unitCourse,
+            courseId: unitCourseId,
             unitN: null,
             challenge: true
           };
         }
+        // Every unit and the Course Challenge are graded and there is no next
+        // course in the ladder. Say so rather than offering a finished course.
+        return {
+          kind: 'khan',
+          label: `${course.label} complete`,
+          url: `https://www.khanacademy.org${course.base}`,
+          detail: `${course.label} \u00b7 finished \u2014 ask Gigi for what comes next`,
+          exact: false,
+          courseId: unitCourseId,
+          unitN: null,
+          courseComplete: true
+        };
       } else {
         return {
           kind: 'khan',
@@ -408,7 +433,7 @@ export function resolveBlockTarget(block, strands = {}, grades = [], lessonsRead
           exact: true,
           onHerLane,
           strandId: lowest.id,
-          courseId: khan.unitCourse,
+          courseId: unitCourseId,
           unitN: next.n
         };
       }

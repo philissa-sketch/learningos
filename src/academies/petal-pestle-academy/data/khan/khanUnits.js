@@ -253,7 +253,193 @@ export const KHAN_UNIT_COURSES = {
       { n: 9, name: 'Syntax: conventions of standard English', slug: 'syntax-conventions-of-standard-english', test: 'syntax-conventions-of-standard-english/dangling-modifiers-and-parallel-structure/test/syntax-conventions-of-standard-english-unit-test' },
       { n: 10, name: 'Usage and style', slug: 'usage-and-style', test: 'usage-and-style/style/test/usage-and-style-unit-test' }
     ]
-  }
+  },
+
+  // ======================================================================
+  // OCT 27 2026 - THE COURSES AFTER 2ND GRADE MATH AND GRAMMAR.
+  //
+  // math3-math6, grammar56 and grammar78 below: every unit name, unit slug, unit
+  // test path and Course Challenge path was read off Khan's own RENDERED course
+  // page that day. `confirmedOn` records that. `renderedOn` is null on purpose:
+  // the built ADDRESSES were not all opened one by one. Five were, and each came
+  // back with the right heading and no "Oops!":
+  //   math3 Unit 1 page, math3 Unit 1 unit test, math3 Course Challenge,
+  //   math6 Unit 3 page (a colon-slug address), grammar56 Unit 1 unit test.
+  // The other ~95 are read-off-the-page, not opened. Re-open before relying on
+  // one, and set renderedOn when it is done.
+  //
+  // math6: Khan prints a 12th unit, "Khan for families" - a parent guide with no
+  // test - so it is not listed and unitCount is 11.
+  // ======================================================================
+  // ---- 3rd Grade Math. Read off Khan's rendered course page on 2026-10-27 (Gigi's browser pane). ----
+  math3: {
+    courseId: 'math3',
+    label: '3rd Grade Math',
+    subject: 'math',
+    quarter: 2,
+    base: '/math/cc-third-grade-math',
+    confirmedOn: '2026-10-27',
+    renderedOn: null,
+    graded: 'khan',
+    unitCount: 14,
+    courseChallenge: 'test/x95ab04602940c446:course-challenge',
+    units: [
+      { n: 1, name: 'Intro to multiplication', slug: 'intro-to-multiplication', test: 'intro-to-multiplication/imp-properties-of-multiplication/test/intro-to-multiplication-unit-test' },
+      { n: 2, name: '1-digit multiplication', slug: '3rd-basic-multiplication', test: '3rd-basic-multiplication/basic-multiplication/test/3rd-basic-multiplication-unit-test' },
+      { n: 3, name: 'Addition, subtraction, and estimation', slug: 'imp-addition-and-subtraction', test: 'imp-addition-and-subtraction/addition-and-subtraction-word-problems/test/imp-addition-and-subtraction-unit-test' },
+      { n: 4, name: 'Intro to division', slug: 'intro-to-division', test: 'intro-to-division/imp-division-facts/test/intro-to-division-unit-test' },
+      { n: 5, name: 'Understand fractions', slug: 'imp-fractions', test: 'imp-fractions/imp-fractions-and-whole-numbers/test/imp-fractions-unit-test' },
+      { n: 6, name: 'Equivalent fractions and comparing fractions', slug: 'equivalent-fractions-and-comparing-fractions', test: 'equivalent-fractions-and-comparing-fractions/imp-equivalent-fractions/test/equivalent-fractions-and-comparing-fractions-unit-test' },
+      { n: 7, name: 'More with multiplication and division', slug: 'imp-multiplication-and-division', test: 'imp-multiplication-and-division/imp-multiplying-by-tens/test/imp-multiplication-and-division-unit-test' },
+      { n: 8, name: 'Arithmetic patterns and problem solving', slug: 'arithmetic-patterns-and-problem-solving', test: 'arithmetic-patterns-and-problem-solving/imp-patterns-in-arithmetic/test/arithmetic-patterns-and-problem-solving-unit-test' },
+      { n: 9, name: 'Quadrilaterals', slug: 'quadrilaterals-3rd', test: 'quadrilaterals-3rd/imp-quadrilaterals/test/quadrilaterals-3rd-unit-test' },
+      { n: 10, name: 'Area', slug: 'imp-geometry', test: 'imp-geometry/imp-decompose-figures-to-find-area/test/imp-geometry-unit-test' },
+      { n: 11, name: 'Perimeter', slug: '3rd-perimeter', test: '3rd-perimeter/imp-comparing-area-and-perimeter/test/3rd-perimeter-unit-test' },
+      { n: 12, name: 'Time', slug: 'time', test: 'time/elapsed-time/test/time-unit-test' },
+      { n: 13, name: 'Measurement', slug: 'imp-measurement-and-data', test: 'imp-measurement-and-data/imp-volume/test/imp-measurement-and-data-unit-test' },
+      { n: 14, name: 'Represent and interpret data', slug: 'represent-and-interpret-data', test: 'represent-and-interpret-data/imp-line-plots/test/represent-and-interpret-data-unit-test' }
+    ]
+  },
+
+  // ---- 4th Grade Math. Read off Khan's rendered course page on 2026-10-27 (Gigi's browser pane). ----
+  math4: {
+    courseId: 'math4',
+    label: '4th Grade Math',
+    subject: 'math',
+    quarter: 3,
+    base: '/math/cc-fourth-grade-math',
+    confirmedOn: '2026-10-27',
+    renderedOn: null,
+    graded: 'khan',
+    unitCount: 14,
+    courseChallenge: 'test/x0b5b2e23e6febb9a:course-challenge',
+    units: [
+      { n: 1, name: 'Place value', slug: 'imp-place-value-and-rounding-2', test: 'imp-place-value-and-rounding-2/imp-comparing-multi-digit-numbers/test/imp-place-value-and-rounding-2-unit-test' },
+      { n: 2, name: 'Addition, subtraction, and estimation', slug: 'imp-addition-and-subtraction-2', test: 'imp-addition-and-subtraction-2/imp-subtracting-multi-digit-numbers/test/imp-addition-and-subtraction-2-unit-test' },
+      { n: 3, name: 'Multiply by 1-digit numbers', slug: 'imp-multiplication-and-division-2', test: 'imp-multiplication-and-division-2/multiply-with-partial-products/test/imp-multiplication-and-division-2-unit-test' },
+      { n: 4, name: 'Multiply by 2-digit numbers', slug: 'multiplying-by-2-digit-numbers', test: 'multiplying-by-2-digit-numbers/multiply-2-digit-numbers-with-partial-products/test/multiplying-by-2-digit-numbers-unit-test' },
+      { n: 5, name: 'Division', slug: 'division', test: 'division/multi-step-word-problems/test/division-unit-test' },
+      { n: 6, name: 'Factors, multiples and patterns', slug: 'imp-factors-multiples-and-patterns', test: 'imp-factors-multiples-and-patterns/imp-math-patterns/test/imp-factors-multiples-and-patterns-unit-test' },
+      { n: 7, name: 'Equivalent fractions and comparing fractions', slug: 'comparing-fractions-and-equivalent-fractions', test: 'comparing-fractions-and-equivalent-fractions/imp-comparing-fractions-with-unlike-denominators/test/comparing-fractions-and-equivalent-fractions-unit-test' },
+      { n: 8, name: 'Add and subtract fractions', slug: 'imp-fractions-2', test: 'imp-fractions-2/imp-line-plots-with-fractions/test/imp-fractions-2-unit-test' },
+      { n: 9, name: 'Multiply fractions', slug: '4th-multiply-fractions', test: '4th-multiply-fractions/imp-multiplying-whole-numbers-and-fractions-word-problems/test/4th-multiply-fractions-unit-test' },
+      { n: 10, name: 'Understand decimals', slug: 'imp-decimals', test: 'imp-decimals/imp-comparing-decimals/test/imp-decimals-unit-test' },
+      { n: 11, name: 'Plane figures', slug: 'plane-figures', test: 'plane-figures/imp-line-of-symmetry/test/plane-figures-unit-test' },
+      { n: 12, name: 'Measuring angles', slug: 'imp-geometry-2', test: 'imp-geometry-2/imp-decomposing-angles/test/imp-geometry-2-unit-test' },
+      { n: 13, name: 'Area and perimeter', slug: 'area-perimeter', test: 'area-perimeter/imp-area-and-perimeter/test/area-perimeter-unit-test' },
+      { n: 14, name: 'Units of measurement', slug: 'imp-measurement-and-data-2', test: 'imp-measurement-and-data-2/imp-conversion-word-problems/test/imp-measurement-and-data-2-unit-test' }
+    ]
+  },
+
+  // ---- 5th Grade Math. Read off Khan's rendered course page on 2026-10-27 (Gigi's browser pane). ----
+  math5: {
+    courseId: 'math5',
+    label: '5th Grade Math',
+    subject: 'math',
+    quarter: 4,
+    base: '/math/cc-fifth-grade-math',
+    confirmedOn: '2026-10-27',
+    renderedOn: null,
+    graded: 'khan',
+    unitCount: 16,
+    courseChallenge: 'test/xe33ac28b798af866:course-challenge',
+    units: [
+      { n: 1, name: 'Decimal place value', slug: 'imp-place-value-and-decimals', test: 'imp-place-value-and-decimals/imp-rounding-decimals/test/imp-place-value-and-decimals-unit-test' },
+      { n: 2, name: 'Add decimals', slug: 'imp-addition-and-subtraction-3', test: 'imp-addition-and-subtraction-3/xe33ac28b798af866:adding-decimals-hundredths/test/imp-addition-and-subtraction-3-unit-test' },
+      { n: 3, name: 'Subtract decimals', slug: 'subtract-decimals', test: 'subtract-decimals/xe33ac28b798af866:subtracting-decimals-hundredths/test/subtract-decimals-unit-test' },
+      { n: 4, name: 'Add and subtract fractions', slug: 'imp-fractions-3', test: 'imp-fractions-3/imp-adding-and-subtracting-fractions-with-unlike-denominators-word-problems/test/imp-fractions-3-unit-test' },
+      { n: 5, name: 'Multi-digit multiplication and division', slug: 'multi-digit-multiplication-and-division', test: 'multi-digit-multiplication-and-division/imp-multi-digit-division-2/test/multi-digit-multiplication-and-division-unit-test' },
+      { n: 6, name: 'Multiply fractions', slug: '5th-multiply-fractions', test: '5th-multiply-fractions/imp-multiplying-fractions-word-problems/test/5th-multiply-fractions-unit-test' },
+      { n: 7, name: 'Divide fractions', slug: 'divide-fractions', test: 'divide-fractions/imp-dividing-fractions-and-whole-numbers-word-problems/test/divide-fractions-unit-test' },
+      { n: 8, name: 'Multiply decimals', slug: 'imp-multiplication-and-division-3', test: 'imp-multiplication-and-division-3/imp-multiplying-decimals/test/imp-multiplication-and-division-3-unit-test' },
+      { n: 9, name: 'Divide decimals', slug: 'divide-decimals', test: 'divide-decimals/divide-whole-numbers-by-decimals/test/divide-decimals-unit-test' },
+      { n: 10, name: 'Powers of ten', slug: 'powers-of-ten', test: 'powers-of-ten/imp-comparing-decimal-place-values/test/powers-of-ten-unit-test' },
+      { n: 11, name: 'Volume', slug: '5th-volume', test: '5th-volume/volume-word-problems/test/5th-volume-unit-test' },
+      { n: 12, name: 'Coordinate plane', slug: 'imp-geometry-3', test: 'imp-geometry-3/imp-coordinate-plane-word-problems/test/imp-geometry-3-unit-test' },
+      { n: 13, name: 'Algebraic thinking', slug: 'imp-algebraic-thinking', test: 'imp-algebraic-thinking/imp-number-patterns/test/imp-algebraic-thinking-unit-test' },
+      { n: 14, name: 'Converting units of measure', slug: 'imp-measurement-and-data-3', test: 'imp-measurement-and-data-3/converting-us-customary-units-word-problems/test/imp-measurement-and-data-3-unit-test' },
+      { n: 15, name: 'Line plots', slug: 'line-plots', test: 'line-plots/imp-data/test/line-plots-unit-test' },
+      { n: 16, name: 'Properties of shapes', slug: 'properties-of-shapes', test: 'properties-of-shapes/properties-shapes/test/properties-of-shapes-unit-test' }
+    ]
+  },
+
+  // ---- 6th Grade Math. Read off Khan's rendered course page on 2026-10-27 (Gigi's browser pane). ----
+  // Khan prints a 12th "Khan for families" unit with no test; it is a parent guide, not coursework, so it is not listed.
+  math6: {
+    courseId: 'math6',
+    label: '6th Grade Math',
+    subject: 'math',
+    quarter: null,
+    base: '/math/cc-sixth-grade-math',
+    confirmedOn: '2026-10-27',
+    renderedOn: null,
+    graded: 'khan',
+    unitCount: 11,
+    courseChallenge: 'test/x0267d782:course-challenge',
+    units: [
+      { n: 1, name: 'Ratios', slug: 'cc-6th-ratios-prop-topic', test: 'cc-6th-ratios-prop-topic/cc-6th-ratio-word-problems/test/cc-6th-ratios-prop-topic-unit-test' },
+      { n: 2, name: 'Arithmetic with rational numbers', slug: 'cc-6th-arithmetic-operations', test: 'cc-6th-arithmetic-operations/cc-6th-dividing-decimals/test/cc-6th-arithmetic-operations-unit-test' },
+      { n: 3, name: 'Rates and percentages', slug: 'x0267d782:cc-6th-rates-and-percentages', test: 'x0267d782:cc-6th-rates-and-percentages/cc-6th-percent-word-problems/test/x0267d782:cc-6th-rates-and-percentages-unit-test' },
+      { n: 4, name: 'Exponents and order of operations', slug: 'x0267d782:cc-6th-exponents-and-order-of-operations', test: 'x0267d782:cc-6th-exponents-and-order-of-operations/x0267d782:more-on-order-of-operations/test/x0267d782:cc-6th-exponents-and-order-of-operations-unit-test' },
+      { n: 5, name: 'Negative numbers', slug: 'cc-6th-negative-number-topic', test: 'cc-6th-negative-number-topic/x0267d782:cc-6th-comparing-absolute-values/test/cc-6th-negative-number-topic-unit-test' },
+      { n: 6, name: 'Variables & expressions', slug: 'cc-6th-expressions-and-variables', test: 'cc-6th-expressions-and-variables/cc-6th-equivalent-expressions/test/cc-6th-expressions-and-variables-unit-test' },
+      { n: 7, name: 'Equations & inequalities', slug: 'cc-6th-equations-and-inequalities', test: 'cc-6th-equations-and-inequalities/x0267d782:cc-6th-analyzing-relationships/test/cc-6th-equations-and-inequalities-unit-test' },
+      { n: 8, name: 'Plane figures', slug: 'x0267d782:cc-6th-plane-figures', test: 'x0267d782:cc-6th-plane-figures/cc-6th-area/test/x0267d782:cc-6th-plane-figures-unit-test' },
+      { n: 9, name: 'Coordinate plane', slug: 'x0267d782:coordinate-plane', test: 'x0267d782:coordinate-plane/cc-6th-quadrilaterals-on-plane/test/x0267d782:coordinate-plane-unit-test' },
+      { n: 10, name: '3D figures', slug: 'cc-6th-geometry-topic', test: 'cc-6th-geometry-topic/cc-6th-surface-area/test/cc-6th-geometry-topic-unit-test' },
+      { n: 11, name: 'Data and statistics', slug: 'cc-6th-data-statistics', test: 'cc-6th-data-statistics/cc-6-shape-of-data/test/cc-6th-data-statistics-unit-test' }
+    ]
+  },
+
+  // ---- Grammar: 5th and 6th grade. Read off Khan's rendered course page on 2026-10-27 (Gigi's browser pane). ----
+  grammar56: {
+    courseId: 'grammar56',
+    label: 'Grammar: 5th and 6th grade',
+    subject: 'writing',
+    quarter: null,
+    base: '/ela/5th-and-6th-grade-grammar',
+    confirmedOn: '2026-10-27',
+    renderedOn: null,
+    graded: 'khan',
+    unitCount: 9,
+    courseChallenge: 'test/x90cef5375e9bcad6:course-challenge',
+    units: [
+      { n: 1, name: 'Nouns', slug: 'x90cef5375e9bcad6:nouns-5', test: 'x90cef5375e9bcad6:nouns-5/x90cef5375e9bcad6:mixed-practice-nouns-5/test/x90cef5375e9bcad6:nouns-5-unit-test' },
+      { n: 2, name: 'Pronouns', slug: 'x90cef5375e9bcad6:pronouns-5', test: 'x90cef5375e9bcad6:pronouns-5/x90cef5375e9bcad6:mixed-practice-pronouns-5/test/x90cef5375e9bcad6:pronouns-5-unit-test' },
+      { n: 3, name: 'Verbs', slug: 'x90cef5375e9bcad6:verbs-5', test: 'x90cef5375e9bcad6:verbs-5/x90cef5375e9bcad6:mixed-practice-verbs-5/test/x90cef5375e9bcad6:verbs-5-unit-test' },
+      { n: 4, name: 'Adjectives and adverbs', slug: 'x90cef5375e9bcad6:adjectives-and-adverbs-5', test: 'x90cef5375e9bcad6:adjectives-and-adverbs-5/x90cef5375e9bcad6:mixed-practice-adjectives-and-adverbs-5/test/x90cef5375e9bcad6:adjectives-and-adverbs-5-unit-test' },
+      { n: 5, name: 'Prepositions and interjections', slug: 'x90cef5375e9bcad6:prepositions-and-interjections-5', test: 'x90cef5375e9bcad6:prepositions-and-interjections-5/x90cef5375e9bcad6:mixed-practice/test/x90cef5375e9bcad6:prepositions-and-interjections-5-unit-test' },
+      { n: 6, name: 'Sentences, clauses, and phrases', slug: 'x90cef5375e9bcad6:sentences-clauses-and-phrases-5', test: 'x90cef5375e9bcad6:sentences-clauses-and-phrases-5/x90cef5375e9bcad6:mixed-practice-sentences-clauses-and-phrases-5/test/x90cef5375e9bcad6:sentences-clauses-and-phrases-5-unit-test' },
+      { n: 7, name: 'Punctuation and capitalization', slug: 'x90cef5375e9bcad6:punctuation-and-capitalization-5', test: 'x90cef5375e9bcad6:punctuation-and-capitalization-5/x90cef5375e9bcad6:mixed-practice-punctuation-and-capitalization-5/test/x90cef5375e9bcad6:punctuation-and-capitalization-5-unit-test' },
+      { n: 8, name: 'Word study', slug: 'x90cef5375e9bcad6:word-study-5', test: 'x90cef5375e9bcad6:word-study-5/x90cef5375e9bcad6:mixed-practice-word-study-5/test/x90cef5375e9bcad6:word-study-5-unit-test' },
+      { n: 9, name: 'Style and tone', slug: 'x90cef5375e9bcad6:style-and-tone-5', test: 'x90cef5375e9bcad6:style-and-tone-5/x90cef5375e9bcad6:mixed-practice-style-and-tone-5/test/x90cef5375e9bcad6:style-and-tone-5-unit-test' }
+    ]
+  },
+
+  // ---- Grammar: 7th and 8th grade. Read off Khan's rendered course page on 2026-10-27 (Gigi's browser pane). ----
+  grammar78: {
+    courseId: 'grammar78',
+    label: 'Grammar: 7th and 8th grade',
+    subject: 'writing',
+    quarter: null,
+    base: '/ela/7th-and-8th-grade-grammar',
+    confirmedOn: '2026-10-27',
+    renderedOn: null,
+    graded: 'khan',
+    unitCount: 9,
+    courseChallenge: 'test/x9e6f4267f632f2c6:course-challenge',
+    units: [
+      { n: 1, name: 'Nouns', slug: 'x9e6f4267f632f2c6:nouns-7', test: 'x9e6f4267f632f2c6:nouns-7/x9e6f4267f632f2c6:mixed-practice-nouns-grammar-7-8/test/x9e6f4267f632f2c6:nouns-7-unit-test' },
+      { n: 2, name: 'Pronouns', slug: 'x9e6f4267f632f2c6:pronouns-7', test: 'x9e6f4267f632f2c6:pronouns-7/x9e6f4267f632f2c6:mixed-practice-pronouns-grammar-7-8/test/x9e6f4267f632f2c6:pronouns-7-unit-test' },
+      { n: 3, name: 'Verbs', slug: 'x9e6f4267f632f2c6:verbs-7', test: 'x9e6f4267f632f2c6:verbs-7/x9e6f4267f632f2c6:mixed-practice-verbs-grammar-7-8/test/x9e6f4267f632f2c6:verbs-7-unit-test' },
+      { n: 4, name: 'Adjectives and adverbs', slug: 'x9e6f4267f632f2c6:adjectives-and-adverbs-7', test: 'x9e6f4267f632f2c6:adjectives-and-adverbs-7/x9e6f4267f632f2c6:mixed-practice-adjectives-adverbs-grammar-7-8/test/x9e6f4267f632f2c6:adjectives-and-adverbs-7-unit-test' },
+      { n: 5, name: 'Prepositions and interjections', slug: 'x9e6f4267f632f2c6:prepositions-and-interjections-7', test: 'x9e6f4267f632f2c6:prepositions-and-interjections-7/x9e6f4267f632f2c6:mixed-practice-prepositions-interjections-grammar-7-8/test/x9e6f4267f632f2c6:prepositions-and-interjections-7-unit-test' },
+      { n: 6, name: 'Sentences, clauses, and phrases', slug: 'x9e6f4267f632f2c6:sentences-clauses-and-phrases-7', test: 'x9e6f4267f632f2c6:sentences-clauses-and-phrases-7/x9e6f4267f632f2c6:mixed-practice-sentences-clauses-phrases-grammar-7-8/test/x9e6f4267f632f2c6:sentences-clauses-and-phrases-7-unit-test' },
+      { n: 7, name: 'Punctuation and capitalization', slug: 'x9e6f4267f632f2c6:punctuation-and-capitalization-7', test: 'x9e6f4267f632f2c6:punctuation-and-capitalization-7/x9e6f4267f632f2c6:mixed-practice-capitalization-punctuation-7/test/x9e6f4267f632f2c6:punctuation-and-capitalization-7-unit-test' },
+      { n: 8, name: 'Word study', slug: 'x9e6f4267f632f2c6:word-study-7', test: 'x9e6f4267f632f2c6:word-study-7/x9e6f4267f632f2c6:mixed-practice-word-study-grammar-7-8/test/x9e6f4267f632f2c6:word-study-7-unit-test' },
+      { n: 9, name: 'Style and tone', slug: 'x9e6f4267f632f2c6:style-and-tone-7', test: 'x9e6f4267f632f2c6:style-and-tone-7/x9e6f4267f632f2c6:mixed-practice-style-tone-grammar-7-8/test/x9e6f4267f632f2c6:style-and-tone-7-unit-test' }
+    ]
+  },
 };
 
 /**
@@ -614,3 +800,110 @@ export const KHAN_UNIT_COUNT = KHAN_UNIT_COURSE_IDS.reduce(
   (n, id) => n + KHAN_UNIT_COURSES[id].units.length,
   0
 );
+
+
+/* ---------------------------------------------------------------------------
+ * WHAT COMES AFTER A COURSE CHALLENGE — added Oct 27 2026.
+ *
+ * Gigi: "Azianna has completed her course challenge for math and it has been
+ * graded but the next Units of math isn't opening. Make sure there are units
+ * available after all course challenges for each Khan Academy course."
+ *
+ * ---- WHAT WAS WRONG ----
+ *
+ * Two things, and either alone would have stranded her:
+ *   1. this file stopped at 2nd Grade Math, Reading and Grammar. There was no
+ *      3rd grade math to go TO.
+ *   2. nothing walked from a finished course to the next one. The Maths block
+ *      kept offering the Course Challenge after it had been graded.
+ *
+ * ---- THE RULE ----
+ *
+ * A course is FINISHED when every unit has a score AND, where Khan built one,
+ * the Course Challenge has a score ("the course challenge is the test after all
+ * the units are completed" - Gigi, v3.76). A finished course hands her to the
+ * next course in its ladder, starting at Unit 1. Her measured level still
+ * chooses where she STARTS; the ladder only decides where she goes NEXT.
+ *
+ * Reading is deliberately not here. Khan built no tests for it and her Reading
+ * block follows the app's own Reading course (Sep 24 2026).
+ * ------------------------------------------------------------------------- */
+
+/** Course ladders, lowest first. Every id must exist in KHAN_UNIT_COURSES. */
+export const KHAN_LADDERS = [
+  ['math2', 'math3', 'math4', 'math5', 'math6'],
+  ['grammar', 'grammar56', 'grammar78']
+];
+
+/**
+ * Courses she can start in without finishing anything first - the ones her
+ * measured level chooses. Everything else in a ladder is "next", not "first".
+ */
+export const KHAN_ENTRY_COURSES = ['math2', 'ela2', 'ela3', 'grammar'];
+
+// Same string as KIND_CHALLENGE in lib/khanGrade.js, which imports THIS file, so
+// it cannot be imported back. check-khan-ladder asserts the two are equal.
+export const CHALLENGE_KIND = 'course-challenge';
+
+/** True when a grade row is a Course Challenge result for this course. */
+function hasChallengeRow(courseId, grades) {
+  return (grades || []).some((g) => g && g.courseId === courseId && g.kind === CHALLENGE_KIND);
+}
+
+/** The course after this one in its ladder, or null at the top / not in one. */
+export function nextCourseInLadder(courseId) {
+  for (const ladder of KHAN_LADDERS) {
+    const i = ladder.indexOf(courseId);
+    if (i >= 0 && i < ladder.length - 1) return ladder[i + 1];
+  }
+  return null;
+}
+
+/** The course before this one in its ladder, or null. */
+export function previousCourseInLadder(courseId) {
+  for (const ladder of KHAN_LADDERS) {
+    const i = ladder.indexOf(courseId);
+    if (i > 0) return ladder[i - 1];
+  }
+  return null;
+}
+
+/** Every unit scored, and the Course Challenge scored where Khan built one. */
+export function courseComplete(courseId, grades = []) {
+  const c = KHAN_UNIT_COURSES[courseId];
+  if (!c) return false;
+  if (nextUnitFor(courseId, grades)) return false;
+  if (c.courseChallenge && !hasChallengeRow(courseId, grades)) return false;
+  return true;
+}
+
+/**
+ * The course she should be working in NOW: the one her level chose, or - if she
+ * has finished it - the next one up, and the next, until one is unfinished.
+ * Stops at the top of a ladder (returns the finished top course).
+ */
+export function currentCourseFor(courseId, grades = []) {
+  let id = courseId;
+  const seen = new Set();
+  while (id && !seen.has(id)) {
+    seen.add(id);
+    if (!courseComplete(id, grades)) break;
+    const next = nextCourseInLadder(id);
+    if (!next || !KHAN_UNIT_COURSES[next]) break;
+    id = next;
+  }
+  return id;
+}
+
+/**
+ * Whether a course is one she is actually in: an entry course, one with any
+ * result recorded, or the next course after a finished one. Used to keep
+ * courses she has not reached off the "waiting on a grown-up" list. The parent
+ * screen does NOT use this - it shows every course.
+ */
+export function courseIsActive(courseId, grades = []) {
+  if (KHAN_ENTRY_COURSES.includes(courseId)) return true;
+  if ((grades || []).some((g) => g && g.courseId === courseId)) return true;
+  const prev = previousCourseInLadder(courseId);
+  return prev ? courseComplete(prev, grades) : false;
+}

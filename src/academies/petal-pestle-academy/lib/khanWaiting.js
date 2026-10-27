@@ -49,7 +49,7 @@
 // ---------------------------------------------------------------------------
 
 import { KHAN_GRADEABLE_COURSES } from './khanGrade.js';
-import { nextUnitFor, countsAsUnitDone } from '../data/khan/khanUnits.js';
+import { nextUnitFor, countsAsUnitDone, courseIsActive } from '../data/khan/khanUnits.js';
 
 /**
  * Whole days between two YYYY-MM-DD strings, or null if either is missing.
@@ -85,6 +85,9 @@ export function khanWaiting(grades = [], today = null) {
   const rows = [];
 
   for (const c of KHAN_GRADEABLE_COURSES) {
+    // A course she has not reached (4th grade math while she is still in 3rd)
+    // is not waiting on anybody. Oct 27 2026.
+    if (!courseIsActive(c.courseId, grades)) continue;
     const unit = nextUnitFor(c.courseId, grades);
     // null means every unit carries a letter — the Course Challenge signal, and
     // the one state that is not waiting on anybody.

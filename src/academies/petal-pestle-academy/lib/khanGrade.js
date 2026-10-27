@@ -448,7 +448,13 @@ export function challengeFor(courseId, grades = []) {
  * them. Generated from the catalog — never hand-typed, because every
  * hand-typed list in this project has drifted.
  */
-export const KHAN_GRADEABLE_COURSES = Object.values(KHAN_UNIT_COURSES).map((c) => ({
+// Oct 27 2026, Gigi: "If there isn't any Khan reading, remove it from her
+// grading system." Khan built no tests for its elementary Reading, and her
+// Reading block follows the app's own Reading course, so a Khan reading course
+// has nothing to grade. Only courses where Khan built the test are gradeable.
+export const KHAN_GRADEABLE_COURSES = Object.values(KHAN_UNIT_COURSES)
+  .filter((c) => c.graded === 'khan')
+  .map((c) => ({
   courseId: c.courseId,
   label: c.label,
   subject: c.subject,

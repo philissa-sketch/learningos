@@ -220,6 +220,8 @@ export const PARENT_NAV = [
     label: 'Her day',
     sections: [
       { id: 'schedule', label: 'Her day' },
+      // Oct 27 2026: every course, reached or not, so a grown-up can confirm they are all there.
+      { id: 'courses', label: 'All her courses' },
       // Sept 30 2026: the weekly Kahoot / Blooket / Gimkit routine. Gigi: "put it in the Grown-up corner."
       { id: 'games', label: 'Review games' }
     ]

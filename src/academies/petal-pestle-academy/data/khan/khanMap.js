@@ -24,7 +24,12 @@
 // real child — her vocabulary came out at exactly 2.91. A band boundary has to
 // sit immediately below the next whole grade, not a tenth below it.
 
-import { unitUrl as khanUnitUrl, nextUnitForStrand } from './khanUnits.js';
+import {
+  unitUrl as khanUnitUrl,
+  nextUnitForStrand,
+  currentCourseFor,
+  KHAN_UNIT_COURSES
+} from './khanUnits.js';
 
 export const KHAN_COURSES = {
   math1: { label: '1st Grade Math', url: 'https://www.khanacademy.org/math/cc-1st-grade-math' },
@@ -71,7 +76,10 @@ export const KHAN_COURSES = {
   // Her science is taught by the app - Herbalism carries ten of Georgia's
   // twenty-five fourth-grade elements and The Science Lab owns the other
   // fifteen. See curriculumPlan.js.
-  bio: { label: 'Middle School Biology', url: 'https://www.khanacademy.org/science/ms-biology' }
+  bio: { label: 'Middle School Biology', url: 'https://www.khanacademy.org/science/ms-biology' },
+  // The grade-level grammar courses a finished Grammar course leads to.
+  grammar56: { label: 'Grammar: 5th and 6th grade', url: 'https://www.khanacademy.org/ela/5th-and-6th-grade-grammar' },
+  grammar78: { label: 'Grammar: 7th and 8th grade', url: 'https://www.khanacademy.org/ela/7th-and-8th-grade-grammar' }
 };
 
 /**
@@ -218,7 +226,10 @@ export function khanFor(strandId, level) {
     courseUrl: course.url,
     unit: band.unit,
     unitUrl,
-    unitCourse: band.unitCourse || null,
+    // A band for a course that now carries its units (3rd grade math upward)
+    // is a unit course even where the band names no unit: the course chooses
+    // the unit, in order, not the band.
+    unitCourse: band.unitCourse || (KHAN_UNIT_COURSES[band.course] ? band.course : null),
     unitN: band.unitN || null
   };
 }
@@ -260,6 +271,17 @@ export function unitForStrand(strandId, level, grades = []) {
     return { ...khan, unitLabel: khan.unit, unitN: khan.unitN, onLane: false, fromLane: false };
   }
 
+  // A finished course hands her to the next one (Oct 27 2026). The same
+  // function blockLinks uses, so Home and Today cannot disagree - the v3.92 bug.
+  const courseId = currentCourseFor(khan.unitCourse, grades);
+  if (courseId !== khan.unitCourse) {
+    const to = KHAN_COURSES[courseId];
+    if (to) {
+      khan.courseLabel = to.label;
+      khan.courseUrl = to.url;
+    }
+    khan.unitCourse = courseId;
+  }
   const picked = nextUnitForStrand(khan.unitCourse, strandId, grades);
   if (!picked || !picked.unit) {
     // Every unit in her lane is graded. The caller decides what that means —

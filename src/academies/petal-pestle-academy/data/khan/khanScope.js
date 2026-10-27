@@ -46,28 +46,28 @@ export const COURSE_SCOPE = {
     { q: 4, units: ['Money and time', 'Data'] }
   ],
   math3: [
-    { q: 1, units: ['Intro to multiplication', 'Addition, subtraction and estimation'] },
-    { q: 2, units: ['Intro to division', 'More with multiplication and division'] },
-    { q: 3, units: ['Understand fractions', 'Equivalent fractions and comparing fractions'] },
-    { q: 4, units: ['Area and perimeter', 'Measurement and data'] }
+    { q: 1, units: ['Intro to multiplication', '1-digit multiplication', 'Addition, subtraction, and estimation', 'Intro to division'] },
+    { q: 2, units: ['Understand fractions', 'Equivalent fractions and comparing fractions', 'More with multiplication and division', 'Arithmetic patterns and problem solving'] },
+    { q: 3, units: ['Quadrilaterals', 'Area', 'Perimeter'] },
+    { q: 4, units: ['Time', 'Measurement', 'Represent and interpret data'] }
   ],
   math4: [
-    { q: 1, units: ['Place value', 'Multiply by 1-digit numbers'] },
-    { q: 2, units: ['Multiply by 2-digit numbers', 'Division'] },
-    { q: 3, units: ['Equivalent fractions and comparing fractions', 'Add and subtract fractions'] },
-    { q: 4, units: ['Understand decimals', 'Units of measurement'] }
+    { q: 1, units: ['Place value', 'Addition, subtraction, and estimation', 'Multiply by 1-digit numbers', 'Multiply by 2-digit numbers'] },
+    { q: 2, units: ['Division', 'Factors, multiples and patterns', 'Equivalent fractions and comparing fractions', 'Add and subtract fractions'] },
+    { q: 3, units: ['Multiply fractions', 'Understand decimals', 'Plane figures'] },
+    { q: 4, units: ['Measuring angles', 'Area and perimeter', 'Units of measurement'] }
   ],
   math5: [
-    { q: 1, units: ['Place value and decimals', 'Add and subtract decimals'] },
-    { q: 2, units: ['Multi-digit multiplication and division', 'Multiply fractions'] },
-    { q: 3, units: ['Add and subtract fractions with unlike denominators', 'Divide fractions'] },
-    { q: 4, units: ['Volume', 'Coordinate plane'] }
+    { q: 1, units: ['Decimal place value', 'Add decimals', 'Subtract decimals', 'Add and subtract fractions'] },
+    { q: 2, units: ['Multi-digit multiplication and division', 'Multiply fractions', 'Divide fractions', 'Multiply decimals'] },
+    { q: 3, units: ['Divide decimals', 'Powers of ten', 'Volume', 'Coordinate plane'] },
+    { q: 4, units: ['Algebraic thinking', 'Converting units of measure', 'Line plots', 'Properties of shapes'] }
   ],
   math6: [
-    { q: 1, units: ['Arithmetic operations', 'Ratios and rates'] },
-    { q: 2, units: ['Arithmetic with rational numbers', 'Negative numbers'] },
-    { q: 3, units: ['Variables and expressions', 'Equations and inequalities'] },
-    { q: 4, units: ['Data and statistics', 'Geometry'] }
+    { q: 1, units: ['Ratios', 'Arithmetic with rational numbers', 'Rates and percentages'] },
+    { q: 2, units: ['Exponents and order of operations', 'Negative numbers', 'Variables & expressions'] },
+    { q: 3, units: ['Equations & inequalities', 'Plane figures', 'Coordinate plane'] },
+    { q: 4, units: ['3D figures', 'Data and statistics'] }
   ],
 
   // -------------------------------- ELA --------------------------------

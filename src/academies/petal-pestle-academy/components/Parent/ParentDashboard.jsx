@@ -21,6 +21,7 @@ import { GoalsPanel } from './GoalsPanel.jsx';
 import { JournalMarkPanel } from './JournalMarkPanel.jsx';
 import { BackupPanel } from '../../screens/GrownUpCorner/BackupPanel.jsx';
 import { GamesGuidePanel } from './GamesGuidePanel.jsx';
+import { AllCoursesPanel } from './AllCoursesPanel.jsx';
 import { kindMeta } from '../../data/journal/journalPrompts.js';
 import { previewImport, importBackup } from '../../db/db.js';
 import { importVerdict, whenLabel } from '../../lib/importGuard.js';
@@ -2217,6 +2218,7 @@ export function ParentDashboard({ onExit }) {
         {tab === 'writingpieces' && <WritingPiecesPanel />}
         {tab === 'messages' && <MessagesPanel />}
         {tab === 'schedule' && <SchedulePanel />}
+        {tab === 'courses' && <AllCoursesPanel />}
         {tab === 'journal' && <JournalReview />}
         {tab === 'rewards' && <RewardsPanel />}
 
