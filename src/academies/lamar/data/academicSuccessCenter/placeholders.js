@@ -243,8 +243,8 @@ export const quarterlyAcademicPlaceholders = {
       { slotId: 'asg::writing::Q2::1', type: 'Research Paper', format: 'person-study', dueDate: '2026-12-18', title: 'Research paper — a Black American aviator or engineer, three sources', note: 'Pick one Black American aviator or engineer — Bessie Coleman, the Tuskegee Airmen, Katherine Johnson, Robert Lawrence, Mary Jackson. Use three independent sources and name each one. Answer one question about them rather than telling their whole life: what did they have to get past, and what did they change for the people after them?' }
     ],
     'Q3 2026-2027': [
-      { slotId: 'asg::reading::Q3::1', type: 'Reading Assignment', dueDate: '2027-01-29', title: 'The Martian: Classroom Edition — Andy Weir', note: 'Weekly chapter pacing. Engineering problem-solving in the field he wants to work in.' },
-      { slotId: 'asg::reading::Q3::2', type: 'Presentation', dueDate: '2027-03-19', format: 'speech', title: 'The Martian — 3-minute pitch', note: 'Pitch the book in 3 minutes, out loud, with nothing read off a page: the problem Watney is in, the 2 smartest things he does about it, and why someone should read it. Practise it twice, timed, before you give it.' },
+      { slotId: 'asg::reading::Q3::1', type: 'Reading Assignment', dueDate: '2027-01-29', title: 'Ghost — Jason Reynolds', note: 'Weekly chapter pacing. A track-team novel about a boy outrunning his own history — fast, funny, and about what to do with pressure.' },
+      { slotId: 'asg::reading::Q3::2', type: 'Presentation', dueDate: '2027-03-19', format: 'speech', title: 'Ghost — 3-minute pitch', note: 'Pitch the book in 3 minutes, out loud, with nothing read off a page: the trouble Ghost is in, the 2 smartest things he does about it, and why someone should read it. Practise it twice, timed, before you give it.' },
       { slotId: 'asg::writing::Q3::1', type: 'Writing Portfolio Entry', format: 'writing-sample', dueDate: '2027-03-05', title: 'Q3 writing portfolio — his strongest Journal entry', note: 'Pick your strongest Writing Journal entry from this quarter. Write two sentences saying why it is the best one. Then revise it once more: fix every spelling and grammar error, and rewrite the one paragraph you know is weakest. Turn in the revised version, not the original.' }
     ],
     'Q4 2026-2027': [
@@ -253,7 +253,7 @@ export const quarterlyAcademicPlaceholders = {
       { slotId: 'asg::writing::Q4::1', type: 'Research Paper', format: 'failure-analysis', dueDate: '2027-05-21', title: 'Capstone research paper — an engineering failure and what it changed', note: 'Pick an engineering failure — Challenger, Apollo 1, the Tacoma Narrows bridge, the Hyatt Regency walkway. Three independent sources, each named. Explain what physically failed, the decision that let it happen, and the rule or standard that changed afterwards. This is the longest piece of the year: build it one step a week.' }
     ],
     'Summer 2027': [
-      { slotId: 'asg::reading::Summer::1', type: 'Reading Assignment', dueDate: '2027-06-25', title: 'Free choice — Skyward, Space Case, or Ungifted', note: 'Independent summer reading, his pick. Book-club style discussion with a parent instead of a write-up — the point of summer is protecting the habit.' },
+      { slotId: 'asg::reading::Summer::1', type: 'Reading Assignment', dueDate: '2027-06-25', title: 'Tristan Strong Punches a Hole in the Sky — Kwame Mbalia', note: 'Independent summer reading. Black American folklore turned adventure — John Henry and Brer Rabbit as living characters. Book-club style discussion with a parent instead of a write-up.' },
       { slotId: 'asg::writing::Summer::1', type: 'Writing Portfolio Entry', format: 'writing-sample', dueDate: '2027-06-30', title: 'Summer writing portfolio — his strongest Journal entry', note: 'Pick your strongest Writing Journal entry from the summer. Write two sentences saying why it is the best one. Then revise it once more: fix every spelling and grammar error, and rewrite the one paragraph you know is weakest. Turn in the revised version, not the original.' }
     ]
   },
@@ -335,18 +335,15 @@ export const quarterlyAcademicPlaceholders = {
        * for a month. The book itself stays: asg::socialStudies::Q1::2 is still
        * the Red-Tail Angels reading, and its note no longer promises a report.
        */
-      { slotId: 'asg::socialStudies::Q2::1', type: 'Reading Assignment', dueDate: '2026-11-13', title: 'National Geographic Kids Guide to Genealogy — read alongside the genealogy unit', note: 'Paced alongside the Genealogy & Historical Evidence unit — see the Black American Excellence shelf for genealogy and primary-source reads' },
       { slotId: 'asg::socialStudies::Q2::2', type: 'Research Paper', format: 'historical-investigation', dueDate: '2026-12-04', title: 'Family history research paper — one ancestor, three independent sources', note: 'Pick one ancestor. Find three independent sources about them — a census record, a certificate, a newspaper page, or an interview you record with a relative. Say what each source claims, where two of them agree, and what you could not confirm. Include a short family tree showing where this person sits.' }
     ],
     // Q3 now holds Geography, Government & Political Systems, and Economics.
     'Q3 2026-2027': [
-      { slotId: 'asg::socialStudies::Q3::1', type: 'Reading Assignment', dueDate: '2027-02-12', title: 'The Royal Kingdoms of Ghana, Mali, and Songhay — weekly chapter pacing', note: 'Paced alongside the Geography & Economics unit and Khan Academy\'s World History' },
       { slotId: 'asg::socialStudies::Q3::2', type: 'Portfolio Entry', format: 'build', dueDate: '2027-02-19', title: 'Map portfolio — physical features of Africa, Southwest Asia, and Southern & Eastern Asia', note: 'Hand-draw three maps: Africa, Southwest Asia, and Southern & Eastern Asia. On each one label at least 8 physical features — rivers, deserts, mountains, seas — plus a scale and a compass. Then write a paragraph per map naming one feature that decides where people live there, and how.' }
     ],
     // Q4 now holds Environment & Culture (SS7G2/SS7G4, plus the rest of the
     // geography strand as those lessons are completed).
     'Q4 2026-2027': [
-      { slotId: 'asg::socialStudies::Q4::1', type: 'Reading Assignment', dueDate: '2027-05-07', title: 'The Night Diary — weekly chapter pacing', note: 'Paced alongside the Environment & Culture unit and Khan Academy\'s World History' }
     ],
     'Summer 2027': [
       { slotId: 'asg::socialStudies::Summer::1', type: 'Reading Assignment', dueDate: '2027-07-16', title: 'Free choice from the Black American Excellence Library', note: 'Independent summer reading' }
@@ -432,7 +429,6 @@ export const quarterlyAcademicPlaceholders = {
       // remaining Q2 books land exactly two weeks apart: Nov 20 / Dec 4 /
       // Dec 18. See readingStaggerMap in useAppStore.js, which is what
       // actually moves a row already in her database.
-      { slotId: 'asg::aerospace::Q2::1', type: 'Reading Assignment', dueDate: '2026-12-18', title: 'Spaceman (Adapted for Young Readers) — weekly chapter pacing', note: 'Paced alongside the Q2 Aerospace lessons' },
       /**
        * THE ROCKET, DONE AGAIN — THIS TIME AFTER THE LESSON. (Sept 5, 2026.)
        *
@@ -455,8 +451,7 @@ export const quarterlyAcademicPlaceholders = {
       { slotId: 'asg::aerospace::Q2::2', type: 'Portfolio Entry', format: 'investigation', dueDate: '2026-12-04', needsLesson: 'ae7-rocket-design', title: 'Bottle rocket, second launch — change one thing and measure it', note: 'Launch the rocket you already built again, changing exactly one thing: the water amount, the fin design, or the air pressure. Record how high or far it went on every launch, including the ones that went badly. Then explain what changed using thrust and Newton\'s Third Law from the Rocket Design lesson, and name one thing that could have skewed the result.' }
     ],
     'Q3 2026-2027': [
-      { slotId: 'asg::aerospace::Q3::1', type: 'Reading Assignment', dueDate: '2027-03-26', title: 'Rocketry: Investigate the Science and Technology of Rockets — reference reading', note: 'Paced alongside the Q3 Aerospace lessons' },
-      { slotId: 'asg::aerospace::Q3::2', type: 'Reading Assignment', dueDate: '2027-03-12', title: 'Higher, Steeper, Faster: The Daredevils Who Conquered the Skies — weekly pacing', note: 'Weekly chapter pacing. Read it for itself — what used to be an engineering analysis of it is now the Q4 flight test.' }
+      { slotId: 'asg::aerospace::Q3::2', type: 'Reading Assignment', dueDate: '2027-03-12', title: 'Chasing Space: Young Readers\' Edition — Leland Melvin — weekly pacing', note: 'Weekly chapter pacing. Read it for itself — what used to be an engineering analysis of it is now the Q4 flight test.' }
     ],
     'Q4 2026-2027': [
       /**
@@ -486,11 +481,9 @@ export const quarterlyAcademicPlaceholders = {
        * report — change either if you want a different investigation.
        */
       { slotId: 'asg::aerospace::Q4::3', type: 'Portfolio Entry', dueDate: '2027-04-23', format: 'investigation', title: 'Flight test — glide ratio across three wing shapes', note: 'Three wing shapes on the same fuselage, five launches each, distance and height recorded every time. Keep the runs that went badly. The data goes into the Engineering Showcase in May.' },
-      { slotId: 'asg::aerospace::Q4::1', type: 'Reading Assignment', dueDate: '2027-05-21', title: 'The Wright Brothers: How They Invented the Airplane — weekly chapter pacing', note: 'Paced alongside the Q4 Aerospace lessons' },
       { slotId: 'asg::aerospace::Q4::2', type: 'Presentation', dueDate: '2027-05-19', format: 'engineering-showcase', title: 'Engineering showcase — a year of aerospace builds', note: 'Choose 3 of your builds from this year — bottle rocket, parachute drop, wing test, glider. For each one: what you set out to do, the numbers you measured, and what you changed after the first attempt. Finish with the build you would redo and how. 10 minutes, the objects or their photos on the table, practised out loud twice.' }
     ],
     'Summer 2027': [
-      { slotId: 'asg::aerospace::Summer::1', type: 'Reading Assignment', dueDate: '2027-07-30', title: 'The Space Race: How the Cold War Put Humans on the Moon — weekly pacing', note: 'Independent summer aerospace reading' },
       // Moved out of Q1 on Sept 5, 2026, and then out of Q3 the same day, when
       // the lesson's DECLARED quarter was read instead of estimated from the
       // timetable: `ae7-wind-tunnels-flight-testing` says

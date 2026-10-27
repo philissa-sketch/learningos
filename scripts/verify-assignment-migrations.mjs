@@ -88,7 +88,7 @@ console.log('\n--- 2. the school supplies them, optionally ---');
    * already hold it. It may grow; it must never SHRINK without the entries
    * being retired deliberately.
    */
-  ok('the corrections came across', Object.keys(repairs.ASSIGNMENT_CORRECTIONS || {}).length === 33,
+  ok('the corrections came across', Object.keys(repairs.ASSIGNMENT_CORRECTIONS || {}).length === 31,
     `${Object.keys(repairs.ASSIGNMENT_CORRECTIONS || {}).length} — the move must not drop one`);
   /**
    * Two, not three. `asg::aerospace::Q2::2` was removed on Sept 28, 2026: it
@@ -99,7 +99,7 @@ console.log('\n--- 2. the school supplies them, optionally ---');
    * this number may shrink again — but only alongside a slot genuinely coming
    * back to life, never by accident.
    */
-  ok('the retired slots came across', (repairs.RETIRED_ASSIGNMENT_SLOTS || []).length === 3,
+  ok('the retired slots came across', (repairs.RETIRED_ASSIGNMENT_SLOTS || []).length === 10,
     `${(repairs.RETIRED_ASSIGNMENT_SLOTS || []).length}`);
   ok('the book swaps came across', Object.keys(repairs.BOOK_SWAPS || {}).length === 8);
   ok('the slot is not required of every Academy',
@@ -164,9 +164,15 @@ console.log('\n--- 4. the mechanism stayed, and still honours the guards ---');
     /\[\]\.concat\(retitle\.fromDueDate \|\| \[\]\)\.includes\(row\.dueDate\)/.test(store),
     'any other date is one she chose; 240 row shapes were compared against the old inline logic, 0 differed');
   const retitles = Object.entries(repairs.ASSIGNMENT_RETITLES || {});
-  ok('the retitle entry came across', retitles.length === 1);
+  ok('the retitle entry came across', retitles.length === 5);
   ok('...and still names the title it replaces', retitles.every(([, r]) => (r.fromTitle || []).length > 0));
-  ok('...and the date it is allowed to move from', retitles.every(([, r]) => (r.fromDueDate || []).length > 0));
+  // A retitle that moves NO date needs no from-date. The invariant is that a
+  // date moves only from a value the entry names -- not that every retitle
+  // must move one. The four book swaps of Oct 27, 2026 change a title and a
+  // note and leave the date alone, because the slot keeps the quarter it was
+  // born in. Asserted the narrow way so the real guard still bites.
+  ok('...and the date it is allowed to move from',
+    retitles.every(([, r]) => !r.dueDate || (r.fromDueDate || []).length > 0));
 }
 
 // ---------------------------------------------------------------------------

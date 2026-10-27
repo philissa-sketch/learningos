@@ -85,9 +85,7 @@ export const ASSIGNMENT_CORRECTIONS = {
   //
   // The worst was the aerospace Book Report on 2027-04-02: after Q3 ends
   // and before Q4 begins, so NO quarter's grade would have collected it.
-  'asg::aerospace::Q4::1':    { fromDueDate: '2027-05-26', dueDate: '2027-05-21' },
   // --- dates: two research papers due together, and a Saturday -------
-  'asg::socialStudies::Q2::1':{ fromDueDate: '2026-12-04', dueDate: '2026-11-13' },
   'asg::socialStudies::Q2::2':{ fromDueDate: '2026-12-18', dueDate: '2026-12-04', format: 'historical-investigation', fromNote: 'Apply this quarter\'s evidence-evaluation methods (corroboration, bias, cross-referencing) to a real family or local-history investigation', note: 'Pick one ancestor. Find three independent sources about them — a census record, a certificate, a newspaper page, or an interview you record with a relative. Say what each source claims, where two of them agree, and what you could not confirm. Include a short family tree showing where this person sits.' },
   'asg::socialStudies::Q3::2':{ fromDueDate: '2027-02-13', dueDate: '2027-02-19', format: 'build', fromNote: 'Apply the personal money management lesson (SS7E10) to build a real personal budget', note: 'Hand-draw three maps: Africa, Southwest Asia, and Southern & Eastern Asia. On each one label at least 8 physical features — rivers, deserts, mountains, seas — plus a scale and a compass. Then write a paragraph per map naming one feature that decides where people live there, and how.' },
   'asg::writing::Q3::1':      { fromDueDate: '2027-02-13', dueDate: '2027-03-05', format: 'writing-sample', fromNote: 'Best skill-prompt entry this quarter — selected later', note: 'Pick your strongest Writing Journal entry from this quarter. Write two sentences saying why it is the best one. Then revise it once more: fix every spelling and grammar error, and rewrite the one paragraph you know is weakest. Turn in the revised version, not the original.' },
@@ -200,7 +198,7 @@ export const ASSIGNMENT_CORRECTIONS = {
   'asg::aerospace::Summer::3': { fromNote: 'Engineering-journal write-up of the Wind Tunnel Test, built after the Wind Tunnels & Flight Testing lesson — the fullest hands-on Aerospace project of the year.', note: 'Run the wind tunnel you built. Test at least 3 shapes, 3 runs each, at the same fan speed. Record what the airflow does — smoke, thread, tufts — and every number you can measure. Photograph each shape in the tunnel. Finish with which shape moved air most smoothly and how you would rebuild the tunnel to make the test fairer.' },
   'asg::science::Summer::1': { fromNote: 'Present a real completed experiment or science-fair-style investigation — format TBD', note: 'Turn one summer experiment into a science-fair board: the question, what you expected, what you did step by step so someone else could repeat it, your data in a table and a chart, and what you found. At least 3 trials. Photograph the setup. Then present it out loud in 5 minutes without reading the board.' },
   'asg::technology::Q2::2': { fromNote: 'Demo a real working program he wrote — format TBD', note: 'Demo one program or CAD build you made this quarter, live, in 5 minutes. Show it working, then walk through one decision you made and why you chose it over the other option. Finish with the bug or problem that cost you the most time and how you found it. Practise out loud twice first.' },
-  'asg::reading::Q3::2': { fromNote: 'Spoken, not written: high thinking load, low writing load, which suits a reader whose comprehension outruns his writing.', note: 'Pitch the book in 3 minutes, out loud, with nothing read off a page: the problem Watney is in, the 2 smartest things he does about it, and why someone should read it. Practise it twice, timed, before you give it.' },
+  'asg::reading::Q3::2': { fromNote: ['Spoken, not written: high thinking load, low writing load, which suits a reader whose comprehension outruns his writing.', 'Pitch the book in 3 minutes, out loud, with nothing read off a page: the problem Watney is in, the 2 smartest things he does about it, and why someone should read it. Practise it twice, timed, before you give it.'], note: 'Pitch the book in 3 minutes, out loud, with nothing read off a page: the trouble Ghost is in, the 2 smartest things he does about it, and why someone should read it. Practise it twice, timed, before you give it.' },
   'asg::reading::Q4::2': { fromNote: 'Theme and character growth. The one full formal essay of the year, placed last on purpose: by April his grammar is a year stronger than it was in August.', note: 'Pick one person in the book and track how they change from the first pages to the last. Give 3 moments, with page numbers, that show the change, and say what caused each one. Finish with a paragraph on what the book is arguing about courage. This is the one full formal essay of the year — build it one step a week.' },
   'asg::socialStudies::Q1::3': { fromNote: 'Model or labelled cross-section of the borehole well from the end of the book. Photograph it, label the parts that matter, and write down the real measurements you used. The engineering in the last chapters is the point.', note: 'Build or draw a cross-section of the borehole well from the end of the book. Label at least 6 parts, write down the real measurements you used, and photograph the finished thing. Finish with 2 sentences on why that well changes life in the village.' },
 };
@@ -228,7 +226,24 @@ export const RETIRED_ASSIGNMENT_SLOTS = [
   // Oct 5, 2026. The Hatchet reading, later swapped to Red-Tail Angels and
   // dated Oct 9, which left Red-Tail on the English card twice. The parent
   // kept the Oct 30 one (asg::socialStudies::Q1::2) and dropped this.
-  'asg::reading::Q1::1'
+  'asg::reading::Q1::1',
+  /**
+   * ---- SEVEN TITLES BECOME LEISURE READING. (Oct 27, 2026.) ----
+   *
+   * The parent, against a year carrying 18 assigned books: most of his
+   * reading should be about Black Americans, and the subject-paced titles
+   * should stop carrying deadlines at all. These seven stay in his Book
+   * Library and go on earning credit through the reading log; they simply
+   * have no due date and no run-up. Georgia counts instructional minutes,
+   * not assignments, so none of this costs him hours toward the 180 days.
+   */
+  'asg::socialStudies::Q2::1',
+  'asg::aerospace::Q2::1',
+  'asg::socialStudies::Q3::1',
+  'asg::aerospace::Q3::1',
+  'asg::socialStudies::Q4::1',
+  'asg::aerospace::Q4::1',
+  'asg::aerospace::Summer::1'
 ];
 
 export const BOOK_SWAPS = {
@@ -266,6 +281,37 @@ export const BOOK_SWAPS = {
  * array elsewhere in this file.
  */
 export const ASSIGNMENT_RETITLES = {
+  /**
+   * ---- MOST OF HIS READING ABOUT BLACK AMERICANS. (Oct 27, 2026.) ----
+   *
+   * The parent: most of his reading should be about Black Americans. Every
+   * title below was already in his Book Library, unread, while the assigned
+   * list spent his reading time elsewhere -- so these are swaps, not books
+   * to buy. Dates are untouched: the slot keeps the quarter it was born in,
+   * which is the invariant verify-assignment-dates enforces.
+   *
+   * Guarded the usual way: only a row still wearing the old title, and only
+   * one he has not started, been graded on, or completed.
+   */
+  'asg::reading::Q3::1': {
+    fromTitle: ['The Martian: Classroom Edition — Andy Weir'],
+    title: 'Ghost — Jason Reynolds',
+    note: 'Weekly chapter pacing. A track-team novel about a boy outrunning his own history — fast, funny, and about what to do with pressure.'
+  },
+  'asg::reading::Q3::2': {
+    fromTitle: ['The Martian — 3-minute pitch'],
+    title: 'Ghost — 3-minute pitch',
+    note: 'Pitch the book in 3 minutes, out loud, with nothing read off a page: the trouble Ghost is in, the 2 smartest things he does about it, and why someone should read it. Practise it twice, timed, before you give it.'
+  },
+  'asg::reading::Summer::1': {
+    fromTitle: ['Free choice — Skyward, Space Case, or Ungifted'],
+    title: 'Tristan Strong Punches a Hole in the Sky — Kwame Mbalia',
+    note: 'Independent summer reading. Black American folklore turned adventure — John Henry and Brer Rabbit as living characters. Book-club style discussion with a parent instead of a write-up.'
+  },
+  'asg::aerospace::Q3::2': {
+    fromTitle: ['Higher, Steeper, Faster: The Daredevils Who Conquered the Skies — weekly pacing'],
+    title: 'Chasing Space: Young Readers\' Edition — Leland Melvin — weekly pacing'
+  },
   'asg::aerospace::Q1::2': {
     fromTitle: ['Bottle rocket — design, launch, and results'],
     fromTitleWithStaleDate: { title: 'Wind tunnel test — design, results, and what the airflow showed', dueDate: '2026-08-16' },
