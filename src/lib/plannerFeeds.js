@@ -196,12 +196,45 @@ export function fridayOfSchoolWeek(week) {
 
 /**
  * Every week-numbered writing prompt and hands-on project, as a dated calendar
- * item. `done` is true when a writingEntry for that prompt exists IN THAT WEEK
- * — never "ever", because the pool repeats and an ever-check is what made the
- * home screen report five weeks of writing as already finished.
+ * item.
+ *
+ * ---- WHEN A WEEK'S PROMPT COUNTS AS DONE (rewritten Oct 27, 2026) ----
+ *
+ * It used to require a writingEntry IN THAT WEEK — never "ever", because the
+ * pool repeats and an ever-check once made the home screen report five weeks
+ * of writing as already finished. The repeat problem was real. The fix was
+ * too narrow, and the parent found what it cost:
+ *
+ *   w7-paragraph was scheduled week 1 (Aug 3-9) and written Oct 13.
+ *   w7-persuasive-writing was scheduled week 9 (Sep 28-Oct 4), written Oct 13.
+ *
+ * Both were DONE, and both sat in Past Due for ever, while the very same
+ * entries queued for grading two panels away. Work finished late never
+ * cleared anything.
+ *
+ * The window is now the right one: from this week's Monday up to the day
+ * before this prompt comes round AGAIN. A late finish closes the week it
+ * belonged to, and cannot reach forward and close a future one. A prompt
+ * scheduled five times still needs five pieces of writing.
+ *
+ * `doneLate` says it was finished after its Friday, and `completedOn` when.
+ * The row clears, and the record still says it was late — the parent's rule:
+ * clear it like regular work, but keep that it was late.
  */
 export function writingScheduleCalendarItems({ writingEntries = [] } = {}) {
   const items = [];
+  // Every week each prompt is scheduled in, ascending — so a week knows when
+  // its own prompt comes round next, which is where its window closes.
+  const weeksByPrompt = new Map();
+  for (const [weekStr, ids] of Object.entries(weeklyWritingSchedule || {})) {
+    for (const id of ids) {
+      const list = weeksByPrompt.get(id);
+      if (list) list.push(Number(weekStr));
+      else weeksByPrompt.set(id, [Number(weekStr)]);
+    }
+  }
+  for (const list of weeksByPrompt.values()) list.sort((a, b) => a - b);
+
   for (const [weekStr, ids] of Object.entries(weeklyWritingSchedule || {})) {
     const week = Number(weekStr);
     const dueDate = fridayOfSchoolWeek(week);
@@ -212,11 +245,19 @@ export function writingScheduleCalendarItems({ writingEntries = [] } = {}) {
     for (const id of ids) {
       const item = findItemById(id);
       if (!item) continue;
-      const done = writingEntries.some((e) => {
+      // Closes the day before this prompt is next scheduled; open to the end
+      // of the year when it never is.
+      const nextWeek = (weeksByPrompt.get(id) || []).find((w) => w > week);
+      const windowEnd = nextWeek
+        ? toDateStr(addDays(SCHOOL_YEAR_START, (nextWeek - 1) * 7 - 1))
+        : null;
+      const entry = writingEntries.find((e) => {
         if (e.promptId !== id || !e.completedAt) return false;
         const d = toDateStr(new Date(e.completedAt));
-        return d >= weekStart && d <= weekEnd;
+        return d >= weekStart && (!windowEnd || d <= windowEnd);
       });
+      const completedOn = entry ? toDateStr(new Date(entry.completedAt)) : null;
+      const done = Boolean(entry);
       items.push({
         key: `writing::${id}::w${week}`,
         title: item.title,
@@ -224,6 +265,8 @@ export function writingScheduleCalendarItems({ writingEntries = [] } = {}) {
         typeLabel: item.category === 'experiment' ? 'Hands-on project' : 'Writing Journal',
         dueDate,
         done,
+        doneLate: done && completedOn > weekEnd,
+        completedOn,
         source: 'writing-schedule',
         // The prompt this row IS, so a row can open it. See lib/itemTarget.js.
         promptId: id,
@@ -249,7 +292,7 @@ export function writingScheduleCalendarItems({ writingEntries = [] } = {}) {
  *      Miss a window and you wait a year." It was rendered as a paragraph with
  *      no date attached and no warning.
  */
-export function gardenCalendarItems({ gardenLog = [], year = 2026 } = {}) {
+export function gardenCalendarItems({ gardenLog = [], writingEntries = [], year = 2026 } = {}) {
   const items = [];
 
   // --- 1. the weekly Friday brief ---
@@ -276,6 +319,9 @@ export function gardenCalendarItems({ gardenLog = [], year = 2026 } = {}) {
     const opens = (gardenBriefs || []).find((b) => b.opensProjectId === build.projectId);
     const closes = (gardenBriefs || []).find((b) => b.closesProjectId === build.projectId);
     if (!closes?.date) continue;
+    const buildWriteUp = (writingEntries || []).find(
+      (e) => e.promptId === build.projectId && e.completedAt
+    );
     items.push({
       key: `garden-build::${build.projectId}`,
       title: `Build ${build.number} — ${build.title}`,
@@ -287,7 +333,15 @@ export function gardenCalendarItems({ gardenLog = [], year = 2026 } = {}) {
       // dash beside a garden build looked like missing data rather than a
       // different kind of scheduling.
       schoolWeek: getSchoolWeekNumber(parseDateStr(closes.date)),
-      done: false, // written up through the Writing Journal; see below
+      // WAS HARDCODED false UNTIL OCT 27, 2026, with a comment saying the
+      // write-up happens through the Writing Journal — and then never asking
+      // the Writing Journal. So a finished build stayed past due for ever.
+      // The parent: "The Sun Survey was already completed." It was: his
+      // journal holds an entry for gd7-project-sun-survey. The write-up IS
+      // the completion, and now it is read as one.
+      done: Boolean(buildWriteUp),
+      doneLate: Boolean(buildWriteUp) && toDateStr(new Date(buildWriteUp.completedAt)) > closes.date,
+      completedOn: buildWriteUp ? toDateStr(new Date(buildWriteUp.completedAt)) : null,
       // The write-up IS a Journal project with this id; carried so the row can
       // open the place he types it. See lib/itemTarget.js.
       promptId: build.projectId,

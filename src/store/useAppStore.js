@@ -8,6 +8,7 @@ import {
   saveLessonProgress,
   loadAllWritingEntries,
   saveWritingEntry,
+  deleteWritingEntryRecord,
   updateWritingEntryRecord,
   loadWeeklyWordState,
   saveWeeklyWordState,
@@ -1845,7 +1846,7 @@ export const useAppStore = create((set, get) => ({
       saveWeeklyWordState('vocabulary', nextVocab)
     ]);
 
-    const xp = meta?.xp ?? 0;
+    let xp = meta?.xp ?? 0;
     const { streak, lastActiveDate, longestStreak } = computeStreak(
       meta?.lastActiveDate ?? null,
       meta?.streak ?? 0,
@@ -5047,8 +5048,91 @@ const seedRows = khanFirstSeedRows().map((r) => ({ ...r, completed: false, grade
      * rather than guessed at. So it is idempotent, and it can never overwrite
      * a rubric score she actually chose.
      */
+    /**
+     * =====================================================================
+     * THE DUPLICATE JOURNAL ENTRIES, REMOVED ONCE. (Oct 27, 2026.)
+     * =====================================================================
+     *
+     * The parent: *"Writing was entered twice for grading. I graded the
+     * first ones."* Three copies of one Paragraph Writing piece and three
+     * of one Persuasive Writing piece, identical text, seconds apart —
+     * `submitWritingEntry` only ever added, and the button was not disabled
+     * while it saved. That hole is closed at the source now; this clears
+     * what it already wrote.
+     *
+     * STAMPED, SO IT RUNS ONCE AND NEVER AGAIN. Every other repair in this
+     * function re-runs on every boot. A delete must not: a piece she grades
+     * tomorrow, with wording that happens to match an older one, is hers.
+     *
+     * WHAT IT KEEPS. Of each set of identical copies it keeps the graded one
+     * — she has already read and scored it — and otherwise the earliest.
+     * Only exact duplicates of promptId AND text are touched; different text
+     * is a different piece of work and is never a duplicate.
+     */
+    let writingEntriesLive = writingEntries;
+    if (!meta?.duplicateWritingEntriesRemovedAt) {
+      const groups = new Map();
+      for (const e of writingEntriesLive) {
+        if (!e?.promptId || typeof e.text !== 'string') continue;
+        const key = e.promptId + '\u0000' + e.text;
+        const list = groups.get(key);
+        if (list) list.push(e);
+        else groups.set(key, [e]);
+      }
+      const doomed = [];
+      for (const list of groups.values()) {
+        if (list.length < 2) continue;
+        const keeper =
+          list.find((e) => e.grade != null) ||
+          [...list].sort((a, b) =>
+            String(a.completedAt || '').localeCompare(String(b.completedAt || '')) || a.id - b.id
+          )[0];
+        for (const e of list) if (e.id !== keeper.id) doomed.push(e.id);
+      }
+      if (doomed.length > 0) {
+        /**
+         * THE XP AND THE ATTENDANCE COUNT GO WITH THEM.
+         *
+         * Each duplicate paid WRITING_ENTRY_XP and bumped that day's writing
+         * count when it was written, so deleting the rows without undoing
+         * both would leave his totals describing work that is no longer
+         * there. The parent: *"Remove the duplicates so its accurate."*
+         *
+         * His RANK does not fall. `getCurrentRank` never returns below
+         * `highWaterRankTier`, so a tier he has reached he keeps — the XP
+         * number is corrected, the standing he earned is not taken back.
+         *
+         * Only the per-day writing COUNT is touched. activeMinutes is not:
+         * the minutes he spent at the keyboard were real whether the save
+         * button wrote one row or three, and those are what the state's
+         * 180 days are counted from.
+         */
+        const removed = writingEntriesLive.filter((e) => doomed.includes(e.id));
+        await Promise.all(doomed.map((id) => deleteWritingEntryRecord(id)));
+        xp = Math.max(0, xp - removed.length * WRITING_ENTRY_XP);
+
+        const byDay = new Map();
+        for (const e of removed) {
+          const day = String(e.completedAt || '').slice(0, 10);
+          if (!day) continue;
+          byDay.set(day, (byDay.get(day) || 0) + 1);
+        }
+        for (const [day, n] of byDay) {
+          const prior = allAttendance[day];
+          if (!prior) continue;
+          const corrected = { ...prior, writingEntries: Math.max(0, (prior.writingEntries || 0) - n) };
+          allAttendance[day] = corrected;
+          await saveAttendanceRecord(day, corrected);
+        }
+
+        const gone = new Set(doomed);
+        writingEntriesLive = writingEntriesLive.filter((e) => !gone.has(e.id));
+      }
+      await saveMeta({ duplicateWritingEntriesRemovedAt: new Date().toISOString() });
+    }
+
     const writingPercentBackfill = [];
-    const writingEntriesRepaired = writingEntries.map((entry) => {
+    const writingEntriesRepaired = writingEntriesLive.map((entry) => {
       if (!entry?.grade || Number.isFinite(entry.gradePercent)) return entry;
       const gradePercent = letterToPercent(entry.grade);
       if (gradePercent === null) return entry;
@@ -5547,6 +5631,37 @@ const seedRows = khanFirstSeedRows().map((r) => ({ ...r, completed: false, grade
       gradedAt: null,
       checkIssues: Number.isFinite(checkIssues) ? checkIssues : null
     };
+
+    /**
+     * ---- THE SAME PIECE OF WRITING, SAVED THREE TIMES. (Oct 27, 2026.) ----
+     *
+     * The parent: *"Writing was entered twice for grading."* It was entered
+     * three times. His journal held three copies of the Paragraph Writing
+     * piece — identical text, 13:41:35, 13:41:50, 13:41:54 — and three of
+     * the Persuasive Writing one. This function only ever ADDED, and the
+     * button that calls it was disabled on an empty box and nothing else, so
+     * a second press during the save, or a return to a prompt whose text was
+     * still in the editor, wrote another row. Each copy also paid XP again
+     * and bumped attendance again.
+     *
+     * A repeat press is not a second piece of work. If an UNGRADED entry for
+     * this prompt already holds exactly this text, that entry is the record
+     * and is updated rather than duplicated — no second row, no second XP.
+     *
+     * Guarded on ungraded and on identical text on purpose. A prompt in this
+     * pool is scheduled several times a year, and a genuine second attempt is
+     * different text; neither must be swallowed by this.
+     */
+    const twin = state.writingEntries.find(
+      (e) => e.promptId === promptId && e.grade == null && e.text === text
+    );
+    if (twin) {
+      const changes = { wordCount, completedAt, checkIssues: entry.checkIssues };
+      await updateWritingEntryRecord(twin.id, changes);
+      const merged = { ...twin, ...changes };
+      set({ writingEntries: state.writingEntries.map((e) => (e.id === twin.id ? merged : e)) });
+      return merged;
+    }
 
     const savedId = await saveWritingEntry(entry);
     const withId = { id: savedId, ...entry };

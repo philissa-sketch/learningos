@@ -1190,6 +1190,10 @@ export async function saveWritingEntry(entry) {
   return db.writingEntries.add(entry);
 }
 
+export async function deleteWritingEntryRecord(id) {
+  return db.writingEntries.delete(id);
+}
+
 export async function updateWritingEntryRecord(id, changes) {
   const existing = await db.writingEntries.get(id);
   return db.writingEntries.put({ ...existing, ...changes, id });

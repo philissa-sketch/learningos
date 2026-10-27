@@ -81,6 +81,17 @@ export function WritingPromptEngine({ prompt, onExit }) {
   };
   const [justSubmitted, setJustSubmitted] = useState(null); // { wordCount } | null
   /**
+   * SAVING IS NOT INSTANT, AND THE BUTTON SAID NOTHING. (Oct 27, 2026.)
+   *
+   * The parent: *"Writing was entered twice for grading."* The button was
+   * disabled on an empty box and nothing else, so a second press while the
+   * first save was still in flight wrote a second row. His journal held
+   * three copies of one piece, 15 and 4 seconds apart. The store refuses a
+   * duplicate now; this stops the second press being possible at all, which
+   * is the half of the fix he can see.
+   */
+  const [saving, setSaving] = useState(false);
+  /**
    * The last check he ran on THIS text, or null if he has not run one — or has
    * typed since. Typing resets it deliberately: a check he passed three
    * paragraphs ago is not a check on what he is about to save.
@@ -202,7 +213,13 @@ export function WritingPromptEngine({ prompt, onExit }) {
     });
 
   const save = async (issueCount) => {
-    const entry = await submitWritingEntry(prompt.id, text, { checkIssues: issueCount });
+    setSaving(true);
+    let entry;
+    try {
+      entry = await submitWritingEntry(prompt.id, text, { checkIssues: issueCount });
+    } finally {
+      setSaving(false);
+    }
     // The entry IS the record now; a leftover draft would be a second copy.
     await clearWritingDraft(prompt.id);
     // The entry IS the record now; a leftover draft would be a second copy.
@@ -211,7 +228,7 @@ export function WritingPromptEngine({ prompt, onExit }) {
   };
 
   const handleSubmit = async () => {
-    if (wordCount === 0) return;
+    if (wordCount === 0 || saving) return;
     // Second press on a text he has already checked: he has seen the list.
     if (checked) {
       await save(checked.issues.length);
@@ -576,7 +593,7 @@ export function WritingPromptEngine({ prompt, onExit }) {
       <button
         type="button"
         onClick={handleSubmit}
-        disabled={wordCount === 0}
+        disabled={wordCount === 0 || saving}
         className={
           'mt-3 w-full rounded-lg px-4 py-2 font-display font-700 transition hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-40 ' +
           (checked && checked.issues.length > 0

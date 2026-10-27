@@ -293,7 +293,10 @@ export function DailyView({ date, onChangeDate }) {
                       : 'border-space-600 text-ink-500 hover:border-signal-cyan hover:text-signal-cyan')
                   }
                 >
-                  {a.done ? '✓ Done' : 'Mark done'}
+                  {/* Finished after its due date still counts as finished, and
+                      the record says which it was — the parent, Oct 27 2026:
+                      clear it like regular work, but keep that it was late. */}
+                  {a.done ? (a.doneLate ? '✓ Done late' : '✓ Done') : 'Mark done'}
                 </button>
               </div>
             ))}

@@ -88,7 +88,11 @@ console.log('--- 1. every grade she enters reaches the record ---');
   );
   ok(
     'the letters already graded are repaired, not just the next ones',
-    /const writingEntriesRepaired = writingEntries\.map\(\(entry\) => \{/.test(store) &&
+    // `writingEntriesLive` since Oct 27, 2026: the same loaded rows, minus the
+    // duplicate journal entries the one-time cleanup removes just above. The
+    // invariant is unchanged -- the repair still runs over what is on disk,
+    // not only over what is written next -- so the name is what widened here.
+    /const writingEntriesRepaired = writingEntries(Live)?\.map\(\(entry\) => \{/.test(store) &&
       /writingEntries: writingEntriesRepaired,/.test(store),
     'fixing the writer fixes only what happens next — the rows on disk stay uncounted forever'
   );
