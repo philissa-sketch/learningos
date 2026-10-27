@@ -186,6 +186,9 @@ export function fieldTripCarriesWork(trip) {
   if (!trip) return false;
   return (
     trip.status === 'completed' ||
+    // Settled as "we did not go" — the fact that it was planned and missed is
+    // itself the record, and it is the reason she no longer has to delete one.
+    trip.status === 'missed' ||
     Boolean(trip.portfolioEntryId) ||
     Boolean(trip.learningPack) ||
     Number(trip.hours) > 0

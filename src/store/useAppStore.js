@@ -13734,6 +13734,41 @@ const seedRows = khanFirstSeedRows().map((r) => ({ ...r, completed: false, grade
     return { ok: true, instructionMinutes, instructionSkipped };
   },
 
+  /**
+   * ---- WE DID NOT GO. (Oct 27, 2026.) ----
+   *
+   * The third state a trip needed. A plan that did not happen is neither
+   * outstanding nor completed, and until today the app could only be told
+   * one of those two things — so five past-dated trips sat in Past Due with
+   * no way to clear them except deletion, which would have thrown away that
+   * they were ever planned.
+   *
+   * It records, it does not erase: the date, the destination and the plan all
+   * stay, and `missedAt` says when she settled it. Nothing is credited — no
+   * portfolio entry, no hours, no attendance — because nothing happened.
+   *
+   * Refused on a completed trip. That one has a portfolio entry and may have
+   * written instruction minutes into her legal record, and this must never be
+   * the path that quietly unpicks them; `reopenFieldTrip` exists for a trip
+   * ticked off by mistake.
+   */
+  async markFieldTripMissed(id) {
+    const trip = get().fieldTrips.find((t) => t.id === id);
+    if (!trip || trip.status === 'completed') return null;
+    const changes = { status: 'missed', missedAt: new Date().toISOString() };
+    await get().updateFieldTrip(id, changes);
+    return { ...trip, ...changes };
+  },
+
+  /** Undo the above — back to a plan, so it can be given a new date. */
+  async unmarkFieldTripMissed(id) {
+    const trip = get().fieldTrips.find((t) => t.id === id);
+    if (!trip || trip.status !== 'missed') return null;
+    const changes = { status: 'planned', missedAt: null };
+    await get().updateFieldTrip(id, changes);
+    return { ...trip, ...changes };
+  },
+
   async completeFieldTrip(id, hours) {
     const trip = get().fieldTrips.find((t) => t.id === id);
     if (!trip || trip.status === 'completed') return;

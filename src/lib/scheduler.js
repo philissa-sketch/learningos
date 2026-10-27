@@ -159,8 +159,21 @@ export function getAssignmentsForDate(assignments, dateStr) {
  * the screen never said — the same fault this project keeps finding, now for
  * the third table in a row.
  *
- * A trip is `done` when it is completed. `status: 'planned'` on a date that has
- * passed is not done, and should keep showing as missed rather than vanish.
+ * A trip is `done` when it is completed — or when the parent has said they
+ * did not go. `status: 'planned'` on a date that has passed is neither, and
+ * keeps showing as missed, which is the whole point of it being there.
+ *
+ * ---- WHY 'MISSED' SETTLES THE ROW (Oct 27, 2026) ----
+ *
+ * The parent: *"We missed alot of the field trips. How to fix?"* Five were
+ * past their date and still 'planned', and a trip had only two states, so
+ * there was no way to say they did not go. They sat in Past Due for ever
+ * and the only way to clear one was to delete it — which throws away that
+ * it was ever planned, and deleting records is against her standing rule.
+ *
+ * So 'missed' settles the row the way 'completed' does, and `missed: true`
+ * travels with it so a screen can say which of the two it was. A plan that
+ * did not happen is a fact about the year, not an outstanding task.
  */
 export function buildCalendarItems({ assignments = [], academicAssignments = [], fieldTrips = [], missionEvaluations = [] }) {
   // Read here rather than at module scope — see the note at the top of the file.
@@ -236,7 +249,8 @@ export function buildCalendarItems({ assignments = [], academicAssignments = [],
       subject: Array.isArray(t.subjects) && t.subjects.length ? t.subjects[0] : null,
       typeLabel: 'Field Trip',
       dueDate: t.date,
-      done: t.status === 'completed',
+      done: t.status === 'completed' || t.status === 'missed',
+      missed: t.status === 'missed',
       source: 'fieldTrip',
       recordId: t.id
     });

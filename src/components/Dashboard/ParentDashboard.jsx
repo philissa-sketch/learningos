@@ -541,6 +541,8 @@ function TripCard({ trip }) {
   const update = useAppStore((s) => s.updateFieldTrip);
   const remove = useAppStore((s) => s.deleteFieldTrip);
   const editCompleted = useAppStore((s) => s.updateCompletedFieldTrip);
+  const markMissed = useAppStore((s) => s.markFieldTripMissed);
+  const unmarkMissed = useAppStore((s) => s.unmarkFieldTripMissed);
   const [openPack, setOpenPack] = useState(false);
   const [hours, setHours] = useState('');
   const [newDate, setNewDate] = useState('');
@@ -552,6 +554,7 @@ function TripCard({ trip }) {
   const [editDate, setEditDate] = useState('');
   const [editMsg, setEditMsg] = useState(null);
   const done = trip.status === 'completed';
+  const missed = trip.status === 'missed';
   const d = daysUntil(trip.date);
 
   return (
@@ -562,6 +565,7 @@ function TripCard({ trip }) {
           <p className="text-xs text-ink-500">
             {trip.date ? formatDate(trip.date) : 'No date'}
             {trip.time ? ` · ${trip.time}` : ''}
+            {missed ? ' · Did not go' : ''}
             {!done && d !== null && (d >= 0 ? ` · in ${d} day${d === 1 ? '' : 's'}` : ` · ${Math.abs(d)} day${Math.abs(d) === 1 ? '' : 's'} ago`)}
             {done && ' · Completed'}
           </p>
@@ -619,6 +623,29 @@ function TripCard({ trip }) {
       </div>
 
       <div className="mt-3 flex flex-wrap items-center gap-2">
+        {/**
+          * "We missed alot of the field trips. How to fix?" (Oct 27, 2026.)
+          *
+          * There was no answer to that except deleting the trip, which throws
+          * away that it was ever planned. This settles it instead: the row
+          * leaves Past Due, the plan stays in the record, and nothing is
+          * credited, because nothing happened. Reversible, so a trip marked
+          * by mistake goes back to being a plan and can take a new date.
+          */}
+        {!done && (
+          <button
+            type="button"
+            onClick={() => (missed ? unmarkMissed(trip.id) : markMissed(trip.id))}
+            className={
+              'rounded-md border px-3 py-1 text-xs font-display font-700 transition ' +
+              (missed
+                ? 'border-signal-amber/40 bg-signal-amber/10 text-signal-amber hover:border-signal-amber'
+                : 'border-space-600 text-ink-400 hover:border-signal-amber hover:text-signal-amber')
+            }
+          >
+            {missed ? 'Did not go — undo' : 'Did not go'}
+          </button>
+        )}
         <button
           type="button"
           onClick={() => {
