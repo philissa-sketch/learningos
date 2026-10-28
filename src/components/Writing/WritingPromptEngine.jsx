@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { guardianWord } from '../../lib/schoolWords.js';
 import { useAppStore } from '../../store/useAppStore.js';
 import { WritingCheckerLink } from './WritingCheckerLink.jsx';
-import { EvidenceLinkInput } from '../Dashboard/EvidenceLink.jsx';
+
 import { SaveToDriveButton } from '../Academic/SaveToDriveButton.jsx';
 import { checkWriting } from '../../lib/writingCheck.js';
 import { pairedBuildFor } from '../../lib/weeklyPlan.js';
@@ -102,7 +102,7 @@ export function WritingPromptEngine({ prompt, onExit }) {
    * 'experiment'` — because that is where the thing he made is the work.
    */
   const isHandsOn = prompt?.category === 'experiment';
-  const [photoUrl, setPhotoUrl] = useState('');
+  const [photoFile, setPhotoFile] = useState(null);
   /**
    * The last check he ran on THIS text, or null if he has not run one — or has
    * typed since. Typing resets it deliberately: a check he passed three
@@ -230,7 +230,7 @@ export function WritingPromptEngine({ prompt, onExit }) {
     try {
       entry = await submitWritingEntry(prompt.id, text, {
         checkIssues: issueCount,
-        photoUrl: isHandsOn && photoUrl.trim() ? photoUrl.trim() : null
+        photoFile: isHandsOn ? photoFile : null
       });
     } catch (err) {
       setSaving(false);
@@ -242,8 +242,8 @@ export function WritingPromptEngine({ prompt, onExit }) {
     await clearWritingDraft(prompt.id);
     // The entry IS the record now; a leftover draft would be a second copy.
     setDraftSaved('');
-    setPhotoUrl('');
-    setJustSubmitted({ wordCount: entry.wordCount, photoUrl: entry.photoUrl || null });
+    setPhotoFile(null);
+    setJustSubmitted({ wordCount: entry.wordCount, photoName: entry.photoName || null });
   };
 
   const handleSubmit = async () => {
@@ -269,6 +269,7 @@ export function WritingPromptEngine({ prompt, onExit }) {
           <h2 className="mt-2 font-display text-2xl font-700 text-ink-100">Nice work, engineer.</h2>
           <p className="mt-2 text-sm text-ink-300">
             {justSubmitted.wordCount} words logged · +15 XP earned
+            {justSubmitted.photoName ? ` · picture attached` : ''}
           </p>
           <div className="mt-5 flex flex-wrap justify-center gap-3">
             {isProject && (
@@ -613,15 +614,18 @@ export function WritingPromptEngine({ prompt, onExit }) {
         <div className="mt-3 rounded-lg border border-space-700 bg-space-900 p-3">
           <p className="font-display text-sm font-700 text-ink-100">A picture of what you made</p>
           <p className="mt-0.5 mb-2 text-xs text-ink-500">
-            Photograph or screenshot it, put the file in Drive, then paste the share link here. The
-            write-up and the picture are turned in together.
+            Screenshot it, or take a photo and get it onto this computer. Then choose the file here —
+            no link, nothing to upload first. It is turned in with your write-up.
           </p>
-          <EvidenceLinkInput
-            value={photoUrl}
-            onChange={setPhotoUrl}
-            folderKey="work-sample"
-            placeholder="Paste the link to your photo or screenshot"
+          <input
+            type="file"
+            accept="image/*"
+            onChange={(e) => setPhotoFile(e.target.files?.[0] || null)}
+            className="w-full rounded-lg border border-space-600 bg-space-950 px-3 py-2 text-xs text-ink-300 file:mr-3 file:rounded file:border-0 file:bg-signal-cyan file:px-3 file:py-1 file:font-display file:text-space-950"
           />
+          {photoFile && (
+            <p className="mt-2 text-xs text-signal-green">Ready to send: {photoFile.name}</p>
+          )}
         </div>
       )}
 

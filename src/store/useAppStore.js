@@ -5613,7 +5613,7 @@ const seedRows = khanFirstSeedRows().map((r) => ({ ...r, completed: false, grade
    * an unknown, never as a zero. A zero would read as "he checked and it was
    * clean", which is a claim this app would have no evidence for.
    */
-  async submitWritingEntry(promptId, text, { checkIssues = null, photoUrl = null } = {}) {
+  async submitWritingEntry(promptId, text, { checkIssues = null, photoUrl = null, photoFile = null } = {}) {
     const state = get();
     const wordCount = text.trim().split(/\s+/).filter(Boolean).length;
     const completedAt = new Date().toISOString();
@@ -5640,11 +5640,28 @@ const seedRows = khanFirstSeedRows().map((r) => ({ ...r, completed: false, grade
        * it offered a text box and nothing else, while the prompts themselves
        * said "Screenshot it" and "Photograph the finished model".
        *
-       * A link, not a file: this app stores no files, on purpose, so that
-       * his work outlives it and a browser reset cannot take it. Same rule
-       * and same validator as every other evidence link in the record.
+       * TWO WAYS IN, because the first one did not fit him. (Oct 27, 2026.)
+       *
+       * It shipped this morning as a Drive link only, and the parent said
+       * what was wrong with that: *"he screenshots his pics or take a pic
+       * with his phone and email it to himself. There isn't a link for his
+       * pictures."* Asking a twelve-year-old to upload to Drive and fetch a
+       * share link before he can turn in a build is four steps that end in
+       * the work not being turned in.
+       *
+       * So `photoFile` is the picture itself, attached from the computer the
+       * way the Planner has attached files since August. `photoUrl` stays for
+       * the durable Drive link she adds when she grades it.
+       *
+       * THEY ARE NOT THE SAME THING, and the difference matters for her
+       * records: a File lives in THIS browser's database. It is not in the
+       * JSON backup — `JSON.stringify` turns a File into `{}` — so it does
+       * not travel to her computer and a browser reset takes it. The link
+       * does. The file is how he hands it in; the link is how it is kept.
        */
-      photoUrl: null
+      photoUrl: null,
+      photoFile: null,
+      photoName: null
     };
 
     /**
@@ -5670,6 +5687,10 @@ const seedRows = khanFirstSeedRows().map((r) => ({ ...r, completed: false, grade
     const link = photoUrl ? normalizeEvidenceUrl(photoUrl) : null;
     if (link && !link.ok) return { ok: false, error: link.error };
     if (link) entry.photoUrl = link.url;
+    if (photoFile) {
+      entry.photoFile = photoFile;
+      entry.photoName = photoFile.name || 'photo';
+    }
 
     const twin = state.writingEntries.find(
       (e) => e.promptId === promptId && e.grade == null && e.text === text
@@ -5681,7 +5702,8 @@ const seedRows = khanFirstSeedRows().map((r) => ({ ...r, completed: false, grade
         checkIssues: entry.checkIssues,
         // A picture added on the second press is the one thing a repeat save
         // may legitimately carry; never blank one he already attached.
-        ...(entry.photoUrl ? { photoUrl: entry.photoUrl } : {})
+        ...(entry.photoUrl ? { photoUrl: entry.photoUrl } : {}),
+        ...(entry.photoFile ? { photoFile: entry.photoFile, photoName: entry.photoName } : {})
       };
       await updateWritingEntryRecord(twin.id, changes);
       const merged = { ...twin, ...changes };
@@ -5701,6 +5723,23 @@ const seedRows = khanFirstSeedRows().map((r) => ({ ...r, completed: false, grade
     await saveMeta({ xp, streak: state.streak, lastActiveDate: state.lastActiveDate });
     await get().bumpTodayAttendance('writingEntries');
     return withId;
+  },
+
+  /**
+   * Attach the picture itself to an entry already turned in — he photographs
+   * the build on Saturday and the write-up happened on Thursday.
+   */
+  async attachWritingEntryPhoto(entryId, file) {
+    const state = get();
+    const existing = (state.writingEntries || []).find((e) => e.id === entryId);
+    if (!existing) return { ok: false, error: 'That entry is not in the record.' };
+    if (!file) return { ok: false, error: 'No picture chosen.' };
+    const changes = { photoFile: file, photoName: file.name || 'photo' };
+    await updateWritingEntryRecord(entryId, changes);
+    set({
+      writingEntries: state.writingEntries.map((e) => (e.id === entryId ? { ...e, ...changes } : e))
+    });
+    return { ok: true };
   },
 
   /**

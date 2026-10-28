@@ -2066,6 +2066,90 @@ const RUBRIC_SCORES = [
   { score: 4, label: 'Excellent' }
 ];
 
+/**
+ * The picture attached to a hands-on project, on the screen she grades from.
+ *
+ * Three things in one small block, in the order she needs them: look at it,
+ * get it out of the browser, give it a permanent home. The amber line is the
+ * honest part — an attached file is not in the backup, and she should not
+ * find that out later.
+ */
+function WritingEntryPhoto({ entry }) {
+  const attach = useAppStore((s) => s.saveWritingEntryPhoto);
+  const [src, setSrc] = useState(null);
+  const [linking, setLinking] = useState(false);
+  const [draft, setDraft] = useState(entry.photoUrl || '');
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    if (!entry.photoFile) return undefined;
+    const url = URL.createObjectURL(entry.photoFile);
+    setSrc(url);
+    return () => URL.revokeObjectURL(url);
+  }, [entry.photoFile]);
+
+  const download = () => {
+    if (!entry.photoFile) return;
+    const url = URL.createObjectURL(entry.photoFile);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = entry.photoName || 'project-photo';
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
+  const saveLink = async () => {
+    const res = await attach(entry.id, draft);
+    if (res && !res.ok) { setError(res.error); return; }
+    setError(null);
+    setLinking(false);
+  };
+
+  return (
+    <div className="mt-2 rounded-md border border-space-700 bg-space-950 p-3">
+      <p className="font-display text-xs uppercase tracking-widest text-signal-cyan">His picture</p>
+      {src && (
+        <img src={src} alt={entry.photoName || 'Project photo'} className="mt-2 max-h-56 rounded border border-space-700" />
+      )}
+      <div className="mt-2 flex flex-wrap items-center gap-2">
+        {entry.photoFile && (
+          <button type="button" onClick={download} className="rounded border border-space-600 px-2 py-1 text-xs text-ink-300 hover:border-signal-cyan">
+            Save the file
+          </button>
+        )}
+        {entry.photoUrl ? (
+          <a href={entry.photoUrl} target="_blank" rel="noreferrer" className="rounded-full border border-signal-green/40 bg-signal-green/10 px-2 py-0.5 text-xs text-signal-green">
+            In Drive — open
+          </a>
+        ) : (
+          <button type="button" onClick={() => setLinking((v) => !v)} className="rounded border border-space-600 px-2 py-1 text-xs text-ink-300 hover:border-signal-cyan">
+            {linking ? 'Cancel' : 'Add the Drive link'}
+          </button>
+        )}
+      </div>
+      {linking && (
+        <div className="mt-2 flex flex-wrap items-center gap-2">
+          <input
+            type="url"
+            value={draft}
+            onChange={(e) => setDraft(e.target.value)}
+            placeholder="Paste the Drive share link"
+            className="min-w-[12rem] flex-1 rounded border border-space-600 bg-space-900 px-2 py-1 text-xs text-ink-100"
+          />
+          <button type="button" onClick={saveLink} className="rounded bg-signal-cyan px-2 py-1 text-xs font-display font-700 text-space-950">Save</button>
+        </div>
+      )}
+      {error && <p className="mt-1 text-xs text-signal-amber">{error}</p>}
+      {!entry.photoUrl && (
+        <p className="mt-2 text-[11px] text-signal-amber">
+          This picture is only in this browser — it is not in your backup. Save the file, put it in
+          Drive, then paste the link here and the record keeps it.
+        </p>
+      )}
+    </div>
+  );
+}
+
 function WritingEntryRow({ entry, promptTitle }) {
   const gradeWritingEntryRubric = useAppStore((s) => s.gradeWritingEntryRubric);
   const [expanded, setExpanded] = useState(false);
@@ -2134,6 +2218,25 @@ function WritingEntryRow({ entry, promptTitle }) {
           )
         )}
       </div>
+
+      {/**
+        * THE PICTURE HE ATTACHED, AND THE LINK THAT OUTLIVES IT.
+        * (Oct 27, 2026.)
+        *
+        * He attaches the image itself, because he has a screenshot or a
+        * phone photo and no Drive link — the parent: *"There isn't a link
+        * for his pictures."* That file lives in THIS browser only: it is not
+        * in the JSON backup and a reset takes it.
+        *
+        * So this card closes the loop. She sees what he made while she is
+        * grading it, saves it out with one button, drops it in Drive, and
+        * pastes the link — which is the copy her records keep. Until she
+        * does, the amber line says so rather than letting her assume the
+        * picture is safe.
+        */}
+      {(entry.photoFile || entry.photoUrl) && (
+        <WritingEntryPhoto entry={entry} />
+      )}
 
       {expanded && (
         <p className="mt-2 whitespace-pre-wrap rounded-md border border-space-700 bg-space-950 p-3 text-xs text-ink-300">
