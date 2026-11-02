@@ -10096,6 +10096,7 @@ const seedRows = khanFirstSeedRows().map((r) => ({ ...r, completed: false, grade
               mastered: 0,
               khanGradedCount: 0,
               wordStudyQuarters: 0,
+              wordStudy: [],
               averageAccuracy: null,
               letterGrade: null
             };
@@ -10109,6 +10110,19 @@ const seedRows = khanFirstSeedRows().map((r) => ({ ...r, completed: false, grade
             mastered: inStrand.filter((l) => state.lessonProgress[l.id]?.mastered).length,
             khanGradedCount: strandKhan.length,
             wordStudyQuarters: strandWords.length,
+            /**
+             * THE WEEKLY WORD TESTS, NAMED ON HIS OWN CARD. (Nov 2, 2026.)
+             *
+             * The count alone was enough for the parent side, which only
+             * needed to show that the tests were being counted somewhere.
+             * His card needs the detail: a boy who sees "Grammar & Writing
+             * A+" with no mention of Friday's spelling test reasonably
+             * concludes the test does not count. It does -- it always has.
+             * This carries the quarter and the score through so the card can
+             * say so. Nothing here changes any average; strandScores above
+             * already included these same percentages.
+             */
+            wordStudy: strandWords,
             averageAccuracy: strandAvg,
             letterGrade: accuracyToLetterGrade(strandAvg)
           };

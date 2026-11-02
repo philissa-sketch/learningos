@@ -8,6 +8,37 @@ import { subjectCardLabel as subjectCardLabelFor } from '../../content/slots/sub
 // Sept 21, 2026 — see src/content/slots/subjects.js.
 const subjectCardLabel = (...args) => subjectCardLabelFor(academyContent(), ...args);
 
+const WORD_STUDY_LABELS = { spelling: 'Spelling', vocabulary: 'Vocabulary' };
+
+/**
+ * WHERE THE FRIDAY WORD TESTS LANDED. (Nov 2, 2026.)
+ *
+ * Spelling and vocabulary have been graded all year -- spelling into Grammar
+ * & Writing, vocabulary into Reading & Literature, one average per quarter
+ * per skill. His mother's screen said so ("N quarters of weekly word
+ * tests"); his did not, so from where he sat the weekly test was homework
+ * that went nowhere. It went into the letter right above this line.
+ *
+ * This NAMES the contribution. It does not re-weight it: these same
+ * percentages are already inside the strand average, and adding them twice
+ * would quietly inflate the subject. Returns null when there is nothing to
+ * say, so no strand grows an empty second line.
+ */
+function wordStudyLine(strand) {
+  const quarters = strand.wordStudy || [];
+  if (quarters.length === 0) return null;
+  const bySkill = new Map();
+  for (const q of quarters) {
+    const label = WORD_STUDY_LABELS[q.skill] || q.skill;
+    if (!bySkill.has(label)) bySkill.set(label, []);
+    // "Q1 2026-2027" is the stored batch label; he needs the quarter.
+    bySkill.get(label).push(`${String(q.quarter).split(' ')[0]} ${q.percent}%`);
+  }
+  return [...bySkill.entries()]
+    .map(([label, scores]) => `Includes ${label} \u2014 ${scores.join(' \u00b7 ')}`)
+    .join(' \u00b7 ');
+}
+
 /**
  * The student's own grades, on the Progress tab.
  *
@@ -79,25 +110,35 @@ export function StudentGradesCard() {
             */}
             {row.strands.length > 0 && (
               <div className="mt-2 space-y-1 border-t border-space-700 pt-2">
-                {row.strands.map((strand) => (
-                  <div key={strand.id} className="flex items-center justify-between gap-2 text-sm">
-                    <span className="text-ink-400">
-                      {strand.label}
-                      {/* Says where the number came from, since one half of ELA
-                          is Khan units this year and the other half is not. */}
-                      {strand.khanGradedCount > 0 && (
-                        <span className="ml-1.5 text-[10px] uppercase tracking-widest text-signal-cyan">Khan</span>
-                      )}
-                    </span>
-                    {strand.letterGrade ? (
-                      <span className={'font-display font-700 ' + gradeColor(strand.averageAccuracy)}>
-                        {strand.letterGrade} · {Math.round(strand.averageAccuracy * 100)}%
+                {row.strands.map((strand) => {
+                  const wordLine = wordStudyLine(strand);
+                  return (
+                    <div key={strand.id} className="flex items-start justify-between gap-2 text-sm">
+                      <span className="text-ink-400">
+                        {strand.label}
+                        {/* Says where the number came from, since one half of ELA
+                            is Khan units this year and the other half is not. */}
+                        {strand.khanGradedCount > 0 && (
+                          <span className="ml-1.5 text-[10px] uppercase tracking-widest text-signal-cyan">Khan</span>
+                        )}
+                        {wordLine && (
+                          <span className="mt-0.5 block text-[11px] text-ink-600">{wordLine}</span>
+                        )}
                       </span>
-                    ) : (
-                      <span className="text-xs text-ink-600">Not started</span>
-                    )}
-                  </div>
-                ))}
+                      {strand.letterGrade ? (
+                        <span
+                          className={
+                            'shrink-0 font-display font-700 ' + gradeColor(strand.averageAccuracy)
+                          }
+                        >
+                          {strand.letterGrade} · {Math.round(strand.averageAccuracy * 100)}%
+                        </span>
+                      ) : (
+                        <span className="shrink-0 text-xs text-ink-600">Not started</span>
+                      )}
+                    </div>
+                  );
+                })}
               </div>
             )}
 
