@@ -2074,6 +2074,29 @@ const RUBRIC_SCORES = [
  * honest part — an attached file is not in the backup, and she should not
  * find that out later.
  */
+/**
+ * Is this actually an image we can show?
+ *
+ * ---- WHY THIS IS NOT `Boolean(entry.photoFile)` (Nov 2, 2026) ----
+ *
+ * The parent, unable to grade anything: *"i am trying to grade his school
+ * work but unable to read it."* The whole grading screen was being replaced
+ * by the error card, on `createObjectURL: Overload resolution failed`.
+ *
+ * A File survives in HIS database, because IndexedDB stores it whole. It does
+ * NOT survive the trip to HER computer: "Send my work" writes JSON, and
+ * `JSON.stringify` turns a File into `{}`. An empty object is TRUTHY, so the
+ * old guard let it through and `URL.createObjectURL({})` threw — and because
+ * it threw during render, it took the entire Ready-to-Grade list with it.
+ *
+ * So the question is not "is there a photoFile field" but "is it a Blob".
+ * On her machine, after an import, the answer is no, and the card now says
+ * the picture did not travel instead of bringing the screen down.
+ */
+function isShowableImage(v) {
+  return typeof Blob !== 'undefined' && v instanceof Blob;
+}
+
 function WritingEntryPhoto({ entry }) {
   const attach = useAppStore((s) => s.saveWritingEntryPhoto);
   const [src, setSrc] = useState(null);
@@ -2081,15 +2104,20 @@ function WritingEntryPhoto({ entry }) {
   const [draft, setDraft] = useState(entry.photoUrl || '');
   const [error, setError] = useState(null);
 
+  const hasImage = isShowableImage(entry.photoFile);
+  // A photoFile that is not a Blob came through an import and is an empty
+  // husk — the name survived the JSON, the bytes did not.
+  const lostInTransfer = Boolean(entry.photoFile) && !hasImage;
+
   useEffect(() => {
-    if (!entry.photoFile) return undefined;
+    if (!isShowableImage(entry.photoFile)) return undefined;
     const url = URL.createObjectURL(entry.photoFile);
     setSrc(url);
     return () => URL.revokeObjectURL(url);
   }, [entry.photoFile]);
 
   const download = () => {
-    if (!entry.photoFile) return;
+    if (!isShowableImage(entry.photoFile)) return;
     const url = URL.createObjectURL(entry.photoFile);
     const a = document.createElement('a');
     a.href = url;
@@ -2112,7 +2140,7 @@ function WritingEntryPhoto({ entry }) {
         <img src={src} alt={entry.photoName || 'Project photo'} className="mt-2 max-h-56 rounded border border-space-700" />
       )}
       <div className="mt-2 flex flex-wrap items-center gap-2">
-        {entry.photoFile && (
+        {hasImage && (
           <button type="button" onClick={download} className="rounded border border-space-600 px-2 py-1 text-xs text-ink-300 hover:border-signal-cyan">
             Save the file
           </button>
@@ -2140,7 +2168,14 @@ function WritingEntryPhoto({ entry }) {
         </div>
       )}
       {error && <p className="mt-1 text-xs text-signal-amber">{error}</p>}
-      {!entry.photoUrl && (
+      {lostInTransfer && !entry.photoUrl && (
+        <p className="mt-2 text-[11px] text-signal-amber">
+          {entry.photoName ? `"${entry.photoName}" ` : 'The picture '}
+          was attached on his computer and did not come across in the transfer — only links do.
+          Open it on his machine, or ask him to put it in Drive and paste the link here.
+        </p>
+      )}
+      {hasImage && !entry.photoUrl && (
         <p className="mt-2 text-[11px] text-signal-amber">
           This picture is only in this browser — it is not in your backup. Save the file, put it in
           Drive, then paste the link here and the record keeps it.
