@@ -329,9 +329,28 @@ export function getNextCalendarItemsBeyond(items, throughDateStr, limit = 3) {
  * date STRINGS so a time-of-day component can never make something due
  * today read as overdue.
  */
+/**
+ * ---- WORK THAT CAN STILL BE DONE. (Nov 2, 2026.) ----
+ *
+ * `immovable` has been set on the planting windows since they were written
+ * and read by nothing, so a window that closed in August sat in Past Due for
+ * ever. The parent, about the garden rows: *"Remove it because there is
+ * nothing that can be done. He has plants and logged them in."*
+ *
+ * She is right, and it is a different thing from being finished. A Friday in
+ * the garden and a planting window are tied to a day that has gone: the
+ * weather, the seedlings and the soil moved on without him, and no amount of
+ * work next week recovers them. Calling them `done` would claim he did them;
+ * leaving them overdue claims he still can. `immovable` says the third, true
+ * thing — there is nothing left to act on — so they stay on the calendar on
+ * their own date and out of the list of what is outstanding.
+ *
+ * It is deliberately NOT set on the garden builds. A build has no expiry: the
+ * Sun Survey could be written up today and still be worth doing.
+ */
 export function getOverdueCalendarItems(items, todayStr) {
   return items
-    .filter((i) => !i.done && i.dueDate < todayStr)
+    .filter((i) => !i.done && !i.immovable && i.dueDate < todayStr)
     .sort((a, b) => a.dueDate.localeCompare(b.dueDate));
 }
 

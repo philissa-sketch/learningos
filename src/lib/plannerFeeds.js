@@ -307,6 +307,10 @@ export function gardenCalendarItems({ gardenLog = [], writingEntries = [], year 
       dueDate: day.date,
       schoolWeek: getSchoolWeekNumber(parseDateStr(day.date)),
       done: (gardenLog || []).some((r) => r.date === day.date),
+      // A garden Friday cannot be made up — see getOverdueCalendarItems. The
+      // session is credited if he logged that day and simply passes if he did
+      // not; either way it never becomes a task waiting to be cleared.
+      immovable: true,
       // The screen a row opens. Named HERE, in the school's own feed, so the
       // shared target rules (lib/itemTarget.js) never have to know its name.
       openView: 'garden',

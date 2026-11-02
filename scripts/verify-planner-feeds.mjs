@@ -242,7 +242,12 @@ console.log('\n--- 2. the garden reaches the planner ---');
   const g = pf.gardenCalendarItems({ gardenLog: [], year: 2026 });
   const briefs = g.filter((i) => i.typeLabel === 'Garden (after school)');
   const builds = g.filter((i) => i.typeLabel === 'Garden build');
-  const planting = g.filter((i) => i.immovable);
+  // Selected by what it IS, not by `immovable`. That flag used to belong to
+  // the planting windows alone, so it doubled as their id; since Nov 2, 2026
+  // the Friday briefs carry it too — neither can be made up — and this filter
+  // would otherwise have caught all 51. The immovable assertion below still
+  // bites on the windows.
+  const planting = g.filter((i) => i.typeLabel === 'Planting deadline');
 
   ok('the Friday briefs are on the calendar', briefs.length > 40, `${briefs.length}`);
   ok('...and closed Fridays are excluded',
