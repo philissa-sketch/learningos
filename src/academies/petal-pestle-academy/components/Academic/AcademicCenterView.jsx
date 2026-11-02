@@ -20,6 +20,7 @@ import { MarigoldMessage } from '../Mentor/MarigoldMessage.jsx';
 import { ThisWeeksStep } from '../Journal/JournalView.jsx';
 import { ParentGate } from '../../../../components/Dashboard/ParentGate.jsx';
 import { BOOK_REPORT, RESEARCH_PAPER } from '../../data/writing/writingPieces.js';
+import { PROJECTS } from '../../config/projects.js';
 import {
   QUARTERS,
   RESEARCH_QUARTERS,
@@ -494,6 +495,43 @@ function SetupTab() {
             );
           })}
         </ul>
+      </section>
+
+      <section>
+        <div className="flex items-center justify-between">
+          <h2 className="font-display text-lg text-ink-900">Supply list — the whole year</h2>
+          <button type="button" onClick={() => window.print()} className="rounded-full border border-cream-300 bg-white px-4 py-1.5 text-xs font-700 text-ink-700">
+            🖨️ Print
+          </button>
+        </div>
+        <p className="text-xs text-ink-700">What every project needs, in order, so it can be gotten ahead of the week it is due. A project set aside above is grayed out — nothing to buy for it this year.</p>
+        <div className="mt-3 space-y-4">
+          {QUARTERS.map((q) => (
+            <div key={q}>
+              <p className="label-caps text-ink-500">Quarter {q}</p>
+              <ul className="mt-1 space-y-2">
+                {PROJECTS.filter((p) => p.quarter === q)
+                  .sort((a, b) => a.module - b.module)
+                  .map((p) => {
+                    const off = setup.projectsOff.includes(p.id);
+                    return (
+                      <li key={p.id} className={`rounded-petal border px-3 py-2 text-sm ${off ? 'border-cream-200 bg-cream-100 text-ink-500' : 'border-cream-300 bg-white text-ink-900'}`}>
+                        <span className="font-700">
+                          Module {p.module} · {p.title}
+                        </span>{' '}
+                        <span className="text-xs">(due week {p.dueWeek}){off ? ' — set aside' : ''}</span>
+                        <ul className={`mt-1 list-disc pl-5 text-xs ${off ? 'line-through' : ''}`}>
+                          {p.needs.map((x) => (
+                            <li key={x}>{x}</li>
+                          ))}
+                        </ul>
+                      </li>
+                    );
+                  })}
+              </ul>
+            </div>
+          ))}
+        </div>
       </section>
 
       <section>
