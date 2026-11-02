@@ -184,7 +184,7 @@ export function nowMinutes(d = new Date()) {
  * Gigi: "it will not turn off until the end of the school day once it is turned
  * on." That sentence needs the app to know when the end of the school day is,
  * and there was no such function. The temptation is to write `return 955` —
- * 3:55pm, which is the right answer today.
+ * 3:35pm, which is the right answer today.
  *
  * A NUMBER THAT HAPPENS TO BE CORRECT TODAY IS NOT A MEASUREMENT (v3.34). Move
  * Singing later, add a block, shorten one, and a literal 955 goes quietly wrong

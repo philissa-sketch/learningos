@@ -10,8 +10,11 @@
 //
 // This was a FOUR-HOUR instructional day. On Aug 13 Gigi asked for hour-long
 // blocks on Maths, Reading and Language Arts & Writing. That is +90 minutes,
-// so it is now a 345-minute day — 5h45 of teaching, running 9:00 to 3:55 once
-// the three breaks are counted, four days a week.
+// so it was a 345-minute day. Nov 1: Gigi removed the break after Maths and the
+// Journal & Quiet Reading block (she does those on her own time), so it is now
+// a 345-minute day again — Social Studies and The Human Body are now both
+// taught every day Monday to Thursday (30 minutes each) — 5h45 of teaching,
+// running 9:00 to 3:35 once the two remaining breaks are counted, four days a week.
 //
 // The arithmetic is not negotiable and is worth stating plainly: three subjects
 // at an hour each is three hours before her own course, Science, Social
@@ -95,7 +98,7 @@ export const DEFAULT_SCHEDULE = [
     subject: 'reading',
     label: 'Reading',
     icon: '📖',
-    start: '10:35',
+    start: '10:15',
     minutes: 60,
     // Sept 24 2026: her own Reading course now (lib/readingProgress.js), not
     // Khan, so it is her course. Dr. Marigold reads this note out loud.
@@ -103,20 +106,11 @@ export const DEFAULT_SCHEDULE = [
     note: 'Today’s reading lesson, then your book.'
   },
   {
-    id: 'blk-break1',
-    label: 'Snack & Move',
-    icon: '🍎',
-    start: '10:15',
-    minutes: 20,
-    kind: 'break',
-    note: 'Outside if the weather allows.'
-  },
-  {
     id: 'blk-writing',
     subject: 'writing',
     label: 'Language Arts & Writing',
     icon: '✏️',
-    start: '12:10',
+    start: '11:50',
     // Sept 24 2026, Gigi: Language Arts gets its own section, then Spelling &
     // Vocabulary, like Lamar's. The 15 minutes come out of this block, so her
     // day is the same length.
@@ -129,7 +123,7 @@ export const DEFAULT_SCHEDULE = [
     subject: 'words',
     label: 'Spelling & Vocabulary',
     icon: '🔤',
-    start: '12:55',
+    start: '12:35',
     minutes: 15,
     kind: 'signature',
     note: 'Today’s spelling and vocabulary activities.'
@@ -139,7 +133,7 @@ export const DEFAULT_SCHEDULE = [
     subject: 'herbalism',
     label: 'Herbalism & Botany',
     icon: '🌿',
-    start: '13:10',
+    start: '12:50',
     minutes: 45,
     kind: 'signature',
     note: 'Her signature course. Hands in the dirt where possible.'
@@ -148,7 +142,7 @@ export const DEFAULT_SCHEDULE = [
     id: 'blk-lunch',
     label: 'Lunch',
     icon: '🥣',
-    start: '11:35',
+    start: '11:15',
     minutes: 35,
     kind: 'break',
     note: 'Kitchen herbs count as school on the days she cooks.'
@@ -162,7 +156,7 @@ export const DEFAULT_SCHEDULE = [
     id: 'blk-break2',
     label: 'Stretch & Reset',
     icon: '🌤️',
-    start: '13:55',
+    start: '13:35',
     minutes: 15,
     kind: 'break',
     note: 'Get up, go outside, look at something green.'
@@ -176,7 +170,7 @@ export const DEFAULT_SCHEDULE = [
     // fault this version exists to fix.
     label: 'The Science Lab',
     icon: '🔬',
-    start: '14:10',
+    start: '13:50',
     minutes: 30,
     kind: 'core',
     // v3.5 — this block ALTERNATES BY QUARTER, declared in config/curriculumPlan.js
@@ -222,7 +216,7 @@ export const DEFAULT_SCHEDULE = [
     rotating: true,
     label: 'Social Studies',
     icon: '🌍',
-    start: '14:40',
+    start: '14:20',
     minutes: 30,
     kind: 'core',
     // NOT Khan. Khan Academy has no elementary social studies at all — their
@@ -231,26 +225,25 @@ export const DEFAULT_SCHEDULE = [
     // This block has no lesson behind it until the app grows one. The Grown-Up
     // Corner says that rather than sending a nine-year-old to a course written
     // for a seventeen-year-old.
-    note: 'Mon & Wed Social Studies · Tue & Thu The Human Body. The app teaches both — Khan has no elementary social studies at all.'
+    note: 'Social Studies, Monday to Thursday. The app teaches it — Khan has no elementary social studies at all.'
   },
   {
-    // The Journal gets its own block, not a corner of the writing block. A
-    // feature with no time on the timetable does not happen — which is the
-    // same rule check-schedule.mjs applies to the five core subjects.
-    id: 'blk-journal',
-    subject: 'journal',
-    label: 'Journal & Quiet Reading',
-    icon: '📓',
-    start: '15:10',
+    // Nov 1 2026: Gigi wanted both subjects every day, Monday to Thursday, 30 minutes each.
+    // This used to share the Social Studies slot on alternate days.
+    id: 'blk-body',
+    subject: 'body',
+    label: 'The Human Body',
+    icon: '🫀',
+    start: '14:50',
     minutes: 30,
-    kind: 'open',
-    note: 'Write an entry, then read whatever she wants.'
+    kind: 'core',
+    note: 'The Human Body, Monday to Thursday.'
   },
   {
     id: 'blk-doing',
     label: 'Singing & Movement',
     icon: '🎵',
-    start: '15:40',
+    start: '15:20',
     minutes: 15,
     kind: 'doing',
     note: 'Singing most days, yoga most days. Not graded, not optional.'

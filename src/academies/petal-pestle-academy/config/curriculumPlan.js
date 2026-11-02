@@ -171,8 +171,7 @@ export const APP_COURSES = [
     // "social studies and the human body to be 2 days a week. They can rotate."
     // Tuesdays and Thursdays, every week of all four quarters, instead of three
     // days a week for two quarters and nothing at all for the other two.
-    block: 'blk-social',
-    rotatesWith: 'social',
+    block: 'blk-body',
     minutesPerDay: 30,
     quarters: [1, 2, 3, 4],
     lessonDaysPerWeek: 2,
@@ -201,7 +200,6 @@ export const APP_COURSES = [
     id: 'social',
     title: 'Social Studies',
     block: 'blk-social',
-    rotatesWith: 'humanbody',
     minutesPerDay: 30,
     // QUARTERS 1 TO 3, not the whole year (v3.31). Gigi, Aug 17 2026, choosing
     // shape B: "I would prefer the human body to have full year courses.

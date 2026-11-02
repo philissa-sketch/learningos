@@ -92,9 +92,9 @@ import { WEEKS } from '../config/assessment.js';
 export const BLOCK_ROTATION = {
   'blk-social': {
     1: 'social',
-    2: 'body',
+    2: 'social',
     3: 'social',
-    4: 'body'
+    4: 'social'
   }
 };
 
