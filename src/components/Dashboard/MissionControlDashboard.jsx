@@ -5,7 +5,7 @@ import { generateDailyPracticeSet } from '../../engine/dailyPractice.js';
 import { getTemplatesUpToTier } from '../../engine/problemTemplates.js';
 import { hasSchoolStarted, schoolYearStartDate, getCurrentQuarter } from '../../lib/schoolQuarter.js';
 import { useCurrentQuarterKhanAssignments } from './KhanAcademyMissionsCard.jsx';
-import { TodayRow, StartHereCard, QuietTile } from './TodayRow.jsx';
+import { TodayRow, QuietTile } from './TodayRow.jsx';
 import { StudentHandoffCard } from './StudentHandoffCard.jsx';
 import { AcademicCenterCard } from './AcademicCenterCard.jsx';
 import { HelpNowCard } from './HelpNowCard.jsx';
@@ -652,14 +652,32 @@ export function MissionControlDashboard({
   // The single next thing: the first scheduled subject that still has an
   // unmastered Mission Control lesson. If every one is clear, the top slot
   // steps aside rather than inventing something to fill itself with.
-  let startHere = null;
-  const remainingMissions = [];
+  /**
+   * EVERY MISSION STAYS IN THE LIST. (Nov 2, 2026.)
+   *
+   * This used to lift the first one out into a Start-here card above the
+   * planner, and the parent found what that costs: **"it doesn't show the
+   * rotating block. It needs to be in the planner not sitting at the top.
+   * He is over looking it."**
+   *
+   * On a Monday the 2:15 rotating block is Aerospace and it is the day's
+   * ONLY Mission Control lesson -- so lifting it out left the planner
+   * running 1:45 PE straight to 3:00 Guitar. The rail on the left said
+   * Aerospace 2:15-3:00; the list he actually works down did not mention
+   * it. Two screens, one day, and the one with the tick boxes was the one
+   * missing a subject.
+   *
+   * `startHere` is still computed, because Nova's greeting names what is up
+   * next and that was never the problem. It marks a row now instead of
+   * removing it.
+   */
+  const todaysMissions = [];
   for (const subject of todaysSubjects) {
     const mission = getTodaysMission(subject);
     if (!mission) continue;
-    if (!startHere) startHere = { subject, mission };
-    else remainingMissions.push({ subject, mission });
+    todaysMissions.push({ subject, mission });
   }
+  const startHere = todaysMissions[0] || null;
 
 
   /**
@@ -1062,16 +1080,9 @@ export function MissionControlDashboard({
         </div>
       )}
 
-      {startHere && (
-        <div>
-          <p className="mb-2 font-display text-[11px] uppercase tracking-widest text-ink-500">Start here</p>
-          <StartHereCard subject={startHere.subject} mission={startHere.mission} onStart={onStartLesson} />
-        </div>
-      )}
-
       <div>
         <p className="mb-2 font-display text-[11px] uppercase tracking-widest text-ink-500">
-          {startHere ? 'The rest of today' : 'Today'}
+          Today
         </p>
         <div className="overflow-hidden rounded-xl border border-space-700 bg-space-800">
           <TimetableOrder blocks={scheduleBlocks}>
@@ -1117,7 +1128,7 @@ export function MissionControlDashboard({
             actionLabel="Open"
           />
 
-          {remainingMissions.map(({ subject, mission }) => {
+          {todaysMissions.map(({ subject, mission }) => {
             const n = lessonNote({ ...mission, subject });
             /**
              * ON FRIDAY, WHY IT IS HERE COMES FIRST. A row that appears only
@@ -1138,6 +1149,7 @@ export function MissionControlDashboard({
                 kind="mission"
                 progressNote={missed ? `Missed ${missed} — the 2:15 block is open for it` : n?.note}
                 progressTone={missed ? 'partial' : n?.tone}
+                highlight={startHere?.subject === subject}
                 onAction={() => onStartLesson(mission)}
                 actionLabel={n?.action || 'Start'}
               />

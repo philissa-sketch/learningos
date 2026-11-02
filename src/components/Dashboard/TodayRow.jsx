@@ -105,6 +105,24 @@ export function TodayRow({
   blockId,
   when,           // "9:00 AM" — supplied by the parent screen, printed here
   offTimetable,   // true = assigned to him, but today's timetable has no slot
+  /**
+   * THE FIRST THING TO DO, MARKED WHERE IT ACTUALLY HAPPENS. (Nov 2, 2026.)
+   *
+   * The parent: **"it doesn't show the rotating block. It needs to be in the
+   * planner not sitting at the top. He is over looking it."**
+   *
+   * She was right, and it was the Start-here card doing it. That card took
+   * the day's first mission OUT of the list and showed it above, so on a
+   * Monday -- when Aerospace is the only Mission Control lesson -- the
+   * planner ran 1:45 PE straight to 3:00 Guitar with nothing at 2:15. A boy
+   * working down a timetable sees a gap there, not a card he already
+   * scrolled past.
+   *
+   * So the emphasis moved onto the row and the row stayed in the list, at
+   * the time the timetable gives it. He still gets told where to begin; he
+   * is told it in the place he is going to be looking.
+   */
+  highlight,      // the first mission of the day — marked, not moved
   onAction,
   actionLabel
 }) {
@@ -126,7 +144,12 @@ export function TodayRow({
   const isRest = kind === 'rest';
 
   return (
-    <div className="flex items-center gap-3 border-t border-space-700 px-4 py-3 first:border-t-0">
+    <div
+      className={
+        'flex items-center gap-3 border-t border-space-700 px-4 py-3 first:border-t-0 ' +
+        (highlight ? 'border-l-2 border-l-signal-cyan bg-signal-cyan/5' : '')
+      }
+    >
       {/* THE TICK IS OFFERED WHEREVER A ROW SUPPLIES ONE — and the rule that
           decides which rows do has not changed. A MISSION row never gets one:
           a Mission Control lesson is "done" by mastering it, not by ticking a
@@ -209,6 +232,11 @@ export function TodayRow({
         >
           {title}
         </span>
+        {highlight && (
+          <span className="mt-0.5 block font-display text-[10px] uppercase tracking-widest text-signal-cyan">
+            Start here
+          </span>
+        )}
         {detail && <span className="block truncate text-xs text-ink-500">{detail}</span>}
         {progressNote ? (
           <span
@@ -248,6 +276,14 @@ export function TodayRow({
 /**
  * The single thing to do next. One card, visually dominant, one button — so
  * the screen answers "what now?" before he has to read anything else.
+ *
+ * ---- NOT RENDERED ON MISSION CONTROL SINCE NOV 2, 2026 ----
+ *
+ * It answered "what now?" by taking that lesson out of the planner, and the
+ * planner is the thing he works down. On a Monday that left no row at 2:15
+ * at all -- see the `highlight` prop above, which replaced it. Kept, not
+ * deleted: the emphasis it provides is right, the placement was not, and a
+ * screen that genuinely has no timetable to sit inside could still use it.
  */
 export function StartHereCard({ subject, mission, onStart }) {
   const beats = Array.isArray(mission.novaIntro?.beats) ? mission.novaIntro.beats.length : null;
