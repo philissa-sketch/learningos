@@ -186,6 +186,7 @@ import {
 import { nextReviewScheduleEntry } from '../engine/dailyPractice.js';
 import { studyCycleKey, nextTermBlitzSlot } from '../lib/studyCycle.js';
 import { EVIDENCE_FOLDER_KEYS, SEEDED_FOLDER_URLS, isRetiredFolderUrl, normalizeEvidenceUrl, REFERENCE_LINK_TYPES } from '../lib/driveLinks.js';
+import { encodeBlobFields, decodeBlobFields } from '../lib/blobTransfer.js';
 import { normalizeHelpUrl } from '../lib/homeworkHelp.js';
 import { missionScoresForSubject, missionEvidencePhrase } from '../lib/missionGrades.js';
 import {
@@ -7022,6 +7023,17 @@ const seedRows = khanFirstSeedRows().map((r) => ({ ...r, completed: false, grade
       morningMeetings: dbMorningMeetings
     };
 
+    /**
+     * HIS PICTURES TRAVEL WITH HIS WORK. (Nov 2, 2026.)
+     *
+     * Until now `JSON.stringify` flattened every attached photo to `{}` and
+     * the parent received an entry that claimed to have a picture and had
+     * none. The Blob is encoded here, immediately before the stringify that
+     * used to destroy it, and decoded on her side in importProgressData.
+     * See lib/blobTransfer.js for why the base64 is chunked.
+     */
+    exportPayload.writingEntries = await encodeBlobFields(exportPayload.writingEntries, ['photoFile']);
+
     // Compact JSON on purpose: pretty-printing inflated the file ~1.4x
     // and doubled peak memory while building the download.
     const json = JSON.stringify(exportPayload);
@@ -7441,11 +7453,19 @@ const seedRows = khanFirstSeedRows().map((r) => ({ ...r, completed: false, grade
       return rowWithoutId;
     };
 
+    /**
+     * Decoded before the merge touches it, so a row entering the database
+     * carries a real File and never the husk that crashed the grading screen.
+     * A picture from an older export, which has no bytes to recover, lands as
+     * null — honestly absent rather than falsely present.
+     */
+    const incomingWritingEntries = decodeBlobFields(importedData.writingEntries || [], ['photoFile']);
+
     const writingKey = (e) => `${e.promptId}|${e.completedAt}`;
     const localWritingByKey = new Map(state.writingEntries.map((e) => [writingKey(e), e]));
     const newWritingRows = [];
     const writingGradeUpdates = [];
-    for (const entry of importedData.writingEntries || []) {
+    for (const entry of incomingWritingEntries) {
       const local = localWritingByKey.get(writingKey(entry));
       if (!local) { newWritingRows.push(stripId(entry)); continue; }
       if (incomingGradeWins(local, entry)) {

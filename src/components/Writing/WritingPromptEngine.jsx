@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { guardianWord } from '../../lib/schoolWords.js';
 import { useAppStore } from '../../store/useAppStore.js';
 import { WritingCheckerLink } from './WritingCheckerLink.jsx';
+import { shrinkImage } from '../../lib/imageShrink.js';
 
 import { SaveToDriveButton } from '../Academic/SaveToDriveButton.jsx';
 import { checkWriting } from '../../lib/writingCheck.js';
@@ -620,7 +621,12 @@ export function WritingPromptEngine({ prompt, onExit }) {
           <input
             type="file"
             accept="image/*"
-            onChange={(e) => setPhotoFile(e.target.files?.[0] || null)}
+            onChange={async (e) => {
+              const chosen = e.target.files?.[0] || null;
+              // Shrunk here rather than at save time, so what he sees named
+              // below is the file that will actually be stored and sent.
+              setPhotoFile(chosen ? await shrinkImage(chosen) : null);
+            }}
             className="w-full rounded-lg border border-space-600 bg-space-950 px-3 py-2 text-xs text-ink-300 file:mr-3 file:rounded file:border-0 file:bg-signal-cyan file:px-3 file:py-1 file:font-display file:text-space-950"
           />
           {photoFile && (
