@@ -21,6 +21,13 @@
 //  3. NO SKIPPING — however far the weeks have moved, she is on her first step
 //     not done. Working ahead still counts. Nothing opens before week 5 of a
 //     quarter.
+//  4. THE CURSOR (Gigi, Nov 3 2026: "the cursor moves to the end of the
+//     sentence or paragraph" every time she backspaces) — the writing box is
+//     NOT a controlled value={draft[box]} textarea saved on every keystroke
+//     (that fights the caret because saveWritingDraft awaits an IndexedDB
+//     write before the store, and thus the box's value prop, catches up);
+//     it is uncontrolled (defaultValue) and only remounts (a version-keyed
+//     key) on a programmatic fill, never on her own typing.
 // ---------------------------------------------------------------------------
 
 import { readFileSync, writeFileSync, mkdtempSync } from 'node:fs';
@@ -85,6 +92,16 @@ function run(ctx) {
   if (ahead.stepNumber !== 4) fail('working ahead no longer counts');
   const early = B.bookReportNow(readThrough(4), {});
   if (early.state !== 'not-yet') fail('the book report opens before week 5 of the quarter');
+
+  // 4. THE CURSOR
+  if (/<textarea[\s\S]{0,80}value=\{draft\[box\][\s\S]{0,40}onChange=\{\(e\) => saveWritingDraft/.test(s.journal)) {
+    fail('the writing box is a controlled value+onChange-save textarea again — this fights her cursor on every keystroke');
+  }
+  if (!/<textarea[\s\S]{0,120}key=\{`\$\{now\.slotId\}-\$\{box\}-\$\{boxVersion\}`\}[\s\S]{0,120}defaultValue=\{draft\[box\][\s\S]{0,160}onChange=\{\(e\) => saveWritingDraft/.test(s.journal)) {
+    fail('the writing box is not an uncontrolled, version-keyed textarea');
+  }
+  if (!/const \[boxVersion, setBoxVersion\] = useState\(0\);/.test(s.journal)) fail('boxVersion no longer exists to force a remount on a programmatic fill');
+  if (!/await saveWritingDraft\(now\.slotId, \{ \[box\]: step\.starters[\s\S]{0,60}\);\s*setBoxVersion/.test(s.journal)) fail('"Put these in my box" no longer awaits the save before remounting the box');
   return out;
 }
 
@@ -100,7 +117,14 @@ const BUGS = [
   ['screen without the step', 'view', '<ThisWeeksStep />', ''],
   ['skipping back', 'schedule', 'const stepNumber = Math.min(total, n);', 'const stepNumber = Math.min(total, Math.max(n, Math.min(byWeek, total)));'],
   ['working ahead ignored', 'schedule', 'const stepNumber = Math.min(total, n);', 'const stepNumber = Math.min(total, byWeek);'],
-  ['opens too early', 'schedule', 'if (inQuarter < OPENS_AT_WEEK_IN_QUARTER) {', 'if (inQuarter < 1) {']
+  ['opens too early', 'schedule', 'if (inQuarter < OPENS_AT_WEEK_IN_QUARTER) {', 'if (inQuarter < 1) {'],
+  ['the box is controlled again', 'journal',
+    "defaultValue={draft[box] || ''}\n                  onChange={(e) => saveWritingDraft(now.slotId, { [box]: e.target.value })}",
+    "value={draft[box] || ''}\n                  onChange={(e) => saveWritingDraft(now.slotId, { [box]: e.target.value })}"],
+  ['the box forgets its remount key', 'journal', 'key={`${now.slotId}-${box}-${boxVersion}`}\n                  rows={boxRows}', 'rows={boxRows}'],
+  ['the starters fill no longer awaits its save', 'journal',
+    "await saveWritingDraft(now.slotId, { [box]: step.starters.map((l) => `${l}\\n\\n`).join('') });\n                      setBoxVersion((v) => v + 1);",
+    "saveWritingDraft(now.slotId, { [box]: step.starters.map((l) => `${l}\\n\\n`).join('') });\n                      setBoxVersion((v) => v + 1);"]
 ];
 
 const real = run(await context());

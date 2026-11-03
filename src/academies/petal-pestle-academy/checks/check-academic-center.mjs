@@ -125,6 +125,17 @@ function run(ctx) {
   if (!/canTickResearch\(quarter, n, row\)/.test(tog)) fail('the store ticks research steps without checking them');
   if (!/if \(s >= n\) have\.delete\(s\)/.test(tog)) fail('un-ticking a research step leaves later steps ticked');
 
+  // THE CURSOR BUG (Gigi, Nov 3 2026: same bug as the book report box — a
+  // controlled value={...} textarea saved on every keystroke fights her
+  // caret because saveWritingDraft awaits an IndexedDB write before the
+  // store catches up). The research-paper box must be uncontrolled.
+  if (/<textarea[\s\S]{0,250}value=\{draft\[now\.box\.field\][\s\S]{0,60}onChange=\{\(e\) => saveWritingDraft/.test(s.view)) {
+    fail('the research-paper box is a controlled value+onChange-save textarea — this fights her cursor on every keystroke');
+  }
+  if (!/<textarea[\s\S]{0,600}key=\{`\$\{slot\}-\$\{now\.box\.field\}`\}[\s\S]{0,160}defaultValue=\{draft\[now\.box\.field\][\s\S]{0,160}onChange=\{\(e\) => saveWritingDraft/.test(s.view)) {
+    fail('the research-paper box is not an uncontrolled, slot/field-keyed textarea');
+  }
+
   // 6. GROWN-UP SETUP
   const setup = (s.store.match(/async saveAcademicSetup\([\s\S]*?\n  \},\n/) || [''])[0];
   if (!/saveWritingDraft\(SETUP_SLOT, patch/.test(setup)) fail('Grown-Up Setup is not saved where backups carry it');
@@ -182,6 +193,10 @@ const BUGS = [
   ['guessed books', 'lib', "      : { kind: 'reading-coming', module: r.n, quarter: r.quarter, moduleTitle: r.title };", "      : { kind: 'reading', module: r.n, quarter: r.quarter, title: r.title, source: 'https://x' };"],
   ['half-done work in the portfolio', 'lib', "if (s.state === 'finished' || s.state === 'marked') {", "if (s.state !== 'not-yet') {"],
   ['activities in the portfolio', 'lib', "if (!r || !(r.kind === 'spelling' || r.kind == null || r.kind === 'vocab-test')) continue;", 'if (!r) continue;']
+,
+  ['the research box is controlled again', 'view',
+    "defaultValue={draft[now.box.field] || ''}\n              onChange={(e) => saveWritingDraft(slot, { [now.box.field]: e.target.value })}",
+    "value={draft[now.box.field] || ''}\n              onChange={(e) => saveWritingDraft(slot, { [now.box.field]: e.target.value })}"]
 ];
 
 const real = run(await context());

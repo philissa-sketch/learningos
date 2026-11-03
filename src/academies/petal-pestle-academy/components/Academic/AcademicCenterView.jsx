@@ -346,8 +346,15 @@ function ResearchTab() {
           <label className="mt-4 block text-sm font-700 text-ink-900">
             {now.box.label}
             <textarea
+              // THE CURSOR BUG (Gigi, Nov 3 2026 — same bug as the book
+              // report box: a controlled value={draft[...]} saved on every
+              // keystroke fights her caret because saveWritingDraft awaits an
+              // IndexedDB write before the store catches up). Uncontrolled,
+              // keyed to the slot/field so it only remounts when she moves to
+              // a different step or quarter, never on her own typing.
+              key={`${slot}-${now.box.field}`}
               rows={now.box.rows}
-              value={draft[now.box.field] || ''}
+              defaultValue={draft[now.box.field] || ''}
               onChange={(e) => saveWritingDraft(slot, { [now.box.field]: e.target.value })}
               className="mt-1 block w-full rounded-petal border-2 border-cream-200 px-3 py-2 text-base font-400"
             />

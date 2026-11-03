@@ -372,6 +372,16 @@ export function ThisWeeksStep() {
   const toggleWritingStep = useAppStore((s) => s.toggleWritingStep);
   const [refused, setRefused] = useState(false);
   const [changingBook, setChangingBook] = useState(false);
+  // THE CURSOR BUG (Gigi, Nov 3 2026: "the cursor moves to the end of the
+  // sentence or paragraph" every time she backspaces mid-text). The box was
+  // value={draft[box]} + onChange saving to the store, and saveWritingDraft
+  // awaits an IndexedDB write before it updates state — so every keystroke
+  // re-set the DOM textarea's value from a half-a-beat-stale store, and
+  // setting .value resets the caret to the end. boxVersion forces a remount
+  // (fresh defaultValue) only on a PROGRAMMATIC fill — the "Put these in my
+  // box" button or switching steps/quarters — never on her own typing, so
+  // typing is local to the DOM and never fought over.
+  const [boxVersion, setBoxVersion] = useState(0);
 
   const lessonsRead = Object.keys(lessonReads || {});
   const stepsBySlot = Object.fromEntries(
@@ -521,9 +531,13 @@ export function ThisWeeksStep() {
                   <button
                     type="button"
                     disabled={!boxEmpty}
-                    onClick={() =>
-                      saveWritingDraft(now.slotId, { [box]: step.starters.map((l) => `${l}\n\n`).join('') })
-                    }
+                    onClick={async () => {
+                      // Await the save before remounting the box, so the fresh
+                      // defaultValue it reads on remount is the real starters
+                      // text and not whatever was there a half-beat earlier.
+                      await saveWritingDraft(now.slotId, { [box]: step.starters.map((l) => `${l}\n\n`).join('') });
+                      setBoxVersion((v) => v + 1);
+                    }}
                     className={`mt-2 rounded-full px-4 py-1.5 text-xs font-700 ${
                       boxEmpty
                         ? 'border border-lavender-500 bg-white text-lavender-700 hover:bg-lavender-300/25'
@@ -540,8 +554,9 @@ export function ThisWeeksStep() {
               <label className="mt-4 block">
                 <span className="label-caps text-ink-500">{boxLabel}</span>
                 <textarea
+                  key={`${now.slotId}-${box}-${boxVersion}`}
                   rows={boxRows}
-                  value={draft[box] || ''}
+                  defaultValue={draft[box] || ''}
                   onChange={(e) => saveWritingDraft(now.slotId, { [box]: e.target.value })}
                   className="mt-1 w-full rounded-petal border border-cream-300 px-3 py-2 text-sm leading-relaxed"
                 />
