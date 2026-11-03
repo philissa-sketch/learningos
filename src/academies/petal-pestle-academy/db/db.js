@@ -114,6 +114,14 @@ export function openOwn() {
   const conn = new Dexie(ownDbName(academyId));
   conn.version(1).stores({ attempts: 'attemptId, testId, dayKey, at' });
   conn.version(2).stores(HER_TABLES);
+  // v3 (Nov 3 2026, Gigi — "no preference" on where the photo lives, so it
+  // stays on her own Chromebook only). ONE ROW PER PROJECT, deliberately NOT
+  // in HER_TABLES/EXPORT_TABLE_POLICY: a photo is tens of KB to a few MB, and
+  // the daily backup file she hand-carries to Gigi has to stay small enough
+  // to carry — a photo in every one of sixteen projects would make it a file
+  // nobody wants to move by hand. The write-up and the "finished" state DO
+  // travel in the ordinary projects row; only the image itself stays put.
+  conn.version(3).stores({ ...HER_TABLES, projectPhotos: 'projectId, updatedAt' });
   conn.on('blocked', () => window.dispatchEvent(new CustomEvent('pp-db-blocked')));
   conn.on('versionchange', () => window.dispatchEvent(new CustomEvent('pp-db-versionchange')));
   connection = conn;
@@ -928,6 +936,25 @@ export async function readProjects() {
 
 export async function putProject(row) {
   await db.projects.put(row);
+}
+
+/**
+ * A project's photo, v3 (Nov 3 2026) — LOCAL TO THIS CHROMEBOOK ONLY. Kept
+ * out of exportAll/importBackup/EXPORT_TABLE_POLICY on purpose; see the
+ * comment on conn.version(3) above. { projectId, dataUrl, updatedAt }.
+ */
+export async function readProjectPhoto(projectId) {
+  return db.projectPhotos.get(projectId);
+}
+
+export async function putProjectPhoto(projectId, dataUrl) {
+  const row = { projectId, dataUrl, updatedAt: new Date().toISOString() };
+  await db.projectPhotos.put(row);
+  return row;
+}
+
+export async function deleteProjectPhoto(projectId) {
+  await db.projectPhotos.delete(projectId);
 }
 
 /** Every Khan grade a grown-up has entered. */

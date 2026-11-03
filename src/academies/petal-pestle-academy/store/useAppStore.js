@@ -45,6 +45,8 @@ import {
   putWritingMark,
   deleteWritingMark,
   putProject,
+  putProjectPhoto,
+  deleteProjectPhoto,
   putLessonRead,
   readAttempts,
   putAttempt,
@@ -1285,6 +1287,35 @@ export const useAppStore = create((set, get) => ({
     const now = new Date().toISOString();
     const existing = get().projectStatus[projectId] || { projectId, startedAt: now };
     const row = { ...existing, projectId, photoSent: !!sent, photoSentAt: sent ? existing.photoSentAt || now : null, startedAt: existing.startedAt || now };
+    await putProject(row);
+    set({ projectStatus: { ...get().projectStatus, [projectId]: row } });
+    return { ok: true, row };
+  },
+
+  /**
+   * THE REAL PHOTO (Gigi, Nov 3 2026: "there isn't anywhere that she can
+   * take a picture and upload it"). Stored in the projectPhotos table,
+   * which is LOCAL TO THIS CHROMEBOOK ONLY (db.js v3 — never in the daily
+   * backup file she sends Gigi, on purpose, to keep that file small; "no
+   * preference" on whether it also reaches Gigi's computer, so it defaults
+   * to staying put). Marks photoSent so the existing finish-gate
+   * (canFinishProject) needs no change at all.
+   */
+  async saveProjectPhoto(projectId, dataUrl) {
+    const photoRow = await putProjectPhoto(projectId, dataUrl);
+    const now = new Date().toISOString();
+    const existing = get().projectStatus[projectId] || { projectId, startedAt: now };
+    const row = { ...existing, projectId, photoSent: true, photoSentAt: existing.photoSentAt || now, startedAt: existing.startedAt || now };
+    await putProject(row);
+    set({ projectStatus: { ...get().projectStatus, [projectId]: row } });
+    return { ok: true, row, photoRow };
+  },
+
+  async removeProjectPhoto(projectId) {
+    await deleteProjectPhoto(projectId);
+    const now = new Date().toISOString();
+    const existing = get().projectStatus[projectId] || { projectId, startedAt: now };
+    const row = { ...existing, projectId, photoSent: false, photoSentAt: null, startedAt: existing.startedAt || now };
     await putProject(row);
     set({ projectStatus: { ...get().projectStatus, [projectId]: row } });
     return { ok: true, row };

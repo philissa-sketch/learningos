@@ -14,8 +14,9 @@
 // button opens Book Reports, never a list she has to search.
 // ---------------------------------------------------------------------------
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useAppStore } from '../../store/useAppStore.js';
+import { readProjectPhoto } from '../../db/db.js';
 import { MarigoldMessage } from '../Mentor/MarigoldMessage.jsx';
 import { ThisWeeksStep } from '../Journal/JournalView.jsx';
 import { ParentGate } from '../../../../components/Dashboard/ParentGate.jsx';
@@ -161,13 +162,118 @@ function BookReportsTab() {
 
 // ---------------------------------------------------------------------------
 
+/**
+ * Shrinks whatever the camera/file picker hands over before it goes into
+ * IndexedDB. A Chromebook or phone camera photo straight off the sensor can
+ * be several MB; sixteen of those a year is still fine on-device, but there
+ * is no reason to keep them full size when nobody ever needs to print one at
+ * full resolution. 1280px on the long side, JPEG @ 0.72, is plenty to see
+ * "did she actually do it."
+ */
+function compressImageFile(file, maxDim = 1280, quality = 0.72) {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    const url = URL.createObjectURL(file);
+    img.onload = () => {
+      const scale = Math.min(1, maxDim / Math.max(img.width, img.height));
+      const w = Math.max(1, Math.round(img.width * scale));
+      const h = Math.max(1, Math.round(img.height * scale));
+      const canvas = document.createElement('canvas');
+      canvas.width = w;
+      canvas.height = h;
+      canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+      URL.revokeObjectURL(url);
+      resolve(canvas.toDataURL('image/jpeg', quality));
+    };
+    img.onerror = () => {
+      URL.revokeObjectURL(url);
+      reject(new Error('That did not look like a photo.'));
+    };
+    img.src = url;
+  });
+}
+
+/**
+ * THE REAL PHOTO (Gigi, Nov 3 2026 — replaces the "I emailed my photo to
+ * Gigi" checkbox). An actual take-or-choose-a-photo upload, stored on her
+ * own Chromebook (db.js v3, projectPhotos — never in the daily backup file),
+ * so she can open her project later and see it, not just remember she sent
+ * it. canFinishProject still just reads row.photoSent, unchanged.
+ */
+function ProjectPhotoBox({ projectId, mine }) {
+  const saveProjectPhoto = useAppStore((s) => s.saveProjectPhoto);
+  const removeProjectPhoto = useAppStore((s) => s.removeProjectPhoto);
+  const [photo, setPhoto] = useState(undefined); // undefined = loading, null = none
+  const [busy, setBusy] = useState(false);
+  const [err, setErr] = useState('');
+
+  useEffect(() => {
+    let live = true;
+    setPhoto(undefined);
+    readProjectPhoto(projectId).then((row) => {
+      if (live) setPhoto(row?.dataUrl || null);
+    });
+    return () => {
+      live = false;
+    };
+  }, [projectId]);
+
+  async function onPick(e) {
+    const file = e.target.files?.[0];
+    e.target.value = '';
+    if (!file) return;
+    setErr('');
+    setBusy(true);
+    try {
+      const dataUrl = await compressImageFile(file);
+      await saveProjectPhoto(projectId, dataUrl);
+      setPhoto(dataUrl);
+    } catch {
+      setErr('That photo could not be saved. Try again.');
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  async function onRemove() {
+    setBusy(true);
+    await removeProjectPhoto(projectId);
+    setPhoto(null);
+    setBusy(false);
+  }
+
+  return (
+    <div>
+      <p className="mt-3 font-700">📷 Your photo</p>
+      {photo === undefined && <p className="text-xs text-ink-500">Loading…</p>}
+      {photo && (
+        <div className="mt-1.5">
+          <img src={photo} alt="Your project" className="max-h-64 rounded-petal border-2 border-cream-200" />
+          {mine && (
+            <button type="button" disabled={busy} onClick={onRemove} className="mt-1.5 block text-xs text-ink-500 underline disabled:opacity-40">
+              Remove this photo
+            </button>
+          )}
+        </div>
+      )}
+      {photo === null && mine && (
+        <label className="mt-1.5 inline-block rounded-full border border-lavender-500 bg-white px-4 py-1.5 text-xs font-700 text-lavender-700 hover:bg-lavender-300/25">
+          {busy ? 'Saving…' : '📷 Take or choose a photo'}
+          <input type="file" accept="image/*" capture="environment" disabled={busy} onChange={onPick} className="hidden" />
+        </label>
+      )}
+      {photo === null && !mine && <p className="text-xs text-ink-500">No photo yet.</p>}
+      {err && <p className="mt-1 text-xs text-clay-500">{err}</p>}
+    </div>
+  );
+}
+
 function ProjectsTab() {
   const her = useHer();
   const setProjectDone = useAppStore((s) => s.setProjectDone);
   const toggleProjectStep = useAppStore((s) => s.toggleProjectStep);
   const toggleMonitorCheckIn = useAppStore((s) => s.toggleMonitorCheckIn);
   const saveProjectWriteup = useAppStore((s) => s.saveProjectWriteup);
-  const setProjectPhotoSent = useAppStore((s) => s.setProjectPhotoSent);
   const board = projectBoard(her);
   const [openId, setOpenId] = useState(board[0]?.id || null);
   const [said, setSaid] = useState('');
@@ -272,18 +378,13 @@ function ProjectsTab() {
                   className="mt-1 w-full rounded-petal border-2 border-cream-200 px-3 py-2 text-sm disabled:cursor-not-allowed disabled:text-ink-500"
                 />
 
-                <p className="mt-3 font-700">📷 Your photo</p>
-                <p className="text-xs text-ink-700">Take a photo of it, and email it to Gigi.</p>
-                <label className="mt-1.5 flex items-center gap-2 text-sm text-ink-900">
-                  <input type="checkbox" disabled={!mine} checked={!!row.photoSent} onChange={(e) => setProjectPhotoSent(p.id, e.target.checked)} />
-                  I emailed my photo to Gigi
-                </label>
+                <ProjectPhotoBox projectId={p.id} mine={mine} />
 
                 {p.state !== 'set-aside' && p.state !== 'done' && !canFinish && (
                   <p className="mt-3 text-xs text-ink-500">
                     {isMonitor
-                      ? 'The finish button shows up once you have checked in enough days, written about it, and emailed your photo.'
-                      : 'The finish button shows up once every step is ticked, you have written about it, and emailed your photo.'}
+                      ? 'The finish button shows up once you have checked in enough days, written about it, and added your photo.'
+                      : 'The finish button shows up once every step is ticked, you have written about it, and added your photo.'}
                   </p>
                 )}
                 {p.state !== 'set-aside' && (p.state === 'done' || canFinish) && (

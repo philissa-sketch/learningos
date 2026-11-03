@@ -40,7 +40,8 @@ const SRC = {
   nav: 'config/navigation.js',
   view: 'components/Academic/AcademicCenterView.jsx',
   school: 'screens/HerSchool/HerSchool.jsx',
-  store: 'store/useAppStore.js'
+  store: 'store/useAppStore.js',
+  db: 'db/db.js'
 };
 const read = (rel) => readFileSync(join(ROOT, rel), 'utf8');
 
@@ -136,6 +137,17 @@ function run(ctx) {
     fail('the research-paper box is not an uncontrolled, slot/field-keyed textarea');
   }
 
+  // THE REAL PHOTO (Gigi, Nov 3 2026: "there isn't anywhere that she can
+  // take a picture and upload it" — this REPLACES the email-it-to-Gigi
+  // checkbox). A real upload, stored LOCAL TO HER CHROMEBOOK ONLY, never in
+  // the daily backup file (keeps that file small to hand-carry).
+  if (/I emailed my photo to Gigi/.test(s.view)) fail('the old "emailed my photo" checkbox is still on the screen instead of a real upload');
+  if (!/function ProjectPhotoBox\(/.test(s.view) || !/<ProjectPhotoBox projectId=\{p\.id\} mine=\{mine\} \/>/.test(s.view)) fail('every project does not show a real photo upload box');
+  if (!/type="file" accept="image\/\*" capture="environment"/.test(s.view)) fail('the photo box does not offer a camera/file upload');
+  if (!/projectPhotos: 'projectId, updatedAt'/.test(s.db)) fail('the database has no local-only table for her photos');
+  if (/projectPhotos: true/.test(s.db) || /projectPhotos,?\s*\n\s*(spellingResults|writingDrafts)/.test(s.db)) fail('her project photos are being swept into the daily backup file — that file has to stay small enough to hand-carry');
+  if (!/async saveProjectPhoto\(/.test(s.store) || !/photoSent: true/.test(s.store)) fail('saving a photo does not mark the project\'s finish gate');
+
   // 6. GROWN-UP SETUP
   const setup = (s.store.match(/async saveAcademicSetup\([\s\S]*?\n  \},\n/) || [''])[0];
   if (!/saveWritingDraft\(SETUP_SLOT, patch/.test(setup)) fail('Grown-Up Setup is not saved where backups carry it');
@@ -197,6 +209,10 @@ const BUGS = [
   ['the research box is controlled again', 'view',
     "defaultValue={draft[now.box.field] || ''}\n              onChange={(e) => saveWritingDraft(slot, { [now.box.field]: e.target.value })}",
     "value={draft[now.box.field] || ''}\n              onChange={(e) => saveWritingDraft(slot, { [now.box.field]: e.target.value })}"]
+,
+  ['the photo upload is gone', 'view', '<ProjectPhotoBox projectId={p.id} mine={mine} />', "<p>No photo upload here.</p>"],
+  ['photos leak into the daily backup', 'db', "projectPhotos: 'projectId, updatedAt'", ''],
+  ['saving a photo no longer marks the project finished-ready', 'store', 'photoSent: true, photoSentAt: existing.photoSentAt', 'photoSent: false, photoSentAt: existing.photoSentAt']
 ];
 
 const real = run(await context());
