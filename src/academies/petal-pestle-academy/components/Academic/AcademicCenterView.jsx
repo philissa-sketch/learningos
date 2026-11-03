@@ -17,6 +17,8 @@
 import { useState, useEffect } from 'react';
 import { useAppStore } from '../../store/useAppStore.js';
 import { readProjectPhoto } from '../../db/db.js';
+// LOCAL date for her monitor check-ins — see the comment in lib/academicCenter.js.
+import { todayDateStr } from '../../../../lib/scheduler.js';
 import { MarigoldMessage } from '../Mentor/MarigoldMessage.jsx';
 import { ThisWeeksStep } from '../Journal/JournalView.jsx';
 import { ParentGate } from '../../../../components/Dashboard/ParentGate.jsx';
@@ -277,7 +279,7 @@ function ProjectsTab() {
   const board = projectBoard(her);
   const [openId, setOpenId] = useState(board[0]?.id || null);
   const [said, setSaid] = useState('');
-  const today = new Date().toISOString().slice(0, 10);
+  const today = todayDateStr();
   const WORDS = {
     now: 'Your project now',
     watching: 'Watching now',

@@ -898,6 +898,26 @@ export function MissionControlDashboard({
   const readingLesson = getTodaysMission('reading');
 
   /**
+   * IS GRAMMAR'S KHAN ROW LIVE TODAY? (Nov 3, 2026.)
+   *
+   * The parent: "Language arts was supposed to be connected to Khan Academy.
+   * That is how it was. Grammar is part of Language arts." She was right, and
+   * the Khan-missions loop below used to hide it: it picked ONE row for the
+   * whole `reading` subject — Reading & Literature's Khan unit or Grammar's,
+   * whichever sorted first — and Grammar is always sequenced AFTER that
+   * quarter's Reading units on purpose, so Grammar's Khan row never got a
+   * turn until Reading's queue ran dry. The fix below gives each strand its
+   * own row. This flag answers one narrower question for the native lesson
+   * track just below: when Khan's own Grammar unit is on the board, the
+   * native `w7-homophones`-style vocabulary/grammar lesson should step aside
+   * rather than print a second, redundant "Language Arts" row that also
+   * duplicates the 1:30 Spelling & Vocabulary block.
+   */
+  const grammarKhanOpenToday = (khanBySubject.get('reading') || []).some(
+    (r) => !r.completed && khanReadingStrand(r) === 'language-arts'
+  );
+
+  /**
    * Electric Guitar, and it renders on EVERY day kind for the same reason PE
    * does: it is genuinely daily. It is also the row this whole subject was
    * designed around. He is not self-disciplined with the guitar, and this
@@ -1161,21 +1181,57 @@ export function MissionControlDashboard({
               labels came from. The daily checkbox is the win he gets for
               showing up; the unit itself is finished by the parent entering
               the Khan score, never from this screen. */}
-          {[...khanBySubject.entries()].map(([subject, rows]) => {
-            const open = rows.filter((r) => !r.completed);
-            const next = [...open].sort((a, b) => (a.sequenceInQuarter || 0) - (b.sequenceInQuarter || 0))[0];
-            if (!next) return null;
-            // English resolves through the strand of the unit he is actually
-            // being handed. Every other subject is one block.
-            const english = subject === 'reading' ? englishRow(khanReadingStrand(next)) : null;
-            const rowBlock = english ? english.blockId : blockForSubjectToday(subject);
-            return (
+          {(() => {
+            /**
+             * READING AND GRAMMAR EACH GET THEIR OWN ROW NOW. (Nov 3, 2026.)
+             *
+             * Until today, `reading` produced exactly one Khan row for the
+             * whole subject — Reading & Literature's unit or Grammar's,
+             * whichever had the lower `sequenceInQuarter`. Grammar's units
+             * are deliberately numbered AFTER that quarter's Reading units
+             * (see GRAMMAR_LADDER_SPEC in useAppStore.js), so for as long as
+             * any Reading & Literature unit was still open — which is most of
+             * every quarter — Grammar's Khan row simply never won the pick
+             * and never appeared on his board, even though it was seeded and
+             * gradeable the whole time.
+             *
+             * The parent: "Language arts was supposed to be connected to
+             * Khan Academy. That is how it was. Grammar is part of Language
+             * arts." She is right that the two belong on the screen
+             * together, not in competition for one slot — he already has
+             * Reading at 10:00 and Spelling & Vocabulary at 1:30, so
+             * Language Arts at 12:30 should reliably be Khan grammar, not
+             * whichever of the two strands happened to sort first.
+             *
+             * Every other Khan subject keeps the single-row behaviour
+             * unchanged — this split is specific to `reading` carrying two
+             * real strands under one Khan subject code.
+             */
+            const entries = [];
+            for (const [subject, rows] of khanBySubject.entries()) {
+              const open = rows.filter((r) => !r.completed);
+              if (subject === 'reading') {
+                for (const strand of ['reading', 'language-arts']) {
+                  const strandOpen = open.filter((r) => khanReadingStrand(r) === strand);
+                  const next = [...strandOpen].sort((a, b) => (a.sequenceInQuarter || 0) - (b.sequenceInQuarter || 0))[0];
+                  if (!next) continue;
+                  const english = englishRow(strand);
+                  entries.push({ key: 'khan-reading-' + strand, subject, next, open: strandOpen, blockId: english.blockId, label: english.label });
+                }
+                continue;
+              }
+              const next = [...open].sort((a, b) => (a.sequenceInQuarter || 0) - (b.sequenceInQuarter || 0))[0];
+              if (!next) continue;
+              const blockId = blockForSubjectToday(subject);
+              entries.push({ key: 'khan-' + subject, subject, next, open, blockId, label: undefined });
+            }
+            return entries.map(({ key, subject, next, open, blockId, label }) => (
               <TodayRow
-                key={'khan-' + subject}
+                key={key}
                 subject={subject}
-                label={english ? english.label : undefined}
-                blockId={rowBlock}
-                when={whenFor(rowBlock)}
+                label={label}
+                blockId={blockId}
+                when={whenFor(blockId)}
                 offTimetable={isOffTimetable(subject)}
                 title={next.skillTitle}
                 detail={open.length + ' unit' + (open.length === 1 ? '' : 's') + ' left this quarter'}
@@ -1200,12 +1256,20 @@ export function MissionControlDashboard({
                  * this app cannot see Khan Academy, so a score she copied off
                  * Khan's own screen is the closest thing to proof it will ever
                  * hold. The checkbox above stays daily, undoable, and five XP.
+                 *
+                 * Reading and Grammar now show as two rows but still share one
+                 * daily tick (`dailyDone.reading`) — ticking either checks off
+                 * "reading" for the day, same as before the split. That is
+                 * unchanged on purpose: the tick has always credited the
+                 * SUBJECT, not the unit, and splitting the display did not
+                 * change what she actually grades (she still enters one Khan
+                 * score per unit, from Khan's own screen).
                  */
                 onAction={() => window.open(next.khanAcademyUrl, '_blank', 'noopener')}
                 actionLabel="Open"
               />
-            );
-          })}
+            ));
+          })()}
 
           {/**
             * THE 10:00 BLOCK NOW HAS TEACHING IN IT, NOT JUST A BOOK.
@@ -1225,7 +1289,24 @@ export function MissionControlDashboard({
             * It sits directly above his book because they are the same block —
             * the lesson is the taught part, the book is the reading part.
             */}
-          {readingLesson && (() => {
+          {/**
+            * SUPPRESSED WHEN KHAN'S OWN GRAMMAR ROW IS LIVE. (Nov 3, 2026.)
+            *
+            * This native lesson track predates real Khan grammar content —
+            * it was added Aug 10 because the 12:30 slot had nothing in it at
+            * all. Now that Khan's Grammar row renders on its own (see the
+            * Khan-missions block above), letting a native vocabulary/grammar
+            * lesson ALSO print at 12:30 on a language-arts-strand day would
+            * be a second "Language Arts" row that duplicates both Khan's
+            * grammar unit and the 1:30 Spelling & Vocabulary block — exactly
+            * the "none of this makes sense" the parent flagged. A
+            * Reading & Literature-strand day is untouched; this only skips
+            * the language-arts half, and only while Khan has an open unit to
+            * show instead. Once Khan's grammar queue for the quarter runs
+            * out, this native lesson reappears on its own — nothing about
+            * its progress or mastery changes, only whether it is shown today.
+            */}
+          {readingLesson && !(readingLesson.strand === 'language-arts' && grammarKhanOpenToday) && (() => {
             const n = lessonNote({ ...readingLesson, subject: 'reading' });
             return (
               <TodayRow

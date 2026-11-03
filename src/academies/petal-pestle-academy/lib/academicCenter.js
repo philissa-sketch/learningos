@@ -31,6 +31,11 @@ import { PROJECTS } from '../config/projects.js';
 import { READING_MODULES, READING_REGISTER } from '../data/reading/course/readingCourse.js';
 import { spineWeek, quarterOfWeek, weekWithinQuarter, bookReportNow } from './bookReportSchedule.js';
 import { WEEKS } from '../config/assessment.js';
+// LOCAL date, never UTC (Nov 3 2026 — this exact UTC-truncation-to-a-date-string
+// pattern is what stopped Lamar's checkboxes working after 8pm Eastern, and the
+// repo-wide guard that remembers that bug caught it here too: Azianna checking in
+// on a monitor project in the evening would have logged it under tomorrow's date).
+import { todayDateStr } from '../../../lib/scheduler.js';
 
 export const SETUP_SLOT = 'academic-setup';
 export const QUARTERS = [1, 2, 3, 4];
@@ -186,7 +191,7 @@ export function projectToday(board = [], projectStatus = {}) {
  * reminder, and whether today has already been checked in. Null when no
  * monitor project is in hand.
  */
-export function monitorToday(board = [], projectStatus = {}, today = new Date().toISOString().slice(0, 10)) {
+export function monitorToday(board = [], projectStatus = {}, today = todayDateStr()) {
   const p = board.find((x) => x.state === 'watching');
   if (!p) return null;
   const checkIns = projectStatus?.[p.id]?.checkIns || [];

@@ -117,6 +117,8 @@ import { getCurrentRank } from '../lib/ranks.js';
 import { DEFAULT_SCHEDULE } from '../config/schedule.js';
 import { wordCount } from '../data/journal/journalPrompts.js';
 import { WRITING_FINAL_STEP } from '../data/writing/writingPieces.js';
+// LOCAL date for her monitor check-ins — see the comment in lib/academicCenter.js.
+import { todayDateStr } from '../../../lib/scheduler.js';
 
 function todayKey(now = new Date()) {
   // Local date, not UTC. A 7pm session in Georgia must not count as tomorrow.
@@ -1247,7 +1249,7 @@ export const useAppStore = create((set, get) => ({
    * step. Checking in is also what STARTS a monitor project (projectBoard
    * keeps a started one active until it is done).
    */
-  async toggleMonitorCheckIn(projectId, day = new Date().toISOString().slice(0, 10)) {
+  async toggleMonitorCheckIn(projectId, day = todayDateStr()) {
     const project = PROJECTS.find((p) => p.id === projectId);
     if (!project || project.kind !== 'monitor') return { ok: false, reason: 'not-a-monitor-project' };
     const now = new Date().toISOString();
