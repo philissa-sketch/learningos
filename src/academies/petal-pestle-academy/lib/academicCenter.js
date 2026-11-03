@@ -90,49 +90,78 @@ export function currentModule(lessonsRead = [], weeks = WEEKS) {
 
 /**
  * Every project with its state, the one she is ON first.
- * state: 'done' | 'now' | 'next' (open by her progress, waiting behind the one
- *        she is on) | 'earlier' (its module is past, not done, not pushed) |
- *        'later' | 'set-aside' (a grown-up turned it off)
+ * state: 'done' | 'now' (the active BUILD) | 'watching' (the active MONITOR)
+ *        | 'next' (open by her progress, waiting behind the one she is on)
+ *        | 'earlier' (its module is past, not done, not pushed) | 'later'
+ *        | 'set-aside' (a grown-up turned it off)
  *
- * ⚠️ ONE PROJECT IS 'now', NEVER SEVERAL (Gigi, Oct 27 2026: her projects "just
- * show up once and do not prompt her throughout the week to finish before
- * giving her a new project"). Today used to list every open project and say
- * "pick any one", and her record holds none finished. The rule:
+ * ⚠️ ONE BUILD PROJECT IS 'now', NEVER SEVERAL (Gigi, Oct 27 2026: her
+ * projects "just show up once and do not prompt her throughout the week to
+ * finish before giving her a new project"). Today used to list every open
+ * project and say "pick any one", and her record holds none finished. The
+ * rule for builds:
  *   · a project she has STARTED (ticked a step) stays 'now' until it is done;
  *   · otherwise it is this module's project;
  *   · if that one is already done, the most recent earlier one not done.
- * A new project is only ever given when the one in hand is finished or set
+ * A new build is only ever given when the one in hand is finished or set
  * aside by a grown-up.
+ *
+ * ⚠️ MONITOR PROJECTS RUN ON THEIR OWN TRACK, NOT GATED TO HER CURRENT
+ * MODULE (Gigi, Nov 2 2026: "she only needs one of those a month"). The
+ * active monitor is simply the earliest-module unfinished one — started
+ * wins, same as builds — so it does not compete with or wait on her build
+ * project, and both can be 'now' on the same day.
  */
 export function projectBoard({ lessonsRead = [], projectStatus = {}, drafts = {}, weeks = WEEKS } = {}) {
   const mod = currentModule(lessonsRead, weeks);
   const off = new Set(setupFrom(drafts).projectsOff);
   const isDone = (id) => !!projectStatus?.[id]?.doneAt;
   const started = (id) => (projectStatus?.[id]?.stepsDone || []).length > 0;
-  const live = PROJECTS.filter((p) => !off.has(p.id) && !isDone(p.id));
   const byModule = (x, y) => x.module - y.module;
-  const activeId =
-    live.filter((p) => started(p.id)).sort(byModule)[0]?.id ||
-    live.find((p) => p.module === mod)?.id ||
-    live.filter((p) => p.module < mod).sort((x, y) => y.module - x.module)[0]?.id ||
+
+  const builds = PROJECTS.filter((p) => (p.kind || 'build') === 'build');
+  const liveBuilds = builds.filter((p) => !off.has(p.id) && !isDone(p.id));
+  const activeBuildId =
+    liveBuilds.filter((p) => started(p.id)).sort(byModule)[0]?.id ||
+    liveBuilds.find((p) => p.module === mod)?.id ||
+    liveBuilds.filter((p) => p.module < mod).sort((x, y) => y.module - x.module)[0]?.id ||
     null;
+
+  const monitors = PROJECTS.filter((p) => p.kind === 'monitor');
+  const liveMonitors = monitors.filter((p) => !off.has(p.id) && !isDone(p.id));
+  const activeMonitorId =
+    liveMonitors.filter((p) => started(p.id)).sort(byModule)[0]?.id ||
+    liveMonitors.sort(byModule)[0]?.id ||
+    null;
+
   const rows = PROJECTS.map((p) => {
+    const isBuild = (p.kind || 'build') === 'build';
     let state = 'later';
     if (off.has(p.id)) state = 'set-aside';
     else if (isDone(p.id)) state = 'done';
-    else if (p.id === activeId) state = 'now';
-    else if (p.module === mod) state = 'next';
-    else if (p.module < mod) state = 'earlier';
-    return { ...p, state, doneAt: projectStatus?.[p.id]?.doneAt || null, stepsDone: projectStatus?.[p.id]?.stepsDone || [] };
+    else if (isBuild && p.id === activeBuildId) state = 'now';
+    else if (!isBuild && p.id === activeMonitorId) state = 'watching';
+    else if (isBuild && p.module === mod) state = 'next';
+    else if (isBuild && p.module < mod) state = 'earlier';
+    else if (!isBuild) state = 'next'; // a monitor project waiting behind the active one
+    return {
+      ...p,
+      state,
+      doneAt: projectStatus?.[p.id]?.doneAt || null,
+      stepsDone: projectStatus?.[p.id]?.stepsDone || [],
+      checkIns: projectStatus?.[p.id]?.checkIns || [],
+      writeup: projectStatus?.[p.id]?.writeup || '',
+      photoSent: !!projectStatus?.[p.id]?.photoSent
+    };
   });
-  const order = { now: 0, next: 1, earlier: 2, later: 3, done: 4, 'set-aside': 5 };
+  const order = { now: 0, watching: 0.5, next: 1, earlier: 2, later: 3, done: 4, 'set-aside': 5 };
   return rows.sort((a, b) => order[a.state] - order[b.state] || a.module - b.module);
 }
 
 /**
- * What the project in hand asks of her TODAY: its first step not ticked.
- * Null when there is no project in hand. `next` is the project waiting behind
- * it, so the screen can say "your next project starts when this one is done".
+ * What the build project in hand asks of her TODAY: its first step not
+ * ticked. Null when there is no build project in hand. `next` is the build
+ * project waiting behind it.
  */
 export function projectToday(board = [], projectStatus = {}) {
   const p = board.find((x) => x.state === 'now');
@@ -148,14 +177,47 @@ export function projectToday(board = [], projectStatus = {}) {
     of: p.steps.length,
     stepsDone: have.size,
     allStepsDone: all,
-    next: board.find((x) => x.state === 'next') || null
+    next: board.find((x) => (x.kind || 'build') === 'build' && x.state === 'next') || null
   };
 }
 
-/** A project can be called finished only when every step has been ticked. */
+/**
+ * What the MONITOR project in hand asks of her TODAY: today's watch
+ * reminder, and whether today has already been checked in. Null when no
+ * monitor project is in hand.
+ */
+export function monitorToday(board = [], projectStatus = {}, today = new Date().toISOString().slice(0, 10)) {
+  const p = board.find((x) => x.state === 'watching');
+  if (!p) return null;
+  const checkIns = projectStatus?.[p.id]?.checkIns || [];
+  return {
+    project: p,
+    watch: p.watch,
+    checkedToday: checkIns.includes(today),
+    checkInCount: checkIns.length,
+    minCheckIns: p.minCheckIns || 1,
+    readyToFinish: checkIns.length >= (p.minCheckIns || 1)
+  };
+}
+
+/**
+ * A project can be called finished only when:
+ *   · every step has been ticked (builds) OR enough days have been checked
+ *     in (monitors — never the FULL run, missing a day or two should not
+ *     lock her out);
+ *   · AND she has written something about it;
+ *   · AND she has confirmed she emailed the photo to Gigi.
+ * (Gigi, Nov 2 2026: every project ends in a write-up and a photo.)
+ */
 export function canFinishProject(project, row) {
-  const have = new Set(row?.stepsDone || []);
-  return !!project && project.steps.every((_, i) => have.has(i + 1));
+  if (!project) return false;
+  const wroteSomething = !!String(row?.writeup || '').trim();
+  const sentPhoto = !!row?.photoSent;
+  const isBuild = (project.kind || 'build') === 'build';
+  const workDone = isBuild
+    ? project.steps.every((_, i) => new Set(row?.stepsDone || []).has(i + 1))
+    : (row?.checkIns || []).length >= (project.minCheckIns || 1);
+  return workDone && wroteSomething && sentPhoto;
 }
 
 /**

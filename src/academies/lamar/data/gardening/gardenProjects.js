@@ -377,5 +377,67 @@ export const gardenProjects = [
     minWords: 160,
     iterationPrompt:
       'Your threshold came from one bucket. Move the sensor to a different bucket - different crop, different tier, different mix age - and take a soaked reading. Predict first: is the number the same? Mix that has been running since August holds water differently from fresh mix, and a bucket in full sun on the top tier dries differently from one on the floor. If one threshold does not fit every bucket, then either you need a sensor per bucket or a threshold per zone. Working out which is affordable and which is correct is the difference between a demo and a system.'
+  },
+  {
+    // ------------------------------------------------------------------
+    // ADDED Nov 2, 2026, at the parent's direct request, outside the five-
+    // build track above. The parent: "We planted collards, mustard greens,
+    // arugula, pak choi, spinach, tatsoi, kale, and pepper lettuce" and
+    // asked for a build tied to what is actually in the ground now rather
+    // than the mapped year. It is not numbered into gardenBuildTrack.js's
+    // 1-5, because those five are gated by the sun survey and placed on a
+    // fixed quarter; this one is gated by the weather instead, and the
+    // Nov 6 brief (gd7-q2-b1-frost) is exactly where that weather question
+    // already gets asked. This is the hands-on half of that brief's
+    // question, not a sixth entry in the mapped sequence.
+    // ------------------------------------------------------------------
+    id: 'gd7-project-frost-cover',
+    subject: 'gardening',
+    tier: 1,
+    category: 'experiment',
+    title: 'The Frost Cover',
+    theme: 'Does a cover actually buy degrees, or just look like it does',
+    relatedBriefId: 'gd7-q2-b1-frost',
+    relatedLessonId: null,
+    toolUrl: 'https://fieldreport.caes.uga.edu/publications/C1027-14/extending-the-crop-season-unheated-spaces/',
+    toolLabel: 'UGA Extension C1027-14 — Extending the Crop Season in Unheated Spaces',
+    objectives:
+      "Build a low hoop cover over the eight crops actually in the ground right now — collards, mustard greens, arugula, pak choi, spinach, tatsoi, kale, and pepper lettuce — that goes on in minutes before a cold night and off again the next morning. Then measure whether it actually does anything: a cover that is not tested is a guess wearing a tool belt.",
+    materials: [
+      '1/2 in PVC conduit or 9-gauge wire, enough for 3-4 hoops over the bucket cluster',
+      'Row cover fabric (look for a "frost protection" or "freeze protection" weight — not the lighter insect-screen kind, which blocks bugs but barely blocks cold)',
+      'Landscape pins, clothespins, or spring clamps to pin the fabric down — wind is the real failure mode, not cold',
+      'Two outdoor thermometers, or one you move between two spots — this build has no result without a second number to compare against',
+      'A tape measure',
+      'Total roughly $15-25'
+    ],
+    procedure: [
+      'Before building anything, predict. How many degrees warmer do you think the air under the cover will be than the open air beside it, on a clear cold night? Write the number down now.',
+      'Measure the bucket cluster you are covering — length, width, and the height of your tallest crop in it. Kale and collards stand taller than the others, so the hoops have to clear THEM, not the shortest plant.',
+      'Cut the hoops to a length that, bent into an arch, clears your tallest measured height by a few inches. Push the ends into the mix or tie them to the bucket rims so wind cannot walk the hoops sideways.',
+      'Drape the fabric over the hoops with slack, not stretched tight — tight fabric against leaves transfers cold instead of trapping air, and trapped air is the entire mechanism.',
+      'Pin the fabric to the ground or the bucket rims all the way around. An open edge lets your trapped warm air walk straight out, which is the most common way a frost cover fails to do anything.',
+      'On a night a hard freeze is actually predicted, place one thermometer INSIDE the cover, at plant height, and leave the other thermometer exposed to the open air a few feet away, same height.',
+      'Read both the next morning before the sun warms anything. Write down both numbers and the difference between them.',
+      'Walk the plants. Which crops under the cover look untouched, and is anything outside the cover (if you left a comparison plant exposed) showing cold damage?',
+      'Repeat on a second cold night to see whether the difference holds up, or whether the first night was a fluke of wind or cloud cover.'
+    ],
+    safetyTips: [
+      'Cut PVC with a hand saw or tubing cutter, braced on a flat surface — not held in your hand against your body.',
+      'Cap or tape every cut wire end. A bare 9-gauge end at head height in the dark is an eye hazard, not a dramatic one, a real one.',
+      'Do this in daylight. Setting hoops and pins in the dark right before a freeze is how a hand finds a sharp edge it could not see.',
+      'A covered cluster in wind is a sail. If wind is also forecast, weight the fabric edges with something heavier than a clip — a brick or a filled bottle at each corner.',
+      'Taking the cover off in the morning: unpin it before you lift it clear of the hoops, not while trying to lift and unpin at once — a hoop that gets dragged can flick fabric or a loose pin back at your face.'
+    ],
+    concepts: ['Trapped air as insulation', 'Radiative heat loss', 'Control vs. treatment', 'Measured difference vs. assumed difference', 'Wind as the real failure mode'],
+    difficulty: 'Beginner',
+    estMinutes: 60,
+    toolSkill:
+      'Cutting and setting a hoop frame to a measured clearance, and securing fabric against wind without puncturing it or leaving an open edge.',
+    instructions:
+      "Write this up as a test report, not a build log. State your predicted temperature difference first. Then give the two real numbers — covered and exposed, same night, same time — and the actual difference between them. Say whether your prediction was right, high, or low. Name which of the eight crops you think the cover bought the most time for and why, using what the Nov 6 frost brief told you about which crops already tolerate cold on their own. Finish with one thing that went wrong or surprised you setting it up — an edge that lifted, a hoop that was too short, wind that moved something.",
+    minWords: 70,
+    iterationPrompt:
+      "Run the same two-thermometer test again, but this time test whether CLUSTERING the buckets against the wall (from the Nov 6 brief) adds anything on top of the cover, or whether the cover alone already does all the work. Cover one cluster pushed against the wall and one pulled away from it, same night, same cover. Predict first, then measure. If the wall adds nothing once there is a cover, that is a real finding — it means the cover is doing the job the wall was borrowed to help with."
   }
 ];

@@ -511,7 +511,7 @@ export const gardenBriefs = [
       { subject: 'socialStudies', label: 'Evaluating a source', detail: 'Social Studies Q2 teaches corroboration and bias for genealogy. Same skill, aimed at a gardening claim instead of a record.' },
       { subject: 'aerospace', label: 'A probability is a more honest answer than a date', detail: 'Nothing in engineering is certain; it is stated with a confidence attached.' }
     ],
-    opensProjectId: null,
+    opensProjectId: 'gd7-project-frost-cover',
     closesProjectId: null
   },
 
@@ -675,7 +675,7 @@ export const gardenBriefs = [
       { subject: 'aerospace', label: 'Lead time', detail: 'A correction that takes months to act has to be started months early. Same reason garlic went in on purpose in September.' }
     ],
     opensProjectId: null,
-    closesProjectId: null
+    closesProjectId: 'gd7-project-frost-cover'
   },
 
   // =========================================================================

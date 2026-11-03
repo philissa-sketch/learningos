@@ -1,5 +1,9 @@
 // ---------------------------------------------------------------------------
-// Gardening — the five-build track, and where each build's skills come from.
+// Gardening — the build track, and where each build's skills come from.
+//
+// FIVE BUILDS SHIPPED THE MAPPED YEAR (Aug 2026). Build 6 (Frost Cover) was
+// added Nov 2, 2026, outside that map, gated by weather rather than a quarter
+// — see its own entry below for why.
 //
 // WHY THIS FILE EXISTS (Aug 8, 2026, at the parent's direct question): "was
 // there anything mentioning building items so that there can be more grown in
@@ -186,6 +190,43 @@ export const gardenBuildTrack = [
       }
     ],
     measureBeforeAfter: 'Water delivered to the nearest versus the farthest bucket, before and after levelling the flow.'
+  },
+  {
+    // ------------------------------------------------------------------
+    // ADDED Nov 2, 2026, at the parent's direct request: "We planted
+    // collards, mustard greens, arugula, pak choi, spinach, tatsoi, kale,
+    // and pepper lettuce" and she wants a build tied to what is actually
+    // growing, because building is what he is interested in. Gated behind
+    // build 1 like every other build here — same reason, a cover still has
+    // to go over a measured zone — but its WHEN is the weather, not the
+    // quarter, which is why it sits last in this file despite running in
+    // November alongside build 2.
+    // ------------------------------------------------------------------
+    number: 6,
+    id: 'gd7-build-frost-cover',
+    projectId: 'gd7-project-frost-cover',
+    title: 'The Frost Cover',
+    quarter: 'Q2 2026-2027',
+    when: 'November — whenever the first hard freeze is actually forecast',
+    status: 'active',
+    buildsWhat: 'Low hoops over the bucket cluster, covered with frost-protection row cover fabric, that goes on before a cold night and off the next morning.',
+    theProblem:
+      'Eight cool-season crops are in the ground now, and a bucket freezes through in a way the open ground does not — the Nov 6 brief explains why. A cover is the standard fix, and almost nobody who uses one has ever measured whether it actually works.',
+    gatedBy: 1,
+    gatedReason: 'The hoops still have to clear the tallest crop in a specific zone, and arch over a cluster whose size the sun survey is what first mapped.',
+    drawsOn: [
+      {
+        subject: 'gardening',
+        what: 'The Nov 6 frost brief — which crops already tolerate cold, and why a bucket is colder than the ground',
+        detail: 'The brief supplies the reasoning; this build supplies the test of it.'
+      },
+      {
+        subject: 'aerospace',
+        what: 'Predict, then measure, then compare',
+        detail: 'Same method as the Sun Survey — a temperature prediction first, then two real thermometer readings, covered and exposed.'
+      }
+    ],
+    measureBeforeAfter: 'Overnight low under the cover versus overnight low in the open air, same night, same height.'
   }
 ];
 

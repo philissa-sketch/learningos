@@ -441,17 +441,51 @@ export function derivedPlannerItems(sources = {}) {
   return [...writingScheduleCalendarItems(sources), ...gardenCalendarItems(sources)];
 }
 
-/** The garden work for one specific day, for the Mission Control board. */
+/**
+ * The garden work for one specific day, for the Mission Control board.
+ *
+ * ---- MON-THU, ADDED NOV 2 2026 ----
+ *
+ * The parent: "He doesn't go to the garden like he should." Friday already
+ * had a real session (below) — a dated brief from gardenCalendar, sometimes
+ * a build, sometimes a harvest or a planting window. Mon-Thu had NOTHING,
+ * because gardenCalendar only has Friday dates in it, and that is by design:
+ * the 25 briefs average 102 minutes and most of them want a real block, not
+ * four more days a week of lesson content nobody asked for.
+ *
+ * So Mon-Thu gets the smallest honest thing instead of a bigger fake one: a
+ * plain "go look" habit, no brief, no `whyToday`, done the moment ANY
+ * garden-log entry lands that day — watering, an observation, a measurement,
+ * whatever he actually did out there. It is a nudge, not an assignment, and
+ * it is written to read that way (no estMinutes beyond the quick number
+ * below, no due date, nothing that can go "missed").
+ */
 export function gardenForDate(dateStr = todayDateStr(), { gardenLog = [] } = {}) {
   const day = (gardenCalendar || []).find((d) => d.date === dateStr);
-  if (!day || day.closed) return null;
-  const brief = (gardenBriefs || []).find((b) => b.id === day.briefId) || null;
+  if (day && !day.closed) {
+    const brief = (gardenBriefs || []).find((b) => b.id === day.briefId) || null;
+    return {
+      date: day.date,
+      briefId: day.briefId,
+      title: brief?.title || 'Garden session',
+      estMinutes: brief?.estMinutes ?? null,
+      whyToday: brief?.whyToday || day.suggestion || null,
+      done: (gardenLog || []).some((r) => r.date === dateStr)
+    };
+  }
+  if (day && day.closed) return null;
+
+  // No Friday calendar entry for this date at all — check whether it is a
+  // Mon-Thu light-check day. `getDay()` on a parsed local date: 1=Mon..4=Thu.
+  const weekday = parseDateStr(dateStr)?.getDay();
+  if (weekday === null || weekday === undefined || weekday < 1 || weekday > 4) return null;
+
   return {
-    date: day.date,
-    briefId: day.briefId,
-    title: brief?.title || 'Garden session',
-    estMinutes: brief?.estMinutes ?? null,
-    whyToday: brief?.whyToday || day.suggestion || null,
+    date: dateStr,
+    briefId: null,
+    title: 'Garden Check — water & look',
+    estMinutes: 15,
+    whyToday: null,
     done: (gardenLog || []).some((r) => r.date === dateStr)
   };
 }

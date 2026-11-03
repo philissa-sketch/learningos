@@ -128,8 +128,20 @@ for (const id of ['block-7b','block-8','block-9','block-10']) {
 const sorted = [...out].sort((a,b)=>mins(a.startTime)-mins(b.startTime));
 for (let k=0;k<sorted.length;k++){
   ok('positive duration '+sorted[k].id, mins(sorted[k].endTime) > mins(sorted[k].startTime));
-  if (k) ok('contiguous '+sorted[k-1].id+'->'+sorted[k].id, sorted[k-1].endTime === sorted[k].startTime,
-            sorted[k-1].endTime+' vs '+sorted[k].startTime);
+  if (k===0) continue;
+  /**
+   * Blocks that share one start time are day-exclusive alternatives for the
+   * SAME slot (Friday's long gardening session and the Mon-Thu Garden
+   * Check both start at 3:00, on `days` that never overlap), not sequential
+   * neighbors — so they are never checked against each other. Walk back to
+   * the nearest earlier block with a genuinely different start time and
+   * check contiguity against that one instead.
+   */
+  let j = k - 1;
+  while (j >= 0 && sorted[j].startTime === sorted[k].startTime) j--;
+  if (j < 0) continue;
+  ok('contiguous '+sorted[j].id+'->'+sorted[k].id, sorted[j].endTime === sorted[k].startTime,
+     sorted[j].endTime+' vs '+sorted[k].startTime);
 }
 // instructional time unchanged
 const instr = (a) => a.filter(b=>b.id!=='block-4'&&b.id!=='block-6'&&b.id!=='block-10')
@@ -169,7 +181,13 @@ ok('default schedule passes through unchanged', nOut === NEW);
 
 console.log('--- defaultSchedule.js itself ---');
 const ds = [...defaultSchedule].sort((a,b)=>mins(a.startTime)-mins(b.startTime));
-for (let k=1;k<ds.length;k++) ok('default contiguous '+ds[k].id, ds[k-1].endTime===ds[k].startTime, ds[k-1].endTime+' vs '+ds[k].startTime);
+for (let k=1;k<ds.length;k++) {
+  // Same day-exclusive-alternatives rule as above.
+  let j = k - 1;
+  while (j >= 0 && ds[j].startTime === ds[k].startTime) j--;
+  if (j < 0) continue;
+  ok('default contiguous '+ds[j].id+'->'+ds[k].id, ds[j].endTime===ds[k].startTime, ds[j].endTime+' vs '+ds[k].startTime);
+}
 // Derived, not frozen — see the note above. What matters is that no two blocks
 // collide, not how many there happen to be this month.
 ok('no duplicate labels', new Set(defaultSchedule.map(b=>b.label)).size === defaultSchedule.length);

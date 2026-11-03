@@ -122,7 +122,16 @@ export const BLOCK_FOR_SUBJECT = {
   socialStudies: 'block-9',
   robotics: 'block-9',
   guitar: 'block-10',
-  gardening: 'block-11'
+  gardening: 'block-11',
+  /**
+   * The Mon-Thu Garden Check, added Nov 2 2026. Deliberately a SEPARATE key
+   * rather than overloading `gardening`: block-11 (Friday's long session)
+   * and block-11b (the daily habit) are credited by the same gardenLog
+   * record (see coveredBlockIds below) but are two different blocks on the
+   * timetable, on two different `days`, and callers that want "the Friday
+   * garden block" specifically still get it from `gardening`.
+   */
+  gardeningCheck: 'block-11b'
 };
 
 /**
@@ -283,7 +292,7 @@ export function blockForLesson(lessonId) {
 }
 
 /** Blocks that are on the timetable but are not instruction. */
-export const NON_INSTRUCTIONAL_BLOCKS = new Set(['block-4', 'block-6']);
+export const NON_INSTRUCTIONAL_BLOCKS = new Set(['block-6']);
 
 function blocksFor(scheduleBlocks) {
   return Array.isArray(scheduleBlocks) && scheduleBlocks.length ? scheduleBlocks : defaultSchedule;
@@ -328,7 +337,18 @@ export function coveredBlockIds(dateStr, {
 
   if (onDate(peWorkoutLog)) ids.add(BLOCK_FOR_SUBJECT.pe);
   if (onDate(guitarLog)) ids.add(BLOCK_FOR_SUBJECT.guitar);
-  if (onDate(gardenLog)) ids.add(BLOCK_FOR_SUBJECT.gardening);
+  /**
+   * One gardenLog entry credits whichever of the two garden blocks actually
+   * runs that day — Friday's long session (block-11) or the Mon-Thu Garden
+   * Check (block-11b, added Nov 2 2026). Crediting both unconditionally is
+   * harmless: `days` already keeps them off each other's timetable, so only
+   * the one that is actually on the printed schedule that day ever gets
+   * read back.
+   */
+  if (onDate(gardenLog)) {
+    ids.add(BLOCK_FOR_SUBJECT.gardening);
+    ids.add(BLOCK_FOR_SUBJECT.gardeningCheck);
+  }
   /**
    * ---- BLOCK-5b, THE SECOND UNCREDITABLE BLOCK. (Aug 26, 2026.) ----
    *

@@ -290,8 +290,20 @@ console.log('\n--- 2. the garden reaches the planner ---');
   const friday = pf.gardenForDate('2026-08-14', { gardenLog: [] });
   const monday = pf.gardenForDate('2026-08-17', { gardenLog: [] });
   ok('a Friday returns that week\'s brief', Boolean(friday?.title), JSON.stringify(friday));
-  ok('...and a Monday returns nothing', monday === null,
-    'gardening is after school on Fridays — block-11 on the timetable');
+  /**
+   * RE-POINTED NOV 2, 2026 — Monday no longer returns nothing. The parent:
+   * "He doesn't go to the garden like he should," so Mon-Thu now carries the
+   * lightweight Garden Check (block-11b on the timetable) instead of the
+   * real dated Friday brief. What must still be true is that it is NOT a
+   * dated brief: no briefId, no whyToday, nothing that could be marked
+   * missed like a real assignment.
+   */
+  ok('...and a Monday returns the light Garden Check, not a dated brief',
+    monday?.title === 'Garden Check — water & look' && monday.briefId === null && monday.whyToday === null,
+    JSON.stringify(monday));
+  const sunday = pf.gardenForDate('2026-08-16', { gardenLog: [] });
+  ok('...and a Sunday (weekend, no block at all) returns nothing', sunday === null,
+    JSON.stringify(sunday));
 }
 
 console.log('\n--- 3. every planner view sees them ---');

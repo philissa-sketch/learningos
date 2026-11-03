@@ -12,6 +12,8 @@
 //
 //   the rail   9:00 Maths  10:00 Reading  10:30 Science  11:15 Typing
 //              12:30 Language Arts  1:30 Spelling  1:45 PE  2:15 Rotating
+//              (times shown as they were Aug 20, 2026 -- the 10:15 break
+//              was removed Nov 2, 2026; see defaultSchedule.js)
 //
 //   the list   PE  Typing  Language Arts  Maths  Science  Social Studies
 //              Technology  Reading  Book  Daily Writing
@@ -424,8 +426,8 @@ console.log('\n--- 7. English is two blocks, and each row is in the right one --
     'grammarCourseOrder.js: a title can differ from the seed after an import or a hand edit');
 
   const B = (id) => defaultSchedule.find((b) => b.id === id);
-  ok('Grammar & Writing lands on the 12:30 Language Arts block',
-    sm.STRAND_BLOCK['language-arts'] === 'block-7' && B('block-7').startTime === '12:30'
+  ok('Grammar & Writing lands on the 12:15 Language Arts block',
+    sm.STRAND_BLOCK['language-arts'] === 'block-7' && B('block-7').startTime === '12:15'
       && /Language Arts/.test(B('block-7').label),
     JSON.stringify(sm.STRAND_BLOCK));
   ok('Reading & Literature lands on the 10:00 Reading Lesson block',
@@ -439,7 +441,7 @@ console.log('\n--- 7. English is two blocks, and each row is in the right one --
    * block-1, and the fix must not create a second one by sending all of
    * English to whichever block it now prefers.
    */
-  ok('the 12:30 block is creditable',
+  ok('the 12:15 block is creditable',
     sm.scheduledMinutesOn('2026-08-19', {
       khanDailyLog: { '2026-08-19': { reading: true } },
       khanAcademyAssignments: [{ ...q1Grammar, batchLabel: 'Q1 2026-2027', sequenceInQuarter: 1 }],
@@ -490,7 +492,7 @@ console.log('\n--- 7. English is two blocks, and each row is in the right one --
   const laLesson = allLessons.find((l) => l.subject === 'reading' && l.strand === 'language-arts');
   ok('a Reading & Literature lesson credits the 10:00 block',
     sm.blockForLesson(litLesson.id) === 'block-3', `${litLesson.id} -> ${sm.blockForLesson(litLesson.id)}`);
-  ok('a Grammar & Writing lesson credits the 12:30 block',
+  ok('a Grammar & Writing lesson credits the 12:15 block',
     sm.blockForLesson(laLesson.id) === 'block-7', `${laLesson.id} -> ${sm.blockForLesson(laLesson.id)}`);
   ok('...and a subject with one strand is unaffected',
     sm.blockForLesson(allLessons.find((l) => l.subject === 'math').id) === 'block-2');

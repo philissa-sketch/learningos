@@ -47,6 +47,30 @@
  *   needs     materials, so a grown-up can get them in advance
  *   steps     what she does, in order
  *   done      what "finished" looks like, so it is not a matter of opinion
+ *   kind      'build' (make it, write it up, done) or 'monitor' (watch
+ *             something over days or weeks — gets a daily reminder of its
+ *             own, see below)
+ *   watch     MONITOR ONLY — the one-line daily nudge Today shows her
+ *   minCheckIns  MONITOR ONLY — how many days checked-in before she can
+ *             call it finished (never the full run; missing a day or two
+ *             should not lock her out)
+ *
+ * ---- WRITE-UP + PHOTO (Nov 2 2026) ----
+ * Gigi: she should write about the project and be able to get a picture of
+ * the result into the record. The app stores no files (see
+ * `BuildPhotoLink.jsx` on the platform side for why), and pasting a Drive
+ * link was declined for her — so EVERY project finishes with a short written
+ * write-up plus a reminder to email the photo to Gigi directly, and a
+ * checkbox confirming she did. `canFinishProject` in lib/academicCenter.js
+ * will not let it be marked done without both.
+ *
+ * ---- THE MONITOR TRACK (Nov 2 2026) ----
+ * Gigi: an ongoing/monitoring project should only need one going at a time,
+ * with a daily reminder to go check it — and it should NOT eat her one
+ * active build-project slot. So monitor-type projects run on their OWN
+ * board (`monitorBoard` / `monitorToday`, same one-at-a-time rule as builds)
+ * and Today shows BOTH cards when both are live. A build project and a
+ * monitor project can be open on the same day.
  */
 /**
  * WHICH COURSE THESE BELONG TO — stated, v3.25.
@@ -82,7 +106,10 @@ export const PROJECTS = [
       'Mark the day the root came out, and the day the shoot did.',
       'At the end, say which bag won and why the other three did not.'
     ],
-    done: 'Fourteen dated rows, and one sentence saying what the four bags proved.'
+    done: 'Fourteen dated rows, and one sentence saying what the four bags proved.',
+    kind: 'monitor',
+    watch: 'Check all four bean bags. Write what you see today, even if nothing happened.',
+    minCheckIns: 10
   },
   {
     id: 'pj-m2',
@@ -99,7 +126,10 @@ export const PROJECTS = [
       'Plot both, every two days, on separate charts.',
       'Find the cup that wins on depth and the cup that wins on number.'
     ],
-    done: 'Two charts, and a sentence about why the winners are different cups.'
+    done: 'Two charts, and a sentence about why the winners are different cups.',
+    kind: 'monitor',
+    watch: "Measure today, if it's a measuring day — longest root and root count in each cup.",
+    minCheckIns: 4
   },
   {
     id: 'pj-m3',
@@ -116,7 +146,10 @@ export const PROJECTS = [
       'Add scraps over the two weeks and note what you added.',
       'At the end, dig up both and draw what is left of each.'
     ],
-    done: 'A working bin, a dated log, and the two drawings side by side.'
+    done: 'A working bin, a dated log, and the two drawings side by side.',
+    kind: 'monitor',
+    watch: 'Peek at the bin. Note anything new — smell, heat, how the scraps look.',
+    minCheckIns: 2
   },
   {
     id: 'pj-m4',
@@ -133,7 +166,8 @@ export const PROJECTS = [
       'Tape each one to card and label what its trick is.',
       'Write who or what you think each defense is aimed at.'
     ],
-    done: 'Six mounted specimens, each labeled with its defense and who it is against.'
+    done: 'Six mounted specimens, each labeled with its defense and who it is against.',
+    kind: 'build'
   },
   // ================= QUARTER 2 =================
   {
@@ -151,7 +185,8 @@ export const PROJECTS = [
       'Write down the numbers before you decide what they mean.',
       'Say which soil you would use for ginger, and why.'
     ],
-    done: 'A table of real timings and one decision with a reason under it.'
+    done: 'A table of real timings and one decision with a reason under it.',
+    kind: 'build'
   },
   {
     id: 'pj-m6',
@@ -168,7 +203,10 @@ export const PROJECTS = [
       'Watch for ten minutes at the same time of day and tally what comes.',
       'Note the weather each time, because it changes what turns up.'
     ],
-    done: 'A planted patch, and a tally of visitors across at least six watches.'
+    done: 'A planted patch, and a tally of visitors across at least six watches.',
+    kind: 'monitor',
+    watch: 'Watch the patch for ten minutes. Tally who visits and note the weather.',
+    minCheckIns: 6
   },
   {
     id: 'pj-m7',
@@ -186,6 +224,7 @@ export const PROJECTS = [
       'Date it and both of you sign it.'
     ],
     done: 'A dated, signed record that Gigi agrees says what she actually said.',
+    kind: 'build',
     note: 'This is the lesson of Module 7 in one page — the knowledge was oral, so it was easy to lose. She is the one writing it down this time.'
   },
   {
@@ -204,6 +243,7 @@ export const PROJECTS = [
       'Drink the tea you brewed with the sun, with honey if you want it.'
     ],
     done: 'Six color observations half an hour apart, and a tea she made herself.',
+    kind: 'build',
     note: 'A drink she made. Never a remedy, and the write-up never says it does anything to a person.'
   },
   // ================= QUARTER 3 =================
@@ -222,7 +262,10 @@ export const PROJECTS = [
       'Do not skip the boring days — the boring days are the data.',
       'At the end, graph the fourteen days and find one pattern.'
     ],
-    done: 'Three working instruments, fourteen dated readings, and one pattern she can point at.'
+    done: 'Three working instruments, fourteen dated readings, and one pattern she can point at.',
+    kind: 'monitor',
+    watch: 'Read the rain gauge, thermometer and wind vane. Write it down.',
+    minCheckIns: 10
   },
   {
     id: 'pj-m10',
@@ -239,7 +282,8 @@ export const PROJECTS = [
       'Write ONE decision about what you will do this week, and two real numbers under it as the reason.',
       'Get Gigi to sign and date it, then check on Sunday whether you were right.'
     ],
-    done: 'A signed, dated decision with two numbers behind it, and a note on Sunday saying how it went.'
+    done: 'A signed, dated decision with two numbers behind it, and a note on Sunday saying how it went.',
+    kind: 'build'
   },
   {
     id: 'pj-m11',
@@ -257,6 +301,9 @@ export const PROJECTS = [
       'Get somebody who was not there to read a label and tell you what is in the jar.'
     ],
     done: 'Five jars, five complete labels, and a stranger able to say what each one holds.',
+    kind: 'monitor',
+    watch: 'Check how the herbs are drying. Not ready until they snap rather than bend.',
+    minCheckIns: 3,
     note: 'The label IS the project. Module 11 exists to teach the difference between a scientist and a guess.'
   },
   {
@@ -274,7 +321,8 @@ export const PROJECTS = [
       'Mark garlic in autumn, because it goes in when the corn comes out.',
       'Check the arithmetic twice — a week wrong here is a crop lost in April.'
     ],
-    done: 'A dated calendar with a real sowing week for every plant she means to grow.'
+    done: 'A dated calendar with a real sowing week for every plant she means to grow.',
+    kind: 'build'
   },
   // ================= QUARTER 4 =================
   {
@@ -293,6 +341,7 @@ export const PROJECTS = [
       'End with what is printed on the box, and why that printing is the point.'
     ],
     done: 'One poster showing every step, with the person and the year named.',
+    kind: 'build',
     note: 'History and chemistry. It never says what the drug is for a person, and it never suggests making anything.'
   },
   {
@@ -311,6 +360,9 @@ export const PROJECTS = [
       'Measure, write the numbers down, and only then decide what they mean.'
     ],
     done: 'A prediction written first, real numbers, and an honest conclusion — including if it was a null result.',
+    kind: 'monitor',
+    watch: "Take today's measurement for your fair test, if today is a measuring day.",
+    minCheckIns: 5,
     note: 'A null result is a real answer. The project is finished whether or not she was right.'
   },
   {
@@ -328,7 +380,8 @@ export const PROJECTS = [
       'Pick the one whose work is closest to what you want to do.',
       'Write her a letter saying what you are going to learn first.'
     ],
-    done: 'Six cards on a wall and one letter, kept.'
+    done: 'Six cards on a wall and one letter, kept.',
+    kind: 'build'
   },
   {
     id: 'pj-m16',
@@ -346,6 +399,7 @@ export const PROJECTS = [
       'Bind it, put her name on it, and date it.'
     ],
     done: 'A finished guide, in her handwriting, from her own data, with her name on the front.',
+    kind: 'build',
     note: 'The capstone of the year. It should take the whole two weeks and it should be the thing she keeps.'
   }
 ];
@@ -363,6 +417,11 @@ export function projectById(id) {
 
 export function projectForModule(moduleNumber) {
   return PROJECTS.find((p) => p.module === moduleNumber) || null;
+}
+
+/** All build-type projects, or all monitor-type projects, in module order. */
+export function projectsByKind(kind) {
+  return PROJECTS.filter((p) => (p.kind || 'build') === kind).sort((a, b) => a.module - b.module);
 }
 
 export default PROJECTS;

@@ -1239,6 +1239,58 @@ export const useAppStore = create((set, get) => ({
   },
 
   /**
+   * MONITOR CHECK-IN (Nov 2 2026). A monitor project's daily reminder has no
+   * order to respect — unlike steps, "did you check it today" is just
+   * today's date, in or out. Toggling lets a mis-tap be undone, same as a
+   * step. Checking in is also what STARTS a monitor project (projectBoard
+   * keeps a started one active until it is done).
+   */
+  async toggleMonitorCheckIn(projectId, day = new Date().toISOString().slice(0, 10)) {
+    const project = PROJECTS.find((p) => p.id === projectId);
+    if (!project || project.kind !== 'monitor') return { ok: false, reason: 'not-a-monitor-project' };
+    const now = new Date().toISOString();
+    const existing = get().projectStatus[projectId] || { projectId, startedAt: now };
+    if (existing.doneAt) return { ok: false, reason: 'already-finished' };
+    const have = new Set(existing.checkIns || []);
+    if (have.has(day)) have.delete(day);
+    else have.add(day);
+    const row = { ...existing, projectId, checkIns: [...have].sort(), startedAt: existing.startedAt || now };
+    await putProject(row);
+    set({ projectStatus: { ...get().projectStatus, [projectId]: row } });
+    return { ok: true, row };
+  },
+
+  /**
+   * HER WRITE-UP, on any project (Nov 2 2026, Gigi: she should write about
+   * the project). Saved straight on the project row, same table backups
+   * already carry.
+   */
+  async saveProjectWriteup(projectId, text) {
+    const now = new Date().toISOString();
+    const existing = get().projectStatus[projectId] || { projectId, startedAt: now };
+    const row = { ...existing, projectId, writeup: String(text || ''), startedAt: existing.startedAt || now };
+    await putProject(row);
+    set({ projectStatus: { ...get().projectStatus, [projectId]: row } });
+    return { ok: true, row };
+  },
+
+  /**
+   * THE PHOTO (Nov 2 2026, Gigi: she should be able to take a picture and
+   * get it into the record). The app stores no files, and a Drive-link
+   * paste was declined for her, so the photo travels by email to Gigi
+   * directly — this is just her confirming she sent it, so the finish
+   * button knows to wait for it. Never auto-set: only she can say she did.
+   */
+  async setProjectPhotoSent(projectId, sent) {
+    const now = new Date().toISOString();
+    const existing = get().projectStatus[projectId] || { projectId, startedAt: now };
+    const row = { ...existing, projectId, photoSent: !!sent, photoSentAt: sent ? existing.photoSentAt || now : null, startedAt: existing.startedAt || now };
+    await putProject(row);
+    set({ projectStatus: { ...get().projectStatus, [projectId]: row } });
+    return { ok: true, row };
+  },
+
+  /**
    * THE v3.12 GRANDFATHERING, run once.
    *
    * Her balance is COMPUTED from the effort counters, not stored. So lowering the

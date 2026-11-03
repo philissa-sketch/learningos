@@ -189,31 +189,38 @@ const ids = defaultSchedule.map((b) => b.id);
 ok(new Set(ids).size === ids.length, 'no duplicate block ids in the default schedule');
 const block10 = defaultSchedule.find((b) => b.id === 'block-10');
 ok(Boolean(block10), 'the default schedule carries block-10');
-ok(block10?.startTime === '15:00' && block10?.endTime === '15:15',
-  `block-10 runs 15:00-15:15 (found ${block10?.startTime}-${block10?.endTime})`);
+ok(block10?.startTime === '14:45' && block10?.endTime === '15:00',
+  `block-10 runs 14:45-15:00 (found ${block10?.startTime}-${block10?.endTime})`);
 ok(toMinutes(block10?.endTime) - toMinutes(block10?.startTime) === GUITAR_DAILY_MINUTES,
   `block-10 is exactly ${GUITAR_DAILY_MINUTES} minutes long — the same number the daily card asks for`);
 ok(/guitar/i.test(block10?.label || ''), 'block-10 names the guitar on the printed schedule',
   'An unnamed fifteen minutes will not happen. This is the whole reason the block exists.');
-// Every block has a positive duration and none overlaps the next.
+// Every block has a positive duration and none overlaps the next — except a
+// pair that deliberately shares one start time as day-exclusive alternatives
+// for the same after-school slot (Friday's long gardening session, block-11,
+// and the Mon-Thu Garden Check, block-11b, added Nov 2 2026 — `days: [5]`
+// and `days: [1,2,3,4]` never overlap). Those are not a sequencing bug, so
+// they are skipped rather than compared.
 for (let i = 0; i < defaultSchedule.length; i += 1) {
   const b = defaultSchedule[i];
   ok(toMinutes(b.endTime) > toMinutes(b.startTime), `${b.id} has a positive duration`);
-  if (i > 0) {
+  if (i > 0 && defaultSchedule[i - 1].startTime !== b.startTime) {
     ok(toMinutes(b.startTime) >= toMinutes(defaultSchedule[i - 1].endTime),
       `${b.id} does not start before ${defaultSchedule[i - 1].id} ends`);
   }
 }
 // THE SCHOOL DAY ENDS AT GUITAR, and that is the boundary this block was
 // deliberately attached to. block-11 (gardening) was appended after it on
-// Aug 9 2026 and sits OUTSIDE the school day on Fridays only, so it is excluded
-// here rather than allowed to move the boundary — the point of the assertion is
-// that nothing pushed guitar off the end of school.
-const AFTER_SCHOOL_IDS = new Set(['block-11']);
+// Aug 9 2026 and sits OUTSIDE the school day on Fridays only, and block-11b
+// (the Mon-Thu Garden Check) joined it Nov 2 2026 sitting outside school on
+// the other four days, so both are excluded here rather than allowed to move
+// the boundary — the point of the assertion is that nothing pushed guitar
+// off the end of school.
+const AFTER_SCHOOL_IDS = new Set(['block-11', 'block-11b']);
 const dayEnd = Math.max(
   ...defaultSchedule.filter((b) => !AFTER_SCHOOL_IDS.has(b.id)).map((b) => toMinutes(b.endTime))
 );
-ok(dayEnd === toMinutes('15:15'), `the school day still ends at 15:15 (found ${dayEnd} minutes past midnight)`);
+ok(dayEnd === toMinutes('15:00'), `the school day still ends at 15:00 (found ${dayEnd} minutes past midnight)`);
 const gardenBlock = defaultSchedule.find((b) => b.id === 'block-11');
 ok(!!gardenBlock && toMinutes(gardenBlock.startTime) >= dayEnd,
   'the after-school garden block starts at or after the end of school',
@@ -227,7 +234,7 @@ ok(!/gardening/i.test(block9?.label || ''),
   "block-9's label no longer claims Gardening — that moved after school", block9?.label);
 ok(!/fridays:/i.test(block9?.label || ''),
   "block-9's label no longer carries a Fridays clause", block9?.label);
-ok(block9?.startTime === '14:15' && block9?.endTime === '15:00',
+ok(block9?.startTime === '14:00' && block9?.endTime === '14:45',
   'block-9 keeps its shipped times — only the label changed');
 
 // ===========================================================================
@@ -244,8 +251,8 @@ const migrated = migrateSavedSchedule(savedBefore);
 ok(migrated !== savedBefore, 'a saved schedule missing block-10 is actually changed');
 const m10 = migrated.find((b) => b.id === 'block-10');
 ok(Boolean(m10), 'block-10 is added to a saved schedule');
-ok(m10?.startTime === '15:00' && m10?.endTime === '15:15',
-  `block-10 lands at 15:00-15:15 when block-9 is untouched (found ${m10?.startTime}-${m10?.endTime})`);
+ok(m10?.startTime === '14:45' && m10?.endTime === '15:00',
+  `block-10 lands at 14:45-15:00 when block-9 is untouched (found ${m10?.startTime}-${m10?.endTime})`);
 ok(migrated.find((b) => b.id === 'block-9')?.label === block9.label,
   'a block-9 still carrying the old shipped label is renamed to the new one');
 // Nothing is deleted and nothing is reordered.

@@ -1554,6 +1554,101 @@ export function migrateSavedSchedule(saved) {
     }
   }
 
+  // --- 10:15 Break (block-4) removed, Nov 2 2026 -----------------------
+  // The parent: "remove the break at 10:15am break." Rather than leave a
+  // dead 15 minutes on the printed schedule, she chose to close the gap —
+  // Science onward all move 15 minutes earlier, the same way Science's
+  // retime on Aug 9 gave minutes to Typing instead of leaving a hole.
+  //
+  // Same strict test as MORNING_RETIME above: every block this touches must
+  // still carry the EXACT time it shipped with, or this does nothing at all.
+  // block-11 (Gardening) is the one exception — it is checked only if
+  // present, since a family that has not reached Friday gardening yet
+  // should not be blocked by a row it does not have.
+  {
+    const BREAK_REMOVED_SHIFT = [
+      { id: 'block-4', from: ['10:15', '10:30'] }, // removed outright
+      { id: 'block-5', from: ['10:30', '11:15'], to: ['10:15', '11:00'] },
+      { id: 'block-5b', from: ['11:15', '11:30'], to: ['11:00', '11:15'] },
+      { id: 'block-6', from: ['11:30', '12:30'], to: ['11:15', '12:15'] },
+      { id: 'block-7', from: ['12:30', '13:30'], to: ['12:15', '13:15'] },
+      { id: 'block-7b', from: ['13:30', '13:45'], to: ['13:15', '13:30'] },
+      { id: 'block-8', from: ['13:45', '14:15'], to: ['13:30', '14:00'] },
+      { id: 'block-9', from: ['14:15', '15:00'], to: ['14:00', '14:45'] },
+      { id: 'block-10', from: ['15:00', '15:15'], to: ['14:45', '15:00'] }
+    ];
+    const required = BREAK_REMOVED_SHIFT.map((spec) => ({
+      spec,
+      index: blocks.findIndex((b) => b && b.id === spec.id)
+    }));
+    const optionalBlock11Index = blocks.findIndex((b) => b && b.id === 'block-11');
+    const optionalBlock11 = optionalBlock11Index === -1 ? null : blocks[optionalBlock11Index];
+    const block11Shipped =
+      !optionalBlock11 || (optionalBlock11.startTime === '15:15' && optionalBlock11.endTime === '16:45');
+    const allShippedForBreakRemoval =
+      required.every(
+        ({ spec, index }) =>
+          index !== -1 &&
+          blocks[index].startTime === spec.from[0] &&
+          blocks[index].endTime === spec.from[1]
+      ) && block11Shipped;
+    if (allShippedForBreakRemoval) {
+      const next = blocks === saved ? [...blocks] : blocks;
+      const breakIndex = next.findIndex((b) => b && b.id === 'block-4');
+      if (breakIndex !== -1) next.splice(breakIndex, 1);
+      for (const { spec, index } of required) {
+        if (spec.id === 'block-4') continue;
+        const i = next.findIndex((b) => b && b.id === spec.id);
+        if (i !== -1) next[i] = { ...next[i], startTime: spec.to[0], endTime: spec.to[1] };
+      }
+      if (optionalBlock11Index !== -1 && optionalBlock11) {
+        const i = next.findIndex((b) => b && b.id === 'block-11');
+        if (i !== -1) next[i] = { ...next[i], startTime: '15:00', endTime: '16:30' };
+      }
+      blocks = next;
+      changed = true;
+    }
+  }
+
+  // --- Garden Check (block-11b), added to the default Nov 2, 2026 ---
+  // Same reason every block-add migration above exists: defaultSchedule.js
+  // alone reaches nobody who already has a saved schedule, and this family
+  // has two computers that do. "He doesn't go to the garden like he should"
+  // — Friday (block-11) was already there; this is the new Mon-Thu light
+  // check.
+  //
+  // ANCHORED ON GUITAR (block-10), NOT ON "WHATEVER ENDS LATEST" — the same
+  // choice block-10's own migration made and for the same reason: if this
+  // used the array's latest end time, a family that has already reached
+  // Friday gardening would get block-11b bolted on at 16:30, after the
+  // Friday-only block-11, instead of at 3:00 where it actually belongs on
+  // Mon-Thu. Guitar is the honest anchor because it marks the end of the
+  // school day on every day that runs this block, Friday included.
+  if (!have.has('block-11b')) {
+    const spec = defaultSchedule.find((b) => b.id === 'block-11b');
+    const hostSpec = defaultSchedule.find((b) => b.id === 'block-10');
+    if (spec && hostSpec) {
+      const runLength = (toMinutes(spec.endTime) ?? 0) - (toMinutes(spec.startTime) ?? 0);
+      const next = blocks === saved ? [...blocks] : blocks;
+      const host = next.find((b) => b && b.id === 'block-10');
+      // "Untouched" = guitar still ends where it shipped, so the default
+      // 3:00-3:15 slot is still correct as written.
+      const hostUntouched = !!host && host.endTime === hostSpec.endTime;
+      const start = hostUntouched
+        ? (toMinutes(spec.startTime) ?? 0)
+        : (host ? (toMinutes(host.endTime) ?? 0) : (toMinutes(spec.startTime) ?? 0));
+      const block11Index = next.findIndex((b) => b && b.id === 'block-11');
+      const placed = { ...spec, startTime: toHHMM(start), endTime: toHHMM(start + (runLength > 0 ? runLength : 15)) };
+      if (block11Index !== -1) {
+        next.splice(block11Index + 1, 0, placed);
+      } else {
+        next.push(placed);
+      }
+      blocks = next;
+      changed = true;
+    }
+  }
+
   return changed ? blocks : saved;
 }
 

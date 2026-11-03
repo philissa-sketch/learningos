@@ -65,13 +65,19 @@ export const defaultSchedule = [
   // before or after it moves.
   // ------------------------------------------------------------------------
   { id: 'block-3', startTime: '10:00', endTime: '10:15', label: 'Reading Lesson', colorKey: 'reading' },
-  { id: 'block-4', startTime: '10:15', endTime: '10:30', label: 'Break', colorKey: 'break' },
+  // ------------------------------------------------------------------------
+  // block-4 — THE 10:15 BREAK — REMOVED Nov 2, 2026, the parent's request.
+  // Everything from Science onward moves 15 minutes earlier to close the
+  // gap rather than leave it empty; the school day now ends at 4:30 instead
+  // of 4:45. See migrateSavedSchedule() in useAppStore.js for the one-time
+  // shift applied to schedules saved before this change.
+  // ------------------------------------------------------------------------
   // SCIENCE RAN 60 MINUTES UNTIL AUG 9 2026. The parent: "I also wanted to have
   // science to 45 minutes and 15 minutes of typing." The fifteen minutes moves
   // from Science straight into block-5b below — LUNCH STILL STARTS AT 11:30 and
   // nothing after it moves by a minute. Instructional time is unchanged at
   // 5 hr 15 min, because typing is instruction too.
-  { id: 'block-5', startTime: '10:30', endTime: '11:15', label: 'Science', colorKey: 'science' },
+  { id: 'block-5', startTime: '10:15', endTime: '11:00', label: 'Science', colorKey: 'science' },
   // ------------------------------------------------------------------------
   // block-5b — Typing, 15 minutes a day. Added Aug 9 2026.
   //
@@ -91,17 +97,17 @@ export const defaultSchedule = [
   // lessons and speed test in the app as the backup when the portal is down or
   // he is offline.
   // ------------------------------------------------------------------------
-  { id: 'block-5b', startTime: '11:15', endTime: '11:30', label: 'Typing Practice', colorKey: 'reading' },
-  { id: 'block-6', startTime: '11:30', endTime: '12:30', label: 'Lunch & Outdoor Time', colorKey: 'break' },
-  { id: 'block-7', startTime: '12:30', endTime: '13:30', label: 'Language Arts & Writing Journal', colorKey: 'math' },
+  { id: 'block-5b', startTime: '11:00', endTime: '11:15', label: 'Typing Practice', colorKey: 'reading' },
+  { id: 'block-6', startTime: '11:15', endTime: '12:15', label: 'Lunch & Outdoor Time', colorKey: 'break' },
+  { id: 'block-7', startTime: '12:15', endTime: '13:15', label: 'Language Arts & Writing Journal', colorKey: 'math' },
   // Added Aug 7, 2026 — the parent: "I told him to follow that schedule but
   // that isn't there." Spelling and vocabulary run a real Mon-Fri cycle
   // (introduce, practice x3, quiz) in lib/weeklyWords.js, but the printed
   // routine never named them, so following the schedule genuinely did not
   // tell him to do it. Carved out of block-7 rather than added on the end, so
   // the school day is not fifteen minutes longer than it was.
-  { id: 'block-7b', startTime: '13:30', endTime: '13:45', label: 'Spelling & Vocabulary', colorKey: 'reading' },
-  { id: 'block-8', startTime: '13:45', endTime: '14:15', label: 'Physical Education', colorKey: 'pe' },
+  { id: 'block-7b', startTime: '13:15', endTime: '13:30', label: 'Spelling & Vocabulary', colorKey: 'reading' },
+  { id: 'block-8', startTime: '13:30', endTime: '14:00', label: 'Physical Education', colorKey: 'pe' },
   // ------------------------------------------------------------------------
   // block-9 — the rotating block. ONE subject, resolved per day.
   //
@@ -117,7 +123,7 @@ export const defaultSchedule = [
   // and a Friday clause for a slot that holds exactly one of them. The Friday
   // clause is gone because gardening moved after school (block-11).
   // ------------------------------------------------------------------------
-  { id: 'block-9', startTime: '14:15', endTime: '15:00', label: 'Rotating Block — Aerospace / Technology / Social Studies / Robotics', colorKey: 'science' },
+  { id: 'block-9', startTime: '14:00', endTime: '14:45', label: 'Rotating Block — Aerospace / Technology / Social Studies / Robotics', colorKey: 'science' },
   // ------------------------------------------------------------------------
   // block-10 — Electric Guitar practice. Added Aug 8, 2026, with the parent.
   //
@@ -141,7 +147,7 @@ export const defaultSchedule = [
   // This is the one change that makes the printed day end at 3:15 instead of
   // 3:00. Nothing before it moves by a minute.
   // ------------------------------------------------------------------------
-  { id: 'block-10', startTime: '15:00', endTime: '15:15', label: 'Electric Guitar Practice', colorKey: 'reading' },
+  { id: 'block-10', startTime: '14:45', endTime: '15:00', label: 'Electric Guitar Practice', colorKey: 'reading' },
   // ------------------------------------------------------------------------
   // block-11 — Gardening, AFTER SCHOOL, Fridays. Added Aug 9 2026.
   //
@@ -160,13 +166,41 @@ export const defaultSchedule = [
   // want a weekend, which is what they wanted before this change too.
   //
   // FRIDAYS ONLY, and the label says so, because scheduleBlocks is one day
-  // template reused Mon-Fri and this block genuinely does not run Mon-Thu.
-  // Guitar keeps 3:00-3:15 and still marks the end of the school day.
+  // template reused Mon-Fri and this block is the big session, not the daily
+  // habit. Guitar keeps 3:00-3:15 and still marks the end of the school day.
+  //
+  // UPDATE, Nov 2 2026: Mon-Thu is no longer empty after school. See
+  // block-11b below — a separate, much smaller block for the days this one
+  // does not run, not an extension of this one.
   // ------------------------------------------------------------------------
   //
   // `days: [5]` is NOT decoration. scheduleBlocks is one template reused Monday
   // through Friday, so without it the class bell announces "Gardening" at 3:20
   // on a Tuesday — a bell ringing for a class nobody is in, which is the exact
   // failure the holiday work fixed a few hours earlier the same day.
-  { id: 'block-11', startTime: '15:15', endTime: '16:45', label: 'Gardening — Fridays, after school', colorKey: 'science', days: [5] }
+  { id: 'block-11', startTime: '15:00', endTime: '16:30', label: 'Gardening — Fridays, after school', colorKey: 'science', days: [5] },
+  // ------------------------------------------------------------------------
+  // block-11b — Garden Check (water & look), Mon-Thu, after school. Added
+  // Nov 2 2026, with the parent: "He doesn't go to the garden like he
+  // should." Added every weekday after school, per her choice.
+  //
+  // THIS IS NOT THE FRIDAY SESSION, SHRUNK. Friday (block-11) runs a real
+  // brief — a lesson, a build, a planting or harvest window — and is the
+  // only day gardenForDate() in lib/plannerFeeds.js resolves a dated brief
+  // for, because gardenCalendar.js only has Friday dates in it. Authoring a
+  // full lesson for four more days a week was not what she asked for; she
+  // asked for him to actually go out there. So Mon-Thu gets the smallest
+  // possible habit instead: water what needs it, look at what's growing,
+  // log it. The Garden screen already has a lightweight 'watering' log kind
+  // for exactly this, so no new screen was needed — only this block and the
+  // Mission Control row reading it (see gardenForDate's weekday branch).
+  //
+  // 15 MINUTES, same 3:00 start as guitar's old slot and Friday's gardening
+  // block, for the same reason block-10 picked 3:00: it rides the one
+  // boundary that fires every day — school ending — instead of asking him to
+  // remember a time that belongs to no other habit.
+  //
+  // `days: [1, 2, 3, 4]` on purpose — Friday already has its own block-11
+  // and does not need a second, smaller one layered under it.
+  { id: 'block-11b', startTime: '15:00', endTime: '15:15', label: 'Garden Check — water & look', colorKey: 'science', days: [1, 2, 3, 4] }
 ];

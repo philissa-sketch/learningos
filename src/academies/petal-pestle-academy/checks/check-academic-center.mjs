@@ -92,12 +92,23 @@ function run(ctx) {
   if (st(1, { marks: [{ pieceId: 'book-report', quarter: 1 }] }) !== 'marked') fail('a marked book report does not say marked');
 
   // 4. PROJECTS
-  const board = A.projectBoard({ lessonsRead: readThrough(5), projectStatus: { 'pj-m1': { doneAt: '2026-09-01' } } });
-  if (board[0].state !== 'now' || board[0].module !== A.currentModule(readThrough(5))) fail('the current project is not first');
-  if (board.find((p) => p.id === 'pj-m1').state !== 'done') fail('a finished project is not marked done');
-  if (board.find((p) => p.id === 'pj-m2').state !== 'earlier') fail('an unfinished earlier project is not flagged');
+  // readThrough(9) lands her on module 5 (pj-m5, a BUILD project). pj-m1/
+  // pj-m2/pj-m3 are MONITOR-track projects (Gigi, Nov 2 2026) with their own
+  // 'watching'/'next' states, not 'now'/'earlier' — use build-kind ids (pj-m4,
+  // pj-m5) to exercise the build-track "current project first" rule.
+  const board = A.projectBoard({ lessonsRead: readThrough(9), projectStatus: { 'pj-m4': { doneAt: '2026-09-01' } } });
+  if (board[0].state !== 'now' || board[0].module !== A.currentModule(readThrough(9))) fail('the current project is not first');
+  if (board.find((p) => p.id === 'pj-m4').state !== 'done') fail('a finished project is not marked done');
+  if (board[0].id !== 'pj-m5') fail('the module-5 build project is not the one that is now');
   const off = A.projectBoard({ lessonsRead: readThrough(5), drafts: { 'academic-setup': { projectsOff: ['pj-m3'] } } });
   if (off.find((p) => p.id === 'pj-m3').state !== 'set-aside') fail('a project a grown-up set aside is still asked for');
+  // readThrough(13) lands her on module 7 (pj-m7, live and unstarted, so it is
+  // 'now'); pj-m4 (module 4, earlier, unstarted) should be flagged 'earlier'.
+  const earlierBoard = A.projectBoard({ lessonsRead: readThrough(13), projectStatus: {} });
+  if (earlierBoard.find((p) => p.id === 'pj-m7').state !== 'now') fail('her current module’s build project is not now');
+  if (earlierBoard.find((p) => p.id === 'pj-m4').state !== 'earlier') fail('an unfinished earlier build project is not flagged');
+  if (A.canFinishProject(board.find((p) => p.id === 'pj-m4'), { stepsDone: [1, 2, 3, 4], writeup: '', photoSent: true }) === true) fail('a project with no write-up can be finished');
+  if (A.canFinishProject(board.find((p) => p.id === 'pj-m4'), { stepsDone: [1, 2, 3, 4], writeup: 'Done.', photoSent: false }) === true) fail('a project with no photo confirmed sent can be finished');
 
   // 5. RESEARCH PAPERS
   if (A.researchNow(2, { lessonsRead: readThrough(3) }).state !== 'not-yet') fail('the Quarter 2 research paper opens in Quarter 1');
@@ -160,7 +171,7 @@ const BUGS = [
   ['no research tab', 'view', "  { id: 'research',", "  { id: 'researchx',"],
   ['finished without writing', 'lib', "else if (steps.has(total) && String(draft?.final || '').trim()) state = 'finished';", "else if (steps.has(total)) state = 'finished';"],
   ['marks ignored', 'lib', "if (mark) state = 'marked';\n  else if", 'if (false) state = \'marked\';\n  else if'],
-  ['current project buried', 'lib', "const order = { now: 0, next: 1, earlier: 2, later: 3, done: 4, 'set-aside': 5 };", "const order = { now: 3, next: 1, earlier: 2, later: 0, done: 4, 'set-aside': 5 };"],
+  ['current project buried', 'lib', "const order = { now: 0, watching: 0.5, next: 1, earlier: 2, later: 3, done: 4, 'set-aside': 5 };", "const order = { now: 3, watching: 0.5, next: 1, earlier: 2, later: 0, done: 4, 'set-aside': 5 };"],
   ['set aside ignored', 'lib', "if (off.has(p.id)) state = 'set-aside';\n    else if (isDone(p.id))", "if (false) state = 'set-aside';\n    else if (isDone(p.id))"],
   ['research open all year', 'lib', 'const open = nowQ >= q || !!setup.researchOpen[q];', 'const open = true;'],
   ['grown-up cannot open early', 'lib', 'const open = nowQ >= q || !!setup.researchOpen[q];', 'const open = nowQ >= q;'],

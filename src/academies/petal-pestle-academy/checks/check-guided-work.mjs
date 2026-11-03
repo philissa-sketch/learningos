@@ -64,14 +64,17 @@ if (SELF_TEST) {
     ['step 2 can be ticked with nothing written', A + 'store/useAppStore.js', "n === 2 && !String(row.notes", "n === 99 && !String(row.notes"],
     ['step 3 can be ticked with nothing written', A + 'store/useAppStore.js', "n === 3 && !String(row.draft", "n === 99 && !String(row.draft"],
     ['no sentence starters', A + 'data/writing/writingPieces.js', "'It is about ___.',", ''],
-    ['a started project does not stay hers', L, 'live.filter((p) => started(p.id)).sort(byModule)[0]?.id ||', ''],
-    ['several projects are "now"', L, "else if (p.id === activeId) state = 'now';", "else if (p.module <= mod) state = 'now';"],
-    ['project can be finished with steps undone', L, 'project.steps.every((_, i) => have.has(i + 1))', 'project.steps.some((_, i) => have.has(i + 1)) || true'],
+    ['a started build project does not stay hers', L, 'liveBuilds.filter((p) => started(p.id)).sort(byModule)[0]?.id ||', ''],
+    ['several build projects are "now"', L, "else if (isBuild && p.id === activeBuildId) state = 'now';", "else if (isBuild && p.module <= mod) state = 'now';"],
+    ['a build project can be finished with steps undone', L, 'project.steps.every((_, i) => new Set(row?.stepsDone || []).has(i + 1))', 'project.steps.some((_, i) => new Set(row?.stepsDone || []).has(i + 1)) || true'],
+    ['a project can be finished with no write-up or photo', L, 'return workDone && wroteSomething && sentPhoto;', 'return workDone;'],
+    ['the watching monitor project crowds out the now build project', L, "const order = { now: 0, watching: 0.5,", "const order = { now: 0, watching: 0,"],
     ['project steps can be ticked out of order', L, 'return n === first;', 'return true;'],
     ['Today offers a pick-any-one list again', T, 'Your next project starts when this one is finished.', 'You have 3 projects to make. Pick any one.'],
     ['Today has no daily project tick', T, 'I did this step ✓\n              </button>\n            )}\n            <button', 'x\n              </button>\n            )}\n            <button'],
     ['Today has no book report knock', T, 'Do today’s step', 'Open'],
-    ['a backup merge drops project steps', A + 'lib/mergeBackup.js', 'return stepsDone.length ? { ...keep, stepsDone } : keep;', 'return keep;']
+    ['a backup merge drops project steps', A + 'lib/mergeBackup.js', 'return { ...keep, ...(stepsDone.length ? { stepsDone } : {}), ...extras };', 'return { ...keep, ...extras };'],
+    ['a backup merge can un-send a photo', A + 'lib/mergeBackup.js', 'const photoSent = !!(local?.photoSent || incoming?.photoSent);', 'const photoSent = !!(local?.photoSent && incoming?.photoSent);']
   ];
   // --from=N starts at the Nth bug (1-based): the whole run is slow because each
   // bug gets its own copy of src/, so it can be done in two halves.
@@ -141,27 +144,53 @@ const count = (board, st) => board.filter((p) => p.state === st).length;
 const T0 = AC.projectBoard({ lessonsRead: HER, projectStatus: {} });
 ok(AC.currentModule(HER) === 7, 'her real position is module 7');
 ok(count(T0, 'now') === 1 && T0[0].id === 'pj-m7', '5. nothing started: one project is now, this module’s (pj-m7)');
-const started = { 'pj-m3': { projectId: 'pj-m3', stepsDone: [1], startedAt: '2026-10-20T00:00:00Z' } };
+// pj-m1/pj-m2/pj-m3/pj-m6/pj-m9/pj-m11/pj-m14 are monitor-track projects (Gigi,
+// Nov 2 2026): use a build-track id (pj-m4, module 4, earlier than her module-7
+// position) to exercise the "started project stays hers" build mechanics.
+const started = { 'pj-m4': { projectId: 'pj-m4', stepsDone: [1], startedAt: '2026-10-20T00:00:00Z' } };
 const T1 = AC.projectBoard({ lessonsRead: HER, projectStatus: started });
-ok(count(T1, 'now') === 1 && T1[0].id === 'pj-m3', '6. a started project stays hers (pj-m3), still only one now');
+ok(count(T1, 'now') === 1 && T1[0].id === 'pj-m4', '6. a started project stays hers (pj-m4), still only one now');
 ok(T1.find((p) => p.id === 'pj-m7').state === 'next', '   this module’s project waits behind it as next');
 const today = AC.projectToday(T1, started);
-ok(today.project.id === 'pj-m3' && today.stepNumber === 2 && today.next?.id === 'pj-m7', '   Today asks for step 2 of pj-m3 and knows pj-m7 is next');
-const T2 = AC.projectBoard({ lessonsRead: HER, projectStatus: { ...started, 'pj-m3': { ...started['pj-m3'], doneAt: '2026-10-25T00:00:00Z' } } });
+ok(today.project.id === 'pj-m4' && today.stepNumber === 2 && today.next?.id === 'pj-m7', '   Today asks for step 2 of pj-m4 and knows pj-m7 is next');
+const T2 = AC.projectBoard({ lessonsRead: HER, projectStatus: { ...started, 'pj-m4': { ...started['pj-m4'], doneAt: '2026-10-25T00:00:00Z' } } });
 ok(count(T2, 'now') === 1 && T2[0].id === 'pj-m7', '   finishing it releases the next project (pj-m7)');
 const T3 = AC.projectBoard({ lessonsRead: HER, projectStatus: { 'pj-m7': { doneAt: '2026-10-25T00:00:00Z' } } });
-ok(count(T3, 'now') === 1 && T3[0].id === 'pj-m6', '   this module’s done: the most recent earlier one is offered, still one');
+ok(count(T3, 'now') === 1 && T3[0].id === 'pj-m5', '   this module’s done: the most recent earlier BUILD one is offered (pj-m6 is a monitor project), still one');
 const T4 = AC.projectBoard({ lessonsRead: HER, projectStatus: {}, drafts: { 'academic-setup': { projectsOff: ['pj-m7'] } } });
 ok(count(T4, 'now') === 1 && T4.find((p) => p.id === 'pj-m7').state === 'set-aside', '   a grown-up setting one aside hands her another, still one');
-const p3 = PROJECTS.find((p) => p.id === 'pj-m3');
-ok(AC.canFinishProject(p3, { stepsDone: [1] }) === false && AC.canFinishProject(p3, { stepsDone: [1, 2, 3, 4] }) === true, '7. a project can be finished only with every step ticked');
-ok(AC.canTickProjectStep(p3, 2, { stepsDone: [1] }) && !AC.canTickProjectStep(p3, 3, { stepsDone: [1] }), '   steps tick in order');
+const p4 = PROJECTS.find((p) => p.id === 'pj-m4');
+ok(AC.canFinishProject(p4, { stepsDone: [1], writeup: 'x', photoSent: true }) === false, '7. a project cannot be finished with steps undone, even with a write-up and photo');
+ok(AC.canFinishProject(p4, { stepsDone: [1, 2, 3, 4], writeup: '', photoSent: true }) === false, '   every step ticked is not enough without a write-up');
+ok(AC.canFinishProject(p4, { stepsDone: [1, 2, 3, 4], writeup: 'What happened.', photoSent: false }) === false, '   a write-up is not enough without the photo confirmed sent');
+ok(AC.canFinishProject(p4, { stepsDone: [1, 2, 3, 4], writeup: 'What happened.', photoSent: true }) === true, '   steps, write-up and photo together finish it');
+ok(AC.canTickProjectStep(p4, 2, { stepsDone: [1] }) && !AC.canTickProjectStep(p4, 3, { stepsDone: [1] }), '   steps tick in order');
+
+console.log('\n--- MONITOR TRACK ---');
+const T5 = AC.projectBoard({ lessonsRead: HER, projectStatus: {} });
+ok(count(T5, 'watching') === 1, '9. exactly one monitor project is watching, alongside the build project that is now');
+ok(T5.find((p) => p.state === 'now').kind === 'build' && T5.find((p) => p.state === 'watching').kind === 'monitor', '   the build project and the monitor project do not block each other');
+const mToday = AC.monitorToday(T5, {});
+ok(mToday && typeof mToday.watch === 'string' && mToday.checkedToday === false && mToday.checkInCount === 0, '   monitorToday hands back today’s watch reminder, unchecked');
+const mon = T5.find((p) => p.state === 'watching');
+const checkedIn = { [mon.id]: { projectId: mon.id, checkIns: ['2026-11-01', '2026-11-02'] } };
+const mToday2 = AC.monitorToday(AC.projectBoard({ lessonsRead: HER, projectStatus: checkedIn }), checkedIn, '2026-11-02');
+ok(mToday2.checkedToday === true && mToday2.checkInCount === 2, '   a day already checked in shows as checked, and the count is right');
+const monProj = PROJECTS.find((p) => p.id === mon.id);
+ok(AC.canFinishProject(monProj, { checkIns: ['1', '2'], writeup: 'x', photoSent: true }) === (2 >= (monProj.minCheckIns || 1)), '   a monitor project finishes by check-in count, not steps ticked');
 const TV = src('components/Schedule/TodayView.jsx');
 ok(/projectToday\(/.test(TV) && /I did this step ✓/.test(TV) && !/Pick any one/.test(TV), '   Today shows one project, today’s step and a tick, and no pick-any-one list');
 ok(/Do today’s step/.test(TV) && /bookReportNow\(lessonsRead, stepsBySlot\)/.test(TV), '   Today knocks for the book report with today’s step');
 ok(/Your next project starts when this one is finished/.test(TV), '   Today says the next project waits');
 const merged = MB.pickProject({ projectId: 'a', startedAt: '2026-10-01', stepsDone: [1, 2] }, { projectId: 'a', startedAt: '2026-10-02', stepsDone: [1, 3] });
 ok(JSON.stringify(merged.stepsDone) === JSON.stringify([1, 2, 3]), '8. a backup merge keeps a step ticked on either machine');
+const mergedMonitor = MB.pickProject(
+  { projectId: 'b', startedAt: '2026-10-01', checkIns: ['2026-10-01'], writeup: 'A short note.', photoSent: false },
+  { projectId: 'b', startedAt: '2026-10-02', checkIns: ['2026-10-02'], writeup: 'A longer, fuller write-up of what happened.', photoSent: true }
+);
+ok(JSON.stringify(mergedMonitor.checkIns) === JSON.stringify(['2026-10-01', '2026-10-02']), '   a backup merge keeps a monitor check-in from either machine');
+ok(mergedMonitor.writeup === 'A longer, fuller write-up of what happened.', '   a backup merge keeps the longer write-up');
+ok(mergedMonitor.photoSent === true, '   a backup merge never un-sends a photo once either machine says it was sent');
 
 console.log(fails ? `\n${fails} FAILED` : '\nPASS');
 process.exit(fails ? 1 : 0);

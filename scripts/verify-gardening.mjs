@@ -349,7 +349,7 @@ useAppStore.setState({ gardenLog: [] });
 // ===========================================================================
 console.log('\n--- 6. the sun survey project ---');
 // ===========================================================================
-ok(gardenProjects.length === 6, `6 garden projects built so far (found ${gardenProjects.length})`);
+ok(gardenProjects.length === 7, `7 garden projects built so far (found ${gardenProjects.length})`);
 // TOOL POLICY (parent, Aug 8 2026): he runs the tools. Safety content teaches
 // technique rather than removing him from the job.
 for (const p of gardenProjects.filter((x) => x.toolSkill)) {
@@ -601,15 +601,15 @@ ok(getGardenDayForDate(new Date('2026-08-14T12:00:00'))?.briefId === 'gd7-q1-b1-
 // ===========================================================================
 console.log('\n--- 9. the build track ---');
 // ===========================================================================
-ok(gardenBuildTrack.length === 5, `5 builds (found ${gardenBuildTrack.length})`);
-ok(gardenBuildTrack.every((b, i) => b.number === i + 1), 'builds are numbered 1..5 in order');
-ok(new Set(gardenBuildTrack.map((b) => b.id)).size === 5, 'no duplicate build ids');
+ok(gardenBuildTrack.length === 6, `6 builds (found ${gardenBuildTrack.length})`);
+ok(gardenBuildTrack.every((b, i) => b.number === i + 1), 'builds are numbered 1..6 in order');
+ok(new Set(gardenBuildTrack.map((b) => b.id)).size === 6, 'no duplicate build ids');
 ok(gardenBuildTrack[0].gatedBy === null, 'build 1 gates nothing before it');
-ok(gardenBuildTrack.slice(1).every((b) => b.gatedBy === 1), 'builds 2-5 are all gated behind build 1');
+ok(gardenBuildTrack.slice(1).every((b) => b.gatedBy === 1), 'builds 2-6 are all gated behind build 1');
 ok(gardenBuildTrack.slice(1).every((b) => typeof b.gatedReason === 'string' && b.gatedReason.length > 20),
   'every locked build states WHY it is locked');
 ok(buildsUnlockedBy([]).length === 1, 'before the survey, only build 1 is unlocked');
-ok(buildsUnlockedBy([1]).length === 5, 'after the survey, all five are unlocked');
+ok(buildsUnlockedBy([1]).length === 6, 'after the survey, all six are unlocked');
 ok(gardenBuildTrack.every((b) => Array.isArray(b.drawsOn) && b.drawsOn.length >= 1),
   'every build names the subject material it draws on');
 // A build whose status says 'built' must actually have a buildable project.

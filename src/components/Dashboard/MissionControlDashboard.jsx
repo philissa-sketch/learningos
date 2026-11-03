@@ -1330,8 +1330,11 @@ export function MissionControlDashboard({
             />
           )}
 
-          {/* AFTER SCHOOL — 3:15 Friday, per block-11 on the timetable. Last on
-              the list because it is last in the day, not least important. */}
+          {/* AFTER SCHOOL, per block-11 on the timetable (big Friday session,
+              light Mon-Thu check). Last on the list because it is last in the
+              day, not least important. The time below comes from whenFor(),
+              not a hardcoded string — it moved once already (Nov 2 2026,
+              break removal) and a literal would go stale again. */}
           {todaysGarden && (
             <TodayRow
               subject="gardening"
@@ -1342,7 +1345,12 @@ export function MissionControlDashboard({
               detail={
                 todaysGarden.done
                   ? 'Recorded in the garden log'
-                  : [todaysGarden.estMinutes ? `${todaysGarden.estMinutes} min` : null, 'after school, 3:15']
+                  : [
+                      todaysGarden.estMinutes ? `${todaysGarden.estMinutes} min` : null,
+                      whenFor(BLOCK_FOR_SUBJECT.gardening)
+                        ? `after school, ${whenFor(BLOCK_FOR_SUBJECT.gardening)}`
+                        : 'after school'
+                    ]
                       .filter(Boolean)
                       .join(' · ')
               }

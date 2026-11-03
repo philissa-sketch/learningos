@@ -29,7 +29,7 @@ import { marigoldCallsHer } from '../../lib/marigoldName.js';
 import { readingToday, khanWatchFor, READING_MINUTES } from '../../lib/readingProgress.js';
 import { unitUrl } from '../../data/khan/khanUnits.js';
 import { SendWorkCard } from './SendWorkCard.jsx';
-import { projectBoard, projectToday } from '../../lib/academicCenter.js';
+import { projectBoard, projectToday, monitorToday } from '../../lib/academicCenter.js';
 
 // ---------------------------------------------------------------------------
 // TODAY — her school day, with a bell.
@@ -117,6 +117,13 @@ export function TodayView({ onNavigate }) {
   });
   const projectNow = projectToday(projectBoardNow, projectStatus || {});
   const toggleProjectStep = useAppStore((s) => s.toggleProjectStep);
+  // Nov 2 2026, Gigi: an ongoing project should only need one going at a
+  // time, with a daily reminder to go check it — and it must NOT use up her
+  // one active build-project slot. This is that reminder: its own card, off
+  // the SAME board (so it can never disagree with Academic Center -> Projects
+  // about which monitor project is active), independent of projectNow above.
+  const monitorNow = monitorToday(projectBoardNow, projectStatus || {});
+  const toggleMonitorCheckIn = useAppStore((s) => s.toggleMonitorCheckIn);
   // Same function the book report screen asks, so the knock and the screen it
   // opens can never disagree about which report, or which step.
   const bookNow = bookReportNow(lessonsRead, stepsBySlot);
@@ -416,6 +423,38 @@ export function TodayView({ onNavigate }) {
           {projectNow.next && (
             <p className="mt-2 text-[0.7rem] text-ink-500">
               Your next project starts when this one is finished.
+            </p>
+          )}
+        </section>
+      )}
+
+      {/* Her monitor project: a daily nudge, separate from the project above. */}
+      {monitorNow && (
+        <section className="mt-5 rounded-petal border-2 border-lavender-500 bg-lavender-300/15 px-4 py-4">
+          <p className="font-display text-base text-ink-900">🔎 Keep watching: {monitorNow.project.title}</p>
+          <p className="mt-0.5 text-xs text-ink-700">{monitorNow.watch}</p>
+          <p className="mt-1 text-[0.7rem] text-ink-500">
+            Checked {monitorNow.checkInCount} of {monitorNow.minCheckIns} days needed
+          </p>
+          <div className="mt-2 flex flex-wrap gap-2">
+            <button
+              type="button"
+              onClick={() => toggleMonitorCheckIn(monitorNow.project.id)}
+              className={`rounded-full border px-4 py-1.5 text-xs font-700 ${monitorNow.checkedToday ? 'border-lavender-500 bg-lavender-500 text-white' : 'border-lavender-500 bg-white text-lavender-700 hover:bg-lavender-300/25'}`}
+            >
+              {monitorNow.checkedToday ? 'Checked today ✓' : 'I checked it today ✓'}
+            </button>
+            <button
+              type="button"
+              onClick={() => throughCircle('blk-projects', () => onNavigate?.('projects'))}
+              className="rounded-full bg-lavender-500 px-4 py-1.5 text-xs font-700 text-white hover:bg-lavender-700"
+            >
+              Open my project
+            </button>
+          </div>
+          {monitorNow.readyToFinish && (
+            <p className="mt-2 text-[0.7rem] text-ink-500">
+              You've checked it enough days now — open it to write it up and finish.
             </p>
           )}
         </section>

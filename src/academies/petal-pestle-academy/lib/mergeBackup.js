@@ -260,21 +260,46 @@ export function pickLessonRead(local, incoming) {
  * Un-finishing never travels. If one machine says not-done and the other says
  * done, done wins: the alternative is a merge that quietly takes a finished
  * fortnight's work away from her.
+ *
+ * Nov 2 2026: monitor projects added a `checkIns` date list (merges the same
+ * way `stepsDone` does — nothing ticked on either machine is ever lost), plus
+ * a `writeup` and a `photoSent` confirmation. A write-up is never silently
+ * replaced with a shorter one, and once either machine says the photo was
+ * emailed, that travels everywhere — un-sending never travels, same reasoning
+ * as un-finishing.
  */
+function mergedExtras(local, incoming) {
+  const checkIns = [...new Set([...(local?.checkIns || []), ...(incoming?.checkIns || [])])].sort();
+  const lw = String(local?.writeup || '');
+  const iw = String(incoming?.writeup || '');
+  const writeup = lw.length >= iw.length ? lw : iw;
+  const photoSent = !!(local?.photoSent || incoming?.photoSent);
+  const photoSentAt = local?.photoSentAt || incoming?.photoSentAt || null;
+  const extras = {};
+  if (checkIns.length) extras.checkIns = checkIns;
+  if (writeup) extras.writeup = writeup;
+  if (photoSent) {
+    extras.photoSent = true;
+    extras.photoSentAt = photoSentAt;
+  }
+  return extras;
+}
+
 export function pickProject(local, incoming) {
   if (!local) return incoming;
   if (!incoming) return local;
+  const extras = mergedExtras(local, incoming);
   if (local.doneAt && incoming.doneAt) {
-    return local.doneAt <= incoming.doneAt ? local : incoming;
+    return { ...(local.doneAt <= incoming.doneAt ? local : incoming), ...extras };
   }
-  if (incoming.doneAt && !local.doneAt) return incoming;
-  if (local.doneAt && !incoming.doneAt) return local;
+  if (incoming.doneAt && !local.doneAt) return { ...incoming, ...extras };
+  if (local.doneAt && !incoming.doneAt) return { ...local, ...extras };
   // Neither is finished: keep the earlier start, and never lose a ticked step
   // from either machine (Oct 27 2026: projects now have steps).
   const stepsDone = [...new Set([...(local.stepsDone || []), ...(incoming.stepsDone || [])])].sort((x, y) => x - y);
   const keep =
     local.startedAt && incoming.startedAt && incoming.startedAt < local.startedAt ? incoming : local;
-  return stepsDone.length ? { ...keep, stepsDone } : keep;
+  return { ...keep, ...(stepsDone.length ? { stepsDone } : {}), ...extras };
 }
 
 /**

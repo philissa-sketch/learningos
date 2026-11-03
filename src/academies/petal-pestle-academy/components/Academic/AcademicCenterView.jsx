@@ -165,11 +165,16 @@ function ProjectsTab() {
   const her = useHer();
   const setProjectDone = useAppStore((s) => s.setProjectDone);
   const toggleProjectStep = useAppStore((s) => s.toggleProjectStep);
+  const toggleMonitorCheckIn = useAppStore((s) => s.toggleMonitorCheckIn);
+  const saveProjectWriteup = useAppStore((s) => s.saveProjectWriteup);
+  const setProjectPhotoSent = useAppStore((s) => s.setProjectPhotoSent);
   const board = projectBoard(her);
   const [openId, setOpenId] = useState(board[0]?.id || null);
   const [said, setSaid] = useState('');
+  const today = new Date().toISOString().slice(0, 10);
   const WORDS = {
     now: 'Your project now',
+    watching: 'Watching now',
     next: 'Next, when this one is finished',
     earlier: 'From an earlier module',
     later: 'Later',
@@ -183,11 +188,15 @@ function ProjectsTab() {
         const open = openId === p.id;
         const row = her.projectStatus?.[p.id] || {};
         const have = new Set(row.stepsDone || []);
+        const checkIns = new Set(row.checkIns || []);
+        const isMonitor = p.kind === 'monitor';
         const canFinish = canFinishProject(p, row);
+        const mine = p.state !== 'set-aside' && p.state !== 'done';
         return (
-          <div key={p.id} className={`rounded-petal border-2 px-4 py-3 ${p.state === 'now' ? 'border-sage-500 bg-sage-300/10' : 'border-cream-300 bg-white'}`}>
+          <div key={p.id} className={`rounded-petal border-2 px-4 py-3 ${p.state === 'now' ? 'border-sage-500 bg-sage-300/10' : p.state === 'watching' ? 'border-lavender-500 bg-lavender-300/15' : 'border-cream-300 bg-white'}`}>
             <button type="button" onClick={() => setOpenId(open ? null : p.id)} className="flex w-full items-baseline justify-between gap-2 text-left">
               <span className="font-display text-base text-ink-900">
+                {isMonitor ? '🔎 ' : ''}
                 {p.title} <span className="text-xs text-ink-500">· Module {p.module}</span>
               </span>
               <span className="text-xs font-700 text-ink-700">{WORDS[p.state]}</span>
@@ -202,35 +211,80 @@ function ProjectsTab() {
                     <li key={x}>{x}</li>
                   ))}
                 </ul>
-                <p className="mt-3 font-700">What you do. Tick each one when you have done it.</p>
-                <div className="mt-1.5 space-y-1.5">
-                  {p.steps.map((x, i) => {
-                    const n = i + 1;
-                    const on = have.has(n);
-                    const mine = p.state !== 'set-aside' && p.state !== 'done';
-                    return (
-                      <button
-                        key={x}
-                        type="button"
-                        disabled={!mine}
-                        onClick={async () => {
-                          const r = await toggleProjectStep(p.id, n);
-                          setSaid(r?.ok === false ? 'Do the step before it first, then tick this one.' : '');
-                        }}
-                        className="flex w-full items-start gap-2.5 text-left text-sm"
-                      >
-                        <span className={`mt-0.5 flex h-5 w-5 flex-none items-center justify-center rounded-full text-[0.65rem] font-700 ${on ? 'bg-sage-500 text-white' : 'bg-cream-200 text-ink-700'}`}>
-                          {on ? '✓' : n}
-                        </span>
-                        <span className={on ? 'text-ink-500 line-through' : 'text-ink-900'}>{x}</span>
-                      </button>
-                    );
-                  })}
-                </div>
+
+                {!isMonitor && (
+                  <>
+                    <p className="mt-3 font-700">What you do. Tick each one when you have done it.</p>
+                    <div className="mt-1.5 space-y-1.5">
+                      {p.steps.map((x, i) => {
+                        const n = i + 1;
+                        const on = have.has(n);
+                        return (
+                          <button
+                            key={x}
+                            type="button"
+                            disabled={!mine}
+                            onClick={async () => {
+                              const r = await toggleProjectStep(p.id, n);
+                              setSaid(r?.ok === false ? 'Do the step before it first, then tick this one.' : '');
+                            }}
+                            className="flex w-full items-start gap-2.5 text-left text-sm"
+                          >
+                            <span className={`mt-0.5 flex h-5 w-5 flex-none items-center justify-center rounded-full text-[0.65rem] font-700 ${on ? 'bg-sage-500 text-white' : 'bg-cream-200 text-ink-700'}`}>
+                              {on ? '✓' : n}
+                            </span>
+                            <span className={on ? 'text-ink-500 line-through' : 'text-ink-900'}>{x}</span>
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </>
+                )}
+
+                {isMonitor && (
+                  <>
+                    <p className="mt-3 font-700">Your daily check-in</p>
+                    <p className="text-xs text-ink-700">{p.watch}</p>
+                    <button
+                      type="button"
+                      disabled={!mine}
+                      onClick={() => toggleMonitorCheckIn(p.id)}
+                      className={`mt-1.5 rounded-full border px-4 py-1.5 text-xs font-700 ${checkIns.has(today) ? 'border-lavender-500 bg-lavender-500 text-white' : 'border-lavender-500 bg-white text-lavender-700 hover:bg-lavender-300/25'}`}
+                    >
+                      {checkIns.has(today) ? 'Checked today ✓' : 'I checked it today ✓'}
+                    </button>
+                    <p className="mt-1.5 text-xs text-ink-500">
+                      Checked {checkIns.size} of {p.minCheckIns} days needed{checkIns.size > 0 ? ` · last: ${[...checkIns].sort().slice(-1)[0]}` : ''}
+                    </p>
+                  </>
+                )}
+
                 <p className="mt-3 font-700">It is finished when</p>
                 <p>{p.done}</p>
+
+                <p className="mt-3 font-700">Write about it</p>
+                <textarea
+                  disabled={!mine}
+                  defaultValue={row.writeup || ''}
+                  onBlur={(e) => saveProjectWriteup(p.id, e.target.value)}
+                  rows={4}
+                  placeholder="What happened? What did you find out?"
+                  className="mt-1 w-full rounded-petal border-2 border-cream-200 px-3 py-2 text-sm disabled:cursor-not-allowed disabled:text-ink-500"
+                />
+
+                <p className="mt-3 font-700">📷 Your photo</p>
+                <p className="text-xs text-ink-700">Take a photo of it, and email it to Gigi.</p>
+                <label className="mt-1.5 flex items-center gap-2 text-sm text-ink-900">
+                  <input type="checkbox" disabled={!mine} checked={!!row.photoSent} onChange={(e) => setProjectPhotoSent(p.id, e.target.checked)} />
+                  I emailed my photo to Gigi
+                </label>
+
                 {p.state !== 'set-aside' && p.state !== 'done' && !canFinish && (
-                  <p className="mt-3 text-xs text-ink-500">The finish button shows up when you have ticked every step.</p>
+                  <p className="mt-3 text-xs text-ink-500">
+                    {isMonitor
+                      ? 'The finish button shows up once you have checked in enough days, written about it, and emailed your photo.'
+                      : 'The finish button shows up once every step is ticked, you have written about it, and emailed your photo.'}
+                  </p>
                 )}
                 {p.state !== 'set-aside' && (p.state === 'done' || canFinish) && (
                   <button type="button" onClick={() => setProjectDone(p.id, p.state !== 'done')} className={`${primary} mt-3`}>

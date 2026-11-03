@@ -36,7 +36,19 @@ ok(blocks.length === defaultSchedule.length,
   `every one of the ${defaultSchedule.length} blocks has usable times (${blocks.length} parsed)`,
   defaultSchedule.filter((b) => !blocks.some((n) => n.id === b.id)).map((b) => b.id).join(', '));
 ok(blocks.every((b) => b.endMin > b.startMin), 'no block ends before it starts');
-const overlaps = blocks.filter((b, i) => i > 0 && b.startMin < blocks[i - 1].endMin)
+/**
+ * weekday=null keeps every block regardless of `days` — right for "print the
+ * whole week," wrong for "flatten it onto one imaginary day," which is what a
+ * plain pairwise scan does. Two blocks on `days` that never share a weekday
+ * (Friday's long gardening session, block-11, and the Mon-Thu Garden Check,
+ * block-11b, added Nov 2 2026) are free to start at the same clock time
+ * because they never run on the same day — that is not an overlap.
+ */
+const shareADay = (a, b) => {
+  if (!Array.isArray(a.days) || !Array.isArray(b.days)) return true; // no restriction = every day
+  return a.days.some((d) => b.days.includes(d));
+};
+const overlaps = blocks.filter((b, i) => i > 0 && b.startMin < blocks[i - 1].endMin && shareADay(b, blocks[i - 1]))
   .map((b) => `${b.label} starts before ${blocks[blocks.indexOf(b) - 1].label} ends`);
 ok(overlaps.length === 0, 'no two blocks overlap', overlaps.join(' | '));
 console.log(`      day runs ${formatClock(blocks[0].startMin)} – ${formatClock(blocks[blocks.length - 1].endMin)}, ${blocks.length} blocks`);
@@ -72,10 +84,10 @@ const midScience = (a, b) => {
 ok(S(midScience(SCIENCE.startTime, SCIENCE.endTime)).current.label === 'Science',
   'the middle of the Science block is Science',
   S(midScience(SCIENCE.startTime, SCIENCE.endTime)).current?.label);
-ok(S('13:35').current.label === 'Spelling & Vocabulary',
-  '1:35pm is Spelling & Vocabulary', S('13:35').current?.label);
-ok(S('15:05').current.label === 'Electric Guitar Practice',
-  '3:05pm is guitar practice', S('15:05').current?.label);
+ok(S('13:20').current.label === 'Spelling & Vocabulary',
+  '1:20pm is Spelling & Vocabulary', S('13:20').current?.label);
+ok(S('14:50').current.label === 'Electric Guitar Practice',
+  '2:50pm is guitar practice', S('14:50').current?.label);
 ok(S('20:00').phase === 'after', '8pm is after the school day');
 ok(S('11:30', false).phase === 'no-school', 'a weekend is "no-school" whatever the time');
 
@@ -109,11 +121,18 @@ ok(Array.isArray(gardenB?.days) && gardenB.days.length === 1 && gardenB.days[0] 
   'the garden block declares Friday and only Friday', JSON.stringify(gardenB?.days));
 const midGarden = toMinutes(gardenB.startTime) + 5;
 ok(scheduleStatus(defaultSchedule, { minutes: midGarden, isSchoolDay: true, weekday: 5 }).current?.id === 'block-11',
-  'on Friday, 3:20pm is the garden');
-ok(scheduleStatus(defaultSchedule, { minutes: midGarden, isSchoolDay: true, weekday: 2 }).current === null,
-  'on Tuesday, 3:20pm is nothing — school is over');
-ok(scheduleStatus(defaultSchedule, { minutes: midGarden, isSchoolDay: true, weekday: 2 }).phase === 'after',
-  'on Tuesday the day is already "after" by 3:20pm');
+  'on Friday, 3:05pm is the garden');
+/**
+ * Tuesday 3:05pm is NOT "nothing — school is over" any more. Block-11b (the
+ * Mon-Thu Garden Check, added Nov 2 2026) runs 3:00-3:15 on Tuesday, so the
+ * right assertion is that it is the current block — the thing this file
+ * must keep catching is block-11 (Friday's long session) leaking onto a
+ * Tuesday, which the loop just below still checks for directly.
+ */
+ok(scheduleStatus(defaultSchedule, { minutes: midGarden, isSchoolDay: true, weekday: 2 }).current?.id === 'block-11b',
+  'on Tuesday, 3:05pm is the Garden Check, not the Friday garden block');
+ok(scheduleStatus(defaultSchedule, { minutes: midGarden, isSchoolDay: true, weekday: 2 }).phase === 'in-block',
+  'on Tuesday the day is still "in-block" at 3:05pm, for the Garden Check');
 // 3:15 rings on BOTH days and should — that is guitar ending, not the garden
 // starting. What must never happen is a bell that names the garden block on a
 // day the garden does not run, so that is what is asserted: across the whole
