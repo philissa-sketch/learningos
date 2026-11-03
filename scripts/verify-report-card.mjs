@@ -380,7 +380,12 @@ console.log('\n--- 9. the reading track is served, and book reports count ---');
   ok('the Lesson Roster offers them', /getLessonRosterSubjects\(\)/.test(roster));
   const dash = read('src/components/Dashboard/MissionControlDashboard.jsx');
   ok('the 10:00 block has a lesson row', /const readingLesson = getTodaysMission\('reading'\)/.test(dash));
-  ok('...that disappears when the track is finished', /\{readingLesson && \(/.test(dash));
+  // Nov 3 2026: the row also skips the language-arts strand while Khan's
+  // own grammar queue is open for the quarter (see MissionControlDashboard.jsx,
+  // "IS GRAMMAR'S KHAN ROW LIVE TODAY?") -- a second, correct condition on the
+  // same gate. The property being checked is still "readingLesson gates this
+  // row", not the exact shape of what follows it.
+  ok('...that disappears when the track is finished', /\{readingLesson && [\s\S]{0,300}?\(/.test(dash));
 
   // Rubric-graded work: a letter is worth the MIDDLE of its band.
   ok('B+ is 88, not 89', letterToPercent('B+') === 88);

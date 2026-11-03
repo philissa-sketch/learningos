@@ -173,6 +173,23 @@ console.log('\n--- 3. every row declares its block ---');
    */
   const blockIdExprs = [...code.matchAll(/blockId=\{([^}]*)\}/g)].map((m) => m[1].trim());
   /**
+   * A bare identifier (`blockId={blockId}`) is still single-sourced if the
+   * identifier itself was assigned from a resolver a few lines up -- that is
+   * what happened Nov 3 2026 when the Khan-reading-strand row and the plain
+   * Khan row were merged into one render, both already resolved before the
+   * JSX runs. Trace a bare identifier back to its declaration before judging
+   * it, instead of failing on the variable name alone.
+   */
+  const resolveBlockIdExpr = (expr) => {
+    if (!/^[A-Za-z_$][\w$]*$/.test(expr)) return expr;
+    const decl = code.match(new RegExp(`const ${expr}\\s*=\\s*([^;]+);`));
+    if (decl) return decl[1];
+    const shorthand = code.match(new RegExp(`\\b${expr}\\s*:\\s*([^,}]+)`));
+    if (shorthand) return shorthand[1];
+    return expr;
+  };
+
+  /**
    * ---- AND A SECOND ROTATING SLOT MOVED THE ROWS AGAIN. (Sep 8, 2026.) ----
    *
    * `blockForSubjectToday` is the fourth resolver, added the day the parent
@@ -186,9 +203,10 @@ console.log('\n--- 3. every row declares its block ---');
    * scheduledMinutes would pass. So the function's own body is checked below.
    */
   const RESOLVERS = /BLOCK_FOR_SUBJECT|STRAND_BLOCK|blockForLesson|rowBlock|blockForSubjectToday/;
+  const resolvedBlockIdExprs = blockIdExprs.map(resolveBlockIdExpr);
   ok(`all ${blockIdExprs.length} blockId expressions resolve through scheduledMinutes`,
-    blockIdExprs.length >= 8 && blockIdExprs.every((e) => RESOLVERS.test(e)),
-    JSON.stringify(blockIdExprs.filter((e) => !RESOLVERS.test(e))));
+    blockIdExprs.length >= 8 && resolvedBlockIdExprs.every((e) => RESOLVERS.test(e)),
+    JSON.stringify(blockIdExprs.filter((e, i) => !RESOLVERS.test(resolvedBlockIdExprs[i]))));
   ok('...and that module is the one the Georgia counter credits from',
     /from '\.\.\/\.\.\/lib\/scheduledMinutes\.js';/.test(code) && /BLOCK_FOR_SUBJECT/.test(code),
     'one source, not two');
@@ -508,8 +526,14 @@ console.log('\n--- 7. English is two blocks, and each row is in the right one --
       && /blockId: STRAND_BLOCK\['language-arts'\], label: 'Language Arts'/.test(dash)
       && /blockId: STRAND_BLOCK\.reading, label: 'Reading'/.test(dash),
     'two separate lookups is how "Language Arts at 10:00" happened in the first place');
+  // Nov 3 2026: the single Khan-reading row was split into one row per open
+  // strand (reading, language-arts), so there is no longer one `next` to hand
+  // khanReadingStrand -- each strand's open units are filtered by
+  // khanReadingStrand first, and englishRow is called with that same strand.
+  // The guarantee ("the label matches the unit actually handed") now shows up
+  // as those two calls agreeing on the strand, not as one nested call.
   ok('...the Khan row uses it, from the unit he is actually handed',
-    /englishRow\(khanReadingStrand\(next\)\)/.test(dash));
+    /khanReadingStrand\(r\) === strand/.test(dash) && /englishRow\(strand\)/.test(dash));
   ok('...and the lesson row uses it, from the lesson strand',
     /englishRow\(readingLesson\.strand\)\.label/.test(dash)
       && /blockForLesson\(readingLesson\.id\)/.test(dash));
