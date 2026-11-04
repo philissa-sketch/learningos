@@ -196,10 +196,32 @@ console.log('\n--- 3. the days are walked, not multiplied ---');
       if (!isSchoolDay(d)) continue;
       if (liveMorningSubject(d, [])) morningSlots += 1;
     }
+    /**
+     * ---- AND A THIRD KIND OF SLOT, NOV 3 2026 ----
+     *
+     * Social Studies moved to DAILY_SUBJECTS that day — its own block-5c,
+     * owned every single school day. Aerospace, Technology and Robotics
+     * joined it the same day, each into its own fixed block (block-9 /
+     * block-9b / block-9c) — which is also the day ROTATING_SUBJECTS
+     * emptied out entirely.
+     *
+     * THAT RETIRES THE FLAT "SCHOOL DAYS" TERM THIS FORMULA USED TO HAVE.
+     * It held only while every school day fell into exactly one of two
+     * buckets inside the (now-dormant) rotating walk: a subject claimed the
+     * day (+1 owned credit) or nobody did (+1 open day) — so
+     * rotatingCredits + openDays always summed to schoolDays, and the old
+     * formula added that sum back in as a flat `schoolDays` term. With
+     * ROTATING_SUBJECTS empty, that walk is skipped before either branch
+     * runs (see the `continue` in ownedDaysInQuarter), so it contributes
+     * NEITHER credits nor open days any more — there is no leftover
+     * schoolDays' worth of accounting to add back, because nothing earns
+     * it. The honest formula is just the two slot kinds that still fire.
+     */
+    const dailySlots = schoolDays * P.DAILY_SUBJECTS.length;
     const accounted = Object.values(owned).reduce((n, v) => n + v, 0) + openDays;
     ok(`${span.batchLabel}: every school day is accounted for, none invented`,
-      accounted === schoolDays + morningSlots,
-      `${accounted} accounted vs ${schoolDays} school days + ${morningSlots} morning slots`);
+      accounted === morningSlots + dailySlots,
+      `${accounted} accounted vs ${morningSlots} morning slots + ${dailySlots} daily-subject slots (schoolDays=${schoolDays}, now uncredited since nothing rotates)`);
     totalMorningSlots += morningSlots;
   }
 }
@@ -207,64 +229,61 @@ console.log('\n--- 3. the days are walked, not multiplied ---');
 console.log('\n--- 4. the open Fridays are shared, so shortfalls add up first ---');
 {
   /**
-   * The mistake this rules out: asking "is this subject's shortfall smaller
-   * than the buffer?" once per subject. Two subjects each four days short in a
-   * quarter with six open Fridays both pass that test and the quarter is still
-   * two days short. The buffer is one pool.
+   * ---- THE BUFFER ITSELF IS DORMANT NOW. (Nov 3, 2026.) ----
+   *
+   * This section used to prove the shared-pool property: two subjects each
+   * under the Friday buffer alone still fail together, because the pool is
+   * one thing, not one per subject. That pool is gone — Aerospace,
+   * Technology and Robotics each own their own fixed block every school
+   * day now, Social Studies included, so there is no leftover Friday left
+   * for a sick day to borrow from, ever. `openDays` is permanently 0 (the
+   * dormancy guard in `ownedDaysInQuarter`), and `covered = shortfall <=
+   * openDays` only holds when shortfall is itself 0 — which makes
+   * `buffered` literally unreachable: the moment any subject goes negative,
+   * the quarter is uncovered and that subject reads `over`, never
+   * `buffered`.
+   *
+   * The property worth keeping is the honest one: going over costs
+   * immediately, with nothing standing behind it, and the quarter says so
+   * truthfully instead of pointing at a Friday that no longer exists.
    */
   const q = P.quarterPacing(Q1, []);
-  const openDays = q.openDays;
-  ok('Q1 has open Fridays to reason about at all', openDays > 0, String(openDays));
+  ok('Q1 has no open Fridays left — the shared buffer is dormant',
+    q.openDays === 0, String(q.openDays));
 
-  /**
-   * The two subjects are looked UP rather than named, so this section keeps
-   * testing the rule after she reallocates a day in weekPattern.js. Naming
-   * them would make a scheduling change look like a pacing bug.
-   */
-  const [a, b] = q.rows.filter((r) => r.days > 0).map((r) => r.subject);
-  ok('Q1 has at least two subjects owning days, which is what makes a shared pool a question',
-    Boolean(a && b), q.rows.map((r) => `${r.subject}:${r.days}`).join(' '));
-
-  /** Each subject overshoots by a bit more than half the pool. */
-  const half = Math.ceil((openDays + 2) / 2);
-  const surplus = (subject) => {
-    const row = q.rows.find((r) => r.subject === subject);
-    return Math.max(0, row.slack) + half;
-  };
-  const overloaded = P.quarterPacing(Q1, [
-    ...rotatingRow(a, Q1.batchLabel, surplus(a)),
-    ...rotatingRow(b, Q1.batchLabel, surplus(b))
-  ]);
-  ok('two subjects that each fit the buffer alone still fail together',
-    overloaded.fits === false && overloaded.over.length >= 2,
-    `shortfall ${overloaded.shortfall} vs ${overloaded.openDays} open, over=[${overloaded.over}]`);
-  ok('...and the shortfall is the sum of both, not the larger of the two',
-    overloaded.shortfall >= half * 2, String(overloaded.shortfall));
-
-  /**
-   * AND THE SENTENCE SAYS WHY. A row four days short in a quarter with seven
-   * open Fridays cannot explain itself from its own numbers — "only 7 Fridays
-   * to absorb 4 days, this does not fit" is a sentence that argues against
-   * itself. It has to name the pool the other subject already spent.
-   */
-  const overRow = overloaded.rows.find((r) => r.state === 'over' && -r.slack < overloaded.openDays);
-  ok('a row short by less than the whole pool explains that the pool is already spent',
-    Boolean(overRow) && /whole quarter is/.test(P.pacingNote(overRow, overloaded)),
-    overRow ? P.pacingNote(overRow, overloaded) : 'no such row to test');
-
-  /** One subject short by less than the pool is buffered, not broken. */
   const oneOver = q.rows.find((r) => r.days > 0);
-  const small = P.quarterPacing(
+  ok('Q1 has a subject owning days, so going over it is testable',
+    Boolean(oneOver), q.rows.map((r) => `${r.subject}:${r.days}`).join(' '));
+
+  const over = P.quarterPacing(
     Q1,
     rotatingRow(oneOver.subject, Q1.batchLabel, Math.max(0, oneOver.slack) + 1)
   );
-  const smallRow = small.rows.find((r) => r.subject === oneOver.subject);
-  ok('one day over, with Fridays free, reads as buffered rather than broken',
-    smallRow.state === 'buffered' && small.fits === true,
-    `${smallRow.state} slack=${smallRow.slack}`);
-  ok('...and fridaysLeft says what the buffer has left afterwards',
-    small.fridaysLeft === small.openDays - small.shortfall,
-    `${small.fridaysLeft} of ${small.openDays}`);
+  const overRow = over.rows.find((r) => r.subject === oneOver.subject);
+  ok('one day over, with no Fridays free, reads as over rather than buffered',
+    overRow.state === 'over' && over.fits === false,
+    `${overRow.state} fits=${over.fits}`);
+  ok('...and the buffered state is unreachable now — nothing is left to cover it',
+    over.rows.every((r) => r.state !== 'buffered'),
+    over.rows.map((r) => `${r.subject}:${r.state}`).join(' '));
+  ok('...and fridaysLeft reports honestly that nothing is left, win or lose',
+    over.fridaysLeft === 0,
+    String(over.fridaysLeft));
+
+  /** Two subjects pushed over at once both read over, not just the bigger one. */
+  const [a, b] = q.rows.filter((r) => r.days > 0).map((r) => r.subject);
+  const bothOver = a && b
+    ? P.quarterPacing(Q1, [
+        ...rotatingRow(a, Q1.batchLabel, Math.max(0, q.rows.find((r) => r.subject === a).slack) + 1),
+        ...rotatingRow(b, Q1.batchLabel, Math.max(0, q.rows.find((r) => r.subject === b).slack) + 1)
+      ])
+    : null;
+  ok('two subjects each pushed over both land in `over`, not just the larger one',
+    Boolean(bothOver) && bothOver.over.length >= 2,
+    bothOver ? `over=[${bothOver.over}]` : 'need two subjects owning days to test this');
+  ok('...and the sentence names the shortfall honestly, with no Fridays to point to',
+    Boolean(bothOver) && /0 open Fridays/.test(P.pacingNote(bothOver.rows.find((r) => r.subject === a), bothOver)),
+    bothOver ? P.pacingNote(bothOver.rows.find((r) => r.subject === a), bothOver) : 'n/a');
 }
 
 console.log('\n--- 5. "exactly enough" is not reported as healthy ---');
@@ -276,8 +295,24 @@ console.log('\n--- 5. "exactly enough" is not reported as healthy ---');
    * its own sentence.
    */
   const q = P.quarterPacing(Q1, []);
-  /** A subject with room to fill, so the boundary can be walked up to. */
-  const spare = q.rows.filter((r) => r.slack >= 2).sort((x, y) => y.slack - x.slack)[0];
+  /**
+   * A subject with room to fill, so the boundary can be walked up to — and
+   * one whose synthetic Khan unit costs exactly ONE day, because `at(n)`
+   * below adds `n` rows expecting `needs` to grow by exactly `n`.
+   *
+   * Social Studies moved to DAILY_SUBJECTS Nov 3, 2026 (it has its own daily
+   * block-5c, not a shared rotating slot) and, with zero Mission Control
+   * lessons of its own in Q1, now owns every school day in the quarter —
+   * by far the largest slack here, so an unfiltered sort picks it first. Its
+   * measured Khan unit cost is 4 days, not 1 (see MEASURED_UNIT_DAYS in
+   * pacing.js), so it would silently break the n-additions-equals-n-days
+   * assumption this test depends on. Filtering on `khanUnitDays(...) === 1`
+   * rules it (and Technology, measured at 8) out on the actual property that
+   * matters here, rather than naming them.
+   */
+  const spare = q.rows
+    .filter((r) => r.slack >= 2 && P.khanUnitDays({ subject: r.subject }) === 1)
+    .sort((x, y) => y.slack - x.slack)[0];
   ok('Q1 has a subject with spare days to fill, so the boundary is testable',
     Boolean(spare), q.rows.map((r) => `${r.subject}:${r.slack}`).join(' '));
 
@@ -298,19 +333,27 @@ console.log('\n--- 5. "exactly enough" is not reported as healthy ---');
     exact.tight.includes(spare.subject), `[${exact.tight}]`);
   /**
    * ---- AND THE SENTENCE TELLS THE TRUTH ABOUT WHICH KIND OF TIGHT IT IS ----
+   * (Nov 3, 2026.)
    *
-   * "One sick day and this quarter cannot catch up" is right only when the
-   * Fridays are gone. Q1 Aerospace is zero-slack with four open Fridays behind
-   * it — a missed Monday has somewhere to go, and crying wolf there teaches her
-   * to scroll past the row that matters.
+   * "One sick day and this quarter cannot catch up" used to be wrong for a
+   * subject with open Fridays still behind it — a missed Monday had
+   * somewhere to go, and crying wolf there taught her to scroll past the row
+   * that matters. That exception is gone along with the Fridays themselves:
+   * every specialized subject owns its own fixed block every school day now,
+   * so a REAL tight row's `fridaysLeft` is always 0, and the alarm firing is
+   * simply correct now, not a false positive to guard against.
+   *
+   * The sentence still has two branches (see pacingNote's `tight` case), so
+   * both are still worth proving off the field they actually read --
+   * `fridaysLeft` -- rather than assuming the dormant branch rotted quietly.
    */
-  ok('a tight subject with Fridays left is told where a missed day goes',
-    exact.fridaysLeft > 0 && /still free/.test(P.pacingNote(exactRow, exact)) &&
-      !/cannot catch up/.test(P.pacingNote(exactRow, exact)),
-    P.pacingNote(exactRow, exact));
-  ok('...and a tight subject with the Fridays already spent gets the real alarm',
-    /cannot catch up/.test(P.pacingNote(exactRow, { ...exact, fridaysLeft: 0 })),
-    P.pacingNote(exactRow, { ...exact, fridaysLeft: 0 }));
+  ok('a real tight row has no Fridays left, so it gets the real alarm',
+    exact.fridaysLeft === 0 && /cannot catch up/.test(P.pacingNote(exactRow, exact)),
+    `fridaysLeft=${exact.fridaysLeft} :: ${P.pacingNote(exactRow, exact)}`);
+  ok('...and the other branch still reads right, should fridaysLeft ever be nonzero again',
+    /still free/.test(P.pacingNote(exactRow, { ...exact, fridaysLeft: 2 })) &&
+      !/cannot catch up/.test(P.pacingNote(exactRow, { ...exact, fridaysLeft: 2 })),
+    P.pacingNote(exactRow, { ...exact, fridaysLeft: 2 }));
 }
 
 console.log('\n--- 6. the floor is declared wherever Khan units are counted ---');
@@ -353,7 +396,6 @@ console.log('\n--- 7. the shipped lesson table still fits on its own ---');
     ok(`${q.quarter} fits on Mission Control lessons alone`, q.fits,
       q.over.map((s) => `${s} over`).join(', '));
   }
-
   /**
    * IDLE MEANS NOTHING TO TEACH, NOT NOTHING IN MISSION CONTROL — and that
    * distinction is the whole reason Khan units are counted here. Social Studies
@@ -361,10 +403,19 @@ console.log('\n--- 7. the shipped lesson table still fits on its own ---');
    * would read as thirteen wasted Wednesdays in a quarter where it has ten
    * units to get through, and that misreading is exactly what the first draft
    * of this module produced.
+   *
+   * Looked up by LESSONS === 0, not by an absent row, as of Nov 3, 2026.
+   * Every DAILY_SUBJECTS member now owns a day every single school day (its
+   * own fixed block, Social Studies and all three de-rotated subjects
+   * alike), so all four always appear as rows regardless of lessons count —
+   * "no row at all" can no longer happen and would make this `.find` return
+   * undefined forever. The real distinction this test needs — carries Khan
+   * work but no Mission Control lessons of its own — is `lessons === 0`.
    */
-  const khanOnly = P.ROTATING_SUBJECTS.find(
-    (s) => P.quarterPacing(Q1, []).rows.every((r) => r.subject !== s)
-  );
+  const khanOnlyQ1 = P.quarterPacing(Q1, []);
+  const khanOnly = khanOnlyQ1.rows.find(
+    (r) => P.DAILY_SUBJECTS.includes(r.subject) && r.lessons === 0
+  )?.subject;
   ok('Q1 has a subject carrying no Mission Control lessons, which is what idle has to get right',
     Boolean(khanOnly), String(khanOnly));
   const seeded = P.quarterPacing(Q1, rotatingRow(khanOnly, Q1.batchLabel, 6));

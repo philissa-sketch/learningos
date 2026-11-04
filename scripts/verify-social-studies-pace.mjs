@@ -64,16 +64,32 @@ for (const q of QUARTER_SPANS.slice(0, 4)) {
   ok(`${q.batchLabel}: Social Studies is not over`, r && r.state !== 'over', JSON.stringify(r));
 }
 
-console.log('\n--- 6. three sessions a week ---');
+console.log('\n--- 6. every school day, not three sessions a week — RETIRED Nov 3, 2026 ---');
 {
+  /**
+   * "Three sessions a week" (Tue/Thu's borrowed morning slot plus the shared
+   * 2:15 block) was itself a patch for "the one x per week isn't enough" —
+   * and on Nov 3, 2026, the parent asked for the real fix instead: "Social
+   * studies need to be everyday. Make 30 minutes time slots if need be."
+   * Social Studies now owns block-5c, every school day, and has left both of
+   * the mechanisms this section used to probe — it is never the morning
+   * slot's subject and never a rotating-block subject again.
+   */
   const probe = [{ subject: 'socialStudies', batchLabel: 'Q2 2026-2027' }, { subject: 'aerospace', batchLabel: 'Q2 2026-2027' }];
-  let n = 0;
+  let borrowed = 0;
   for (let i = 0; i < 5; i++) {
     const d = new Date(2026, 10, 9 + i); // Mon Nov 9 .. Fri Nov 13, 2026
-    if (liveMorningSubject(d, probe) === 'socialStudies') n++;
-    if (liveRotatingSubjects(d, probe).includes('socialStudies')) n++;
+    if (liveMorningSubject(d, probe) === 'socialStudies') borrowed++;
+    if (liveRotatingSubjects(d, probe).includes('socialStudies')) borrowed++;
   }
-  ok('a Q2 week gives Social Studies three sessions', n === 3, String(n));
+  ok('Social Studies no longer borrows the morning slot or the rotating block at all',
+    borrowed === 0, String(borrowed));
+
+  const { defaultSchedule } = await import(moduleUrl('src/academies/lamar/data/schedule/defaultSchedule.js'));
+  const block5c = defaultSchedule.find((b) => b.id === 'block-5c');
+  ok('it has its own block-5c, with no `days` restriction — every school day',
+    Boolean(block5c) && block5c.label === 'Social Studies' && !('days' in block5c),
+    JSON.stringify(block5c));
 }
 
 console.log(`\n${passed} passed, ${failures.length} failed`);

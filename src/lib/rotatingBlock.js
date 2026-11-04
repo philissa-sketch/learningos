@@ -251,6 +251,9 @@ export function resolveBlockLabel(block, date = new Date(), khanAcademyAssignmen
  * -block.mjs fails if the current default is missing from either.
  */
 export const SHIPPED_ROTATING_LABELS = new Set([
+  // Current, Nov 3 2026 — Social Studies left the rotation for its own
+  // daily block (block-5c), so it also left this label.
+  'Rotating Block — Aerospace / Technology / Robotics',
   'Rotating Block — Aerospace / Technology / Social Studies / Robotics',
   'Aerospace / Social Studies / Coding / Robotics / STEM Project · Fridays: Gardening or Guitar Theory',
   'Aerospace / Social Studies / Coding / Robotics / STEM Project',

@@ -68,8 +68,8 @@ const S = (hhmm, isSchoolDay = true) => scheduleStatus(defaultSchedule, { minute
 
 ok(S('07:30').phase === 'before', 'before the first block: "before"');
 ok(S('07:30').next.label.includes('Morning Meeting'), 'and it names the morning meeting as next');
-ok(S('09:30').phase === 'in-block' && S('09:30').current.label === 'Mathematics',
-  '9:30am is Mathematics', S('09:30').current?.label);
+ok(S('09:15').phase === 'in-block' && S('09:15').current.label === 'Mathematics',
+  '9:15am is Mathematics', S('09:15').current?.label);
 // DERIVED, NOT HARDCODED. This trio broke on Aug 9 2026 when the morning was
 // retimed (Reading 45 -> 15 min, Language Arts 30 -> 60) and Science moved from
 // 11:00-12:00 to 10:30-11:30. The checks were right about the BEHAVIOUR and
@@ -84,10 +84,12 @@ const midScience = (a, b) => {
 ok(S(midScience(SCIENCE.startTime, SCIENCE.endTime)).current.label === 'Science',
   'the middle of the Science block is Science',
   S(midScience(SCIENCE.startTime, SCIENCE.endTime)).current?.label);
-ok(S('13:20').current.label === 'Spelling & Vocabulary',
-  '1:20pm is Spelling & Vocabulary', S('13:20').current?.label);
-ok(S('14:50').current.label === 'Electric Guitar Practice',
-  '2:50pm is guitar practice', S('14:50').current?.label);
+ok(S('13:20').current.label === 'Vocabulary',
+  '1:20pm is Vocabulary — Spelling (13:00) and Vocabulary (13:15) split into their own blocks Nov 3, 2026',
+  S('13:20').current?.label);
+ok(S('15:35').current.label === 'Electric Guitar Practice',
+  '3:35pm is guitar practice -- block-10 shifted 14:30-14:45 -> 15:30-15:45 on Nov 3, 2026, when Aerospace/Technology/Robotics each took their own fixed block ahead of it',
+  S('15:35').current?.label);
 ok(S('20:00').phase === 'after', '8pm is after the school day');
 ok(S('11:30', false).phase === 'no-school', 'a weekend is "no-school" whatever the time');
 
@@ -98,9 +100,9 @@ ok(S('11:30', false).phase === 'no-school', 'a weekend is "no-school" whatever t
 // the day that block became the Reading Lesson — the fifth stale-literal
 // failure in this project in a week, and the thing under test was never the
 // label. It is that the boundary belongs to the block starting.
-const tenOClock = defaultSchedule.find((b) => b.startTime === '10:00');
-ok(S('10:00').current.label === tenOClock.label,
-  `on the boundary, the new block is the current one (${tenOClock.label})`, S('10:00').current?.label);
+const mathEndsBlock = defaultSchedule.find((b) => b.startTime === defaultSchedule.find((x) => x.label === 'Mathematics').endTime);
+ok(S(mathEndsBlock.startTime).current.label === mathEndsBlock.label,
+  `on the boundary, the new block is the current one (${mathEndsBlock.label})`, S(mathEndsBlock.startTime).current?.label);
 
 // The countdown.
 // A HARDCODED 3600 UNTIL AUG 9 2026, and it broke the moment Science went from
@@ -232,13 +234,13 @@ console.log('\n--- 3. the bell rings when it should, and only then ---');
 const D = (hhmm, warn = 2, isSchoolDay = true) =>
   bellDue(defaultSchedule, { minutes: at(hhmm), warningMinutes: warn, isSchoolDay });
 
-ok(D('09:30') === null, 'no bell mid-block');
-ok(D('10:00')?.kind === 'switch', 'switch bell when Maths ends at 10:00', JSON.stringify(D('10:00')));
-ok(D('09:58')?.kind === 'warning', 'warning two minutes before, at 9:58', JSON.stringify(D('09:58')));
-ok(D('09:58', 0) === null, 'no warning at all when the lead is set to zero');
-ok(D('09:55', 5)?.kind === 'warning', 'a five-minute lead warns at 9:55');
+ok(D('09:15') === null, 'no bell mid-block');
+ok(D('09:30')?.kind === 'switch', 'switch bell when Maths ends at 09:30', JSON.stringify(D('09:30')));
+ok(D('09:28')?.kind === 'warning', 'warning two minutes before, at 9:28', JSON.stringify(D('09:28')));
+ok(D('09:28', 0) === null, 'no warning at all when the lead is set to zero');
+ok(D('09:25', 5)?.kind === 'warning', 'a five-minute lead warns at 9:25');
 ok(D('08:30')?.kind === 'start', 'the day opens with the start bell');
-ok(D('10:00', 2, false) === null, 'nothing rings at the weekend');
+ok(D('09:30', 2, false) === null, 'nothing rings at the weekend');
 ok(D('20:00') === null, 'nothing rings long after the last block');
 
 /**
@@ -246,9 +248,9 @@ ok(D('20:00') === null, 'nothing rings long after the last block');
  * rather than a boolean. A background tab can be starved for a minute; when it
  * gets a turn again the bell it missed should still ring, late but correct.
  */
-const lateByHalfMin = bellDue(defaultSchedule, { minutes: at('10:00') + 0.5, warningMinutes: 2 });
+const lateByHalfMin = bellDue(defaultSchedule, { minutes: at('09:30') + 0.5, warningMinutes: 2 });
 ok(lateByHalfMin?.kind === 'switch', 'a tab that wakes 30 seconds late still rings the switch');
-const lateByFiveMin = bellDue(defaultSchedule, { minutes: at('10:00') + 5, warningMinutes: 2 });
+const lateByFiveMin = bellDue(defaultSchedule, { minutes: at('09:30') + 5, warningMinutes: 2 });
 ok(lateByFiveMin === null, 'but a boundary five minutes gone is not rung — too late to be useful');
 
 /**
@@ -256,11 +258,11 @@ ok(lateByFiveMin === null, 'but a boundary five minutes gone is not rung — too
  * evaluated repeatedly inside one second must produce one key, and two
  * different boundaries must produce two.
  */
-const k1 = bellKey('2026-08-10', D('10:00'));
-const k2 = bellKey('2026-08-10', bellDue(defaultSchedule, { minutes: at('10:00') + 0.2, warningMinutes: 2 }));
+const k1 = bellKey('2026-08-10', D('09:30'));
+const k2 = bellKey('2026-08-10', bellDue(defaultSchedule, { minutes: at('09:30') + 0.2, warningMinutes: 2 }));
 ok(k1 === k2 && k1 !== null, 'the same boundary yields the same key, so it rings once', `${k1} vs ${k2}`);
-ok(bellKey('2026-08-10', D('10:45')) !== k1, 'a different boundary yields a different key');
-ok(bellKey('2026-08-11', D('10:00')) !== k1, 'the same boundary tomorrow rings again');
+ok(bellKey('2026-08-10', D('10:15')) !== k1, 'a different boundary yields a different key');
+ok(bellKey('2026-08-11', D('09:30')) !== k1, 'the same boundary tomorrow rings again');
 
 /**
  * A warning must never land on top of a switch. A block shorter than the
@@ -436,8 +438,8 @@ console.log('\n--- the clock conversion (the caller, not just the library) ---')
     weekday: 3
   });
   ok(midMorning.phase === 'in-block', '10:52 on a Wednesday is IN a block, not before school', `phase ${midMorning.phase}`);
-  ok(Boolean(midMorning.current) && midMorning.current.label === 'Science',
-    '...and the block it names is Science', midMorning.current ? midMorning.current.label : 'no current block');
+  ok(Boolean(midMorning.current) && midMorning.current.label === 'Typing Practice',
+    '...and the block it names is Typing Practice', midMorning.current ? midMorning.current.label : 'no current block');
 
   for (const file of ['src/components/Dashboard/ClassBellCard.jsx', 'src/components/Dashboard/TodaysRoutineRail.jsx']) {
     const name = file.split('/').pop();

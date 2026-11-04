@@ -543,7 +543,7 @@ console.log('\n--- 10. school-year scoping and the word-study weight ---');
   // The schedule change that came with it.
   const sched = read('src/academies/lamar/data/schedule/defaultSchedule.js');
   ok('the 10:00 block is the reading lesson now', /label: 'Reading Lesson'/.test(sched));
-  ok('...still fifteen minutes', /'block-3', startTime: '10:00', endTime: '10:15'/.test(sched));
+  ok('...still fifteen minutes', /'block-3', startTime: '09:30', endTime: '09:45'/.test(sched));
   ok('the rename reaches a schedule she already saved',
     /b\.label === 'Reading' \|\| b\.label === 'Independent Reading'/.test(store));
   const dash = read('src/components/Dashboard/MissionControlDashboard.jsx');

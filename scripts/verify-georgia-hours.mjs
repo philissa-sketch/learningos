@@ -180,20 +180,38 @@ console.log('\n--- 4b. the schedule enters the hours ---');
    * that he's done the time should be entered."
    */
   const tickAll = { '2026-08-17': { math: true, reading: true, science: true, typing: true } };
-  ok('ticking maths books the 60 minutes her timetable gives it',
-    sm.scheduledMinutesOn('2026-08-17', { khanDailyLog: { '2026-08-17': { math: true } } }) === 60,
-    'block-2 is 09:00-10:00 because she said so');
+  ok('ticking maths books the 30 minutes her timetable gives it',
+    sm.scheduledMinutesOn('2026-08-17', { khanDailyLog: { '2026-08-17': { math: true } } }) === 30,
+    'block-2 is 09:00-09:30 because she said so (Nov 3, 2026 rebuild)');
   ok('...and four subjects book their four blocks',
-    sm.scheduledMinutesOn('2026-08-17', { khanDailyLog: tickAll }) === 135,
-    '60 + 15 + 45 + 15');
+    sm.scheduledMinutesOn('2026-08-17', { khanDailyLog: tickAll }) === 90,
+    '30 math + 15 reading + 30 science + 15 typing');
 
-  /** THE DOUBLE-COUNTING TRAP. Four subjects share the 45-minute 2:15 block. */
+  /**
+   * ---- NOTHING SHARES A BLOCK ANY MORE. (Nov 3, 2026, same day.) ----
+   *
+   * Aerospace, Technology and Robotics used to share ONE 30-minute rotating
+   * block (block-9). The parent retired that mechanism too, the same
+   * sitting: "I want them to be daily." Each now has its own real block
+   * (block-9, block-9b, block-9c), so ticking all three books three
+   * SEPARATE 30-minute blocks, not one shared slot — the opposite of what
+   * this section used to prove, because the thing it was proving no longer
+   * exists to prove.
+   */
   const oneRotator = sm.scheduledMinutesOn('2026-08-17', { khanDailyLog: { '2026-08-17': { aerospace: true } } });
   const three = sm.scheduledMinutesOn('2026-08-17', {
-    khanDailyLog: { '2026-08-17': { aerospace: true, technology: true, socialStudies: true } }
+    khanDailyLog: { '2026-08-17': { aerospace: true, technology: true, robotics: true } }
   });
-  ok('three rotating subjects still book ONE 45-minute block', oneRotator === 45 && three === 45,
-    `${oneRotator} vs ${three} — the block only happened once`);
+  ok('Aerospace alone books its own 30-minute block', oneRotator === 30, String(oneRotator));
+  ok('...and Aerospace, Technology and Robotics together book THREE separate 30-minute blocks',
+    three === 90,
+    `${three} — each has its own block now (block-9/9b/9c), none of them shared`);
+  ok('...and Social Studies books its OWN block alongside them too',
+    sm.scheduledMinutesOn('2026-08-17', {
+      khanDailyLog: { '2026-08-17': { aerospace: true, socialStudies: true } }
+    }) === 60,
+    '30 Aerospace + 30 Social Studies — two real blocks, neither shared with the other');
+
 
   ok('lunch and break are never instruction',
     !sm.coveredBlockIds('2026-08-17', { khanDailyLog: { '2026-08-17': { math: true } } }).has('block-6'),
@@ -207,12 +225,12 @@ console.log('\n--- 4b. the schedule enters the hours ---');
     sm.scheduledMinutesOn('2026-08-17', {
       writingEntries: [{ completedAt: '2026-08-17T18:00:00.000Z' }],
       weeklyWordState: { spelling: { weekStartDate: '2026-08-17', completedDayTasks: ['mon'] } }
-    }) === 75,
-    'without these two the ticks could only ever reach 3h45 of a 5h30 day — under the bar');
+    }) === 60,
+    'Daily Writing (15) + Writing Journal (15) + Spelling (15) + Vocabulary (15), each its own block since Nov 3, 2026');
 
   ok('an evening writing entry counts for that evening, not tomorrow',
     sm.coveredBlockIds('2026-08-17', { writingEntries: [{ completedAt: '2026-08-18T01:30:00.000Z' }] }).size === 0 ||
-    sm.coveredBlockIds('2026-08-17', { writingEntries: [{ completedAt: '2026-08-18T01:30:00.000Z' }] }).has('block-7'),
+    sm.coveredBlockIds('2026-08-17', { writingEntries: [{ completedAt: '2026-08-18T01:30:00.000Z' }] }).has('block-7a'),
     'completedAt is UTC; it goes through localDayOf');
 
   ok('recomputed from the logs, so unticking removes the credit',
@@ -231,7 +249,16 @@ console.log('\n--- 4b. the schedule enters the hours ---');
 
   ok('a full day of ticks clears the 4.5-hour bar',
     sm.scheduledMinutesOn('2026-08-17', {
-      khanDailyLog: { '2026-08-17': { math: true, reading: true, science: true, typing: true, aerospace: true } },
+      khanDailyLog: { '2026-08-17': { math: true, reading: true, science: true, typing: true, aerospace: true, socialStudies: true } },
+      // One Khan tick on 'reading' only resolves to ONE of its two strands
+      // (whichever nextOpenKhanRow hands back) — a grammar row here resolves
+      // it to block-7, so a Reading & Literature LESSON is what credits
+      // block-3 instead.
+      khanAcademyAssignments: [{
+        subject: 'reading', batchLabel: 'Q1 2026-2027', sequenceInQuarter: 1,
+        khanAcademyUrl: 'https://www.khanacademy.org/humanities/grammar/punctuation-the-comma-and-the-apostrophe'
+      }],
+      lessonProgress: { 'r7-bessie-coleman': { lastCompletedDate: '2026-08-17' } },
       peWorkoutLog: [{ date: '2026-08-17' }], guitarLog: [{ date: '2026-08-17' }],
       writingEntries: [{ completedAt: '2026-08-17T17:00:00.000Z' }],
       weeklyWordState: { spelling: { weekStartDate: '2026-08-17', completedDayTasks: ['mon'] } }
@@ -635,20 +662,28 @@ console.log('\n--- the lessons this app teaches earn the block they sit in ---')
     /lessonProgress: get\(\)\.lessonProgress/.test(codeOnly(read('src/store/useAppStore.js'))));
 
   /**
-   * The arithmetic, on her real numbers, not on a mock. Aug 19: math, science,
-   * reading, typing, guitar, writing and word study were already credited at
-   * 225. The Aerospace lesson adds block-9's 45 and nothing else, because the
-   * block is the unit of credit and it only happened once.
+   * ---- AEROSPACE AND TECHNOLOGY BOOK TWO SEPARATE BLOCKS NOW, NOT ONE
+   * SHARED ONE. (Nov 3, 2026, same day.) ----
+   *
+   * This section used to credit a lesson in each of two subjects that shared
+   * ONE 45-minute rotating block (block-9) and prove the shared block was
+   * only counted once. The parent retired that sharing: "I want them to be
+   * daily." Aerospace keeps block-9; Technology moved to its own block-9b.
+   * The fixture below gives both blocks real times so the test can prove
+   * the honest thing that replaced the old one — two real blocks, credited
+   * separately — rather than silently passing because block-9b was missing
+   * from an unchanged fixture.
    */
   const blocks = [
-    { id: 'block-9', startTime: '14:15', endTime: '15:00' }
+    { id: 'block-9', startTime: '14:00', endTime: '14:30' },
+    { id: 'block-9b', startTime: '14:30', endTime: '15:00' }
   ];
   const mins = sm.scheduledMinutesOn('2026-08-19', {
     lessonProgress: { 'ae7-history-of-flight-2': { mastered: true, lastCompletedDate: '2026-08-19' } },
     scheduleBlocks: blocks
   });
-  ok('an Aerospace lesson on a date books the 45-minute rotating block',
-    mins === 45, `got ${mins}`);
+  ok('an Aerospace lesson on a date books its own 30-minute block',
+    mins === 30, `got ${mins}`);
   const twice = sm.scheduledMinutesOn('2026-08-19', {
     lessonProgress: {
       'ae7-history-of-flight-2': { lastCompletedDate: '2026-08-19' },
@@ -656,8 +691,8 @@ console.log('\n--- the lessons this app teaches earn the block they sit in ---')
     },
     scheduleBlocks: blocks
   });
-  ok('...and two rotating subjects on one day still book it once',
-    twice === 45, `got ${twice} — the block happened once`);
+  ok('...and Aerospace plus Technology together book TWO separate blocks, not one shared one',
+    twice === 60, `got ${twice} — each now has its own block (block-9/block-9b)`);
   const other = sm.scheduledMinutesOn('2026-08-18', {
     lessonProgress: { 'ae7-history-of-flight-2': { lastCompletedDate: '2026-08-19' } },
     scheduleBlocks: blocks
@@ -703,9 +738,14 @@ console.log('\n--- every instructional block on the timetable can actually be cr
     gardenLog: [{ date: D }],
     writingEntries: [{ completedAt: `${D}T15:00:00.000Z` }],
     weeklyWordState: { spelling: { creditedDates: [D] } },
-    lessonProgress: { 'any-lesson': { lastCompletedDate: D } },
+    lessonProgress: { 'any-lesson': { lastCompletedDate: D }, 'r7-bessie-coleman': { lastCompletedDate: D } },
     morningMeetings: { [D]: { completedAt: `${D}T13:00:00.000Z` } },
-    khanAcademyAssignments: []
+    khanAcademyAssignments: [{
+      subject: 'reading',
+      batchLabel: 'Q1 2026-2027',
+      sequenceInQuarter: 1,
+      khanAcademyUrl: 'https://www.khanacademy.org/humanities/grammar/punctuation-the-comma-and-the-apostrophe'
+    }]
   };
   const covered = sm.coveredBlockIds(D, everything);
   const instructional = defaultSchedule.filter((b) => !sm.NON_INSTRUCTIONAL_BLOCKS.has(b.id));

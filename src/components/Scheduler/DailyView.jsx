@@ -1,6 +1,10 @@
 import { useState, useEffect, useMemo } from 'react';
 import { useAppStore } from '../../store/useAppStore.js';
-import { resolveBlockLabel, ROTATING_BLOCK_ID } from '../../lib/rotatingBlock.js';
+// ROTATING_BLOCK_ID's "Rotating block" caption retired Nov 3, 2026 — nothing
+// on this screen rotates any more (see MissionControlDashboard.jsx's
+// isOffTimetable comment for the full history), so this import no longer
+// names it.
+import { resolveBlockLabel } from '../../lib/rotatingBlock.js';
 import {
   toDateStr,
   todayDateStr,
@@ -10,6 +14,7 @@ import {
 } from '../../lib/scheduler.js';
 import { buildPlannerItemsByDate, splitPlannerItems } from '../../lib/plannerCalendar.js';
 import { academyContent } from '../../content/academyContent.js';
+import { DAILY_SPECIALIZED_SUBJECTS } from '../../lib/scheduledMinutes.js';
 import { dayPattern as slotDayPattern } from '../../content/slots/timetable.js';
 
 const { SUBJECT_LABELS = {} } = academyContent().subjects;
@@ -160,10 +165,21 @@ export function DailyView({ date, onChangeDate }) {
    * first time he got ahead or fell behind.
    */
   const pattern = dayPattern(date);
+  /**
+   * ---- NOTHING ROTATES ANY MORE. (Nov 3, 2026.) ----
+   *
+   * This used to map over `pattern.subjects` — the weekday's rotation
+   * preference list — to find which ONE specialized subject owned today.
+   * The parent retired the rotation itself: "I want them to be daily."
+   * `pattern.subjects` is now empty on every weekday (see weekPattern.js),
+   * so this reads the fixed daily list instead: Aerospace, Technology,
+   * Robotics and Social Studies all run every school day now, same as Math
+   * or Science.
+   */
   // eslint-disable-next-line react-hooks/exhaustive-deps -- lessonProgress is the real reactive input; getTodaysMission reads it via get()
   const todaysLessons = useMemo(
     () =>
-      pattern.subjects
+      DAILY_SPECIALIZED_SUBJECTS
         .map((subject) => ({ subject, lesson: getTodaysMission(subject) }))
         .filter((row) => row.lesson),
     [dateStr, lessonProgress, getTodaysMission]
@@ -221,8 +237,8 @@ export function DailyView({ date, onChangeDate }) {
           <p className="mt-1 text-xs text-ink-500">{pattern.note}</p>
           {todaysLessons.length === 0 ? (
             <p className="mt-2 text-sm text-ink-500">
-              Every lesson in {pattern.subjects.map((x) => SUBJECT_LABELS[x] || x).join(' and ')} is already
-              mastered — a good day for the Academic Center or a project.
+              Every lesson in {DAILY_SPECIALIZED_SUBJECTS.map((x) => SUBJECT_LABELS[x] || x).join(', ')} is
+              already mastered — a good day for the Academic Center or a project.
             </p>
           ) : (
             <div className="mt-2 space-y-1.5">
@@ -243,8 +259,8 @@ export function DailyView({ date, onChangeDate }) {
             </div>
           )}
           <p className="mt-2 text-xs text-ink-600">
-            Core academics run every school day through Khan Academy; the lessons above are the rotating
-            subjects for this weekday, each showing the next one he hasn’t mastered.
+            Core academics and Aerospace, Technology, Robotics and Social Studies all run every school day
+            now; the lessons above show the next one he hasn’t mastered in each.
           </p>
         </div>
       )}
@@ -444,9 +460,6 @@ export function DailyView({ date, onChangeDate }) {
                       <p className="mt-1 font-display text-base font-700 text-ink-100">
                         {resolveBlockLabel(block, date, khanAcademyAssignments)}
                       </p>
-                      {block.id === ROTATING_BLOCK_ID && (
-                        <p className="mt-0.5 text-[11px] text-ink-500">Rotating block — this is what runs today</p>
-                      )}
                     </div>
                     {isNow && (
                       <span className="rounded-full border border-signal-cyan/50 bg-signal-cyan/15 px-2 py-1 text-xs font-display uppercase tracking-wide text-signal-cyan">

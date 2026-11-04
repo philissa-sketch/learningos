@@ -22,11 +22,10 @@ import { WORD_ACTIVITIES } from '../../lib/weeklyWords.js';
 import { todayDateStr } from '../../lib/scheduler.js';
 import { TimetableOrder } from './TimetableOrder.jsx';
 import { pairedBuildFor } from '../../lib/weeklyPlan.js';
-import { BLOCK_FOR_SUBJECT, STRAND_BLOCK, khanReadingStrand, blockForLesson } from '../../lib/scheduledMinutes.js';
+import { BLOCK_FOR_SUBJECT, STRAND_BLOCK, khanReadingStrand, blockForLesson, DAILY_SPECIALIZED_SUBJECTS } from '../../lib/scheduledMinutes.js';
 import {
   liveRotatingSubjects,
   liveMorningSubject,
-  ROTATING_BLOCK_ID,
   MORNING_BLOCK_ID
 } from '../../lib/rotatingBlock.js';
 import { useToday } from '../../lib/useToday.js';
@@ -365,15 +364,22 @@ export function MissionControlDashboard({
   const missedDayLabel = (subject) =>
     behindThisWeek.find((b) => b.subject === subject)?.label ?? null;
 
+  /**
+   * ---- NOTHING ROTATES ANY MORE. (Nov 3, 2026.) ----
+   *
+   * The parent: "i don't want aerospace robotics and tech to be rotating...
+   * I want them to be daily. social studies should be daily as well." Social
+   * Studies, Aerospace, Technology and Robotics each now own a real block
+   * every school day (block-5c, block-9, block-9b, block-9c) instead of
+   * taking turns in one shared slot, so `todaysSubjects` no longer asks
+   * `liveRotatingSubjects` / `liveMorningSubject` which ONE of them is live
+   * today — all four are, every day, the same way Math and Science are.
+   * `subjectsBehindThisWeek` is kept in the mix for anything else that can
+   * still fall behind, but with nothing left to rotate it will normally be
+   * empty.
+   */
   const todaysSubjects = todayPattern.kind === 'core'
-    ? todayPattern.flex
-      ? subjectsBehindThisWeek
-      : [
-          ...liveRotatingSubjects(new Date(), khanAcademyAssignments),
-          ...(liveMorningSubject(new Date(), khanAcademyAssignments)
-            ? [liveMorningSubject(new Date(), khanAcademyAssignments)]
-            : [])
-        ]
+    ? [...DAILY_SPECIALIZED_SUBJECTS, ...subjectsBehindThisWeek]
     : allSubjects;
 
   /**
@@ -381,10 +387,11 @@ export function MissionControlDashboard({
    * routine gives each of them its own daily block: 9:00 Mathematics,
    * 10:00 Independent Reading, 11:00 Science, 1:00 Language Arts.
    *
-   * Social Studies and Technology do NOT have a daily block. They share the
-   * 2:15 rotating slot and, per the 4+1 week the parent chose, run Tuesday and
-   * Thursday only — "specialized subjects ROTATE so he never handles more than
-   * two in one day."
+   * Social Studies, Aerospace, Technology and Robotics ALSO have their own
+   * daily block now (see DAILY_SPECIALIZED_SUBJECTS above) and so are always
+   * included via `todaysSubjects` below, without needing to be listed here
+   * too — this list stays the three subjects that never went through the
+   * rotating-block machinery at all.
    */
   const DAILY_KHAN_SUBJECTS = ['math', 'reading', 'science'];
 
@@ -759,8 +766,14 @@ export function MissionControlDashboard({
       .map((b) => [b.id, formatBlockTime(b.startTime)])
   );
 
-  /** The subject that actually owns the 2:15 block today, if any. */
-  const rotatingOwners = liveRotatingSubjects(new Date(), khanAcademyAssignments);
+  /**
+   * `rotatingOwners` lived here until Nov 3, 2026, the day the 2:15 block
+   * stopped being shared at all — Aerospace, Technology and Robotics each
+   * got their own fixed block (block-9, block-9b, block-9c), the same day
+   * Social Studies' own daily block-5c was confirmed. `isOffTimetable` below
+   * no longer needs to ask who today's one owner is, because there is no
+   * longer only one.
+   */
 
   /**
    * ==========================================================================
@@ -805,26 +818,19 @@ export function MissionControlDashboard({
   const whenFor = (blockId) => blockTimeById.get(blockId) || '';
 
   /**
-   * A rotating subject that is NOT today's owner is off the timetable. Nothing
-   * else can be: every other row on this screen owns a block that runs every
-   * school day.
+   * ---- NOTHING IS EVER OFF-TIMETABLE ANY MORE. (Nov 3, 2026.) ----
+   *
+   * This used to flag a rotating subject that was not today's one owner —
+   * "Aerospace is Monday/Wednesday only, so stamp it off-timetable on a
+   * Tuesday." The parent retired the rotation itself: "I want them to be
+   * daily." Aerospace, Technology and Robotics each now own a real block
+   * every school day (block-9, block-9b, block-9c), the same as Social
+   * Studies' block-5c and Math's block-2 — nothing on this screen can be off
+   * its own timetable any more. Kept as a function, returning false, rather
+   * than deleted — every row still calls it, and a future subject that
+   * genuinely needs to rotate again would reuse this one name.
    */
-  const isOffTimetable = (subject) => {
-    /**
-     * FRIDAY IS NEVER OFF-TIMETABLE. (Sep 16, 2026.)
-     *
-     * Its 2:15 block is OPEN — "whatever is behind gets it" — and since this
-     * day now only lists subjects that are actually behind, every row here is
-     * precisely what that block is for. Stamping them "not on today's
-     * timetable" would be the screen arguing with itself, which is the exact
-     * complaint that started this whole thread.
-     */
-    if (todayPattern.flex) return false;
-    // It owns the 10:30 slot today, so it is as on-timetable as Mathematics.
-    if (subject && subject === morningOwner) return false;
-    if (BLOCK_FOR_SUBJECT[subject] !== ROTATING_BLOCK_ID) return false;
-    return !rotatingOwners.includes(subject);
-  };
+  const isOffTimetable = () => false;
 
   /**
    * ENGLISH IS TWO BLOCKS, AND A ROW BELONGS TO THE ONE IT TEACHES.
@@ -1209,6 +1215,23 @@ export function MissionControlDashboard({
              */
             const entries = [];
             for (const [subject, rows] of khanBySubject.entries()) {
+              /**
+               * SCIENCE GIVES UP ITS BLOCK ON THE DAY SOMEONE ELSE OWNS IT.
+               * (Nov 3, 2026.)
+               *
+               * `liveMorningSubject` (rotatingBlock.js, Aug 29 2026) already
+               * documents the intent: "Science gives up Tuesday so Social
+               * Studies can have a second day." The LABEL on block-5 already
+               * honoured that — `resolveBlockLabel` swaps "Science" for
+               * "Social Studies" on the printed schedule — but this loop
+               * never checked it, so Science's own Khan row kept rendering
+               * at 10:15 right alongside whoever actually owns the slot that
+               * day. The parent, looking at Science, Social Studies (native)
+               * and Social Studies (Khan) all stamped 10:15 at once: "why are
+               * all these subjects in the same time slot?" They were never
+               * meant to be — Science was supposed to step aside entirely.
+               */
+              if (subject === 'science' && morningOwner) continue;
               const open = rows.filter((r) => !r.completed);
               if (subject === 'reading') {
                 for (const strand of ['reading', 'language-arts']) {
@@ -1401,8 +1424,8 @@ export function MissionControlDashboard({
             <TodayRow
               subject="reading"
               label="Daily Writing"
-              blockId={BLOCK_FOR_SUBJECT.ela}
-              when={whenFor(BLOCK_FOR_SUBJECT.ela)}
+              blockId={BLOCK_FOR_SUBJECT.dailyWriting}
+              when={whenFor(BLOCK_FOR_SUBJECT.dailyWriting)}
               title={drillDoneToday ? `${todaysDrill.skillLabel} — done` : todaysDrill.title}
               detail={drillDoneToday ? 'Written today' : `${todaysDrill.skillLabel} · about 15 minutes`}
               kind={drillDoneToday ? 'done' : 'mission'}
@@ -1527,8 +1550,8 @@ export function MissionControlDashboard({
             <TodayRow
               subject="reading"
               label="Writing Journal"
-              blockId={BLOCK_FOR_SUBJECT.ela}
-              when={whenFor(BLOCK_FOR_SUBJECT.ela)}
+              blockId={BLOCK_FOR_SUBJECT.writingJournal}
+              when={whenFor(BLOCK_FOR_SUBJECT.writingJournal)}
               title="This week's writing — done"
               kind="done"
               onAction={onOpenJournal}
@@ -1538,8 +1561,8 @@ export function MissionControlDashboard({
             <TodayRow
               subject="reading"
               label="Writing Journal"
-              blockId={BLOCK_FOR_SUBJECT.ela}
-              when={whenFor(BLOCK_FOR_SUBJECT.ela)}
+              blockId={BLOCK_FOR_SUBJECT.writingJournal}
+              when={whenFor(BLOCK_FOR_SUBJECT.writingJournal)}
               title={nextJournalPrompt.title}
               detail={
                 journalPairedBuild && nextJournalPrompt.pairedInstructions
@@ -1594,8 +1617,8 @@ export function MissionControlDashboard({
                   key={skill}
                   subject="reading"
                   label={name}
-                  blockId={BLOCK_FOR_SUBJECT.wordStudy}
-                  when={whenFor(BLOCK_FOR_SUBJECT.wordStudy)}
+                  blockId={BLOCK_FOR_SUBJECT[skill]}
+                  when={whenFor(BLOCK_FOR_SUBJECT[skill])}
                   title={"This week's " + name.toLowerCase() + ' words'}
                   detail={
                     'Nothing due at the weekend. Monday is ' +
@@ -1614,8 +1637,8 @@ export function MissionControlDashboard({
                   key={skill}
                   subject="reading"
                   label={name}
-                  blockId={BLOCK_FOR_SUBJECT.wordStudy}
-                  when={whenFor(BLOCK_FOR_SUBJECT.wordStudy)}
+                  blockId={BLOCK_FOR_SUBJECT[skill]}
+                  when={whenFor(BLOCK_FOR_SUBJECT[skill])}
                   title={name + ' — done for today'}
                   detail="Next step tomorrow. The list stays open if he wants another look."
                   kind="done"
@@ -1640,8 +1663,8 @@ export function MissionControlDashboard({
                 key={skill}
                 subject="reading"
                 label={name}
-                blockId={BLOCK_FOR_SUBJECT.wordStudy}
-                when={whenFor(BLOCK_FOR_SUBJECT.wordStudy)}
+                blockId={BLOCK_FOR_SUBJECT[skill]}
+                when={whenFor(BLOCK_FOR_SUBJECT[skill])}
                 title={task.label + (task.isCatchUp ? ' — catching up' : '')}
                 detail={task.instructions}
                 kind="mission"

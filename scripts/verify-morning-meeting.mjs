@@ -148,8 +148,11 @@ console.log('\n--- 2. running the meeting books the 30 minutes ---');
     khanDailyLog: { '2026-08-20': { math: true } },
     scheduleBlocks: defaultSchedule
   });
+  // Math shrank from 60 to 30 minutes (block-2, 09:00-09:30) in the Nov 3,
+  // 2026 full timetable rebuild -- this test's expected total was pinned to
+  // the old 60-minute figure and needs to move with it: 30 meeting + 30 math.
   ok('...and adds to the blocks he ticked, not instead of them',
-    full['2026-08-20'] === 90, `got ${full['2026-08-20']} — 30 meeting + 60 maths`);
+    full['2026-08-20'] === 60, `got ${full['2026-08-20']} — 30 meeting + 30 maths`);
 }
 
 console.log('\n--- 3. the record survives the two computers ---');

@@ -1,9 +1,26 @@
 /**
- * The 2:15 block must name the course that is actually in it.
+ * The 2:15 block used to have to name the course that was actually in it,
+ * because it could hold any one of several specialized subjects depending on
+ * the day and the quarter.
  *
  * Guards the fix made Aug 9 2026 after the parent said, in her words: "I dont
  * understand the rotating block. Let's fix that to have the actual course that
  * will be there for the week."
+ *
+ * ---- AND THEN, NOV 3 2026, SHE RETIRED THE ROTATION ITSELF ----
+ *
+ * "i don't want aerospace robotics and tech to be rotating... I want them to
+ * be daily. social studies should be daily as well." Social Studies had
+ * already left the rotation that same day for its own block (block-5c);
+ * Aerospace, Technology and Robotics followed it immediately after, each
+ * getting a real block of its own (block-9, block-9b, block-9c). Every
+ * `WEEK_PATTERN[d].subjects` list is empty now — there is nothing left for
+ * `liveRotatingSubjects` to resolve, on any weekday, in any quarter.
+ *
+ * Sections 1-7 below used to assert WHICH subject the block resolved to on
+ * which day. They now assert the opposite and simpler thing: nothing does,
+ * because nothing shares a block any more. Section 8 (the 10:30 slot) was
+ * already rewritten this way on Nov 3 for Social Studies and is unchanged.
  */
 import './lib/academy-under-test.mjs';
 import fs from 'node:fs';
@@ -36,407 +53,148 @@ let pass = 0, fail = 0;
 const ok = (name, cond, extra = '') => { if (cond) pass++; else { fail++; console.log('  FAIL:', name, extra); } };
 
 // Khan rows as they really are: Social Studies runs on Khan in Q1 and Summer.
+// (Aerospace/Technology/Robotics never need a Khan row to appear on their own
+// block any more — they aren't competing with anyone for it.)
 const KHAN = [
   ...Array.from({ length: 10 }, () => ({ subject: 'socialStudies', batchLabel: 'Q1 2026-2027' })),
   ...Array.from({ length: 6 }, () => ({ subject: 'socialStudies', batchLabel: 'Summer 2027' }))
 ];
 const D = (y, m, d) => new Date(y, m - 1, d);
 
-// ONE SUBJECT A DAY SINCE AUG 9 2026. These used to assert TWO subjects on
-// Tuesday and Thursday. The parent: "we have social studies and tech on the
-// same 45min slot. I don't think that will work." Every core day now resolves
-// to exactly one subject with the whole 45 minutes.
-console.log('--- Q1: Technology owns both its days while Social Studies is Khan-only ---');
-const q1Tue = liveRotatingSubjects(D(2026, 8, 11), KHAN);
-ok('Q1 Tuesday is Technology alone', q1Tue.length === 1 && q1Tue[0] === 'technology', q1Tue.join(','));
-const q1Thu = liveRotatingSubjects(D(2026, 8, 13), KHAN);
-ok('Q1 Thursday is Technology too — Social Studies has no Q1 lessons to teach here',
-  q1Thu.length === 1 && q1Thu[0] === 'technology', q1Thu.join(','));
+console.log('--- 1. WEEK_PATTERN names no rotating subject on any weekday ---');
+for (const d of [1, 2, 3, 4, 5]) {
+  ok(WEEK_PATTERN[d].label + ' has an empty subjects list',
+    Array.isArray(WEEK_PATTERN[d].subjects) && WEEK_PATTERN[d].subjects.length === 0,
+    JSON.stringify(WEEK_PATTERN[d].subjects));
+}
 
-console.log('--- Q2 onward: Thursday hands back to Social Studies ---');
-const q2Thu = liveRotatingSubjects(D(2026, 11, 12), KHAN);
-ok('Q2 Thursday is Social Studies alone', q2Thu.length === 1 && q2Thu[0] === 'socialStudies', q2Thu.join(','));
-const q2Tue = liveRotatingSubjects(D(2026, 11, 10), KHAN);
-ok('Q2 Tuesday is still Technology', q2Tue.length === 1 && q2Tue[0] === 'technology', q2Tue.join(','));
-
-console.log('--- Q4: Robotics replaces Technology on Tuesday ---');
-const q4Tue = liveRotatingSubjects(D(2027, 4, 6), KHAN);
-ok('Q4 Tuesday is Robotics alone', q4Tue.length === 1 && q4Tue[0] === 'robotics', q4Tue.join(','));
-const q4Thu = liveRotatingSubjects(D(2027, 4, 8), KHAN);
-ok('Q4 Thursday is Social Studies alone', q4Thu.length === 1 && q4Thu[0] === 'socialStudies', q4Thu.join(','));
-
-// NEVER TWO. That is the whole change — two subjects in one 45-minute block was
-// the thing the parent called out. Zero is legitimate and must stay legitimate:
-// a holiday resolves to none, and Summer's Tue/Thu genuinely have no rotating
-// lessons. So the invariant asserted everywhere is "at most one", and "exactly
-// one" is asserted only where a subject really is scheduled.
-console.log('--- no core day ever resolves to two subjects ---');
+console.log('--- 2. liveRotatingSubjects resolves to nothing, every weekday, every quarter ---');
 for (const [y, m, d, q] of [[2026,8,10,'Q1'],[2026,11,9,'Q2'],[2027,2,8,'Q3'],[2027,4,5,'Q4'],[2027,6,7,'Summer']]) {
   for (const off of [0, 1, 2, 3, 4]) {
     const day = D(y, m, d + off);
-    const live = liveRotatingSubjects(day, KHAN);
-    ok(`${q} ${WEEK_PATTERN[day.getDay()].label}: never two subjects in one block`,
-      live.length <= 1, live.join(','));
+    ok(`${q} ${WEEK_PATTERN[day.getDay()].label}: liveRotatingSubjects is empty`,
+      liveRotatingSubjects(day, KHAN).length === 0,
+      liveRotatingSubjects(day, KHAN).join(','));
   }
-  // Friday owns no subject in any quarter — that is what keeps it open.
-  ok(`${q} Friday owns no subject — it is the open day`,
-    liveRotatingSubjects(D(y, m, d + 4), KHAN).length === 0);
 }
+ok('empty even with no Khan rows supplied at all (there is nothing left to default to)',
+  liveRotatingSubjects(D(2026, 8, 11), null).length === 0);
 
-console.log('--- and it is exactly one on every day that has lessons ---');
-for (const [y, m, d, q, label] of [
-  [2026, 8, 10, 'Q1', 'Monday'], [2026, 8, 11, 'Q1', 'Tuesday'],
-  [2026, 8, 12, 'Q1', 'Wednesday'], [2026, 8, 13, 'Q1', 'Thursday'],
-  [2026, 11, 9, 'Q2', 'Monday'], [2026, 11, 10, 'Q2', 'Tuesday'],
-  [2026, 11, 12, 'Q2', 'Thursday'],
-  [2027, 2, 8, 'Q3', 'Monday'], [2027, 2, 9, 'Q3', 'Tuesday'], [2027, 2, 11, 'Q3', 'Thursday'],
-  [2027, 4, 5, 'Q4', 'Monday'], [2027, 4, 6, 'Q4', 'Tuesday'], [2027, 4, 8, 'Q4', 'Thursday'],
-  [2027, 6, 7, 'Summer', 'Monday']
-]) {
-  const live = liveRotatingSubjects(D(y, m, d), KHAN);
-  ok(`${q} ${label} names exactly one course`, live.length === 1, live.join(','));
-}
-
-console.log('--- Mon/Wed is one subject, with the whole 45 minutes ---');
-for (const [y, m, d] of [[2026,8,10],[2026,11,9],[2027,2,8],[2027,4,5]]) {
-  const live = liveRotatingSubjects(D(y, m, d), KHAN);
-  ok(`${y}-${m}-${d} Monday is Aerospace alone`, live.length === 1 && live[0] === 'aerospace', live.join(','));
-}
-
-console.log('--- labels ---');
-ok('Monday label names the course', rotatingBlockLabel(D(2026, 8, 10), KHAN) === 'Aerospace Engineering',
+console.log('--- 3. labels: block-9 carries its own stored label now, same as any other block ---');
+// rotatingBlockLabel is the DYNAMIC resolver — still callable, now dormant,
+// because nothing lives in the block any more. It must say so honestly
+// rather than guess an owner.
+ok("rotatingBlockLabel itself is dormant — 'Catch-up' on an ordinary weekday",
+  rotatingBlockLabel(D(2026, 8, 10), KHAN) === 'Catch-up',
   rotatingBlockLabel(D(2026, 8, 10), KHAN));
-ok('no label still contains a slash list', !rotatingBlockLabel(D(2026, 8, 11), KHAN).includes('STEM Project'));
-// FRIDAY NAMED THE GARDEN UNTIL AUG 9 2026. Gardening moved after school, so
-// the garden must NOT be in this label any more — and Friday must read as open,
-// which is what protects the overflow the Tue/Thu split depends on.
-const friLabel = rotatingBlockLabel(D(2026, 8, 14), KHAN);
-ok('Friday reads as the open day', /^Open/.test(friLabel), friLabel);
-ok('Friday no longer names the garden — it is after school now',
-  !/Gardening/i.test(friLabel), friLabel);
-ok('Friday names the long Khan units, which are the reason it exists',
-  /Khan/.test(friLabel), friLabel);
-/**
- * ---- ASSERT THE PROPERTY, NOT THE ANSWER (rewritten Aug 20, 2026) ----
- *
- * This used to read: `Q1 Friday names Khan-only Social Studies`. It was true
- * when written and it is false now, for the best possible reason — Social
- * Studies OWNS WEDNESDAY in Q1 since the parent reallocated the block, so it
- * is no longer a homeless subject that Friday has to advertise.
- *
- * The check was encoding an answer. The rule it meant to protect is:
- *
- *     a subject that is live this quarter and owns no weekday must be named
- *     on Friday, or it is invisible on the schedule
- *
- * — which is the bug this project shipped twice, and a third time in the
- * student's own words: "he has social studies to complete but it's not on
- * Today's routine." That rule is quarter-independent and survives her moving
- * subjects around, which an answer never can.
- */
-{
-  const ROTATING = ['aerospace', 'technology', 'socialStudies', 'robotics'];
-  for (const [qLabel, anchor] of [
-    ['Q1', D(2026, 8, 14)], ['Q2', D(2026, 11, 20)],
-    ['Q3', D(2027, 2, 19)], ['Q4', D(2027, 5, 14)]
-  ]) {
-    // Who owns a weekday this quarter, asked of the week the Friday sits in.
-    const owners = new Set();
-    for (let i = 1; i <= 5; i += 1) {
-      const day = new Date(anchor);
-      day.setDate(day.getDate() - 5 + i);
-      const w = liveRotatingSubjects(day, KHAN)[0];
-      if (w) owners.add(w);
-    }
-    // Who has real work this quarter but no day of their own.
-    const batch = getCurrentQuarter(anchor).batchLabel;
-    const khanLive = new Set(KHAN.filter((a) => a.batchLabel === batch).map((a) => a.subject));
-    const homeless = ROTATING.filter(
-      (s) => khanLive.has(s) && !owners.has(s)
-    );
-    const label = rotatingBlockLabel(anchor, KHAN);
-    const named = homeless.every((s) => label.includes(SUBJECT_LABELS[s] || s));
-    ok(`${qLabel} Friday names every live subject that owns no weekday`,
-      named, `homeless=[${homeless}] label="${label}"`);
-    // And the converse: it must not advertise a subject that already has a day.
-    const doubleBooked = [...owners].filter((s) => label.includes(SUBJECT_LABELS[s] || s));
-    ok(`${qLabel} Friday does not re-advertise a subject that owns a weekday`,
-      doubleBooked.length === 0,
-      `already owns a day: [${doubleBooked}] label="${label}"`);
-  }
+// resolveBlockLabel is what every real screen calls, and it is the one that
+// matters: block-9 keeps ITS OWN stored label on every date, because the
+// current shipped label ('Aerospace Engineering') is no longer on the
+// known-dynamic-label list — there is nothing left to resolve.
+const shipped = defaultSchedule.find((b) => b.id === ROTATING_BLOCK_ID);
+ok("block-9's own shipped label is 'Aerospace Engineering'", shipped.label === 'Aerospace Engineering', shipped.label);
+ok('...and it is NOT on the dynamic-resolution list any more — nothing needs resolving',
+  !SHIPPED_ROTATING_LABELS.has(shipped.label), shipped.label);
+for (const [y, m, d] of [[2026,8,10],[2026,8,12],[2026,11,10],[2027,4,8]]) {
+  ok(`resolveBlockLabel(block-9) is "Aerospace Engineering" on ${y}-${m}-${d}, regardless of date`,
+    resolveBlockLabel(shipped, D(y, m, d), KHAN) === 'Aerospace Engineering',
+    resolveBlockLabel(shipped, D(y, m, d), KHAN));
 }
+// A parent's own rename still wins, same rule every block follows.
+const hers = { ...shipped, label: 'Lamar Engineering Hour' };
+ok('a parent-typed label is still left alone', resolveBlockLabel(hers, D(2026, 8, 10), KHAN) === 'Lamar Engineering Hour');
+for (const b of defaultSchedule.filter((x) => x.id !== ROTATING_BLOCK_ID && x.id !== MORNING_BLOCK_ID)) {
+  ok('non-dynamic block untouched: ' + b.id, resolveBlockLabel(b, D(2026, 8, 10), KHAN) === b.label);
+}
+// Friday's label is still generated dynamically — it is still the open day,
+// just no longer naming a rotating subject that "ran out of Tuesdays"
+// (there are none left to name).
+const friLabel = rotatingBlockLabel(D(2026, 8, 14), KHAN);
+ok('Friday still reads as the open day', /^Open/.test(friLabel), friLabel);
+ok('Friday still names the long Khan units, which are the reason it exists',
+  /Khan/.test(friLabel), friLabel);
+ok('Friday never names a rotating subject any more — there is none to name',
+  !/Aerospace|Technology|Robotics/.test(friLabel), friLabel);
 ok('weekend says no school', rotatingBlockLabel(D(2026, 8, 15), KHAN) === 'No school');
 
-console.log('--- never blank, never wrong when data is missing ---');
-for (const day of [D(2026,8,11), D(2026,11,10), D(2027,2,9), D(2027,4,8), D(2027,6,8)]) {
-  ok('label is non-empty with no Khan rows: ' + day.toDateString(), (rotatingBlockLabel(day, null) || '').length > 0);
-  // WITHOUT KHAN ROWS THIS USED TO SHOW THE WHOLE ROTATION. It cannot any more
-  // — the whole point is one subject in the block — so the fallback narrowed to
-  // the day's FIRST preference rather than all of them. Still never blank.
-  ok('a subject is still named with no Khan rows: ' + day.toDateString(),
-    liveRotatingSubjects(day, null).length === 1,
-    liveRotatingSubjects(day, null).join(','));
-}
-
-console.log('--- the parent\'s own wording always wins ---');
-const shipped = defaultSchedule.find((b) => b.id === ROTATING_BLOCK_ID);
-ok('the current shipped default is on the known-shipped list', SHIPPED_ROTATING_LABELS.has(shipped.label), shipped.label);
-ok('a shipped label IS resolved', resolveBlockLabel(shipped, D(2026, 8, 10), KHAN) === 'Aerospace Engineering');
-const hers = { ...shipped, label: 'Lamar Engineering Hour' };
-ok('a parent-typed label is NOT resolved', resolveBlockLabel(hers, D(2026, 8, 10), KHAN) === 'Lamar Engineering Hour');
-for (const b of defaultSchedule.filter((x) => x.id !== ROTATING_BLOCK_ID)) {
-  ok('non-rotating block untouched: ' + b.id, resolveBlockLabel(b, D(2026, 8, 10), KHAN) === b.label);
-}
-
-console.log('--- kept in sync with the store migration ---');
+console.log('--- 4. the SHIPPED_ROTATING_LABELS list still matches the store migration ---');
+// Kept for the labels still on it (every wording this app has EVER shipped
+// for block-9, including the current Nov-3-before-derotation one) — the
+// store must still know how to rename a schedule still carrying any of them.
 const store = fs.readFileSync(root + '/src/store/useAppStore.js', 'utf8');
 const legacy = store.slice(store.indexOf('LEGACY_BLOCK_9_LABELS = new Set('));
 for (const label of SHIPPED_ROTATING_LABELS) {
-  if (label === shipped.label) continue;
-  ok('store knows legacy label: ' + label.slice(0, 30), legacy.includes(label));
+  ok('store knows legacy label: ' + label.slice(0, 40), legacy.includes(label));
 }
 
-console.log('--- the printed week ---');
+console.log('--- 5. the printed week ---');
 const week = rotatingWeek(D(2026, 8, 10), KHAN);
 ok('five weekdays', week.length === 5);
 ok('no weekday resolves to a slash list', week.every((d) => !d.label.includes(' / ')));
 console.log();
 for (const d of week) console.log('   ', d.weekday.padEnd(10), d.label);
 
-// ---------------------------------------------------------------------------
-// FRIDAY, THE CATCH-UP DAY, MUST ACTUALLY HAVE SOMETHING ON IT.
-//
-// Found Aug 12 2026, answering the parent's question about a missed field-trip
-// day: "they will stay the same correct except the ones that changes
-// throughout the week ex aerospace?"
-//
-// Friday is `kind: 'core'` with `subjects: []` — deliberately empty, because a
-// fixed subject there would take the day back off the overflow that the
-// Tue/Thu one-subject-per-day split depends on. The dashboard filtered
-// `allSubjects` against that empty list, so Friday's `todaysSubjects` came out
-// EMPTY: no Start Here card, no Aerospace / Technology / Social Studies /
-// Robotics row, and no Social Studies or Technology Khan row.
-//
-// The day that exists to absorb a missed Monday had nothing on it to absorb
-// with. `flex` is the flag that separates "this day names its subject" from
-// "this day takes whatever is behind".
-// ---------------------------------------------------------------------------
-/**
- * ---- AND ON SEP 16 2026 SHE REVERSED THE OTHER HALF OF IT ----
- *
- * "Make it that only subjects and projects that are due shows up in the 'Rest
- * of the day' on Fridays."
- *
- * The Aug 12 fix above sent Friday to `allSubjects`, which put aerospace,
- * technology, socialStudies and robotics on the board every Friday whether or
- * not anything was owed in them — four rows no timetable had asked for, on top
- * of the nine daily ones.
- *
- * Both failures are real and they are opposite. Put to her with both named,
- * she chose neither: **only what is behind, plus what is dated.** Friday now
- * asks the record — did this subject get the day the timetable gave it? — and
- * a week he kept up with yields a short Friday ON PURPOSE.
- *
- * SO THE PROPERTY THESE TWO CHECKS DEFEND HAS NARROWED, AND IS RESTATED, NOT
- * DELETED: Friday must never be reduced to its own empty `subjects: []` list.
- * That was the Aug 12 bug and it is still a bug. What is no longer asserted is
- * that Friday shows EVERYTHING — that was one answer to it, and it is now hers
- * to have changed. Asserting today's answer here is what made this suite fail
- * on a screen that had just been corrected.
- */
-console.log('--- friday draws on the record, never on its own empty subject list ---');
+console.log('--- 6. the dashboard no longer asks the rotation which subject is live today ---');
 {
-  /**
-   * COMMENTS STRIPPED, like the block at the foot of this file already does.
-   * Read raw, the negative clause below matched the dashboard's own comment
-   * QUOTING the Aug 26 bug — `allSubjects.filter((s) => scheduledToday…` — and
-   * reported a corrected screen as broken. Eighth instance in this repo of a
-   * guard matching an explanation of the thing it forbids.
-   */
   const dash = fs.readFileSync(root + '/src/components/Dashboard/MissionControlDashboard.jsx', 'utf8')
     .replace(/\/\*[\s\S]*?\*\//g, '').replace(/\{\/\*[\s\S]*?\*\/\}/g, '').replace(/^\s*\/\/.*$/gm, '');
-  ok('a flex day is not filtered down to its (empty) subject list',
-    !/allSubjects\.filter\(\(\w+\) => (?:scheduledToday|todayPattern\.subjects)/.test(dash)
-      && /todayPattern\.flex\s*\?\s*subjectsBehindThisWeek/.test(dash),
-    'an empty preference list means "this day takes what is behind", never "this day has nothing"');
-  ok('...and Friday is still the flex day in the pattern',
-    WEEK_PATTERN[5].flex === true && WEEK_PATTERN[5].subjects.length === 0);
-// These moved to src/content/slots/timetable.js on Sept 22, 2026. Asked of the
-// school's timetable slot as content.js exports it, the way the app asks.
-  const __slotTT = await import(moduleUrl('src/content/slots/timetable.js'));
-  const { timetable: __schoolTT } = await import(moduleUrl('src/academies/lamar/content.js'));
-  const __TT = { timetable: __schoolTT };
-  const subjectsForDay = (...a) => __slotTT.subjectsForDay(__TT, ...a);
-  ok('...so subjectsForDay(Friday) is empty and the dashboard must not filter on it',
-    subjectsForDay(D(2026, 8, 14)).length === 0);
+  /**
+   * `todaysSubjects` used to ask `liveRotatingSubjects` which ONE subject
+   * owned today's block. Aerospace, Technology and Robotics each have their
+   * own block now, every day, so this reads a fixed list instead
+   * (`DAILY_SPECIALIZED_SUBJECTS`, shared with scheduledMinutes.js and
+   * DailyView.jsx so the three screens can never disagree again).
+   */
+  ok('todaysSubjects is built from the fixed daily list, not a per-day rotation',
+    /todaysSubjects\s*=\s*todayPattern\.kind === 'core'\s*\?\s*\[\s*\.\.\.DAILY_SPECIALIZED_SUBJECTS/.test(dash),
+    'a per-day rotation would re-introduce "only one subject is live today" for subjects that are now daily');
+  ok('...and it stays the same list whether or not the day is flex (Friday)',
+    !/todayPattern\.flex\s*\?\s*subjectsBehindThisWeek\s*\n?\s*:\s*\[/.test(dash),
+    'Friday runs Aerospace/Technology/Robotics in their own blocks too now, same as Monday-Thursday');
+  ok('isOffTimetable no longer asks who owns the rotating block',
+    /const isOffTimetable = \(\) => false;/.test(dash),
+    'nothing can be off its own timetable now that nothing rotates');
 }
 
-// ---------------------------------------------------------------------------
-// THE BOARD AND THE BLOCK MUST READ THE SAME ORDER FOR THE SAME DAY.
-//
-// The parent, Aug 26 2026: **"What day does aerospace lesson supposed to run?
-// it doesn't make any sense to put that warning on the project."** Her screen
-// showed, on a WEDNESDAY:
-//
-//     START HERE — Aerospace Engineering: How Airplanes Fly II
-//     ...
-//     AEROSPACE PROJECT — not on today's timetable
-//
-// Both true at once, about one subject. `subjectsForDay()` takes a quarter and
-// the dashboard called it WITHOUT one, so it got Wednesday's default order
-// (['aerospace','socialStudies']) while the 2:15 block used Q1's override
-// (['socialStudies','aerospace']). The lesson loop offered the first of its
-// list; `isOffTimetable` asked the block and disagreed.
-//
-// The Aug 20 fix declared "the list and the rail now answer the same question"
-// and made the KHAN rows agree. The lesson loop kept its own answer.
-// ---------------------------------------------------------------------------
-{
-  const __slotTT = await import(moduleUrl('src/content/slots/timetable.js'));
-  const { timetable: __schoolTT } = await import(moduleUrl('src/academies/lamar/content.js'));
-  const __TT = { timetable: __schoolTT };
-  const subjectsForDay = (...a) => __slotTT.subjectsForDay(__TT, ...a);
-  const dayPattern = (...a) => __slotTT.dayPattern(__TT, ...a);
-  // patternSubjects moved to the platform on Sept 1, 2026 (§3c Step 1). The
-  // week pattern it reads is still this school's.
-  const { patternSubjects } = await import(moduleUrl('src/lib/timetable.js'));
-
-  /** Every school day of a Q1 week, and one from Q2 where the override lifts. */
-  const days = [D(2026, 8, 24), D(2026, 8, 25), D(2026, 8, 26), D(2026, 8, 27), D(2026, 11, 4)];
-  for (const day of days) {
-    const quarterId = getCurrentQuarter(day).id;
-    const offered = subjectsForDay(day, quarterId);
-    const owner = liveRotatingSubjects(day, KHAN)[0];
-    const label = day.toLocaleDateString('en-US', { weekday: 'long' }) + ' ' + quarterId;
-    if (!owner) continue;
-    ok(`${label}: the day's first offered subject IS the one that owns the block`,
-      offered[0] === owner,
-      `offered ${JSON.stringify(offered)} but ${owner} owns it — the Start Here card and the warning will disagree`);
-  }
-
-  /** The Q1 Wednesday swap, named explicitly because it is the case that broke. */
-  ok('Q1 Wednesday belongs to Social Studies, not Aerospace',
-    patternSubjects(dayPattern(D(2026, 8, 26)), 'Q1')[0] === 'socialStudies',
-    'Technology needs both Tuesday and Thursday in Q1, so Wednesday is the swap');
-  ok('...and Aerospace gets Wednesday back from Q2',
-    patternSubjects(dayPattern(D(2026, 11, 4)), 'Q2')[0] === 'aerospace',
-    "taking Wednesday off Aerospace for the YEAR to solve a Q1 problem is what the swap avoids");
-  ok('...and in Q1 Aerospace runs Monday',
-    liveRotatingSubjects(D(2026, 8, 24), KHAN)[0] === 'aerospace',
-    'eleven lessons, eleven Mondays — the zero-slack quarter the pacing panel reports');
-
-  /**
-   * And the dashboard must ASK with the quarter. Without this the two orders
-   * come back the moment someone writes the shorter call.
-   */
-  const dash = fs.readFileSync(path.join(root, 'src/components/Dashboard/MissionControlDashboard.jsx'), 'utf8')
-    .replace(/\/\*[\s\S]*?\*\//g, '').replace(/\{\/\*[\s\S]*?\*\/\}/g, '').replace(/^\s*\/\/.*$/gm, '');
-  ok('the board asks subjectsForDay WITH the quarter',
-    /subjectsForDay\(new Date\(\), getCurrentQuarter\(\)\.id\)/.test(dash),
-    'an unscoped call is the bug: it cannot see the Q1 Wednesday swap');
-  ok('...and never calls it bare',
-    !/subjectsForDay\(\)/.test(dash),
-    'the no-argument form returns the default order for every quarter');
-
-  /**
-   * ---- AND THE ARGUMENT ALONE WAS NOT ENOUGH ----
-   *
-   * The first fix passed the quarter and then threw the result away:
-   * `allSubjects.filter((s) => scheduledToday.includes(s))` keeps ALLSUBJECTS
-   * order — aerospace first — so Wednesday still opened with an Aerospace
-   * lesson. Shipped, and reported as fixed, without looking at his screen.
-   *
-   * The mission loop was the last caller reading the preference list at all.
-   * It reads the BLOCK now, like the rail, the Khan rows and isOffTimetable
-   * have since Aug 20.
-   */
-  /**
-   * Pinned as `liveRotatingSubjects(...) : allSubjects` verbatim until Aug 29
-   * 2026, when the 10:30 slot joined the same expression and the SHAPE changed
-   * without the PROPERTY changing. What matters is that today's rows come from
-   * the block owners and never from the preference list — the bug being
-   * `allSubjects.filter((s) => scheduledToday.includes(s))`, which keeps
-   * allSubjects order and reopened Wednesday with Aerospace.
-   */
-  ok("the day's rotating rows come from the block owner, not the preference list",
-    /liveRotatingSubjects\(new Date\(\), khanAcademyAssignments\)/.test(dash)
-      && /:\s*allSubjects/.test(dash),
-    'a preference list has two names on it and the block holds one of them');
-  ok('...and never by filtering allSubjects through the day list',
-    !/allSubjects\.filter\(\(\w+\) => scheduledToday/.test(dash),
-    'that keeps allSubjects order, which is the Aug 26 bug shipped and reported as fixed');
-  ok('...and his mission list counts the 10:30 slot too',
-    /liveMorningSubject\(new Date\(\), khanAcademyAssignments\)/.test(dash),
-    'a subject with a day on the timetable and nothing on his screen is the bug this project keeps finding');
-  /**
-   * Was `...and a flex day still shows everything`, pinned to the same literal
-   * as the Aug 12 section. See the note there: she replaced "everything" with
-   * "what is behind" on Sep 16. The half that survives is that a flex day is
-   * answered by its own branch rather than falling through the rotation.
-   */
-  ok('...and a flex day is answered from the record, not from the rotation',
-    /todayPattern\.flex\s*\?\s*subjectsBehindThisWeek\s*:/.test(dash),
-    'Friday owns no subject; reading the rotation there gives it Thursday\u2019s');
-}
-
-
-console.log('\n--- 8. the second rotating slot, at 10:30 ---');
+console.log('\n--- 7. the second rotating slot, at 10:30 — RETIRED Nov 3, 2026 ---');
 {
   /**
-   * The parent, Aug 29 2026: *"The same issue arises with Social Studies. We
-   * may have to replan the schedule. To see what classes he can do 2x a week."*
+   * This whole mechanism — Social Studies borrowing Science's 10:30 block on
+   * Tuesday (Aug 29 2026) and then Thursday too (Sept 16 2026) — is gone.
+   * The parent caught the reason directly: Science's own Khan row never
+   * deferred when another subject became the "morning owner", so Science and
+   * whichever subject had borrowed the slot both ended up stamped with the
+   * same clock time. "Why are all these subjects in the same time slot?"
    *
-   * Science gave up Tuesday at 10:30. WHICH subject got it was decided by the
-   * repaired pacing model rather than by preference: across the year at one day
-   * a week, Social Studies was 30 days short and Aerospace 5. Aerospace keeps
-   * Monday and leans on the Friday buffer, which is what the buffer is for.
+   * The real fix was not a defer-harder patch on this mechanism, it was
+   * removing the reason for it: Social Studies now has its own real,
+   * every-day block (block-5c), so nothing ever needs to borrow Science's
+   * slot again. `liveMorningSubject` and `MORNING_BLOCK_ID` stay in the
+   * codebase rather than being ripped out — a future subject may genuinely
+   * need a second rotating slot of its own — but with every `morningSubjects`
+   * list empty, this function is permanently dormant: it must return null for
+   * every day, with no exceptions.
    */
   const rows = ['aerospace', 'technology', 'socialStudies', 'science']
     .map((x) => ({ subject: x, batchLabel: 'Q1 2026-2027' }));
   const day = (i) => new Date(2026, 7, 31 + i);
 
-  ok('Tuesday 10:30 belongs to Social Studies',
-    liveMorningSubject(day(1), rows) === 'socialStudies',
-    String(liveMorningSubject(day(1), rows)));
-  /**
-   * THURSDAY JOINED TUESDAY, Sept 16 2026. The parent: *"Lamar is behind in
-   * his social studies. The one x per week isn't enough."* The eight open World
-   * History units hold 77 Khan lessons; she chose three sessions a week.
-   * Science's 26 units cost 70 days and Mon/Wed/Fri give it ~118 — it still
-   * fits, which is the property this section protects.
-   */
-  ok('Thursday 10:30 belongs to Social Studies',
-    liveMorningSubject(day(3), rows) === 'socialStudies',
-    String(liveMorningSubject(day(3), rows)));
-  for (const [i, name] of [[0, 'Monday'], [2, 'Wednesday'], [4, 'Friday']]) {
-    ok(name + ' 10:30 stays Science',
+  for (const [i, name] of [[0, 'Monday'], [1, 'Tuesday'], [2, 'Wednesday'], [3, 'Thursday'], [4, 'Friday']]) {
+    ok(name + ' 10:30 is dormant — Science owns the whole day',
       liveMorningSubject(day(i), rows) === null,
       String(liveMorningSubject(day(i), rows)));
   }
-  ok('so Science keeps THREE days a week, and never fewer',
-    [0, 2, 3, 4].filter((i) => liveMorningSubject(day(i), rows) === null).length === 3,
-    'all four science courses still fit at Mon/Wed/Fri; two days would not');
-
-  ok('THE POINT: Social Studies now owns two days a week',
-    liveMorningSubject(day(1), rows) === 'socialStudies'
-      && liveRotatingSubjects(day(2), rows)[0] === 'socialStudies',
-    'Tuesday morning and Wednesday afternoon');
-  ok('...and Technology still owns its two',
-    liveRotatingSubjects(day(1), rows)[0] === 'technology'
-      && liveRotatingSubjects(day(3), rows)[0] === 'technology');
-  ok('...and Aerospace keeps Monday',
-    liveRotatingSubjects(day(0), rows)[0] === 'aerospace');
-
-  ok('a quarter where Social Studies has no work leaves Science its Tuesday',
-    liveMorningSubject(day(1), []) === null,
-    'an empty block is worse than no second slot');
+  ok('Social Studies no longer shows up at 10:30 at all',
+    liveMorningSubject(day(1), rows) !== 'socialStudies' && liveMorningSubject(day(3), rows) !== 'socialStudies');
+  ok('Social Studies owns its own block-5c instead, every day',
+    liveRotatingSubjects(day(1), rows).includes('socialStudies') === false,
+    'it is off the rotation entirely now, not just off the 10:30 slot');
 
   const b5 = { id: MORNING_BLOCK_ID, label: 'Science' };
-  ok('the 10:30 block LABEL follows the owner, on every surface at once',
-    resolveBlockLabel(b5, day(1), rows) === 'Social Studies'
-      && resolveBlockLabel(b5, day(0), rows) === 'Science',
-    resolveBlockLabel(b5, day(1), rows) + ' / ' + resolveBlockLabel(b5, day(0), rows));
-  ok('...and a block she renamed herself is left alone',
+  ok('the 10:30 block always resolves to its own label now',
+    resolveBlockLabel(b5, day(1), rows) === 'Science' && resolveBlockLabel(b5, day(3), rows) === 'Science',
+    resolveBlockLabel(b5, day(1), rows) + ' / ' + resolveBlockLabel(b5, day(3), rows));
+  ok('...and a block she renamed herself is still left alone',
     resolveBlockLabel({ id: MORNING_BLOCK_ID, label: 'My Science Time' }, day(1), rows) === 'My Science Time',
     'the same rule every other block rename follows');
 }

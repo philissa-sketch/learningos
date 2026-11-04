@@ -1381,6 +1381,16 @@ export function migrateSavedSchedule(saved) {
   // itself a shipped default is touched. If she has typed her own name for this
   // block, hers stays and this does nothing.
   const LEGACY_BLOCK_9_LABELS = new Set([
+    // Replaced Nov 3 2026, same day, when Aerospace/Technology/Robotics each
+    // left the rotation for their own daily blocks (block-9/9b/9c, see
+    // defaultSchedule.js) on the parent's explicit instruction: "I want them
+    // to be daily." A schedule still carrying this label gets the current
+    // one, same as every rename before it.
+    'Rotating Block — Aerospace / Technology / Robotics',
+    // Replaced Nov 3 2026 when Social Studies left the rotation for its own
+    // daily block (block-5c, see defaultSchedule.js). A schedule still
+    // carrying this label gets the current one, same as every rename before it.
+    'Rotating Block — Aerospace / Technology / Social Studies / Robotics',
     // Replaced Aug 9 2026 when gardening moved after school and the block went
     // to one subject per day. Kept here so a saved schedule still carrying it
     // is relabelled rather than treated as the parent's own wording.
@@ -1643,6 +1653,199 @@ export function migrateSavedSchedule(saved) {
         next.splice(block11Index + 1, 0, placed);
       } else {
         next.push(placed);
+      }
+      blocks = next;
+      changed = true;
+    }
+  }
+
+  // --- THE FULL TIMETABLE REBUILD, Nov 3 2026 ---------------------------
+  //
+  // The parent, after the Science/Social Studies collision ("why are all
+  // these subjects in the same time slot?") turned out to be one case of a
+  // pattern repeated three more times that same day — Language Arts, Daily
+  // Writing AND Writing Journal all sharing one 12:15 stamp, and Spelling
+  // AND Vocabulary both sharing one 1:30 stamp — gave the exact spec to fix
+  // all of it at once:
+  //
+  //   "Math 30 mins, reading 15 mins, Social studies 30 mins, science 30
+  //    mins, typing 15 mins, Language arts 30, Daily writing 15 mins.
+  //    Writing Journal 15 mins, Spelling 15mins, vocab 15 mins, PE 30 mins,
+  //    tech 30 mins, guitar 15 mins, garden 15 mins, aerospace 30 mins."
+  //
+  // This picks up exactly where the Social-Studies-gets-a-daily-block change
+  // (the comment on block-5c in defaultSchedule.js) left off: THAT change
+  // was never reached by a migration of its own before this one superseded
+  // it, so there is no in-between saved shape to handle — only the schedule
+  // every family had right after the Nov 2, 2026 break removal (the
+  // BREAK_REMOVED_SHIFT migration just above this one). This migration goes
+  // straight from that shape to today's final one, in a single pass, same
+  // strict all-or-nothing rule as every migration above it.
+  if (!have.has('block-5c') && !have.has('block-7a')) {
+    const FULL_REBUILD_SHIFT = [
+      { id: 'block-2', from: ['09:00', '10:00'], to: ['09:00', '09:30'] },
+      { id: 'block-3', from: ['10:00', '10:15'], to: ['09:30', '09:45'] },
+      { id: 'block-5', from: ['10:15', '11:00'], to: ['10:15', '10:45'] },
+      { id: 'block-5b', from: ['11:00', '11:15'], to: ['10:45', '11:00'] },
+      { id: 'block-6', from: ['11:15', '12:15'], to: ['11:00', '12:00'] },
+      // block-7 narrows to Language Arts alone; Daily Writing and Writing
+      // Journal are carved out of its old 60 minutes as block-7a/block-7d.
+      { id: 'block-7', from: ['12:15', '13:15'], to: ['12:00', '12:30'] },
+      // block-7b narrows to Spelling alone; Vocabulary is carved out of its
+      // old 15 minutes as block-7c.
+      { id: 'block-7b', from: ['13:15', '13:30'], to: ['13:00', '13:15'] },
+      { id: 'block-8', from: ['13:30', '14:00'], to: ['13:30', '14:00'] },
+      { id: 'block-9', from: ['14:00', '14:45'], to: ['14:00', '14:30'] },
+      { id: 'block-10', from: ['14:45', '15:00'], to: ['14:30', '14:45'] }
+    ];
+    const required = FULL_REBUILD_SHIFT.map((spec) => ({
+      spec,
+      index: blocks.findIndex((b) => b && b.id === spec.id)
+    }));
+    // block-11 and block-11b are optional, same rule as every migration
+    // above: a family that has not reached Friday gardening (or the Mon-Thu
+    // check) yet should not be blocked by a row it does not have.
+    const optionalBlock11Index = blocks.findIndex((b) => b && b.id === 'block-11');
+    const optionalBlock11 = optionalBlock11Index === -1 ? null : blocks[optionalBlock11Index];
+    const block11Shipped =
+      !optionalBlock11 || (optionalBlock11.startTime === '15:00' && optionalBlock11.endTime === '16:30');
+    const optionalBlock11bIndex = blocks.findIndex((b) => b && b.id === 'block-11b');
+    const optionalBlock11b = optionalBlock11bIndex === -1 ? null : blocks[optionalBlock11bIndex];
+    const block11bShipped =
+      !optionalBlock11b || (optionalBlock11b.startTime === '15:00' && optionalBlock11b.endTime === '15:15');
+    const allShippedForFullRebuild =
+      required.every(
+        ({ spec, index }) =>
+          index !== -1 &&
+          blocks[index].startTime === spec.from[0] &&
+          blocks[index].endTime === spec.from[1]
+      ) && block11Shipped && block11bShipped;
+    if (allShippedForFullRebuild) {
+      const next = blocks === saved ? [...blocks] : blocks;
+      for (const { spec } of required) {
+        const i = next.findIndex((b) => b && b.id === spec.id);
+        if (i !== -1) next[i] = { ...next[i], startTime: spec.to[0], endTime: spec.to[1] };
+      }
+      // Social Studies, every school day, right after Science.
+      const scienceIndex = next.findIndex((b) => b && b.id === 'block-5');
+      const block5cSpec = defaultSchedule.find((b) => b.id === 'block-5c');
+      if (scienceIndex !== -1 && block5cSpec) {
+        next.splice(scienceIndex, 0, { ...block5cSpec });
+      }
+      // Daily Writing and Writing Journal, carved out of the old block-7.
+      const langArtsIndex = next.findIndex((b) => b && b.id === 'block-7');
+      const dailyWritingSpec = defaultSchedule.find((b) => b.id === 'block-7a');
+      const writingJournalSpec = defaultSchedule.find((b) => b.id === 'block-7d');
+      if (langArtsIndex !== -1 && dailyWritingSpec && writingJournalSpec) {
+        next.splice(langArtsIndex + 1, 0, { ...dailyWritingSpec }, { ...writingJournalSpec });
+      }
+      // Vocabulary, carved out of the old block-7b (now Spelling alone).
+      const spellingIndex = next.findIndex((b) => b && b.id === 'block-7b');
+      const vocabularySpec = defaultSchedule.find((b) => b.id === 'block-7c');
+      if (spellingIndex !== -1 && vocabularySpec) {
+        next.splice(spellingIndex + 1, 0, { ...vocabularySpec });
+      }
+      // block-7 and block-7b keep their OLD shipped labels naming the thing
+      // that just moved out of them — same rule as block-9's label rename
+      // above: only a label this app itself shipped is ever touched, never
+      // one the parent typed in herself.
+      if (langArtsIndex !== -1 && next[langArtsIndex].label === 'Language Arts & Writing Journal') {
+        next[langArtsIndex] = { ...next[langArtsIndex], label: 'Language Arts' };
+      }
+      if (spellingIndex !== -1 && next[spellingIndex].label === 'Spelling & Vocabulary') {
+        next[spellingIndex] = { ...next[spellingIndex], label: 'Spelling' };
+      }
+      if (optionalBlock11Index !== -1 && optionalBlock11) {
+        const i = next.findIndex((b) => b && b.id === 'block-11');
+        if (i !== -1) next[i] = { ...next[i], startTime: '14:45', endTime: '16:15' };
+      }
+      if (optionalBlock11bIndex !== -1 && optionalBlock11b) {
+        const i = next.findIndex((b) => b && b.id === 'block-11b');
+        if (i !== -1) next[i] = { ...next[i], startTime: '14:45', endTime: '15:00' };
+      }
+      blocks = next;
+      changed = true;
+    }
+  }
+
+  // ---------------------------------------------------------------------
+  // AEROSPACE, TECHNOLOGY AND ROBOTICS DE-ROTATED, Nov 3 2026 — same day as
+  // the full rebuild just above, after the parent asked for the very next
+  // thing in the same sitting: "i don't want aerospace robotics and tech
+  // to be rotating... I want them to be daily. social studies should be
+  // daily as well." (Social Studies had already gone daily, as block-5c, in
+  // the rebuild above.)
+  //
+  // Until this point Aerospace, Technology and Robotics shared ONE 30-minute
+  // block (block-9), resolved per day by lib/rotatingBlock.js so only one of
+  // them ever ran on a given day. Each now gets its own real, sequential
+  // 30-minute block every school day: `aerospace` keeps block-9's id and
+  // clock time (14:00-14:30); `technology` gets a new block-9b
+  // (14:30-15:00); `robotics` gets a new block-9c (15:00-15:30). Guitar, the
+  // Garden Check and Friday's Gardening session all shift an hour later to
+  // make room — none of their own durations changed.
+  //
+  // Guarded on block-9b alone (not block-5c/block-7a): a family already on
+  // the full-rebuild shape just above has those two; a family migrating both
+  // steps in one pass gets them from the step just above, in the same
+  // `blocks` this one reads next. Either way, the FROM times below are the
+  // full-rebuild's shipped times for block-9/10/11/11b, so this step only
+  // ever matches a schedule already in that exact shape.
+  if (!have.has('block-9b')) {
+    const DEROTATE_SHIFT = [
+      { id: 'block-10', from: ['14:30', '14:45'], to: ['15:30', '15:45'] }
+    ];
+    const required = DEROTATE_SHIFT.map((spec) => ({
+      spec,
+      index: blocks.findIndex((b) => b && b.id === spec.id)
+    }));
+    // block-9 itself does not move — Aerospace keeps 14:00-14:30 exactly as
+    // it was. Checked here anyway so this step only ever fires against the
+    // shape it actually knows how to migrate.
+    const block9 = blocks.find((b) => b && b.id === 'block-9');
+    const block9Shipped = !!block9 && block9.startTime === '14:00' && block9.endTime === '14:30';
+    // block-11 and block-11b are optional, same rule as every migration
+    // above: a family that has not reached Friday gardening (or the Mon-Thu
+    // check) yet should not be blocked by a row it does not have.
+    const optionalBlock11Index = blocks.findIndex((b) => b && b.id === 'block-11');
+    const optionalBlock11 = optionalBlock11Index === -1 ? null : blocks[optionalBlock11Index];
+    const block11Shipped =
+      !optionalBlock11 || (optionalBlock11.startTime === '14:45' && optionalBlock11.endTime === '16:15');
+    const optionalBlock11bIndex = blocks.findIndex((b) => b && b.id === 'block-11b');
+    const optionalBlock11b = optionalBlock11bIndex === -1 ? null : blocks[optionalBlock11bIndex];
+    const block11bShipped =
+      !optionalBlock11b || (optionalBlock11b.startTime === '14:45' && optionalBlock11b.endTime === '15:00');
+    const allShippedForDerotate =
+      block9Shipped &&
+      block11Shipped &&
+      block11bShipped &&
+      required.every(
+        ({ spec, index }) =>
+          index !== -1 &&
+          blocks[index].startTime === spec.from[0] &&
+          blocks[index].endTime === spec.from[1]
+      );
+    if (allShippedForDerotate) {
+      const next = blocks === saved ? [...blocks] : blocks;
+      for (const { spec } of required) {
+        const i = next.findIndex((b) => b && b.id === spec.id);
+        if (i !== -1) next[i] = { ...next[i], startTime: spec.to[0], endTime: spec.to[1] };
+      }
+      // Technology and Robotics, each carved out as their own real block
+      // right after Aerospace's.
+      const aerospaceIndex = next.findIndex((b) => b && b.id === 'block-9');
+      const technologySpec = defaultSchedule.find((b) => b.id === 'block-9b');
+      const roboticsSpec = defaultSchedule.find((b) => b.id === 'block-9c');
+      if (aerospaceIndex !== -1 && technologySpec && roboticsSpec) {
+        next.splice(aerospaceIndex + 1, 0, { ...technologySpec }, { ...roboticsSpec });
+      }
+      if (optionalBlock11Index !== -1 && optionalBlock11) {
+        const i = next.findIndex((b) => b && b.id === 'block-11');
+        if (i !== -1) next[i] = { ...next[i], startTime: '15:45', endTime: '17:15' };
+      }
+      if (optionalBlock11bIndex !== -1 && optionalBlock11b) {
+        const i = next.findIndex((b) => b && b.id === 'block-11b');
+        if (i !== -1) next[i] = { ...next[i], startTime: '15:45', endTime: '16:00' };
       }
       blocks = next;
       changed = true;

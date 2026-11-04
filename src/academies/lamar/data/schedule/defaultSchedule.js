@@ -3,18 +3,6 @@
 // customize this (edit times/labels, add/remove/reorder blocks) — this is
 // only the starting point new users see and the target of "Reset to
 // Recommended Schedule".
-//
-// Two labels below are deliberately worded to cover more than one activity,
-// per two real scheduling gaps found and resolved during a full
-// curriculum-builder audit of PROJECT_PLAN.md (see Part 5 there):
-//   - block-7 ("Language Arts & Writing Journal") covers both Khan
-//     Academy Language Arts and the separate, graded Writing Journal —
-//     they're functionally distinct (grammar/vocab drills vs. real
-//     composition) but share one generic, parent-customizable time slot.
-//   - block-9 now names Social Studies alongside Aerospace/Coding/
-//     Robotics/STEM Project — Social Studies rotates into this existing
-//     block rather than getting its own dedicated slot, confirmed with
-//     the parent ahead of Social Studies' first real lessons.
 // ---------------------------------------------------------------------------
 
 // ---------------------------------------------------------------------------
@@ -23,184 +11,154 @@
 // longer. 15 minutes for reading and I will have him read later in the day
 // before bed."
 //
-// Independent Reading 45 -> 15 min. Language Arts & Writing Journal 30 -> 60.
-// The thirty minutes moves from one block to the other; NOTHING is added to or
-// taken off the school day. Total instructional time is 5 hr 15 min before and
-// after, which is what keeps the Georgia 4.5 hr/day average intact.
+// Reading is NOT reduced overall — it moves. Fifteen minutes here, and the
+// real reading happens at bedtime, which is the parent's own arrangement and
+// not something this file tracks.
+// ---------------------------------------------------------------------------
+
+// ---------------------------------------------------------------------------
+// FULL TIMETABLE REBUILD, Nov 3 2026 — every block below carries the exact
+// minutes the parent stated, subject by subject, after the Science/Social
+// Studies collision ("why are all these subjects in the same time slot?")
+// turned out to be one case of a pattern repeated three more times on this
+// same printed day: Language Arts, Daily Writing AND Writing Journal all
+// sharing one 12:45 stamp inside the old block-7, and Spelling AND
+// Vocabulary both sharing one 1:30 stamp inside the old block-7b. Three
+// different activities can share a hallway; they cannot share a clock.
 //
-// WHAT MOVES AND WHAT DOES NOT. Only blocks 3-7 change. block-7 keeps its
-// 13:30 END, so Spelling & Vocabulary, PE, the rotating block and Guitar all
-// sit at exactly the times they sat at yesterday. The day still starts 8:30 and
-// still ends 3:15.
+// Her list, verbatim, is the spec this file now matches exactly:
+//   Math 30, Reading 15, Social Studies 30, Science 30, Typing 15,
+//   Language Arts 30, Daily Writing 15, Writing Journal 15, Spelling 15,
+//   Vocab 15, PE 30, Tech 30, Guitar 15, Garden 15, Aerospace 30.
 //
-// THE ONE REAL TRADE, stated plainly rather than buried: lunch moves from 12:00
-// to 11:30. Thirty minutes came out of the morning and nothing before lunch
-// grew, so lunch either moves earlier or the whole day ends later. Moving lunch
-// was chosen because the alternative pushed Guitar to 3:45 and that block was
-// deliberately placed at the end of the school day as a habit cue.
+// WHAT THIS CHANGES FROM THE NOV 3 "Social Studies every day" REBUILD JUST
+// BEFORE IT: Math 60 -> 30, Science 45 -> 30, the rotating block
+// (Aerospace/Technology/Robotics) 45 -> 30, and block-7 / block-7b each
+// split into their real, separately-timed pieces instead of staying one
+// slot wearing two or three names. Social Studies (block-5c, added minutes
+// earlier that same day) is untouched by this pass — it was already a real
+// 30-minute daily block and her list confirms the number, not a change.
 //
-// Reading is NOT reduced overall — it moves. Fifteen minutes here, and the real
-// reading happens at bedtime, which is the parent's own arrangement and not
-// something this file tracks.
+// EVERY OTHER BLOCK a parent has not asked to change keeps its own duration:
+// Morning Meeting (30), Lunch & Outdoor Time (60), PE (30), Guitar (15), and
+// the two garden blocks. Nothing here is touched that she did not name.
+//
+// THE DAY GETS SHORTER, NOT LONGER. Math and Science each gave back minutes
+// nobody asked them to keep, and the rotating block gave back fifteen more —
+// net sixty minutes off a day that, the same morning, had just gained thirty
+// for Social Studies. The school day now runs 8:30 to 3:00 Monday-Thursday
+// (3:00-4:30 after school is the Mon-Thu Garden Check and, Fridays, the full
+// 90-minute Gardening session) instead of 8:30 to 3:30/3:45. Instructional
+// time — every block except Lunch — is 5 hr 30 min, still well clear of
+// Georgia's 4.5 hr/day average.
+//
+// See migrateSavedSchedule() in useAppStore.js for the one-time shift
+// applied to schedules a parent has already customized and saved.
 // ---------------------------------------------------------------------------
 
 export const defaultSchedule = [
   { id: 'block-1', startTime: '08:30', endTime: '09:00', label: 'Morning Meeting, Goals & Calendar', colorKey: 'neutral' },
-  { id: 'block-2', startTime: '09:00', endTime: '10:00', label: 'Mathematics', colorKey: 'math' },
+  { id: 'block-2', startTime: '09:00', endTime: '09:30', label: 'Mathematics', colorKey: 'math' },
   // ------------------------------------------------------------------------
-  // block-3 — THE READING LESSON, not the book. Changed Aug 10 2026.
-  //
-  // The parent: "change the time for A long walk to water. I will have him read
-  // that book before bed and the reading lessons that you just opened can take
-  // the place of the 15 minutes."
-  //
-  // These fifteen minutes were "Independent Reading" — his novel, with no
-  // instruction attached and nothing assessed. The forty Reading & Literature
-  // lessons (Bessie Coleman, Mae Jemison, Hidden Figures, main idea, inference,
-  // context clues) were built, unreachable, and are the taught half of this
-  // subject. They take the slot; the novel moves to bedtime, which is hers to
-  // run and not something this schedule tracks.
-  //
-  // The block is still `colorKey: 'reading'` and still fifteen minutes: nothing
-  // before or after it moves.
+  // block-3 — THE READING LESSON, not the book. Still fifteen minutes,
+  // still `colorKey: 'reading'` — see MORNING RETIME above for why it is
+  // short on purpose, and the Aug 10 2026 history (kept in git) for why it
+  // is a taught lesson rather than independent reading time.
   // ------------------------------------------------------------------------
-  { id: 'block-3', startTime: '10:00', endTime: '10:15', label: 'Reading Lesson', colorKey: 'reading' },
+  { id: 'block-3', startTime: '09:30', endTime: '09:45', label: 'Reading Lesson', colorKey: 'reading' },
   // ------------------------------------------------------------------------
-  // block-4 — THE 10:15 BREAK — REMOVED Nov 2, 2026, the parent's request.
-  // Everything from Science onward moves 15 minutes earlier to close the
-  // gap rather than leave it empty; the school day now ends at 4:30 instead
-  // of 4:45. See migrateSavedSchedule() in useAppStore.js for the one-time
-  // shift applied to schedules saved before this change.
+  // block-5c — Social Studies, every school day. Added Nov 3 2026, the same
+  // day as this file's full rebuild (see the top-of-file comment), after
+  // three different borrow-a-slot mechanisms for this one subject collided
+  // on screen. No `days` restriction — same as Math and Science.
   // ------------------------------------------------------------------------
-  // SCIENCE RAN 60 MINUTES UNTIL AUG 9 2026. The parent: "I also wanted to have
-  // science to 45 minutes and 15 minutes of typing." The fifteen minutes moves
-  // from Science straight into block-5b below — LUNCH STILL STARTS AT 11:30 and
-  // nothing after it moves by a minute. Instructional time is unchanged at
-  // 5 hr 15 min, because typing is instruction too.
-  { id: 'block-5', startTime: '10:15', endTime: '11:00', label: 'Science', colorKey: 'science' },
+  { id: 'block-5c', startTime: '09:45', endTime: '10:15', label: 'Social Studies', colorKey: 'science' },
+  { id: 'block-5', startTime: '10:15', endTime: '10:45', label: 'Science', colorKey: 'science' },
   // ------------------------------------------------------------------------
-  // block-5b — Typing, 15 minutes a day. Added Aug 9 2026.
-  //
-  // NAMED ON THE PRINTED SCHEDULE ON PURPOSE, for the reason this project has
-  // already been caught by once, in the parent's words: "I told him to follow
-  // that schedule but that isn't there" — about spelling and vocabulary, which
-  // ran a real Mon-Fri cycle the routine never named, so following the schedule
-  // genuinely did not tell him to do it.
-  //
-  // Typing is a skill that only comes from daily reps, and it is the one on
-  // this schedule that most rewards short and every-day over long and
-  // occasional. Fifteen minutes before lunch is a natural stopping point: the
-  // block ends when lunch starts, so there is a hard edge rather than a
-  // judgement call about when he has done enough.
-  //
-  // Runs against EdClub (see data/writing/typingLessons.js) with the built-in
-  // lessons and speed test in the app as the backup when the portal is down or
-  // he is offline.
+  // block-5b — Typing, 15 minutes a day. Runs against EdClub (see
+  // data/writing/typingLessons.js) with the built-in lessons and speed test
+  // in the app as the backup when the portal is down or he is offline.
   // ------------------------------------------------------------------------
-  { id: 'block-5b', startTime: '11:00', endTime: '11:15', label: 'Typing Practice', colorKey: 'reading' },
-  { id: 'block-6', startTime: '11:15', endTime: '12:15', label: 'Lunch & Outdoor Time', colorKey: 'break' },
-  { id: 'block-7', startTime: '12:15', endTime: '13:15', label: 'Language Arts & Writing Journal', colorKey: 'math' },
-  // Added Aug 7, 2026 — the parent: "I told him to follow that schedule but
-  // that isn't there." Spelling and vocabulary run a real Mon-Fri cycle
-  // (introduce, practice x3, quiz) in lib/weeklyWords.js, but the printed
-  // routine never named them, so following the schedule genuinely did not
-  // tell him to do it. Carved out of block-7 rather than added on the end, so
-  // the school day is not fifteen minutes longer than it was.
-  { id: 'block-7b', startTime: '13:15', endTime: '13:30', label: 'Spelling & Vocabulary', colorKey: 'reading' },
+  { id: 'block-5b', startTime: '10:45', endTime: '11:00', label: 'Typing Practice', colorKey: 'reading' },
+  { id: 'block-6', startTime: '11:00', endTime: '12:00', label: 'Lunch & Outdoor Time', colorKey: 'break' },
+  // ------------------------------------------------------------------------
+  // block-7 / block-7a / block-7d — ENGLISH IS THREE BLOCKS, NOT ONE.
+  // Split Nov 3 2026. Until this change all three lived in a single 60-
+  // minute "Language Arts & Writing Journal" slot and all printed the same
+  // 12:45 clock time — Khan Academy Language Arts, the daily structure
+  // drill, and the graded Writing Journal prompt, three different pieces of
+  // work stamped with one time. That is the exact shape of bug the Science/
+  // Social Studies collision was, just one slot over. Each now has its own
+  // real, sequential block and its own key in BLOCK_FOR_SUBJECT
+  // (scheduledMinutes.js): `ela` (block-7), `dailyWriting` (block-7a),
+  // `writingJournal` (block-7d).
+  // ------------------------------------------------------------------------
+  { id: 'block-7', startTime: '12:00', endTime: '12:30', label: 'Language Arts', colorKey: 'math' },
+  { id: 'block-7a', startTime: '12:30', endTime: '12:45', label: 'Daily Writing', colorKey: 'reading' },
+  { id: 'block-7d', startTime: '12:45', endTime: '13:00', label: 'Writing Journal', colorKey: 'reading' },
+  // ------------------------------------------------------------------------
+  // block-7b / block-7c — SPELLING IS NOT VOCABULARY. Split Nov 3 2026, same
+  // reason as block-7 above: both skills were stamped with the same 1:30
+  // clock time inside one "Spelling & Vocabulary" block, and Mission Control
+  // has shown a real row for each of them every school day since Aug 9 2026
+  // (see lib/weeklyWords.js). Each now has its own 15-minute block and its
+  // own BLOCK_FOR_SUBJECT key: `spelling` (block-7b, keeps its original id),
+  // `vocabulary` (block-7c, new).
+  // ------------------------------------------------------------------------
+  { id: 'block-7b', startTime: '13:00', endTime: '13:15', label: 'Spelling', colorKey: 'reading' },
+  { id: 'block-7c', startTime: '13:15', endTime: '13:30', label: 'Vocabulary', colorKey: 'reading' },
   { id: 'block-8', startTime: '13:30', endTime: '14:00', label: 'Physical Education', colorKey: 'pe' },
   // ------------------------------------------------------------------------
-  // block-9 — the rotating block. ONE subject, resolved per day.
+  // block-9 / block-9b / block-9c — AEROSPACE, TECHNOLOGY AND ROBOTICS ARE
+  // EACH DAILY NOW. De-rotated Nov 3 2026, same day as the rebuild above,
+  // on the parent's own words: "i don't want aerospace robotics and tech to
+  // be rotating... I want them to be daily. social studies should be daily
+  // as well." (Social Studies had already gone daily, as block-5c, earlier
+  // that same day.)
   //
-  // The stored label below is a FALLBACK, not what is displayed. lib/
-  // rotatingBlock.js resolves this block against the date on screen and shows
-  // the actual course: Aerospace on Mon/Wed, Technology on Tue, Social Studies
-  // on Thu, and "Open" on Fri. The stored string is only used when the parent
-  // has renamed the block herself, and as the label a printed copy falls back
-  // to.
+  // Until this change these three subjects shared ONE 30-minute slot
+  // (block-9), resolved per day by lib/rotatingBlock.js so that only one of
+  // them ever ran on a given day — the exact "three different activities,
+  // one clock" shape the rest of this file's rebuild fixed everywhere else.
+  // Each now gets its own real, sequential 30-minute block every school
+  // day, with its own fixed id in BLOCK_FOR_SUBJECT (scheduledMinutes.js):
+  // `aerospace` (block-9, keeps its original id), `technology` (block-9b,
+  // new), `robotics` (block-9c, new). lib/rotatingBlock.js's day-resolution
+  // machinery (liveRotatingSubjects, the dynamic block-9 label) is retired
+  // the same way the morning-slot machinery was retired for Social Studies
+  // — kept in the file as dormant code, not deleted.
   //
-  // IT READ "Aerospace / Social Studies / Coding / Robotics / STEM Project ·
-  // Fridays: Gardening or Guitar Theory" UNTIL AUG 9 2026 — five subject names
-  // and a Friday clause for a slot that holds exactly one of them. The Friday
-  // clause is gone because gardening moved after school (block-11).
+  // THE DAY GOT 60 MINUTES LONGER as a direct result: three real 30-minute
+  // blocks instead of one shared one. Guitar, the Garden Check and Friday's
+  // Gardening session all shift an hour later to make room; none of their
+  // own durations changed.
   // ------------------------------------------------------------------------
-  { id: 'block-9', startTime: '14:00', endTime: '14:45', label: 'Rotating Block — Aerospace / Technology / Social Studies / Robotics', colorKey: 'science' },
+  { id: 'block-9', startTime: '14:00', endTime: '14:30', label: 'Aerospace Engineering', colorKey: 'science' },
+  { id: 'block-9b', startTime: '14:30', endTime: '15:00', label: 'Technology & Computer Science', colorKey: 'science' },
+  { id: 'block-9c', startTime: '15:00', endTime: '15:30', label: 'Robotics & Automation', colorKey: 'science' },
   // ------------------------------------------------------------------------
-  // block-10 — Electric Guitar practice. Added Aug 8, 2026, with the parent.
-  //
-  // THIS SITS OUTSIDE SCHOOL HOURS AND IS ON THE PRINTED SCHEDULE ANYWAY, and
-  // that is the entire point rather than an oversight. This project has already
-  // been caught by exactly the opposite, in her own words: "I told him to
-  // follow that schedule but that isn't there" — about spelling and vocabulary,
-  // which ran a real Mon-Fri cycle the printed routine never named. Following
-  // the schedule genuinely did not tell him to do it, so he did not do it.
-  //
-  // He is NOT self-disciplined about the guitar, which is the whole reason this
-  // subject is being built. An unnamed fifteen minutes will not happen. So it
-  // gets what PE has: a named block AND a daily card on his home screen. Both,
-  // not either.
-  //
-  // 3:00 IS CHOSEN DELIBERATELY. Not because the evening is a worse time to
-  // play, but because attaching a new habit to a boundary that already fires
-  // every single day — the school day ending — is the most reliable way to make
-  // it stick. It is parent-movable like every other block.
-  //
-  // This is the one change that makes the printed day end at 3:15 instead of
-  // 3:00. Nothing before it moves by a minute.
+  // block-10 — Electric Guitar practice. Named on the printed schedule AND
+  // a daily card on his home screen, on purpose — see the Aug 8 2026
+  // history (kept in git) for why an unnamed block does not get done.
+  // Shifted an hour later Nov 3 2026 (was 14:30) when Aerospace/Technology/
+  // Robotics each became its own real block instead of sharing one.
   // ------------------------------------------------------------------------
-  { id: 'block-10', startTime: '14:45', endTime: '15:00', label: 'Electric Guitar Practice', colorKey: 'reading' },
+  { id: 'block-10', startTime: '15:30', endTime: '15:45', label: 'Electric Guitar Practice', colorKey: 'reading' },
   // ------------------------------------------------------------------------
-  // block-11 — Gardening, AFTER SCHOOL, Fridays. Added Aug 9 2026.
-  //
-  // The parent: "Gardening can be in the same slot as Lunch 30 min lunch 30
-  // min gardening or gardening can be after school." She chose after school.
-  //
-  // WHY THE LUNCH SPLIT WAS NOT VIABLE, since the question will come back: the
-  // 25 garden briefs run 60, 75, 90, 120, 180, 240 and 300 minutes — average
-  // 102. The SHORTEST is double a 30-minute slot, and five of them are builds
-  // (the trellis, the drip irrigation, the moisture-sensor capstone) that
-  // cannot be split without spending most of the time carrying tools in and
-  // out. Gardening never fitted an academic slot; that is the real reason
-  // Friday had been a buffer day for it.
-  //
-  // 90 MINUTES covers 20 of the 25 briefs as written. The five long builds
-  // want a weekend, which is what they wanted before this change too.
-  //
-  // FRIDAYS ONLY, and the label says so, because scheduleBlocks is one day
-  // template reused Mon-Fri and this block is the big session, not the daily
-  // habit. Guitar keeps 3:00-3:15 and still marks the end of the school day.
-  //
-  // UPDATE, Nov 2 2026: Mon-Thu is no longer empty after school. See
-  // block-11b below — a separate, much smaller block for the days this one
-  // does not run, not an extension of this one.
+  // block-11 — Gardening, AFTER SCHOOL, Fridays. 90 minutes, unchanged by
+  // this rebuild — her list did not name gardening's Friday session, only
+  // the daily 15-minute check below. `days: [5]` is NOT decoration: this
+  // file is one template reused Monday-Friday, so without it the class bell
+  // announces "Gardening" on a day nobody is in that class. Shifted an hour
+  // later Nov 3 2026, same reason as block-10.
   // ------------------------------------------------------------------------
-  //
-  // `days: [5]` is NOT decoration. scheduleBlocks is one template reused Monday
-  // through Friday, so without it the class bell announces "Gardening" at 3:20
-  // on a Tuesday — a bell ringing for a class nobody is in, which is the exact
-  // failure the holiday work fixed a few hours earlier the same day.
-  { id: 'block-11', startTime: '15:00', endTime: '16:30', label: 'Gardening — Fridays, after school', colorKey: 'science', days: [5] },
+  { id: 'block-11', startTime: '15:45', endTime: '17:15', label: 'Gardening — Fridays, after school', colorKey: 'science', days: [5] },
   // ------------------------------------------------------------------------
-  // block-11b — Garden Check (water & look), Mon-Thu, after school. Added
-  // Nov 2 2026, with the parent: "He doesn't go to the garden like he
-  // should." Added every weekday after school, per her choice.
-  //
-  // THIS IS NOT THE FRIDAY SESSION, SHRUNK. Friday (block-11) runs a real
-  // brief — a lesson, a build, a planting or harvest window — and is the
-  // only day gardenForDate() in lib/plannerFeeds.js resolves a dated brief
-  // for, because gardenCalendar.js only has Friday dates in it. Authoring a
-  // full lesson for four more days a week was not what she asked for; she
-  // asked for him to actually go out there. So Mon-Thu gets the smallest
-  // possible habit instead: water what needs it, look at what's growing,
-  // log it. The Garden screen already has a lightweight 'watering' log kind
-  // for exactly this, so no new screen was needed — only this block and the
-  // Mission Control row reading it (see gardenForDate's weekday branch).
-  //
-  // 15 MINUTES, same 3:00 start as guitar's old slot and Friday's gardening
-  // block, for the same reason block-10 picked 3:00: it rides the one
-  // boundary that fires every day — school ending — instead of asking him to
-  // remember a time that belongs to no other habit.
-  //
-  // `days: [1, 2, 3, 4]` on purpose — Friday already has its own block-11
-  // and does not need a second, smaller one layered under it.
-  { id: 'block-11b', startTime: '15:00', endTime: '15:15', label: 'Garden Check — water & look', colorKey: 'science', days: [1, 2, 3, 4] }
+  // block-11b — Garden Check (water & look), Mon-Thu, after school. 15
+  // minutes, matching her list. `days: [1, 2, 3, 4]` on purpose — Friday
+  // already has its own block-11 and does not need a second, smaller one
+  // layered under it. Shifted an hour later Nov 3 2026, same reason as
+  // block-10.
+  // ------------------------------------------------------------------------
+  { id: 'block-11b', startTime: '15:45', endTime: '16:00', label: 'Garden Check — water & look', colorKey: 'science', days: [1, 2, 3, 4] }
 ];

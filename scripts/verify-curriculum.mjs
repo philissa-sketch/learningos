@@ -241,12 +241,27 @@ ok(
 // so they are exempt by construction rather than by a hardcoded allow-list.
 // ---------------------------------------------------------------------------
 const { WEEK_PATTERN } = await import('../src/academies/lamar/data/schedule/weekPattern.js');
+// ---------------------------------------------------------------------------
+// REACHABILITY MOVED OFF WEEK_PATTERN FOR THE SPECIALIZED SUBJECTS, NOV 3 2026.
+//
+// Aerospace, Technology, Robotics and Social Studies used to earn their core-day
+// reach by sitting in some day's `subjects` preference list -- that is exactly
+// what the check below exists to catch missing. The parent retired the whole
+// rotating mechanism ("i don't want aerospace robotics and tech to be
+// rotating... I want them to be daily"), and WEEK_PATTERN.subjects is empty on
+// every day now (see weekPattern.js). They are reachable the same way Math,
+// Reading and Science always were -- exempt by construction, because each now
+// runs every school day in its own fixed schedule block instead of through
+// this weekday map at all.
+// ---------------------------------------------------------------------------
+const { DAILY_SPECIALIZED_SUBJECTS } = await import('../src/lib/scheduledMinutes.js');
 
-const coreDaySubjects = new Set(
-  Object.values(WEEK_PATTERN)
+const coreDaySubjects = new Set([
+  ...Object.values(WEEK_PATTERN)
     .filter((p) => p.kind === 'core')
-    .flatMap((p) => p.subjects)
-);
+    .flatMap((p) => p.subjects),
+  ...DAILY_SPECIALIZED_SUBJECTS
+]);
 
 const quarterTaggedSubjects = new Set(
   allLessons.filter((l) => l.quarter).map((l) => l.subject)
@@ -257,24 +272,33 @@ ok(
   unreachable.length === 0,
   'every subject with quarter-tagged lessons appears on at least one core day',
   unreachable
-    .map((s) => `${s} has quarter-tagged lessons but is on NO core day — it would only ever show on Friday. Add it to WEEK_PATTERN.`)
+    .map((s) => `${s} has quarter-tagged lessons but is on NO core day and is not in DAILY_SPECIALIZED_SUBJECTS — it would only ever show on Friday. Add it to WEEK_PATTERN or DAILY_SPECIALIZED_SUBJECTS.`)
     .join(' | ')
 );
 
-// AT LEAST TWICE A WEEK UNTIL AUG 9 2026, when the 2:15 block went to ONE
-// subject a day so Social Studies and Technology would stop splitting 45
-// minutes. A subject gets its own day and the open Friday for overflow, so the
-// floor is once. Aerospace still runs twice — asserted separately below.
-// Aerospace is the one subject held to twice a week, and on purpose: it is his
-// dream, it has 54 lessons against 95 Mon/Wed sessions, and a career interest
-// studied once a week is a subject rather than a spark. If it ever drops to one
-// day, that was not a rebalance — it was an accident.
+// AEROSPACE WENT DAILY NOV 3, 2026, ALONG WITH TECHNOLOGY AND ROBOTICS.
+//
+// "At least twice a week" was Aerospace's own floor, held above every other
+// rotating subject's once-a-week minimum on purpose — his dream subject, and a
+// career interest studied once a week is a spark, not a subject. The parent
+// raised that floor all the way to daily: "I want them to be daily."
+// WEEK_PATTERN.subjects is empty on every day now (the mechanism this check
+// used to read is retired), so the honest assertion is that Aerospace reaches
+// him through DAILY_SPECIALIZED_SUBJECTS — every school day, not two.
 ok(
-  Object.values(WEEK_PATTERN).filter((p) => p.subjects.includes('aerospace')).length === 2,
-  'Aerospace still runs twice a week'
+  DAILY_SPECIALIZED_SUBJECTS.includes('aerospace') &&
+    Object.values(WEEK_PATTERN).filter((p) => p.kind === 'core' && p.subjects.includes('aerospace')).length === 0,
+  'Aerospace now runs daily, through its own block, not twice a week via WEEK_PATTERN'
 );
 
 for (const subject of coreDaySubjects) {
+  if (DAILY_SPECIALIZED_SUBJECTS.includes(subject)) {
+    // Daily by construction (its own fixed schedule block, Nov 3, 2026) — no
+    // WEEK_PATTERN day count applies to it, the same way Math, Reading and
+    // Science were always exempt from this loop.
+    ok(true, `${subject} runs every core day via its own schedule block (daily, not WEEK_PATTERN-rotated)`);
+    continue;
+  }
   const days = Object.values(WEEK_PATTERN).filter((p) => p.subjects.includes(subject)).length;
   ok(
     days >= 1,

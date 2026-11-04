@@ -21,11 +21,18 @@
  * The first subject with real lessons in the current quarter owns the day; see
  * lib/rotatingBlock.js, which is the only place that resolves it.
  *
- * WHAT DID NOT CHANGE: Aerospace still runs 2x/week, on Monday and Wednesday.
- * A career interest studied every single day stops being a spark and becomes a
- * chore — Aerospace is his dream, which is exactly why it is not daily. Eleven
- * lessons a quarter against 16-24 Mon/Wed sessions; it fits everywhere with
- * room to spare.
+ * ---- AEROSPACE, TECHNOLOGY AND ROBOTICS WENT DAILY NOV 3, 2026 ----------
+ *
+ * The line that used to live here said Aerospace stayed at 2x/week on
+ * purpose, so a career interest wouldn't become a chore. The parent decided
+ * otherwise, in her own words: "i don't want aerospace robotics and tech to
+ * be rotating... I want them to be daily. social studies should be daily as
+ * well." Each of the three (and Social Studies, confirmed the same day) now
+ * runs every school day in its own real block — block-9 Aerospace, block-9b
+ * Technology, block-9c Robotics, block-5c Social Studies, all in
+ * defaultSchedule.js — instead of taking one or two weekdays each. Every
+ * `subjects` list below that used to name one of them is now empty; see the
+ * per-day comments for the history.
  *
  * GEORGIA ATTENDANCE. Five real instructional days a week, 200 days Aug-May
  * against the required 180, plus 39 in summer. Friday counts on its own terms
@@ -53,8 +60,16 @@ export const WEEK_PATTERN = {
   1: {
     label: 'Monday',
     kind: 'core',
-    subjects: ['aerospace'],
-    note: 'Core academics, then Aerospace — the full 45 minutes. Science runs through Khan Academy today.'
+    // ---- AEROSPACE LEFT THIS LIST NOV 3, 2026 ----------------------------
+    //
+    // Monday was Aerospace's first of two weekly rotation days (with
+    // Wednesday) until the parent retired the whole rotating-block
+    // mechanism: "i don't want aerospace robotics and tech to be
+    // rotating... I want them to be daily." Aerospace now runs every
+    // school day in its own real block (block-9 in defaultSchedule.js)
+    // instead of taking turns for one weekday's worth of time.
+    subjects: [],
+    note: 'Core academics. Aerospace, Technology and Robotics each run every day now, in their own blocks (block-9/9b/9c) — see defaultSchedule.js.'
   },
   // TUESDAY AND THURSDAY BOTH CARRIED SOCIAL STUDIES *AND* TECHNOLOGY UNTIL
   // AUG 9 2026, sharing one 45-minute block. The parent: "we have social
@@ -65,31 +80,36 @@ export const WEEK_PATTERN = {
   2: {
     label: 'Tuesday',
     kind: 'core',
-    subjects: ['technology', 'robotics'],
+    // ---- TECHNOLOGY AND ROBOTICS LEFT THIS LIST NOV 3, 2026 -------------
+    //
+    // Tuesday and Thursday were Technology's (Robotics' in Q4) rotation
+    // days until the parent retired the rotating-block mechanism itself:
+    // "i don't want aerospace robotics and tech to be rotating... I want
+    // them to be daily." Each now runs every school day in its own real
+    // block (block-9b Technology, block-9c Robotics) instead of splitting
+    // the week between them.
+    subjects: [],
     /**
-     * ---- A SECOND ROTATING SLOT, AT 10:30. (Aug 29, 2026.) ----
+     * ---- THE SECOND ROTATING SLOT, AT 10:30 — RETIRED NOV 3, 2026. ----
      *
-     * The parent: *"The same issue arises with Social Studies. We may have to
-     * replan the schedule. To see what classes he can do 2x a week."*
+     * From Aug 29 to Nov 3, Tuesday borrowed Science's 10:15 block for Social
+     * Studies via `morningSubjects` below, because Social Studies owned no
+     * weekday of its own and was 30 days behind on the year's pacing. That
+     * was always a display trick, not real time — it renamed block-5 for the
+     * day without ever telling Science's own Khan row to step aside, which is
+     * exactly the bug the parent caught: "why are all these subjects in the
+     * same time slot?"
      *
-     * She was right, and the pacing model settled which subject gets it.
-     * Counting Mission Control lessons plus the real cost of a Khan unit,
-     * across the whole year at one day a week:
-     *
-     *     Social Studies   39 days owned, 69 needed   -> 30 short
-     *     Aerospace        39 days owned, 44 needed   ->  5 short
-     *
-     * Social Studies is six times further behind, so it takes the new day.
-     * Aerospace keeps Monday: a five-day overflow is exactly the size the open
-     * Friday exists to absorb, and taking Friday's buffer away to fix a
-     * five-day gap would create a bigger one.
-     *
-     * The slot is Science's old Tuesday. Science drops from five days to four
-     * — its 26 units cost 70 days against 144 available at four days, so it
-     * fits with room, and no course had to be cut to find this time.
+     * Social Studies now has its own real block every school day (block-5c in
+     * defaultSchedule.js, right after Science), so it no longer needs to
+     * borrow anyone else's time — on any day. `morningSubjects` is gone from
+     * every day in this file, Science keeps its own block every day, and this
+     * whole mechanism (`liveMorningSubject`, `MORNING_BLOCK_ID` in
+     * rotatingBlock.js) is now permanently dormant rather than removed, in
+     * case a future subject genuinely needs a second rotating slot of its
+     * own.
      */
-    morningSubjects: ['socialStudies'],
-    note: 'Core academics, then Technology & Computer Science — the full 45 minutes. Robotics replaces Technology here in Q4.'
+    note: 'Core academics. Technology and Robotics each run every day now, in their own blocks (block-9b/9c) — see defaultSchedule.js.'
   },
   // ORDER OF PREFERENCE, same rule as Thursday: Technology owns Tuesday
   // wherever it has lessons, and hands the day to Robotics in Q4 where it has
@@ -125,12 +145,27 @@ export const WEEK_PATTERN = {
   // reads this array in order, so if Social Studies ever has nothing live in a
   // quarter, Wednesday returns to Aerospace by itself rather than sitting
   // empty — the same shape Thursday already uses.
+  // ---- SOCIAL STUDIES LEFT THIS LIST NOV 3, 2026 ----------------------
+  //
+  // Wednesday was Social Studies' one guaranteed rotation day from Aug 20
+  // (see the long comment below, kept for the Q1 history it explains) until
+  // Social Studies got a real daily block of its own (block-5c). Keeping it
+  // in this preference list too, on top of a daily block, would have been
+  // over-provisioning one subject at the cost of a day Aerospace, Technology
+  // or Robotics could use — exactly the kind of silent imbalance this file's
+  // own comments have fought since August. Wednesday is Aerospace's alone now.
   3: {
     label: 'Wednesday',
     kind: 'core',
-    subjects: ['aerospace', 'socialStudies'],
-    subjectsByQuarter: { Q1: ['socialStudies', 'aerospace'] },
-    note: 'Core academics, then Aerospace — the full 45 minutes. Social Studies takes this day in Q1, while Technology needs both Tuesday and Thursday.'
+    // ---- AEROSPACE LEFT THIS LIST TOO, NOV 3, 2026 -----------------------
+    //
+    // Wednesday was Aerospace's second weekly rotation day (with Monday)
+    // until the parent retired the rotating-block mechanism itself: "I
+    // want them to be daily." Aerospace now runs every school day in its
+    // own real block (block-9), so it no longer needs a specific weekday
+    // at all.
+    subjects: [],
+    note: 'Core academics. Aerospace, Technology and Robotics each run every day now, in their own blocks (block-9/9b/9c). Social Studies runs every day too, in its own block-5c.'
   },
   // THURSDAY'S LIST IS AN ORDER OF PREFERENCE, NOT A LIST OF WHAT RUNS. The
   // first subject with real lessons in the quarter owns the day and gets all 45
@@ -151,29 +186,28 @@ export const WEEK_PATTERN = {
   // with Tuesday alone for 22 lessons and 12 Khan units.
   //
   // The parent chose Wednesday for Social Studies over exactly that option.
+  // ---- SOCIAL STUDIES LEFT THIS LIST, AND ITS BORROWED 10:30 SLOT,
+  // NOV 3, 2026 ----------------------------------------------------------
+  //
+  // Thursday had carried Social Studies three ways by the end: the main
+  // rotation day below, plus a second borrowed Science slot added Sept 16
+  // because "the one x per week isn't enough." Both are retired now that
+  // Social Studies runs every school day in its own block (block-5c) —
+  // five real sessions a week is strictly more than the three this day alone
+  // used to patch together, without needing to touch Science's block at all.
+  // Thursday reverts to Technology, its other listed subject.
   4: {
     label: 'Thursday',
     kind: 'core',
-    subjects: ['socialStudies', 'technology'],
-    subjectsByQuarter: { Q1: ['technology', 'socialStudies'] },
-    /**
-     * ---- A THIRD SOCIAL STUDIES SESSION, THURSDAY AT 10:30. (Sept 16, 2026.) ----
-     *
-     * The parent: *"Lamar is behind in his social studies. The one x per week
-     * isn't enough. In each unit may have up to 11 lessons with multiple
-     * videos in each lesson."*
-     *
-     * Counted off the live Khan pages that day: the eight unfinished World
-     * History units hold 77 lessons (5, 12, 15, 8, 10, 10, 9, 8) — the
-     * pacing model's flat "4 days a unit" had understated them by more than
-     * half. She chose three sessions a week and spreading the units across
-     * the year.
-     *
-     * Science gives up Thursday as it gave up Tuesday. Its 26 units cost 70
-     * days; at Mon/Wed/Fri it still owns more than that. verify-pacing checks.
-     */
-    morningSubjects: ['socialStudies'],
-    note: 'Core academics, then Social Studies — the full 45 minutes. Technology takes this day in Q1, when it carries 23 lessons and Social Studies has none.'
+    // ---- TECHNOLOGY AND ROBOTICS LEFT THIS LIST NOV 3, 2026 -------------
+    //
+    // Thursday was Technology's (Robotics' in Q4) second rotation day, with
+    // Tuesday, until the parent retired the rotating-block mechanism
+    // itself: "I want them to be daily." Each now runs every school day in
+    // its own real block (block-9b, block-9c), so neither needs a specific
+    // weekday any more.
+    subjects: [],
+    note: 'Core academics. Technology and Robotics each run every day now, in their own blocks (block-9b/9c). Social Studies runs every day too, in its own block-5c.'
   },
   // FRIDAY WAS A 'buffer' DAY UNTIL AUG 9 2026 — no new academic material, and
   // the garden owned the afternoon. The parent moved it back to a full Mon-Fri
@@ -203,9 +237,19 @@ export const WEEK_PATTERN = {
     label: 'Friday',
     kind: 'core',
     flex: true,
+    // `subjects: []` has been true since Aug 9 2026 for the reason above —
+    // a fixed rotating subject here would have spent the day's overflow
+    // capacity. As of Nov 3, 2026 there is no rotation left to overflow:
+    // Aerospace, Technology, Robotics and Social Studies each own their own
+    // block every school day, Friday included, the same as any other day
+    // (see DAILY_SPECIALIZED_SUBJECTS in MissionControlDashboard.jsx). This
+    // stays empty anyway — Friday is still `flex` for whatever ELSE falls
+    // behind during the week (an unfinished Khan set, a rough draft, a
+    // missed word-study day), just no longer for a rotating subject that
+    // "ran out of Tuesdays," because none can any more.
     subjects: [],
     afterSchool: ['gardening'],
-    note: 'A full school day. The rotating block is open: long Khan units that need the whole week, whatever is behind from Mon-Thu, or a field trip planned in advance. The garden is after school.'
+    note: 'A full school day — Aerospace, Technology, Robotics and Social Studies each run in their own block today too, same as every other day. The open part of Friday now catches up on anything else that fell behind, or a field trip planned in advance. The garden is after school.'
   },
   0: { label: 'Sunday', kind: 'weekend', subjects: [], note: 'Weekend.' },
   6: { label: 'Saturday', kind: 'weekend', subjects: [], note: 'Weekend.' }

@@ -55,9 +55,9 @@ export function PacingSection() {
           Does each subject have enough days?
         </h3>
         <p className="mt-2 text-sm text-ink-300">
-          The 2:15 rotating block gives Aerospace, Technology, Social Studies and Robotics a fixed number of
-          days each quarter. This counts them against the work those subjects are carrying — lessons and Khan
-          Academy units both, because both land in the same forty-five minutes.
+          Aerospace, Technology, Social Studies and Robotics each run every school day in their own block now
+          (retired the 2:15 rotating slot Nov 3, 2026). This counts every school day a subject owns against
+          the work it is carrying — lessons and Khan Academy units both.
         </p>
         <p className="mt-2 text-sm text-ink-300">
           {trouble.length > 0 ? (

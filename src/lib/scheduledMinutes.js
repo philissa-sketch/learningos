@@ -23,14 +23,19 @@
 //
 // ---- THE DOUBLE-COUNTING TRAP, AND WHY THIS COUNTS BLOCKS NOT TICKS ----
 //
-// The rotating 2:15 block is shared — Aerospace, Technology, Social Studies and
-// Robotics take turns in block-9. Tick two of them on one day and a naive sum
-// books ninety minutes for a forty-five minute block.
+// The rotating 2:15 block USED TO BE shared — Aerospace, Technology, Social
+// Studies and Robotics took turns in block-9. Tick two of them on one day and
+// a naive sum booked ninety minutes for a forty-five minute block. (Retired
+// Nov 3, 2026 — each of the four now has its own real block and never shares
+// one, so this scenario can no longer happen. The distinct-blocks rule below
+// is kept because it is still the right rule for the pairs that DO still
+// share credit on purpose: Daily Writing/Writing Journal and
+// Spelling/Vocabulary off one writingEntries or wordStudyDates record.)
 //
 // So the unit of credit is the **BLOCK, not the tick**. Today's minutes are the
 // sum of the DISTINCT blocks that at least one completed thing maps to. Ticking
-// two rotating subjects credits block-9 exactly once, because the block only
-// happened once.
+// two subjects that happen to share a block credits that block exactly once,
+// because the block only happened once.
 //
 // This also makes the whole thing idempotent: it is recomputed from the logs,
 // never incremented. Unticking removes the credit for free, and there is no
@@ -99,10 +104,25 @@ export function wordStudyDates(weeklyWordState = {}) {
  * keeps working. Renaming is a thing parents do; changing ids is not something
  * the UI even offers.
  *
- * The four rotating subjects all point at block-9 on purpose. See the header:
- * the block is the unit of credit, so they collapse into one another rather
- * than stacking.
+ * ---- NOTHING ROTATES ANY MORE. (Nov 3, 2026.) ----
+ *
+ * Aerospace, Technology, Robotics and Social Studies used to collapse onto
+ * one shared block (block-9, or block-5c's predecessor) on purpose, because
+ * only one of them ran on a given day. The parent: "i don't want aerospace
+ * robotics and tech to be rotating... I want them to be daily. social
+ * studies should be daily as well." All four now have their own real block
+ * every school day and no longer stack.
  */
+/**
+ * Subjects with their own real block every school day, outside core (Math,
+ * Reading, Science, Language Arts). Added Nov 3, 2026 when the parent
+ * retired the rotating 2:15 block entirely: "I want them to be daily.
+ * social studies should be daily as well." Any screen that used to ask
+ * `liveRotatingSubjects`/`pattern.subjects` which ONE of these was live
+ * today should read this fixed list instead — all four are, every day.
+ */
+export const DAILY_SPECIALIZED_SUBJECTS = ['socialStudies', 'aerospace', 'technology', 'robotics'];
+
 export const BLOCK_FOR_SUBJECT = {
   /**
    * The 08:30 block. It had no entry here until Aug 20, 2026, and no record
@@ -115,12 +135,32 @@ export const BLOCK_FOR_SUBJECT = {
   science: 'block-5',
   typing: 'block-5b',
   ela: 'block-7',
-  wordStudy: 'block-7b',
+  /**
+   * ---- ENGLISH, SPELLING AND VOCAB EACH SPLIT INTO THEIR OWN BLOCK.
+   * (Nov 3, 2026.) ----
+   *
+   * Until this date `ela` covered Khan Language Arts, the daily writing
+   * drill AND the Writing Journal, and `wordStudy` covered both Spelling and
+   * Vocabulary — four real pieces of work sharing two clock times. That is
+   * the Science/Social Studies collision bug in miniature, twice over. See
+   * the Nov 3 2026 comment at the top of defaultSchedule.js for the parent's
+   * exact numbers. `wordStudy` is retired; `spelling` and `vocabulary` take
+   * its place.
+   */
+  dailyWriting: 'block-7a',
+  writingJournal: 'block-7d',
+  spelling: 'block-7b',
+  vocabulary: 'block-7c',
   pe: 'block-8',
   aerospace: 'block-9',
-  technology: 'block-9',
-  socialStudies: 'block-9',
-  robotics: 'block-9',
+  technology: 'block-9b',
+  /**
+   * Moved off the rotating block-9 to its own daily block-5c on Nov 3 2026
+   * (see defaultSchedule.js) — Social Studies no longer rotates or borrows
+   * anyone else's time.
+   */
+  socialStudies: 'block-5c',
+  robotics: 'block-9c',
   guitar: 'block-10',
   gardening: 'block-11',
   /**
@@ -376,10 +416,29 @@ export function coveredBlockIds(dateStr, {
    * completedAt is a UTC timestamp, so it goes through localDayOf. An entry
    * finished at 8pm Eastern belongs to that evening, not to tomorrow.
    */
+  /**
+   * Daily Writing and the Writing Journal are now two separate blocks
+   * (Nov 3, 2026), but writingEntries does not yet distinguish which of the
+   * two produced a given entry — a drill entry and a journal entry share
+   * one table, keyed by promptId from two different prompt lists. Crediting
+   * both blocks on any completed entry keeps the total hours exactly what
+   * they were before the split (neither block went uncreditable) rather
+   * than guessing which one he actually did; splitting the credit itself is
+   * future work if it's ever needed.
+   */
   if ((writingEntries || []).some((e) => e?.completedAt && localDayOf(e.completedAt) === dateStr)) {
-    ids.add(BLOCK_FOR_SUBJECT.ela);
+    ids.add(BLOCK_FOR_SUBJECT.dailyWriting);
+    ids.add(BLOCK_FOR_SUBJECT.writingJournal);
   }
-  if (wordStudyDates(weeklyWordState).has(dateStr)) ids.add(BLOCK_FOR_SUBJECT.wordStudy);
+  /**
+   * Same reasoning for Spelling and Vocabulary (also split Nov 3, 2026):
+   * one weekly-word record covers the day, not the skill, so both blocks
+   * credit together.
+   */
+  if (wordStudyDates(weeklyWordState).has(dateStr)) {
+    ids.add(BLOCK_FOR_SUBJECT.spelling);
+    ids.add(BLOCK_FOR_SUBJECT.vocabulary);
+  }
 
   /**
    * Lessons he finished in this app, on this day.

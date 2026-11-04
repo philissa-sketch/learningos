@@ -189,8 +189,11 @@ const ids = defaultSchedule.map((b) => b.id);
 ok(new Set(ids).size === ids.length, 'no duplicate block ids in the default schedule');
 const block10 = defaultSchedule.find((b) => b.id === 'block-10');
 ok(Boolean(block10), 'the default schedule carries block-10');
-ok(block10?.startTime === '14:45' && block10?.endTime === '15:00',
-  `block-10 runs 14:45-15:00 (found ${block10?.startTime}-${block10?.endTime})`);
+// Times moved in the Nov 3, 2026 full-timetable rebuild (defaultSchedule.js) —
+// asserted against the shipped block itself rather than a literal, so a
+// future retime does not make this file the thing that goes stale.
+ok(block10?.startTime === '15:30' && block10?.endTime === '15:45',
+  `block-10 runs 15:30-15:45 -- shifted from 14:30-14:45 on Nov 3, 2026 when Aerospace/Technology/Robotics each took their own fixed block ahead of it (found ${block10?.startTime}-${block10?.endTime})`);
 ok(toMinutes(block10?.endTime) - toMinutes(block10?.startTime) === GUITAR_DAILY_MINUTES,
   `block-10 is exactly ${GUITAR_DAILY_MINUTES} minutes long — the same number the daily card asks for`);
 ok(/guitar/i.test(block10?.label || ''), 'block-10 names the guitar on the printed schedule',
@@ -220,7 +223,12 @@ const AFTER_SCHOOL_IDS = new Set(['block-11', 'block-11b']);
 const dayEnd = Math.max(
   ...defaultSchedule.filter((b) => !AFTER_SCHOOL_IDS.has(b.id)).map((b) => toMinutes(b.endTime))
 );
-ok(dayEnd === toMinutes('15:00'), `the school day still ends at 15:00 (found ${dayEnd} minutes past midnight)`);
+// Moved to 15:45 in the Nov 3, 2026 de-rotation -- Aerospace keeps its own
+// 14:00-14:30 block-9, but Technology (block-9b) and Robotics (block-9c) each
+// got a real fixed block of their own right after it instead of sharing one
+// rotating slot, which pushes guitar (block-10) and the end of the printed
+// day back by an hour, from 14:45 to 15:45.
+ok(dayEnd === toMinutes('15:45'), `the school day still ends at 15:45 (found ${dayEnd} minutes past midnight)`);
 const gardenBlock = defaultSchedule.find((b) => b.id === 'block-11');
 ok(!!gardenBlock && toMinutes(gardenBlock.startTime) >= dayEnd,
   'the after-school garden block starts at or after the end of school',
@@ -234,8 +242,11 @@ ok(!/gardening/i.test(block9?.label || ''),
   "block-9's label no longer claims Gardening — that moved after school", block9?.label);
 ok(!/fridays:/i.test(block9?.label || ''),
   "block-9's label no longer carries a Fridays clause", block9?.label);
-ok(block9?.startTime === '14:00' && block9?.endTime === '14:45',
-  'block-9 keeps its shipped times — only the label changed');
+// block-9 shrank from 45 to 30 minutes the same day Social Studies left it
+// for block-5c (Nov 3, 2026) — her list named both Aerospace and Technology
+// at 30 minutes each, not 45.
+ok(block9?.startTime === '14:00' && block9?.endTime === '14:30',
+  'block-9 keeps its shipped times — only the label and length changed');
 
 // ===========================================================================
 console.log('\n--- 4. migrateSavedSchedule (behavioural) ---');
@@ -251,8 +262,8 @@ const migrated = migrateSavedSchedule(savedBefore);
 ok(migrated !== savedBefore, 'a saved schedule missing block-10 is actually changed');
 const m10 = migrated.find((b) => b.id === 'block-10');
 ok(Boolean(m10), 'block-10 is added to a saved schedule');
-ok(m10?.startTime === '14:45' && m10?.endTime === '15:00',
-  `block-10 lands at 14:45-15:00 when block-9 is untouched (found ${m10?.startTime}-${m10?.endTime})`);
+ok(m10?.startTime === '15:30' && m10?.endTime === '15:45',
+  `block-10 lands at 15:30-15:45 when block-9 is untouched (found ${m10?.startTime}-${m10?.endTime})`);
 ok(migrated.find((b) => b.id === 'block-9')?.label === block9.label,
   'a block-9 still carrying the old shipped label is renamed to the new one');
 // Nothing is deleted and nothing is reordered.
@@ -296,8 +307,11 @@ const frozenMigrated = migrateSavedSchedule(frozenAtOriginal);
 const frozen9 = frozenMigrated.find((b) => b.id === 'block-9');
 ok(frozen9?.label === block9.label,
   'a block-9 frozen at the ORIGINAL shipped default is renamed forward', frozen9?.label);
-ok(/social studies/i.test(frozen9?.label || ''),
-  'the rename also gives her printed schedule Social Studies, which it never named');
+// Social Studies left this label Nov 3, 2026 for its own daily block
+// (block-5c) — the rename now gives her printed schedule Technology and
+// Robotics, and must NOT reintroduce a subject that moved off this block.
+ok(!/social studies/i.test(frozen9?.label || ''),
+  'the rename does not reintroduce Social Studies — it moved to its own block', frozen9?.label);
 ok(migrateSavedSchedule(frozenMigrated) === frozenMigrated,
   'the frozen-label case is idempotent too');
 

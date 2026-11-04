@@ -1,6 +1,9 @@
 import { useState, useEffect, useMemo } from 'react';
 import { useAppStore } from '../../store/useAppStore.js';
-import { resolveBlockLabel, ROTATING_BLOCK_ID } from '../../lib/rotatingBlock.js';
+// ROTATING_BLOCK_ID's "Rotating block" caption retired Nov 3, 2026 — nothing
+// on this rail rotates any more (see MissionControlDashboard.jsx's isOffTimetable
+// comment for the full history), so this import no longer names it.
+import { resolveBlockLabel } from '../../lib/rotatingBlock.js';
 import { scheduleStatus, formatClock, minutesSinceMidnight } from '../../lib/classBell.js';
 import { todayDateStr } from '../../lib/scheduler.js';
 import { academyContent } from '../../content/academyContent.js';
@@ -142,9 +145,6 @@ export function TodaysRoutineRail({ onOpenSchedule }) {
                   >
                     {label}
                   </p>
-                  {block.id === ROTATING_BLOCK_ID && !isPast && (
-                    <p className="text-[10px] text-ink-600">Rotating block</p>
-                  )}
                   {isNow && (
                     <div className="mt-1.5 h-0.5 w-full overflow-hidden rounded-full bg-space-700">
                       <div className="h-full bg-signal-cyan" style={{ width: through + '%' }} />

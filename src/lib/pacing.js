@@ -67,14 +67,47 @@ const isSchoolDay = (...args) => slotIsSchoolDay(academyContent(), ...args);
  * on any screen said so before this.
  */
 
-/** Subjects taught in the 2:15 rotating block. The core subjects have their own. */
-export const ROTATING_SUBJECTS = ['aerospace', 'technology', 'socialStudies', 'robotics'];
+/**
+ * Subjects taught in the rotating block. EMPTY since Nov 3, 2026 — Aerospace,
+ * Technology and Robotics were the last three subjects still sharing it (see
+ * the long comment at DAILY_SUBJECTS below), and the parent retired the whole
+ * mechanism: "i don't want aerospace robotics and tech to be rotating... I
+ * want them to be daily." Kept as a named, exported constant rather than
+ * deleted — the shared-block mechanism itself (`liveRotatingSubjects` in
+ * rotatingBlock.js, the `openDays`/Friday-buffer math just below) is left in
+ * place, dormant, in case a future subject genuinely needs to rotate.
+ */
+export const ROTATING_SUBJECTS = [];
+
+/**
+ * Subjects with a guaranteed daily block of their own, OUTSIDE the rotation —
+ * same as a core subject (Math, Science), but still carrying Mission Control
+ * lessons and Khan units the way these subjects used to as rotating ones, so
+ * this module still has to pace them.
+ *
+ * Social Studies moved here Nov 3, 2026, and Aerospace, Technology and
+ * Robotics joined it the same day, on the parent's explicit instruction:
+ * "I want them to be daily. social studies should be daily as well." Until
+ * then each shared the rotating block (`ROTATING_SUBJECTS`) and this module
+ * counted its days by walking `liveRotatingSubjects` / `liveMorningSubject`
+ * for the days it won. Each now has its own real block every school day
+ * (block-5c, block-9, block-9b, block-9c — see defaultSchedule.js), no
+ * rotation involved, so that walk would report ZERO days owned for any of
+ * them — not because they lost ground, but because they stopped competing
+ * for days they no longer need to compete for. `ownedDaysInQuarter` below
+ * credits every subject in this list every school day directly, the same way
+ * it would for Math or Science if anyone asked.
+ */
+export const DAILY_SUBJECTS = ['socialStudies', 'aerospace', 'technology', 'robotics'];
+
+/** Every subject this module paces load for — rotating or daily-block. */
+const TRACKED_SUBJECTS = [...ROTATING_SUBJECTS, ...DAILY_SUBJECTS];
 
 /** Mission Control lessons per `subject|quarter`, counted once at module load. */
 const LESSONS_BY_SUBJECT_QUARTER = (() => {
   const map = new Map();
   for (const lesson of allLessons) {
-    if (!lesson.quarter || !ROTATING_SUBJECTS.includes(lesson.subject)) continue;
+    if (!lesson.quarter || !TRACKED_SUBJECTS.includes(lesson.subject)) continue;
     const key = lesson.subject + '|' + lesson.quarter;
     map.set(key, (map.get(key) || 0) + 1);
   }
@@ -126,6 +159,33 @@ export function ownedDaysInQuarter(quarter, khanAcademyAssignments) {
      */
     const morning = liveMorningSubject(day, khanAcademyAssignments);
     if (morning) owned[morning] = (owned[morning] || 0) + 1;
+
+    /**
+     * DAILY_SUBJECTS own this day unconditionally, same as Math or Science
+     * would — their block runs every school day and was never part of the
+     * rotation count below. Added Nov 3, 2026, when Social Studies moved
+     * here from ROTATING_SUBJECTS; Aerospace, Technology and Robotics joined
+     * the same day.
+     */
+    for (const subject of DAILY_SUBJECTS) owned[subject] = (owned[subject] || 0) + 1;
+
+    /**
+     * ---- THE ROTATING WALK IS DORMANT NOW THAT ROTATING_SUBJECTS IS EMPTY.
+     * (Nov 3, 2026.) ----
+     *
+     * With nothing left to rotate, `liveRotatingSubjects` would resolve to []
+     * on every single school day — not because the block is open, but because
+     * no block like that exists any more. Counting every day as an "open
+     * Friday" buffer would be a lie dressed as slack: there is no shared
+     * block left for a sick day to borrow, because Aerospace, Technology and
+     * Robotics each own their own fixed block now, Friday included (the
+     * DAILY_SUBJECTS loop above already credits Friday to each of them, same
+     * as any other school day). So this walk, and the Friday-buffer math it
+     * used to feed, only runs when a subject is actually registered as
+     * rotating — skipped entirely while ROTATING_SUBJECTS is empty, kept for
+     * the day a future subject needs the mechanism again.
+     */
+    if (ROTATING_SUBJECTS.length === 0) continue;
 
     const live = liveRotatingSubjects(day, khanAcademyAssignments);
     if (live.length === 0) {
@@ -207,7 +267,7 @@ function khanUnitsBySubject(quarter, khanAcademyAssignments) {
   const days = {};
   for (const row of khanAcademyAssignments) {
     if (!row || row.batchLabel !== quarter.batchLabel) continue;
-    if (!ROTATING_SUBJECTS.includes(row.subject)) continue;
+    if (!TRACKED_SUBJECTS.includes(row.subject)) continue;
     counts[row.subject] = (counts[row.subject] || 0) + 1;
     days[row.subject] = (days[row.subject] || 0) + khanUnitDays(row);
   }
@@ -230,9 +290,9 @@ export function quarterPacing(quarter, khanAcademyAssignments) {
   const { counts: khanUnits, days: khanDays } = khanUnitsBySubject(quarter, khanAcademyAssignments);
 
   const subjects = new Set([
-    ...Object.keys(owned).filter((s) => ROTATING_SUBJECTS.includes(s)),
+    ...Object.keys(owned).filter((s) => TRACKED_SUBJECTS.includes(s)),
     ...Object.keys(khanUnits),
-    ...ROTATING_SUBJECTS.filter(
+    ...TRACKED_SUBJECTS.filter(
       (s) => (LESSONS_BY_SUBJECT_QUARTER.get(s + '|' + quarter.batchLabel) || 0) > 0
     )
   ]);
