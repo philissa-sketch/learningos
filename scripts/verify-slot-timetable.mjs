@@ -160,12 +160,32 @@ console.log('\n--- 5. the day-off sentence belongs to the school ---');
 
 console.log('\n--- 6. what is taught on a day ---');
 {
+  /**
+   * ---- THE ROTATING subjects LIST WENT DORMANT NOV 3, 2026 ----
+   *
+   * These two checks used to assert that a weekday's `subjects` list named a
+   * live subject, and that a quarter could override it via
+   * `subjectsByQuarter`. Both were true the day they were written. Aerospace,
+   * Technology, Robotics and Social Studies each got their own fixed daily
+   * block that day (block-9/9b/9c/5c in defaultSchedule.js), and every
+   * weekday's `subjects` in weekPattern.js was emptied out on purpose — see
+   * that file's own "WENT DAILY NOV 3, 2026" comments. No day defines
+   * `subjectsByQuarter` any more either; the quarter-swap mechanism it
+   * supported (Aerospace giving up Wednesday to Social Studies in Q1) was
+   * retired the same day.
+   *
+   * `subjectsForDay` still answers correctly — it is just correctly empty
+   * now, because nothing is left to rotate through WEEK_PATTERN. These
+   * checks assert that dormancy explicitly rather than testing a handoff
+   * that can no longer happen.
+   */
   const wed = D('2026-09-09');
-  ok('the days-off school teaches its own weekday list', subjectsForDay(L, wed, null).length > 0
-    && subjectsForDay(L, wed, null).every((s) => LAMAR.WEEK_PATTERN[3].subjects.includes(s) || true));
-  const byQ = Object.keys(LAMAR.WEEK_PATTERN[3].subjectsByQuarter || {})[0];
-  ok('...and a quarter override when it has one', byQ
-    ? JSON.stringify(subjectsForDay(L, wed, byQ)) === JSON.stringify(LAMAR.WEEK_PATTERN[3].subjectsByQuarter[byQ]) : false);
+  ok('the days-off school names no rotating subject any more',
+    subjectsForDay(L, wed, null).length === 0 && LAMAR.WEEK_PATTERN[3].subjects.length === 0,
+    'Aerospace, Technology, Robotics and Social Studies each own a fixed daily block now — nothing is left for WEEK_PATTERN.subjects to carry');
+  ok('...and no weekday keeps a quarter override any more',
+    Object.values(LAMAR.WEEK_PATTERN).every((day) => !day.subjectsByQuarter),
+    'subjectsByQuarter was the Q1 Aerospace/Social-Studies swap, retired with the rotation itself');
   ok('nothing is taught on a day off', subjectsForDay(L, D('2026-09-07')).length === 0);
   ok('the terms school teaches that term’s courses',
     JSON.stringify(subjectsForDay(P, D('2026-09-08'))) === JSON.stringify(PETAL.SUBJECTS_BY_TERM.q1));

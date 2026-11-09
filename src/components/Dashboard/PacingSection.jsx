@@ -57,7 +57,7 @@ export function PacingSection() {
         <p className="mt-2 text-sm text-ink-300">
           Aerospace, Technology, Social Studies and Robotics each run every school day in their own block now
           (retired the 2:15 rotating slot Nov 3, 2026). This counts every school day a subject owns against
-          the work it is carrying — lessons and Khan Academy units both.
+          the work it is carrying — lessons and Khan units both.
         </p>
         <p className="mt-2 text-sm text-ink-300">
           {trouble.length > 0 ? (
