@@ -14439,7 +14439,7 @@ function quarterLabelForDate(dateStr) {
   return getCurrentQuarter(d).batchLabel;
 }
 
-function khanStrandFor(subject, row) {
+export function khanStrandFor(subject, row) {
   if (subject !== 'reading') return null;
   return khanGrammarUnitByUrl(row?.khanAcademyUrl) ? 'language-arts' : 'reading';
 }

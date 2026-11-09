@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo } from 'react';
 import { guardianWord, learnerWord, stateWord } from '../../lib/schoolWords.js';
-import { useAppStore, totalMasteredCount } from '../../store/useAppStore.js';
+import { useAppStore, totalMasteredCount, khanStrandFor } from '../../store/useAppStore.js';
 import { XP_PER_COIN, XP_PER_CREDIT, CREDIT_AUTO_APPROVE_MAX } from '../../lib/economy.js';
 import { CurrencyControlsSection } from './CurrencyControlsSection.jsx';
 import { GradeLadderCard } from './GradeLadderCard.jsx';
@@ -2002,19 +2002,55 @@ function KhanAcademyGradesSection() {
             </p>
           ) : (
             <div className="mt-4 space-y-5">
-              {bySubject.map(([subject, rows]) => (
-                <div key={subject}>
-                  <p className="text-xs font-display uppercase tracking-widest text-ink-500">
-                    {SUBJECT_LABELS[subject] || subject}{' '}
-                    <span className="text-ink-600">· {rows.length}</span>
-                  </p>
-                  <div className="mt-1.5 space-y-1.5">
-                    {rows.map((row) => (
-                      <KhanGradeRow key={row.id} row={row} onGraded={pin} />
-                    ))}
+              {bySubject.map(([subject, rows]) => {
+                /**
+                 * READING COMPREHENSION AND GRAMMAR ARE TWO TRACKS, NOT ONE
+                 * GRADE SEQUENCE. (Nov 9, 2026.)
+                 *
+                 * The "reading" subject carries two Khan strands that sit at
+                 * different grade levels on purpose: reading comprehension is
+                 * pinned to his actual reading level (7th), constant across
+                 * quarters, while grammar deliberately ramps slower on her own
+                 * ladder (5th in Q1, 6th in Q2, 7th-8th in Q3-4). Both lists
+                 * are internally ordered correctly, but stacked together with
+                 * no label they read as one sequence sliding from 7th back to
+                 * 6th. She asked for it to be legible instead of just
+                 * explained once in chat -- so split it under its own
+                 * sub-headings whenever a subject actually mixes strands.
+                 */
+                const strands = subject === 'reading'
+                  ? [
+                      { id: 'reading', label: 'Reading Comprehension', rows: rows.filter((r) => khanStrandFor(subject, r) === 'reading') },
+                      { id: 'language-arts', label: 'Grammar', rows: rows.filter((r) => khanStrandFor(subject, r) === 'language-arts') },
+                    ].filter((s) => s.rows.length > 0)
+                  : [{ id: subject, label: SUBJECT_LABELS[subject] || subject, rows }];
+                const splitStrands = strands.length > 1;
+
+                return (
+                  <div key={subject}>
+                    <p className="text-xs font-display uppercase tracking-widest text-ink-500">
+                      {SUBJECT_LABELS[subject] || subject}{' '}
+                      <span className="text-ink-600">· {rows.length}</span>
+                    </p>
+                    <div className={splitStrands ? 'mt-1.5 space-y-4' : 'mt-1.5 space-y-1.5'}>
+                      {strands.map((strand) => (
+                        <div key={strand.id}>
+                          {splitStrands && (
+                            <p className="text-[11px] font-display uppercase tracking-widest text-ink-600">
+                              {strand.label} <span className="text-ink-700">· {strand.rows.length}</span>
+                            </p>
+                          )}
+                          <div className="mt-1 space-y-1.5">
+                            {strand.rows.map((row) => (
+                              <KhanGradeRow key={row.id} row={row} onGraded={pin} />
+                            ))}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           )}
         </>
